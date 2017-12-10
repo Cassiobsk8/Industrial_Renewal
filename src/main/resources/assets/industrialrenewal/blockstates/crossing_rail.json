@@ -1,0 +1,21 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "shape": {
+      "normal": {
+        "model": "industrialrenewal:rail_crossing"
+      },
+      "north_south": {
+        "model": "industrialrenewal:rail_crossing"
+      },
+      "east_west": {
+        "model": "industrialrenewal:rail_crossing",
+        "y": 90
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:rail_crossing",
+      "transform": "forge:default-block"
+    }
+  }
+}

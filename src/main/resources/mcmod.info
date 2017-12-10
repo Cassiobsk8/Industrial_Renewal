@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "industrialrenewal",
+    "name": "Industrial Renewal",
+    "description": "A industrial content mod.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["CassioKF"],
+    "credits": "The internet",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:cargo_container"
+    },
+    "inventory": {
+      "model": "industrialrenewal:cargo_container",
+      "transform": "forge:default-block"
+    }
+  }
+}

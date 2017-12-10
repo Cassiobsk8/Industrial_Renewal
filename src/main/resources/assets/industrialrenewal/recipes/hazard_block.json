@@ -1,0 +1,24 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "RRR",
+    "C M",
+    "RRR"
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "dyeYellow"
+    },
+    "M": {
+      "type": "forge:ore_dict",
+      "ore": "dyeBlack"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:block_hazard"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "train_horn": {
+    "category": "block",
+    "sounds": [
+      {
+      "name": "industrialrenewal:train_horn",
+      "stream": false
+      }
+    ]
+  },
+  "valve": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "industrialrenewal:valve",
+        "stream": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "shape": {
+      "normal": {
+        "model": "industrialrenewal:rail_normal"
+      },
+      "north_south": {
+        "model": "industrialrenewal:rail_normal"
+      },
+      "east_west": {
+        "model": "industrialrenewal:rail_normal",
+        "y": 90
+      },
+      "ascending_east": {
+        "model": "industrialrenewal:rail_normal_raised",
+        "y": 270
+      },
+      "ascending_west": {
+        "model": "industrialrenewal:rail_normal_raised",
+        "y": 90
+      },
+      "ascending_north": {
+        "model": "industrialrenewal:rail_normal_raised",
+        "y": 180
+      },
+      "ascending_south": {
+        "model": "industrialrenewal:rail_normal_raised"
+      },
+      "south_east": {
+        "model": "industrialrenewal:rail_normal_curved",
+        "y": 180
+      },
+      "south_west": {
+        "model": "industrialrenewal:rail_normal_curved",
+        "y": 270
+      },
+      "north_west": {
+        "model": "industrialrenewal:rail_normal_curved"
+      },
+      "north_east": {
+        "model": "industrialrenewal:rail_normal_curved",
+        "y": 90
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:rail_normal",
+      "transform": "forge:default-block"
+    }
+  }
+}

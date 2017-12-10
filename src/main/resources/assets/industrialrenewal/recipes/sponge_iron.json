@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:coal",
+      "data": 0
+    },
+    {
+      "item": "minecraft:coal",
+      "data": 0
+    },
+    {
+      "item": "minecraft:coal",
+      "data": 0
+    },
+    {
+      "item": "minecraft:coal",
+      "data": 0
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  ],
+  "result": {
+    "item": "industrialrenewal:sponge_iron"
+  }
+}
