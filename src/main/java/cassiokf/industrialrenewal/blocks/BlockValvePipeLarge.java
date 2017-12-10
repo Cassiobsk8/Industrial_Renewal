@@ -15,7 +15,6 @@ public class BlockValvePipeLarge extends BlockBase {
 
     public BlockValvePipeLarge(String name) {
         super(Material.IRON, name);
-
         setHardness(3f);
         setResistance(5f);
     }
