@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.pipes.BlockValvePipeLarge;
+import cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge;
 import cassiokf.industrialrenewal.tileentity.counter.BlockCounter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -33,7 +33,7 @@ public class ModBlocks {
                 valveLarge
         );
         GameRegistry.registerTileEntity(bcounter.getTileEntityClass(), bcounter.getRegistryName().toString());
-        //GameRegistry.registerTileEntity(cartContainer.getTileEntityClass(), cartContainer.getRegistryName().toString());
+        GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
