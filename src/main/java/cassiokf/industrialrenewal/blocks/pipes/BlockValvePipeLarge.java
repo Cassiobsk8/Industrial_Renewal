@@ -24,7 +24,6 @@ public class BlockValvePipeLarge extends BlockBase {
         setResistance(5f);
         this.setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ACTIVE, false));
     }
-
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
