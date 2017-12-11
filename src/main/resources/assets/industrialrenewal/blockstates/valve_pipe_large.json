@@ -1,9 +1,19 @@
 {
   "forge_marker": 1,
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:valve_large"
-    },
+    "normal": {"model": "industrialrenewal:valve_large"},
+    "active=false,facing=up": { "model": "industrialrenewal:valve_large" },
+    "active=false,facing=down": { "model": "industrialrenewal:valve_large" },
+    "active=false,facing=south": { "model": "industrialrenewal:valve_large" },
+    "active=false,facing=east": { "model": "industrialrenewal:valve_large","y":270 },
+    "active=false,facing=west": { "model": "industrialrenewal:valve_large","y":90 },
+    "active=false,facing=north": { "model": "industrialrenewal:valve_large","y":180 },
+    "active=true,facing=up": { "model": "industrialrenewal:valve_large_open" },
+    "active=true,facing=down": { "model": "industrialrenewal:valve_large_open" },
+    "active=true,facing=south": { "model": "industrialrenewal:valve_large_open" },
+    "active=true,facing=east": { "model": "industrialrenewal:valve_large_open","y":270 },
+    "active=true,facing=west": { "model": "industrialrenewal:valve_large_open","y":90 },
+    "active=true,facing=north": { "model": "industrialrenewal:valve_large_open","y":180 },
     "inventory": {
       "model": "industrialrenewal:valve_large",
       "transform": "forge:default-block"

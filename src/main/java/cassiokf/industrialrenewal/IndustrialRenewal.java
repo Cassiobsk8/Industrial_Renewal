@@ -7,7 +7,6 @@ import cassiokf.industrialrenewal.recipes.ModRecipes;
 import cassiokf.industrialrenewal.tab.IndustrialRenewalTab;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -16,7 +15,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 @Mod(modid = IndustrialRenewal.MODID, name = IndustrialRenewal.NAME, version = IndustrialRenewal.VERSION)
 public class IndustrialRenewal {
