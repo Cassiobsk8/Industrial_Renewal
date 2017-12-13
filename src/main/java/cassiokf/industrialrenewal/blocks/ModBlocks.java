@@ -9,6 +9,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModBlocks {
 
+
     public static BlockOre oreCopper = new BlockOre("ore_copper", "oreCopper");
 
     public static BlockOre blockHazard = new BlockOre("block_hazard",null);
