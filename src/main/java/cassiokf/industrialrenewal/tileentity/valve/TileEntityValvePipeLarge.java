@@ -17,6 +17,7 @@ import java.util.Set;
 
 public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluidHandler {
 
+    private EnumFacing facing = EnumFacing.NORTH;
 
     public TileEntityValvePipeLarge() {
         tank = new ValveUtils(this, 1000);
@@ -25,6 +26,14 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
         return (oldState.getBlock() != newState.getBlock());
+    }
+    public EnumFacing getFacing() {
+        return facing;
+    }
+
+    public void setFacing(final EnumFacing facing) {
+        this.facing = facing;
+        markDirty();
     }
 
     @Override
@@ -41,8 +50,9 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
     @Override
     public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
         readFromNBT(pkt.getNbtCompound());
+        notifyBlockUpdate();
     }
-    //test
+
     @Override
     public int fill(FluidStack resource, boolean doFill) {
         if(resource == null)
@@ -69,7 +79,6 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
         return new IFluidTankProperties[] { new FluidTankProperties(tank.getInfo().fluid, tank.getInfo().capacity) };
     }
 
-    //Test
     private final Set<EnumFacing> enabledFacings = EnumSet.of(EnumFacing.NORTH,EnumFacing.SOUTH,EnumFacing.EAST,EnumFacing.WEST);
 
     public boolean toggleFacing(final EnumFacing facing) {
@@ -81,15 +90,26 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
             return true;
         }
     }
+
     public boolean isFacingEnabled(final @Nullable EnumFacing facing) {
         return enabledFacings.contains(facing) || facing == null;
     }
     public Set<EnumFacing> getEnabledFacings() {
         return enabledFacings;
     }
+    private void notifyBlockUpdate() {
+        final IBlockState state = getWorld().getBlockState(getPos());
+        getWorld().notifyBlockUpdate(getPos(), state, state, 3);
+    }
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        notifyBlockUpdate();
+    }
     @Override
     public void readFromNBT(final NBTTagCompound tag) {
         super.readFromNBT(tag);
+        facing = EnumFacing.getFront(tag.getInteger("facing"));
 
         enabledFacings.clear();
 
@@ -103,6 +123,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
         final int[] enabledFacingIndices = enabledFacings.stream()
                 .mapToInt(EnumFacing::getIndex)
                 .toArray();
+        tag.setInteger("facing", facing.getIndex());
 
         tag.setIntArray("EnabledFacings", enabledFacingIndices);
 
