@@ -5,24 +5,25 @@ import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
+import javax.swing.text.Position;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,9 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
 
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
+    //public static final PropertyDirection POSITION = BlockHorizontal.POSITION;
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
+
 
     public BlockValvePipeLarge(String name) {
         super(Material.IRON, name);
@@ -44,19 +47,37 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
         int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
-        boolean Vactive = world.getBlockState(pos).getValue(ACTIVE);
+        boolean Vactive = state.getValue(ACTIVE);
 
         final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
 
         world.playSound((EntityPlayer) null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:valve")), SoundCategory.BLOCKS, 1.0F, 1.0F);
         if (!Vactive) {
             world.setBlockState(pos, state.withProperty(ACTIVE, true));
-            //setFacing(world,pos);
+            shutDown(world, pos);
+            //tileEntity.fill(tileEntity.drain(250,true),true);
         } else {
             world.setBlockState(pos, state.withProperty(ACTIVE, false));
-            //setFacing(world,pos);
+            shutDown(world, pos);
         }
         return true;
+    }
+
+    public void shutDown(World world,BlockPos pos) {
+        EnumFacing vFace = world.getBlockState(pos).getValue(FACING);
+        final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
+        if (vFace == EnumFacing.NORTH) {
+            tileEntity.toggleFacing(EnumFacing.EAST);
+        }
+        if (vFace == EnumFacing.SOUTH) {
+            tileEntity.toggleFacing(EnumFacing.WEST);
+        }
+        if (vFace == EnumFacing.EAST) {
+            tileEntity.toggleFacing(EnumFacing.SOUTH);
+        }
+        if (vFace == EnumFacing.WEST) {
+            tileEntity.toggleFacing(EnumFacing.NORTH);
+        }
     }
 
     public void setFacing(World world, BlockPos pos) {
@@ -76,6 +97,7 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING, ACTIVE);
     }
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
         EnumFacing facing = EnumFacing.getFront((meta > 8) ? meta - 8 : meta);
@@ -87,20 +109,26 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
         int facingbits = state.getValue(FACING).getIndex();
         return facingbits;
     }
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
-
+    @SuppressWarnings("deprecation")
     @Override
     @Deprecated
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
-
+    @SuppressWarnings("deprecation")
     @Override
     @Deprecated
     public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isNormalCube(IBlockState state) {
         return false;
     }
     @Override
@@ -123,9 +151,10 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     @Override
     public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
         //test
-
+        final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
         //test
         setFacing(world,pos);
+        shutDown(world, pos);
         final IFluidHandler fluidHandler = getFluidHandler(world, pos);
         if (fluidHandler != null) {
             FluidUtil.tryEmptyContainer(stack, fluidHandler, Integer.MAX_VALUE, null, true);

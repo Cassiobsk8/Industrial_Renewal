@@ -8,28 +8,23 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.TileFluidHandler;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.*;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Set;
 
-public class TileEntityValvePipeLarge extends TileFluidHandler {
+public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluidHandler {
 
-    //public void tCapacity(int numb) {
-    //        tank = new ValveUtils(this, numb);
-    //}
 
     public TileEntityValvePipeLarge() {
-        tank = new ValveUtils(this, 20);
+        tank = new ValveUtils(this, 1000);
     }
+
     @Override
-
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-
         return (oldState.getBlock() != newState.getBlock());
-
     }
 
     @Override
@@ -48,7 +43,33 @@ public class TileEntityValvePipeLarge extends TileFluidHandler {
         readFromNBT(pkt.getNbtCompound());
     }
     //test
+    @Override
+    public int fill(FluidStack resource, boolean doFill) {
+        if(resource == null)
+            return 0;
+        int canAccept = resource.amount;
+        if(canAccept <= 0)
+            return 0;
 
+        return this.tank.fill(resource, doFill);
+    }
+    @Override
+    public FluidStack drain(FluidStack resource, boolean doDrain)
+    {
+        return this.tank.drain(resource.amount, doDrain);
+    }
+    @Override
+    public FluidStack drain(int maxDrain, boolean doDrain)
+    {
+        //needsUpdate = true;
+        return this.tank.drain(maxDrain, doDrain);
+    }
+    @Override
+    public IFluidTankProperties[] getTankProperties() {
+        return new IFluidTankProperties[] { new FluidTankProperties(tank.getInfo().fluid, tank.getInfo().capacity) };
+    }
+
+    //Test
     private final Set<EnumFacing> enabledFacings = EnumSet.of(EnumFacing.NORTH,EnumFacing.SOUTH,EnumFacing.EAST,EnumFacing.WEST);
 
     public boolean toggleFacing(final EnumFacing facing) {
