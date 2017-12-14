@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.valve;
 
 import cassiokf.industrialrenewal.util.EnumFaceRotation;
+import cassiokf.industrialrenewal.util.ValveUtils;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,9 +22,9 @@ import static cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge.AC
 
 public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluidHandler {
 
-    private EnumFacing facing = EnumFacing.NORTH;
+    private EnumFacing facing = EnumFacing.SOUTH;
     private EnumFaceRotation faceRotation = EnumFaceRotation.UP;
-    private PropertyBool active = ACTIVE;
+    //private PropertyBool active = ACTIVE;
 
     public TileEntityValvePipeLarge() {
         tank = new ValveUtils(this, 1000);

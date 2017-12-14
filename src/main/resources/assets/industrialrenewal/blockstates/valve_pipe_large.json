@@ -1,7 +1,6 @@
 {
   "forge_marker": 1,
   "variants": {
-    "normal": {"model": "industrialrenewal:valve_large"},
     "active=false,face_rotation=up,facing=up": { "model": "industrialrenewal:valve_large"},
     "active=false,face_rotation=up,facing=down": { "model": "industrialrenewal:valve_large","x":180},
     "active=false,face_rotation=up,facing=south": { "model": "industrialrenewal:valve_large","y":180,"x":90},

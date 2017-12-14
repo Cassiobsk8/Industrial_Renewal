@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.tileentity.valve;
+package cassiokf.industrialrenewal.util;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.Fluid;

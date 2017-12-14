@@ -51,9 +51,7 @@ public class IndustrialRenewal {
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event){
 		System.out.println(NAME + " is loading preInit!");
-		//test
         IRSoundHandler.init();
-        //test
 	}
 
 	@Mod.EventHandler
