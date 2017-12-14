@@ -1,5 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.valve;
 
+import cassiokf.industrialrenewal.util.EnumFaceRotation;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -15,9 +17,13 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Set;
 
+import static cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge.ACTIVE;
+
 public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluidHandler {
 
     private EnumFacing facing = EnumFacing.NORTH;
+    private EnumFaceRotation faceRotation = EnumFaceRotation.UP;
+    private PropertyBool active = ACTIVE;
 
     public TileEntityValvePipeLarge() {
         tank = new ValveUtils(this, 1000);
@@ -110,6 +116,8 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
     public void readFromNBT(final NBTTagCompound tag) {
         super.readFromNBT(tag);
         facing = EnumFacing.getFront(tag.getInteger("facing"));
+        faceRotation = EnumFaceRotation.values()[tag.getInteger("faceRotation")];
+        //active = BlockValvePipeLarge.state.getValue(tag.getBoolean("active"));
 
         enabledFacings.clear();
 
@@ -124,7 +132,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
                 .mapToInt(EnumFacing::getIndex)
                 .toArray();
         tag.setInteger("facing", facing.getIndex());
-
+        tag.setInteger("faceRotation", faceRotation.ordinal());
         tag.setIntArray("EnabledFacings", enabledFacingIndices);
 
         return super.writeToNBT(tag);
@@ -150,5 +158,12 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
         }
 
         return super.getCapability(capability, facing);
+    }
+    public EnumFaceRotation getFaceRotation() {
+        return faceRotation;
+    }
+    public void setFaceRotation(final EnumFaceRotation faceRotation) {
+        this.faceRotation = faceRotation;
+        markDirty();
     }
 }

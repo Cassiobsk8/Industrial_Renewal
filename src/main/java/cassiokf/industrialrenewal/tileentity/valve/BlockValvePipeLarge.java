@@ -1,10 +1,12 @@
 package cassiokf.industrialrenewal.tileentity.valve;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.util.EnumFaceRotation;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,14 +23,13 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarge> {
 
 
     public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
+    public static final IProperty<EnumFaceRotation> FACE_ROTATION = PropertyEnum.create("face_rotation", EnumFaceRotation.class);
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
 
@@ -36,25 +37,36 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
         super(Material.IRON, name);
         setHardness(3f);
         setResistance(5f);
-        //this.setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ACTIVE, false));
+        this.setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(FACE_ROTATION, EnumFaceRotation.UP).withProperty(ACTIVE, false));
+    }
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, ACTIVE, FACE_ROTATION);
     }
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (entity.isSneaking()) { // If the player is sneaking, rotate the face
+            rotateFace(world, pos);
+            return true;
+        } else { // Else rotate or recolour the block
 
-        int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
-        boolean Vactive = state.getValue(ACTIVE);
+            int i = pos.getX();
+            int j = pos.getY();
+            int k = pos.getZ();
+            boolean Vactive = state.getValue(ACTIVE);
 
-        world.playSound((EntityPlayer) null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:valve")), SoundCategory.BLOCKS, 1.0F, 1.0F);
-        if (!Vactive) {
-            world.setBlockState(pos, state.withProperty(ACTIVE, true));
-            shutDown(world, pos);
-            //tileEntity.fill(tileEntity.drain(250,true),true);
-        } else {
-            world.setBlockState(pos, state.withProperty(ACTIVE, false));
-            shutDown(world, pos);
+            world.playSound((EntityPlayer) null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:valve")), SoundCategory.BLOCKS, 1.0F, 1.0F);
+            if (!Vactive) {
+                world.setBlockState(pos, state.withProperty(ACTIVE, true));
+                shutDown(world, pos);
+                //tileEntity.fill(tileEntity.drain(250,true),true);
+            } else {
+                world.setBlockState(pos, state.withProperty(ACTIVE, false));
+                shutDown(world, pos);
+            }
+            return true;
         }
-        return true;
     }
 
     public void shutDown(World world,BlockPos pos) {
@@ -87,10 +99,6 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
         }
     }
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, ACTIVE);
-    }
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
@@ -167,17 +175,30 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
         final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
         return tileEntity != null ? tileEntity.getFacing() : EnumFacing.NORTH;
     }
-
+    public EnumFaceRotation getFaceRotation(final IBlockAccess world, final BlockPos pos) {
+        final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
+        return tileEntity != null ? tileEntity.getFaceRotation() : EnumFaceRotation.UP;
+    }
     public void setFacing(final IBlockAccess world, final BlockPos pos, final EnumFacing facing) {
         final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
         if (tileEntity != null) {
             tileEntity.setFacing(facing);
         }
     }
+    public void setFaceRotation(final IBlockAccess world, final BlockPos pos, final EnumFaceRotation faceRotation) {
+        final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
+        if (tileEntity != null) {
+            tileEntity.setFaceRotation(faceRotation);
+        }
+    }
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(final IBlockState state, final IBlockAccess worldIn, final BlockPos pos) {
-        return state.withProperty(FACING, getFacing(worldIn, pos));
+        return state.withProperty(FACING, getFacing(worldIn, pos)).withProperty(FACE_ROTATION, getFaceRotation(worldIn, pos)).withProperty(ACTIVE, state.getValue(ACTIVE));
+    }
+    public void rotateFace(final World world, final BlockPos pos) {
+        final EnumFaceRotation faceRotation = getFaceRotation(world, pos);
+        setFaceRotation(world, pos, faceRotation.rotateClockwise());
     }
 
     @Override
