@@ -24,7 +24,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-
 public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarge> {
 
 
@@ -47,22 +46,29 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (entity.isSneaking()) { // If the player is sneaking, rotate the face
-            rotateFace(world, pos);
-            return true;
-        } else { // Else rotate or recolour the block
-
-            int i = pos.getX();
-            int j = pos.getY();
-            int k = pos.getZ();
             boolean Vactive = state.getValue(ACTIVE);
+            rotateFace(world, pos);
+            resetFace(world, pos);
+            setFace(world,pos);
+            if (!Vactive) {
+                shutDown(world, pos);
+            }
+            return true;
+        } else {
+
+            int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
 
             world.playSound((EntityPlayer) null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:valve")), SoundCategory.BLOCKS, 1.0F, 1.0F);
+            boolean Vactive = state.getValue(ACTIVE);
             if (!Vactive) {
                 world.setBlockState(pos, state.withProperty(ACTIVE, true));
-                shutDown(world, pos);
+                resetFace(world, pos);
+                setFace(world,pos);
                 //tileEntity.fill(tileEntity.drain(250,true),true);
             } else {
                 world.setBlockState(pos, state.withProperty(ACTIVE, false));
+                resetFace(world, pos);
+                setFace(world,pos);
                 shutDown(world, pos);
             }
             return true;
@@ -71,17 +77,25 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
 
     public void shutDown(World world,BlockPos pos) {
         EnumFacing vFace = world.getBlockState(pos).getValue(FACING);
+        EnumFaceRotation rFace = getFaceRotation(world,pos);
         final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
-        if (vFace == EnumFacing.NORTH) {
+
+        if ((vFace == EnumFacing.NORTH && rFace == EnumFaceRotation.UP)||(vFace == EnumFacing.SOUTH && rFace == EnumFaceRotation.DOWN)||(vFace == EnumFacing.UP && rFace == EnumFaceRotation.UP)||(vFace == EnumFacing.DOWN && rFace == EnumFaceRotation.UP)) {
             tileEntity.toggleFacing(EnumFacing.EAST);
         }
-        if (vFace == EnumFacing.SOUTH) {
+        if ((vFace == EnumFacing.NORTH && rFace == EnumFaceRotation.DOWN)||(vFace == EnumFacing.SOUTH && rFace == EnumFaceRotation.UP)||(vFace == EnumFacing.UP && rFace == EnumFaceRotation.DOWN)||(vFace == EnumFacing.DOWN && rFace == EnumFaceRotation.DOWN)) {
             tileEntity.toggleFacing(EnumFacing.WEST);
         }
-        if (vFace == EnumFacing.EAST) {
+        if ((vFace == EnumFacing.NORTH && rFace == EnumFaceRotation.LEFT)||(vFace == EnumFacing.SOUTH && rFace == EnumFaceRotation.LEFT)||(vFace == EnumFacing.WEST && rFace == EnumFaceRotation.LEFT)||(vFace == EnumFacing.EAST && rFace == EnumFaceRotation.LEFT)) {
+            tileEntity.toggleFacing(EnumFacing.DOWN);
+        }
+        if ((vFace == EnumFacing.NORTH && rFace == EnumFaceRotation.RIGHT)||(vFace == EnumFacing.SOUTH && rFace == EnumFaceRotation.RIGHT)||(vFace == EnumFacing.WEST && rFace == EnumFaceRotation.RIGHT)||(vFace == EnumFacing.EAST && rFace == EnumFaceRotation.RIGHT)) {
+            tileEntity.toggleFacing(EnumFacing.UP);
+        }
+        if ((vFace == EnumFacing.EAST && rFace == EnumFaceRotation.UP)||(vFace == EnumFacing.WEST && rFace == EnumFaceRotation.DOWN)||(vFace == EnumFacing.UP && rFace == EnumFaceRotation.RIGHT)||(vFace == EnumFacing.DOWN && rFace == EnumFaceRotation.LEFT)) {
             tileEntity.toggleFacing(EnumFacing.SOUTH);
         }
-        if (vFace == EnumFacing.WEST) {
+        if ((vFace == EnumFacing.WEST && rFace == EnumFaceRotation.UP)||(vFace == EnumFacing.EAST && rFace == EnumFaceRotation.DOWN)||(vFace == EnumFacing.UP && rFace == EnumFaceRotation.LEFT)||(vFace == EnumFacing.DOWN && rFace == EnumFaceRotation.RIGHT)) {
             tileEntity.toggleFacing(EnumFacing.NORTH);
         }
     }
@@ -89,14 +103,75 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     public void setFace(World world, BlockPos pos) {
         final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
         EnumFacing vFace = world.getBlockState(pos).getValue(FACING);
+        EnumFaceRotation rFace = getFaceRotation(world,pos);
         if (vFace == EnumFacing.NORTH || vFace == EnumFacing.SOUTH) {
-            tileEntity.toggleFacing(EnumFacing.NORTH);
-            tileEntity.toggleFacing(EnumFacing.SOUTH);
+            if (rFace == EnumFaceRotation.UP || rFace == EnumFaceRotation.DOWN) {
+                tileEntity.activeFacing(EnumFacing.EAST);
+                tileEntity.activeFacing(EnumFacing.WEST);
+                tileEntity.disableFacing(EnumFacing.NORTH);
+                tileEntity.disableFacing(EnumFacing.SOUTH);
+                tileEntity.disableFacing(EnumFacing.UP);
+                tileEntity.disableFacing(EnumFacing.DOWN);
+            }
+            if (rFace == EnumFaceRotation.LEFT || rFace == EnumFaceRotation.RIGHT) {
+                tileEntity.activeFacing(EnumFacing.UP);
+                tileEntity.activeFacing(EnumFacing.DOWN);
+
+                tileEntity.disableFacing(EnumFacing.NORTH);
+                tileEntity.disableFacing(EnumFacing.SOUTH);
+                tileEntity.disableFacing(EnumFacing.EAST);
+                tileEntity.disableFacing(EnumFacing.WEST);
+            }
         }
         if (vFace == EnumFacing.WEST || vFace == EnumFacing.EAST) {
-            tileEntity.toggleFacing(EnumFacing.WEST);
-            tileEntity.toggleFacing(EnumFacing.EAST);
+            if (rFace == EnumFaceRotation.UP || rFace == EnumFaceRotation.DOWN) {
+                tileEntity.activeFacing(EnumFacing.NORTH);
+                tileEntity.activeFacing(EnumFacing.SOUTH);
+
+                tileEntity.disableFacing(EnumFacing.EAST);
+                tileEntity.disableFacing(EnumFacing.WEST);
+                tileEntity.disableFacing(EnumFacing.UP);
+                tileEntity.disableFacing(EnumFacing.DOWN);
+            }
+            if (rFace == EnumFaceRotation.LEFT || rFace == EnumFaceRotation.RIGHT) {
+                tileEntity.activeFacing(EnumFacing.UP);
+                tileEntity.activeFacing(EnumFacing.DOWN);
+
+                tileEntity.disableFacing(EnumFacing.NORTH);
+                tileEntity.disableFacing(EnumFacing.SOUTH);
+                tileEntity.disableFacing(EnumFacing.EAST);
+                tileEntity.disableFacing(EnumFacing.WEST);
+            }
         }
+        if (vFace == EnumFacing.UP || vFace == EnumFacing.DOWN) {
+            if (rFace == EnumFaceRotation.UP || rFace == EnumFaceRotation.DOWN) {
+                tileEntity.activeFacing(EnumFacing.EAST);
+                tileEntity.activeFacing(EnumFacing.WEST);
+
+                tileEntity.disableFacing(EnumFacing.NORTH);
+                tileEntity.disableFacing(EnumFacing.SOUTH);
+                tileEntity.disableFacing(EnumFacing.UP);
+                tileEntity.disableFacing(EnumFacing.DOWN);
+            }
+            if (rFace == EnumFaceRotation.LEFT || rFace == EnumFaceRotation.RIGHT) {
+                tileEntity.activeFacing(EnumFacing.NORTH);
+                tileEntity.activeFacing(EnumFacing.SOUTH);
+
+                tileEntity.disableFacing(EnumFacing.UP);
+                tileEntity.disableFacing(EnumFacing.DOWN);
+                tileEntity.disableFacing(EnumFacing.EAST);
+                tileEntity.disableFacing(EnumFacing.WEST);
+            }
+        }
+    }
+    public void resetFace(World world, BlockPos pos) {
+        final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
+        tileEntity.disableFacing(EnumFacing.NORTH);
+        tileEntity.disableFacing(EnumFacing.SOUTH);
+        tileEntity.disableFacing(EnumFacing.EAST);
+        tileEntity.disableFacing(EnumFacing.WEST);
+        tileEntity.disableFacing(EnumFacing.UP);
+        tileEntity.disableFacing(EnumFacing.DOWN);
     }
 
     @SuppressWarnings("deprecation")
@@ -154,6 +229,7 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
         /** Arrumar essa porcaria de setFace e shutDown **/
 
         setFacing(world, pos, EnumFacing.getDirectionFromEntityLiving(pos, placer));
+        resetFace(world, pos);
         setFace(world,pos);
         shutDown(world, pos);
         final IFluidHandler fluidHandler = getFluidHandler(world, pos);

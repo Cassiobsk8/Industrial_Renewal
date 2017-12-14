@@ -85,11 +85,28 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
         return new IFluidTankProperties[] { new FluidTankProperties(tank.getInfo().fluid, tank.getInfo().capacity) };
     }
 
-    private final Set<EnumFacing> enabledFacings = EnumSet.of(EnumFacing.NORTH,EnumFacing.SOUTH,EnumFacing.EAST,EnumFacing.WEST);
+    private final Set<EnumFacing> enabledFacings = EnumSet.allOf(EnumFacing.class);
 
     public boolean toggleFacing(final EnumFacing facing) {
         if (enabledFacings.contains(facing)) {
             enabledFacings.remove(facing);
+            return false;
+        } else {
+            enabledFacings.add(facing);
+            return true;
+        }
+    }
+    public boolean disableFacing(final EnumFacing facing) {
+        if (enabledFacings.contains(facing)) {
+            enabledFacings.remove(facing);
+            return false;
+        } else {
+
+            return true;
+        }
+    }
+    public boolean activeFacing(final EnumFacing facing) {
+        if (enabledFacings.contains(facing)) {
             return false;
         } else {
             enabledFacings.add(facing);
