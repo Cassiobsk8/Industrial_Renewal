@@ -41,7 +41,7 @@ public class BlockGateAnd extends BlockTileEntity<TileEntityGateAnd> {
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
         setCreativeTab(IndustrialRenewal.creativeTab);
-        this.setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false).withProperty(ACTIVE10, false).withProperty(ACTIVE01, false));
+
     }
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
@@ -99,6 +99,7 @@ public class BlockGateAnd extends BlockTileEntity<TileEntityGateAnd> {
     }
     @Override
     public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+        this.setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false).withProperty(ACTIVE10, false).withProperty(ACTIVE01, false));
         change(world, pos, state);
     }
     public void change(World worldIn, BlockPos pos, IBlockState state){
@@ -176,8 +177,9 @@ public class BlockGateAnd extends BlockTileEntity<TileEntityGateAnd> {
     public IBlockState getStateFromMeta(int meta) {
         EnumFacing facing = EnumFacing.getFront(meta);
 
-        return getDefaultState().withProperty(FACING, facing).withProperty(ACTIVE, false).withProperty(ACTIVE10, false).withProperty(ACTIVE01, false);
+        return getDefaultState().withProperty(FACING, facing);
     }
+
     @Override
     public int getMetaFromState(IBlockState state) {
         int facingbits = state.getValue(FACING).getIndex();
