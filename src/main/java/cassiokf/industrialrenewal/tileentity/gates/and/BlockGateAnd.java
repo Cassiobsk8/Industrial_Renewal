@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.tileentity.gates.and;
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import cassiokf.industrialrenewal.tileentity.valve.TileEntityValvePipeLarge;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -13,6 +14,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -28,13 +30,14 @@ public class BlockGateAnd extends BlockTileEntity<TileEntityGateAnd> {
     protected static final AxisAlignedBB BLOCK_GATE_AND_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
     public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
+    public static final PropertyBool ACTIVE10 = PropertyBool.create("active10");
 
     public BlockGateAnd(String name) {
         super(Material.IRON, name);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
         setCreativeTab(IndustrialRenewal.creativeTab);
-        this.setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
+        this.setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false).withProperty(ACTIVE10, false));
     }
 
     @Override
@@ -56,6 +59,47 @@ public class BlockGateAnd extends BlockTileEntity<TileEntityGateAnd> {
     public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         return blockState.getWeakPower(blockAccess, pos, side);
     }
+    //test
+    private int getPowerLevelIn1(World world, BlockPos pos) {
+        int maxPowerFound = 0;
+        EnumFacing vFace = world.getBlockState(pos).getValue(FACING);
+        //for (EnumFacing whichFace : EnumFacing.HORIZONTALS) {
+        EnumFacing rFace = pickFace(vFace);
+        BlockPos neighborPos = pos.offset(rFace);
+        int powerLevel1 = world.getRedstonePower(neighborPos, rFace);
+        System.out.println("neighborChange: " + powerLevel1 + " " + rFace);
+            maxPowerFound = Math.max(powerLevel1, maxPowerFound);
+        //}
+        return maxPowerFound;
+    }
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighborPos)
+    {
+        // calculate the power level from neighbours and store in our TileEntity for later use in isProvidingWeakPower()
+        int powerLevel1 = getPowerLevelIn1(worldIn, pos);
+        //TileEntity tileentity = worldIn.getTileEntity(pos);
+        if (powerLevel1 > 0) {
+            System.out.println("neighborChange: " + powerLevel1);
+        }
+        notifyNeighbors(worldIn,pos,state);
+
+    }
+    public EnumFacing pickFace(EnumFacing face){
+        if (face == EnumFacing.NORTH) {
+            return EnumFacing.WEST;
+        }
+        if (face == EnumFacing.SOUTH) {
+            return EnumFacing.EAST;
+        }
+        if (face == EnumFacing.EAST) {
+            return EnumFacing.NORTH;
+        }
+        if (face == EnumFacing.WEST) {
+            return EnumFacing.SOUTH;
+        }
+        return EnumFacing.NORTH;
+    }
+    //test
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote){
@@ -94,7 +138,7 @@ public class BlockGateAnd extends BlockTileEntity<TileEntityGateAnd> {
     }
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, ACTIVE);
+        return new BlockStateContainer(this, FACING, ACTIVE, ACTIVE10);
     }
     @SuppressWarnings("deprecation")
     @Override
