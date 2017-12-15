@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd;
 import cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge;
 import cassiokf.industrialrenewal.tileentity.counter.BlockCounter;
 import net.minecraft.block.Block;
@@ -11,7 +12,7 @@ public class ModBlocks {
 
 
     public static BlockOre oreCopper = new BlockOre("ore_copper", "oreCopper");
-
+    public static BlockGateAnd gateAnd = new BlockGateAnd("gate_and");
     public static BlockOre blockHazard = new BlockOre("block_hazard",null);
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
@@ -31,10 +32,12 @@ public class ModBlocks {
                 bcounter,
                 //cartContainer,
                 crossingRail,
-                valveLarge
+                valveLarge,
+                gateAnd
         );
         GameRegistry.registerTileEntity(bcounter.getTileEntityClass(), bcounter.getRegistryName().toString());
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
+        GameRegistry.registerTileEntity(gateAnd.getTileEntityClass(), gateAnd.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -45,7 +48,8 @@ public class ModBlocks {
                 bcounter.createItemBlock(),
                // cartContainer.createItemBlock(),
                 crossingRail.createItemBlock(),
-                valveLarge.createItemBlock()
+                valveLarge.createItemBlock(),
+                gateAnd.createItemBlock()
         );
     }
 
@@ -57,5 +61,6 @@ public class ModBlocks {
         //cartContainer.registerItemModel(Item.getItemFromBlock(cartContainer));
         crossingRail.registerItemModel(Item.getItemFromBlock(crossingRail));
         valveLarge.registerItemModel(Item.getItemFromBlock(valveLarge));
+        gateAnd.registerItemModel(Item.getItemFromBlock(gateAnd));
     }
 }

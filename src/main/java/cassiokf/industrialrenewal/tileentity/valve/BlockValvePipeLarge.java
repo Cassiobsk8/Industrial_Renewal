@@ -31,7 +31,6 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     public static final IProperty<EnumFaceRotation> FACE_ROTATION = PropertyEnum.create("face_rotation", EnumFaceRotation.class);
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
-
     public BlockValvePipeLarge(String name) {
         super(Material.IRON, name);
         setHardness(3f);
@@ -62,6 +61,7 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
             if (!Vactive) {
                 world.setBlockState(pos, state.withProperty(ACTIVE, true));
                 setFace(world,pos);
+                world.spawnParticle(EnumParticleTypes.WATER_DROP, (double) i, (double) j, (double) k, 1.0D, 1.0D, 1.0D);
                 //tileEntity.fill(tileEntity.drain(250,true),true);
             } else {
                 world.setBlockState(pos, state.withProperty(ACTIVE, false));

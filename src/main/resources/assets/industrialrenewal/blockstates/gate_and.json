@@ -1,0 +1,20 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {"model": "industrialrenewal:and_gate_00"},
+    "active=false,facing=down": {"model": "industrialrenewal:and_gate_00"},
+    "active=false,facing=up": {"model": "industrialrenewal:and_gate_00"},
+    "active=false,facing=north": {"model": "industrialrenewal:and_gate_00"},
+    "active=false,facing=west": {"model": "industrialrenewal:and_gate_00","y":-90},
+    "active=false,facing=south": {"model": "industrialrenewal:and_gate_00","y":180},
+    "active=false,facing=east": {"model": "industrialrenewal:and_gate_00","y":90},
+    "active=true,facing=down": {"model": "industrialrenewal:and_gate_11"},
+    "active=true,facing=up": {"model": "industrialrenewal:and_gate_11"},
+    "active=true,facing=north": {"model": "industrialrenewal:and_gate_11"},
+    "active=true,facing=west": {"model": "industrialrenewal:and_gate_11","y":-90},
+    "active=true,facing=south": {"model": "industrialrenewal:and_gate_11","y":180},
+    "active=true,facing=east": {"model": "industrialrenewal:and_gate_11","y":90},
+
+    "inventory": {"model": "industrialrenewal:and_gate_00", "transform": "forge:default-block"}
+  }
+}
