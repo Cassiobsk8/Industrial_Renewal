@@ -1,0 +1,14 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {"model": "industrialrenewal:alarm"},
+    "facing=down": {"model": "industrialrenewal:alarm","x":180},
+    "facing=up": {"model": "industrialrenewal:alarm"},
+    "facing=north": {"model": "industrialrenewal:alarm","x":90},
+    "facing=west": {"model": "industrialrenewal:alarm","x":90,"y":-90},
+    "facing=south": {"model": "industrialrenewal:alarm","x":90,"y":180},
+    "facing=east": {"model": "industrialrenewal:alarm","x":90,"y":90},
+
+    "inventory": {"model": "industrialrenewal:alarm", "transform": "forge:default-block"}
+  }
+}

@@ -16,5 +16,14 @@
         "stream": false
       }
     ]
+  },
+  "modern_alarm": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "industrialrenewal:modern_alarm",
+        "stream": false
+      }
+    ]
   }
 }

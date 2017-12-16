@@ -1,5 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
+import cassiokf.industrialrenewal.tileentity.carts.CartTransportContainer;
 import cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd;
 import cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge;
 import cassiokf.industrialrenewal.tileentity.counter.BlockCounter;
@@ -14,30 +16,29 @@ public class ModBlocks {
     public static BlockOre oreCopper = new BlockOre("ore_copper", "oreCopper");
     public static BlockGateAnd gateAnd = new BlockGateAnd("gate_and");
     public static BlockOre blockHazard = new BlockOre("block_hazard",null);
+    public static BlockAlarm alarm = new BlockAlarm("alarm");
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail");
 
     public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large");
 
-    public static BlockCounter bcounter = new BlockCounter();
-
-    //public static CartBase cartContainer = new CartBase();
+    //public static CartTransportContainer cartContainer = new CartTransportContainer();
 
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
                 oreCopper,
                 blockHazard,
                 normalRail,
-                bcounter,
                 //cartContainer,
                 crossingRail,
                 valveLarge,
-                gateAnd
+                gateAnd,
+                alarm
         );
-        GameRegistry.registerTileEntity(bcounter.getTileEntityClass(), bcounter.getRegistryName().toString());
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(gateAnd.getTileEntityClass(), gateAnd.getRegistryName().toString());
+        GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -45,11 +46,11 @@ public class ModBlocks {
                 oreCopper.createItemBlock(),
                 blockHazard.createItemBlock(),
                 normalRail.createItemBlock(),
-                bcounter.createItemBlock(),
-               // cartContainer.createItemBlock(),
+                //cartContainer.createItemBlock(),
                 crossingRail.createItemBlock(),
                 valveLarge.createItemBlock(),
-                gateAnd.createItemBlock()
+                gateAnd.createItemBlock(),
+                alarm.createItemBlock()
         );
     }
 
@@ -57,10 +58,10 @@ public class ModBlocks {
         oreCopper.registerItemModel(Item.getItemFromBlock(oreCopper));
         blockHazard.registerItemModel(Item.getItemFromBlock(blockHazard));
         normalRail.registerItemModel(Item.getItemFromBlock(normalRail));
-        bcounter.registerItemModel(Item.getItemFromBlock(bcounter));
         //cartContainer.registerItemModel(Item.getItemFromBlock(cartContainer));
         crossingRail.registerItemModel(Item.getItemFromBlock(crossingRail));
         valveLarge.registerItemModel(Item.getItemFromBlock(valveLarge));
         gateAnd.registerItemModel(Item.getItemFromBlock(gateAnd));
+        alarm.registerItemModel(Item.getItemFromBlock(alarm));
     }
 }

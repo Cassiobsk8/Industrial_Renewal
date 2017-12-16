@@ -11,5 +11,8 @@ public class IRSoundHandler {
 
         ResourceLocation sound1 = new ResourceLocation("industrialrenewal", "valve");
         ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(sound1).setRegistryName(sound1));
+
+        ResourceLocation sound2 = new ResourceLocation("industrialrenewal", "modern_alarm");
+        ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(sound2).setRegistryName(sound2));
     }
 }
