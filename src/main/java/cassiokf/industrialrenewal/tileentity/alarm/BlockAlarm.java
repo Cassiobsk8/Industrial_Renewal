@@ -12,6 +12,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -40,8 +41,7 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
     private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.5625F, 0.875F, 0.875F, 1);
     private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.4375F, 0.875F, 0.875F, 0);
     public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
-    private final long PERIOD = 1000L; // Adjust to suit timing
-    private long lastTime = System.currentTimeMillis() - PERIOD;
+
 
 
     public BlockAlarm(String name) {
@@ -75,8 +75,8 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         final TileEntityAlarm tileEntity = getTileEntity(world, pos);
-        world.playSound((EntityPlayer) null,pos.add(0.5, 0.5, 0.5), net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:modern_alarm")), SoundCategory.BLOCKS, 2.0F, 1.0F);
-        tileEntity.checkPowered(world, tileEntity);
+        //world.playSound((EntityPlayer) null,pos.add(0.5, 0.5, 0.5), net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:modern_alarm")), SoundCategory.BLOCKS, 2.0F, 1.0F);
+        //tileEntity.checkPowered(world, tileEntity);
         return true;
     }
 
@@ -94,13 +94,18 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
             this.dropBlockAsItem(world, pos, world.getBlockState(pos), 0);
             world.setBlockToAir(pos);
         }
-        if (tileEntity.checkPowered(world, tileEntity)) {
-            long thisTime = System.currentTimeMillis();
-            if ((thisTime - lastTime) >= PERIOD) {
-                lastTime = thisTime;
-                world.playSound((EntityPlayer) null, pos.add(0.5, 0.5, 0.5), net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:modern_alarm")), SoundCategory.BLOCKS, 2.0F, 1.0F);
-            }
-        }
+            //tileEntity.playThis(world, pos, state);
+            //notifyNeighbors(world,pos,state);
+    }
+
+    protected void notifyNeighbors(World worldIn, BlockPos pos, IBlockState state)
+    {
+        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+        BlockPos blockpos = pos.offset(enumfacing.getOpposite());
+        if(net.minecraftforge.event.ForgeEventFactory.onNeighborNotify(worldIn, pos, worldIn.getBlockState(pos), java.util.EnumSet.of(enumfacing.getOpposite()), false).isCanceled())
+            return;
+        worldIn.neighborChanged(blockpos, this, pos);
+        //worldIn.notifyNeighborsOfStateExcept(blockpos, this, enumfacing);
     }
     @Override
     protected BlockStateContainer createBlockState() {

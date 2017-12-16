@@ -78,6 +78,13 @@ public class BlockGateAnd extends BlockTileEntity<TileEntityGateAnd> {
             return block == Blocks.REDSTONE_WIRE ? ((Integer)iblockstate.getValue(BlockRedstoneWire.POWER)).intValue() : worldIn.getStrongPower(pos, side);
         }
     }
+    public int tickRate()
+    {
+        return 200;
+    }
+    public void updateTick() {
+
+    }
     private int getPowerLevelIn1(World world, BlockPos pos) {
         EnumFacing v1Face = world.getBlockState(pos).getValue(FACING);
         EnumFacing r1Face = pickFace(v1Face);
