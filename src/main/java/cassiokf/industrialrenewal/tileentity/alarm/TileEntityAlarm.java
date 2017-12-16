@@ -19,10 +19,13 @@ public class TileEntityAlarm extends TileEntity implements ITickable {
     public TileEntityAlarm() {
 
     }
-    //Change TickRate!
     @Override
     public void update() {
-        playThis();
+        long thisTime = System.currentTimeMillis();
+        if ((thisTime - lastTime) >= PERIOD) {
+            lastTime = thisTime;
+            playThis();
+        }
     }
     private static boolean isPoweredWire(World world, BlockPos pos) {
         return world.getBlockState(pos).getBlock() == Blocks.REDSTONE_WIRE && Blocks.REDSTONE_WIRE.getStrongPower(world.getBlockState(pos), world, pos, EnumFacing.DOWN) > 0;
@@ -37,11 +40,7 @@ public class TileEntityAlarm extends TileEntity implements ITickable {
     }
     public void playThis() {
         if (this.checkPowered()) {
-            long thisTime = System.currentTimeMillis();
-            if ((thisTime - lastTime) >= PERIOD) {
-                lastTime = thisTime;
-                this.getWorld().playSound((EntityPlayer) null, this.getPos().add(0.5, 0.5, 0.5), net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:modern_alarm")), SoundCategory.BLOCKS, 2.0F, 1.0F);
-            }
+            this.getWorld().playSound((EntityPlayer) null, this.getPos().add(0.5, 0.5, 0.5), net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:modern_alarm")), SoundCategory.BLOCKS, 4.0F, 1.0F);
         }
     }
     @Override
