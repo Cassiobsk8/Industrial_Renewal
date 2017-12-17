@@ -1,0 +1,32 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {"model": "industrialrenewal:or_gate_00"},
+    "active=false,active01=false,active10=false,facing=down": {"model": "industrialrenewal:or_gate_00"},
+    "active=false,active01=false,active10=false,facing=up": {"model": "industrialrenewal:or_gate_00"},
+    "active=false,active01=false,active10=false,facing=north": {"model": "industrialrenewal:or_gate_00"},
+    "active=false,active01=false,active10=false,facing=west": {"model": "industrialrenewal:or_gate_00","y":-90},
+    "active=false,active01=false,active10=false,facing=south": {"model": "industrialrenewal:or_gate_00","y":180},
+    "active=false,active01=false,active10=false,facing=east": {"model": "industrialrenewal:or_gate_00","y":90},
+    "active=true,active01=false,active10=true,facing=down": {"model": "industrialrenewal:or_gate_10"},
+    "active=true,active01=false,active10=true,facing=up": {"model": "industrialrenewal:or_gate_10"},
+    "active=true,active01=false,active10=true,facing=north": {"model": "industrialrenewal:or_gate_10"},
+    "active=true,active01=false,active10=true,facing=west": {"model": "industrialrenewal:or_gate_10","y":-90},
+    "active=true,active01=false,active10=true,facing=south": {"model": "industrialrenewal:or_gate_10","y":180},
+    "active=true,active01=false,active10=true,facing=east": {"model": "industrialrenewal:or_gate_10","y":90},
+    "active=true,active01=true,active10=false,facing=down": {"model": "industrialrenewal:or_gate_01"},
+    "active=true,active01=true,active10=false,facing=up": {"model": "industrialrenewal:or_gate_01"},
+    "active=true,active01=true,active10=false,facing=north": {"model": "industrialrenewal:or_gate_01"},
+    "active=true,active01=true,active10=false,facing=west": {"model": "industrialrenewal:or_gate_01","y":-90},
+    "active=true,active01=true,active10=false,facing=south": {"model": "industrialrenewal:or_gate_01","y":180},
+    "active=true,active01=true,active10=false,facing=east": {"model": "industrialrenewal:or_gate_01","y":90},
+    "active=true,active01=true,active10=true,facing=down": {"model": "industrialrenewal:or_gate_11"},
+    "active=true,active01=true,active10=true,facing=up": {"model": "industrialrenewal:or_gate_11"},
+    "active=true,active01=true,active10=true,facing=north": {"model": "industrialrenewal:or_gate_11"},
+    "active=true,active01=true,active10=true,facing=west": {"model": "industrialrenewal:or_gate_11","y":-90},
+    "active=true,active01=true,active10=true,facing=south": {"model": "industrialrenewal:or_gate_11","y":180},
+    "active=true,active01=true,active10=true,facing=east": {"model": "industrialrenewal:or_gate_11","y":90},
+
+    "inventory": {"model": "industrialrenewal:or_gate_00", "transform": "forge:default-block"}
+  }
+}

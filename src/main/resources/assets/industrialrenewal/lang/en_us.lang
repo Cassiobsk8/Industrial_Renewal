@@ -20,4 +20,5 @@ tile.valve_pipe_large_open.name=Large Fluid Valve Open
 tile.gate_and.name=Gate AND
 tile.gate_nand.name=Gate NAND
 tile.gate_not.name=Gate NOT
+tile.gate_or.name=Gate OR
 tile.alarm.name=Industrial Alarm
