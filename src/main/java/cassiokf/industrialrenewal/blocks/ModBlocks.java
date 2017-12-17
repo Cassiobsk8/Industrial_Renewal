@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import cassiokf.industrialrenewal.tileentity.carts.CartTransportContainer;
 import cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd;
+import cassiokf.industrialrenewal.tileentity.gates.not.BlockGateNot;
 import cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge;
 import cassiokf.industrialrenewal.tileentity.counter.BlockCounter;
 import net.minecraft.block.Block;
@@ -15,6 +16,7 @@ public class ModBlocks {
 
     public static BlockOre oreCopper = new BlockOre("ore_copper", "oreCopper");
     public static BlockGateAnd gateAnd = new BlockGateAnd("gate_and");
+    public static BlockGateNot gateNot = new BlockGateNot("gate_not");
     public static BlockOre blockHazard = new BlockOre("block_hazard",null);
     public static BlockAlarm alarm = new BlockAlarm("alarm");
 
@@ -34,10 +36,12 @@ public class ModBlocks {
                 crossingRail,
                 valveLarge,
                 gateAnd,
+                gateNot,
                 alarm
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(gateAnd.getTileEntityClass(), gateAnd.getRegistryName().toString());
+        GameRegistry.registerTileEntity(gateNot.getTileEntityClass(), gateNot.getRegistryName().toString());
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
     }
 
@@ -50,6 +54,7 @@ public class ModBlocks {
                 crossingRail.createItemBlock(),
                 valveLarge.createItemBlock(),
                 gateAnd.createItemBlock(),
+                gateNot.createItemBlock(),
                 alarm.createItemBlock()
         );
     }
@@ -62,6 +67,7 @@ public class ModBlocks {
         crossingRail.registerItemModel(Item.getItemFromBlock(crossingRail));
         valveLarge.registerItemModel(Item.getItemFromBlock(valveLarge));
         gateAnd.registerItemModel(Item.getItemFromBlock(gateAnd));
+        gateNot.registerItemModel(Item.getItemFromBlock(gateNot));
         alarm.registerItemModel(Item.getItemFromBlock(alarm));
     }
 }

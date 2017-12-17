@@ -51,13 +51,13 @@ public class IndustrialRenewal {
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event){
 		System.out.println(NAME + " is loading preInit!");
-        IRSoundHandler.init();
 	}
 
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event){
-	    ModRecipes.init();
 		System.out.println(NAME + " is loading init!");
+		ModRecipes.init();
+		IRSoundHandler.init();
 	}
 
 	@Mod.EventHandler

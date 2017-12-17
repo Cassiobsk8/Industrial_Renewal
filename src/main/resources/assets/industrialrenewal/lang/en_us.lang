@@ -18,4 +18,5 @@ tile.cart_container=Cargo Container
 tile.valve_pipe_large.name=Large Fluid Valve
 tile.valve_pipe_large_open.name=Large Fluid Valve Open
 tile.gate_and.name=Gate AND
+tile.gate_not.name=Gate NOT
 tile.alarm.name=Industrial Alarm
