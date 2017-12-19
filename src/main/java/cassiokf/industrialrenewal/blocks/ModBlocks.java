@@ -26,6 +26,8 @@ public class ModBlocks {
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail");
+    public static BlockDetectorRail detectorRail = new BlockDetectorRail("detector_rail");
+    public static BlockBoosterRail boosterRail = new BlockBoosterRail("booster_rail");
 
     public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large");
 
@@ -38,6 +40,8 @@ public class ModBlocks {
                 normalRail,
                 //cartContainer,
                 crossingRail,
+                detectorRail,
+                boosterRail,
                 valveLarge,
                 gateAnd,
                 gateNand,
@@ -60,6 +64,8 @@ public class ModBlocks {
                 normalRail.createItemBlock(),
                 //cartContainer.createItemBlock(),
                 crossingRail.createItemBlock(),
+                detectorRail.createItemBlock(),
+                boosterRail.createItemBlock(),
                 valveLarge.createItemBlock(),
                 gateAnd.createItemBlock(),
                 gateNand.createItemBlock(),
@@ -75,6 +81,8 @@ public class ModBlocks {
         normalRail.registerItemModel(Item.getItemFromBlock(normalRail));
         //cartContainer.registerItemModel(Item.getItemFromBlock(cartContainer));
         crossingRail.registerItemModel(Item.getItemFromBlock(crossingRail));
+        detectorRail.registerItemModel(Item.getItemFromBlock(detectorRail));
+        boosterRail.registerItemModel(Item.getItemFromBlock(boosterRail));
         valveLarge.registerItemModel(Item.getItemFromBlock(valveLarge));
         gateAnd.registerItemModel(Item.getItemFromBlock(gateAnd));
         gateNand.registerItemModel(Item.getItemFromBlock(gateNand));

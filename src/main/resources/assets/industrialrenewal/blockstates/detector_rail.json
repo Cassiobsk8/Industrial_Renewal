@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "variants": {
+      "powered=false,shape=north_south": {"model": "industrialrenewal:rail_detector"},
+      "powered=false,shape=east_west": {"model": "industrialrenewal:rail_detector", "y": 90},
+      "powered=true,shape=north_south": {"model": "industrialrenewal:rail_detector_active"},
+      "powered=true,shape=east_west": {"model": "industrialrenewal:rail_detector_active", "y": 90},
+      "inventory": {
+        "model": "industrialrenewal:rail_detector",
+        "transform": "forge:default-block"
+      }
+  }
+}
