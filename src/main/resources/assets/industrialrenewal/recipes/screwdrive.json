@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "R  ",
+    " R ",
+    "  C"
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "minecraft:flint"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:screwdrive"
+  }
+}

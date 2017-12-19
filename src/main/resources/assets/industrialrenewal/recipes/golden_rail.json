@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "industrialrenewal:booster_rail",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "minecraft:golden_rail"
+  }
+}

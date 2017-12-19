@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "R R",
+    "RCR",
+    "RRR"
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "minecraft:netherrack"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:block_chimney"
+  }
+}
