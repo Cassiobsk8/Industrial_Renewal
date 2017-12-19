@@ -1,13 +1,11 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
-import cassiokf.industrialrenewal.tileentity.carts.CartTransportContainer;
 import cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd;
 import cassiokf.industrialrenewal.tileentity.gates.nand.BlockGateNand;
 import cassiokf.industrialrenewal.tileentity.gates.not.BlockGateNot;
 import cassiokf.industrialrenewal.tileentity.gates.or.BlockGateOr;
 import cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge;
-import cassiokf.industrialrenewal.tileentity.counter.BlockCounter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -22,6 +20,7 @@ public class ModBlocks {
     public static BlockGateNot gateNot = new BlockGateNot("gate_not");
     public static BlockGateOr gateOr = new BlockGateOr("gate_or");
     public static BlockOre blockHazard = new BlockOre("block_hazard",null);
+    public static BlockChimney blockChimney = new BlockChimney("block_chimney");
     public static BlockAlarm alarm = new BlockAlarm("alarm");
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
@@ -37,6 +36,7 @@ public class ModBlocks {
         registry.registerAll(
                 oreCopper,
                 blockHazard,
+                blockChimney,
                 normalRail,
                 //cartContainer,
                 crossingRail,
@@ -61,6 +61,7 @@ public class ModBlocks {
         registry.registerAll(
                 oreCopper.createItemBlock(),
                 blockHazard.createItemBlock(),
+                blockChimney.createItemBlock(),
                 normalRail.createItemBlock(),
                 //cartContainer.createItemBlock(),
                 crossingRail.createItemBlock(),
@@ -78,6 +79,7 @@ public class ModBlocks {
     public static void registerItemModels() {
         oreCopper.registerItemModel(Item.getItemFromBlock(oreCopper));
         blockHazard.registerItemModel(Item.getItemFromBlock(blockHazard));
+        blockChimney.registerItemModel(Item.getItemFromBlock(blockChimney));
         normalRail.registerItemModel(Item.getItemFromBlock(normalRail));
         //cartContainer.registerItemModel(Item.getItemFromBlock(cartContainer));
         crossingRail.registerItemModel(Item.getItemFromBlock(crossingRail));

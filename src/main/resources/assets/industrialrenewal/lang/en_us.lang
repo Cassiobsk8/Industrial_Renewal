@@ -12,6 +12,7 @@ item.screwdrive.name=Screw Drive
 
 tile.ore_copper.name=Copper Ore
 tile.block_hazard.name=Hazard Block
+tile.block_chimney.name=Chimney
 tile.normal_rail.name=Rail
 tile.detector_rail.name=Detector Rail
 tile.booster_rail.name=Booster Rail

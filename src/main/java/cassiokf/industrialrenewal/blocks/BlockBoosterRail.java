@@ -28,8 +28,9 @@ public class BlockBoosterRail extends BlockRailPowered {
     public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos) {
         double d15 = Math.sqrt(cart.motionX * cart.motionX + cart.motionZ * cart.motionZ);
         /** Precisa desacelerar **/
-        if (!world.getBlockState(pos).getValue(BlockRailPowered.POWERED))
+        if (!world.getBlockState(pos).getValue(BlockRailPowered.POWERED)) {
             return;
+        }
 
         if (d15 > 0.01D) {
             cart.motionX += cart.motionX / d15 * 0.06D;
