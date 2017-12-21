@@ -19,6 +19,7 @@
     }
   },
   "result": {
-    "item": "industrialrenewal:block_hazard"
+    "item": "industrialrenewal:block_hazard",
+    "count": 6
   }
 }

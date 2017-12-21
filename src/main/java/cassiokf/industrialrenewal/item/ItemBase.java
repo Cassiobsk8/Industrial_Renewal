@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.tab.IndustrialRenewalTab;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 

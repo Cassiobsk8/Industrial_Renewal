@@ -6,7 +6,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import static cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd.*;
+import static cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd.ACTIVE;
+import static cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd.FACING;
 
 public class TileEntityGateNot extends TileEntity {
 

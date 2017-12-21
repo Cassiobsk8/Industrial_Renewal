@@ -7,6 +7,7 @@ import cassiokf.industrialrenewal.tileentity.gates.not.BlockGateNot;
 import cassiokf.industrialrenewal.tileentity.gates.or.BlockGateOr;
 import cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -19,8 +20,10 @@ public class ModBlocks {
     public static BlockGateNand gateNand = new BlockGateNand("gate_nand");
     public static BlockGateNot gateNot = new BlockGateNot("gate_not");
     public static BlockGateOr gateOr = new BlockGateOr("gate_or");
-    public static BlockOre blockHazard = new BlockOre("block_hazard",null);
+    public static BlockBase blockHazard = new BlockBase(Material.IRON,"block_hazard");
+    public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor");
     public static BlockChimney blockChimney = new BlockChimney("block_chimney");
+    public static RedstoneWire redstoneWire = new RedstoneWire("redstone_wire");
     public static BlockAlarm alarm = new BlockAlarm("alarm");
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
@@ -36,6 +39,7 @@ public class ModBlocks {
         registry.registerAll(
                 oreCopper,
                 blockHazard,
+                blockIndFloor,
                 blockChimney,
                 normalRail,
                 //cartContainer,
@@ -47,7 +51,8 @@ public class ModBlocks {
                 gateNand,
                 gateNot,
                 gateOr,
-                alarm
+                alarm,
+                redstoneWire
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(gateAnd.getTileEntityClass(), gateAnd.getRegistryName().toString());
@@ -61,6 +66,7 @@ public class ModBlocks {
         registry.registerAll(
                 oreCopper.createItemBlock(),
                 blockHazard.createItemBlock(),
+                blockIndFloor.createItemBlock(),
                 blockChimney.createItemBlock(),
                 normalRail.createItemBlock(),
                 //cartContainer.createItemBlock(),
@@ -72,13 +78,15 @@ public class ModBlocks {
                 gateNand.createItemBlock(),
                 gateNot.createItemBlock(),
                 gateOr.createItemBlock(),
-                alarm.createItemBlock()
+                alarm.createItemBlock(),
+                redstoneWire.createItemBlock()
         );
     }
 
     public static void registerItemModels() {
         oreCopper.registerItemModel(Item.getItemFromBlock(oreCopper));
         blockHazard.registerItemModel(Item.getItemFromBlock(blockHazard));
+        blockIndFloor.registerItemModel(Item.getItemFromBlock(blockIndFloor));
         blockChimney.registerItemModel(Item.getItemFromBlock(blockChimney));
         normalRail.registerItemModel(Item.getItemFromBlock(normalRail));
         //cartContainer.registerItemModel(Item.getItemFromBlock(cartContainer));
@@ -91,5 +99,6 @@ public class ModBlocks {
         gateNot.registerItemModel(Item.getItemFromBlock(gateNot));
         alarm.registerItemModel(Item.getItemFromBlock(alarm));
         gateOr.registerItemModel(Item.getItemFromBlock(gateOr));
+        redstoneWire.registerItemModel(Item.getItemFromBlock(redstoneWire));
     }
 }

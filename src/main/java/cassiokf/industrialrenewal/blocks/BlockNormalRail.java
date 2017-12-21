@@ -3,12 +3,8 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-
-import java.util.List;
 
 public class BlockNormalRail extends BlockRail {
 
@@ -24,7 +20,7 @@ public class BlockNormalRail extends BlockRail {
         //setSoundType(SoundType.METAL);
         setCreativeTab(IndustrialRenewal.creativeTab);
     }
-    
+
     @Override
     @Deprecated
     public boolean isOpaqueCube(IBlockState state) {

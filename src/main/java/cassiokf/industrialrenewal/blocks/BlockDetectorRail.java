@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import net.minecraft.block.BlockRail;
 import net.minecraft.block.BlockRailDetector;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;

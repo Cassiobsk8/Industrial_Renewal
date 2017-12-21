@@ -1,40 +1,27 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import net.minecraft.block.BlockRailPowered;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
-public class BlockBoosterRail extends BlockRailPowered {
+
+public class BlockIndustrialFloor extends Block {
 
     protected String name;
 
-    public BlockBoosterRail(String name) {
-
+    public BlockIndustrialFloor(String name) {
+        super(Material.IRON);
         this.name = name;
-
         setUnlocalizedName(name);
         setRegistryName(name);
         setHardness(0.8f);
-        //setSoundType(SoundType.METAL);
+        setSoundType(SoundType.METAL);
         setCreativeTab(IndustrialRenewal.creativeTab);
-    }
-    @Override
-    public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos) {
-        double d15 = Math.sqrt(cart.motionX * cart.motionX + cart.motionZ * cart.motionZ);
-        /** Precisa desacelerar **/
-        if (!world.getBlockState(pos).getValue(BlockRailPowered.POWERED)) {
-            return;
-        }
 
-        if (d15 > 0.01D) {
-            cart.motionX += cart.motionX / d15 * 0.06D;
-            cart.motionZ += cart.motionZ / d15 * 0.06D;
-        }
     }
 
     @Override
