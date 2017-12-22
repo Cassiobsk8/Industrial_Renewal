@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.blocks;
 
-
 import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -18,11 +17,11 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockFloorPipe extends BlockFluidPipe {
+public class BlockFloorCable extends BlockEnergyCable {
 
     public static final AxisAlignedBB FULL_BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    public BlockFloorPipe(String name) {
+    public BlockFloorCable(String name) {
         super(name);
     }
 
@@ -32,10 +31,10 @@ public class BlockFloorPipe extends BlockFluidPipe {
         int j = pos.getY();
         int k = pos.getZ();
         if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
-            world.playSound((EntityPlayer) null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:drill")), SoundCategory.BLOCKS, 1.0F, 1.0F);
+            world.playSound(null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:drill")), SoundCategory.BLOCKS, 1.0F, 1.0F);
             world.setBlockState(new BlockPos(i, j, k), ModBlocks.blockIndFloor.getDefaultState(), 3);
             if (!entity.isCreative()) {
-                entity.inventory.addItemStackToInventory(new ItemStack(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.fluidPipe), 1));
+                entity.inventory.addItemStackToInventory(new ItemStack(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.energyCable), 1));
             }
             return true;
         }
