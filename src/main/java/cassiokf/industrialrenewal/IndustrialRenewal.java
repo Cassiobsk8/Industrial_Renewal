@@ -21,7 +21,7 @@ public class IndustrialRenewal {
 
     public static final IndustrialRenewalTab creativeTab = new IndustrialRenewalTab();
     public static final String MODID = "industrialrenewal";
-    public static final String NAME = "Industrial Renwal";
+    public static final String NAME = "Industrial Renewal";
     public static final String VERSION = "1.0.0";
     @Mod.Instance(MODID)
     public static IndustrialRenewal instance;

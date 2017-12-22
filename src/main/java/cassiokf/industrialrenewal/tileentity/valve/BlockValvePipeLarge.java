@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.valve;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.item.ModItems;
 import cassiokf.industrialrenewal.util.EnumFaceRotation;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -50,7 +51,7 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (entity.isSneaking()) { // If the player is sneaking, rotate the face
+        if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
             boolean Vactive = world.getBlockState(pos).getValue(ACTIVE);
             rotateFace(world, pos);
             setFace(world, pos);
