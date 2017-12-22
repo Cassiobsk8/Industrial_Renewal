@@ -70,29 +70,36 @@ public class BlockEnergyCable extends BlockPipeBase implements IEnergyStorage {
     }
 
     //IEnergyStorage
+    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
+        if (from == null) {
+            return this.receiveEnergy(maxReceive, simulate);
+        } else {
+            return 0;
+        }
+    }
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
-        return 1000;
+        return receiveEnergy(null, maxReceive, simulate);
     }
 
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
-        return 1000;
+        return 0;
     }
 
     @Override
     public int getEnergyStored() {
-        return 1000;
+        return 0;
     }
 
     @Override
     public int getMaxEnergyStored() {
-        return 1000;
+        return 0;
     }
 
     @Override
     public boolean canExtract() {
-        return true;
+        return false;
     }
 
     @Override

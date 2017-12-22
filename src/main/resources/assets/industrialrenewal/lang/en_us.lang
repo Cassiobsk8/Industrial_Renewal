@@ -32,3 +32,4 @@ tile.fluid_pipe.name=Fluid Pipe
 tile.energy_cable.name=Energy Cable
 tile.floor_pipe.name=Floor Pipe
 tile.floor_cable.name=Floor Cable
+tile.floor_lamp.name=Floor Light

@@ -182,6 +182,7 @@ public class BlockGateNot extends BlockTileEntity<TileEntityGateNot> {
     public TileEntityGateNot createTileEntity(World world, IBlockState state) {
         return new TileEntityGateNot();
     }
+
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return face == EnumFacing.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;

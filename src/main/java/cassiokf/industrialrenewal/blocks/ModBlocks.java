@@ -28,6 +28,7 @@ public class ModBlocks {
     public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable");
     public static BlockFloorPipe floorPipe = new BlockFloorPipe("floor_pipe");
     public static BlockFloorCable floorCable = new BlockFloorCable("floor_cable");
+    public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp");
     public static BlockAlarm alarm = new BlockAlarm("alarm");
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
@@ -60,7 +61,8 @@ public class ModBlocks {
                 fluidPipe,
                 energyCable,
                 floorPipe,
-                floorCable
+                floorCable,
+                floorLamp
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(gateAnd.getTileEntityClass(), gateAnd.getRegistryName().toString());
@@ -91,7 +93,8 @@ public class ModBlocks {
                 fluidPipe.createItemBlock(),
                 energyCable.createItemBlock(),
                 floorPipe.createItemBlock(),
-                floorCable.createItemBlock()
+                floorCable.createItemBlock(),
+                floorLamp.createItemBlock()
         );
     }
 
@@ -116,5 +119,6 @@ public class ModBlocks {
         energyCable.registerItemModel(Item.getItemFromBlock(energyCable));
         floorPipe.registerItemModel(Item.getItemFromBlock(floorPipe));
         floorCable.registerItemModel(Item.getItemFromBlock(floorCable));
+        floorLamp.registerItemModel(Item.getItemFromBlock(floorLamp));
     }
 }

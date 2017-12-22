@@ -70,7 +70,7 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         //make it change sound on right clicked with ScrewDrive
-        return true;
+        return false;
     }
 
     @Override
