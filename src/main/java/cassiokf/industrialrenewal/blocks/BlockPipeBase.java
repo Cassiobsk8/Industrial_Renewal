@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.blocks;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -44,6 +45,8 @@ public class BlockPipeBase extends BlockBase {
     );
     public BlockPipeBase(final String name) {
         super(Material.IRON, name);
+        setSoundType(SoundType.METAL);
+        setHardness(0.8f);
     }
     @Override
     protected BlockStateContainer createBlockState() {
@@ -144,5 +147,12 @@ public class BlockPipeBase extends BlockBase {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, axisAlignedBB);
             }
         }
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        //TODO arrumar isso para incluir a conexão
+        final AxisAlignedBB bb = new AxisAlignedBB(PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MAX_POS, PIPE_MAX_POS, PIPE_MAX_POS);
+        return bb;
     }
 }

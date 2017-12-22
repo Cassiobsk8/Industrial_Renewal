@@ -29,3 +29,4 @@ tile.gate_or.name=Gate OR
 tile.alarm.name=Industrial Alarm
 tile.redstone_wire.name=Redstone Wire
 tile.fluid_pipe.name=Fluid Pipe
+tile.floor_pipe.name=Floor Pipe
