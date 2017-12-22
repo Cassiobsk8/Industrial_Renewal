@@ -8,9 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -63,6 +61,7 @@ public class BlockFloorPipe extends BlockPipeBase {
         int j = pos.getY();
         int k = pos.getZ();
         if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
+            world.playSound((EntityPlayer) null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:drill")), SoundCategory.BLOCKS, 1.0F, 1.0F);
             world.setBlockState(new BlockPos(i, j, k), ModBlocks.blockIndFloor.getDefaultState(), 3);
             if (!entity.isCreative()) {
                 entity.inventory.addItemStackToInventory(new ItemStack(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.fluidPipe), 1));

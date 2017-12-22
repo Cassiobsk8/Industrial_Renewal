@@ -25,5 +25,14 @@
         "stream": false
       }
     ]
+  },
+  "drill": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "industrialrenewal:drill",
+        "stream": false
+      }
+    ]
   }
 }
