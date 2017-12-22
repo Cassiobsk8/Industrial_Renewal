@@ -1,13 +1,23 @@
 {
   "forge_marker": 1,
   "variants": {
-      "powered=false,shape=north_south": {"model": "industrialrenewal:rail_booster"},
-      "powered=false,shape=east_west": {"model": "industrialrenewal:rail_booster", "y": 90},
-      "powered=true,shape=north_south": {"model": "industrialrenewal:rail_booster_powered"},
-      "powered=true,shape=east_west": {"model": "industrialrenewal:rail_booster_powered", "y": 90},
-      "inventory": {
-        "model": "industrialrenewal:rail_booster",
-        "transform": "forge:default-block"
-      }
+    "powered=false,shape=north_south": {
+      "model": "industrialrenewal:rail_booster"
+    },
+    "powered=false,shape=east_west": {
+      "model": "industrialrenewal:rail_booster",
+      "y": 90
+    },
+    "powered=true,shape=north_south": {
+      "model": "industrialrenewal:rail_booster_powered"
+    },
+    "powered=true,shape=east_west": {
+      "model": "industrialrenewal:rail_booster_powered",
+      "y": 90
+    },
+    "inventory": {
+      "model": "industrialrenewal:rail_booster",
+      "transform": "forge:default-block"
+    }
   }
 }

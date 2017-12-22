@@ -19,6 +19,11 @@ public class TileEntityAlarm extends TileEntity implements ITickable {
     public TileEntityAlarm() {
 
     }
+
+    private static boolean isPoweredWire(World world, BlockPos pos) {
+        return world.getBlockState(pos).getBlock() == Blocks.REDSTONE_WIRE && Blocks.REDSTONE_WIRE.getStrongPower(world.getBlockState(pos), world, pos, EnumFacing.DOWN) > 0;
+    }
+
     @Override
     public void update() {
         long thisTime = System.currentTimeMillis();
@@ -27,9 +32,7 @@ public class TileEntityAlarm extends TileEntity implements ITickable {
             playThis();
         }
     }
-    private static boolean isPoweredWire(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock() == Blocks.REDSTONE_WIRE && Blocks.REDSTONE_WIRE.getStrongPower(world.getBlockState(pos), world, pos, EnumFacing.DOWN) > 0;
-    }
+
     public boolean checkPowered() {
         boolean powered = world.isBlockPowered(this.getPos())
                 || isPoweredWire(this.getWorld(), this.getPos().add(1, 0, 0))
@@ -38,11 +41,13 @@ public class TileEntityAlarm extends TileEntity implements ITickable {
                 || isPoweredWire(this.getWorld(), this.getPos().add(0, 0, -1));
         return powered;
     }
+
     public void playThis() {
         if (this.checkPowered()) {
             this.getWorld().playSound((EntityPlayer) null, this.getPos().add(0.5, 0.5, 0.5), net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:modern_alarm")), SoundCategory.BLOCKS, 4.0F, 1.0F);
         }
     }
+
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
         return (oldState.getBlock() != newState.getBlock());

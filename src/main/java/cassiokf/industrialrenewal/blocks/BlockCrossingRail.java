@@ -17,9 +17,8 @@ import net.minecraft.world.World;
 
 public class BlockCrossingRail extends BlockRail {
 
-    protected String name;
-
     private final long PERIOD = 3000L; // Adjust to suit timing
+    protected String name;
     private long lastTime = System.currentTimeMillis() - PERIOD;
 
     public BlockCrossingRail(String name) {

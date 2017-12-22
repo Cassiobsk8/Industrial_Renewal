@@ -19,9 +19,10 @@ import java.util.Set;
 
 public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluidHandler {
 
+    private final Set<EnumFacing> enabledFacings = EnumSet.allOf(EnumFacing.class);
     private EnumFacing facing = EnumFacing.SOUTH;
-    private EnumFaceRotation faceRotation = EnumFaceRotation.UP;
     //private PropertyBool active = ACTIVE;
+    private EnumFaceRotation faceRotation = EnumFaceRotation.UP;
 
     public TileEntityValvePipeLarge() {
         tank = new ValveUtils(this, 1000);
@@ -60,31 +61,30 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-        if(resource == null)
+        if (resource == null)
             return 0;
         int canAccept = resource.amount;
-        if(canAccept <= 0)
+        if (canAccept <= 0)
             return 0;
 
         return this.tank.fill(resource, doFill);
     }
+
     @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain)
-    {
+    public FluidStack drain(FluidStack resource, boolean doDrain) {
         return this.tank.drain(resource.amount, doDrain);
     }
+
     @Override
-    public FluidStack drain(int maxDrain, boolean doDrain)
-    {
+    public FluidStack drain(int maxDrain, boolean doDrain) {
         //needsUpdate = true;
         return this.tank.drain(maxDrain, doDrain);
     }
+
     @Override
     public IFluidTankProperties[] getTankProperties() {
-        return new IFluidTankProperties[] { new FluidTankProperties(tank.getInfo().fluid, tank.getInfo().capacity) };
+        return new IFluidTankProperties[]{new FluidTankProperties(tank.getInfo().fluid, tank.getInfo().capacity)};
     }
-
-    private final Set<EnumFacing> enabledFacings = EnumSet.allOf(EnumFacing.class);
 
     public boolean toggleFacing(final EnumFacing facing) {
         if (enabledFacings.contains(facing)) {
@@ -95,6 +95,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
             return true;
         }
     }
+
     public boolean disableFacing(final EnumFacing facing) {
         if (enabledFacings.contains(facing)) {
             enabledFacings.remove(facing);
@@ -104,6 +105,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
             return true;
         }
     }
+
     public boolean activeFacing(final EnumFacing facing) {
         if (enabledFacings.contains(facing)) {
             return false;
@@ -116,18 +118,22 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
     public boolean isFacingEnabled(final @Nullable EnumFacing facing) {
         return enabledFacings.contains(facing) || facing == null;
     }
+
     public Set<EnumFacing> getEnabledFacings() {
         return enabledFacings;
     }
+
     private void notifyBlockUpdate() {
         final IBlockState state = getWorld().getBlockState(getPos());
         getWorld().notifyBlockUpdate(getPos(), state, state, 3);
     }
+
     @Override
     public void markDirty() {
         super.markDirty();
         notifyBlockUpdate();
     }
+
     @Override
     public void readFromNBT(final NBTTagCompound tag) {
         super.readFromNBT(tag);
@@ -142,6 +148,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
             enabledFacings.add(EnumFacing.getFront(index));
         }
     }
+
     @Override
     public NBTTagCompound writeToNBT(final NBTTagCompound tag) {
         final int[] enabledFacingIndices = enabledFacings.stream()
@@ -153,6 +160,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
 
         return super.writeToNBT(tag);
     }
+
     @Override
     public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
@@ -175,9 +183,11 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
 
         return super.getCapability(capability, facing);
     }
+
     public EnumFaceRotation getFaceRotation() {
         return faceRotation;
     }
+
     public void setFaceRotation(final EnumFaceRotation faceRotation) {
         this.faceRotation = faceRotation;
         markDirty();

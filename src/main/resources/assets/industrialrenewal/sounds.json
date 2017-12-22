@@ -3,8 +3,8 @@
     "category": "block",
     "sounds": [
       {
-      "name": "industrialrenewal:train_horn",
-      "stream": false
+        "name": "industrialrenewal:train_horn",
+        "stream": false
       }
     ]
   },

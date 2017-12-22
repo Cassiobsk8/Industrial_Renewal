@@ -7,7 +7,9 @@
     "mcversion": "${mcversion}",
     "url": "",
     "updateUrl": "",
-    "authorList": ["CassioKF"],
+    "authorList": [
+      "CassioKF"
+    ],
     "credits": "The internet",
     "logoFile": "",
     "screenshots": [],

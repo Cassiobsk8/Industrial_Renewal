@@ -20,7 +20,7 @@ public class ModBlocks {
     public static BlockGateNand gateNand = new BlockGateNand("gate_nand");
     public static BlockGateNot gateNot = new BlockGateNot("gate_not");
     public static BlockGateOr gateOr = new BlockGateOr("gate_or");
-    public static BlockBase blockHazard = new BlockBase(Material.IRON,"block_hazard");
+    public static BlockBase blockHazard = new BlockBase(Material.IRON, "block_hazard");
     public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor");
     public static BlockChimney blockChimney = new BlockChimney("block_chimney");
     public static RedstoneWire redstoneWire = new RedstoneWire("redstone_wire");

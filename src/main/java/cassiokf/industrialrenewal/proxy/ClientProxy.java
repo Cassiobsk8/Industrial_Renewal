@@ -12,6 +12,7 @@ public class ClientProxy extends CommonProxy {
     public void registerItemRenderer(Item item, int meta, String id) {
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(IndustrialRenewal.MODID + ":" + id, "inventory"));
     }
+
     @Override
     public String localize(String unlocalized, Object... args) {
         return I18n.format(unlocalized, args);

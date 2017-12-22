@@ -26,14 +26,20 @@ public class BlockChimney extends Block {
         setCreativeTab(IndustrialRenewal.creativeTab);
 
     }
+
     @Override
     public int tickRate(World world) {
         return 10;
     }
-    /** todo Arrumar para não ser mais random **/
+
+    /**
+     * todo Arrumar para não ser mais random
+     **/
     @Override
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
-        int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
+        int i = pos.getX();
+        int j = pos.getY();
+        int k = pos.getZ();
         for (int la = 0; la < 20; ++la) {
             double d0 = (double) ((float) i) + (double) (random.nextFloat()) * 1.000000001490116D;
             double d1 = ((double) ((float) j) + (double) (random.nextFloat()) * 1.000000001490116D) + 0.5D;

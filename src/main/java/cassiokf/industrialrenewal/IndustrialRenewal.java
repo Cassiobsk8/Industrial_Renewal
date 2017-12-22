@@ -20,49 +20,49 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class IndustrialRenewal {
 
     public static final IndustrialRenewalTab creativeTab = new IndustrialRenewalTab();
+    public static final String MODID = "industrialrenewal";
+    public static final String NAME = "Industrial Renwal";
+    public static final String VERSION = "1.0.0";
+    @Mod.Instance(MODID)
+    public static IndustrialRenewal instance;
+    @SidedProxy(clientSide = "cassiokf.industrialrenewal.proxy.ClientProxy", serverSide = "cassiokf.industrialrenewal.proxy.CommonProxy", modId = MODID)
+    public static CommonProxy proxy;
 
-	@Mod.EventBusSubscriber
-	public static class RegistrationHandler {
-		@SubscribeEvent
-		public static void registerBlocks(RegistryEvent.Register<Block> event) {
-		    ModBlocks.register(event.getRegistry());
-		}
-		@SubscribeEvent
-		public static void registerItems(RegistryEvent.Register<Item> event) {
-			ModItems.register(event.getRegistry());
-			ModBlocks.registerItemBlocks(event.getRegistry());
-		}
-		@SubscribeEvent
-		public static void registerItems(ModelRegistryEvent event) {
-			ModItems.registerModels();
-			ModBlocks.registerItemModels();
-		}
-	}
-	public static final String MODID = "industrialrenewal";
-	public static final String NAME = "Industrial Renwal";
-	public static final String VERSION = "1.0.0";
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        System.out.println(NAME + " is loading preInit!");
+    }
 
-	@Mod.Instance(MODID)
-	public static IndustrialRenewal instance;
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
+        System.out.println(NAME + " is loading init!");
+        ModRecipes.init();
+        IRSoundHandler.init();
+    }
 
-	@SidedProxy(clientSide = "cassiokf.industrialrenewal.proxy.ClientProxy", serverSide = "cassiokf.industrialrenewal.proxy.CommonProxy", modId = MODID)
-	public static CommonProxy proxy;
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        System.out.println(NAME + " is loading posInit!");
 
-	@Mod.EventHandler
-	public void preInit(FMLPreInitializationEvent event){
-		System.out.println(NAME + " is loading preInit!");
-	}
+    }
 
-	@Mod.EventHandler
-	public void init(FMLInitializationEvent event){
-		System.out.println(NAME + " is loading init!");
-		ModRecipes.init();
-		IRSoundHandler.init();
-	}
+    @Mod.EventBusSubscriber
+    public static class RegistrationHandler {
+        @SubscribeEvent
+        public static void registerBlocks(RegistryEvent.Register<Block> event) {
+            ModBlocks.register(event.getRegistry());
+        }
 
-	@Mod.EventHandler
-	public void postInit(FMLPostInitializationEvent event){
-		System.out.println(NAME + " is loading posInit!");
+        @SubscribeEvent
+        public static void registerItems(RegistryEvent.Register<Item> event) {
+            ModItems.register(event.getRegistry());
+            ModBlocks.registerItemBlocks(event.getRegistry());
+        }
 
-	}
+        @SubscribeEvent
+        public static void registerItems(ModelRegistryEvent event) {
+            ModItems.registerModels();
+            ModBlocks.registerItemModels();
+        }
+    }
 }

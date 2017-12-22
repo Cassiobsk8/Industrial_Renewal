@@ -1,20 +1,54 @@
 {
   "forge_marker": 1,
   "variants": {
-    "normal": {"model": "industrialrenewal:not_gate_1"},
-    "active=false,facing=down": {"model": "industrialrenewal:not_gate_1"},
-    "active=false,facing=up": {"model": "industrialrenewal:not_gate_1"},
-    "active=false,facing=north": {"model": "industrialrenewal:not_gate_1"},
-    "active=false,facing=west": {"model": "industrialrenewal:not_gate_1","y":-90},
-    "active=false,facing=south": {"model": "industrialrenewal:not_gate_1","y":180},
-    "active=false,facing=east": {"model": "industrialrenewal:not_gate_1","y":90},
-    "active=true,facing=down": {"model": "industrialrenewal:not_gate_0"},
-    "active=true,facing=up": {"model": "industrialrenewal:not_gate_0"},
-    "active=true,facing=north": {"model": "industrialrenewal:not_gate_0"},
-    "active=true,facing=west": {"model": "industrialrenewal:not_gate_0","y":-90},
-    "active=true,facing=south": {"model": "industrialrenewal:not_gate_0","y":180},
-    "active=true,facing=east": {"model": "industrialrenewal:not_gate_0","y":90},
-
-    "inventory": {"model": "industrialrenewal:not_gate_1", "transform": "forge:default-block"}
+    "normal": {
+      "model": "industrialrenewal:not_gate_1"
+    },
+    "active=false,facing=down": {
+      "model": "industrialrenewal:not_gate_1"
+    },
+    "active=false,facing=up": {
+      "model": "industrialrenewal:not_gate_1"
+    },
+    "active=false,facing=north": {
+      "model": "industrialrenewal:not_gate_1"
+    },
+    "active=false,facing=west": {
+      "model": "industrialrenewal:not_gate_1",
+      "y": -90
+    },
+    "active=false,facing=south": {
+      "model": "industrialrenewal:not_gate_1",
+      "y": 180
+    },
+    "active=false,facing=east": {
+      "model": "industrialrenewal:not_gate_1",
+      "y": 90
+    },
+    "active=true,facing=down": {
+      "model": "industrialrenewal:not_gate_0"
+    },
+    "active=true,facing=up": {
+      "model": "industrialrenewal:not_gate_0"
+    },
+    "active=true,facing=north": {
+      "model": "industrialrenewal:not_gate_0"
+    },
+    "active=true,facing=west": {
+      "model": "industrialrenewal:not_gate_0",
+      "y": -90
+    },
+    "active=true,facing=south": {
+      "model": "industrialrenewal:not_gate_0",
+      "y": 180
+    },
+    "active=true,facing=east": {
+      "model": "industrialrenewal:not_gate_0",
+      "y": 90
+    },
+    "inventory": {
+      "model": "industrialrenewal:not_gate_1",
+      "transform": "forge:default-block"
+    }
   }
 }

@@ -22,6 +22,7 @@ public class CartTransportContainer extends EntityMinecartContainer implements I
     public CartTransportContainer(World world, double x, double y, double z, int cartType, int color) {
         super(world, x, y, z);
     }
+
     @Override
     public void killMinecart(DamageSource par1DamageSource) {
         this.setDead();
@@ -34,6 +35,7 @@ public class CartTransportContainer extends EntityMinecartContainer implements I
             this.entityDropItem(itemstack, 0.0F);
         }
     }
+
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack item) {
         return true;
@@ -43,6 +45,7 @@ public class CartTransportContainer extends EntityMinecartContainer implements I
     public int getSizeInventory() {
         return 36;
     }
+
     @Override
     protected void entityInit() {
         super.entityInit();

@@ -43,15 +43,26 @@ public class BlockPipeBase extends BlockBase {
                     })
                     .collect(Collectors.toList())
     );
+
     public BlockPipeBase(final String name) {
         super(Material.IRON, name);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }
+
+    private static float getMinBound(final int dir) {
+        return dir == -1 ? 0 : PIPE_MIN_POS;
+    }
+
+    private static float getMaxBound(final int dir) {
+        return dir == 1 ? 1 : PIPE_MAX_POS;
+    }
+
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
     }
+
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(final int meta) {
@@ -61,14 +72,6 @@ public class BlockPipeBase extends BlockBase {
     @Override
     public int getMetaFromState(final IBlockState state) {
         return 0;
-    }
-
-    private static float getMinBound(final int dir) {
-        return dir == -1 ? 0 : PIPE_MIN_POS;
-    }
-
-    private static float getMaxBound(final int dir) {
-        return dir == 1 ? 1 : PIPE_MAX_POS;
     }
 
     @SuppressWarnings("deprecation")

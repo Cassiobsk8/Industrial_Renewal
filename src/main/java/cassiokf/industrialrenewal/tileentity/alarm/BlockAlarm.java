@@ -24,14 +24,13 @@ import javax.annotation.Nullable;
 
 public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
 
+    public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
     private static final AxisAlignedBB UP_BLOCK_AABB = new AxisAlignedBB(0.125F, 0, 0.125F, 0.875F, 0.4375F, 0.875F);
     private static final AxisAlignedBB DOWN_BLOCK_AABB = new AxisAlignedBB(0.125F, 1, 0.125F, 0.875F, 0.5625F, 0.875F);
     private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(0F, 0.125F, 0.125F, 0.4375F, 0.875F, 0.875F);
     private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(1F, 0.125F, 0.125F, 0.5625F, 0.875F, 0.875F);
     private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.5625F, 0.875F, 0.875F, 1);
     private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.4375F, 0.875F, 0.875F, 0);
-    public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
-
 
 
     public BlockAlarm(String name) {
@@ -42,11 +41,13 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
         this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.UP));
 
     }
+
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         super.breakBlock(world, pos, state);
         world.removeTileEntity(pos);
     }
+
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         EnumFacing dir = state.getValue(FACING);
@@ -65,6 +66,7 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
                 return UP_BLOCK_AABB;
         }
     }
+
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         //make it change sound on right clicked with ScrewDrive
@@ -78,6 +80,7 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
             ((World) world).setBlockToAir(pos);
         }
     }
+
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (!(world.isSideSolid(pos.offset(world.getBlockState(pos).getValue(FACING).getOpposite()), world.getBlockState(pos).getValue(FACING).getOpposite()))) {
@@ -85,10 +88,12 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
             world.setBlockToAir(pos);
         }
     }
+
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING);
     }
+
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
@@ -113,6 +118,7 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
             }
         }
     }
+
     @Override
     public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
 
@@ -134,7 +140,7 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
     @Override
     public Class<TileEntityAlarm> getTileEntityClass() {
         return TileEntityAlarm.class;
-	}
+    }
 
     @Nullable
     @Override
