@@ -24,6 +24,7 @@ public class ModBlocks {
     public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor");
     public static BlockChimney blockChimney = new BlockChimney("block_chimney");
     public static RedstoneWire redstoneWire = new RedstoneWire("redstone_wire");
+    public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe");
     public static BlockAlarm alarm = new BlockAlarm("alarm");
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
@@ -52,7 +53,8 @@ public class ModBlocks {
                 gateNot,
                 gateOr,
                 alarm,
-                redstoneWire
+                redstoneWire,
+                fluidPipe
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(gateAnd.getTileEntityClass(), gateAnd.getRegistryName().toString());
@@ -79,7 +81,8 @@ public class ModBlocks {
                 gateNot.createItemBlock(),
                 gateOr.createItemBlock(),
                 alarm.createItemBlock(),
-                redstoneWire.createItemBlock()
+                redstoneWire.createItemBlock(),
+                fluidPipe.createItemBlock()
         );
     }
 
@@ -100,5 +103,6 @@ public class ModBlocks {
         alarm.registerItemModel(Item.getItemFromBlock(alarm));
         gateOr.registerItemModel(Item.getItemFromBlock(gateOr));
         redstoneWire.registerItemModel(Item.getItemFromBlock(redstoneWire));
+        fluidPipe.registerItemModel(Item.getItemFromBlock(fluidPipe));
     }
 }

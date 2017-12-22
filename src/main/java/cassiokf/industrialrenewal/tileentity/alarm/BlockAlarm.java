@@ -43,6 +43,11 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
 
     }
     @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        super.breakBlock(world, pos, state);
+        world.removeTileEntity(pos);
+    }
+    @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         EnumFacing dir = state.getValue(FACING);
         switch (dir) {

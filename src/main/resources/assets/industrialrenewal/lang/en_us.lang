@@ -27,3 +27,5 @@ tile.gate_nand.name=Gate NAND
 tile.gate_not.name=Gate NOT
 tile.gate_or.name=Gate OR
 tile.alarm.name=Industrial Alarm
+tile.redstone_wire.name=Redstone Wire
+tile.fluid_pipe.name=Fluid Pipe
