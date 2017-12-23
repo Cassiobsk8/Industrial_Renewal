@@ -1,0 +1,23 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " R ",
+    "CBC",
+    " R "
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "nuggetIron"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:lamp"
+  }
+}
