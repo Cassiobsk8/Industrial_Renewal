@@ -8,21 +8,34 @@ import java.util.List;
 
 public class ItemSteelSaw extends ItemBase {
 
+    private static int maxDamage = 64;
+
     public ItemSteelSaw(String name) {
         super(name);
-        setMaxDamage(1);
+        setMaxDamage(64);
+        this.setNoRepair();
         maxStackSize = 1;
         setContainerItem(this);
     }
 
-    @Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-        return 64;
+    public static ItemStack copyStack(ItemStack stack, int n) {
+        return new ItemStack(stack.getItem(), n, stack.getItemDamage());
     }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack stack) {
+        int dmg = stack.getItemDamage();
+        if (dmg == maxDamage) {
+            return new ItemStack(stack.getItem(), 0, maxDamage);
+        }
+        ItemStack tr = copyStack(stack, 1);
+        tr.setItemDamage(dmg + 1);
+        return tr;
+    }
+
 
     @Override
     public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag) {
         list.add("A saw that can cut stones");
     }
-
 }
