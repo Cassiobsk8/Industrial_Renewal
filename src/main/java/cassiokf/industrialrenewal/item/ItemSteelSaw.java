@@ -22,7 +22,7 @@ public class ItemSteelSaw extends ItemBase {
 
     @Override
     public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag) {
-        list.add("On use can remove the block");
+        list.add("A saw that can cut stones");
     }
 
 }
