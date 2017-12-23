@@ -13,7 +13,7 @@ public class IndustrialRenewalTab extends CreativeTabs {
 
     @Override
     public ItemStack getTabIconItem() {
-        return new ItemStack(ModItems.ingotSteel);
+        return new ItemStack(ModItems.screwDrive);
     }
 
 }
