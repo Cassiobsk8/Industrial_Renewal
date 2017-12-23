@@ -49,6 +49,7 @@ public class ItemPowerScrewDrive extends ItemBase {
                 }
                 world.setBlockState(new BlockPos(x, y, z), ModBlocks.blockIndFloor.getDefaultState(), 3);
             }
+            //TODO adicionar para remover os gates
         }
         return EnumActionResult.PASS;
     }
