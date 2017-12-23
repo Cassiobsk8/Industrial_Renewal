@@ -1,18 +1,12 @@
 package cassiokf.industrialrenewal.blocks;
 
 
-import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -30,21 +24,6 @@ public class BlockFloorPipe extends BlockFluidPipe {
         super(name);
     }
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        int i = pos.getX();
-        int j = pos.getY();
-        int k = pos.getZ();
-        if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
-            world.playSound((EntityPlayer) null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:drill")), SoundCategory.BLOCKS, 1.0F, 1.0F);
-            world.setBlockState(new BlockPos(i, j, k), ModBlocks.blockIndFloor.getDefaultState(), 3);
-            if (!entity.isCreative()) {
-                entity.inventory.addItemStackToInventory(new ItemStack(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.fluidPipe), 1));
-            }
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public Item getItemDropped(IBlockState state, Random par2Random, int par3) {

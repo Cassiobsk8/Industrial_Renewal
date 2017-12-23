@@ -46,18 +46,20 @@ public class BlockFloorLamp extends Block {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        int i = pos.getX();
-        int j = pos.getY();
-        int k = pos.getZ();
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
         if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
-            world.playSound(null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:drill")), SoundCategory.BLOCKS, 1.0F, 1.0F);
-            world.setBlockState(new BlockPos(i, j, k), ModBlocks.blockIndFloor.getDefaultState(), 3);
-            if (!entity.isCreative()) {
-                entity.inventory.addItemStackToInventory(new ItemStack(ModItems.lamp, 1));
-            }
+            world.playSound(null, (double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:drill")), SoundCategory.BLOCKS, 1.0F, 1.0F);
+            dorotateBlock(world, pos, state);
             return true;
         }
         return false;
+    }
+
+    public void dorotateBlock(World world, BlockPos pos, IBlockState state) {
+        EnumFacing newFace = state.getValue(FACING).rotateY();
+        world.setBlockState(pos, state.withProperty(FACING, newFace));
     }
 
     @Override
