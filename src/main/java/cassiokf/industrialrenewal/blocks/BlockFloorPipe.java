@@ -45,6 +45,12 @@ public class BlockFloorPipe extends BlockFluidPipe {
 
     @SuppressWarnings("deprecation")
     @Override
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+        return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean p_185477_7_) {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, state.getCollisionBoundingBox(worldIn, pos));
     }

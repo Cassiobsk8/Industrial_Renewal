@@ -8,7 +8,7 @@ public class ModItems {
     public static ItemOreDict ingotSteel = new ItemOreDict("ingot_steel", "ingotSteel");
     public static ItemOreDict spongeIron = new ItemOreDict("sponge_iron", null);
     public static ItemPowerScrewDrive screwDrive = new ItemPowerScrewDrive("screwdrive");
-    public static ItemBase steelSaw = new ItemBase("steel_saw");
+    public static ItemSteelSaw steelSaw = new ItemSteelSaw("steel_saw");
     public static ItemBase lamp = new ItemBase("lamp");
 
     public static void register(IForgeRegistry<Item> registry) {
