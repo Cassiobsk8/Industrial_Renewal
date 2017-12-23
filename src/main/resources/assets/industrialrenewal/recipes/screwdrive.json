@@ -1,16 +1,19 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
-    "R  ",
-    " R ",
+    "RRR",
+    " BR",
     "  C"
   ],
   "key": {
     "R": {
       "item": "minecraft:iron_ingot"
     },
+    "B": {
+      "item": "minecraft:stone_button"
+    },
     "C": {
-      "item": "minecraft:flint"
+      "item": "minecraft:redstone_block"
     }
   },
   "result": {

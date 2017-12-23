@@ -4,7 +4,10 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -17,6 +20,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public class BlockFloorPipe extends BlockFluidPipe {
 
@@ -40,6 +44,24 @@ public class BlockFloorPipe extends BlockFluidPipe {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+        return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor)).getItem();
+    }
+
+    @Override
+    public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        ItemStack itemst = new ItemStack(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.fluidPipe));
+        EntityItem entity = new EntityItem(world, x, y, z, itemst);
+        if (!world.isRemote) {
+            world.spawnEntity(entity);
+        }
+
     }
 
     @SuppressWarnings("deprecation")

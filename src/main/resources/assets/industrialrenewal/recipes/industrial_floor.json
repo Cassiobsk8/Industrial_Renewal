@@ -2,8 +2,8 @@
   "type": "forge:ore_shaped",
   "pattern": [
     "RRR",
-    "CCC",
-    "RRR"
+    "   ",
+    "CCC"
   ],
   "key": {
     "R": {

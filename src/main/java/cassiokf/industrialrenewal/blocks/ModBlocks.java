@@ -91,10 +91,10 @@ public class ModBlocks {
                 alarm.createItemBlock(),
                 redstoneWire.createItemBlock(),
                 fluidPipe.createItemBlock(),
-                energyCable.createItemBlock(),
-                floorPipe.createItemBlock(),
-                floorCable.createItemBlock(),
-                floorLamp.createItemBlock()
+                energyCable.createItemBlock()
+                //floorPipe.createItemBlock(),
+                //floorCable.createItemBlock(),
+                //floorLamp.createItemBlock()
         );
     }
 
@@ -117,8 +117,8 @@ public class ModBlocks {
         redstoneWire.registerItemModel(Item.getItemFromBlock(redstoneWire));
         fluidPipe.registerItemModel(Item.getItemFromBlock(fluidPipe));
         energyCable.registerItemModel(Item.getItemFromBlock(energyCable));
-        floorPipe.registerItemModel(Item.getItemFromBlock(floorPipe));
-        floorCable.registerItemModel(Item.getItemFromBlock(floorCable));
-        floorLamp.registerItemModel(Item.getItemFromBlock(floorLamp));
+        //floorPipe.registerItemModel(Item.getItemFromBlock(floorPipe));
+        //floorCable.registerItemModel(Item.getItemFromBlock(floorCable));
+        //floorLamp.registerItemModel(Item.getItemFromBlock(floorLamp));
     }
 }
