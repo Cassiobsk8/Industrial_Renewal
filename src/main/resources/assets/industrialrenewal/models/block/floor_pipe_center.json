@@ -3,7 +3,7 @@
   "textures": {
     "0": "blocks/concrete_gray",
     "1": "blocks/cauldron_side",
-    "2": "blocks/cauldron_inner"
+    "2": "industrialrenewal:blocks/pipe"
   },
   "display": {
     "gui": {
