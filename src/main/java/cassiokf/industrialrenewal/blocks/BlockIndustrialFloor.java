@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -49,6 +50,14 @@ public class BlockIndustrialFloor extends Block {
             world.setBlockState(new BlockPos(i, j, k), ModBlocks.floorCable.getDefaultState(), 3);
             if (!entity.isCreative()) {
                 entity.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.energyCable), 0, 1, null);
+            }
+            return true;
+        }
+        if (entity.inventory.getCurrentItem().getItem() == ModItems.lamp) {
+            world.playSound(null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.NEUTRAL, 1.0F, 1.0F);
+            world.setBlockState(new BlockPos(i, j, k), ModBlocks.floorLamp.getDefaultState().withProperty(BlockFloorLamp.FACING, entity.getHorizontalFacing()), 3);
+            if (!entity.isCreative()) {
+                entity.inventory.clearMatchingItems(ModItems.lamp, 0, 1, null);
             }
             return true;
         }

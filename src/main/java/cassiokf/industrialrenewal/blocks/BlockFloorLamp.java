@@ -53,7 +53,7 @@ public class BlockFloorLamp extends Block {
             world.playSound(null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:drill")), SoundCategory.BLOCKS, 1.0F, 1.0F);
             world.setBlockState(new BlockPos(i, j, k), ModBlocks.blockIndFloor.getDefaultState(), 3);
             if (!entity.isCreative()) {
-                entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCable), 1));
+                entity.inventory.addItemStackToInventory(new ItemStack(ModItems.lamp, 1));
             }
             return true;
         }
@@ -70,7 +70,7 @@ public class BlockFloorLamp extends Block {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        ItemStack itemst = new ItemStack(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.energyCable));
+        ItemStack itemst = new ItemStack(ModItems.lamp);
         EntityItem entity = new EntityItem(world, x, y, z, itemst);
         if (!world.isRemote) {
             world.spawnEntity(entity);

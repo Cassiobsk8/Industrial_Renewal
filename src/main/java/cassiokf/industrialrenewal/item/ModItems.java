@@ -9,13 +9,15 @@ public class ModItems {
     public static ItemOreDict spongeIron = new ItemOreDict("sponge_iron", null);
     public static ItemBase screwDrive = new ItemBase("screwdrive");
     public static ItemBase steelSaw = new ItemBase("steel_saw");
+    public static ItemBase lamp = new ItemBase("lamp");
 
     public static void register(IForgeRegistry<Item> registry) {
         registry.registerAll(
                 ingotSteel,
                 spongeIron,
                 screwDrive,
-                steelSaw
+                steelSaw,
+                lamp
         );
     }
 
@@ -24,5 +26,6 @@ public class ModItems {
         spongeIron.registerItemModel();
         screwDrive.registerItemModel();
         steelSaw.registerItemModel();
+        lamp.registerItemModel();
     }
 }
