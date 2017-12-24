@@ -38,7 +38,7 @@ public class ModBlocks {
 
     public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large");
 
-    //public static CartTransportContainer cartContainer = new CartTransportContainer();
+    //public static BlockCartCargoContainer cargoContainer = new BlockCartCargoContainer("cargo_container");
 
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
@@ -47,7 +47,7 @@ public class ModBlocks {
                 blockIndFloor,
                 blockChimney,
                 normalRail,
-                //cartContainer,
+                //cargoContainer,
                 crossingRail,
                 detectorRail,
                 boosterRail,
@@ -65,6 +65,7 @@ public class ModBlocks {
                 floorLamp
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
+        //GameRegistry.registerTileEntity(cargoContainer.getTileEntityClass(),cargoContainer.getRegistryName().toString());
         GameRegistry.registerTileEntity(gateAnd.getTileEntityClass(), gateAnd.getRegistryName().toString());
         GameRegistry.registerTileEntity(gateNand.getTileEntityClass(), gateNand.getRegistryName().toString());
         GameRegistry.registerTileEntity(gateNot.getTileEntityClass(), gateNot.getRegistryName().toString());
@@ -79,7 +80,7 @@ public class ModBlocks {
                 blockIndFloor.createItemBlock(),
                 blockChimney.createItemBlock(),
                 normalRail.createItemBlock(),
-                //cartContainer.createItemBlock(),
+                //cargoContainer.createItemBlock(),
                 crossingRail.createItemBlock(),
                 detectorRail.createItemBlock(),
                 boosterRail.createItemBlock(),
@@ -104,7 +105,7 @@ public class ModBlocks {
         blockIndFloor.registerItemModel(Item.getItemFromBlock(blockIndFloor));
         blockChimney.registerItemModel(Item.getItemFromBlock(blockChimney));
         normalRail.registerItemModel(Item.getItemFromBlock(normalRail));
-        //cartContainer.registerItemModel(Item.getItemFromBlock(cartContainer));
+        //cargoContainer.registerItemModel(Item.getItemFromBlock(cargoContainer));
         crossingRail.registerItemModel(Item.getItemFromBlock(crossingRail));
         detectorRail.registerItemModel(Item.getItemFromBlock(detectorRail));
         boosterRail.registerItemModel(Item.getItemFromBlock(boosterRail));
