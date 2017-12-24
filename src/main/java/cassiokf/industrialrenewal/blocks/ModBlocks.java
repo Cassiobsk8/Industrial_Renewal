@@ -38,7 +38,7 @@ public class ModBlocks {
 
     public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large");
 
-    //public static BlockCartCargoContainer cargoContainer = new BlockCartCargoContainer("cargo_container");
+    //public static TileEntityCartCargoContainer cargoContainer = new TileEntityCartCargoContainer(null);
 
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(

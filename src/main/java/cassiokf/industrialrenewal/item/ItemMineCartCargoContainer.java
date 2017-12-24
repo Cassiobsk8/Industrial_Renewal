@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.tileentity.carts.TileEntityCartCargoContainer;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
@@ -42,7 +43,7 @@ public class ItemMineCartCargoContainer extends ItemMinecart {
                     d0 = 0.5D;
                 }
 
-                EntityMinecart entityminecart = EntityMinecart.create(worldIn, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.0625D + d0, (double) pos.getZ() + 0.5D, EntityMinecart.Type.CHEST);
+                TileEntityCartCargoContainer entityminecart = new TileEntityCartCargoContainer(worldIn, pos, 5);
 
                 if (itemstack.hasDisplayName()) {
                     entityminecart.setCustomNameTag(itemstack.getDisplayName());

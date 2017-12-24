@@ -13,6 +13,9 @@ public class CommonProxy {
         registerItemRenderer(Item.getItemFromBlock(block), meta, id);
     }
 
+    public void registerBlockRenderers() {
+
+    }
     public String localize(String unlocalized, Object... args) {
         return I18n.translateToLocalFormatted(unlocalized, args);
     }

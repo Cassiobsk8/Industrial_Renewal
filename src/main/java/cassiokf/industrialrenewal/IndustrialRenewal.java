@@ -38,6 +38,7 @@ public class IndustrialRenewal {
         System.out.println(NAME + " is loading init!");
         ModRecipes.init();
         IRSoundHandler.init();
+        proxy.registerBlockRenderers();
     }
 
     @Mod.EventHandler
