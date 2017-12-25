@@ -1,12 +1,9 @@
 package cassiokf.industrialrenewal.item;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.tileentity.carts.TileEntityCartCargoContainer;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -14,50 +11,151 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemMineCartCargoContainer extends ItemMinecart {
+import java.util.Random;
 
-    protected String name;
+public class ItemMineCartCargoContainer extends ItemBase {
 
-    public ItemMineCartCargoContainer(EntityMinecart.Type typeIn, String name) {
-        super(typeIn);
-        this.name = name;
-        setUnlocalizedName(name);
-        setRegistryName(name);
-        setCreativeTab(IndustrialRenewal.creativeTab);
+    public int minecartType;
+    private int type;
+
+    public ItemMineCartCargoContainer(String name, int cartType) {
+        super(name);
+        this.type = cartType;
+        this.maxStackSize = 16;
+        this.minecartType = -1;
+
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        IBlockState iblockstate = worldIn.getBlockState(pos);
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        IBlockState iblockstate = world.getBlockState(pos);
 
-        if (!BlockRailBase.isRailBlock(iblockstate)) {
+        if (!BlockRailBase.isRailBlock(iblockstate))
             return EnumActionResult.FAIL;
-        } else {
-            ItemStack itemstack = player.getHeldItem(hand);
 
-            if (!worldIn.isRemote) {
-                BlockRailBase.EnumRailDirection blockrailbase$enumraildirection = iblockstate.getBlock() instanceof BlockRailBase ? ((BlockRailBase) iblockstate.getBlock()).getRailDirection(worldIn, pos, iblockstate, null) : BlockRailBase.EnumRailDirection.NORTH_SOUTH;
-                double d0 = 0.0D;
-
-                if (blockrailbase$enumraildirection.isAscending()) {
-                    d0 = 0.5D;
+        else {
+            if (!world.isRemote) {
+                pos.offset(EnumFacing.EAST, (int) 0.5);
+                int rand = new Random().nextInt(9);
+                ItemStack itemstack = player.getHeldItem(hand);
+                switch (type) {/*
+                case(0):
+                {
+                    EntityCartOpen entityminecart = new EntityCartOpen(world, pos, rand);
+                    if (item.hasDisplayName())
+                    {
+                        entityminecart.setCustomNameTag(item.getDisplayName());
+                    }
+                    world.spawnEntityInWorld(entityminecart);
+                    if (entityminecart != null)
+                    {
+                        item.stackSize--;
+                    }
+                    return EnumActionResult.SUCCESS;
+                }
+                case(1):
+                {
+                    EntityCartTanker entityminecart = new EntityCartTanker(world, pos, rand);
+                    if (item.hasDisplayName())
+                    {
+                        entityminecart.setCustomNameTag(item.getDisplayName());
+                    }
+                    world.spawnEntityInWorld(entityminecart);
+                    if (entityminecart != null)
+                    {
+                        item.stackSize--;
+                    }
+                    return EnumActionResult.SUCCESS;
+                }
+                case(2):
+                {
+                    EntityCartWood entityminecart = new EntityCartWood(world, pos, rand);
+                    if (item.hasDisplayName())
+                    {
+                        entityminecart.setCustomNameTag(item.getDisplayName());
+                    }
+                    world.spawnEntityInWorld(entityminecart);
+                    if (entityminecart != null)
+                    {
+                        item.stackSize--;
+                    }
+                    return EnumActionResult.SUCCESS;
+                }
+                case(3):
+                {
+                    EntityCartFlat entityminecart = new EntityCartFlat(world, pos, rand);
+                    if (item.hasDisplayName())
+                    {
+                        entityminecart.setCustomNameTag(item.getDisplayName());
+                    }
+                    world.spawnEntityInWorld(entityminecart);
+                    if (entityminecart != null)
+                    {
+                        item.stackSize--;
+                    }
+                    return EnumActionResult.SUCCESS;
+                }
+                case(4):
+                {
+                    EntityCartPanzer entityminecart = new EntityCartPanzer(world, pos, rand);
+                    if (item.hasDisplayName())
+                    {
+                        entityminecart.setCustomNameTag(item.getDisplayName());
+                    }
+                    world.spawnEntityInWorld(entityminecart);
+                    if (entityminecart != null)
+                    {
+                        item.stackSize--;
+                    }
+                    return EnumActionResult.SUCCESS;
+                }*/
+                    case (5): {
+                        TileEntityCartCargoContainer entityminecart = new TileEntityCartCargoContainer(world, pos, rand);
+                        if (itemstack.hasDisplayName()) {
+                            entityminecart.setCustomNameTag(itemstack.getDisplayName());
+                        }
+                        world.spawnEntity(entityminecart);
+                        if (entityminecart != null) {
+                            itemstack.shrink(1);
+                        }
+                        return EnumActionResult.SUCCESS;
+                    }/*
+                case(6):
+                {
+                    EntityCartTender entityminecart = new EntityCartTender(world, pos, rand);
+                    if (item.hasDisplayName())
+                    {
+                        entityminecart.setCustomNameTag(item.getDisplayName());
+                    }
+                    world.spawnEntityInWorld(entityminecart);
+                    if (entityminecart != null)
+                    {
+                        item.stackSize--;
+                    }
+                    return EnumActionResult.SUCCESS;
                 }
 
-                TileEntityCartCargoContainer entityminecart = new TileEntityCartCargoContainer(worldIn, pos, 5);
-
-                if (itemstack.hasDisplayName()) {
-                    entityminecart.setCustomNameTag(itemstack.getDisplayName());
+                case(7):
+                {
+                    EntityCartCage entityminecart = new EntityCartCage(world, pos, rand);
+                    if (item.hasDisplayName())
+                    {
+                        entityminecart.setCustomNameTag(item.getDisplayName());
+                    }
+                    world.spawnEntityInWorld(entityminecart);
+                    if (entityminecart != null)
+                    {
+                        item.stackSize--;
+                    }
+                    return EnumActionResult.SUCCESS;
+                }*/
+                    default: {
+                        return EnumActionResult.FAIL;
+                    }
                 }
-
-                worldIn.spawnEntity(entityminecart);
             }
-
-            itemstack.shrink(1);
-            return EnumActionResult.SUCCESS;
         }
+        return EnumActionResult.FAIL;
     }
 
-    public void registerItemModel() {
-        IndustrialRenewal.proxy.registerItemRenderer(this, 0, name);
-    }
 }

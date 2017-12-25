@@ -1,10 +1,12 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.TESRModels.ModelCargoContainer;
 import cassiokf.industrialrenewal.tileentity.carts.TileEntityCartBase;
 import cassiokf.industrialrenewal.tileentity.carts.TileEntityCartCargoContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -36,24 +38,17 @@ public class TileEntitySRender extends Render<EntityMinecart> {
             new ResourceLocation(IndustrialRenewal.MODID, "textures/entities/coscart.container.8.png")
     };
     private static ResourceLocation minecartTextures[] = {
-            new ResourceLocation(IndustrialRenewal.MODID, "textures/entities/coscart.open.0.png"),
-            new ResourceLocation(IndustrialRenewal.MODID, "textures/entities/coscart.liquid.0.png"),
-            new ResourceLocation(IndustrialRenewal.MODID, "textures/entities/coscart.woodfull.png"),
-            new ResourceLocation(IndustrialRenewal.MODID, "textures/entities/coscart.empty.png"),
-            new ResourceLocation(IndustrialRenewal.MODID, "textures/entities/coscart.panzer.png"),
             new ResourceLocation(IndustrialRenewal.MODID, "textures/entities/coscart.container.0.png"),
-            new ResourceLocation(IndustrialRenewal.MODID, "textures/entities/coscart.tender.png"),
-            new ResourceLocation(IndustrialRenewal.MODID, "textures/entities/coscart.cage.png")
     };
-    private ModelCartBase modelMinecart[] = {
-            new ModelCartOpen(),
-            new ModelCartTanker(),
-            new ModelCartWood(),
-            new ModelCartFlat(),
-            new ModelCartPanzer(),
-            new ModelCartContainer(),
-            new ModelCartTender(),
-            new ModelCartCage()
+    private ModelBase modelMinecart[] = {
+            new ModelCargoContainer(),
+            new ModelCargoContainer(),
+            new ModelCargoContainer(),
+            new ModelCargoContainer(),
+            new ModelCargoContainer(),
+            new ModelCargoContainer(),
+            new ModelCargoContainer(),
+            new ModelCargoContainer()
     };
 
 
@@ -66,7 +61,6 @@ public class TileEntitySRender extends Render<EntityMinecart> {
     public void doRender(EntityMinecart entity, double x, double y, double z, float entityYaw, float partialTicks) {
         y = y + 0.0625F;
         GL11.glPushMatrix();
-        int logs = getCartItems(entity);
         this.bindEntityTexture(entity);
         long i = (long) entity.getEntityId() * 493286711L;
         i = i * i * 4392167121L + i * 98761L;
@@ -93,15 +87,15 @@ public class TileEntitySRender extends Render<EntityMinecart> {
                 vec3d2 = vec3d;
             }
 
-            x += vec3d.xCoord - d0;
-            y += (vec3d1.yCoord + vec3d2.yCoord) / 2.0D - d1;
-            z += vec3d.zCoord - d2;
-            Vec3d vec3d3 = vec3d2.addVector(-vec3d1.xCoord, -vec3d1.yCoord, -vec3d1.zCoord);
+            x += vec3d.x - d0;
+            y += (vec3d1.y + vec3d2.y) / 2.0D - d1;
+            z += vec3d.z - d2;
+            Vec3d vec3d3 = vec3d2.addVector(-vec3d1.x, -vec3d1.y, -vec3d1.z);
 
             if (vec3d3.lengthVector() != 0.0D) {
                 vec3d3 = vec3d3.normalize();
-                entityYaw = (float) (Math.atan2(vec3d3.zCoord, vec3d3.xCoord) * 180.0D / Math.PI);
-                f3 = (float) (Math.atan(vec3d3.yCoord) * 73.0D);
+                entityYaw = (float) (Math.atan2(vec3d3.z, vec3d3.x) * 180.0D / Math.PI);
+                f3 = (float) (Math.atan(vec3d3.y) * 73.0D);
             }
         }
 
@@ -141,7 +135,7 @@ public class TileEntitySRender extends Render<EntityMinecart> {
             this.bindEntityTexture(entity);
         }
         GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-        this.modelMinecart[getCartType(entity)].render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F, logs);
+        this.modelMinecart[getCartType(entity)].render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GlStateManager.popMatrix();
         if (this.renderOutlines) {
             GlStateManager.disableOutlineMode();
@@ -153,22 +147,13 @@ public class TileEntitySRender extends Render<EntityMinecart> {
 
     protected <T> void renderCartContents(T entity, float partialTicks, IBlockState block) {
         GlStateManager.pushMatrix();
-        Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlockBrightness(block, ((Entity) entity).getBrightness(partialTicks));
+        Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlockBrightness(block, ((Entity) entity).getBrightness());
         GlStateManager.popMatrix();
     }
 
     @Nullable
     @Override
     protected ResourceLocation getEntityTexture(EntityMinecart entity) {
-        //if (getCartType(entity) == 1 && entity instanceof EntityCartTanker)
-        //{
-        //    return minecartTankTextures[((EntityCartTanker) entity).getColor()];
-        //}
-        //else if (getCartType(entity) == 0 && entity instanceof EntityCartOpen)
-        //{
-        //    return minecartOpenTextures[((EntityCartOpen) entity).getColor()];
-        //}
-        /*else*/
         if (getCartType(entity) == 5 && entity instanceof TileEntityCartCargoContainer) {
             return minecartContainerTextures[((TileEntityCartCargoContainer) entity).getColor()];
         }
@@ -180,10 +165,6 @@ public class TileEntitySRender extends Render<EntityMinecart> {
         if (entity instanceof TileEntityCartBase) {
             cart = ((TileEntityCartBase) entity).getCustomCartType();
         }
-        //else if(entity instanceof EntityModelledTanker)
-        //{
-        //    cart = ((EntityModelledTanker) entity).getCustomCartType();
-        //}
         return cart;
     }
 }

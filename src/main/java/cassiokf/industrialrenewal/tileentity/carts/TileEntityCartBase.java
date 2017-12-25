@@ -19,19 +19,15 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TileEntityCartBase extends EntityMinecartContainer implements ISidedInventory {
+
     protected static final DataParameter<Integer> CARTTYPE = EntityDataManager.<Integer>createKey(TileEntityCartBase.class, DataSerializers.VARINT);
     protected static final DataParameter<Integer> CARTCOLOR = EntityDataManager.<Integer>createKey(TileEntityCartBase.class, DataSerializers.VARINT);
     protected static final DataParameter<Integer> CARTITEMS = EntityDataManager.<Integer>createKey(TileEntityCartBase.class, DataSerializers.VARINT);
-    private static final int[] SLOTS1 = buildSlotArray(0, 1);
-    private static final int[] SLOTS9 = buildSlotArray(0, 9);
+
     private static final int[] SLOTS36 = buildSlotArray(0, 36);
     public int colour = 0;
     protected int cart;
@@ -45,7 +41,7 @@ public class TileEntityCartBase extends EntityMinecartContainer implements ISide
         super(world, x, y, z);
         this.setCustomCartType(cartType);
         this.cart = cartType;
-        if (cartType == 5 || cartType == 0) {
+        if (cartType == 5) {
             this.setColor(color);
             this.colour = color;
         }
@@ -95,24 +91,7 @@ public class TileEntityCartBase extends EntityMinecartContainer implements ISide
 
     @Override
     public ItemStack getCartItem() {
-        switch (this.getCustomCartType()) {
-            case (0):
-                //return new ItemStack(ItemsInit.ModelledCartOpen);
-            case (2):
-                //return new ItemStack(ItemsInit.ModelledCartWood);
-            case (3):
-                //return new ItemStack(ItemsInit.ModelledCartFlat);
-            case (4):
-                //return new ItemStack(ItemsInit.ModelledCartPanzer);
-            case (5):
-                return new ItemStack(ModItems.cargoContainer);
-            case (6):
-                //return new ItemStack(ItemsInit.ModelledCartTender);
-            case (7):
-                //return new ItemStack(ItemsInit.ModelledCartCage);
-            default:
-                return new ItemStack(ModItems.cargoContainer);
-        }
+        return new ItemStack(ModItems.cargoContainer);
     }
 
     protected void readEntityFromNBT(NBTTagCompound tag) {
@@ -172,25 +151,9 @@ public class TileEntityCartBase extends EntityMinecartContainer implements ISide
 
     @Override
     public int getSizeInventory() {
-        switch (this.getCustomCartType()) {
-            case (0):
-            case (2):
-            case (6):
-                return 9;
-            case (3):
-            case (4):
-            case (7):
-                return 0;
-            case (5):
-                return 36;
-            default:
-                return 9;
-        }
+        return 36;
     }
 
-    public int getMinecartType() {
-        return -1;
-    }
 
     public int getCustomCartType() {
         return this.dataManager.get(CARTTYPE);
@@ -200,46 +163,13 @@ public class TileEntityCartBase extends EntityMinecartContainer implements ISide
         this.dataManager.set(CARTTYPE, Integer.valueOf(cartType));
     }
 
-    public int getItemCount() {
-        return this.dataManager.get(CARTITEMS);
-    }
-
     public int getDefaultDisplayTileOffset() {
         return 8;
     }
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack item) {
-        switch (this.getCustomCartType()) {
-
-            case (5):
-                return true;
-            case (2): {
-                if (item != null) {
-                    return isWood(item);
-                }
-                return false;
-            }
-            case (6): {
-                if (item != null && ForgeEventFactory.getItemBurnTime(item) > 0) {
-                    return true;
-                }
-                return false;
-            }
-            case (0): {
-                if (item != null) {
-                    return isLoose(item);
-                }
-                return false;
-            }
-            case (3):
-            case (4):
-            case (7): {
-                return false;
-            }
-            default:
-                return true;
-        }
+        return true;
     }
 
     public void onUpdate() {
@@ -251,20 +181,7 @@ public class TileEntityCartBase extends EntityMinecartContainer implements ISide
 
     @Override
     public int[] getSlotsForFace(EnumFacing side) {
-        switch (this.getCustomCartType()) {
-            case (0):
-            case (2):
-            case (6):
-                return SLOTS9;
-            case (3):
-            case (4):
-            case (7):
-                return SLOTS1;
-            case (5):
-                return SLOTS36;
-            default:
-                return SLOTS9;
-        }
+        return SLOTS36;
     }
 
     @Override
@@ -280,47 +197,6 @@ public class TileEntityCartBase extends EntityMinecartContainer implements ISide
     @Override
     public String getGuiID() {
         return this.hasCustomName() ? getCustomNameTag() : getName();
-    }
-
-    public boolean isWood(ItemStack stack) {
-        int[] array = OreDictionary.getOreIDs(stack);
-        int size = array.length;
-        List<Integer> arrayore = new ArrayList<Integer>();
-        arrayore.add(OreDictionary.getOreID("logWood"));
-        arrayore.add(OreDictionary.getOreID("logRubber"));
-        boolean isIn = false;
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                if (arrayore.contains(array[i])) {
-                    isIn = true;
-                    break;
-                }
-            }
-        }
-        return isIn;
-    }
-
-    public boolean isLoose(ItemStack stack) {
-        int[] array = OreDictionary.getOreIDs(stack);
-        List<Integer> arrayore = new ArrayList<Integer>();
-        int size = array.length;
-        arrayore.add(OreDictionary.getOreID("sand"));
-        arrayore.add(OreDictionary.getOreID("sandstone"));
-        arrayore.add(OreDictionary.getOreID("cobblestone"));
-        arrayore.add(OreDictionary.getOreID("stone"));
-        arrayore.add(OreDictionary.getOreID("gravel"));
-        arrayore.add(OreDictionary.getOreID("dirt"));
-
-        boolean isIn = false;
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                if (arrayore.contains(array[i])) {
-                    isIn = true;
-                    break;
-                }
-            }
-        }
-        return isIn;
     }
 
     @Nonnull

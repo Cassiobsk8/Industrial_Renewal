@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.item;
 
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -10,7 +9,7 @@ public class ModItems {
     public static ItemOreDict spongeIron = new ItemOreDict("sponge_iron", null);
     public static ItemPowerScrewDrive screwDrive = new ItemPowerScrewDrive("screwdrive");
     public static ItemSteelSaw steelSaw = new ItemSteelSaw("steel_saw");
-    public static ItemMineCartCargoContainer cargoContainer = new ItemMineCartCargoContainer(EntityMinecart.Type.CHEST, "cargo_container");
+    public static ItemMineCartCargoContainer cargoContainer = new ItemMineCartCargoContainer("cargo_container", 5);
     public static ItemBase lamp = new ItemBase("lamp");
     public static ItemBase smallSlab = new ItemBase("small_slab");
 

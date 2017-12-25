@@ -31,6 +31,7 @@ public class IndustrialRenewal {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         System.out.println(NAME + " is loading preInit!");
+        proxy.registerBlockRenderers();
     }
 
     @Mod.EventHandler
@@ -38,7 +39,6 @@ public class IndustrialRenewal {
         System.out.println(NAME + " is loading init!");
         ModRecipes.init();
         IRSoundHandler.init();
-        proxy.registerBlockRenderers();
     }
 
     @Mod.EventHandler
