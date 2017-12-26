@@ -9,7 +9,7 @@ public class ModItems {
     public static ItemOreDict spongeIron = new ItemOreDict("sponge_iron", null);
     public static ItemPowerScrewDrive screwDrive = new ItemPowerScrewDrive("screwdrive");
     public static ItemSteelSaw steelSaw = new ItemSteelSaw("steel_saw");
-    public static ItemMineCartCargoContainer cargoContainer = new ItemMineCartCargoContainer("cargo_container", 5);
+    public static ItemMineCartCargoContainer cargoContainer = new ItemMineCartCargoContainer("cargo_container");
     public static ItemBase lamp = new ItemBase("lamp");
     public static ItemBase smallSlab = new ItemBase("small_slab");
 
