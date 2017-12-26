@@ -9,6 +9,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -44,7 +45,7 @@ public class BlockPipeBase extends BlockBase {
                     .collect(Collectors.toList())
     );
 
-    public BlockPipeBase(final String name) {
+    public BlockPipeBase(String name) {
         super(Material.IRON, name);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
@@ -86,6 +87,10 @@ public class BlockPipeBase extends BlockBase {
         return false;
     }
 
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.MODEL;
+    }
     /**
      * Is the neighbouring block a valid connection for this pipe?
      *
@@ -136,11 +141,11 @@ public class BlockPipeBase extends BlockBase {
 
     @SuppressWarnings("deprecation")
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean p_185477_7_) {
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
         final AxisAlignedBB bb = new AxisAlignedBB(PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MAX_POS, PIPE_MAX_POS, PIPE_MAX_POS);
         addCollisionBoxToList(pos, entityBox, collidingBoxes, bb);
 
-        if (!p_185477_7_) {
+        if (!isActualState) {
             state = state.getActualState(worldIn, pos);
         }
 
@@ -158,4 +163,5 @@ public class BlockPipeBase extends BlockBase {
         final AxisAlignedBB bb = new AxisAlignedBB(PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MAX_POS, PIPE_MAX_POS, PIPE_MAX_POS);
         return bb;
     }
+
 }

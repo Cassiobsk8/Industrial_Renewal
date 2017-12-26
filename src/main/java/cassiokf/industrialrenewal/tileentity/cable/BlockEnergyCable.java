@@ -1,40 +1,50 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.tileentity.cable;
 
+import cassiokf.industrialrenewal.blocks.BlockPipeBase;
+import cassiokf.industrialrenewal.blocks.ModBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockEnergyCable extends BlockPipeBase implements IEnergyStorage {
+import javax.annotation.Nullable;
+
+public class BlockEnergyCable extends BlockPipeBase implements ITileEntityProvider {
 
     public BlockEnergyCable(String name) {
         super(name);
+
     }
 
     @Override
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
-        // Connect if the neighbouring block is another pipe
-        //if (super.isValidConnection(ownState, neighbourState, world, ownPos, neighbourDirection)) {
-        //    return true;
-        //}
 
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final Block neighbourBlock = neighbourState.getBlock();
 
         if (neighbourBlock.hasTileEntity(neighbourState)) {
             final TileEntity tileEntity = world.getTileEntity(neighbourPos);
-            return tileEntity != null && tileEntity.hasCapability(CapabilityEnergy.ENERGY, neighbourDirection.getOpposite());
+            //TODO remover || implementando energy capability
+            return tileEntity != null && (tileEntity.hasCapability(CapabilityEnergy.ENERGY, neighbourDirection.getOpposite()) || neighbourBlock instanceof BlockEnergyCable);
+
         }
 
         return neighbourBlock instanceof IEnergyStorage;
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
     }
 
     @Override
@@ -53,47 +63,11 @@ public class BlockEnergyCable extends BlockPipeBase implements IEnergyStorage {
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Nullable
     @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        return new TileEntityEnergyCable();
     }
-
     //IEnergyStorage
-    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-        if (from == null) {
-            return this.receiveEnergy(maxReceive, simulate);
-        } else {
-            return 0;
-        }
-    }
-    @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
-        return receiveEnergy(null, maxReceive, simulate);
-    }
 
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
-        return 0;
-    }
-
-    @Override
-    public int getEnergyStored() {
-        return 0;
-    }
-
-    @Override
-    public int getMaxEnergyStored() {
-        return 0;
-    }
-
-    @Override
-    public boolean canExtract() {
-        return false;
-    }
-
-    @Override
-    public boolean canReceive() {
-        return true;
-    }
 }
