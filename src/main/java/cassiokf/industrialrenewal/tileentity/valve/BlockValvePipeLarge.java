@@ -8,12 +8,14 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -27,7 +29,7 @@ import javax.annotation.Nullable;
 
 public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarge> {
 
-
+    protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.125D, 0.125D, 0.125D, 0.875D, 0.875D, 0.875D);
     public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
     public static final IProperty<EnumFaceRotation> FACE_ROTATION = PropertyEnum.create("face_rotation", EnumFaceRotation.class);
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
@@ -153,6 +155,10 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
 
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return BLOCK_AABB;
+    }
     @SuppressWarnings("deprecation")
     @Override
     @Deprecated
@@ -250,5 +256,9 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
         setFacing(world, pos, facing.rotateAround(axis.getAxis()));
 
         return true;
+    }
+
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
     }
 }
