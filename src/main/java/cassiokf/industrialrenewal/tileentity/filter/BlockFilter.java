@@ -1,9 +1,8 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.tileentity.filter;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.blocks.ModBlocks;
 import cassiokf.industrialrenewal.item.ModItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -11,37 +10,31 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Random;
+import javax.annotation.Nullable;
 
 import static net.minecraft.block.BlockDoor.getFacing;
+import static net.minecraft.init.Blocks.AIR;
 
 
-public class BlockFloorLamp extends Block {
+public class BlockFilter extends BlockTileEntity<TileEntityFilter> {
 
     public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
-    protected String name;
+    protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.1875D, 0D, 0.1875D, 0.8125D, 0.750D, 0.8125D);
 
-    public BlockFloorLamp(String name) {
-        super(Material.IRON);
-        this.name = name;
-        setUnlocalizedName(name);
-        setRegistryName(name);
-        setLightLevel(1.0F);
-        setSoundType(SoundType.METAL);
-        setCreativeTab(IndustrialRenewal.creativeTab);
-
+    public BlockFilter(String name) {
+        super(Material.IRON, name);
+        setHardness(4f);
+        setResistance(5f);
     }
 
     @Override
@@ -57,33 +50,26 @@ public class BlockFloorLamp extends Block {
         return false;
     }
 
+    @Override
+    public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
+        world.setBlockToAir(pos.down());
+    }
+
     public void dorotateBlock(World world, BlockPos pos, IBlockState state) {
         EnumFacing newFace = state.getValue(FACING).rotateY();
         world.setBlockState(pos, state.withProperty(FACING, newFace));
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
-        return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor)).getItem();
+    public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+        world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().rotateY()));
+        //Tem uma forma melhor?
+        world.setBlockState(pos.down(), ModBlocks.dummyFilter.getDefaultState(), 3);
     }
 
     @Override
-    public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-        ItemStack itemst = new ItemStack(ModItems.lamp);
-        EntityItem entity = new EntityItem(world, x, y, z, itemst);
-        if (!world.isRemote) {
-            world.spawnEntity(entity);
-        }
-
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-        return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor));
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        return worldIn.getBlockState(pos.down()).getBlock() == AIR;
     }
 
     @Override
@@ -117,6 +103,18 @@ public class BlockFloorLamp extends Block {
         return facingbits;
     }
 
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return BLOCK_AABB;
+    }
+
+    @Deprecated
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
+        return state.getBoundingBox(worldIn, pos).offset(pos);
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public BlockRenderLayer getBlockLayer() {
@@ -135,19 +133,19 @@ public class BlockFloorLamp extends Block {
         return false;
     }
 
-    public void registerItemModel(Item itemBlock) {
-        IndustrialRenewal.proxy.registerItemRenderer(itemBlock, 0, name);
+    @Override
+    public Class<TileEntityFilter> getTileEntityClass() {
+        return TileEntityFilter.class;
     }
 
-    public Item createItemBlock() {
-        return new ItemBlock(this).setRegistryName(getRegistryName());
+    @Nullable
+    @Override
+    public TileEntityFilter createTileEntity(World world, IBlockState state) {
+        return new TileEntityFilter();
     }
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        if (face == EnumFacing.DOWN) {
-            return BlockFaceShape.SOLID;
-        }
         return BlockFaceShape.UNDEFINED;
     }
 }

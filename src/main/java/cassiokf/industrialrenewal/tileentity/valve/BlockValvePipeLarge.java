@@ -202,11 +202,11 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
         setFacing(world, pos, EnumFacing.getDirectionFromEntityLiving(pos, placer));
 
         setFace(world, pos);
-        //shutDown(world, pos);
         final IFluidHandler fluidHandler = getFluidHandler(world, pos);
         if (fluidHandler != null) {
             FluidUtil.tryEmptyContainer(stack, fluidHandler, Integer.MAX_VALUE, null, true);
         }
+        //markDirt();
     }
 
     @SuppressWarnings("deprecation")

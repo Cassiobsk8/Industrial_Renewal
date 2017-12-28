@@ -26,6 +26,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
     private final Set<EnumFacing> enabledFacings = EnumSet.allOf(EnumFacing.class);
     private EnumFacing facing = EnumFacing.SOUTH;
     private EnumFaceRotation faceRotation = EnumFaceRotation.UP;
+    private Boolean active = false;
 
     public TileEntityValvePipeLarge() {
         tank = new ValveUtils(this, 1000);
@@ -192,7 +193,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
         super.readFromNBT(tag);
         facing = EnumFacing.getFront(tag.getInteger("facing"));
         faceRotation = EnumFaceRotation.values()[tag.getInteger("faceRotation")];
-        //active = BlockValvePipeLarge.state.getValue(tag.getBoolean("active"));
+        active = tag.getBoolean("active");
 
         enabledFacings.clear();
 
@@ -210,6 +211,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
         tag.setInteger("facing", facing.getIndex());
         tag.setInteger("faceRotation", faceRotation.ordinal());
         tag.setIntArray("EnabledFacings", enabledFacingIndices);
+        tag.setBoolean("active", active);
 
         return super.writeToNBT(tag);
     }

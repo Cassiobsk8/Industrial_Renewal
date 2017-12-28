@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
+import cassiokf.industrialrenewal.tileentity.filter.BlockFilter;
 import cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd;
 import cassiokf.industrialrenewal.tileentity.gates.nand.BlockGateNand;
 import cassiokf.industrialrenewal.tileentity.gates.not.BlockGateNot;
@@ -32,6 +33,9 @@ public class ModBlocks {
     public static BlockFloorCable floorCable = new BlockFloorCable("floor_cable");
     public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp");
     public static BlockAlarm alarm = new BlockAlarm("alarm");
+    public static BlockFilter filter = new BlockFilter("fluid_filter");
+
+    public static BlockFilterDummy dummyFilter = new BlockFilterDummy("dummy_filter");
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail");
@@ -59,12 +63,14 @@ public class ModBlocks {
                 gateNot,
                 gateOr,
                 alarm,
+                filter,
                 redstoneWire,
                 fluidPipe,
                 energyCable,
                 floorPipe,
                 floorCable,
-                floorLamp
+                floorLamp,
+                dummyFilter
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -73,6 +79,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(gateNot.getTileEntityClass(), gateNot.getRegistryName().toString());
         GameRegistry.registerTileEntity(gateOr.getTileEntityClass(), gateOr.getRegistryName().toString());
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
+        GameRegistry.registerTileEntity(filter.getTileEntityClass(), filter.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -92,6 +99,7 @@ public class ModBlocks {
                 gateNot.createItemBlock(),
                 gateOr.createItemBlock(),
                 alarm.createItemBlock(),
+                filter.createItemBlock(),
                 redstoneWire.createItemBlock(),
                 fluidPipe.createItemBlock(),
                 energyCable.createItemBlock()
@@ -116,6 +124,7 @@ public class ModBlocks {
         gateNand.registerItemModel(Item.getItemFromBlock(gateNand));
         gateNot.registerItemModel(Item.getItemFromBlock(gateNot));
         alarm.registerItemModel(Item.getItemFromBlock(alarm));
+        filter.registerItemModel(Item.getItemFromBlock(filter));
         gateOr.registerItemModel(Item.getItemFromBlock(gateOr));
         redstoneWire.registerItemModel(Item.getItemFromBlock(redstoneWire));
         fluidPipe.registerItemModel(Item.getItemFromBlock(fluidPipe));

@@ -1,0 +1,8 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:fluid_filter_dummy"
+    }
+  }
+}
