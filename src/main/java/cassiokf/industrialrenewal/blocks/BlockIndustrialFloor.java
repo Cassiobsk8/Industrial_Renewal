@@ -5,6 +5,7 @@ import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -14,6 +15,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 
@@ -82,5 +84,13 @@ public class BlockIndustrialFloor extends Block {
 
     public Item createItemBlock() {
         return new ItemBlock(this).setRegistryName(getRegistryName());
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        if (face == EnumFacing.UP || face == EnumFacing.DOWN) {
+            return BlockFaceShape.SOLID;
+        }
+        return BlockFaceShape.UNDEFINED;
     }
 }

@@ -6,6 +6,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -24,8 +25,8 @@ import java.util.stream.Stream;
 
 public class BlockPipeBase extends BlockBase {
 
-    public static final float PIPE_MIN_POS = 0.25f;
-    public static final float PIPE_MAX_POS = 0.75f;
+    public static final float PIPE_MIN_POS = 0.250f;
+    public static final float PIPE_MAX_POS = 0.750f;
 
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES)
@@ -142,8 +143,8 @@ public class BlockPipeBase extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        final AxisAlignedBB bb = new AxisAlignedBB(PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MAX_POS, PIPE_MAX_POS, PIPE_MAX_POS);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, bb);
+        final AxisAlignedBB AA_BB = new AxisAlignedBB(PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MAX_POS, PIPE_MAX_POS, PIPE_MAX_POS);
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
 
         if (!isActualState) {
             state = state.getActualState(worldIn, pos);
@@ -160,8 +161,13 @@ public class BlockPipeBase extends BlockBase {
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         //TODO arrumar isso para incluir a conexão
-        final AxisAlignedBB bb = new AxisAlignedBB(PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MAX_POS, PIPE_MAX_POS, PIPE_MAX_POS);
-        return bb;
+        final AxisAlignedBB AA_BB = new AxisAlignedBB(PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MAX_POS, PIPE_MAX_POS, PIPE_MAX_POS);
+        return AA_BB;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
     }
 
 }

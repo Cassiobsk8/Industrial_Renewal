@@ -258,6 +258,7 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
         return true;
     }
 
+    @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
     }

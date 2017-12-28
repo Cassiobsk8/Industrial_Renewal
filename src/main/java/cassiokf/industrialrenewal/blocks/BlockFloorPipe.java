@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
 
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -66,6 +67,14 @@ public class BlockFloorPipe extends BlockFluidPipe {
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return FULL_BLOCK_AABB;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        if (face == EnumFacing.UP || face == EnumFacing.DOWN) {
+            return BlockFaceShape.SOLID;
+        }
+        return BlockFaceShape.UNDEFINED;
     }
 
 }
