@@ -11,7 +11,7 @@ public class BaseEnergyContainer implements IEnergyStorage, INBTSerializable<NBT
     private int output;
 
     public BaseEnergyContainer() {
-        this(1024, 1024, 1024);
+        this(102400, 102400, 102400);
     }
 
     public BaseEnergyContainer(int capacity, int input, int output) {

@@ -34,8 +34,8 @@ public class BlockEnergyCable extends BlockPipeBase implements ITileEntityProvid
 
         if (neighbourBlock.hasTileEntity(neighbourState)) {
             final TileEntity tileEntity = world.getTileEntity(neighbourPos);
-            //TODO remover || implementando energy capability
-            return tileEntity != null && (tileEntity.hasCapability(CapabilityEnergy.ENERGY, neighbourDirection.getOpposite()) || neighbourBlock instanceof BlockEnergyCable);
+
+            return tileEntity != null && tileEntity.hasCapability(CapabilityEnergy.ENERGY, neighbourDirection.getOpposite());
 
         }
 
