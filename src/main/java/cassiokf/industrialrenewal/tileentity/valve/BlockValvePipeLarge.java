@@ -54,7 +54,6 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
-            boolean Vactive = world.getBlockState(pos).getValue(ACTIVE);
             rotateFace(world, pos);
             setFace(world, pos);
             return true;
@@ -75,7 +74,6 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
             return true;
         }
     }
-
 
     public void setFace(World world, BlockPos pos) {
         final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
@@ -195,9 +193,11 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
         return getCapability(getTileEntity(world, pos), CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
     }
 
+
     @Override
     public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
         /** Arrumar essa porcaria de setFace e shutDown **/
+        final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
 
         setFacing(world, pos, EnumFacing.getDirectionFromEntityLiving(pos, placer));
 
@@ -206,7 +206,7 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
         if (fluidHandler != null) {
             FluidUtil.tryEmptyContainer(stack, fluidHandler, Integer.MAX_VALUE, null, true);
         }
-        //markDirt();
+        tileEntity.markDirty();
     }
 
     @SuppressWarnings("deprecation")

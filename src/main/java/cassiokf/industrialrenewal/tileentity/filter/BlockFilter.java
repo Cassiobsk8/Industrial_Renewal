@@ -17,13 +17,19 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-import static net.minecraft.block.BlockDoor.getFacing;
 import static net.minecraft.init.Blocks.AIR;
+
+//import static net.minecraft.block.BlockDoor.getFacing;
 
 
 public class BlockFilter extends BlockTileEntity<TileEntityFilter> {
@@ -37,17 +43,10 @@ public class BlockFilter extends BlockTileEntity<TileEntityFilter> {
         setResistance(5f);
     }
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-        if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
-            world.playSound(null, (double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:drill")), SoundCategory.BLOCKS, 1.0F, 1.0F);
-            dorotateBlock(world, pos, state);
-            return true;
-        }
-        return false;
+    //Fluid
+    @Nullable
+    public static <T> T getCapability(@Nullable final ICapabilityProvider provider, final Capability<T> capability, @Nullable final EnumFacing facing) {
+        return provider != null && provider.hasCapability(capability, facing) ? provider.getCapability(capability, facing) : null;
     }
 
     @Override
@@ -55,16 +54,31 @@ public class BlockFilter extends BlockTileEntity<TileEntityFilter> {
         world.setBlockToAir(pos.down());
     }
 
-    public void dorotateBlock(World world, BlockPos pos, IBlockState state) {
-        EnumFacing newFace = state.getValue(FACING).rotateY();
-        world.setBlockState(pos, state.withProperty(FACING, newFace));
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
+            world.playSound(null, (double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:drill")), SoundCategory.BLOCKS, 1.0F, 1.0F);
+            return rotateBlock(world, pos, side);
+        }
+        return false;
     }
 
     @Override
     public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
-        world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().rotateY()));
+        world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing()));
         //Tem uma forma melhor?
         world.setBlockState(pos.down(), ModBlocks.dummyFilter.getDefaultState(), 3);
+        final IFluidHandler fluidHandler = getFluidHandler(world, pos);
+        if (fluidHandler != null) {
+            FluidUtil.tryEmptyContainer(stack, fluidHandler, Integer.MAX_VALUE, null, true);
+        }
+    }
+
+    public EnumFacing getFacing(final IBlockAccess world, final BlockPos pos) {
+        return world.getBlockState(pos).getValue(FACING);
     }
 
     @Override
@@ -108,13 +122,6 @@ public class BlockFilter extends BlockTileEntity<TileEntityFilter> {
         return BLOCK_AABB;
     }
 
-    @Deprecated
-    @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
-        return state.getBoundingBox(worldIn, pos).offset(pos);
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public BlockRenderLayer getBlockLayer() {
@@ -134,6 +141,14 @@ public class BlockFilter extends BlockTileEntity<TileEntityFilter> {
     }
 
     @Override
+    public boolean rotateBlock(final World world, final BlockPos pos, final EnumFacing axis) {
+        final EnumFacing facing = getFacing(world, pos);
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(FACING, facing.rotateY()));
+
+        return true;
+    }
+
+    @Override
     public Class<TileEntityFilter> getTileEntityClass() {
         return TileEntityFilter.class;
     }
@@ -147,5 +162,15 @@ public class BlockFilter extends BlockTileEntity<TileEntityFilter> {
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    public boolean hasTileEntity(final IBlockState state) {
+        return true;
+    }
+
+    @Nullable
+    private IFluidHandler getFluidHandler(final IBlockAccess world, final BlockPos pos) {
+        return getCapability(getTileEntity(world, pos), CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
     }
 }
