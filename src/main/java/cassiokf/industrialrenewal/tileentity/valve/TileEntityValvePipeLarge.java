@@ -46,17 +46,16 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
             final TileEntity tileEntityS = this.getWorld().getTileEntity(this.getPos().offset(facetofill));
 
             if (tileEntityS != null && !tileEntityS.isInvalid() && Vactive) {
-                //System.out.println("first! " + facetofill.getOpposite());
+                active = true;
                 if (tileEntityS.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facetofill.getOpposite())) {
-                    //System.out.println("second! ");
                     IFluidHandler consumer = tileEntityS.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facetofill.getOpposite());
                     if (consumer != null) {
-                        //TODO código para enxer o tanke adjacente
-                        this.fill(tank.getFluid(), true);
-                        //System.out.println("Drain!");
-
+                        tank.drain(consumer.fill(tank.drain(tank.getCapacity(), false), true), true);
                     }
                 }
+            }
+            if (!Vactive) {
+                active = false;
             }
         }
     }
@@ -211,7 +210,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
         tag.setInteger("facing", facing.getIndex());
         tag.setInteger("faceRotation", faceRotation.ordinal());
         tag.setIntArray("EnabledFacings", enabledFacingIndices);
-        tag.setBoolean("active", active);
+        tag.setBoolean("active", this.active);
 
         return super.writeToNBT(tag);
     }

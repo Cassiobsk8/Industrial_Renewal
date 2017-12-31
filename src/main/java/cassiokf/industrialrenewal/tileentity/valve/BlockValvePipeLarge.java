@@ -53,25 +53,25 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
-            rotateFace(world, pos);
-            setFace(world, pos);
+        if (world.isRemote) {
             return true;
         } else {
-
-            int i = pos.getX();
-            int j = pos.getY();
-            int k = pos.getZ();
-
-            world.playSound((EntityPlayer) null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:valve")), SoundCategory.BLOCKS, 1.0F, 1.0F);
-            boolean Vactive = world.getBlockState(pos).getValue(ACTIVE);
-            if (!Vactive) {
-                world.setBlockState(pos, state.withProperty(ACTIVE, true));
-                world.spawnParticle(EnumParticleTypes.WATER_DROP, (double) i, (double) j, (double) k, 1.0D, 1.0D, 1.0D);
+            if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
+                rotateFace(world, pos);
+                setFace(world, pos);
+                return true;
             } else {
-                world.setBlockState(pos, state.withProperty(ACTIVE, false));
+                int i = pos.getX();
+                int j = pos.getY();
+                int k = pos.getZ();
+
+                world.playSound((EntityPlayer) null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:valve")), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                state = state.cycleProperty(ACTIVE);
+                world.setBlockState(pos, state, 3);
+                world.spawnParticle(EnumParticleTypes.WATER_DROP, (double) i, (double) j, (double) k, 1.0D, 1.0D, 1.0D);
+                world.notifyNeighborsOfStateChange(pos, this, false);
+                return true;
             }
-            return true;
         }
     }
 
@@ -137,14 +137,22 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        EnumFacing facing = EnumFacing.getFront((meta > 8) ? meta - 8 : meta);
-        return getDefaultState().withProperty(FACING, facing);
+        //EnumFacing facing = EnumFacing.getFront((meta > 8) ? meta - 8 : meta);
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(ACTIVE, Boolean.valueOf((meta & 8) > 0));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        int facingbits = state.getValue(FACING).getIndex();
-        return facingbits;
+        //int facingbits = state.getValue(FACING).getIndex();
+        //return facingbits;
+        int i = 0;
+        i = i | ((EnumFacing) state.getValue(FACING)).getIndex();
+
+        if (((Boolean) state.getValue(ACTIVE)).booleanValue()) {
+            i |= 8;
+        }
+
+        return i;
     }
 
     @SuppressWarnings("deprecation")
@@ -196,7 +204,7 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
 
     @Override
     public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
-        /** Arrumar essa porcaria de setFace e shutDown **/
+
         final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
 
         setFacing(world, pos, EnumFacing.getDirectionFromEntityLiving(pos, placer));

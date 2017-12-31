@@ -71,10 +71,13 @@ public class BlockFilter extends BlockTileEntity<TileEntityFilter> {
         world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing()));
         //Tem uma forma melhor?
         world.setBlockState(pos.down(), ModBlocks.dummyFilter.getDefaultState(), 3);
+
         final IFluidHandler fluidHandler = getFluidHandler(world, pos);
+        final TileEntityFilter tileEntity = getTileEntity(world, pos);
         if (fluidHandler != null) {
             FluidUtil.tryEmptyContainer(stack, fluidHandler, Integer.MAX_VALUE, null, true);
         }
+        tileEntity.markDirty();
     }
 
     public EnumFacing getFacing(final IBlockAccess world, final BlockPos pos) {

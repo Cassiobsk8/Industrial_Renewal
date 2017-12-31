@@ -30,20 +30,16 @@ public class TileEntityFilter extends TileFluidHandler implements IFluidHandler,
             EnumFacing facetofill = this.getWorld().getBlockState(this.getPos()).getValue(FACING).rotateY();
             final TileEntity tileEntityS = this.getWorld().getTileEntity(this.getPos().offset(facetofill));
             if (tileEntityS != null) {
-                //System.out.println("first! " + facetofill.getOpposite());
                 if (tileEntityS.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facetofill.getOpposite())) {
-                    //System.out.println("second! ");
                     IFluidHandler consumer = tileEntityS.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facetofill.getOpposite());
                     if (consumer != null) {
-                        //TODO código para enxer o tanke adjacente
-                        //this.fill(tank.getFluid(), true);
-                        //this.drain(tank.getFluidAmount(), true);
-                        //System.out.println("tank " + getFluidName());
+                        tank.drain(consumer.fill(tank.drain(tank.getCapacity(), false), true), true);
                     }
                 }
             }
         }
     }
+
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
@@ -85,6 +81,19 @@ public class TileEntityFilter extends TileFluidHandler implements IFluidHandler,
     private void notifyBlockUpdate() {
         final IBlockState state = getWorld().getBlockState(getPos());
         getWorld().notifyBlockUpdate(getPos(), state, state, 3);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        tank.readFromNBT(tag);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        tag = super.writeToNBT(tag);
+        tank.writeToNBT(tag);
+        return tag;
     }
 
     //Capability
