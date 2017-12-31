@@ -30,12 +30,12 @@ public class FilterTESRender extends TileEntitySpecialRenderer<TileEntityFilter>
         else GlStateManager.translate(x, y, z);
     }
 
-    public static void renderFluid(TileEntityFilter te, FluidStack fluid, BlockPos pos, double x1, double y1, double z1, double x2, double y2, double z2) {
+    public static void renderFluid(TileEntityFilter te, FluidStack fluid, BlockPos pos, double x, double y, double z, double x1, double y1, double z1, double x2, double y2, double z2) {
         final int color = fluid.getFluid().getColor(fluid);
-        renderFluid(te, fluid, pos, x1, y1, z1, x2, y2, z2, color);
+        renderFluid(te, fluid, pos, x, y, z, x1, y1, z1, x2, y2, z2, color);
     }
 
-    public static void renderFluid(TileEntityFilter te, FluidStack fluid, BlockPos pos, double x1, double y1, double z1, double x2, double y2, double z2, int color) {
+    public static void renderFluid(TileEntityFilter te, FluidStack fluid, BlockPos pos, double x, double y, double z, double x1, double y1, double z1, double x2, double y2, double z2, int color) {
 
         final Minecraft mc = Minecraft.getMinecraft();
         final Tessellator tessellator = Tessellator.getInstance();
@@ -44,6 +44,7 @@ public class FilterTESRender extends TileEntitySpecialRenderer<TileEntityFilter>
 
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        setupRenderState(x, y, z);
 
         final TextureAtlasSprite still = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill(fluid).toString());
         final TextureAtlasSprite flowing = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getFlowing(fluid).toString());
@@ -212,12 +213,10 @@ public class FilterTESRender extends TileEntitySpecialRenderer<TileEntityFilter>
                 GlStateManager.enableBlend();
                 translateAgainstPlayer(te.getPos(), true);
                 //GlStateManager.translate(x, y-1, z);
-                renderFluid(te, fluid, te.getPos(), 0.1876D, 0.251D, 0.1876D, 0.8124D, 1.0D, 0.8124D);
+                renderFluid(te, fluid, te.getPos(), 0.00d, 0.00d, 0.00d, 0.1876D, 0.251D, 0.1876D, 0.8124D, 1.0D, 0.8124D);
                 GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
             }
-
         }
     }
-
 }
