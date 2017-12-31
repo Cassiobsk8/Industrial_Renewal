@@ -1,5 +1,7 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.tileentity.filter;
 
+import cassiokf.industrialrenewal.blocks.BlockBase;
+import cassiokf.industrialrenewal.blocks.ModBlocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;

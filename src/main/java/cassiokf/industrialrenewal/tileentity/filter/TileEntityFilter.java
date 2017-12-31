@@ -38,7 +38,7 @@ public class TileEntityFilter extends TileFluidHandler implements IFluidHandler,
                         //TODO código para enxer o tanke adjacente
                         //this.fill(tank.getFluid(), true);
                         //this.drain(tank.getFluidAmount(), true);
-                        //System.out.println("Drain!");
+                        //System.out.println("tank " + getFluidName());
                     }
                 }
             }
@@ -48,6 +48,15 @@ public class TileEntityFilter extends TileFluidHandler implements IFluidHandler,
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
         return (oldState.getBlock() != newState.getBlock());
+    }
+
+    @Nullable
+    public FluidStack getFluidName() {
+        if (tank.getFluidAmount() > 0) {
+            return tank.getFluid();
+        } else {
+            return null;
+        }
     }
 
     @Override

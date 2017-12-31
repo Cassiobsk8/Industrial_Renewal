@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.filter.BlockFilter;
+import cassiokf.industrialrenewal.tileentity.filter.BlockFilterDummy;
 import cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd;
 import cassiokf.industrialrenewal.tileentity.gates.nand.BlockGateNand;
 import cassiokf.industrialrenewal.tileentity.gates.not.BlockGateNot;
