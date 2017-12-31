@@ -27,7 +27,7 @@ public class TileEntityFilter extends TileFluidHandler implements IFluidHandler,
     @Override
     public void update() {
         if (this.hasWorld()) {
-            EnumFacing facetofill = this.getWorld().getBlockState(this.getPos()).getValue(FACING).rotateY().getOpposite();
+            EnumFacing facetofill = this.getWorld().getBlockState(this.getPos()).getValue(FACING).rotateY();
             final TileEntity tileEntityS = this.getWorld().getTileEntity(this.getPos().offset(facetofill));
             if (tileEntityS != null) {
                 //System.out.println("first! " + facetofill.getOpposite());
@@ -36,9 +36,9 @@ public class TileEntityFilter extends TileFluidHandler implements IFluidHandler,
                     IFluidHandler consumer = tileEntityS.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facetofill.getOpposite());
                     if (consumer != null) {
                         //TODO código para enxer o tanke adjacente
-                        this.fill(tank.getFluid(), true);
+                        //this.fill(tank.getFluid(), true);
+                        //this.drain(tank.getFluidAmount(), true);
                         //System.out.println("Drain!");
-
                     }
                 }
             }
@@ -82,11 +82,17 @@ public class TileEntityFilter extends TileFluidHandler implements IFluidHandler,
 
     @Override
     public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing) {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing != null) {
             if (this.getWorld().getBlockState(this.getPos()).getValue(FACING) == EnumFacing.NORTH || this.getWorld().getBlockState(this.getPos()).getValue(FACING) == EnumFacing.SOUTH) {
-                return facing == EnumFacing.EAST || facing == EnumFacing.WEST;
+                if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) {
+                    return true;
+                }
+                return false;
             } else {
-                return facing == EnumFacing.SOUTH || facing == EnumFacing.NORTH;
+                if (facing == EnumFacing.SOUTH || facing == EnumFacing.NORTH) {
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -97,13 +103,11 @@ public class TileEntityFilter extends TileFluidHandler implements IFluidHandler,
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            //if (isFacingEnabled(facing)) {
-            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
-            //}
-
-            //return null;
+            if (facing == this.getWorld().getBlockState(this.getPos()).getValue(FACING).rotateY() || facing == this.getWorld().getBlockState(this.getPos()).getValue(FACING).rotateY().getOpposite()) {
+                return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
+            }
+            return super.getCapability(capability, facing);
         }
-
         return super.getCapability(capability, facing);
     }
     //IFluidHandler
