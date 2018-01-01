@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity.filter;
 
-import cassiokf.industrialrenewal.util.ValveUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -12,16 +11,25 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.*;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.TileFluidHandler;
 
 import javax.annotation.Nullable;
 
 import static cassiokf.industrialrenewal.tileentity.filter.BlockFilter.FACING;
 
-public class TileEntityFilter extends TileFluidHandler implements IFluidHandler, ITickable {
+public class TileEntityFilter extends TileFluidHandler implements /*IFluidHandler,*/ ITickable {
+
+    public FluidTankTile tank;
+    private boolean hasFluid = false;
+    private boolean changed = false;
+    private boolean doRender = false;
 
     TileEntityFilter() {
-        tank = new ValveUtils(this, 1000);
+        this.tank = new FluidTankTile(1000);
+        this.tank.setTileEntity(this);
+        //tank = new ValveUtils(this, 1000);
     }
 
     @Override
@@ -32,14 +40,32 @@ public class TileEntityFilter extends TileFluidHandler implements IFluidHandler,
             if (tileEntityS != null) {
                 if (tileEntityS.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facetofill.getOpposite())) {
                     IFluidHandler consumer = tileEntityS.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facetofill.getOpposite());
-                    if (consumer != null) {
+                    if (consumer != null && tank != null) {
                         tank.drain(consumer.fill(tank.drain(tank.getCapacity(), false), true), true);
                     }
                 }
             }
         }
+        /*
+        doRender = false;
+        changed = hasFluid;
+        if (tank != null && tank.getFluidAmount() > 0) {
+            hasFluid = true;
+        }
+        if (tank.getFluidAmount() == 0 || tank == null) {
+            hasFluid = false;
+        }
+        if (changed != hasFluid) {
+            doRender = true;
+        }
+        //System.out.println("END " + doRender);
+        if (doRender) {
+            final IBlockState state = this.getWorld().getBlockState(getPos());
+            this.getWorld().notifyBlockUpdate(this.getPos(), state, state, 1);
+            markDirty();
+        }
+        */
     }
-
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
@@ -53,6 +79,11 @@ public class TileEntityFilter extends TileFluidHandler implements IFluidHandler,
         } else {
             return null;
         }
+    }
+
+    @Nullable
+    public int getFluidAmount() {
+        return tank.getFluidAmount();
     }
 
     @Override
@@ -85,14 +116,23 @@ public class TileEntityFilter extends TileFluidHandler implements IFluidHandler,
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        tank.readFromNBT(tag);
+        if (tag.hasKey("FluidData")) {
+            this.tank = tag.hasKey("FluidData")
+                    ? new FluidTankTile(FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("FluidData")), 1000)
+                    : new FluidTankTile(1000);
+        }
+        this.tank.setTileEntity(this);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag = super.writeToNBT(tag);
-        tank.writeToNBT(tag);
+        if (this.tank != null) {
+            if (this.tank.getFluid() != null) {
+                final NBTTagCompound tankTag = new NBTTagCompound();
+                this.tank.getFluid().writeToNBT(tankTag);
+                tag.setTag("FluidData", tankTag);
+            }
+        }
         return tag;
     }
 
@@ -129,7 +169,7 @@ public class TileEntityFilter extends TileFluidHandler implements IFluidHandler,
         return super.getCapability(capability, facing);
     }
     //IFluidHandler
-
+/*
     @Override
     public int fill(FluidStack resource, boolean doFill) {
         if (resource == null)
@@ -156,5 +196,5 @@ public class TileEntityFilter extends TileFluidHandler implements IFluidHandler,
     public IFluidTankProperties[] getTankProperties() {
         return new IFluidTankProperties[]{new FluidTankProperties(tank.getInfo().fluid, tank.getInfo().capacity)};
     }
-
+*/
 }

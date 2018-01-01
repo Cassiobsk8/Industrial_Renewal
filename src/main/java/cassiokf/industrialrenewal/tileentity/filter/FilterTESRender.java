@@ -47,13 +47,13 @@ public class FilterTESRender extends TileEntitySpecialRenderer<TileEntityFilter>
         setupRenderState(x, y, z);
 
         final TextureAtlasSprite still = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill(fluid).toString());
-        final TextureAtlasSprite flowing = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getFlowing(fluid).toString());
+        //final TextureAtlasSprite flowing = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getFlowing(fluid).toString());
 
-        addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.NORTH, color, brightness);
-        addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.EAST, color, brightness);
-        addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.SOUTH, color, brightness);
-        addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.WEST, color, brightness);
-        addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.DOWN, color, brightness);
+        addTexturedQuad(buffer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.NORTH, color, brightness);
+        addTexturedQuad(buffer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.EAST, color, brightness);
+        addTexturedQuad(buffer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.SOUTH, color, brightness);
+        addTexturedQuad(buffer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.WEST, color, brightness);
+        addTexturedQuad(buffer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.DOWN, color, brightness);
 
         tessellator.draw();
         cleanupRenderState();
@@ -208,13 +208,13 @@ public class FilterTESRender extends TileEntitySpecialRenderer<TileEntityFilter>
     public void render(TileEntityFilter te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         if (te != null) {
             FluidStack fluid = te.getFluidName();
-            if (fluid != null) {
+            int amount = te.getFluidAmount();
+            if (fluid != null && amount > 0) {
                 GlStateManager.pushMatrix();
-                GlStateManager.enableBlend();
+                //GlStateManager.enableBlend();
                 translateAgainstPlayer(te.getPos(), true);
-                //GlStateManager.translate(x, y-1, z);
                 renderFluid(te, fluid, te.getPos(), 0.00d, 0.00d, 0.00d, 0.1880D, 0.255D, 0.1880D, 0.8120D, 1.0D, 0.8120D);
-                GlStateManager.disableBlend();
+                //GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
             }
         }
