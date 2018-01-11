@@ -211,10 +211,10 @@ public class FilterTESRender extends TileEntitySpecialRenderer<TileEntityFilter>
             int amount = te.getFluidAmount();
             if (fluid != null && amount > 0) {
                 GlStateManager.pushMatrix();
-                //GlStateManager.enableBlend();
+                GlStateManager.enableBlend();
                 translateAgainstPlayer(te.getPos(), true);
                 renderFluid(te, fluid, te.getPos(), 0.00d, 0.00d, 0.00d, 0.1880D, 0.255D, 0.1880D, 0.8120D, 1.0D, 0.8120D);
-                //GlStateManager.disableBlend();
+                GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
             }
         }

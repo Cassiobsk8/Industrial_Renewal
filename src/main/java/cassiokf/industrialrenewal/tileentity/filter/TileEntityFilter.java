@@ -22,9 +22,6 @@ import static cassiokf.industrialrenewal.tileentity.filter.BlockFilter.FACING;
 public class TileEntityFilter extends TileFluidHandler implements /*IFluidHandler,*/ ITickable {
 
     public FluidTankTile tank;
-    private boolean hasFluid = false;
-    private boolean changed = false;
-    private boolean doRender = false;
 
     TileEntityFilter() {
         this.tank = new FluidTankTile(1000);
@@ -46,25 +43,6 @@ public class TileEntityFilter extends TileFluidHandler implements /*IFluidHandle
                 }
             }
         }
-        /*
-        doRender = false;
-        changed = hasFluid;
-        if (tank != null && tank.getFluidAmount() > 0) {
-            hasFluid = true;
-        }
-        if (tank.getFluidAmount() == 0 || tank == null) {
-            hasFluid = false;
-        }
-        if (changed != hasFluid) {
-            doRender = true;
-        }
-        //System.out.println("END " + doRender);
-        if (doRender) {
-            final IBlockState state = this.getWorld().getBlockState(getPos());
-            this.getWorld().notifyBlockUpdate(this.getPos(), state, state, 1);
-            markDirty();
-        }
-        */
     }
 
     @Override
@@ -84,12 +62,6 @@ public class TileEntityFilter extends TileFluidHandler implements /*IFluidHandle
     @Nullable
     public int getFluidAmount() {
         return tank.getFluidAmount();
-    }
-
-    @Override
-    public void markDirty() {
-        super.markDirty();
-        notifyBlockUpdate();
     }
 
     @Override
