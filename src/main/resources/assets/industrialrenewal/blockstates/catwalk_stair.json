@@ -1,9 +1,6 @@
 {
   "forge_marker": 1,
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:catwalk_stair"
-    },
     "active_left=false,active_right=false,facing=down": {
       "model": "industrialrenewal:catwalk_stair"
     },

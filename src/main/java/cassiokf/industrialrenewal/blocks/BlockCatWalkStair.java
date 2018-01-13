@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -10,6 +11,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -34,7 +36,37 @@ public class BlockCatWalkStair extends BlockBase {
         super(Material.IRON, name);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
-        this.setDefaultState(blockState.getBaseState().withProperty(ACTIVE_LEFT, true).withProperty(ACTIVE_RIGHT, true));
+    }
+
+    public void changestate(World world, BlockPos pos, IBlockState state) {
+        EnumFacing facing = state.getValue(FACING);
+        if (world.getBlockState(pos.offset(facing.rotateY())).getBlock() instanceof BlockCatWalkStair) {
+            world.setBlockState(pos, state.withProperty(ACTIVE_RIGHT, false));
+        }
+        if (!(world.getBlockState(pos.offset(facing.rotateY())).getBlock() instanceof BlockCatWalkStair)) {
+            world.setBlockState(pos, state.withProperty(ACTIVE_RIGHT, true));
+        }
+        if (world.getBlockState(pos.offset(facing.rotateY().getOpposite())).getBlock() instanceof BlockCatWalkStair) {
+            world.setBlockState(pos, state.withProperty(ACTIVE_LEFT, false));
+        }
+        if (!(world.getBlockState(pos.offset(facing.rotateY().getOpposite())).getBlock() instanceof BlockCatWalkStair)) {
+            world.setBlockState(pos, state.withProperty(ACTIVE_LEFT, true));
+        }
+    }
+
+    @Override
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+        changestate(world, pos, state);
+    }
+
+    @Override
+    public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+        changestate(world, pos, state);
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighborPos) {
+        changestate(worldIn, pos, state);
     }
 
     @Override
