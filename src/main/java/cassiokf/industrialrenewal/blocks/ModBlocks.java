@@ -3,8 +3,6 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
-import cassiokf.industrialrenewal.tileentity.filter.BlockFilter;
-import cassiokf.industrialrenewal.tileentity.filter.BlockFilterDummy;
 import cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd;
 import cassiokf.industrialrenewal.tileentity.gates.nand.BlockGateNand;
 import cassiokf.industrialrenewal.tileentity.gates.not.BlockGateNot;
@@ -27,18 +25,14 @@ public class ModBlocks {
     public static BlockBase blockHazard = new BlockBase(Material.IRON, "block_hazard");
     public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor");
     public static BlockChimney blockChimney = new BlockChimney("block_chimney");
-    //public static RedstoneWire redstoneWire = new RedstoneWire("redstone_wire");
     public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe");
     public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable");
     public static BlockFloorPipe floorPipe = new BlockFloorPipe("floor_pipe");
     public static BlockFloorCable floorCable = new BlockFloorCable("floor_cable");
     public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp");
     public static BlockAlarm alarm = new BlockAlarm("alarm");
-    public static BlockFilter filter = new BlockFilter("fluid_filter");
     public static BlockCatWalk catWalk = new BlockCatWalk("catwalk");
     public static BlockCatWalkStair catwalkStair = new BlockCatWalkStair("catwalk_stair");
-
-    public static BlockFilterDummy dummyFilter = new BlockFilterDummy("dummy_filter");
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail");
@@ -47,8 +41,6 @@ public class ModBlocks {
 
     public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large");
 
-    //public static TileEntityCartCargoContainer cargoContainer = new TileEntityCartCargoContainer(null);
-
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
                 oreCopper,
@@ -56,7 +48,6 @@ public class ModBlocks {
                 blockIndFloor,
                 blockChimney,
                 normalRail,
-                //cargoContainer,
                 crossingRail,
                 detectorRail,
                 boosterRail,
@@ -66,14 +57,11 @@ public class ModBlocks {
                 gateNot,
                 gateOr,
                 alarm,
-                filter,
-                //redstoneWire,
                 fluidPipe,
                 energyCable,
                 floorPipe,
                 floorCable,
                 floorLamp,
-                dummyFilter,
                 catWalk,
                 catwalkStair
         );
@@ -84,7 +72,6 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(gateNot.getTileEntityClass(), gateNot.getRegistryName().toString());
         GameRegistry.registerTileEntity(gateOr.getTileEntityClass(), gateOr.getRegistryName().toString());
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
-        GameRegistry.registerTileEntity(filter.getTileEntityClass(), filter.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -94,7 +81,6 @@ public class ModBlocks {
                 blockIndFloor.createItemBlock(),
                 blockChimney.createItemBlock(),
                 normalRail.createItemBlock(),
-                //cargoContainer.createItemBlock(),
                 crossingRail.createItemBlock(),
                 detectorRail.createItemBlock(),
                 boosterRail.createItemBlock(),
@@ -104,8 +90,6 @@ public class ModBlocks {
                 gateNot.createItemBlock(),
                 gateOr.createItemBlock(),
                 alarm.createItemBlock(),
-                filter.createItemBlock(),
-                //redstoneWire.createItemBlock(),
                 fluidPipe.createItemBlock(),
                 energyCable.createItemBlock(),
                 catWalk.createItemBlock(),
@@ -119,7 +103,6 @@ public class ModBlocks {
         blockIndFloor.registerItemModel(Item.getItemFromBlock(blockIndFloor));
         blockChimney.registerItemModel(Item.getItemFromBlock(blockChimney));
         normalRail.registerItemModel(Item.getItemFromBlock(normalRail));
-        //cargoContainer.registerItemModel(Item.getItemFromBlock(cargoContainer));
         crossingRail.registerItemModel(Item.getItemFromBlock(crossingRail));
         detectorRail.registerItemModel(Item.getItemFromBlock(detectorRail));
         boosterRail.registerItemModel(Item.getItemFromBlock(boosterRail));
@@ -128,9 +111,7 @@ public class ModBlocks {
         gateNand.registerItemModel(Item.getItemFromBlock(gateNand));
         gateNot.registerItemModel(Item.getItemFromBlock(gateNot));
         alarm.registerItemModel(Item.getItemFromBlock(alarm));
-        filter.registerItemModel(Item.getItemFromBlock(filter));
         gateOr.registerItemModel(Item.getItemFromBlock(gateOr));
-        //redstoneWire.registerItemModel(Item.getItemFromBlock(redstoneWire));
         fluidPipe.registerItemModel(Item.getItemFromBlock(fluidPipe));
         energyCable.registerItemModel(Item.getItemFromBlock(energyCable));
         catWalk.registerItemModel(Item.getItemFromBlock(catWalk));

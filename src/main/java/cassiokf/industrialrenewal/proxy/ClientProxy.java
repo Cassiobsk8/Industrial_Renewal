@@ -1,13 +1,10 @@
 package cassiokf.industrialrenewal.proxy;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.tileentity.filter.FilterTESRender;
-import cassiokf.industrialrenewal.tileentity.filter.TileEntityFilter;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 public class ClientProxy extends CommonProxy {
 
@@ -18,8 +15,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerBlockRenderers() {
-        //RenderingRegistry.registerEntityRenderingHandler(TileEntityCartCargoContainer.class, TileEntitySRender::new);
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFilter.class, new FilterTESRender());
+        //ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFilter.class, new FilterTESRender());
     }
 
     @Override
