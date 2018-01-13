@@ -24,7 +24,6 @@ import java.util.List;
 public class BlockCatWalkStair extends BlockBase {
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
-    //public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
     public static final PropertyBool ACTIVE_LEFT = PropertyBool.create("active_left");
     public static final PropertyBool ACTIVE_RIGHT = PropertyBool.create("active_right");
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
@@ -32,6 +31,10 @@ public class BlockCatWalkStair extends BlockBase {
     protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.5D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 0.5D, 1.0D, 1.0D);
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.5D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB NC_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 2.0D, 0.03125D);
+    protected static final AxisAlignedBB SC_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.96875D, 1.0D, 2.0D, 1.0D);
+    protected static final AxisAlignedBB WC_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.03125D, 2.0D, 1.0D);
+    protected static final AxisAlignedBB EC_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 2.0D, 1.0D);
 
     public BlockCatWalkStair(String name) {
         super(Material.IRON, name);
@@ -114,25 +117,50 @@ public class BlockCatWalkStair extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
+        IBlockState actualState = getActualState(state, worldIn, pos);
+
         addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
 
-        if (!isActualState) {
-            state = state.getActualState(worldIn, pos);
-        }
-        EnumFacing face = state.getValue(FACING);
+        EnumFacing face = actualState.getValue(FACING);
+        Boolean left = actualState.getValue(ACTIVE_LEFT);
+        Boolean right = actualState.getValue(ACTIVE_RIGHT);
         if (face == EnumFacing.NORTH) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
+            if (left) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, WC_AABB);
+            }
+            if (right) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, EC_AABB);
+            }
+
         }
         if (face == EnumFacing.SOUTH) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
+            if (left) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, EC_AABB);
+            }
+            if (right) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, WC_AABB);
+            }
         }
         if (face == EnumFacing.WEST) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
+            if (left) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, SC_AABB);
+            }
+            if (right) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, NC_AABB);
+            }
         }
         if (face == EnumFacing.EAST) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
+            if (left) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, NC_AABB);
+            }
+            if (right) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, SC_AABB);
+            }
         }
-
     }
 
     @Override
