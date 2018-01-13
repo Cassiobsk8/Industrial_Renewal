@@ -1,0 +1,310 @@
+{
+  "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
+  "textures": {
+    "0": "blocks/anvil_base",
+    "1": "industrialrenewal:blocks/pipe"
+  },
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        75,
+        255,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    }
+  },
+  "elements": [
+    {
+      "name": "Cube",
+      "from": [
+        5.50,
+        5.00,
+        0.00
+      ],
+      "to": [
+        10.50,
+        7.00,
+        5.50
+      ],
+      "faces": {
+        "north": {
+          "texture": "#0",
+          "uv": [
+            0.00,
+            0.00,
+            5.00,
+            2.00
+          ]
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            0.00,
+            0.00,
+            5.50,
+            2.00
+          ]
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            0.00,
+            0.00,
+            5.50,
+            2.00
+          ]
+        },
+        "up": {
+          "texture": "#0",
+          "uv": [
+            0.00,
+            0.00,
+            5.00,
+            5.50
+          ]
+        },
+        "down": {
+          "texture": "#0",
+          "uv": [
+            0.00,
+            0.00,
+            5.00,
+            5.50
+          ]
+        }
+      }
+    },
+    {
+      "name": "Cube Copy",
+      "from": [
+        5.50,
+        14.00,
+        0.00
+      ],
+      "to": [
+        10.50,
+        16.00,
+        5.50
+      ],
+      "faces": {
+        "north": {
+          "texture": "#0",
+          "uv": [
+            0.00,
+            0.00,
+            5.00,
+            2.00
+          ]
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            0.00,
+            0.00,
+            5.50,
+            2.00
+          ]
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            0.00,
+            0.00,
+            5.50,
+            2.00
+          ]
+        },
+        "up": {
+          "texture": "#0",
+          "uv": [
+            0.00,
+            0.00,
+            5.00,
+            5.50
+          ]
+        },
+        "down": {
+          "texture": "#0",
+          "uv": [
+            0.00,
+            0.00,
+            5.00,
+            5.50
+          ]
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        7.00,
+        6.00,
+        6.00
+      ],
+      "to": [
+        9.00,
+        15.90,
+        8.00
+      ],
+      "rotation": {
+        "origin": [
+          6.0,
+          6.0,
+          6.0
+        ],
+        "axis": "x",
+        "angle": -45.0
+      },
+      "faces": {
+        "north": {
+          "texture": "#1",
+          "uv": [
+            0.00,
+            0.00,
+            2.00,
+            9.90
+          ]
+        },
+        "east": {
+          "texture": "#1",
+          "uv": [
+            0.00,
+            0.00,
+            2.00,
+            9.90
+          ]
+        },
+        "south": {
+          "texture": "#1",
+          "uv": [
+            0.00,
+            0.00,
+            2.00,
+            9.90
+          ]
+        },
+        "west": {
+          "texture": "#1",
+          "uv": [
+            0.00,
+            0.00,
+            2.00,
+            9.90
+          ]
+        }
+      }
+    }
+  ]
+}

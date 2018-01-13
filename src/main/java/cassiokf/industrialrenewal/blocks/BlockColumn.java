@@ -1,7 +1,8 @@
 package cassiokf.industrialrenewal.blocks;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -21,14 +22,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BlockPillar extends BlockBase {
+public class BlockColumn extends BlockBase {
 
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
-    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
-    protected static final AxisAlignedBB TOP_AABB = new AxisAlignedBB(0.0D, 0.8125D, 0.0D, 1.0D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.25D, 0.3125D, 0.25D, 0.75D, 1.0D, 0.75D);
+    protected static final AxisAlignedBB BOT_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.3125D, 0.75D);
 
-    public BlockPillar(String name) {
+    public BlockColumn(String name) {
         super(Material.IRON, name);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
@@ -79,10 +80,17 @@ public class BlockPillar extends BlockBase {
      */
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         Block nb = neighbourState.getBlock();
-        if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
-            return nb instanceof BlockLever || nb instanceof BlockRedstoneTorch || nb instanceof BlockTripWireHook || nb instanceof BlockColumn || nb instanceof BlockLadder;
+        if (nb.isFullCube(neighbourState) && neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
+            //TODO melhorar essa parte, não ta funfando direito
+            return isConnected(ownState, neighbourDirection.getOpposite());
         }
-        return nb.isFullCube(neighbourState) || nb instanceof BlockCatWalk;
+        if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
+            if (nb.isFullCube(neighbourState)) {
+                return isConnected(ownState, neighbourDirection.getOpposite());
+            }
+            return nb instanceof BlockColumn || nb instanceof BlockPillar;
+        }
+        return neighbourDirection == EnumFacing.DOWN && !isAir(neighbourState, world, ownPos.offset(neighbourDirection));
     }
 
     /**
@@ -100,7 +108,7 @@ public class BlockPillar extends BlockBase {
         final Block neighbourBlock = neighbourState.getBlock();
 
         final boolean neighbourIsValidForThis = isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
-        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockPillar) || ((BlockPillar) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
+        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockColumn) || ((BlockColumn) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
 
         return neighbourIsValidForThis && thisIsValidForNeighbour;
     }
@@ -124,8 +132,8 @@ public class BlockPillar extends BlockBase {
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
         IBlockState actualState = getActualState(state, worldIn, pos);
         addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
-        if (isConnected(actualState, EnumFacing.UP)) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, TOP_AABB);
+        if (isConnected(actualState, EnumFacing.DOWN)) {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, BOT_AABB);
         }
     }
 
@@ -136,10 +144,6 @@ public class BlockPillar extends BlockBase {
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        if (face == EnumFacing.EAST || face == EnumFacing.WEST || face == EnumFacing.NORTH || face == EnumFacing.SOUTH) {
-            return BlockFaceShape.SOLID;
-        } else {
-            return BlockFaceShape.UNDEFINED;
-        }
+        return BlockFaceShape.UNDEFINED;
     }
 }
