@@ -27,7 +27,7 @@ public class ModBlocks {
     public static BlockBase blockHazard = new BlockBase(Material.IRON, "block_hazard");
     public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor");
     public static BlockChimney blockChimney = new BlockChimney("block_chimney");
-    public static RedstoneWire redstoneWire = new RedstoneWire("redstone_wire");
+    //public static RedstoneWire redstoneWire = new RedstoneWire("redstone_wire");
     public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe");
     public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable");
     public static BlockFloorPipe floorPipe = new BlockFloorPipe("floor_pipe");
@@ -35,6 +35,8 @@ public class ModBlocks {
     public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp");
     public static BlockAlarm alarm = new BlockAlarm("alarm");
     public static BlockFilter filter = new BlockFilter("fluid_filter");
+    public static BlockCatWalk catWalk = new BlockCatWalk("catwalk");
+    public static BlockCatWalkStair catwalkStair = new BlockCatWalkStair("catwalk_stair");
 
     public static BlockFilterDummy dummyFilter = new BlockFilterDummy("dummy_filter");
 
@@ -65,13 +67,15 @@ public class ModBlocks {
                 gateOr,
                 alarm,
                 filter,
-                redstoneWire,
+                //redstoneWire,
                 fluidPipe,
                 energyCable,
                 floorPipe,
                 floorCable,
                 floorLamp,
-                dummyFilter
+                dummyFilter,
+                catWalk,
+                catwalkStair
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -101,12 +105,11 @@ public class ModBlocks {
                 gateOr.createItemBlock(),
                 alarm.createItemBlock(),
                 filter.createItemBlock(),
-                redstoneWire.createItemBlock(),
+                //redstoneWire.createItemBlock(),
                 fluidPipe.createItemBlock(),
-                energyCable.createItemBlock()
-                //floorPipe.createItemBlock(),
-                //floorCable.createItemBlock(),
-                //floorLamp.createItemBlock()
+                energyCable.createItemBlock(),
+                catWalk.createItemBlock(),
+                catwalkStair.createItemBlock()
         );
     }
 
@@ -127,11 +130,10 @@ public class ModBlocks {
         alarm.registerItemModel(Item.getItemFromBlock(alarm));
         filter.registerItemModel(Item.getItemFromBlock(filter));
         gateOr.registerItemModel(Item.getItemFromBlock(gateOr));
-        redstoneWire.registerItemModel(Item.getItemFromBlock(redstoneWire));
+        //redstoneWire.registerItemModel(Item.getItemFromBlock(redstoneWire));
         fluidPipe.registerItemModel(Item.getItemFromBlock(fluidPipe));
         energyCable.registerItemModel(Item.getItemFromBlock(energyCable));
-        //floorPipe.registerItemModel(Item.getItemFromBlock(floorPipe));
-        //floorCable.registerItemModel(Item.getItemFromBlock(floorCable));
-        //floorLamp.registerItemModel(Item.getItemFromBlock(floorLamp));
+        catWalk.registerItemModel(Item.getItemFromBlock(catWalk));
+        catwalkStair.registerItemModel(Item.getItemFromBlock(catwalkStair));
     }
 }

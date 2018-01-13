@@ -1,0 +1,54 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:catwalk_stair"
+    },
+    "active_left=false,active_right=false,facing=down": {
+      "model": "industrialrenewal:catwalk_stair"
+    },
+    "active_left=false,active_right=false,facing=up": {
+      "model": "industrialrenewal:catwalk_stair"
+    },
+    "active_left=false,active_right=false,facing=north": {
+      "model": "industrialrenewal:catwalk_stair"
+    },
+    "active_left=false,active_right=false,facing=west": {
+      "model": "industrialrenewal:catwalk_stair",
+      "y": -90
+    },
+    "active_left=false,active_right=false,facing=south": {
+      "model": "industrialrenewal:catwalk_stair",
+      "y": 180
+    },
+    "active_left=false,active_right=false,facing=east": {
+      "model": "industrialrenewal:catwalk_stair",
+      "y": 90
+    },
+    "active_left=true,active_right=true,facing=down": {
+      "model": "industrialrenewal:catwalk_stair11"
+    },
+    "active_left=true,active_right=true,facing=up": {
+      "model": "industrialrenewal:catwalk_stair11"
+    },
+    "active_left=true,active_right=true,facing=north": {
+      "model": "industrialrenewal:catwalk_stair11"
+    },
+    "active_left=true,active_right=true,facing=west": {
+      "model": "industrialrenewal:catwalk_stair11",
+      "y": -90
+    },
+    "active_left=true,active_right=true,facing=south": {
+      "model": "industrialrenewal:catwalk_stair11",
+      "y": 180
+    },
+    "active_left=true,active_right=true,facing=east": {
+      "model": "industrialrenewal:catwalk_stair11",
+      "y": 90
+    },
+    "inventory": {
+      "model": "industrialrenewal:catwalk_stair11",
+      "transform": "forge:default-block"
+    }
+  }
+}
