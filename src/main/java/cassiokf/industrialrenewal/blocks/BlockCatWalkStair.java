@@ -1,9 +1,9 @@
 package cassiokf.industrialrenewal.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
@@ -23,14 +23,15 @@ import java.util.List;
 
 public class BlockCatWalkStair extends BlockBase {
 
-    public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+    //public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
     public static final PropertyBool ACTIVE_LEFT = PropertyBool.create("active_left");
     public static final PropertyBool ACTIVE_RIGHT = PropertyBool.create("active_right");
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 0.5D);
-    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.5D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.5D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.5D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.5D, 1.0D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 0.5D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.5D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D);
 
     public BlockCatWalkStair(String name) {
         super(Material.IRON, name);
@@ -40,28 +41,38 @@ public class BlockCatWalkStair extends BlockBase {
 
     public void changestate(World world, BlockPos pos, IBlockState state) {
         EnumFacing facing = state.getValue(FACING);
-        if (world.getBlockState(pos.offset(facing.rotateY())).getBlock() instanceof BlockCatWalkStair) {
-            world.setBlockState(pos, state.withProperty(ACTIVE_RIGHT, false));
+        Block blockRight = world.getBlockState(pos.offset(facing.rotateY())).getBlock();
+        Block blockLeft = world.getBlockState(pos.offset(facing.rotateY().getOpposite())).getBlock();
+        state = world.getBlockState(pos);
+        if (blockRight instanceof BlockCatWalkStair && blockLeft instanceof BlockCatWalkStair) {
+            world.setBlockState(pos, state.withProperty(ACTIVE_LEFT, false).withProperty(ACTIVE_RIGHT, false));
         }
-        if (!(world.getBlockState(pos.offset(facing.rotateY())).getBlock() instanceof BlockCatWalkStair)) {
-            world.setBlockState(pos, state.withProperty(ACTIVE_RIGHT, true));
+        if (blockRight instanceof BlockCatWalkStair && !(blockLeft instanceof BlockCatWalkStair)) {
+            world.setBlockState(pos, state.withProperty(ACTIVE_LEFT, true).withProperty(ACTIVE_RIGHT, false));
         }
-        if (world.getBlockState(pos.offset(facing.rotateY().getOpposite())).getBlock() instanceof BlockCatWalkStair) {
-            world.setBlockState(pos, state.withProperty(ACTIVE_LEFT, false));
+        if (!(blockRight instanceof BlockCatWalkStair) && blockLeft instanceof BlockCatWalkStair) {
+            world.setBlockState(pos, state.withProperty(ACTIVE_LEFT, false).withProperty(ACTIVE_RIGHT, true));
         }
-        if (!(world.getBlockState(pos.offset(facing.rotateY().getOpposite())).getBlock() instanceof BlockCatWalkStair)) {
-            world.setBlockState(pos, state.withProperty(ACTIVE_LEFT, true));
+        if (!(blockRight instanceof BlockCatWalkStair) && !(blockLeft instanceof BlockCatWalkStair)) {
+            world.setBlockState(pos, state.withProperty(ACTIVE_LEFT, true).withProperty(ACTIVE_RIGHT, true));
         }
     }
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
         changestate(world, pos, state);
+        world.notifyNeighborsOfStateChange(pos, this, false);
     }
 
     @Override
     public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
         changestate(world, pos, state);
+        world.notifyNeighborsOfStateChange(pos, this, false);
+    }
+
+    @Override
+    public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
+        world.notifyNeighborsOfStateChange(pos, this, false);
     }
 
     @Override
@@ -77,15 +88,21 @@ public class BlockCatWalkStair extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        EnumFacing facing = EnumFacing.getFront(meta);
-
-        return getDefaultState().withProperty(FACING, facing);
+        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(ACTIVE_LEFT, Boolean.valueOf((meta & 4) > 0)).withProperty(ACTIVE_RIGHT, Boolean.valueOf((meta & 8) > 0));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        int facingbits = state.getValue(FACING).getIndex();
-        return facingbits;
+        int i = 0;
+        i = i | state.getValue(FACING).getHorizontalIndex();
+
+        if (state.getValue(ACTIVE_LEFT)) {
+            i |= 4;
+        }
+        if (state.getValue(ACTIVE_RIGHT)) {
+            i |= 8;
+        }
+        return i;
     }
 
     @SuppressWarnings("deprecation")
