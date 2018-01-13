@@ -84,8 +84,10 @@ public class BlockCatWalk extends BlockBase {
      * @return Is the neighbouring block a valid connection?
      */
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+
         if (neighbourDirection != EnumFacing.UP) {
-            return neighbourState.getBlock() instanceof BlockCatWalk || neighbourState.getBlock().isFullCube(neighbourState);
+            IBlockState downstate = world.getBlockState(ownPos.offset(neighbourDirection).down());
+            return neighbourState.getBlock() instanceof BlockCatWalk || neighbourState.getBlock().isFullCube(neighbourState) || downstate.getBlock() instanceof BlockCatWalkStair;
         }
         return !(neighbourState.getBlock() instanceof BlockEnergyCable);
     }
