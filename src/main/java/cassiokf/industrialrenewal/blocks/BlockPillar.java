@@ -82,6 +82,9 @@ public class BlockPillar extends BlockBase {
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
             return nb instanceof BlockLever || nb instanceof BlockRedstoneTorch || nb instanceof BlockTripWireHook || nb instanceof BlockColumn || nb instanceof BlockLadder;
         }
+        if (neighbourDirection == EnumFacing.DOWN) {
+            return nb.isFullCube(neighbourState) || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorCable || nb instanceof BlockFloorPipe;
+        }
         return nb.isFullCube(neighbourState) || nb instanceof BlockCatWalk;
     }
 

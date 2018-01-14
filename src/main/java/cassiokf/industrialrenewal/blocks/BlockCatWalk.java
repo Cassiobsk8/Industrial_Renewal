@@ -28,7 +28,7 @@ public class BlockCatWalk extends BlockBase {
 
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
-    protected static final AxisAlignedBB RENDER_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0625D, 1.0D);
+    protected static final AxisAlignedBB RENDER_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0938D, 1.0D);
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.03125D, 1.0D);
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.03125D);
     protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.96875D, 1.0D, 1.0D, 1.0D);
@@ -89,7 +89,9 @@ public class BlockCatWalk extends BlockBase {
         Block nb = neighbourState.getBlock();
 
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
-            return nb instanceof BlockCatWalk || nb.isFullCube(neighbourState) || nb instanceof BlockCatWalkStair || downstate.getBlock() instanceof BlockCatWalkStair || downstate.getBlock() instanceof BlockILadder;
+            return nb instanceof BlockCatWalk || nb.isFullCube(neighbourState) || nb instanceof BlockCatWalkStair
+                    || downstate.getBlock() instanceof BlockCatWalkStair || downstate.getBlock() instanceof BlockILadder
+                    || nb instanceof BlockILadder;
         }
         if (neighbourDirection == EnumFacing.DOWN) {
             return nb instanceof BlockILadder || nb instanceof BlockLadder;
