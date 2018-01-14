@@ -80,10 +80,11 @@ public class BlockPillar extends BlockBase {
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         Block nb = neighbourState.getBlock();
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
-            return nb instanceof BlockLever || nb instanceof BlockRedstoneTorch || nb instanceof BlockTripWireHook || nb instanceof BlockColumn || nb instanceof BlockLadder;
+            return nb instanceof BlockLever || nb instanceof BlockRedstoneTorch || nb instanceof BlockTripWireHook || nb instanceof BlockColumn || nb instanceof BlockLadder
+                    || nb instanceof BlockRoof;
         }
         if (neighbourDirection == EnumFacing.DOWN) {
-            return nb.isFullCube(neighbourState) || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorCable || nb instanceof BlockFloorPipe;
+            return nb.isFullCube(neighbourState) || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorCable || nb instanceof BlockFloorPipe || nb instanceof BlockRoof;
         }
         return nb.isFullCube(neighbourState) || nb instanceof BlockCatWalk;
     }

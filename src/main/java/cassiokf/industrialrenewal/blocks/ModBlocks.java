@@ -36,6 +36,7 @@ public class ModBlocks {
     public static BlockPillar pillar = new BlockPillar("catwalk_pillar");
     public static BlockColumn column = new BlockColumn("catwalk_column");
     public static BlockILadder iladder = new BlockILadder("catwalk_ladder");
+    public static BlockRoof roof = new BlockRoof("roof");
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail");
@@ -69,7 +70,8 @@ public class ModBlocks {
                 catwalkStair,
                 pillar,
                 column,
-                iladder
+                iladder,
+                roof
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -102,7 +104,8 @@ public class ModBlocks {
                 catwalkStair.createItemBlock(),
                 pillar.createItemBlock(),
                 column.createItemBlock(),
-                iladder.createItemBlock()
+                iladder.createItemBlock(),
+                roof.createItemBlock()
         );
     }
 
@@ -128,5 +131,6 @@ public class ModBlocks {
         pillar.registerItemModel(Item.getItemFromBlock(pillar));
         column.registerItemModel(Item.getItemFromBlock(column));
         iladder.registerItemModel(Item.getItemFromBlock(iladder));
+        roof.registerItemModel(Item.getItemFromBlock(roof));
     }
 }
