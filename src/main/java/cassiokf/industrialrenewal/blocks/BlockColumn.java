@@ -80,14 +80,12 @@ public class BlockColumn extends BlockBase {
      */
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         Block nb = neighbourState.getBlock();
+
         if (nb.isFullCube(neighbourState) && neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
-            //TODO melhorar essa parte, não ta funfando direito
-            return isConnected(ownState, neighbourDirection.getOpposite());
+            Block oppositBlock = world.getBlockState(ownPos.offset(neighbourDirection.getOpposite())).getBlock();
+            return oppositBlock instanceof BlockColumn;
         }
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
-            if (nb.isFullCube(neighbourState)) {
-                return isConnected(ownState, neighbourDirection.getOpposite());
-            }
             return nb instanceof BlockColumn || nb instanceof BlockPillar;
         }
         return neighbourDirection == EnumFacing.DOWN && !isAir(neighbourState, world, ownPos.offset(neighbourDirection));
