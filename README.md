@@ -16,5 +16,8 @@ Logics gates:
 3D Rails:
 ![alt text](04.png)
 
+Catwalk (Catwalk + Stair + Caged Ladder + Pillars + Columns)
+![alt text](05.png)
+
 More soon:
 ...

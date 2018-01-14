@@ -45,7 +45,7 @@
     },
     "inventory": {
       "model": "industrialrenewal:catwalk_ladder_caged",
-      "y": -90,
+      "y": 90,
       "transform": "forge:default-block"
     }
   }

@@ -6,7 +6,14 @@
   },
   "variants": {
     "down": {
-      "true": {},
+      "true": {
+        "submodel": {
+          "pipe_down": {
+            "model": "industrialrenewal:catwalk_down",
+            "uvlock": true
+          }
+        }
+      },
       "false": {}
     },
     "up": {
@@ -70,6 +77,10 @@
     "inventory": [
       {
         "submodel": {
+          "pipe_down": {
+            "model": "industrialrenewal:catwalk_down",
+            "uvlock": true
+          },
           "pipe_north": {
             "model": "industrialrenewal:catwalk_side",
             "uvlock": true

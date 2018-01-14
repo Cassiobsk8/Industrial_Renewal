@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLadder;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -84,11 +85,14 @@ public class BlockCatWalk extends BlockBase {
      * @return Is the neighbouring block a valid connection?
      */
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+        IBlockState downstate = world.getBlockState(ownPos.offset(neighbourDirection).down());
+        Block nb = neighbourState.getBlock();
 
-        if (neighbourDirection != EnumFacing.UP) {
-            IBlockState downstate = world.getBlockState(ownPos.offset(neighbourDirection).down());
-            Block nb = neighbourState.getBlock();
+        if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
             return nb instanceof BlockCatWalk || nb.isFullCube(neighbourState) || nb instanceof BlockCatWalkStair || downstate.getBlock() instanceof BlockCatWalkStair || downstate.getBlock() instanceof BlockILadder;
+        }
+        if (neighbourDirection == EnumFacing.DOWN) {
+            return nb instanceof BlockILadder || nb instanceof BlockLadder;
         }
         return !(neighbourState.getBlock() instanceof BlockEnergyCable);
     }
@@ -130,10 +134,12 @@ public class BlockCatWalk extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
 
         if (!isActualState) {
             state = state.getActualState(worldIn, pos);
+        }
+        if (isConnected(state, EnumFacing.DOWN)) {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
         }
         if (isConnected(state, EnumFacing.NORTH)) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
