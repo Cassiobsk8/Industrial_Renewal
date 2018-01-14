@@ -88,7 +88,7 @@ public class BlockCatWalk extends BlockBase {
         if (neighbourDirection != EnumFacing.UP) {
             IBlockState downstate = world.getBlockState(ownPos.offset(neighbourDirection).down());
             Block nb = neighbourState.getBlock();
-            return nb instanceof BlockCatWalk || nb.isFullCube(neighbourState) || nb instanceof BlockCatWalkStair || downstate.getBlock() instanceof BlockCatWalkStair;
+            return nb instanceof BlockCatWalk || nb.isFullCube(neighbourState) || nb instanceof BlockCatWalkStair || downstate.getBlock() instanceof BlockCatWalkStair || downstate.getBlock() instanceof BlockILadder;
         }
         return !(neighbourState.getBlock() instanceof BlockEnergyCable);
     }

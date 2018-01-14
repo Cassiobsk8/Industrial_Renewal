@@ -1,0 +1,52 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "active=false,facing=down": {
+      "model": "industrialrenewal:catwalk_ladder_base"
+    },
+    "active=false,facing=up": {
+      "model": "industrialrenewal:catwalk_ladder_base"
+    },
+    "active=false,facing=north": {
+      "model": "industrialrenewal:catwalk_ladder_base"
+    },
+    "active=false,facing=west": {
+      "model": "industrialrenewal:catwalk_ladder_base",
+      "y": -90
+    },
+    "active=false,facing=south": {
+      "model": "industrialrenewal:catwalk_ladder_base",
+      "y": 180
+    },
+    "active=false,facing=east": {
+      "model": "industrialrenewal:catwalk_ladder_base",
+      "y": 90
+    },
+    "active=true,facing=down": {
+      "model": "industrialrenewal:catwalk_ladder_caged"
+    },
+    "active=true,facing=up": {
+      "model": "industrialrenewal:catwalk_ladder_caged"
+    },
+    "active=true,facing=north": {
+      "model": "industrialrenewal:catwalk_ladder_caged"
+    },
+    "active=true,facing=west": {
+      "model": "industrialrenewal:catwalk_ladder_caged",
+      "y": -90
+    },
+    "active=true,facing=south": {
+      "model": "industrialrenewal:catwalk_ladder_caged",
+      "y": 180
+    },
+    "active=true,facing=east": {
+      "model": "industrialrenewal:catwalk_ladder_caged",
+      "y": 90
+    },
+    "inventory": {
+      "model": "industrialrenewal:catwalk_ladder_caged",
+      "y": -90,
+      "transform": "forge:default-block"
+    }
+  }
+}
