@@ -13,9 +13,8 @@ public class BlockDetectorRail extends BlockRailDetector {
     public BlockDetectorRail(String name) {
 
         this.name = name;
-
-        setUnlocalizedName(name);
-        setRegistryName(name);
+        setRegistryName(IndustrialRenewal.MODID, name);
+        setUnlocalizedName(IndustrialRenewal.MODID + "." + name);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
         setCreativeTab(IndustrialRenewal.creativeTab);

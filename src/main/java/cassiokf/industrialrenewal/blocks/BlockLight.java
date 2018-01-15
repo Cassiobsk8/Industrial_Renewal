@@ -22,15 +22,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BlockColumn extends BlockBase {
-
+public class BlockLight extends BlockBase {
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.25D, 0.3125D, 0.25D, 0.75D, 1.0D, 0.75D);
-    protected static final AxisAlignedBB BOT_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.3125D, 0.75D);
 
-    public BlockColumn(String name) {
+    public BlockLight(String name) {
         super(Material.IRON, name);
+        setLightLevel(1.0F);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }
@@ -68,6 +67,15 @@ public class BlockColumn extends BlockBase {
         return EnumBlockRenderType.MODEL;
     }
 
+    private Boolean isEven(BlockPos pos) {
+        Integer number = pos.getZ();
+        if ((number % 2) == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Is the neighbouring block a valid connection for this pipe?
      *
@@ -81,14 +89,19 @@ public class BlockColumn extends BlockBase {
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         Block nb = neighbourState.getBlock();
 
-        if (nb.isFullCube(neighbourState) && neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
-            Block oppositBlock = world.getBlockState(ownPos.offset(neighbourDirection.getOpposite())).getBlock();
-            return oppositBlock instanceof BlockColumn;
+        if (neighbourDirection == EnumFacing.UP) {
+            //System.out.println("up name: " + nb.getRegistryName().toString());
+            return nb instanceof BlockCatWalk
+                    || nb instanceof BlockColumn || nb instanceof BlockPillar
+                    || nb.isFullCube(neighbourState)
+                    || (nb instanceof BlockRoof && isEven(ownPos))
+                    || nb.getRegistryName().toString().matches("immersiveengineering:wooden_device1")
+                    || nb.getRegistryName().toString().matches("immersiveengineering:metal_decoration2");
         }
-        if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
-            return nb instanceof BlockColumn || nb instanceof BlockPillar || nb instanceof BlockLight;
-        }
-        return neighbourDirection == EnumFacing.DOWN && !nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection));
+        return (nb instanceof BlockPillar
+                || nb instanceof BlockColumn
+                || nb.isFullCube(neighbourState)
+        ) && !isConnected(ownState, EnumFacing.UP);
     }
 
     /**
@@ -106,7 +119,7 @@ public class BlockColumn extends BlockBase {
         final Block neighbourBlock = neighbourState.getBlock();
 
         final boolean neighbourIsValidForThis = isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
-        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockColumn) || ((BlockColumn) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
+        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockLight) || ((BlockLight) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
 
         return neighbourIsValidForThis && thisIsValidForNeighbour;
     }
@@ -128,11 +141,7 @@ public class BlockColumn extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        IBlockState actualState = getActualState(state, worldIn, pos);
         addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
-        if (isConnected(actualState, EnumFacing.DOWN)) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, BOT_AABB);
-        }
     }
 
     @Override

@@ -80,11 +80,32 @@ public class BlockPillar extends BlockBase {
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         Block nb = neighbourState.getBlock();
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
-            return nb instanceof BlockLever || nb instanceof BlockRedstoneTorch || nb instanceof BlockTripWireHook || nb instanceof BlockColumn || nb instanceof BlockLadder
-                    || nb instanceof BlockRoof;
+            Block lightupB = world.getBlockState(ownPos.offset(neighbourDirection).up()).getBlock();
+            return nb instanceof BlockLever
+                    || nb instanceof BlockRedstoneTorch
+                    || nb instanceof BlockTripWireHook
+                    || nb instanceof BlockColumn
+                    || nb instanceof BlockLadder
+                    || (nb instanceof BlockLight
+                    //this part is from BlockLight Up connection
+                    && !(lightupB instanceof BlockCatWalk
+                    || lightupB instanceof BlockColumn || lightupB instanceof BlockPillar
+                    || lightupB.isFullCube(neighbourState)
+                    || (lightupB instanceof BlockRoof && ((ownPos.offset(neighbourDirection).getZ() % 2) == 0))
+                    || lightupB.getRegistryName().toString().matches("immersiveengineering:wooden_device1")
+                    || lightupB.getRegistryName().toString().matches("immersiveengineering:metal_decoration2")))
+                    || nb instanceof BlockRoof
+                    || nb.getRegistryName().toString().matches("immersiveengineering:connector")
+                    || nb.getRegistryName().toString().matches("immersiveengineering:metal_decoration2")
+                    || nb.getRegistryName().toString().matches("immersiveengineering:wooden_device1")
+                    || nb.getRegistryName().toString().matches("immersiveengineering:metal_device1");
         }
         if (neighbourDirection == EnumFacing.DOWN) {
-            return nb.isFullCube(neighbourState) || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorCable || nb instanceof BlockFloorPipe || nb instanceof BlockRoof;
+            return nb.isFullCube(neighbourState)
+                    || nb instanceof BlockIndustrialFloor
+                    || nb instanceof BlockFloorCable
+                    || nb instanceof BlockFloorPipe
+                    || nb instanceof BlockRoof;
         }
         return nb.isFullCube(neighbourState) || nb instanceof BlockCatWalk;
     }

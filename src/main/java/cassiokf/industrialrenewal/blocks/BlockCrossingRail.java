@@ -32,9 +32,8 @@ public class BlockCrossingRail extends BlockRail {
 
 
         this.name = name;
-
-        setUnlocalizedName(name);
-        setRegistryName(name);
+        setRegistryName(IndustrialRenewal.MODID, name);
+        setUnlocalizedName(IndustrialRenewal.MODID + "." + name);
         setHardness(0.8f);
         setSoundType(SoundType.WOOD);
         setCreativeTab(IndustrialRenewal.creativeTab);

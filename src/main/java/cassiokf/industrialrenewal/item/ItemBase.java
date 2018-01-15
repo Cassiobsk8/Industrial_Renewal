@@ -10,8 +10,8 @@ public class ItemBase extends Item {
 
     public ItemBase(String name) {
         this.name = name;
-        setUnlocalizedName(name);
-        setRegistryName(name);
+        setRegistryName(IndustrialRenewal.MODID, name);
+        setUnlocalizedName(IndustrialRenewal.MODID + "." + name);
         setCreativeTab(IndustrialRenewal.creativeTab);
     }
 

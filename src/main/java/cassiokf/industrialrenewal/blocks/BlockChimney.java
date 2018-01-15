@@ -1,11 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -13,18 +9,13 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 
-public class BlockChimney extends Block {
+public class BlockChimney extends BlockBase {
 
     protected String name;
 
     public BlockChimney(String name) {
-        super(Material.IRON);
-        this.name = name;
-        setUnlocalizedName(name);
-        setRegistryName(name);
+        super(Material.IRON, name);
         setHardness(0.8f);
-        setCreativeTab(IndustrialRenewal.creativeTab);
-
     }
 
     @Override
@@ -60,13 +51,5 @@ public class BlockChimney extends Block {
     @Deprecated
     public boolean isFullCube(IBlockState state) {
         return false;
-    }
-
-    public void registerItemModel(Item itemBlock) {
-        IndustrialRenewal.proxy.registerItemRenderer(itemBlock, 0, name);
-    }
-
-    public Item createItemBlock() {
-        return new ItemBlock(this).setRegistryName(getRegistryName());
     }
 }

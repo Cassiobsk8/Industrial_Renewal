@@ -16,8 +16,8 @@ public class BlockBase extends Block {
 
         this.name = name;
 
-        setUnlocalizedName(name);
-        setRegistryName(name);
+        setRegistryName(IndustrialRenewal.MODID, name);
+        setUnlocalizedName(IndustrialRenewal.MODID + "." + name);
         setCreativeTab(IndustrialRenewal.creativeTab);
         setHardness(2f);
         setResistance(5f);

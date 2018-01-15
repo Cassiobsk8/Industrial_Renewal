@@ -1,15 +1,11 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.item.ModItems;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -19,18 +15,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 
-public class BlockIndustrialFloor extends Block {
+public class BlockIndustrialFloor extends BlockBase {
 
     protected String name;
 
     public BlockIndustrialFloor(String name) {
-        super(Material.IRON);
-        this.name = name;
-        setUnlocalizedName(name);
-        setRegistryName(name);
+        super(Material.IRON, name);
         setHardness(0.8f);
         setSoundType(SoundType.METAL);
-        setCreativeTab(IndustrialRenewal.creativeTab);
 
     }
 
@@ -76,14 +68,6 @@ public class BlockIndustrialFloor extends Block {
     @Deprecated
     public boolean isFullCube(IBlockState state) {
         return false;
-    }
-
-    public void registerItemModel(Item itemBlock) {
-        IndustrialRenewal.proxy.registerItemRenderer(itemBlock, 0, name);
-    }
-
-    public Item createItemBlock() {
-        return new ItemBlock(this).setRegistryName(getRegistryName());
     }
 
     @Override
