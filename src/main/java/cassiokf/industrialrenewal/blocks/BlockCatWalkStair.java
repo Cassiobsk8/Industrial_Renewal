@@ -11,7 +11,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -42,47 +41,32 @@ public class BlockCatWalkStair extends BlockBase {
         setHardness(0.8f);
     }
 
-    public void changestate(World world, BlockPos pos, IBlockState state) {
-        EnumFacing facing = state.getValue(FACING);
-        Block blockRight = world.getBlockState(pos.offset(facing.rotateY())).getBlock();
-        Block blockLeft = world.getBlockState(pos.offset(facing.rotateY().getOpposite())).getBlock();
-        state = world.getBlockState(pos);
-        if (blockRight instanceof BlockCatWalkStair && blockLeft instanceof BlockCatWalkStair) {
-            world.setBlockState(pos, state.withProperty(ACTIVE_LEFT, false).withProperty(ACTIVE_RIGHT, false));
+    private Boolean leftConnected(IBlockState state, IBlockAccess world, BlockPos pos) {
+        EnumFacing face = state.getValue(FACING);
+        Block block = world.getBlockState(pos.offset(face.rotateY().getOpposite())).getBlock();
+        if (block instanceof BlockCatWalkStair) {
+            EnumFacing leftFace = world.getBlockState(pos.offset(face.rotateY().getOpposite())).getValue(FACING);
+            return !(leftFace == face);
         }
-        if (blockRight instanceof BlockCatWalkStair && !(blockLeft instanceof BlockCatWalkStair)) {
-            world.setBlockState(pos, state.withProperty(ACTIVE_LEFT, true).withProperty(ACTIVE_RIGHT, false));
+        return true;
+    }
+
+    private Boolean rightConnected(IBlockState state, IBlockAccess world, BlockPos pos) {
+        EnumFacing face = state.getValue(FACING);
+        Block block = world.getBlockState(pos.offset(face.rotateY())).getBlock();
+        if (block instanceof BlockCatWalkStair) {
+            EnumFacing rightFace = world.getBlockState(pos.offset(face.rotateY())).getValue(FACING);
+            return !(rightFace == face);
         }
-        if (!(blockRight instanceof BlockCatWalkStair) && blockLeft instanceof BlockCatWalkStair) {
-            world.setBlockState(pos, state.withProperty(ACTIVE_LEFT, false).withProperty(ACTIVE_RIGHT, true));
-        }
-        if (!(blockRight instanceof BlockCatWalkStair) && !(blockLeft instanceof BlockCatWalkStair)) {
-            world.setBlockState(pos, state.withProperty(ACTIVE_LEFT, true).withProperty(ACTIVE_RIGHT, true));
-        }
+        return true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-        changestate(world, pos, state);
-        world.notifyNeighborsOfStateChange(pos, this, false);
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
+        state = state.withProperty(ACTIVE_LEFT, leftConnected(state, world, pos)).withProperty(ACTIVE_RIGHT, rightConnected(state, world, pos));
+        return state;
     }
-
-    @Override
-    public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
-        changestate(world, pos, state);
-        world.notifyNeighborsOfStateChange(pos, this, false);
-    }
-
-    @Override
-    public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
-        world.notifyNeighborsOfStateChange(pos, this, false);
-    }
-
-    @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighborPos) {
-        changestate(worldIn, pos, state);
-    }
-
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING, ACTIVE_LEFT, ACTIVE_RIGHT);
@@ -91,20 +75,13 @@ public class BlockCatWalkStair extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(ACTIVE_LEFT, Boolean.valueOf((meta & 4) > 0)).withProperty(ACTIVE_RIGHT, Boolean.valueOf((meta & 8) > 0));
+        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
         int i = 0;
         i = i | state.getValue(FACING).getHorizontalIndex();
-
-        if (state.getValue(ACTIVE_LEFT)) {
-            i |= 4;
-        }
-        if (state.getValue(ACTIVE_RIGHT)) {
-            i |= 8;
-        }
         return i;
     }
 
