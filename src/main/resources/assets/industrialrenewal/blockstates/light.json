@@ -2,31 +2,34 @@
   "forge_marker": 1,
   "variants": {
     "normal": {
-      "model": "industrialrenewal:light_up"
+      "model": "industrialrenewal:light"
     },
     "facing=down": {
-      "model": "industrialrenewal:light_up"
+      "model": "industrialrenewal:light",
+      "x": 90
     },
     "facing=up": {
-      "model": "industrialrenewal:light_up"
+      "model": "industrialrenewal:light",
+      "x": -90
     },
     "facing=north": {
-      "model": "industrialrenewal:light_side"
+      "model": "industrialrenewal:light"
     },
     "facing=west": {
-      "model": "industrialrenewal:light_side",
+      "model": "industrialrenewal:light",
       "y": -90
     },
     "facing=south": {
-      "model": "industrialrenewal:light_side",
+      "model": "industrialrenewal:light",
       "y": 180
     },
     "facing=east": {
-      "model": "industrialrenewal:light_side",
+      "model": "industrialrenewal:light",
       "y": 90
     },
     "inventory": {
-      "model": "industrialrenewal:light_up",
+      "model": "industrialrenewal:light",
+      "y": 180,
       "transform": "forge:default-block"
     }
   }

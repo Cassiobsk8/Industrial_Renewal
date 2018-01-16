@@ -180,7 +180,7 @@ public class BlockIndustrialFloor extends BlockBase {
             }
             return true;
         }
-        if (entity.inventory.getCurrentItem().getItem() == ModItems.lamp) {
+        if (entity.inventory.getCurrentItem().getItem() == net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.fluorescent)) {
             world.playSound(null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.NEUTRAL, 1.0F, 1.0F);
             world.setBlockState(new BlockPos(i, j, k), ModBlocks.floorLamp.getDefaultState().withProperty(BlockFloorLamp.FACING, entity.getHorizontalFacing()), 3);
             if (!entity.isCreative()) {

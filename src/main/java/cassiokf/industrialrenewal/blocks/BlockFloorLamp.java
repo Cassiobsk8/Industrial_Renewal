@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -36,8 +35,6 @@ public class BlockFloorLamp extends BlockBase {
         super(Material.IRON, name);
         this.setLightLevel(1.0F);
         setSoundType(SoundType.METAL);
-        setCreativeTab(IndustrialRenewal.creativeTab);
-
     }
 
     @Override
@@ -68,7 +65,7 @@ public class BlockFloorLamp extends BlockBase {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        ItemStack itemst = new ItemStack(ModItems.lamp);
+        ItemStack itemst = new ItemStack(Item.getItemFromBlock(ModBlocks.fluorescent));
         EntityItem entity = new EntityItem(world, x, y, z, itemst);
         if (!world.isRemote) {
             world.spawnEntity(entity);
