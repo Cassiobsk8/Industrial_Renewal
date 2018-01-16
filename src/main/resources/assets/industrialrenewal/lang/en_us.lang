@@ -39,4 +39,5 @@ tile.industrialrenewal.catwalk_column.name=Column
 tile.industrialrenewal.catwalk_ladder.name=Caged Ladder
 tile.industrialrenewal.roof.name=Roof
 tile.industrialrenewal.gutter.name=Gutter
-tile.industrialrenewal.light.name=Light
+tile.industrialrenewal.light.name=External Light
+tile.industrialrenewal.fluorescent.name=Fluorescent Light

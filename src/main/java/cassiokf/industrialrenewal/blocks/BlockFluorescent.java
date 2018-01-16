@@ -1,7 +1,8 @@
 package cassiokf.industrialrenewal.blocks;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -21,17 +22,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BlockPillar extends BlockBase {
+public class BlockFluorescent extends BlockBase {
 
+    //TODO converter para EnumFacing
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
     protected static final AxisAlignedBB TOP_AABB = new AxisAlignedBB(0.0D, 0.8125D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    public BlockPillar(String name) {
+    public BlockFluorescent(String name) {
         super(Material.IRON, name);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
+        setLightLevel(1.0F);
     }
 
     @Override
@@ -79,32 +82,10 @@ public class BlockPillar extends BlockBase {
      */
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         Block nb = neighbourState.getBlock();
-        if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
-            return nb instanceof BlockLever
-                    || nb instanceof BlockRedstoneTorch
-                    || nb instanceof BlockTripWireHook
-                    || nb instanceof BlockColumn
-                    || nb instanceof BlockLadder
-                    || (nb instanceof BlockLight && neighbourState.getValue(BlockLight.FACING) == neighbourDirection.getOpposite())
-                    || nb instanceof BlockRoof
-                    || nb.getRegistryName().toString().matches("immersiveengineering:connector")
-                    || nb.getRegistryName().toString().matches("immersiveengineering:metal_decoration2")
-                    || nb.getRegistryName().toString().matches("immersiveengineering:wooden_device1")
-                    || nb.getRegistryName().toString().matches("immersiveengineering:metal_device1")
-                    //start Industrial floor side connection
-                    || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
-                    || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable || nb instanceof BlockCatWalk;
-            //end
+        if (neighbourDirection != EnumFacing.UP) {
+            return nb instanceof BlockFluorescent;
         }
-        if (neighbourDirection == EnumFacing.DOWN) {
-            return nb.isFullCube(neighbourState)
-                    || nb instanceof BlockIndustrialFloor
-                    || nb instanceof BlockFloorCable
-                    || nb instanceof BlockFloorPipe
-                    || nb instanceof BlockRoof;
-        }
-        return nb.isFullCube(neighbourState) || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
-                || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable || nb instanceof BlockCatWalk;
+        return !(nb instanceof BlockRoof) || (ownPos.getZ() % 2) == 0;
     }
 
     /**
@@ -119,12 +100,8 @@ public class BlockPillar extends BlockBase {
     private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
-        final Block neighbourBlock = neighbourState.getBlock();
 
-        final boolean neighbourIsValidForThis = isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
-        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockPillar) || ((BlockPillar) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
-
-        return neighbourIsValidForThis && thisIsValidForNeighbour;
+        return isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
     }
 
     @SuppressWarnings("deprecation")

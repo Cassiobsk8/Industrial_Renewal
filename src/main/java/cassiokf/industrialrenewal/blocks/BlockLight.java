@@ -30,7 +30,6 @@ public class BlockLight extends BlockBase {
         setLightLevel(1.0F);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
-        this.setDefaultState(this.getDefaultState());
     }
 
     @Override
