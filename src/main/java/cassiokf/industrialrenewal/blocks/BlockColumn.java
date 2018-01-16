@@ -88,16 +88,8 @@ public class BlockColumn extends BlockBase {
             return oppositBlock instanceof BlockColumn || oppositBlock instanceof BlockPillar;
         }
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
-            Block lightupB = world.getBlockState(ownPos.offset(neighbourDirection).up()).getBlock();
-            return nb instanceof BlockColumn || nb instanceof BlockPillar || (nb instanceof BlockLight
-                    //this part is from BlockLight Up connection
-                    && !(lightupB instanceof BlockCatWalk
-                    || lightupB instanceof BlockColumn || lightupB instanceof BlockPillar
-                    || lightupB.isFullCube(neighbourState)
-                    || (lightupB instanceof BlockRoof && ((ownPos.offset(neighbourDirection).getZ() % 2) == 0))
-                    || lightupB.getRegistryName().toString().matches("immersiveengineering:wooden_device1")
-                    || lightupB.getRegistryName().toString().matches("immersiveengineering:metal_decoration2")));
-            //end
+            return nb instanceof BlockColumn || nb instanceof BlockPillar
+                    || (nb instanceof BlockLight && neighbourState.getValue(BlockLight.FACING) == neighbourDirection.getOpposite());
         }
         return neighbourDirection == EnumFacing.DOWN && (!nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection)) || nb instanceof BlockColumn);
     }

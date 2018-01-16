@@ -11,7 +11,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -69,7 +68,7 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        //make it change sound on right clicked with ScrewDrive
+        //todo make it change sound on right clicked with ScrewDrive
         return false;
     }
 
@@ -108,15 +107,7 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        if (world.isSideSolid(pos.offset(facing.getOpposite()), facing.getOpposite())) {
-            return this.getDefaultState().withProperty(FACING, facing);
-        } else {
-            if (world.getBlockState(pos.down()).getBlock() != Blocks.AIR) {
-                return this.getDefaultState().withProperty(FACING, EnumFacing.UP);
-            } else {
-                return null;
-            }
-        }
+        return this.getDefaultState().withProperty(FACING, facing.getOpposite());
     }
 
     @Override

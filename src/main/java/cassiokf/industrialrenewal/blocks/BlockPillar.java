@@ -86,15 +86,7 @@ public class BlockPillar extends BlockBase {
                     || nb instanceof BlockTripWireHook
                     || nb instanceof BlockColumn
                     || nb instanceof BlockLadder
-                    || (nb instanceof BlockLight
-                    //this part is from BlockLight Up connection
-                    && !(lightupB instanceof BlockCatWalk
-                    || lightupB instanceof BlockColumn || lightupB instanceof BlockPillar
-                    || lightupB.isFullCube(neighbourState)
-                    || (lightupB instanceof BlockRoof && ((ownPos.offset(neighbourDirection).getZ() % 2) == 0))
-                    || lightupB.getRegistryName().toString().matches("immersiveengineering:wooden_device1")
-                    || lightupB.getRegistryName().toString().matches("immersiveengineering:metal_decoration2")))
-                    //end
+                    || (nb instanceof BlockLight && neighbourState.getValue(BlockLight.FACING) == neighbourDirection.getOpposite())
                     || nb instanceof BlockRoof
                     || nb.getRegistryName().toString().matches("immersiveengineering:connector")
                     || nb.getRegistryName().toString().matches("immersiveengineering:metal_decoration2")
