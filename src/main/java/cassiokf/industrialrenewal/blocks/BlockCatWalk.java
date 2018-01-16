@@ -95,6 +95,7 @@ public class BlockCatWalk extends BlockBase {
                     || (nb instanceof BlockCatWalkStair && neighbourState.getValue(BlockCatWalkStair.FACING) == neighbourDirection)
                     || (downstate.getBlock() instanceof BlockCatWalkStair && downstate.getValue(BlockCatWalkStair.FACING) == neighbourDirection.getOpposite())
                     || (downstate.getBlock() instanceof BlockILadder && downstate.getValue(BlockILadder.FACING) == neighbourDirection.getOpposite())
+                    || downstate.getBlock() instanceof BlockIndustrialFloor || downstate.getBlock() instanceof BlockFloorLamp || downstate.getBlock() instanceof BlockFloorPipe || downstate.getBlock() instanceof BlockFloorCable
                     || (nb instanceof BlockILadder && neighbourState.getValue(BlockILadder.FACING) == neighbourDirection && !neighbourState.getValue(BlockILadder.ACTIVE));
         }
         if (neighbourDirection == EnumFacing.DOWN) {

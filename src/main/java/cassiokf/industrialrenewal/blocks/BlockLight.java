@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BlockLight extends BlockBase {
+    //todo converter para EnumFacing
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.25D, 0.3125D, 0.25D, 0.75D, 1.0D, 0.75D);

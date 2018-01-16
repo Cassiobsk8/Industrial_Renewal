@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.item.ModItems;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -28,17 +27,14 @@ import java.util.Random;
 import static net.minecraft.block.BlockDoor.getFacing;
 
 
-public class BlockFloorLamp extends Block {
+public class BlockFloorLamp extends BlockBase {
 
     public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
     protected String name;
 
     public BlockFloorLamp(String name) {
-        super(Material.IRON);
-        this.name = name;
-        setUnlocalizedName(name);
-        setRegistryName(name);
-        setLightLevel(1.0F);
+        super(Material.IRON, name);
+        this.setLightLevel(1.0F);
         setSoundType(SoundType.METAL);
         setCreativeTab(IndustrialRenewal.creativeTab);
 
@@ -133,14 +129,6 @@ public class BlockFloorLamp extends Block {
     @Deprecated
     public boolean isFullCube(IBlockState state) {
         return false;
-    }
-
-    public void registerItemModel(Item itemBlock) {
-        IndustrialRenewal.proxy.registerItemRenderer(itemBlock, 0, name);
-    }
-
-    public Item createItemBlock() {
-        return new ItemBlock(this).setRegistryName(getRegistryName());
     }
 
     @Override

@@ -35,6 +35,7 @@ public class BlockRoof extends BlockBase {
         super(Material.IRON, name);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
+        setLightOpacity(255);
     }
 
     @Override
@@ -98,7 +99,7 @@ public class BlockRoof extends BlockBase {
             Block dBlock = dState.getBlock();
             Block sBlock = sState.getBlock();
             Block nBlock = nState.getBlock();
-            if (sBlock instanceof BlockRoof && nBlock instanceof BlockRoof) {
+            if ((sBlock instanceof BlockRoof || sBlock instanceof BlockILadder) && (nBlock instanceof BlockRoof || nBlock instanceof BlockILadder)) {
                 // (block pos is Even) && (neighbour SW) && !down connection
                 return isEven(ownPos)
                         && (nb instanceof BlockRoof || nb.isFullCube(neighbourState) || nb instanceof BlockPillar || nb instanceof BlockColumn)
@@ -123,9 +124,9 @@ public class BlockRoof extends BlockBase {
         final Block neighbourBlock = neighbourState.getBlock();
 
         final boolean neighbourIsValidForThis = isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
-        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockRoof) || ((BlockRoof) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
+        //final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockRoof) || ((BlockRoof) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
 
-        return neighbourIsValidForThis && thisIsValidForNeighbour;
+        return neighbourIsValidForThis;// && thisIsValidForNeighbour;
     }
 
     @SuppressWarnings("deprecation")

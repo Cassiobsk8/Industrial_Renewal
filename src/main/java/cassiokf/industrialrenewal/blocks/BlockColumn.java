@@ -81,14 +81,25 @@ public class BlockColumn extends BlockBase {
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         Block nb = neighbourState.getBlock();
 
-        if (nb.isFullCube(neighbourState) && neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
+        if ((nb.isFullCube(neighbourState) || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable)
+                && neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
+
             Block oppositBlock = world.getBlockState(ownPos.offset(neighbourDirection.getOpposite())).getBlock();
-            return oppositBlock instanceof BlockColumn;
+            return oppositBlock instanceof BlockColumn || oppositBlock instanceof BlockPillar;
         }
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
-            return nb instanceof BlockColumn || nb instanceof BlockPillar || nb instanceof BlockLight;
+            Block lightupB = world.getBlockState(ownPos.offset(neighbourDirection).up()).getBlock();
+            return nb instanceof BlockColumn || nb instanceof BlockPillar || (nb instanceof BlockLight
+                    //this part is from BlockLight Up connection
+                    && !(lightupB instanceof BlockCatWalk
+                    || lightupB instanceof BlockColumn || lightupB instanceof BlockPillar
+                    || lightupB.isFullCube(neighbourState)
+                    || (lightupB instanceof BlockRoof && ((ownPos.offset(neighbourDirection).getZ() % 2) == 0))
+                    || lightupB.getRegistryName().toString().matches("immersiveengineering:wooden_device1")
+                    || lightupB.getRegistryName().toString().matches("immersiveengineering:metal_decoration2")));
+            //end
         }
-        return neighbourDirection == EnumFacing.DOWN && !nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection));
+        return neighbourDirection == EnumFacing.DOWN && (!nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection)) || nb instanceof BlockColumn);
     }
 
     /**

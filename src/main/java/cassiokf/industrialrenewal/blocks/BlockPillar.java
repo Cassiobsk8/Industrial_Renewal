@@ -94,11 +94,16 @@ public class BlockPillar extends BlockBase {
                     || (lightupB instanceof BlockRoof && ((ownPos.offset(neighbourDirection).getZ() % 2) == 0))
                     || lightupB.getRegistryName().toString().matches("immersiveengineering:wooden_device1")
                     || lightupB.getRegistryName().toString().matches("immersiveengineering:metal_decoration2")))
+                    //end
                     || nb instanceof BlockRoof
                     || nb.getRegistryName().toString().matches("immersiveengineering:connector")
                     || nb.getRegistryName().toString().matches("immersiveengineering:metal_decoration2")
                     || nb.getRegistryName().toString().matches("immersiveengineering:wooden_device1")
-                    || nb.getRegistryName().toString().matches("immersiveengineering:metal_device1");
+                    || nb.getRegistryName().toString().matches("immersiveengineering:metal_device1")
+                    //start Industrial floor side connection
+                    || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
+                    || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable || nb instanceof BlockCatWalk;
+            //end
         }
         if (neighbourDirection == EnumFacing.DOWN) {
             return nb.isFullCube(neighbourState)
@@ -107,7 +112,8 @@ public class BlockPillar extends BlockBase {
                     || nb instanceof BlockFloorPipe
                     || nb instanceof BlockRoof;
         }
-        return nb.isFullCube(neighbourState) || nb instanceof BlockCatWalk;
+        return nb.isFullCube(neighbourState) || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
+                || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable || nb instanceof BlockCatWalk;
     }
 
     /**

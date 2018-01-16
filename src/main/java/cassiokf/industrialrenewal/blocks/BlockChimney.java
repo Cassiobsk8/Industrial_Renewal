@@ -16,6 +16,7 @@ public class BlockChimney extends BlockBase {
     public BlockChimney(String name) {
         super(Material.IRON, name);
         setHardness(0.8f);
+        setLightOpacity(255);
     }
 
     @Override
