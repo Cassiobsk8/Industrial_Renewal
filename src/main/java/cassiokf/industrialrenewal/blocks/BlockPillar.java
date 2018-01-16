@@ -93,7 +93,7 @@ public class BlockPillar extends BlockBase {
                     || nb.getRegistryName().toString().matches("immersiveengineering:metal_device1")
                     //start Industrial floor side connection
                     || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
-                    || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable || nb instanceof BlockCatWalk;
+                    || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable;
             //end
         }
         if (neighbourDirection == EnumFacing.DOWN) {

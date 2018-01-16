@@ -123,7 +123,12 @@ public class BlockIndustrialFloor extends BlockBase {
         Block nb = neighbourState.getBlock();
         return nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable
                 || (neighbourDirection != EnumFacing.DOWN && neighbourDirection != EnumFacing.UP && nb instanceof BlockDoor)
-                || (neighbourDirection == EnumFacing.DOWN && nb instanceof BlockILadder);
+                || (neighbourDirection == EnumFacing.DOWN && nb instanceof BlockILadder)
+                //start check for horizontal Iladder
+                || ((neighbourDirection == EnumFacing.NORTH || neighbourDirection == EnumFacing.SOUTH || neighbourDirection == EnumFacing.EAST || neighbourDirection == EnumFacing.WEST)
+                && nb instanceof BlockILadder && !neighbourState.getValue(BlockILadder.ACTIVE))
+                //end
+                ;
     }
 
     /**
