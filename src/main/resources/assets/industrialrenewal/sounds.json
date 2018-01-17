@@ -34,5 +34,23 @@
         "stream": false
       }
     ]
+  },
+  "gate_closing": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "industrialrenewal:gate_closing",
+        "stream": false
+      }
+    ]
+  },
+  "gate_opening": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "industrialrenewal:gate_opening",
+        "stream": false
+      }
+    ]
   }
 }

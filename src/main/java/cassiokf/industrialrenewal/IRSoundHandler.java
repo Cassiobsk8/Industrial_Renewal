@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 public class IRSoundHandler {
 
     public static void init() {
+        //TODO Renomear com o nome certo
         ResourceLocation sound0 = new ResourceLocation("industrialrenewal", "train_horn");
         ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(sound0).setRegistryName(sound0));
 
@@ -17,5 +18,11 @@ public class IRSoundHandler {
 
         ResourceLocation sound3 = new ResourceLocation("industrialrenewal", "drill");
         ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(sound3).setRegistryName(sound3));
+
+        ResourceLocation sound4 = new ResourceLocation("industrialrenewal", "gate_opening");
+        ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(sound4).setRegistryName(sound4));
+
+        ResourceLocation sound5 = new ResourceLocation("industrialrenewal", "gate_closing");
+        ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(sound5).setRegistryName(sound5));
     }
 }
