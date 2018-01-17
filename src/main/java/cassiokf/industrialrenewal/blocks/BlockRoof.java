@@ -99,7 +99,7 @@ public class BlockRoof extends BlockBase {
             Block dBlock = dState.getBlock();
             Block sBlock = sState.getBlock();
             Block nBlock = nState.getBlock();
-            if ((sBlock instanceof BlockRoof || sBlock instanceof BlockILadder) && (nBlock instanceof BlockRoof || nBlock instanceof BlockILadder)) {
+            if ((sBlock instanceof BlockRoof || sBlock instanceof BlockCatwalkLadder) && (nBlock instanceof BlockRoof || nBlock instanceof BlockCatwalkLadder)) {
                 // (block pos is Even) && (neighbour SW) && !down connection
                 return isEven(ownPos)
                         && (nb instanceof BlockRoof || nb.isFullCube(neighbourState) || nb instanceof BlockPillar || nb instanceof BlockColumn)

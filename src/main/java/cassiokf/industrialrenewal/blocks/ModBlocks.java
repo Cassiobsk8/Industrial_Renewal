@@ -35,7 +35,7 @@ public class ModBlocks {
     public static BlockCatwalkStair catwalkStair = new BlockCatwalkStair("catwalk_stair");
     public static BlockPillar pillar = new BlockPillar("catwalk_pillar");
     public static BlockColumn column = new BlockColumn("catwalk_column");
-    public static BlockILadder iladder = new BlockILadder("catwalk_ladder");
+    public static BlockCatwalkLadder iladder = new BlockCatwalkLadder("catwalk_ladder");
     public static BlockRoof roof = new BlockRoof("roof");
     public static BlockGutter gutter = new BlockGutter("gutter");
     public static BlockLight light = new BlockLight("light");

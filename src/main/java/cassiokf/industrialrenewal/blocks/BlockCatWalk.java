@@ -96,12 +96,12 @@ public class BlockCatWalk extends BlockBase {
                     || (nb instanceof BlockCatwalkGate && neighbourState.getValue(BlockCatwalkGate.FACING) == neighbourDirection.getOpposite())
                     || (nb instanceof BlockCatwalkStair && neighbourState.getValue(BlockCatwalkStair.FACING) == neighbourDirection)
                     || (downstate.getBlock() instanceof BlockCatwalkStair && downstate.getValue(BlockCatwalkStair.FACING) == neighbourDirection.getOpposite())
-                    || (downstate.getBlock() instanceof BlockILadder && downstate.getValue(BlockILadder.FACING) == neighbourDirection.getOpposite())
+                    || (downstate.getBlock() instanceof BlockCatwalkLadder && downstate.getValue(BlockCatwalkLadder.FACING) == neighbourDirection.getOpposite())
                     //|| downstate.getBlock() instanceof BlockIndustrialFloor || downstate.getBlock() instanceof BlockFloorLamp || downstate.getBlock() instanceof BlockFloorPipe || downstate.getBlock() instanceof BlockFloorCable
-                    || (nb instanceof BlockILadder && neighbourState.getValue(BlockILadder.FACING) == neighbourDirection && !neighbourState.getValue(BlockILadder.ACTIVE));
+                    || (nb instanceof BlockCatwalkLadder && neighbourState.getValue(BlockCatwalkLadder.FACING) == neighbourDirection && !neighbourState.getValue(BlockCatwalkLadder.ACTIVE));
         }
         if (neighbourDirection == EnumFacing.DOWN) {
-            return nb instanceof BlockILadder || nb instanceof BlockLadder
+            return nb instanceof BlockCatwalkLadder || nb instanceof BlockLadder
                     || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp || nb instanceof BlockFloorCable || nb instanceof BlockFloorPipe
                     || nb instanceof BlockCatWalk;
         }

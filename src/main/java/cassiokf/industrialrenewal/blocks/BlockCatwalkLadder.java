@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockILadder extends BlockBase {
+public class BlockCatwalkLadder extends BlockBase {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
     protected static final AxisAlignedBB LADDER_EAST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 1.0D, 1.0D);
@@ -33,7 +33,7 @@ public class BlockILadder extends BlockBase {
     protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.03125D, 1.0D, 1.0D);
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    public BlockILadder(String name) {
+    public BlockCatwalkLadder(String name) {
         super(Material.IRON, name);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);

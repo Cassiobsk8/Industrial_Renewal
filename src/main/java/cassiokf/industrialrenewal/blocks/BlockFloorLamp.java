@@ -157,10 +157,10 @@ public class BlockFloorLamp extends BlockBase {
         if (neighbourDirection != EnumFacing.UP) {
             return nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable
                     || (neighbourDirection != EnumFacing.DOWN && nb instanceof BlockDoor)
-                    || (neighbourDirection == EnumFacing.DOWN && nb instanceof BlockILadder)
+                    || (neighbourDirection == EnumFacing.DOWN && nb instanceof BlockCatwalkLadder)
                     //start check for horizontal Iladder
                     || ((neighbourDirection == EnumFacing.NORTH || neighbourDirection == EnumFacing.SOUTH || neighbourDirection == EnumFacing.EAST || neighbourDirection == EnumFacing.WEST)
-                    && nb instanceof BlockILadder && !neighbourState.getValue(BlockILadder.ACTIVE))
+                    && nb instanceof BlockCatwalkLadder && !neighbourState.getValue(BlockCatwalkLadder.ACTIVE))
                     //end
                     ;
         }
