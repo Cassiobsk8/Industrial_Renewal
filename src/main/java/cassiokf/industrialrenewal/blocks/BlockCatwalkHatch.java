@@ -44,6 +44,7 @@ public class BlockCatwalkHatch extends BlockBase {
     public BlockCatwalkHatch(String name) {
         super(Material.IRON, name);
         setHardness(0.8f);
+        setLightOpacity(255);
     }
 
     @Override
@@ -53,8 +54,10 @@ public class BlockCatwalkHatch extends BlockBase {
         } else {
             if (state.getValue(ACTIVE)) {
                 world.playSound(null, pos, Objects.requireNonNull(SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:gate_closing"))), SoundCategory.NEUTRAL, 1.0F, 1.0F);
+
             } else {
                 world.playSound(null, pos, Objects.requireNonNull(SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:gate_opening"))), SoundCategory.NEUTRAL, 1.0F, 1.0F);
+
             }
 
             state = state.cycleProperty(ACTIVE);
