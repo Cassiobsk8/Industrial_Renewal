@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -87,6 +88,7 @@ public class BlockPillar extends BlockBase {
                     || nb instanceof BlockLadder
                     || (nb instanceof BlockLight && neighbourState.getValue(BlockLight.FACING) == neighbourDirection.getOpposite())
                     || nb instanceof BlockRoof
+                    || (nb instanceof BlockAlarm && neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection)
                     || nb.getRegistryName().toString().matches("immersiveengineering:connector")
                     || nb.getRegistryName().toString().matches("immersiveengineering:metal_decoration2")
                     || nb.getRegistryName().toString().matches("immersiveengineering:wooden_device1")

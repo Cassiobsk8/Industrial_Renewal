@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -89,12 +90,14 @@ public class BlockColumn extends BlockBase {
         }
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
             return nb instanceof BlockColumn || nb instanceof BlockPillar
+                    || (nb instanceof BlockAlarm && neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection)
                     || (nb instanceof BlockLight && neighbourState.getValue(BlockLight.FACING) == neighbourDirection.getOpposite());
         }
         if (nb instanceof BlockLight) {
             return neighbourState.getValue(BlockLight.FACING) == EnumFacing.UP;
         }
-        return neighbourDirection == EnumFacing.DOWN && !(nb instanceof BlockCatwalkLadder) && !nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection));
+        return neighbourDirection == EnumFacing.DOWN && !(nb instanceof BlockCatwalkLadder) && !(nb instanceof BlockAlarm && !(neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection))
+                && !nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection));
     }
 
     /**
