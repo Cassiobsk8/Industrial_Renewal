@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.item.ModItems;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
@@ -187,9 +186,12 @@ public class BlockIndustrialFloor extends BlockBase {
         }
         if (entity.inventory.getCurrentItem().getItem() == net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.fluorescent)) {
             world.playSound(null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.NEUTRAL, 1.0F, 1.0F);
-            world.setBlockState(new BlockPos(i, j, k), ModBlocks.floorLamp.getDefaultState().withProperty(BlockFloorLamp.FACING, entity.getHorizontalFacing()), 3);
+            world.setBlockState(pos, ModBlocks.floorLamp.getDefaultState(), 3);
+            if (entity.getHorizontalFacing() == EnumFacing.EAST || entity.getHorizontalFacing() == EnumFacing.WEST) {
+                world.setBlockState(pos.up(), ModBlocks.dummy.getDefaultState(), 3);
+            }
             if (!entity.isCreative()) {
-                entity.inventory.clearMatchingItems(ModItems.lamp, 0, 1, null);
+                entity.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.fluorescent), 0, 1, null);
             }
             return true;
         }

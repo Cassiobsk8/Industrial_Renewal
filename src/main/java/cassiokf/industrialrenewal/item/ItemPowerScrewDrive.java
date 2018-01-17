@@ -44,7 +44,7 @@ public class ItemPowerScrewDrive extends ItemBase {
                         entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCable), 1));
                     }
                     if (world.getBlockState(pos).getBlock() == ModBlocks.floorLamp) {
-                        entity.inventory.addItemStackToInventory(new ItemStack(ModItems.lamp, 1));
+                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.fluorescent), 1));
                     }
                 }
                 world.setBlockState(new BlockPos(x, y, z), ModBlocks.blockIndFloor.getDefaultState(), 3);
@@ -61,9 +61,6 @@ public class ItemPowerScrewDrive extends ItemBase {
     }
 
     private void playDrillSound(World world, BlockPos pos) {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-        world.playSound(null, (double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:drill")), SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:drill")), SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 }

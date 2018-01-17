@@ -1,26 +1,86 @@
 {
   "forge_marker": 1,
+  "defaults": {
+    "model": "industrialrenewal:dummy",
+    "uvlock": true
+  },
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:floor_lamp"
+    "down": {
+      "true": {
+        "submodel": {
+          "pipe_down": {
+            "model": "industrialrenewal:floor_down",
+            "uvlock": true
+          }
+        }
+      },
+      "false": {}
     },
-    "facing=south": {
-      "model": "industrialrenewal:floor_lamp",
-      "y": 90
+    "up": {
+      "true": {
+        "submodel": {
+          "pipe_up": {
+            "model": "industrialrenewal:floor_lamp",
+            "uvlock": true
+          }
+        }
+      },
+      "false": {
+        "submodel": {
+          "pipe_up_down": {
+            "model": "industrialrenewal:floor_lamp",
+            "y": 90,
+            "uvlock": true
+          }
+        }
+      }
     },
-    "facing=east": {
-      "model": "industrialrenewal:floor_lamp",
-      "y": 90
+    "north": {
+      "true": {
+        "submodel": {
+          "pipe_north": {
+            "model": "industrialrenewal:floor_side",
+            "uvlock": true
+          }
+        }
+      },
+      "false": {}
     },
-    "facing=north": {
-      "model": "industrialrenewal:floor_lamp"
+    "south": {
+      "true": {
+        "submodel": {
+          "pipe_south": {
+            "model": "industrialrenewal:floor_side",
+            "y": 180,
+            "uvlock": true
+          }
+        }
+      },
+      "false": {}
     },
-    "facing=west": {
-      "model": "industrialrenewal:floor_lamp"
+    "east": {
+      "true": {
+        "submodel": {
+          "pipe_east": {
+            "model": "industrialrenewal:floor_side",
+            "y": 90,
+            "uvlock": true
+          }
+        }
+      },
+      "false": {}
     },
-    "inventory": {
-      "model": "industrialrenewal:floor_lamp",
-      "transform": "forge:default-block"
+    "west": {
+      "true": {
+        "submodel": {
+          "pipe_west": {
+            "model": "industrialrenewal:floor_side",
+            "y": -90,
+            "uvlock": true
+          }
+        }
+      },
+      "false": {}
     }
   }
 }

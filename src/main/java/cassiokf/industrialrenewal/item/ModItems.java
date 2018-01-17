@@ -10,7 +10,6 @@ public class ModItems {
     public static ItemPowerScrewDrive screwDrive = new ItemPowerScrewDrive("screwdrive");
     public static ItemSteelSaw steelSaw = new ItemSteelSaw("steel_saw");
     public static ItemMineCartCargoContainer cargoContainer = new ItemMineCartCargoContainer("cargo_container");
-    public static ItemBase lamp = new ItemBase("lamp");
     public static ItemBase smallSlab = new ItemBase("small_slab");
 
     public static void register(IForgeRegistry<Item> registry) {
@@ -19,7 +18,6 @@ public class ModItems {
                 spongeIron,
                 screwDrive,
                 steelSaw,
-                lamp,
                 cargoContainer,
                 smallSlab
         );
@@ -30,7 +28,6 @@ public class ModItems {
         spongeIron.registerItemModel();
         screwDrive.registerItemModel();
         steelSaw.registerItemModel();
-        lamp.registerItemModel();
         cargoContainer.registerItemModel();
         smallSlab.registerItemModel();
     }
