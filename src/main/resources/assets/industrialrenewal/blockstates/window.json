@@ -1,0 +1,79 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "industrialrenewal:window_base",
+    "uvlock": true
+  },
+  "variants": {
+    "down": {
+      "true": {},
+      "false": {}
+    },
+    "up": {
+      "true": {},
+      "false": {}
+    },
+    "north": {
+      "true": {
+        "submodel": {
+          "pipe_north": {
+            "model": "industrialrenewal:window_side",
+            "uvlock": true
+          }
+        }
+      },
+      "false": {}
+    },
+    "south": {
+      "true": {
+        "submodel": {
+          "pipe_south": {
+            "model": "industrialrenewal:window_side",
+            "y": 180,
+            "uvlock": true
+          }
+        }
+      },
+      "false": {}
+    },
+    "east": {
+      "true": {
+        "submodel": {
+          "pipe_east": {
+            "model": "industrialrenewal:window_side",
+            "y": 90,
+            "uvlock": true
+          }
+        }
+      },
+      "false": {}
+    },
+    "west": {
+      "true": {
+        "submodel": {
+          "pipe_west": {
+            "model": "industrialrenewal:window_side",
+            "y": -90,
+            "uvlock": true
+          }
+        }
+      },
+      "false": {}
+    },
+    "inventory": [
+      {
+        "submodel": {
+          "pipe_north": {
+            "model": "industrialrenewal:window_side",
+            "uvlock": true
+          },
+          "pipe_south": {
+            "model": "industrialrenewal:window_side",
+            "y": 180,
+            "uvlock": true
+          }
+        }
+      }
+    ]
+  }
+}
