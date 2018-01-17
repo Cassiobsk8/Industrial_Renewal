@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockCatWalkStair extends BlockBase {
+public class BlockCatwalkStair extends BlockBase {
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool ACTIVE_LEFT = PropertyBool.create("active_left");
@@ -35,7 +35,7 @@ public class BlockCatWalkStair extends BlockBase {
     protected static final AxisAlignedBB WC_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.03125D, 2.4D, 1.0D);
     protected static final AxisAlignedBB EC_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 2.4D, 1.0D);
 
-    public BlockCatWalkStair(String name) {
+    public BlockCatwalkStair(String name) {
         super(Material.IRON, name);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
@@ -44,7 +44,7 @@ public class BlockCatWalkStair extends BlockBase {
     private Boolean leftConnected(IBlockState state, IBlockAccess world, BlockPos pos) {
         EnumFacing face = state.getValue(FACING);
         Block block = world.getBlockState(pos.offset(face.rotateY().getOpposite())).getBlock();
-        if (block instanceof BlockCatWalkStair) {
+        if (block instanceof BlockCatwalkStair) {
             EnumFacing leftFace = world.getBlockState(pos.offset(face.rotateY().getOpposite())).getValue(FACING);
             return !(leftFace == face);
         }
@@ -54,7 +54,7 @@ public class BlockCatWalkStair extends BlockBase {
     private Boolean rightConnected(IBlockState state, IBlockAccess world, BlockPos pos) {
         EnumFacing face = state.getValue(FACING);
         Block block = world.getBlockState(pos.offset(face.rotateY())).getBlock();
-        if (block instanceof BlockCatWalkStair) {
+        if (block instanceof BlockCatwalkStair) {
             EnumFacing rightFace = world.getBlockState(pos.offset(face.rotateY())).getValue(FACING);
             return !(rightFace == face);
         }

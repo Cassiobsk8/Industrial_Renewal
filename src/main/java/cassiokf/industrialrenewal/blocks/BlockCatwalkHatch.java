@@ -20,24 +20,28 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class BlockCatwalkGate extends BlockBase {
+public class BlockCatwalkHatch extends BlockBase {
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
-    protected static final AxisAlignedBB RNORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0625D);
-    protected static final AxisAlignedBB RSOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.9375D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB RWEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB REAST_AABB = new AxisAlignedBB(0.9375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.5D, 0.03125D);
-    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.96875D, 1.0D, 1.5D, 1.0D);
-    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.03125D, 1.5D, 1.0D);
-    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 1.5D, 1.0D);
-    protected static final AxisAlignedBB FRONT_LEFT_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.125D, 1.5D, 0.125D);
-    protected static final AxisAlignedBB FRONT_RIGHT_AABB = new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.5D, 0.125D);
-    protected static final AxisAlignedBB BACK_LEFT_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.875D, 0.125D, 1.5D, 1.0D);
-    protected static final AxisAlignedBB BACK_RIGHT_AABB = new AxisAlignedBB(0.875D, 0.0D, 0.875D, 1.0D, 1.5D, 1.0D);
+    protected static final AxisAlignedBB RNORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D);
+    protected static final AxisAlignedBB RSOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.875D, 1.0D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB RWEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.125D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB REAST_AABB = new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    public BlockCatwalkGate(String name) {
+    protected static final AxisAlignedBB RDOWN_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D);
+
+    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 0.0625D);
+    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.9375D, 1.0D, 0.125D, 1.0D);
+    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 0.125D, 1.0D);
+    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.9375D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
+
+    protected static final AxisAlignedBB OPEN_NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0625D);
+    protected static final AxisAlignedBB OPEN_SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.9375D, 1.0D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB OPEN_WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB OPEN_EAST_AABB = new AxisAlignedBB(0.9375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+
+    public BlockCatwalkHatch(String name) {
         super(Material.IRON, name);
         setHardness(0.8f);
     }
@@ -64,19 +68,29 @@ public class BlockCatwalkGate extends BlockBase {
     }
 
     @Override
+    public boolean isLadder(IBlockState state, IBlockAccess world, BlockPos pos, EntityLivingBase entity) {
+        return world.getBlockState(pos).getValue(ACTIVE);
+    }
+
+    @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         EnumFacing face = state.getValue(FACING);
-        if (face == EnumFacing.NORTH) {
-            return RNORTH_AABB;
-        }
-        if (face == EnumFacing.SOUTH) {
-            return RSOUTH_AABB;
-        }
-        if (face == EnumFacing.WEST) {
-            return RWEST_AABB;
-        }
-        if (face == EnumFacing.EAST) {
-            return REAST_AABB;
+        Boolean active = state.getValue(ACTIVE);
+        if (active) {
+            if (face == EnumFacing.NORTH) {
+                return RNORTH_AABB;
+            }
+            if (face == EnumFacing.SOUTH) {
+                return RSOUTH_AABB;
+            }
+            if (face == EnumFacing.WEST) {
+                return RWEST_AABB;
+            }
+            if (face == EnumFacing.EAST) {
+                return REAST_AABB;
+            }
+        } else {
+            return RDOWN_AABB;
         }
         return RNORTH_AABB;
     }
@@ -86,34 +100,32 @@ public class BlockCatwalkGate extends BlockBase {
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
         IBlockState actualState = getActualState(state, worldIn, pos);
         Boolean active = actualState.getValue(ACTIVE);
-        if (!active) {
+        if (active) {
             EnumFacing face = state.getValue(FACING);
             if (face == EnumFacing.NORTH) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-            } else if (face == EnumFacing.SOUTH) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, OPEN_NORTH_AABB);
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-            } else if (face == EnumFacing.WEST) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
-            } else if (face == EnumFacing.EAST) {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
-            }
-        } else if (active) {
-            EnumFacing face = state.getValue(FACING);
-            if (face == EnumFacing.NORTH) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, FRONT_LEFT_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, FRONT_RIGHT_AABB);
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
             } else if (face == EnumFacing.SOUTH) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, BACK_LEFT_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, BACK_RIGHT_AABB);
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, OPEN_SOUTH_AABB);
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
             } else if (face == EnumFacing.WEST) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, FRONT_LEFT_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, BACK_LEFT_AABB);
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, OPEN_WEST_AABB);
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
             } else if (face == EnumFacing.EAST) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, FRONT_RIGHT_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, BACK_RIGHT_AABB);
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, OPEN_EAST_AABB);
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
             }
+        } else {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, RDOWN_AABB);
         }
-
     }
 
     @Override
@@ -140,7 +152,7 @@ public class BlockCatwalkGate extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(ACTIVE, false);
+        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(ACTIVE, false);
     }
 
     @Override

@@ -93,8 +93,8 @@ public class BlockCatWalk extends BlockBase {
             return nb instanceof BlockCatWalk
                     || nb.isFullCube(neighbourState)
                     || (nb instanceof BlockCatwalkGate && neighbourState.getValue(BlockCatwalkGate.FACING) == neighbourDirection.getOpposite())
-                    || (nb instanceof BlockCatWalkStair && neighbourState.getValue(BlockCatWalkStair.FACING) == neighbourDirection)
-                    || (downstate.getBlock() instanceof BlockCatWalkStair && downstate.getValue(BlockCatWalkStair.FACING) == neighbourDirection.getOpposite())
+                    || (nb instanceof BlockCatwalkStair && neighbourState.getValue(BlockCatwalkStair.FACING) == neighbourDirection)
+                    || (downstate.getBlock() instanceof BlockCatwalkStair && downstate.getValue(BlockCatwalkStair.FACING) == neighbourDirection.getOpposite())
                     || (downstate.getBlock() instanceof BlockILadder && downstate.getValue(BlockILadder.FACING) == neighbourDirection.getOpposite())
                     //|| downstate.getBlock() instanceof BlockIndustrialFloor || downstate.getBlock() instanceof BlockFloorLamp || downstate.getBlock() instanceof BlockFloorPipe || downstate.getBlock() instanceof BlockFloorCable
                     || (nb instanceof BlockILadder && neighbourState.getValue(BlockILadder.FACING) == neighbourDirection && !neighbourState.getValue(BlockILadder.ACTIVE));

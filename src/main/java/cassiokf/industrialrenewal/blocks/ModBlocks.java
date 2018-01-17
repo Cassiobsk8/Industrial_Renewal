@@ -32,7 +32,7 @@ public class ModBlocks {
     public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp");
     public static BlockAlarm alarm = new BlockAlarm("alarm");
     public static BlockCatWalk catWalk = new BlockCatWalk("catwalk");
-    public static BlockCatWalkStair catwalkStair = new BlockCatWalkStair("catwalk_stair");
+    public static BlockCatwalkStair catwalkStair = new BlockCatwalkStair("catwalk_stair");
     public static BlockPillar pillar = new BlockPillar("catwalk_pillar");
     public static BlockColumn column = new BlockColumn("catwalk_column");
     public static BlockILadder iladder = new BlockILadder("catwalk_ladder");
@@ -42,6 +42,7 @@ public class ModBlocks {
     public static BlockFluorescent fluorescent = new BlockFluorescent("fluorescent");
     public static BlockDummy dummy = new BlockDummy("dummy");
     public static BlockCatwalkGate catwalkGate = new BlockCatwalkGate("catwalk_gate");
+    public static BlockCatwalkHatch hatch = new BlockCatwalkHatch("catwalk_hatch");
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail");
@@ -81,7 +82,8 @@ public class ModBlocks {
                 light,
                 fluorescent,
                 dummy,
-                catwalkGate
+                catwalkGate,
+                hatch
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -119,7 +121,8 @@ public class ModBlocks {
                 gutter.createItemBlock(),
                 light.createItemBlock(),
                 fluorescent.createItemBlock(),
-                catwalkGate.createItemBlock()
+                catwalkGate.createItemBlock(),
+                hatch.createItemBlock()
         );
     }
 
@@ -150,5 +153,6 @@ public class ModBlocks {
         light.registerItemModel(Item.getItemFromBlock(light));
         fluorescent.registerItemModel(Item.getItemFromBlock(fluorescent));
         catwalkGate.registerItemModel(Item.getItemFromBlock(catwalkGate));
+        hatch.registerItemModel(Item.getItemFromBlock(hatch));
     }
 }
