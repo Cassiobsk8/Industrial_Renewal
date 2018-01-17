@@ -96,8 +96,7 @@ public class BlockColumn extends BlockBase {
         if (nb instanceof BlockLight) {
             return neighbourState.getValue(BlockLight.FACING) == EnumFacing.UP;
         }
-        return neighbourDirection == EnumFacing.DOWN && !(nb instanceof BlockCatwalkLadder) && !(nb instanceof BlockAlarm && !(neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection))
-                && !nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection));
+        return neighbourDirection == EnumFacing.UP || !(nb instanceof BlockCatwalkLadder) && !(nb instanceof BlockAlarm && !(neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection)) && !nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection));
     }
 
     /**

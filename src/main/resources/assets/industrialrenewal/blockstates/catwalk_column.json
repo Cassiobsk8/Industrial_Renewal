@@ -17,14 +17,7 @@
       "false": {}
     },
     "up": {
-      "true": {
-        "submodel": {
-          "pipe_up": {
-            "model": "industrialrenewal:catwalk_pillar_up",
-            "uvlock": true
-          }
-        }
-      },
+      "true": {},
       "false": {}
     },
     "north": {
