@@ -9,12 +9,16 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,6 +26,11 @@ public class BlockPlatform extends BlockBase {
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+
+    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 1.0D, 0.0D, 1.0D, 2.0D, 0.03125D);
+    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 1.0D, 0.96875D, 1.0D, 2.0D, 1.0D);
+    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 1.0D, 0.0D, 0.03125D, 2.0D, 1.0D);
+    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.96875D, 1.0D, 0.0D, 1.0D, 2.0D, 1.0D);
 
     public BlockPlatform(String name) {
         super(Material.IRON, name);
@@ -122,6 +131,30 @@ public class BlockPlatform extends BlockBase {
         return BASE_AABB;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
+
+        if (!isActualState) {
+            state = state.getActualState(worldIn, pos);
+        }
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
+
+        if (!isConnected(state, EnumFacing.UP)) {
+            if (!isConnected(state, EnumFacing.NORTH)) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
+            }
+            if (!isConnected(state, EnumFacing.SOUTH)) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
+            }
+            if (!isConnected(state, EnumFacing.WEST)) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
+            }
+            if (!isConnected(state, EnumFacing.EAST)) {
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
+            }
+        }
+    }
     @Deprecated
     public boolean isTopSolid(IBlockState state) {
         return true;
