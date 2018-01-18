@@ -92,21 +92,6 @@ public class BlockScaffold extends BlockBase {
             state = state.getActualState(worldIn, pos);
         }
         addCollisionBoxToList(pos, entityBox, collidingBoxes, CBASE_AABB);
-        /*
-        if (!isConnected(state, EnumFacing.UP)) {
-            if (isConnected(state, EnumFacing.NORTH)) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-            }
-            if (isConnected(state, EnumFacing.SOUTH)) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-            }
-            if (isConnected(state, EnumFacing.WEST)) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
-            }
-            if (isConnected(state, EnumFacing.EAST)) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
-            }
-        }*/
     }
 
     @Override

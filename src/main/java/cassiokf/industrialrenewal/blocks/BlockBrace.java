@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
@@ -35,15 +34,8 @@ public class BlockBrace extends BlockBase {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (world.isRemote) {
-            return true;
-        } else {
-            if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
-
-                return false;
-            }
-            return false;
-        }
+        //TODO colocação automatica
+        return false;
     }
 
     public IBlockState getStateFromMeta(int meta) {

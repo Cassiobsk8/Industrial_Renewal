@@ -10,8 +10,11 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -69,6 +72,24 @@ public class BlockPillar extends BlockBase {
         return EnumBlockRenderType.MODEL;
     }
 
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.pillar)) {
+            Integer n = 1;
+            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar) {
+                n++;
+            }
+            if (world.getBlockState(pos.up(n)).getBlock().isAir(world.getBlockState(pos.up(n)), world, pos.up(n))) {
+                world.setBlockState(pos.up(n), ModBlocks.pillar.getDefaultState(), 3);
+                if (!player.isCreative()) {
+                    player.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.pillar), 0, 1, null);
+                }
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
     /**
      * Is the neighbouring block a valid connection for this pipe?
      *
@@ -103,10 +124,7 @@ public class BlockPillar extends BlockBase {
         }
         if (neighbourDirection == EnumFacing.DOWN) {
             return nb.isFullCube(neighbourState)
-                    || nb instanceof BlockIndustrialFloor
-                    || nb instanceof BlockFloorCable
-                    || nb instanceof BlockFloorPipe
-                    || nb instanceof BlockRoof;
+                    || nb.isTopSolid(neighbourState);
         }
         return nb.isFullCube(neighbourState) || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
                 || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable || nb instanceof BlockCatWalk;
