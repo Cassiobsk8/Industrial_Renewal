@@ -19,7 +19,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -89,6 +91,9 @@ public class BlockColumn extends BlockBase {
             return oppositBlock instanceof BlockColumn || oppositBlock instanceof BlockPillar;
         }
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
+            if (nb instanceof BlockBrace) {
+                return Objects.equals(neighbourState.getValue(BlockBrace.FACING).getName(), neighbourDirection.getOpposite().getName()) || Objects.equals(neighbourState.getValue(BlockBrace.FACING).getName(), "down_" + neighbourDirection.getName());
+            }
             return nb instanceof BlockColumn || nb instanceof BlockPillar
                     || (nb instanceof BlockAlarm && neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection)
                     || (nb instanceof BlockLight && neighbourState.getValue(BlockLight.FACING) == neighbourDirection.getOpposite());
@@ -96,7 +101,13 @@ public class BlockColumn extends BlockBase {
         if (nb instanceof BlockLight) {
             return neighbourState.getValue(BlockLight.FACING) == EnumFacing.UP;
         }
-        return neighbourDirection == EnumFacing.UP || !(nb instanceof BlockCatwalkLadder) && !(nb instanceof BlockAlarm && !(neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection)) && !nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection));
+        if (nb instanceof BlockBrace) {
+            return Arrays.toString(EnumFacing.HORIZONTALS).contains(neighbourState.getValue(BlockBrace.FACING).toString());
+        }
+        return neighbourDirection == EnumFacing.UP
+                || !(nb instanceof BlockCatwalkLadder)
+                && !(nb instanceof BlockAlarm && !(neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection))
+                && !nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection));
     }
 
     /**

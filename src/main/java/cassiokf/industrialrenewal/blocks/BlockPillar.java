@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -88,11 +89,13 @@ public class BlockPillar extends BlockBase {
                     || nb instanceof BlockLadder
                     || (nb instanceof BlockLight && neighbourState.getValue(BlockLight.FACING) == neighbourDirection.getOpposite())
                     || nb instanceof BlockRoof
+                    || (nb instanceof BlockBrace && Objects.equals(neighbourState.getValue(BlockBrace.FACING).getName(), neighbourDirection.getOpposite().getName()))
+                    || (nb instanceof BlockBrace && Objects.equals(neighbourState.getValue(BlockBrace.FACING).getName(), "down_" + neighbourDirection.getName()))
                     || (nb instanceof BlockAlarm && neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection)
-                    || nb.getRegistryName().toString().matches("immersiveengineering:connector")
-                    || nb.getRegistryName().toString().matches("immersiveengineering:metal_decoration2")
-                    || nb.getRegistryName().toString().matches("immersiveengineering:wooden_device1")
-                    || nb.getRegistryName().toString().matches("immersiveengineering:metal_device1")
+                    || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:connector")
+                    || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:metal_decoration2")
+                    || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:wooden_device1")
+                    || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:metal_device1")
                     //start Industrial floor side connection
                     || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
                     || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable;
