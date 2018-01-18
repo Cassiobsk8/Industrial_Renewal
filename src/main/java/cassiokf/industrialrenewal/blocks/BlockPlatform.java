@@ -84,7 +84,8 @@ public class BlockPlatform extends BlockBase {
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         Block nb = neighbourState.getBlock();
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
-            return nb instanceof BlockPlatform || nb.isFullCube(neighbourState);
+            return nb instanceof BlockPlatform || nb.isFullCube(neighbourState)
+                    || (nb instanceof BlockCatwalkStair && neighbourState.getValue(BlockCatwalkStair.FACING) == neighbourDirection.getOpposite());
         }
         if (neighbourDirection == EnumFacing.DOWN) {
             return nb.isFullCube(neighbourState)

@@ -210,6 +210,11 @@ public class BlockIndustrialFloor extends BlockBase {
         return false;
     }
 
+    @Deprecated
+    public boolean isTopSolid(IBlockState state) {
+        return true;
+    }
+
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         if (face == EnumFacing.UP || face == EnumFacing.DOWN) {
