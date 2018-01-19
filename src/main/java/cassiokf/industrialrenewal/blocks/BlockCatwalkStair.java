@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.BlockRail;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -72,6 +73,9 @@ public class BlockCatwalkStair extends BlockBase {
     private Boolean leftConnected(IBlockState state, IBlockAccess world, BlockPos pos) {
         EnumFacing face = state.getValue(FACING);
         Block block = world.getBlockState(pos.offset(face.rotateY().getOpposite())).getBlock();
+        if (block instanceof BlockRail) {
+            return !(world.getBlockState(pos.offset(face.rotateY().getOpposite())).getValue(BlockRail.SHAPE).toString().equals("ascending_" + face));
+        }
         if (block instanceof BlockCatwalkStair) {
             EnumFacing leftFace = world.getBlockState(pos.offset(face.rotateY().getOpposite())).getValue(FACING);
             return !(leftFace == face);
@@ -82,6 +86,9 @@ public class BlockCatwalkStair extends BlockBase {
     private Boolean rightConnected(IBlockState state, IBlockAccess world, BlockPos pos) {
         EnumFacing face = state.getValue(FACING);
         Block block = world.getBlockState(pos.offset(face.rotateY())).getBlock();
+        if (block instanceof BlockRail) {
+            return !(world.getBlockState(pos.offset(face.rotateY())).getValue(BlockRail.SHAPE).toString().equals("ascending_" + face));
+        }
         if (block instanceof BlockCatwalkStair) {
             EnumFacing rightFace = world.getBlockState(pos.offset(face.rotateY())).getValue(FACING);
             return !(rightFace == face);

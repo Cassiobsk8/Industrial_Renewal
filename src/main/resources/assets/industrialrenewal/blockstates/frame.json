@@ -1,0 +1,12 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:frame_base"
+    },
+    "inventory": {
+      "model": "industrialrenewal:frame_base",
+      "transform": "forge:default-block"
+    }
+  }
+}

@@ -47,6 +47,7 @@ public class ModBlocks {
     public static BlockPlatform platform = new BlockPlatform("platform");
     public static BlockBrace brace = new BlockBrace("brace");
     public static BlockScaffold scaffold = new BlockScaffold("scaffold");
+    public static BlockFrame frame = new BlockFrame("frame");
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail");
@@ -91,7 +92,8 @@ public class ModBlocks {
                 window,
                 platform,
                 brace,
-                scaffold
+                scaffold,
+                frame
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -134,7 +136,8 @@ public class ModBlocks {
                 window.createItemBlock(),
                 platform.createItemBlock(),
                 brace.createItemBlock(),
-                scaffold.createItemBlock()
+                scaffold.createItemBlock(),
+                frame.createItemBlock()
         );
     }
 
@@ -170,5 +173,6 @@ public class ModBlocks {
         platform.registerItemModel(Item.getItemFromBlock(platform));
         brace.registerItemModel(Item.getItemFromBlock(brace));
         scaffold.registerItemModel(Item.getItemFromBlock(scaffold));
+        frame.registerItemModel(Item.getItemFromBlock(frame));
     }
 }

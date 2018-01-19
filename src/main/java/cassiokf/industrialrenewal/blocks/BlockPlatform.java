@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.blocks;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRail;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -83,12 +84,16 @@ public class BlockPlatform extends BlockBase {
      */
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         Block nb = neighbourState.getBlock();
+        Block ub = world.getBlockState(ownPos.up()).getBlock();
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
             return nb instanceof BlockPlatform || nb.isFullCube(neighbourState)
-                    || (nb instanceof BlockCatwalkStair && neighbourState.getValue(BlockCatwalkStair.FACING) == neighbourDirection.getOpposite());
+                    || nb instanceof BlockRail
+                    || (nb instanceof BlockCatwalkStair && neighbourState.getValue(BlockCatwalkStair.FACING) == neighbourDirection.getOpposite())
+                    || (ub instanceof BlockCatwalkGate && neighbourDirection == world.getBlockState(ownPos.up()).getValue(BlockCatwalkGate.FACING));
         }
         if (neighbourDirection == EnumFacing.DOWN) {
             return nb.isFullCube(neighbourState)
+                    || nb instanceof BlockBrace
                     || nb instanceof BlockPlatform
                     || nb instanceof BlockPillar
                     || nb instanceof BlockColumn;
