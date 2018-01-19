@@ -12,8 +12,11 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -44,6 +47,21 @@ public class BlockCatWalk extends BlockBase {
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.catWalk)) {
+            if (world.getBlockState(pos.offset(player.getHorizontalFacing())).getBlock().isAir(world.getBlockState(pos.offset(player.getHorizontalFacing())), world, pos.offset(player.getHorizontalFacing()))) {
+                world.setBlockState(pos.offset(player.getHorizontalFacing()), ModBlocks.catWalk.getDefaultState(), 3);
+                if (!player.isCreative()) {
+                    player.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.catWalk), 0, 1, null);
+                }
+                return true;
+            }
+            return true;
+        }
+        return false;
     }
 
     @SuppressWarnings("deprecation")
