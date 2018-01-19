@@ -52,10 +52,23 @@ public class BlockCatWalk extends BlockBase {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.catWalk)) {
+            if (side == EnumFacing.UP) {
+                if (world.getBlockState(pos.offset(player.getHorizontalFacing())).getBlock().isAir(world.getBlockState(pos.offset(player.getHorizontalFacing())), world, pos.offset(player.getHorizontalFacing()))) {
+                    world.setBlockState(pos.offset(player.getHorizontalFacing()), ModBlocks.catWalk.getDefaultState(), 3);
+                    if (!player.isCreative()) {
+                        player.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.catWalk), 0, 1, null);
+                    }
+                    return true;
+                }
+                return true;
+            }
+            return false;
+        }
+        if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.catwalkStair)) {
             if (world.getBlockState(pos.offset(player.getHorizontalFacing())).getBlock().isAir(world.getBlockState(pos.offset(player.getHorizontalFacing())), world, pos.offset(player.getHorizontalFacing()))) {
-                world.setBlockState(pos.offset(player.getHorizontalFacing()), ModBlocks.catWalk.getDefaultState(), 3);
+                world.setBlockState(pos.offset(player.getHorizontalFacing()), ModBlocks.catwalkStair.getDefaultState().withProperty(BlockCatwalkStair.FACING, player.getHorizontalFacing()), 3);
                 if (!player.isCreative()) {
-                    player.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.catWalk), 0, 1, null);
+                    player.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.catwalkStair), 0, 1, null);
                 }
                 return true;
             }

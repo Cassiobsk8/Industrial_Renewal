@@ -11,7 +11,10 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -39,6 +42,31 @@ public class BlockCatwalkStair extends BlockBase {
         super(Material.IRON, name);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.catwalkStair)) {
+            if (world.getBlockState(pos.offset(player.getHorizontalFacing()).up()).getBlock().isAir(world.getBlockState(pos.offset(player.getHorizontalFacing()).up()), world, pos.offset(player.getHorizontalFacing()).up())) {
+                world.setBlockState(pos.offset(player.getHorizontalFacing()).up(), ModBlocks.catwalkStair.getDefaultState().withProperty(BlockCatwalkStair.FACING, player.getHorizontalFacing()), 3);
+                if (!player.isCreative()) {
+                    player.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.catwalkStair), 0, 1, null);
+                }
+                return true;
+            }
+            return true;
+        }
+        if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.catWalk)) {
+            if (world.getBlockState(pos.offset(player.getHorizontalFacing()).up()).getBlock().isAir(world.getBlockState(pos.offset(player.getHorizontalFacing()).up()), world, pos.offset(player.getHorizontalFacing()).up())) {
+                world.setBlockState(pos.offset(player.getHorizontalFacing()).up(), ModBlocks.catWalk.getDefaultState(), 3);
+                if (!player.isCreative()) {
+                    player.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.catWalk), 0, 1, null);
+                }
+                return true;
+            }
+            return true;
+        }
+        return false;
     }
 
     private Boolean leftConnected(IBlockState state, IBlockAccess world, BlockPos pos) {
