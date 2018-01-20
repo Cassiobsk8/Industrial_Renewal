@@ -1,10 +1,11 @@
-package cassiokf.industrialrenewal.tileentity.gates.not;
+package cassiokf.industrialrenewal.blocks.gates;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.blocks.BlockBase;
 import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -22,13 +23,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-
-
-public class BlockGateNot extends BlockTileEntity<TileEntityGateNot> {
+public class BlockGateNot extends BlockBase {
 
     protected static final AxisAlignedBB BLOCK_GATE_AND_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
     public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
@@ -37,35 +33,31 @@ public class BlockGateNot extends BlockTileEntity<TileEntityGateNot> {
     public BlockGateNot(String name) {
         super(Material.CIRCUITS, name);
         setHardness(0.8f);
-        //setSoundType(SoundType.METAL);
+        setSoundType(SoundType.METAL);
         setCreativeTab(IndustrialRenewal.creativeTab);
 
-    }
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-    {
-        return side.getAxis() != EnumFacing.Axis.Y;
     }
 
     @Override
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         boolean Vactive = blockState.getValue(ACTIVE);
-        if (!Vactive)
-        {
+        if (!Vactive) {
             return 0;
         }
         else {
             return blockState.getValue(FACING).getOpposite() == side ? this.getActiveSignal(blockAccess, pos, blockState) : 0;
         }
     }
-    protected int getActiveSignal(IBlockAccess worldIn, BlockPos pos, IBlockState state)
-    {
+
+    protected int getActiveSignal(IBlockAccess worldIn, BlockPos pos, IBlockState state) {
         return 15;
     }
+
     @Override
     public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         return blockState.getWeakPower(blockAccess, pos, side);
     }
+
     protected int getPowerOnSide(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
         IBlockState iblockstate = worldIn.getBlockState(pos);
         Block block = iblockstate.getBlock();
@@ -73,87 +65,104 @@ public class BlockGateNot extends BlockTileEntity<TileEntityGateNot> {
             return 15;
         }
         else {
-            return block == Blocks.REDSTONE_WIRE ? ((Integer)iblockstate.getValue(BlockRedstoneWire.POWER)).intValue() : worldIn.getStrongPower(pos, side);
+            return block == Blocks.REDSTONE_WIRE ? (Integer) iblockstate.getValue(BlockRedstoneWire.POWER) : worldIn.getStrongPower(pos, side);
         }
     }
 
     private int getPowerLevelIn1(World world, BlockPos pos) {
         EnumFacing v1Face = world.getBlockState(pos).getValue(FACING).getOpposite();
         BlockPos neighborPos = pos.offset(v1Face);
-        int powerLevel1 = getPowerOnSide(world, neighborPos, v1Face);
-        return powerLevel1;
+        return getPowerOnSide(world, neighborPos, v1Face);
     }
 
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighborPos) {
         change(worldIn, pos, state);
     }
+
     @Override
     public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
         this.setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
         change(world, pos, state);
     }
-    public void change(World worldIn, BlockPos pos, IBlockState state){
+
+    private void change(World worldIn, BlockPos pos, IBlockState state) {
         int powerLevel1 = getPowerLevelIn1(worldIn, pos);
-        final TileEntityGateNot tileEntity = getTileEntity(worldIn, pos);
         if (powerLevel1 > 0) {
-            tileEntity.exchangeOut(worldIn, pos, state, false);
+            worldIn.setBlockState(pos, state.withProperty(ACTIVE, false));
         }
         if (powerLevel1 <= 0) {
-            tileEntity.exchangeOut(worldIn, pos, state, true);
+            worldIn.setBlockState(pos, state.withProperty(ACTIVE, true));
         }
     }
-    protected void notifyNeighbors(World worldIn, BlockPos pos, IBlockState state)
-    {
-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+
+    private Boolean out(World worldIn, BlockPos pos) {
+        int powerLevel1 = getPowerLevelIn1(worldIn, pos);
+        return powerLevel1 <= 0;
+    }
+
+    protected void notifyNeighbors(World worldIn, BlockPos pos, IBlockState state) {
+        EnumFacing enumfacing = state.getValue(FACING);
         BlockPos blockpos = pos.offset(enumfacing.getOpposite());
         if(net.minecraftforge.event.ForgeEventFactory.onNeighborNotify(worldIn, pos, worldIn.getBlockState(pos), java.util.EnumSet.of(enumfacing.getOpposite()), false).isCanceled())
             return;
         worldIn.neighborChanged(blockpos, this, pos);
         worldIn.notifyNeighborsOfStateExcept(blockpos, this, enumfacing);
     }
+
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        final TileEntityGateNot tileEntity = getTileEntity(world, pos);
         if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
-            tileEntity.dorotateBlock(world, pos, state);
-            IBlockState nstate = world.getBlockState(pos);
-            change(world, pos, nstate);
+            rotateBlock(world, pos, state);
         }
         return true;
     }
+
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
         int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
         world.scheduleUpdate(new BlockPos(i, j, k), this, this.tickRate(world));
         notifyNeighbors(world,pos,state);
     }
+
     @Override
     public boolean canProvidePower(IBlockState state) {
         return true;
     }
+
+    private void rotateBlock(World world, BlockPos pos, IBlockState state) {
+        EnumFacing newFace = state.getValue(FACING).rotateY();
+        world.setBlockState(pos, state.withProperty(FACING, newFace));
+        IBlockState newState = world.getBlockState(pos);
+        change(world, pos, newState);
+    }
+
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return BLOCK_GATE_AND_AABB;
     }
+
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING, ACTIVE);
     }
+
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        EnumFacing facing = EnumFacing.getFront(meta);
-
-        return getDefaultState().withProperty(FACING, facing);
+        return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(ACTIVE, (meta & 8) > 0);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        int facingbits = state.getValue(FACING).getIndex();
-        return facingbits;
+        int i = 0;
+        i = i | state.getValue(FACING).getIndex();
+        if (state.getValue(ACTIVE)) {
+            i |= 8;
+        }
+        return i;
     }
+
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
@@ -172,19 +181,7 @@ public class BlockGateNot extends BlockTileEntity<TileEntityGateNot> {
         return false;
     }
 
-    @Override
-    public Class<TileEntityGateNot> getTileEntityClass() {
-        return TileEntityGateNot.class;
-	}
-
-    @Nullable
-    @Override
-    public TileEntityGateNot createTileEntity(World world, IBlockState state) {
-        return new TileEntityGateNot();
-    }
-
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return face == EnumFacing.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
     }
 }

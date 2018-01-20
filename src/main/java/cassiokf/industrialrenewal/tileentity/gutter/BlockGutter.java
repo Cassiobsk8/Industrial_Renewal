@@ -50,7 +50,6 @@ public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
     }
 
     private Boolean downConnected(IBlockAccess world, BlockPos pos) {
-        Block block = world.getBlockState(pos.down()).getBlock();
         final TileEntity tileEntityS = world.getTileEntity(pos.offset(EnumFacing.DOWN));
         return tileEntityS != null && !tileEntityS.isInvalid() && tileEntityS.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP);
     }
@@ -91,25 +90,12 @@ public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3));
-        //.withProperty(ACTIVE_LEFT, Boolean.valueOf((meta & 4) > 0))
-        //.withProperty(ACTIVE_RIGHT, Boolean.valueOf((meta & 8) > 0));
-        //.withProperty(ACTIVE_DOWN, Boolean.valueOf((meta & 16) > 0));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
         int i = 0;
         i = i | state.getValue(FACING).getHorizontalIndex();
-        /*
-        if (state.getValue(ACTIVE_LEFT)) {
-            i |= 4;
-        }
-        if (state.getValue(ACTIVE_RIGHT)) {
-            i |= 8;
-        }/*
-        if (state.getValue(ACTIVE_DOWN)) {
-            i |= 16;
-        }*/
         return i;
     }
 
