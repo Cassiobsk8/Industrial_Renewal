@@ -1,5 +1,6 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.tileentity.gutter;
 
+import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
@@ -12,16 +13,21 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockGutter extends BlockBase {
+import static cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge.getCapability;
+
+public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool ACTIVE_LEFT = PropertyBool.create("active_left");
@@ -45,7 +51,8 @@ public class BlockGutter extends BlockBase {
 
     private Boolean downConnected(IBlockAccess world, BlockPos pos) {
         Block block = world.getBlockState(pos.down()).getBlock();
-        return block instanceof BlockFluidPipe;
+        final TileEntity tileEntityS = world.getTileEntity(pos.offset(EnumFacing.DOWN));
+        return tileEntityS != null && !tileEntityS.isInvalid() && tileEntityS.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP);
     }
 
     private Boolean leftConnected(IBlockState state, IBlockAccess world, BlockPos pos) {
@@ -199,6 +206,21 @@ public class BlockGutter extends BlockBase {
         return false;
     }
 
+    @Override
+    public Class<TileEntityGutter> getTileEntityClass() {
+        return TileEntityGutter.class;
+    }
+
+    @Nullable
+    @Override
+    public TileEntityGutter createTileEntity(World world, IBlockState state) {
+        return new TileEntityGutter();
+    }
+
+    @Nullable
+    private IFluidHandler getFluidHandler(final IBlockAccess world, final BlockPos pos) {
+        return getCapability(getTileEntity(world, pos), CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+    }
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
     }

@@ -161,6 +161,8 @@ public class BlockPlatform extends BlockBase {
             }
         }
     }
+
+    @Override
     @Deprecated
     public boolean isTopSolid(IBlockState state) {
         return true;
