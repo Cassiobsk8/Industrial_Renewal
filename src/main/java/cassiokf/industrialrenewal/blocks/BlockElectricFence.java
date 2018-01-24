@@ -62,6 +62,17 @@ public class BlockElectricFence extends BlockBase {
         //worldIn.playSound(null, pos, Objects.requireNonNull(SoundEvent.REGISTRY.getObject(IRSoundHandler.spark)), SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
+    @Override
+    @Deprecated
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+        IBlockState actualState = state.getActualState(world, pos);
+        if (isConnected(actualState, EnumFacing.UP)) {
+            return 7;
+        } else {
+            return 0;
+        }
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(final int meta) {
