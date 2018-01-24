@@ -44,7 +44,6 @@ public class BlockCatwalkHatch extends BlockBase {
     public BlockCatwalkHatch(String name) {
         super(Material.IRON, name);
         setHardness(0.8f);
-        setLightOpacity(255);
     }
 
     @Override
@@ -63,6 +62,15 @@ public class BlockCatwalkHatch extends BlockBase {
             state = state.cycleProperty(ACTIVE);
             world.setBlockState(pos, state, 3);
             return true;
+        }
+    }
+
+    public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+        IBlockState actualState = state.getActualState(world, pos);
+        if (actualState.getValue(ACTIVE)) {
+            return 0;
+        } else {
+            return 250;
         }
     }
 
