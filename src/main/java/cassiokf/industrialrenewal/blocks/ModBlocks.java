@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.blocks.gates.BlockGateNot;
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
+import cassiokf.industrialrenewal.tileentity.exhaust.BlockExhaustFan;
 import cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd;
 import cassiokf.industrialrenewal.tileentity.gates.nand.BlockGateNand;
 import cassiokf.industrialrenewal.tileentity.gates.or.BlockGateOr;
@@ -50,6 +51,8 @@ public class ModBlocks {
     public static BlockScaffold scaffold = new BlockScaffold("scaffold");
     public static BlockFrame frame = new BlockFrame("frame");
 
+    public static BlockExhaustFan exhaust = new BlockExhaustFan("exhaust_fan");
+
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail");
     public static BlockDetectorRail detectorRail = new BlockDetectorRail("detector_rail");
@@ -94,7 +97,8 @@ public class ModBlocks {
                 platform,
                 brace,
                 scaffold,
-                frame
+                frame,
+                exhaust
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -103,6 +107,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(gateOr.getTileEntityClass(), gateOr.getRegistryName().toString());
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
         GameRegistry.registerTileEntity(gutter.getTileEntityClass(), gutter.getRegistryName().toString());
+        GameRegistry.registerTileEntity(exhaust.getTileEntityClass(), exhaust.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -138,7 +143,8 @@ public class ModBlocks {
                 platform.createItemBlock(),
                 brace.createItemBlock(),
                 scaffold.createItemBlock(),
-                frame.createItemBlock()
+                frame.createItemBlock(),
+                exhaust.createItemBlock()
         );
     }
 
@@ -175,5 +181,6 @@ public class ModBlocks {
         brace.registerItemModel(Item.getItemFromBlock(brace));
         scaffold.registerItemModel(Item.getItemFromBlock(scaffold));
         frame.registerItemModel(Item.getItemFromBlock(frame));
+        exhaust.registerItemModel(Item.getItemFromBlock(exhaust));
     }
 }

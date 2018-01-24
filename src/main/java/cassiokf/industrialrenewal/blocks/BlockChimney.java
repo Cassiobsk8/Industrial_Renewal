@@ -11,8 +11,6 @@ import java.util.Random;
 
 public class BlockChimney extends BlockBase {
 
-    protected String name;
-
     public BlockChimney(String name) {
         super(Material.IRON, name);
         setHardness(0.8f);

@@ -30,8 +30,12 @@ public class BlockPillar extends BlockBase {
 
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
-    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
-    protected static final AxisAlignedBB TOP_AABB = new AxisAlignedBB(0.0D, 0.8125D, 0.0D, 1.0D, 1.0D, 1.0D);
+    private static float NORTHZ1 = 0.250f;
+    private static float SOUTHZ2 = 0.750f;
+    private static float WESTX1 = 0.250f;
+    private static float EASTX2 = 0.750f;
+    private static float DOWNY1 = 0.0f;
+    private static float UPY2 = 1.0f;
 
     public BlockPillar(String name) {
         super(Material.IRON, name);
@@ -167,16 +171,58 @@ public class BlockPillar extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        IBlockState actualState = getActualState(state, worldIn, pos);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
-        if (isConnected(actualState, EnumFacing.UP)) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, TOP_AABB);
+        if (!isActualState) {
+            state = state.getActualState(worldIn, pos);
         }
+        if (isConnected(state, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.0f;
+        } else if (!isConnected(state, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.250f;
+        }
+        if (isConnected(state, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 1.0f;
+        } else if (!isConnected(state, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 0.750f;
+        }
+        if (isConnected(state, EnumFacing.WEST)) {
+            WESTX1 = 0.0f;
+        } else if (!isConnected(state, EnumFacing.WEST)) {
+            WESTX1 = 0.250f;
+        }
+        if (isConnected(state, EnumFacing.EAST)) {
+            EASTX2 = 1.0f;
+        } else if (!isConnected(state, EnumFacing.EAST)) {
+            EASTX2 = 0.750f;
+        }
+        final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return BASE_AABB;
+        IBlockState actualState = state.getActualState(source, pos);
+
+        if (isConnected(actualState, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.0f;
+        } else if (!isConnected(actualState, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.250f;
+        }
+        if (isConnected(actualState, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 1.0f;
+        } else if (!isConnected(actualState, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 0.750f;
+        }
+        if (isConnected(actualState, EnumFacing.WEST)) {
+            WESTX1 = 0.0f;
+        } else if (!isConnected(actualState, EnumFacing.WEST)) {
+            WESTX1 = 0.250f;
+        }
+        if (isConnected(actualState, EnumFacing.EAST)) {
+            EASTX2 = 1.0f;
+        } else if (!isConnected(actualState, EnumFacing.EAST)) {
+            EASTX2 = 0.750f;
+        }
+        return new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
     }
 
     @Override

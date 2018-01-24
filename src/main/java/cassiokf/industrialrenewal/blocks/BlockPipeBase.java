@@ -14,7 +14,6 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -25,8 +24,15 @@ import java.util.stream.Stream;
 
 public class BlockPipeBase extends BlockBase {
 
-    public static final float PIPE_MIN_POS = 0.250f;
-    public static final float PIPE_MAX_POS = 0.750f;
+    private static float NORTHZ1 = 0.250f;
+    private static float SOUTHZ2 = 0.750f;
+    private static float WESTX1 = 0.250f;
+    private static float EASTX2 = 0.750f;
+    private static float DOWNY1 = 0.250f;
+    private static float UPY2 = 0.750f;
+
+    //public static final float PIPE_MIN_POS = 0.250f;
+    //public static final float PIPE_MAX_POS = 0.750f;
 
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES)
@@ -34,30 +40,10 @@ public class BlockPipeBase extends BlockBase {
                     .collect(Collectors.toList())
     );
 
-    public static final ImmutableList<AxisAlignedBB> CONNECTED_BOUNDING_BOXES = ImmutableList.copyOf(
-            Stream.of(EnumFacing.VALUES)
-                    .map(facing -> {
-                        Vec3i directionVec = facing.getDirectionVec();
-                        return new AxisAlignedBB(
-                                getMinBound(directionVec.getX()), getMinBound(directionVec.getY()), getMinBound(directionVec.getZ()),
-                                getMaxBound(directionVec.getX()), getMaxBound(directionVec.getY()), getMaxBound(directionVec.getZ())
-                        );
-                    })
-                    .collect(Collectors.toList())
-    );
-
     public BlockPipeBase(String name) {
         super(Material.IRON, name);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
-    }
-
-    private static float getMinBound(final int dir) {
-        return dir == -1 ? 0 : PIPE_MIN_POS;
-    }
-
-    private static float getMaxBound(final int dir) {
-        return dir == 1 ? 1 : PIPE_MAX_POS;
     }
 
     @Override
@@ -143,26 +129,79 @@ public class BlockPipeBase extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        final AxisAlignedBB AA_BB = new AxisAlignedBB(PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MAX_POS, PIPE_MAX_POS, PIPE_MAX_POS);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
 
         if (!isActualState) {
             state = state.getActualState(worldIn, pos);
         }
-
-        for (final EnumFacing facing : EnumFacing.VALUES) {
-            if (isConnected(state, facing)) {
-                final AxisAlignedBB axisAlignedBB = CONNECTED_BOUNDING_BOXES.get(facing.getIndex());
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, axisAlignedBB);
-            }
+        if (isConnected(state, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.0f;
+        } else if (!isConnected(state, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.250f;
         }
+        if (isConnected(state, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 1.0f;
+        } else if (!isConnected(state, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 0.750f;
+        }
+        if (isConnected(state, EnumFacing.WEST)) {
+            WESTX1 = 0.0f;
+        } else if (!isConnected(state, EnumFacing.WEST)) {
+            WESTX1 = 0.250f;
+        }
+        if (isConnected(state, EnumFacing.EAST)) {
+            EASTX2 = 1.0f;
+        } else if (!isConnected(state, EnumFacing.EAST)) {
+            EASTX2 = 0.750f;
+        }
+        if (isConnected(state, EnumFacing.DOWN)) {
+            DOWNY1 = 0.0f;
+        } else if (!isConnected(state, EnumFacing.DOWN)) {
+            DOWNY1 = 0.250f;
+        }
+        if (isConnected(state, EnumFacing.UP)) {
+            UPY2 = 1.0f;
+        } else if (!isConnected(state, EnumFacing.UP)) {
+            UPY2 = 0.750f;
+        }
+        final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        //TODO arrumar isso para incluir a conexão
-        //final AxisAlignedBB AA_BB = new AxisAlignedBB(PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MAX_POS, PIPE_MAX_POS, PIPE_MAX_POS);
-        return new AxisAlignedBB(PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MAX_POS, PIPE_MAX_POS, PIPE_MAX_POS);
+        IBlockState actualState = state.getActualState(source, pos);
+
+        if (isConnected(actualState, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.0f;
+        } else if (!isConnected(actualState, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.250f;
+        }
+        if (isConnected(actualState, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 1.0f;
+        } else if (!isConnected(actualState, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 0.750f;
+        }
+        if (isConnected(actualState, EnumFacing.WEST)) {
+            WESTX1 = 0.0f;
+        } else if (!isConnected(actualState, EnumFacing.WEST)) {
+            WESTX1 = 0.250f;
+        }
+        if (isConnected(actualState, EnumFacing.EAST)) {
+            EASTX2 = 1.0f;
+        } else if (!isConnected(actualState, EnumFacing.EAST)) {
+            EASTX2 = 0.750f;
+        }
+        if (isConnected(actualState, EnumFacing.DOWN)) {
+            DOWNY1 = 0.0f;
+        } else if (!isConnected(actualState, EnumFacing.DOWN)) {
+            DOWNY1 = 0.250f;
+        }
+        if (isConnected(actualState, EnumFacing.UP)) {
+            UPY2 = 1.0f;
+        } else if (!isConnected(actualState, EnumFacing.UP)) {
+            UPY2 = 0.750f;
+        }
+        return new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
     }
 
     @Override
