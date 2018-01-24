@@ -50,6 +50,7 @@ public class ModBlocks {
     public static BlockBrace brace = new BlockBrace("brace");
     public static BlockScaffold scaffold = new BlockScaffold("scaffold");
     public static BlockFrame frame = new BlockFrame("frame");
+    public static BlockElectricFence efence = new BlockElectricFence("electric_fence");
 
     public static BlockExhaustFan exhaust = new BlockExhaustFan("exhaust_fan");
 
@@ -98,7 +99,8 @@ public class ModBlocks {
                 brace,
                 scaffold,
                 frame,
-                exhaust
+                exhaust,
+                efence
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -144,7 +146,8 @@ public class ModBlocks {
                 brace.createItemBlock(),
                 scaffold.createItemBlock(),
                 frame.createItemBlock(),
-                exhaust.createItemBlock()
+                exhaust.createItemBlock(),
+                efence.createItemBlock()
         );
     }
 
@@ -182,5 +185,6 @@ public class ModBlocks {
         scaffold.registerItemModel(Item.getItemFromBlock(scaffold));
         frame.registerItemModel(Item.getItemFromBlock(frame));
         exhaust.registerItemModel(Item.getItemFromBlock(exhaust));
+        efence.registerItemModel(Item.getItemFromBlock(efence));
     }
 }

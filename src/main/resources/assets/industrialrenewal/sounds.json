@@ -52,5 +52,14 @@
         "stream": false
       }
     ]
+  },
+  "spark": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "industrialrenewal:spark",
+        "stream": false
+      }
+    ]
   }
 }

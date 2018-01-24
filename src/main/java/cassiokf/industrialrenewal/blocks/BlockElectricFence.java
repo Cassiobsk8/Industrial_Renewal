@@ -10,36 +10,56 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BlockFluorescent extends BlockBase {
-
-    //TODO converter para EnumFacing
+public class BlockElectricFence extends BlockBase {
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
-    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
-    protected static final AxisAlignedBB TOP_AABB = new AxisAlignedBB(0.0D, 0.8125D, 0.0D, 1.0D, 1.0D, 1.0D);
+    private static float NORTHZ1 = 0.4375f;
+    private static float SOUTHZ2 = 0.5625f;
+    private static float WESTX1 = 0.4375f;
+    private static float EASTX2 = 0.5625f;
+    private static float DOWNY1 = 0.0f;
+    private static float UPY2 = 1.5f;
+    private static float RUPY2 = 1.0f;
 
-    public BlockFluorescent(String name) {
+    public BlockElectricFence(String name) {
         super(Material.IRON, name);
         setSoundType(SoundType.METAL);
-        setHardness(0.8f);
-        setLightLevel(1.0F);
+    }
+
+    @Override
+    public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
+        return false;
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
+    }
+
+    @Override
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+        if (entityIn instanceof EntityLivingBase) {
+            entityIn.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 0.0F);
+            ((EntityLivingBase) entityIn).knockBack(entityIn, 0.2f, pos.getX() - entityIn.posX, pos.getZ() - entityIn.posZ);
+        }
+        //worldIn.playSound(null, pos, Objects.requireNonNull(SoundEvent.REGISTRY.getObject(IRSoundHandler.spark)), SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
     @SuppressWarnings("deprecation")
@@ -82,10 +102,13 @@ public class BlockFluorescent extends BlockBase {
      */
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         Block nb = neighbourState.getBlock();
-        if (neighbourDirection != EnumFacing.UP) {
-            return nb instanceof BlockFluorescent;
+        Block nbu = world.getBlockState(ownPos.offset(EnumFacing.UP)).getBlock();
+        if (neighbourDirection == EnumFacing.UP) {
+            Integer z = ownPos.getZ();
+            Integer x = ownPos.getX();
+            return nbu.isAir(neighbourState, world, ownPos.offset(EnumFacing.UP)) && (z % x % 3 == 0);
         }
-        return !(nb instanceof BlockRoof) || (ownPos.getZ() % 2) == 0;
+        return nb instanceof BlockElectricFence;
     }
 
     /**
@@ -100,8 +123,12 @@ public class BlockFluorescent extends BlockBase {
     private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
+        final Block neighbourBlock = neighbourState.getBlock();
 
-        return isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
+        final boolean neighbourIsValidForThis = isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
+        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockElectricFence) || ((BlockElectricFence) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
+
+        return neighbourIsValidForThis && thisIsValidForNeighbour;
     }
 
     @SuppressWarnings("deprecation")
@@ -121,20 +148,68 @@ public class BlockFluorescent extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        IBlockState actualState = getActualState(state, worldIn, pos);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
-        if (isConnected(actualState, EnumFacing.UP)) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, TOP_AABB);
+        if (!isActualState) {
+            state = state.getActualState(worldIn, pos);
         }
+        if (isConnected(state, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.0f;
+        } else if (!isConnected(state, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.4375f;
+        }
+        if (isConnected(state, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 1.0f;
+        } else if (!isConnected(state, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 0.5625f;
+        }
+        if (isConnected(state, EnumFacing.WEST)) {
+            WESTX1 = 0.0f;
+        } else if (!isConnected(state, EnumFacing.WEST)) {
+            WESTX1 = 0.4375f;
+        }
+        if (isConnected(state, EnumFacing.EAST)) {
+            EASTX2 = 1.0f;
+        } else if (!isConnected(state, EnumFacing.EAST)) {
+            EASTX2 = 0.5625f;
+        }
+        final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return BASE_AABB;
+        IBlockState actualState = state.getActualState(source, pos);
+
+        if (isConnected(actualState, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.0f;
+        } else if (!isConnected(actualState, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.4375f;
+        }
+        if (isConnected(actualState, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 1.0f;
+        } else if (!isConnected(actualState, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 0.5625f;
+        }
+        if (isConnected(actualState, EnumFacing.WEST)) {
+            WESTX1 = 0.0f;
+        } else if (!isConnected(actualState, EnumFacing.WEST)) {
+            WESTX1 = 0.4375f;
+        }
+        if (isConnected(actualState, EnumFacing.EAST)) {
+            EASTX2 = 1.0f;
+        } else if (!isConnected(actualState, EnumFacing.EAST)) {
+            EASTX2 = 0.5625f;
+        }
+        return new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, RUPY2, SOUTHZ2);
     }
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
 }

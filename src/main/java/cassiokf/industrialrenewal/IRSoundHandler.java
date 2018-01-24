@@ -5,6 +5,8 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class IRSoundHandler {
 
+    public static final ResourceLocation spark = new ResourceLocation(IndustrialRenewal.MODID, "spark");
+
     public static void init() {
         //TODO Renomear com o nome certo
         ResourceLocation sound0 = new ResourceLocation("industrialrenewal", "train_horn");
@@ -24,5 +26,8 @@ public class IRSoundHandler {
 
         ResourceLocation sound5 = new ResourceLocation("industrialrenewal", "gate_closing");
         ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(sound5).setRegistryName(sound5));
+
+
+        ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(spark).setRegistryName(spark));
     }
 }
