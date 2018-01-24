@@ -1,9 +1,11 @@
 {
   "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/stone_slab_top"
+    }
+  },
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:or_gate_00"
-    },
     "active=false,active01=false,active10=false,facing=down": {
       "model": "industrialrenewal:or_gate_00"
     },

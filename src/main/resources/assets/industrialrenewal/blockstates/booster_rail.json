@@ -1,5 +1,10 @@
 {
   "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/rail_golden"
+    }
+  },
   "variants": {
     "powered=false,shape=north_south": {
       "model": "industrialrenewal:rail_booster"

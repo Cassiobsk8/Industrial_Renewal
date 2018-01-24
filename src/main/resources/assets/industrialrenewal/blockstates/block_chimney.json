@@ -1,5 +1,10 @@
 {
   "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/cauldron_inner"
+    }
+  },
   "variants": {
     "normal": {"model": "industrialrenewal:chimney"},
     "inventory": {"model": "industrialrenewal:chimney", "transform": "forge:default-block"}

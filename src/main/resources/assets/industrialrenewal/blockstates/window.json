@@ -2,7 +2,9 @@
   "forge_marker": 1,
   "defaults": {
     "model": "industrialrenewal:window_base",
-    "uvlock": true
+    "textures": {
+      "particle": "blocks/glass"
+    }
   },
   "variants": {
     "down": {

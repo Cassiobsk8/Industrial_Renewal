@@ -2,7 +2,9 @@
   "forge_marker": 1,
   "defaults": {
     "model": "industrialrenewal:fluorescent_base",
-    "uvlock": true
+    "textures": {
+      "particle": "blocks/quartz_block_top"
+    }
   },
   "variants": {
     "down": {

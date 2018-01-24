@@ -1,7 +1,10 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "industrialrenewal:scaffold_base"
+    "model": "industrialrenewal:scaffold_base",
+    "textures": {
+      "particle": "industrialrenewal:blocks/pipe"
+    }
   },
   "variants": {
     "down": {

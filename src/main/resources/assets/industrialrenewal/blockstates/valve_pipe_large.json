@@ -1,5 +1,10 @@
 {
   "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/cauldron_inner"
+    }
+  },
   "variants": {
     "active=false,face_rotation=up,facing=up": { "model": "industrialrenewal:valve_large"},
     "active=false,face_rotation=up,facing=down": { "model": "industrialrenewal:valve_large","x":180},

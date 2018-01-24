@@ -1,5 +1,10 @@
 {
   "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/noteblock"
+    }
+  },
   "variants": {
     "normal": {
       "model": "industrialrenewal:alarm"

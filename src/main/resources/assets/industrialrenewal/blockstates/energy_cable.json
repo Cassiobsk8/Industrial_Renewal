@@ -2,7 +2,9 @@
   "forge_marker": 1,
   "defaults": {
     "model": "industrialrenewal:cable_center",
-    "uvlock": true
+    "textures": {
+      "particle": "blocks/redstone_block"
+    }
   },
   "variants": {
     "down": {

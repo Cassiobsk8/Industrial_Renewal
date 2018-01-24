@@ -1,5 +1,10 @@
 {
   "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/rail_detector"
+    }
+  },
   "variants": {
       "powered=false,shape=north_south": {"model": "industrialrenewal:rail_detector"},
       "powered=false,shape=east_west": {"model": "industrialrenewal:rail_detector", "y": 90},
