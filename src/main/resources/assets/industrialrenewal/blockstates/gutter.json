@@ -170,8 +170,7 @@
       "y": 90
     },
     "inventory": {
-      "model": "industrialrenewal:gutter_000",
-      "transform": "forge:default-block"
+      "model": "industrialrenewal:gutter_101"
     }
   }
 }

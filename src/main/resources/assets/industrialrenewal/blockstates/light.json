@@ -28,9 +28,7 @@
       "y": 90
     },
     "inventory": {
-      "model": "industrialrenewal:light",
-      "y": 180,
-      "transform": "forge:default-block"
+      "model": "industrialrenewal:light"
     }
   }
 }

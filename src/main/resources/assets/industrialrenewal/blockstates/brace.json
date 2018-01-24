@@ -39,8 +39,7 @@
       "y": 90
     },
     "inventory": {
-      "model": "industrialrenewal:brace",
-      "transform": "forge:default-block"
+      "model": "industrialrenewal:brace"
     }
   }
 }

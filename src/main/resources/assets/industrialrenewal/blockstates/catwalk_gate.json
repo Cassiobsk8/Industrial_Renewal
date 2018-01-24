@@ -47,8 +47,7 @@
       "y": 90
     },
     "inventory": {
-      "model": "industrialrenewal:catwalk_gate_0",
-      "transform": "forge:default-block"
+      "model": "industrialrenewal:catwalk_gate_0"
     }
   }
 }

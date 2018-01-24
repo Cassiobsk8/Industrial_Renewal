@@ -8,9 +8,9 @@
     "display": {
         "gui": {
             "rotation": [
-                30,
-                225,
-                0
+                -150,
+                145,
+                180
             ],
             "translation": [
                 0,

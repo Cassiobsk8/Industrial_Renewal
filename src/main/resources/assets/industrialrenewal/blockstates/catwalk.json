@@ -83,11 +83,12 @@
           },
           "pipe_north": {
             "model": "industrialrenewal:catwalk_side",
+            "y": 90,
             "uvlock": true
           },
           "pipe_south": {
             "model": "industrialrenewal:catwalk_side",
-            "y": 180,
+            "y": -90,
             "uvlock": true
           }
         }

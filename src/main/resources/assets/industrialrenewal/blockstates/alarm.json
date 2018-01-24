@@ -31,8 +31,7 @@
       "y": 90
     },
     "inventory": {
-      "model": "industrialrenewal:alarm",
-      "transform": "forge:default-block"
+      "model": "industrialrenewal:alarm"
     }
   }
 }

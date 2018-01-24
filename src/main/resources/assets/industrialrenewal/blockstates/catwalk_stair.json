@@ -86,8 +86,7 @@
       "y": 90
     },
     "inventory": {
-      "model": "industrialrenewal:catwalk_stair11",
-      "transform": "forge:default-block"
+      "model": "industrialrenewal:catwalk_stair11"
     }
   }
 }

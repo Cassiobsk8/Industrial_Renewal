@@ -47,8 +47,7 @@
       "y": 90
     },
     "inventory": {
-      "model": "industrialrenewal:catwalk_hatch_1",
-      "transform": "forge:default-block"
+      "model": "industrialrenewal:catwalk_hatch_1"
     }
   }
 }
