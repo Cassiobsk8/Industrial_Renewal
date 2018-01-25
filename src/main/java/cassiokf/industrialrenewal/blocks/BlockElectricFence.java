@@ -119,7 +119,7 @@ public class BlockElectricFence extends BlockBase {
             Integer x = ownPos.getX();
             return nbu.isAir(neighbourState, world, ownPos.offset(EnumFacing.UP)) && (z % x % 3 == 0);
         }
-        return nb instanceof BlockElectricFence;
+        return nb instanceof BlockElectricFence || nb instanceof BlockElectricGate;
     }
 
     /**
