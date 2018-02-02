@@ -29,17 +29,6 @@ public class BlockSolarPanel extends BlockTileEntity<TileEntitySolarPanel> {
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        return worldIn.getBlockState(pos.down()).isTopSolid();
-    }
-
-    @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        super.breakBlock(world, pos, state);
-        world.removeTileEntity(pos);
-    }
-
-    @Override
     public Class<TileEntitySolarPanel> getTileEntityClass() {
         return TileEntitySolarPanel.class;
     }

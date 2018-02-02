@@ -5,13 +5,13 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class VoltsEnergyContainer implements IEnergyStorage, INBTSerializable<NBTTagCompound> {
-    private int stored;
-    private int capacity;
-    private int input;
-    private int output;
+    protected int stored;
+    protected int capacity;
+    protected int input;
+    protected int output;
 
     public VoltsEnergyContainer() {
-        this(256, 0, 15);
+        this(1000, 1000, 1000);
     }
 
     public VoltsEnergyContainer(int capacity, int input, int output) {

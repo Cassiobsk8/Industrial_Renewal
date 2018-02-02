@@ -7,6 +7,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -29,8 +30,11 @@ public class TileEntitySolarPanel extends TileEntity implements ICapabilityProvi
     public void update() {
         if (this.hasWorld()) {
             World world = this.getWorld();
+            BlockPos pos = this.getPos();
             int connections = 0;
-            if (world.provider.hasSkyLight()) {
+            if (world.provider.hasSkyLight() && world.canBlockSeeSky(pos.offset(EnumFacing.UP))
+                    && world.getSkylightSubtracted() == 0 && this.container.getEnergyStored() != this.container.getMaxEnergyStored()) {
+
                 int i = world.getLightFor(EnumSkyBlock.SKY, pos) - world.getSkylightSubtracted();
                 float f = world.getCelestialAngleRadians(1.0F);
                 if (i > 0) {
@@ -49,7 +53,7 @@ public class TileEntitySolarPanel extends TileEntity implements ICapabilityProvi
             }
             connections = 0;
             for (final EnumFacing facing : EnumFacing.HORIZONTALS) {
-                final TileEntity tileEntity = world.getTileEntity(this.getPos().offset(facing));
+                final TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
                 if (tileEntity != null && !tileEntity.isInvalid()) {
                     if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()) && !(world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockSolarPanel)) {
                         connections = connections + 1;
@@ -62,7 +66,7 @@ public class TileEntitySolarPanel extends TileEntity implements ICapabilityProvi
             }
             //System.out.println("Stored " + this.container.getEnergyStored() + " Connections " + connections + " Result " + energy);
             for (final EnumFacing facing : EnumFacing.HORIZONTALS) {
-                final TileEntity tileEntity = world.getTileEntity(this.getPos().offset(facing));
+                final TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
                 if (tileEntity != null && !tileEntity.isInvalid()) {
                     if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()) && !(world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockSolarPanel)) {
                         final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
