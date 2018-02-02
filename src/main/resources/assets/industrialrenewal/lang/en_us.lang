@@ -50,3 +50,4 @@ tile.industrialrenewal.valve_pipe_large_open.name=Large Fluid Valve Open
 tile.industrialrenewal.window.name=Windows
 tile.industrialrenewal.electric_fence.name=Electric Fence
 tile.industrialrenewal.electric_gate.name=Electric Gate
+tile.industrialrenewal.solar_panel.name=Basic Solar Panel

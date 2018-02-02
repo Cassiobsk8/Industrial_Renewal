@@ -1,0 +1,42 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "industrialrenewal:electric_gate_base",
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "west": {
+        "y": 270
+      },
+      "east": {
+        "y": 90
+      }
+    },
+    "active": {
+      "true": {
+        "model": "industrialrenewal:electric_gate_base_open"
+      },
+      "false": {}
+    },
+    "up": {
+      "true": {
+        "submodel": {
+          "pipe_front": {
+            "model": "industrialrenewal:electric_gate_front"
+          }
+        }
+      },
+      "false": {}
+    },
+    "inventory": [
+      {}
+    ]
+  }
+}

@@ -9,6 +9,7 @@ import cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd;
 import cassiokf.industrialrenewal.tileentity.gates.nand.BlockGateNand;
 import cassiokf.industrialrenewal.tileentity.gates.or.BlockGateOr;
 import cassiokf.industrialrenewal.tileentity.gutter.BlockGutter;
+import cassiokf.industrialrenewal.tileentity.solarpanel.BlockSolarPanel;
 import cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -52,6 +53,7 @@ public class ModBlocks {
     public static BlockFrame frame = new BlockFrame("frame");
     public static BlockElectricFence efence = new BlockElectricFence("electric_fence");
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate");
+    public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel");
 
     public static BlockExhaustFan exhaust = new BlockExhaustFan("exhaust_fan");
 
@@ -102,7 +104,8 @@ public class ModBlocks {
                 frame,
                 exhaust,
                 efence,
-                egate
+                egate,
+                spanel
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -112,6 +115,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
         GameRegistry.registerTileEntity(gutter.getTileEntityClass(), gutter.getRegistryName().toString());
         GameRegistry.registerTileEntity(exhaust.getTileEntityClass(), exhaust.getRegistryName().toString());
+        GameRegistry.registerTileEntity(spanel.getTileEntityClass(), spanel.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -150,7 +154,8 @@ public class ModBlocks {
                 frame.createItemBlock(),
                 exhaust.createItemBlock(),
                 efence.createItemBlock(),
-                egate.createItemBlock()
+                egate.createItemBlock(),
+                spanel.createItemBlock()
         );
     }
 
@@ -190,5 +195,6 @@ public class ModBlocks {
         exhaust.registerItemModel(Item.getItemFromBlock(exhaust));
         efence.registerItemModel(Item.getItemFromBlock(efence));
         egate.registerItemModel(Item.getItemFromBlock(egate));
+        spanel.registerItemModel(Item.getItemFromBlock(spanel));
     }
 }

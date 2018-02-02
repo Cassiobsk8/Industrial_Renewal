@@ -50,7 +50,7 @@ public class TileEntityGutter extends TileFluidHandler implements IFluidHandler,
                     Integer fillamount = 0;
 
                     while (world.getBlockState(pos.offset(state.getValue(BlockGutter.FACING), f)).getBlock() instanceof BlockRoof) {
-                        if (world.isRainingAt(pos.offset(state.getValue(BlockGutter.FACING), f).up())) {
+                        if (world.isRainingAt(pos.offset(state.getValue(BlockGutter.FACING), f).up(2))) {
                             fillamount++;
                             f++;
                         } else {
