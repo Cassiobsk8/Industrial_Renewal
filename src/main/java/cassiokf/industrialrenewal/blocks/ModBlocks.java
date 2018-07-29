@@ -20,7 +20,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class ModBlocks {
 
 
-    public static BlockOre oreCopper = new BlockOre("ore_copper", "oreCopper");
+    //public static BlockOre oreCopper = new BlockOre("ore_copper", "oreCopper");
     public static BlockGateAnd gateAnd = new BlockGateAnd("gate_and");
     public static BlockGateNand gateNand = new BlockGateNand("gate_nand");
     public static BlockGateNot gateNot = new BlockGateNot("gate_not");
@@ -55,6 +55,8 @@ public class ModBlocks {
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate");
     public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel");
 
+    public static BlockRedstoneWire redstonew = new BlockRedstoneWire("redstone_wire");
+
     public static BlockExhaustFan exhaust = new BlockExhaustFan("exhaust_fan");
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
@@ -66,7 +68,7 @@ public class ModBlocks {
 
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
-                oreCopper,
+                //oreCopper,
                 blockHazard,
                 blockIndFloor,
                 blockChimney,
@@ -105,7 +107,8 @@ public class ModBlocks {
                 exhaust,
                 efence,
                 egate,
-                spanel
+                spanel,
+                redstonew
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -120,7 +123,7 @@ public class ModBlocks {
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
         registry.registerAll(
-                oreCopper.createItemBlock(),
+                //oreCopper.createItemBlock(),
                 blockHazard.createItemBlock(),
                 blockIndFloor.createItemBlock(),
                 blockChimney.createItemBlock(),
@@ -155,12 +158,13 @@ public class ModBlocks {
                 exhaust.createItemBlock(),
                 efence.createItemBlock(),
                 egate.createItemBlock(),
-                spanel.createItemBlock()
+                spanel.createItemBlock(),
+                redstonew.createItemBlock()
         );
     }
 
     public static void registerItemModels() {
-        oreCopper.registerItemModel(Item.getItemFromBlock(oreCopper));
+        //oreCopper.registerItemModel(Item.getItemFromBlock(oreCopper));
         blockHazard.registerItemModel(Item.getItemFromBlock(blockHazard));
         blockIndFloor.registerItemModel(Item.getItemFromBlock(blockIndFloor));
         blockChimney.registerItemModel(Item.getItemFromBlock(blockChimney));
@@ -196,5 +200,6 @@ public class ModBlocks {
         efence.registerItemModel(Item.getItemFromBlock(efence));
         egate.registerItemModel(Item.getItemFromBlock(egate));
         spanel.registerItemModel(Item.getItemFromBlock(spanel));
+        redstonew.registerItemModel(Item.getItemFromBlock(redstonew));
     }
 }

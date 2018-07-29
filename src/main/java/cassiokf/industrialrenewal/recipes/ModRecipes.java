@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.recipes;
 
-import cassiokf.industrialrenewal.blocks.ModBlocks;
 import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -16,7 +15,7 @@ public class ModRecipes {
         GameRegistry.addShapelessRecipe(new ResourceLocation("industrialrenewal:small_slabs"), new ResourceLocation("small_slabs"), new ItemStack(ModItems.smallSlab, 4),
                 Ingredient.fromStacks(new ItemStack(ModItems.steelSaw, 1, OreDictionary.WILDCARD_VALUE)), Ingredient.fromStacks(new ItemStack(Blocks.STONE_SLAB, 1)));
 
-        ModBlocks.oreCopper.initOreDict();
+        //ModBlocks.oreCopper.initOreDict();
         ModItems.ingotSteel.initOreDict();
     }
 

@@ -1,27 +1,35 @@
 {
   "forge_marker": 1,
+  "defaults": {
+    "model": "industrialrenewal:redstone_wire_base",
+    "textures": {
+      "particle": "blocks/redstone_block"
+    }
+  },
   "variants": {
-    "east=none,north=side,power=0,south=side,west=none": {"model": "industrialrenewal:redstone_wire_line_ns"},
-    "east=side,north=none,power=0,south=none,west=side": {"model": "industrialrenewal:redstone_wire_line_ns","y":90},
-    "east=none,north=side,power=0,south=none,west=none": {"model": "industrialrenewal:redstone_wire_line_n"},
-    "east=none,north=none,power=0,south=side,west=none": {"model": "industrialrenewal:redstone_wire_line_n","y":180},
-    "east=side,north=none,power=0,south=none,west=none": {"model": "industrialrenewal:redstone_wire_line_n","y":90},
-    "east=none,north=none,power=0,south=none,west=side": {"model": "industrialrenewal:redstone_wire_line_n","y":270},
-    "east=none,north=side,power=0,south=none,west=side": {"model": "industrialrenewal:redstone_wire_curved"},
-    "east=side,north=side,power=0,south=none,west=none": {"model": "industrialrenewal:redstone_wire_curved","y":90},
-    "east=side,north=none,power=0,south=side,west=none": {"model": "industrialrenewal:redstone_wire_curved","y":180},
-    "east=none,north=none,power=0,south=side,west=side": {"model": "industrialrenewal:redstone_wire_curved","y":270},
-    "east=side,north=side,power=0,south=none,west=side": {"model": "industrialrenewal:redstone_wire_3w"},
-    "east=side,north=side,power=0,south=side,west=none": {"model": "industrialrenewal:redstone_wire_3w","y":90},
-    "east=side,north=none,power=0,south=side,west=side": {"model": "industrialrenewal:redstone_wire_3w","y":180},
-    "east=none,north=side,power=0,south=side,west=side": {"model": "industrialrenewal:redstone_wire_3w","y":270},
-    "east=none,north=up,power=0,south=side,west=none": {"model": "industrialrenewal:redstone_wire_line_ns_up"},
-    "east=up,north=none,power=0,south=none,west=side": {"model": "industrialrenewal:redstone_wire_line_ns_up","y":90},
-    "east=none,north=side,power=0,south=up,west=none": {"model": "industrialrenewal:redstone_wire_line_ns_up","y":180},
-    "east=side,north=none,power=0,south=none,west=up": {"model": "industrialrenewal:redstone_wire_line_ns_up","y":270},
-    "east=side,north=side,power=0,south=side,west=side": {"model": "industrialrenewal:redstone_wire_cross"},
-    "east=none,north=none,power=0,south=none,west=none": {"model": "industrialrenewal:redstone_wire_dot"},
-
-    "inventory": {"model": "industrialrenewal:redstone_wire_line_ns", "transform": "forge:default-block"}
+    "facing": {
+      "north": {
+        "x": 90
+      },
+      "south": {
+        "x": 90,
+        "y": 180
+      },
+      "west": {
+        "x": 90,
+        "y": 270
+      },
+      "east": {
+        "x": 90,
+        "y": 90
+      },
+      "up": {},
+      "down": {
+        "x": 180
+      }
+    },
+    "inventory": [
+      {}
+    ]
   }
 }
