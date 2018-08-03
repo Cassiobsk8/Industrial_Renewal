@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
+import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -123,6 +124,7 @@ public class BlockCatWalk extends BlockBase {
 
             return nb instanceof BlockCatWalk
                     || nb.isFullCube(neighbourState)
+                    || nb instanceof BlockRailBase
                     || (nb instanceof BlockCatwalkHatch && neighbourState.getValue(BlockCatwalkHatch.FACING) == neighbourDirection)
                     || (nb instanceof BlockCatwalkGate && neighbourState.getValue(BlockCatwalkGate.FACING) == neighbourDirection.getOpposite())
                     || (nb instanceof BlockCatwalkStair && neighbourState.getValue(BlockCatwalkStair.FACING) == neighbourDirection)

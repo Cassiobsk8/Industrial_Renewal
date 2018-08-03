@@ -80,10 +80,18 @@ public class BlockCatwalkLadder extends BlockBase {
         return i;
     }
 
+    protected boolean OpenIf(final IBlockAccess WorldIn, BlockPos ownPos) {
+        final BlockPos downpos = ownPos.down();
+        final BlockPos twoDownPos = downpos.down();
+        final IBlockState downState = WorldIn.getBlockState(downpos);
+        final IBlockState twoDownState = WorldIn.getBlockState(twoDownPos);
+        return downState.isFullBlock() || (downState.getBlock() instanceof BlockCatwalkLadder && !downState.getValue(ACTIVE) && twoDownState.isFullBlock());
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
+        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(ACTIVE, !OpenIf(worldIn, pos));
     }
 
     @Override
