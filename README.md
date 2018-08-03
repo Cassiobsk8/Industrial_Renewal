@@ -1,6 +1,8 @@
 # Industrial_Renewal
+
 Minecraft mod
 
+![alt text](Logo.png)
 
 ![alt text](peek.png)
 
