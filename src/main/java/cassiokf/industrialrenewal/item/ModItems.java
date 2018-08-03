@@ -7,6 +7,8 @@ public class ModItems {
 
     public static ItemOreDict ingotSteel = new ItemOreDict("ingot_steel", "ingotSteel");
     public static ItemOreDict spongeIron = new ItemOreDict("sponge_iron", null);
+    public static ItemOreDict stickIron = new ItemOreDict("stick_iron", "stickIron");
+
     public static ItemPowerScrewDrive screwDrive = new ItemPowerScrewDrive("screwdrive");
     public static ItemSteelSaw steelSaw = new ItemSteelSaw("steel_saw");
     public static ItemMineCartCargoContainer cargoContainer = new ItemMineCartCargoContainer("cargo_container");
@@ -19,7 +21,8 @@ public class ModItems {
                 screwDrive,
                 steelSaw,
                 cargoContainer,
-                smallSlab
+                smallSlab,
+                stickIron
         );
     }
 
@@ -30,5 +33,6 @@ public class ModItems {
         steelSaw.registerItemModel();
         cargoContainer.registerItemModel();
         smallSlab.registerItemModel();
+        stickIron.registerItemModel();
     }
 }
