@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.gates.or;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.Block;
@@ -40,7 +40,7 @@ public class BlockGateOr extends BlockTileEntity<TileEntityGateOr> {
         super(Material.CIRCUITS, name);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
-        setCreativeTab(IndustrialRenewal.creativeTab);
+        setCreativeTab(References.CREATIVE_TAB);
 
     }
     @SideOnly(Side.CLIENT)

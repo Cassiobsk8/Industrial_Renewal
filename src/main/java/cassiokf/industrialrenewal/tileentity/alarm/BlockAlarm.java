@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.alarm;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -35,7 +35,7 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
         super(Material.IRON, name);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
-        setCreativeTab(IndustrialRenewal.creativeTab);
+        setCreativeTab(References.CREATIVE_TAB);
         this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.UP));
 
     }

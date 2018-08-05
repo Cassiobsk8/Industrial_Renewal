@@ -5,7 +5,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class IRSoundHandler {
 
-    public static final ResourceLocation spark = new ResourceLocation(IndustrialRenewal.MODID, "spark");
+    public static final ResourceLocation spark = new ResourceLocation(References.MODID, "spark");
 
     public static void init() {
         //TODO Renomear com o nome certo

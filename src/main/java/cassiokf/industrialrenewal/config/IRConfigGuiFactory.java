@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.config;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.References;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
@@ -40,7 +40,7 @@ public class IRConfigGuiFactory implements IModGuiFactory {
     public static class IRConfigGui extends GuiConfig {
 
         public IRConfigGui(GuiScreen parentScreen) {
-            super(parentScreen, getConfigElements(), IndustrialRenewal.MODID, false, false, I18n.format("gui.config.main_title"));
+            super(parentScreen, getConfigElements(), References.MODID, false, false, I18n.format("gui.config.main_title"));
         }
 
         private static List<IConfigElement> getConfigElements() {

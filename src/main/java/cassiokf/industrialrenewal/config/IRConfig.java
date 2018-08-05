@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.config;
 
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.References;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -80,7 +80,7 @@ public class IRConfig {
 
         @SubscribeEvent(priority = EventPriority.LOWEST)
         public void onEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
-            if (event.getModID().equals(IndustrialRenewal.MODID)) {
+            if (event.getModID().equals(References.MODID)) {
                 syncFromGui();
             }
         }

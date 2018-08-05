@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.gates;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.BlockBase;
 import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.Block;
@@ -34,7 +34,7 @@ public class BlockGateNot extends BlockBase {
         super(Material.CIRCUITS, name);
         setHardness(0.8f);
         setSoundType(SoundType.METAL);
-        setCreativeTab(IndustrialRenewal.creativeTab);
+        setCreativeTab(References.CREATIVE_TAB);
 
     }
 

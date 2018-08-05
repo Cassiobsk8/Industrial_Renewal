@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.blocks;
 
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.References;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -32,11 +33,11 @@ public class BlockCrossingRail extends BlockRail {
 
 
         this.name = name;
-        setRegistryName(IndustrialRenewal.MODID, name);
-        setUnlocalizedName(IndustrialRenewal.MODID + "." + name);
+        setRegistryName(References.MODID, name);
+        setUnlocalizedName(References.MODID + "." + name);
         setHardness(0.8f);
         setSoundType(SoundType.WOOD);
-        setCreativeTab(IndustrialRenewal.creativeTab);
+        setCreativeTab(References.CREATIVE_TAB);
     }
 
 

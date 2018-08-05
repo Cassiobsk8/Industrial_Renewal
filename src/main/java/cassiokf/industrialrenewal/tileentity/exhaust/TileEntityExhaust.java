@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.exhaust;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.References;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -24,7 +24,7 @@ public class TileEntityExhaust extends TileEntity {
     //private final VariableValue offset = new VariableValue(0);
 
     public TileEntityExhaust() {
-        asm = ModelLoaderRegistry.loadASM(new ResourceLocation(IndustrialRenewal.MODID.toLowerCase(), "asms/block/exhaust.json"), ImmutableMap.<String, ITimeValue>of(
+        asm = ModelLoaderRegistry.loadASM(new ResourceLocation(References.MODID.toLowerCase(), "asms/block/exhaust.json"), ImmutableMap.<String, ITimeValue>of(
                 "cycle_length", cycleLength,
                 "click_time", clickTime
                 //"offset", offset

@@ -5,7 +5,6 @@ import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.item.ModItems;
 import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
-import cassiokf.industrialrenewal.tab.IndustrialRenewalTab;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -17,28 +16,25 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod(modid = IndustrialRenewal.MODID, name = IndustrialRenewal.NAME, version = IndustrialRenewal.VERSION, guiFactory = References.GUI_FACTORY)
+
+@Mod(modid = References.MODID, name = References.NAME, version = References.VERSION, guiFactory = References.GUI_FACTORY)
 public class IndustrialRenewal {
 
-    public static final IndustrialRenewalTab creativeTab = new IndustrialRenewalTab();
-    public static final String MODID = "industrialrenewal";
-    public static final String NAME = "Industrial Renewal";
-    public static final String VERSION = "1.0.0";
-    @Mod.Instance(MODID)
+    @Mod.Instance(References.MODID)
     public static IndustrialRenewal instance;
-    @SidedProxy(clientSide = "cassiokf.industrialrenewal.proxy.ClientProxy", serverSide = "cassiokf.industrialrenewal.proxy.CommonProxy", modId = MODID)
+    @SidedProxy(clientSide = "cassiokf.industrialrenewal.proxy.ClientProxy", serverSide = "cassiokf.industrialrenewal.proxy.CommonProxy", modId = References.MODID)
     public static CommonProxy proxy;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        System.out.println(NAME + " is loading preInit!");
+        System.out.println(References.NAME + " is loading preInit!");
         IRConfig.preInit();
         proxy.preInit();
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        System.out.println(NAME + " is loading init!");
+        System.out.println(References.NAME + " is loading init!");
         ModRecipes.init();
         IRSoundHandler.init();
         proxy.registerBlockRenderers();
@@ -46,7 +42,7 @@ public class IndustrialRenewal {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        System.out.println(NAME + " is loading posInit!");
+        System.out.println(References.NAME + " is loading posInit!");
 
     }
 

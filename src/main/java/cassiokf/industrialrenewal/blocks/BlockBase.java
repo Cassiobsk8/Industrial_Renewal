@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -16,9 +17,9 @@ public class BlockBase extends Block {
 
         this.name = name;
 
-        setRegistryName(IndustrialRenewal.MODID, name);
-        setUnlocalizedName(IndustrialRenewal.MODID + "." + name);
-        setCreativeTab(IndustrialRenewal.creativeTab);
+        setRegistryName(References.MODID, name);
+        setUnlocalizedName(References.MODID + "." + name);
+        setCreativeTab(References.CREATIVE_TAB);
         setHardness(2f);
         setResistance(5f);
     }

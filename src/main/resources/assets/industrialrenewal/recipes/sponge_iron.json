@@ -1,4 +1,10 @@
 {
+  "conditions": [
+    {
+      "type": "industrialrenewal:sponge_iron_enabled",
+      "value": true
+    }
+  ],
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {

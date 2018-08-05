@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.References;
 import net.minecraft.block.BlockRailDetector;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -13,11 +14,11 @@ public class BlockDetectorRail extends BlockRailDetector {
     public BlockDetectorRail(String name) {
 
         this.name = name;
-        setRegistryName(IndustrialRenewal.MODID, name);
-        setUnlocalizedName(IndustrialRenewal.MODID + "." + name);
+        setRegistryName(References.MODID, name);
+        setUnlocalizedName(References.MODID + "." + name);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
-        setCreativeTab(IndustrialRenewal.creativeTab);
+        setCreativeTab(References.CREATIVE_TAB);
     }
 
     @Override

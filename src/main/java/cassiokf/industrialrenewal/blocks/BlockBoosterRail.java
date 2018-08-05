@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.References;
 import net.minecraft.block.BlockRailPowered;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
@@ -16,11 +17,11 @@ public class BlockBoosterRail extends BlockRailPowered {
     public BlockBoosterRail(String name) {
 
         this.name = name;
-        setRegistryName(IndustrialRenewal.MODID, name);
-        setUnlocalizedName(IndustrialRenewal.MODID + "." + name);
+        setRegistryName(References.MODID, name);
+        setUnlocalizedName(References.MODID + "." + name);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
-        setCreativeTab(IndustrialRenewal.creativeTab);
+        setCreativeTab(References.CREATIVE_TAB);
     }
 
     @Override

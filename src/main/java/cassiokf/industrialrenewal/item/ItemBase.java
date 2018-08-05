@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.References;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
@@ -10,9 +11,10 @@ public class ItemBase extends Item {
 
     public ItemBase(String name) {
         this.name = name;
-        setRegistryName(IndustrialRenewal.MODID, name);
-        setUnlocalizedName(IndustrialRenewal.MODID + "." + name);
-        setCreativeTab(IndustrialRenewal.creativeTab);
+        setRegistryName(References.MODID, name);
+        setUnlocalizedName(References.MODID + "." + name);
+
+        setCreativeTab(References.CREATIVE_TAB);
     }
 
     public void registerItemModel() {

@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tab;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 public class IndustrialRenewalTab extends CreativeTabs {
 
     public IndustrialRenewalTab() {
-        super(IndustrialRenewal.MODID);
+        super(References.MODID);
     }
 
     @Override
