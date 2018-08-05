@@ -52,3 +52,11 @@ tile.industrialrenewal.window.name=Windows
 tile.industrialrenewal.electric_fence.name=Electric Fence
 tile.industrialrenewal.electric_gate.name=Electric Gate
 tile.industrialrenewal.solar_panel.name=Basic Solar Panel
+
+#Gui
+
+gui.config.main_title=Industrial Renewal Configuration
+gui.config.category.recipes=Recipes
+gui.config.category.recipes.tooltip=Recipes settings
+gui.config.recipes.spongeiron_recipe.name=Sponge Iron recipe
+gui.config.recipes.spongeiron_recipe.comment=Turn On/Off the sponge iron recipe (Default true)

@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal;
 
 import cassiokf.industrialrenewal.blocks.ModBlocks;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.item.ModItems;
 import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
@@ -16,7 +17,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod(modid = IndustrialRenewal.MODID, name = IndustrialRenewal.NAME, version = IndustrialRenewal.VERSION)
+@Mod(modid = IndustrialRenewal.MODID, name = IndustrialRenewal.NAME, version = IndustrialRenewal.VERSION, guiFactory = References.GUI_FACTORY)
 public class IndustrialRenewal {
 
     public static final IndustrialRenewalTab creativeTab = new IndustrialRenewalTab();
@@ -31,6 +32,8 @@ public class IndustrialRenewal {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         System.out.println(NAME + " is loading preInit!");
+        IRConfig.preInit();
+        proxy.preInit();
     }
 
     @Mod.EventHandler
