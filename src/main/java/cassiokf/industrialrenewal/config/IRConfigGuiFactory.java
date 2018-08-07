@@ -24,12 +24,12 @@ public class IRConfigGuiFactory implements IModGuiFactory {
 
     @Override
     public boolean hasConfigGui() {
-        return false;
+        return true;
     }
 
     @Override
     public GuiScreen createConfigGui(GuiScreen parentScreen) {
-        return null;
+        return new IRConfigGui(parentScreen);
     }
 
     @Override
@@ -49,21 +49,23 @@ public class IRConfigGuiFactory implements IModGuiFactory {
             return list;
         }
 
-    }
+        public static class CategoryEntryBlocks extends GuiConfigEntries.CategoryEntry {
 
-    public static class CategoryEntryBlocks extends GuiConfigEntries.CategoryEntry {
+            public CategoryEntryBlocks(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement configElement) {
+                super(owningScreen, owningEntryList, configElement);
+            }
 
-        public CategoryEntryBlocks(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement configElement) {
-            super(owningScreen, owningEntryList, configElement);
+            @Override
+            protected GuiScreen buildChildScreen() {
+                Configuration config = IRConfig.getConfig();
+                ConfigElement categoryBlocks = new ConfigElement(config.getCategory(IRConfig.CATEGORY_NAME_RECIPES));
+                List<IConfigElement> propertyOnScreen = categoryBlocks.getChildElements();
+                String windowTitle = I18n.format("gui.config.category.recipes");
+                return new GuiConfig(owningScreen, propertyOnScreen, owningScreen.modID, this.configElement.requiresWorldRestart() || owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() || owningScreen.allRequireMcRestart, windowTitle);
+            }
         }
 
-        @Override
-        protected GuiScreen buildChildScreen() {
-            Configuration config = IRConfig.getConfig();
-            ConfigElement categoryBlocks = new ConfigElement(config.getCategory(IRConfig.CATEGORY_NAME_RECIPES));
-            List<IConfigElement> propertyOnScreen = categoryBlocks.getChildElements();
-            String windowTitle = I18n.format("gui.config.category.recipes");
-            return new GuiConfig(owningScreen, propertyOnScreen, owningScreen.modID, this.configElement.requiresWorldRestart() || owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() || owningScreen.allRequireMcRestart, windowTitle);
-        }
     }
+
+
 }
