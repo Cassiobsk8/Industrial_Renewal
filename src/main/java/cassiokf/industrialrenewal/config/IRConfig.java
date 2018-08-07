@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.config;
 
 
 import cassiokf.industrialrenewal.References;
-import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -55,7 +54,7 @@ public class IRConfig {
         //All the properties
         Property propertyRecipeSpongeIron = config.get(CATEGORY_NAME_RECIPES, "spongeiron_recipe", true);
         propertyRecipeSpongeIron.setLanguageKey("gui.config.recipes.spongeiron_recipe.name");
-        propertyRecipeSpongeIron.setComment(I18n.format("gui.config.recipes.spongeiron_recipe.comment"));
+        propertyRecipeSpongeIron.setComment("gui.config.recipes.spongeiron_recipe.comment");
         //End of properties
 
         List<String> propertyOrderRecipes = new ArrayList<String>();
