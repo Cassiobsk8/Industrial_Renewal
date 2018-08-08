@@ -53,6 +53,10 @@ tile.industrialrenewal.electric_fence.name=Electric Fence
 tile.industrialrenewal.electric_gate.name=Electric Gate
 tile.industrialrenewal.solar_panel.name=Basic Solar Panel
 
+#Entity
+
+entity.industrialrenewal.cargo_container.name=Cargo Container
+
 #Gui
 
 gui.config.main_title=Industrial Renewal Configuration

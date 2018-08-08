@@ -2,9 +2,11 @@ package cassiokf.industrialrenewal;
 
 import cassiokf.industrialrenewal.blocks.ModBlocks;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.entity.EntityInit;
 import cassiokf.industrialrenewal.item.ModItems;
 import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
+import cassiokf.industrialrenewal.util.RenderHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -28,6 +30,8 @@ public class IndustrialRenewal {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         System.out.println(References.NAME + " is loading preInit!");
+        EntityInit.registerEntities();
+        RenderHandler.registerEntitiesRender();
         IRConfig.preInit();
         proxy.preInit();
     }
