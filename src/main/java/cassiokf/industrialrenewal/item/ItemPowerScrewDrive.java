@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.blocks.ModBlocks;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -15,8 +16,8 @@ import java.util.List;
 
 public class ItemPowerScrewDrive extends ItemBase {
 
-    public ItemPowerScrewDrive(String name) {
-        super(name);
+    public ItemPowerScrewDrive(String name, CreativeTabs tab) {
+        super(name, tab);
         maxStackSize = 1;
     }
 

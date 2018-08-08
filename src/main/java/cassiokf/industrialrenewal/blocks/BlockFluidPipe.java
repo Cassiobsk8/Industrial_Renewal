@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -22,8 +23,8 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import javax.annotation.Nullable;
 
 public class BlockFluidPipe extends BlockPipeBase implements IFluidHandler {
-    public BlockFluidPipe(String name) {
-        super(name);
+    public BlockFluidPipe(String name, CreativeTabs tab) {
+        super(name, tab);
     }
 
     @Override

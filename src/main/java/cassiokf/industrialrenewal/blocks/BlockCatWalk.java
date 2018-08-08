@@ -12,6 +12,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -39,8 +40,8 @@ public class BlockCatWalk extends BlockBase {
     protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.03125D, 1.5D, 1.0D);
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 1.5D, 1.0D);
 
-    public BlockCatWalk(String name) {
-        super(Material.IRON, name);
+    public BlockCatWalk(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }

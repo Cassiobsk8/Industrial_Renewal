@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 
@@ -12,14 +13,14 @@ public class BlockBase extends Block {
 
     protected String name;
 
-    public BlockBase(Material material, String name) {
+    public BlockBase(Material material, String name, CreativeTabs tab) {
         super(material);
 
         this.name = name;
 
         setRegistryName(References.MODID, name);
         setUnlocalizedName(References.MODID + "." + name);
-        setCreativeTab(References.CREATIVE_TAB);
+        setCreativeTab(tab);
         setHardness(2f);
         setResistance(5f);
     }

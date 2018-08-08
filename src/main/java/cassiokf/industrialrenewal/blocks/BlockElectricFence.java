@@ -9,6 +9,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.BlockRenderLayer;
@@ -38,8 +39,8 @@ public class BlockElectricFence extends BlockBase {
     private static float UPY2 = 1.5f;
     private static float RUPY2 = 1.0f;
 
-    public BlockElectricFence(String name) {
-        super(Material.IRON, name);
+    public BlockElectricFence(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
     }
 

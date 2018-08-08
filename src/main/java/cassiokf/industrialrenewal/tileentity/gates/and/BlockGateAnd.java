@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity.gates.and;
 
-import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.Block;
@@ -12,6 +11,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -36,11 +36,10 @@ public class BlockGateAnd extends BlockTileEntity<TileEntityGateAnd> {
     public static final PropertyBool ACTIVE10 = PropertyBool.create("active10");
     public static final PropertyBool ACTIVE01 = PropertyBool.create("active01");
 
-    public BlockGateAnd(String name) {
-        super(Material.CIRCUITS, name);
+    public BlockGateAnd(String name, CreativeTabs tab) {
+        super(Material.CIRCUITS, name, tab);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
-        setCreativeTab(References.CREATIVE_TAB);
 
     }
     @SideOnly(Side.CLIENT)

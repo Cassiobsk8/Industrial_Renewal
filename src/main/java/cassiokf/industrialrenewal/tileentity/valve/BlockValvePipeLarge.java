@@ -11,6 +11,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -34,8 +35,8 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     public static final IProperty<EnumFaceRotation> FACE_ROTATION = PropertyEnum.create("face_rotation", EnumFaceRotation.class);
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
-    public BlockValvePipeLarge(String name) {
-        super(Material.IRON, name);
+    public BlockValvePipeLarge(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setHardness(3f);
         setResistance(5f);
         this.setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));

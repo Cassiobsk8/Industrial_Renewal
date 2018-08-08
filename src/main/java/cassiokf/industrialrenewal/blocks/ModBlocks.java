@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.gates.BlockGateNot;
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
@@ -20,48 +21,53 @@ public class ModBlocks {
 
 
     //public static BlockOre oreCopper = new BlockOre("ore_copper", "oreCopper");
-    public static BlockGateAnd gateAnd = new BlockGateAnd("gate_and");
-    public static BlockGateNand gateNand = new BlockGateNand("gate_nand");
-    public static BlockGateNot gateNot = new BlockGateNot("gate_not");
-    public static BlockGateOr gateOr = new BlockGateOr("gate_or");
-    public static BlockBase blockHazard = new BlockBase(Material.IRON, "block_hazard");
-    public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor");
-    public static BlockChimney blockChimney = new BlockChimney("block_chimney");
-    public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe");
-    public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable");
-    public static BlockFloorPipe floorPipe = new BlockFloorPipe("floor_pipe");
-    public static BlockFloorCable floorCable = new BlockFloorCable("floor_cable");
-    public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp");
-    public static BlockAlarm alarm = new BlockAlarm("alarm");
-    public static BlockCatWalk catWalk = new BlockCatWalk("catwalk");
-    public static BlockCatwalkStair catwalkStair = new BlockCatwalkStair("catwalk_stair");
-    public static BlockPillar pillar = new BlockPillar("catwalk_pillar");
-    public static BlockColumn column = new BlockColumn("catwalk_column");
-    public static BlockCatwalkLadder iladder = new BlockCatwalkLadder("catwalk_ladder");
-    public static BlockRoof roof = new BlockRoof("roof");
-    public static BlockGutter gutter = new BlockGutter("gutter");
-    public static BlockLight light = new BlockLight("light");
-    public static BlockFluorescent fluorescent = new BlockFluorescent("fluorescent");
-    public static BlockDummy dummy = new BlockDummy("dummy");
-    public static BlockCatwalkGate catwalkGate = new BlockCatwalkGate("catwalk_gate");
-    public static BlockCatwalkHatch hatch = new BlockCatwalkHatch("catwalk_hatch");
-    public static BlockWindow window = new BlockWindow("window");
-    public static BlockPlatform platform = new BlockPlatform("platform");
-    public static BlockBrace brace = new BlockBrace("brace");
-    public static BlockScaffold scaffold = new BlockScaffold("scaffold");
-    public static BlockFrame frame = new BlockFrame("frame");
-    public static BlockElectricFence efence = new BlockElectricFence("electric_fence");
-    public static BlockElectricGate egate = new BlockElectricGate("electric_gate");
-    public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel");
+    public static BlockGateAnd gateAnd = new BlockGateAnd("gate_and", References.CREATIVE_IR_TAB);
+    public static BlockGateNand gateNand = new BlockGateNand("gate_nand", References.CREATIVE_IR_TAB);
+    public static BlockGateNot gateNot = new BlockGateNot("gate_not", References.CREATIVE_IR_TAB);
+    public static BlockGateOr gateOr = new BlockGateOr("gate_or", References.CREATIVE_IR_TAB);
 
-    public static BlockRedstoneWire redstonew = new BlockRedstoneWire("redstone_wire");
+    public static BlockBase blockHazard = new BlockBase(Material.IRON, "block_hazard", References.CREATIVE_IR_TAB);
 
-    public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail");
-    public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail");
-    public static BlockDetectorRail detectorRail = new BlockDetectorRail("detector_rail");
-    public static BlockBoosterRail boosterRail = new BlockBoosterRail("booster_rail");
+    public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor", References.CREATIVE_IR_TAB);
+    public static BlockChimney blockChimney = new BlockChimney("block_chimney", References.CREATIVE_IR_TAB);
 
-    public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large");
+    public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe", References.CREATIVE_IR_TAB);
+    public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable", References.CREATIVE_IR_TAB);
+    public static BlockFloorPipe floorPipe = new BlockFloorPipe("floor_pipe", References.CREATIVE_IR_TAB);
+    public static BlockFloorCable floorCable = new BlockFloorCable("floor_cable", References.CREATIVE_IR_TAB);
+    public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp", References.CREATIVE_IR_TAB);
+
+    public static BlockAlarm alarm = new BlockAlarm("alarm", References.CREATIVE_IR_TAB);
+
+    public static BlockCatWalk catWalk = new BlockCatWalk("catwalk", References.CREATIVE_IR_TAB);
+    public static BlockCatwalkStair catwalkStair = new BlockCatwalkStair("catwalk_stair", References.CREATIVE_IR_TAB);
+    public static BlockPillar pillar = new BlockPillar("catwalk_pillar", References.CREATIVE_IR_TAB);
+    public static BlockColumn column = new BlockColumn("catwalk_column", References.CREATIVE_IR_TAB);
+    public static BlockCatwalkLadder iladder = new BlockCatwalkLadder("catwalk_ladder", References.CREATIVE_IR_TAB);
+    public static BlockRoof roof = new BlockRoof("roof", References.CREATIVE_IR_TAB);
+    public static BlockGutter gutter = new BlockGutter("gutter", References.CREATIVE_IR_TAB);
+    public static BlockLight light = new BlockLight("light", References.CREATIVE_IR_TAB);
+    public static BlockFluorescent fluorescent = new BlockFluorescent("fluorescent", References.CREATIVE_IR_TAB);
+    public static BlockDummy dummy = new BlockDummy("dummy", References.CREATIVE_IR_TAB);
+    public static BlockCatwalkGate catwalkGate = new BlockCatwalkGate("catwalk_gate", References.CREATIVE_IR_TAB);
+    public static BlockCatwalkHatch hatch = new BlockCatwalkHatch("catwalk_hatch", References.CREATIVE_IR_TAB);
+    public static BlockWindow window = new BlockWindow("window", References.CREATIVE_IR_TAB);
+    public static BlockPlatform platform = new BlockPlatform("platform", References.CREATIVE_IR_TAB);
+    public static BlockBrace brace = new BlockBrace("brace", References.CREATIVE_IR_TAB);
+    public static BlockScaffold scaffold = new BlockScaffold("scaffold", References.CREATIVE_IR_TAB);
+    public static BlockFrame frame = new BlockFrame("frame", References.CREATIVE_IR_TAB);
+    public static BlockElectricFence efence = new BlockElectricFence("electric_fence", References.CREATIVE_IR_TAB);
+    public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
+    public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREATIVE_IR_TAB);
+
+    public static BlockRedstoneWire redstonew = new BlockRedstoneWire("redstone_wire", References.CREATIVE_IR_TAB);
+
+    public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
+    public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
+    public static BlockDetectorRail detectorRail = new BlockDetectorRail("detector_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
+    public static BlockBoosterRail boosterRail = new BlockBoosterRail("booster_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
+
+    public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large", References.CREATIVE_IR_TAB);
 
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(

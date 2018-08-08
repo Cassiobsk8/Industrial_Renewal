@@ -4,6 +4,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -13,8 +14,8 @@ public class BlockFrame extends BlockBase {
 
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    public BlockFrame(String name) {
-        super(Material.IRON, name);
+    public BlockFrame(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }

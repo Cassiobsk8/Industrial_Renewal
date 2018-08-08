@@ -5,6 +5,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -21,8 +22,8 @@ public class BlockBrace extends BlockBase {
     protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
 
-    public BlockBrace(String name) {
-        super(Material.IRON, name);
+    public BlockBrace(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setHardness(3f);
         setResistance(5f);
     }

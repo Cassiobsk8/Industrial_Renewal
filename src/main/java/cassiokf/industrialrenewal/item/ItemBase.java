@@ -9,12 +9,12 @@ public class ItemBase extends Item {
 
     protected String name;
 
-    public ItemBase(String name) {
+    public ItemBase(String name, CreativeTabs tab) {
         this.name = name;
         setRegistryName(References.MODID, name);
         setUnlocalizedName(References.MODID + "." + name);
 
-        setCreativeTab(References.CREATIVE_TAB);
+        setCreativeTab(tab);
     }
 
     public void registerItemModel() {

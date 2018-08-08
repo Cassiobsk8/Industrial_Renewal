@@ -6,6 +6,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -16,8 +17,8 @@ public class BlockRedstoneWire extends BlockBase {
 
     public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
 
-    public BlockRedstoneWire(String name) {
-        super(Material.CIRCUITS, name);
+    public BlockRedstoneWire(String name, CreativeTabs tab) {
+        super(Material.CIRCUITS, name, tab);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
 

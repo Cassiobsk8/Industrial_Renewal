@@ -8,8 +8,8 @@ public class BlockOre extends BlockBase {
 
     private String oreName;
 
-    public BlockOre(String name, String oreName) {
-        super(Material.ROCK, name);
+    public BlockOre(String name, String oreName, CreativeTabs tab) {
+        super(Material.ROCK, name, tab);
 
         this.oreName = oreName;
 

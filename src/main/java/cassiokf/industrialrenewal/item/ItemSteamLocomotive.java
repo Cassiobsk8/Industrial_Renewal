@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.item;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -14,8 +15,8 @@ import net.minecraft.world.World;
 public class ItemSteamLocomotive extends ItemBase {
 
 
-    public ItemSteamLocomotive(String name) {
-        super(name);
+    public ItemSteamLocomotive(String name, CreativeTabs tab) {
+        super(name, tab);
 
         this.maxStackSize = 8;
     }

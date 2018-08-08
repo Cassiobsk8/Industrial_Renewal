@@ -11,6 +11,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,8 +52,8 @@ public class BlockFloorLamp extends BlockBase {
     protected static final AxisAlignedBB C_WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 1.0D, 1.0D);
     protected static final AxisAlignedBB C_EAST_AABB = new AxisAlignedBB(0.9375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    public BlockFloorLamp(String name) {
-        super(Material.IRON, name);
+    public BlockFloorLamp(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setLightLevel(1.0F);
     }

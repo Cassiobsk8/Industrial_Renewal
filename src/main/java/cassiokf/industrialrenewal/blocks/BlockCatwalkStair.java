@@ -10,6 +10,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,8 +40,8 @@ public class BlockCatwalkStair extends BlockBase {
     protected static final AxisAlignedBB WC_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.03125D, 2.0D, 1.0D);
     protected static final AxisAlignedBB EC_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 2.0D, 1.0D);
 
-    public BlockCatwalkStair(String name) {
-        super(Material.IRON, name);
+    public BlockCatwalkStair(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }

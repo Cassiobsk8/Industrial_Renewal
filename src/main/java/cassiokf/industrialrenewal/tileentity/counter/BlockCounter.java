@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.counter;
 
+import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -15,7 +16,7 @@ import javax.annotation.Nullable;
 public class BlockCounter extends BlockTileEntity<TileEntityCounter> {
 
     public BlockCounter() {
-        super(Material.ROCK, "counter");
+        super(Material.ROCK, "counter", References.CREATIVE_IR_TAB);
     }
 
     @Override

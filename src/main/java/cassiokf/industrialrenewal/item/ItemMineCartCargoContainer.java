@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.item;
 import cassiokf.industrialrenewal.entity.EntityCargoContainer;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -14,8 +15,8 @@ import net.minecraft.world.World;
 public class ItemMineCartCargoContainer extends ItemBase {
 
 
-    public ItemMineCartCargoContainer(String name) {
-        super(name);
+    public ItemMineCartCargoContainer(String name, CreativeTabs tab) {
+        super(name, tab);
 
         this.maxStackSize = 16;
     }

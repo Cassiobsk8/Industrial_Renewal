@@ -5,6 +5,7 @@ import cassiokf.industrialrenewal.blocks.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -21,8 +22,8 @@ import javax.annotation.Nullable;
 
 public class BlockEnergyCable extends BlockPipeBase implements ITileEntityProvider {
 
-    public BlockEnergyCable(String name) {
-        super(name);
+    public BlockEnergyCable(String name, CreativeTabs tab) {
+        super(name, tab);
 
     }
 

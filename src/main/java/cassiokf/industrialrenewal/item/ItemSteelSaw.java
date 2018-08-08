@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.item;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -10,8 +11,8 @@ public class ItemSteelSaw extends ItemBase {
 
     private static int maxDamage = 64;
 
-    public ItemSteelSaw(String name) {
-        super(name);
+    public ItemSteelSaw(String name, CreativeTabs tab) {
+        super(name, tab);
         setMaxDamage(64);
         this.setNoRepair();
         maxStackSize = 1;

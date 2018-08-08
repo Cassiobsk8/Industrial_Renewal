@@ -8,6 +8,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,8 +40,8 @@ public class BlockElectricGate extends BlockBase {
     protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.875D, 0.625D, 1.5D, 1.875D);
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.375D, 0.0D, -0.875, 0.625D, 1.5D, 0.125D);
 
-    public BlockElectricGate(String name) {
-        super(Material.IRON, name);
+    public BlockElectricGate(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setHardness(0.8f);
     }
 

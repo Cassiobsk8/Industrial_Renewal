@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
 import net.minecraft.block.BlockRailPowered;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -14,14 +15,14 @@ public class BlockBoosterRail extends BlockRailPowered {
 
     protected String name;
 
-    public BlockBoosterRail(String name) {
+    public BlockBoosterRail(String name, CreativeTabs tab) {
 
         this.name = name;
         setRegistryName(References.MODID, name);
         setUnlocalizedName(References.MODID + "." + name);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
-        setCreativeTab(References.CREATIVE_TAB);
+        setCreativeTab(tab);
     }
 
     @Override

@@ -11,6 +11,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
@@ -43,8 +44,8 @@ public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
     protected static final AxisAlignedBB WC_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.8125D, 0.75D, 1.0D);
     protected static final AxisAlignedBB EC_AABB = new AxisAlignedBB(0.1875D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D);
 
-    public BlockGutter(String name) {
-        super(Material.IRON, name);
+    public BlockGutter(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }

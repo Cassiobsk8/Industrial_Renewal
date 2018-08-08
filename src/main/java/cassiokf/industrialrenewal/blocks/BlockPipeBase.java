@@ -9,6 +9,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -40,8 +41,8 @@ public class BlockPipeBase extends BlockBase {
                     .collect(Collectors.toList())
     );
 
-    public BlockPipeBase(String name) {
-        super(Material.IRON, name);
+    public BlockPipeBase(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }

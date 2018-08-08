@@ -7,6 +7,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,8 +38,8 @@ public class BlockCatwalkGate extends BlockBase {
     protected static final AxisAlignedBB BACK_LEFT_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.875D, 0.125D, 1.5D, 1.0D);
     protected static final AxisAlignedBB BACK_RIGHT_AABB = new AxisAlignedBB(0.875D, 0.0D, 0.875D, 1.0D, 1.5D, 1.0D);
 
-    public BlockCatwalkGate(String name) {
-        super(Material.IRON, name);
+    public BlockCatwalkGate(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setHardness(0.8f);
     }
 

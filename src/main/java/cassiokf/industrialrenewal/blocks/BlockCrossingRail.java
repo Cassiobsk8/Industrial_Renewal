@@ -7,6 +7,7 @@ import net.minecraft.block.BlockRail;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -29,15 +30,13 @@ public class BlockCrossingRail extends BlockRail {
     protected String name;
     private long lastTime = System.currentTimeMillis() - PERIOD;
 
-    public BlockCrossingRail(String name) {
-
-
+    public BlockCrossingRail(String name, CreativeTabs tab) {
         this.name = name;
         setRegistryName(References.MODID, name);
         setUnlocalizedName(References.MODID + "." + name);
         setHardness(0.8f);
         setSoundType(SoundType.WOOD);
-        setCreativeTab(References.CREATIVE_TAB);
+        setCreativeTab(tab);
     }
 
 

@@ -9,6 +9,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -37,8 +38,8 @@ public class BlockPillar extends BlockBase {
     private static float DOWNY1 = 0.0f;
     private static float UPY2 = 1.0f;
 
-    public BlockPillar(String name) {
-        super(Material.IRON, name);
+    public BlockPillar(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }

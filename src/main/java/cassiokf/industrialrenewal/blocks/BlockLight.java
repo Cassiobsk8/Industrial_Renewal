@@ -6,6 +6,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.BlockRenderLayer;
@@ -31,8 +32,8 @@ public class BlockLight extends BlockBase {
     protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.3125D, 0.6875D, 0.1875D, 0.6875D, 1.0D, 0.8125D);
     protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.1875D, 0.6875D, 0.3125D, 0.8125D);
 
-    public BlockLight(String name) {
-        super(Material.IRON, name);
+    public BlockLight(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setLightLevel(1.0F);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);

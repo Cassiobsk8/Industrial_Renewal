@@ -5,6 +5,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -17,8 +18,8 @@ public class BlockSolarPanel extends BlockTileEntity<TileEntitySolarPanel> {
 
     protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
 
-    public BlockSolarPanel(String name) {
-        super(Material.GLASS, name);
+    public BlockSolarPanel(String name, CreativeTabs tab) {
+        super(Material.GLASS, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }

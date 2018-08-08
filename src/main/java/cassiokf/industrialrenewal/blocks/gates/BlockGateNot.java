@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.blocks.gates;
 
-import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.BlockBase;
 import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.Block;
@@ -13,6 +12,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -30,11 +30,10 @@ public class BlockGateNot extends BlockBase {
     public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
-    public BlockGateNot(String name) {
-        super(Material.CIRCUITS, name);
+    public BlockGateNot(String name, CreativeTabs tab) {
+        super(Material.CIRCUITS, name, tab);
         setHardness(0.8f);
         setSoundType(SoundType.METAL);
-        setCreativeTab(References.CREATIVE_TAB);
 
     }
 

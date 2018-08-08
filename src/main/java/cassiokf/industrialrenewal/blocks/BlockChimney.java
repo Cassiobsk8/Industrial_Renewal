@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.blocks;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -11,8 +12,8 @@ import java.util.Random;
 
 public class BlockChimney extends BlockBase {
 
-    public BlockChimney(String name) {
-        super(Material.IRON, name);
+    public BlockChimney(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setHardness(0.8f);
         setLightOpacity(255);
     }

@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.blocks;
 
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,8 +25,8 @@ public class BlockFloorPipe extends BlockFluidPipe {
 
     public static final AxisAlignedBB FULL_BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    public BlockFloorPipe(String name) {
-        super(name);
+    public BlockFloorPipe(String name, CreativeTabs tab) {
+        super(name, tab);
     }
 
 

@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.blocks;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -16,8 +17,8 @@ public class BlockDummy extends BlockBase {
     protected static final AxisAlignedBB NONE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 
 
-    public BlockDummy(String name) {
-        super(Material.IRON, name);
+    public BlockDummy(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
     }
 
     @Override

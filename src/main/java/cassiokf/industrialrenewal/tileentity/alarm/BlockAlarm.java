@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity.alarm;
 
-import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -9,6 +8,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -31,11 +31,10 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm> {
     private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.4375F, 0.875F, 0.875F, 0);
 
 
-    public BlockAlarm(String name) {
-        super(Material.IRON, name);
+    public BlockAlarm(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
-        setCreativeTab(References.CREATIVE_TAB);
         this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.UP));
 
     }

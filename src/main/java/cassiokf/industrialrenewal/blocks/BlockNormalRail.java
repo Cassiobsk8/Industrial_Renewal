@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 
@@ -11,7 +12,7 @@ public class BlockNormalRail extends BlockRail {
 
     protected String name;
 
-    public BlockNormalRail(String name) {
+    public BlockNormalRail(String name, CreativeTabs tab) {
 
         this.name = name;
 
@@ -19,7 +20,7 @@ public class BlockNormalRail extends BlockRail {
         setUnlocalizedName(References.MODID + "." + name);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
-        setCreativeTab(References.CREATIVE_TAB);
+        setCreativeTab(tab);
     }
 
     @Override
