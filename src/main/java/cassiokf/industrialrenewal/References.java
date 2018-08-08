@@ -15,4 +15,5 @@ public class References {
     public static final String GUI_FACTORY = "cassiokf.industrialrenewal.config.IRConfigGuiFactory";
 
     public static final int ENTITY_CARGOCONTAINER_ID = 120;
+    public static final int ENTITY_STEAMLOCOMOTIVE_ID = 121;
 }
