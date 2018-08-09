@@ -1,0 +1,70 @@
+#Wed Dec 06 12:33:40 BRST 2017
+
+itemGroup.industrialrenewal=Industrial Renewal
+itemGroup.industrialrenewalrailroad=Industrial Renewal Railroad
+
+#Items
+
+item.industrialrenewal.ingot_steel.name=Стальной слиток
+item.industrialrenewal.screwdrive.name=Шуруповерт
+item.industrialrenewal.small_slab.name=Маленькая плита
+item.industrialrenewal.sponge_iron.name=Губчатое железо
+item.industrialrenewal.steel_saw.name=Стальная пила
+item.industrialrenewal.stick_iron.name=Железный стержень
+item.industrialrenewal.steam_locomotive.name=Паровоз
+item.industrialrenewal.cargo_container.name=Грузовой контейнер
+
+#Blocks
+
+tile.industrialrenewal.alarm.name=Промышленная сигнализация
+tile.industrialrenewal.block_chimney.name=Дымовая труба
+tile.industrialrenewal.block_hazard.name=Блок опасности
+tile.industrialrenewal.booster_rail.name=Ускоряющий путь
+tile.industrialrenewal.brace.name=Балка раскоса
+tile.industrialrenewal.cart_container=Грузовой контейнер
+tile.industrialrenewal.catwalk.name=Подиум
+tile.industrialrenewal.catwalk_column.name=Колонна
+tile.industrialrenewal.catwalk_gate.name=Подиумная калитка
+tile.industrialrenewal.catwalk_hatch.name=Люк
+tile.industrialrenewal.catwalk_ladder.name=Лестница в клетке
+tile.industrialrenewal.catwalk_pillar.name=Столб
+tile.industrialrenewal.catwalk_stair.name=Ступенька
+tile.industrialrenewal.crossing_rail.name=Перекрестный путь
+tile.industrialrenewal.detector_rail.name=Детекторный путь
+tile.industrialrenewal.energy_cable.name=Энергетический кабель
+tile.industrialrenewal.fluid_filter.name=Жидкостный фильтр (WIP)
+tile.industrialrenewal.fluid_pipe.name=Жидкостная труба
+tile.industrialrenewal.fluorescent.name=Флуоресцентный свет
+tile.industrialrenewal.frame.name=Рамка пути
+tile.industrialrenewal.gate_and.name=Гейт И
+tile.industrialrenewal.gate_nand.name=Гейт НЕ-И
+tile.industrialrenewal.gate_not.name=Гейт НЕ
+tile.industrialrenewal.gate_or.name=Гейт ИЛИ
+tile.industrialrenewal.gutter.name=Сточная канава
+tile.industrialrenewal.industrial_floor.name=Промышленный пол
+tile.industrialrenewal.light.name=Внешний свет
+tile.industrialrenewal.normal_rail.name=Путь
+tile.industrialrenewal.ore_copper.name=Медная руда
+tile.industrialrenewal.platform.name=Платформа
+tile.industrialrenewal.redstone_wire.name=Редстоун провод (WIP)
+tile.industrialrenewal.roof.name=Крыша
+tile.industrialrenewal.scaffold.name=Строительные леса
+tile.industrialrenewal.valve_pipe_large.name=Жидкостный клапан
+tile.industrialrenewal.valve_pipe_large_open.name=Большой открытый жидкостный клапан
+tile.industrialrenewal.window.name=Окна
+tile.industrialrenewal.electric_fence.name=Электрический забор
+tile.industrialrenewal.electric_gate.name=Электрическая калитка
+tile.industrialrenewal.solar_panel.name=Основная солнечная панель
+
+#Entity
+
+entity.industrialrenewal.cargo_container.name=Грузовой контейнер
+entity.industrialrenewal.steam_locomotive.name=Паровоз
+
+#Gui
+
+gui.config.main_title=Конфигурация Industrial Renewal
+gui.config.category.recipes=Рецепты
+gui.config.category.recipes.tooltip=Настройки рецептов
+gui.config.recipes.spongeiron_recipe.name=Рецепт губчатого железа
+gui.config.recipes.spongeiron_recipe.comment=Включить/выключить рецепт губчатого железа (по умолчанию - вкл.)
