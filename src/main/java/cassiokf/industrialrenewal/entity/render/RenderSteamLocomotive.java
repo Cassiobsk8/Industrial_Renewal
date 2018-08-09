@@ -22,6 +22,7 @@ public class RenderSteamLocomotive<T extends EntitySteamLocomotive> extends Rend
     }
 
     public void doRender(EntitySteamLocomotive entity, double x, double y, double z, float entityYaw, float partialTicks) {
+
         GlStateManager.pushMatrix();
         this.bindEntityTexture(entity);
         long i = (long) entity.getEntityId() * 493286711L;
