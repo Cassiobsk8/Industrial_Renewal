@@ -9,7 +9,10 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class RenderCargoContainer<T extends EntityCargoContainer> extends Render<EntityCargoContainer> {
 
     public static final ResourceLocation TEXTURES = new ResourceLocation(References.MODID + ":textures/entities/cargocontainer.png");

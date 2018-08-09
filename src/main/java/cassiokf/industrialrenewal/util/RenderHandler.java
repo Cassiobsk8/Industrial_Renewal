@@ -10,6 +10,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class RenderHandler {
+
     public static void registerEntitiesRender() {
         RenderingRegistry.registerEntityRenderingHandler(EntityCargoContainer.class, new IRenderFactory<EntityCargoContainer>() {
             @Override

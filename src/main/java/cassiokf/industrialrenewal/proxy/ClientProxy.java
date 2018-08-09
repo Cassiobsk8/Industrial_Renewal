@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.proxy;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.util.RenderHandler;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
@@ -12,6 +13,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit() {
         IRConfig.clientPreInit();
+        RenderHandler.registerEntitiesRender();
     }
 
     @Override
