@@ -40,7 +40,7 @@ public class IndustrialRenewal {
     public void init(FMLInitializationEvent event) {
         System.out.println(References.NAME + " is loading init!");
         ModRecipes.init();
-        IRSoundHandler.init();
+        IRSoundHandler.registerSounds();
         proxy.registerBlockRenderers();
     }
 

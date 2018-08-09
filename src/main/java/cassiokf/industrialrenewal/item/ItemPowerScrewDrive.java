@@ -1,12 +1,16 @@
 package cassiokf.industrialrenewal.item;
 
+import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.blocks.ModBlocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -62,6 +66,6 @@ public class ItemPowerScrewDrive extends ItemBase {
     }
 
     private void playDrillSound(World world, BlockPos pos) {
-        world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:drill")), SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound(null, pos, IRSoundHandler.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 }

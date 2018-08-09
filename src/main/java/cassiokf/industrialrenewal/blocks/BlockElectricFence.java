@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.IRSoundHandler;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -12,10 +13,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -25,6 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -60,7 +59,9 @@ public class BlockElectricFence extends BlockBase {
             entityIn.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 0.0F);
             ((EntityLivingBase) entityIn).knockBack(entityIn, 0.2f, pos.getX() - entityIn.posX, pos.getZ() - entityIn.posZ);
         }
-        //worldIn.playSound(null, pos, Objects.requireNonNull(SoundEvent.REGISTRY.getObject(IRSoundHandler.spark)), SoundCategory.BLOCKS, 1.0F, 1.0F);
+        Random r = new Random();
+        float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
+        worldIn.playSound(null, pos, IRSoundHandler.EFECT_SHOCK, SoundCategory.BLOCKS, 0.6F, pitch);
     }
 
     @Override

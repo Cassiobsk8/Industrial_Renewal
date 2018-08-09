@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
 
+import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
 import net.minecraft.block.BlockRail;
@@ -9,11 +10,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -46,10 +45,7 @@ public class BlockCrossingRail extends BlockRail {
         long thisTime = System.currentTimeMillis();
         if ((thisTime - lastTime) >= PERIOD) {
             lastTime = thisTime;
-            int i = pos.getX();
-            int j = pos.getY();
-            int k = pos.getZ();
-            world.playSound((EntityPlayer) null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:train_horn")), SoundCategory.BLOCKS, 2.0F, 1.0F);
+            world.playSound(null, pos, IRSoundHandler.TILEENTITY_TRAINHORN, SoundCategory.BLOCKS, 2F, 1F);
         }
     }
 

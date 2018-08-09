@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.IRSoundHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -12,7 +13,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -20,7 +23,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Objects;
+import java.util.Random;
 
 public class BlockElectricGate extends BlockBase {
 
@@ -55,8 +58,10 @@ public class BlockElectricGate extends BlockBase {
         if (world.isRemote) {
             return true;
         } else {
+            Random r = new Random();
+            float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
             if (state.getValue(ACTIVE)) {
-                world.playSound(null, pos, Objects.requireNonNull(SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:gate_closing"))), SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                world.playSound(null, pos, IRSoundHandler.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F, pitch);
                 if (upb instanceof BlockElectricGate) {
                     upstate = upstate.withProperty(ACTIVE, false);
                     world.setBlockState(pos.up(), upstate, 3);
@@ -69,7 +74,7 @@ public class BlockElectricGate extends BlockBase {
                 world.setBlockState(pos, state, 3);
                 return true;
             } else {
-                world.playSound(null, pos, Objects.requireNonNull(SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:gate_opening"))), SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                world.playSound(null, pos, IRSoundHandler.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F, pitch);
                 if (upb instanceof BlockElectricGate) {
                     upstate = upstate.withProperty(ACTIVE, true);
                     world.setBlockState(pos.up(), upstate, 3);

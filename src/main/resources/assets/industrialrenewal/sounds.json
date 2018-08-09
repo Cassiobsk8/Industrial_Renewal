@@ -1,64 +1,71 @@
 {
-  "train_horn": {
+  "railroad.train_horn": {
     "category": "block",
+    "subtitle": "railroad.train_horn",
     "sounds": [
       {
-        "name": "industrialrenewal:train_horn",
-        "stream": false
+        "name": "industrialrenewal:railroad/train_horn",
+        "stream": true
       }
     ]
   },
   "valve": {
     "category": "block",
+    "subtitle": "valve",
     "sounds": [
       {
         "name": "industrialrenewal:valve",
-        "stream": false
+        "stream": true
       }
     ]
   },
   "modern_alarm": {
     "category": "block",
+    "subtitle": "modern_alarm",
     "sounds": [
       {
         "name": "industrialrenewal:modern_alarm",
-        "stream": false
+        "stream": true
       }
     ]
   },
   "drill": {
     "category": "block",
+    "subtitle": "drill",
     "sounds": [
       {
         "name": "industrialrenewal:drill",
-        "stream": false
+        "stream": true
       }
     ]
   },
   "gate_closing": {
     "category": "block",
+    "subtitle": "gate_closing",
     "sounds": [
       {
         "name": "industrialrenewal:gate_closing",
-        "stream": false
+        "stream": true
       }
     ]
   },
   "gate_opening": {
     "category": "block",
+    "subtitle": "gate_opening",
     "sounds": [
       {
         "name": "industrialrenewal:gate_opening",
-        "stream": false
+        "stream": true
       }
     ]
   },
   "spark": {
     "category": "block",
+    "subtitle": "spark",
     "sounds": [
       {
         "name": "industrialrenewal:spark",
-        "stream": false
+        "stream": true
       }
     ]
   }

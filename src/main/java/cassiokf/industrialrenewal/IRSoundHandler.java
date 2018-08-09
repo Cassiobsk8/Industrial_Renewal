@@ -1,33 +1,28 @@
 package cassiokf.industrialrenewal;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class IRSoundHandler {
 
-    public static final ResourceLocation spark = new ResourceLocation(References.MODID, "spark");
+    public static SoundEvent TILEENTITY_TRAINHORN, TILEENTITY_VALVE_CHANGE, TILEENTITY_ALARM, ITEM_DRILL, BLOCK_CATWALKGATE_OPEN, BLOCK_CATWALKGATE_CLOSE, EFECT_SHOCK;
 
-    public static void init() {
-        //TODO Renomear com o nome certo
-        ResourceLocation sound0 = new ResourceLocation("industrialrenewal", "train_horn");
-        ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(sound0).setRegistryName(sound0));
+    public static void registerSounds() {
+        TILEENTITY_TRAINHORN = registerSound("railroad.train_horn");
+        TILEENTITY_VALVE_CHANGE = registerSound("valve");
+        TILEENTITY_ALARM = registerSound("modern_alarm");
+        ITEM_DRILL = registerSound("drill");
+        BLOCK_CATWALKGATE_OPEN = registerSound("gate_opening");
+        BLOCK_CATWALKGATE_CLOSE = registerSound("gate_closing");
+        EFECT_SHOCK = registerSound("spark");
+    }
 
-        ResourceLocation sound1 = new ResourceLocation("industrialrenewal", "valve");
-        ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(sound1).setRegistryName(sound1));
-
-        ResourceLocation sound2 = new ResourceLocation("industrialrenewal", "modern_alarm");
-        ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(sound2).setRegistryName(sound2));
-
-        ResourceLocation sound3 = new ResourceLocation("industrialrenewal", "drill");
-        ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(sound3).setRegistryName(sound3));
-
-        ResourceLocation sound4 = new ResourceLocation("industrialrenewal", "gate_opening");
-        ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(sound4).setRegistryName(sound4));
-
-        ResourceLocation sound5 = new ResourceLocation("industrialrenewal", "gate_closing");
-        ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(sound5).setRegistryName(sound5));
-
-
-        ForgeRegistries.SOUND_EVENTS.register(new net.minecraft.util.SoundEvent(spark).setRegistryName(spark));
+    private static SoundEvent registerSound(String name) {
+        ResourceLocation location = new ResourceLocation(References.MODID, name);
+        SoundEvent event = new SoundEvent(location);
+        event.setRegistryName(name);
+        ForgeRegistries.SOUND_EVENTS.register(event);
+        return event;
     }
 }

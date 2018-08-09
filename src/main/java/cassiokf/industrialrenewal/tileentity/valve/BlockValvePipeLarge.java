@@ -15,7 +15,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -66,7 +68,7 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
                 int j = pos.getY();
                 int k = pos.getZ();
 
-                world.playSound((EntityPlayer) null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:valve")), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                getTileEntity(world, pos).playSwitchSound();
                 state = state.cycleProperty(ACTIVE);
                 world.setBlockState(pos, state, 3);
                 world.spawnParticle(EnumParticleTypes.WATER_DROP, (double) i, (double) j, (double) k, 1.0D, 1.0D, 1.0D);

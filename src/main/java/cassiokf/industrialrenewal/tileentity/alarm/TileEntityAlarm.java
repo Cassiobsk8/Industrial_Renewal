@@ -1,12 +1,11 @@
 package cassiokf.industrialrenewal.tileentity.alarm;
 
+import cassiokf.industrialrenewal.IRSoundHandler;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -44,7 +43,7 @@ public class TileEntityAlarm extends TileEntity implements ITickable {
 
     public void playThis() {
         if (this.checkPowered()) {
-            this.getWorld().playSound((EntityPlayer) null, this.getPos().add(0.5, 0.5, 0.5), net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:modern_alarm")), SoundCategory.BLOCKS, 4.0F, 1.0F);
+            this.getWorld().playSound(null, this.getPos(), IRSoundHandler.TILEENTITY_ALARM, SoundCategory.BLOCKS, 4.0F, 1.0F);
         }
     }
 
