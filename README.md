@@ -1,6 +1,6 @@
 # Industrial Renewal
 
-![alt text](Logo.png)
+![alt text](images/Logo.png)
 
 On Curse: https://www.curseforge.com/minecraft/mc-mods/industrial-renewal
 This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -8,27 +8,27 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 Railroad:
 
-![alt text](07.png)
+![alt text](images/07.png)
 
-![alt text](peek.png)
+![alt text](images/peek.png)
 
 Industrial Floor:
-![alt text](01.png)
+![alt text](images/01.png)
 
 Alarm:
-![alt text](02.png)
+![alt text](images/02.png)
 
 Logic gates:
-![alt text](03.png)
+![alt text](images/03.png)
 
 3D Rails:
-![alt text](04.png)
+![alt text](images/04.png)
 
 Catwalk (Catwalk + Stair + Caged Ladder + Pillars + Columns)
-![alt text](05.png)
+![alt text](images/05.png)
 
 Pillars and Platforms:
-![alt text](06.png)
+![alt text](images/06.png)
 
 More soon:
 ...
