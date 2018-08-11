@@ -13,6 +13,7 @@ item.industrialrenewal.steel_saw.name=Steel Saw
 item.industrialrenewal.stick_iron.name=Iron Rod
 item.industrialrenewal.steam_locomotive.name=Steam Locomotive
 item.industrialrenewal.cargo_container.name=Cargo Container
+item.industrialrenewal.medkit.name=MedKit
 
 #Blocks
 
@@ -70,4 +71,4 @@ gui.config.category.recipes.tooltip=Recipes settings
 gui.config.recipes.spongeiron_recipe.name=Sponge Iron recipe
 gui.config.recipes.spongeiron_recipe.comment=Turn On/Off the sponge iron recipe (Default true)
 
-gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Slots for bandages
+gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Slots for MedKits

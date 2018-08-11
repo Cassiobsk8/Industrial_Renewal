@@ -70,7 +70,7 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
         }
         if (!player.isSneaking() && player.inventory.getCurrentItem() == ItemStack.EMPTY) {
             ItemStack stack = itemInKit(world, pos);
-            if (stack != null) {
+            if (stack != null && player.shouldHeal() && player.isPotionActive(MobEffects.REGENERATION)) {
                 player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 150, 1, false, false));
                 stack.shrink(1);
                 TileEntityFirstAidKit te = (TileEntityFirstAidKit) world.getTileEntity(pos);

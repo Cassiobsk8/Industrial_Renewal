@@ -7,7 +7,7 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class FirstAidSlot extends SlotItemHandler {
 
-    private ItemStack allowedOnSlot = new ItemStack(ModItems.ingotSteel);
+    private ItemStack allowedOnSlot = new ItemStack(ModItems.medkit);
 
     public FirstAidSlot(IItemHandler inventoryIn, int index, int xPosition, int yPosition) {
         super(inventoryIn, index, xPosition, yPosition);

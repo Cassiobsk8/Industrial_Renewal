@@ -13,6 +13,7 @@ item.industrialrenewal.steel_saw.name=Стальная пила
 item.industrialrenewal.stick_iron.name=Железный стержень
 item.industrialrenewal.steam_locomotive.name=Паровоз
 item.industrialrenewal.cargo_container.name=Грузовой контейнер
+item.industrialrenewal.medkit.name=Аптечка
 
 #Blocks
 
@@ -70,4 +71,4 @@ gui.config.category.recipes.tooltip=Настройки рецептов
 gui.config.recipes.spongeiron_recipe.name=Рецепт губчатого железа
 gui.config.recipes.spongeiron_recipe.comment=Включить/выключить рецепт губчатого железа (по умолчанию - вкл.)
 
-gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Слоты для бандажей
+gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Слоты для медицинских наборов
