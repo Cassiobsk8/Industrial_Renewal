@@ -32,6 +32,7 @@ tile.industrialrenewal.catwalk_stair.name=Stair
 tile.industrialrenewal.crossing_rail.name=Crossing Rail
 tile.industrialrenewal.detector_rail.name=Detector Rail
 tile.industrialrenewal.energy_cable.name=Energy Cable
+tile.industrialrenewal.firstaid_kit.name=First-aid Kit
 tile.industrialrenewal.fluid_filter.name=Fluid Filter (WIP)
 tile.industrialrenewal.fluid_pipe.name=Fluid Pipe
 tile.industrialrenewal.fluorescent.name=Fluorescent Light
@@ -68,3 +69,5 @@ gui.config.category.recipes=Recipes
 gui.config.category.recipes.tooltip=Recipes settings
 gui.config.recipes.spongeiron_recipe.name=Sponge Iron recipe
 gui.config.recipes.spongeiron_recipe.comment=Turn On/Off the sponge iron recipe (Default true)
+
+gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Slots for bandages

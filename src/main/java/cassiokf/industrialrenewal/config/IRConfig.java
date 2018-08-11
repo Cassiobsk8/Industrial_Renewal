@@ -54,7 +54,7 @@ public class IRConfig {
         //All the properties
         Property propertyRecipeSpongeIron = config.get(CATEGORY_NAME_RECIPES, "spongeiron_recipe", true);
         propertyRecipeSpongeIron.setLanguageKey("gui.config.recipes.spongeiron_recipe.name");
-        propertyRecipeSpongeIron.setComment("gui.config.recipes.spongeiron_recipe.comment");
+        propertyRecipeSpongeIron.setComment("Turn On/Off the sponge iron recipe (Default true)"); //TODO See whats going wrong
         //End of properties
 
         List<String> propertyOrderRecipes = new ArrayList<String>();

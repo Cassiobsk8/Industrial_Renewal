@@ -1,0 +1,32 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/firstaid"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:firstaid_kit"
+    },
+    "facing=north": {
+      "model": "industrialrenewal:firstaid_kit"
+    },
+    "facing=west": {
+      "model": "industrialrenewal:firstaid_kit",
+      "y": -90
+    },
+    "facing=south": {
+      "model": "industrialrenewal:firstaid_kit",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "industrialrenewal:firstaid_kit",
+      "y": 90
+    },
+    "inventory": {
+      "model": "industrialrenewal:firstaid_kit",
+      "y": 180
+    }
+  }
+}

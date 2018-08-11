@@ -6,6 +6,10 @@ import net.minecraft.util.text.translation.I18n;
 
 public class CommonProxy {
 
+    public void Init() {
+        //Need to put in Main class
+    }
+
     public void preInit() {
 
     }

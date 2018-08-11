@@ -11,6 +11,11 @@ import net.minecraftforge.client.model.ModelLoader;
 public class ClientProxy extends CommonProxy {
 
     @Override
+    public void Init() {
+        super.Init();
+    }
+
+    @Override
     public void preInit() {
         IRConfig.clientPreInit();
         RenderHandler.registerEntitiesRender();

@@ -5,6 +5,7 @@ import cassiokf.industrialrenewal.blocks.gates.BlockGateNot;
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
+import cassiokf.industrialrenewal.tileentity.firstaidkit.BlockFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd;
 import cassiokf.industrialrenewal.tileentity.gates.nand.BlockGateNand;
 import cassiokf.industrialrenewal.tileentity.gates.or.BlockGateOr;
@@ -30,6 +31,7 @@ public class ModBlocks {
 
     public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor", References.CREATIVE_IR_TAB);
     public static BlockChimney blockChimney = new BlockChimney("block_chimney", References.CREATIVE_IR_TAB);
+    public static BlockFirstAidKit firstAidKit = new BlockFirstAidKit("firstaid_kit", References.CREATIVE_IR_TAB);
 
     public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe", References.CREATIVE_IR_TAB);
     public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable", References.CREATIVE_IR_TAB);
@@ -110,7 +112,8 @@ public class ModBlocks {
                 efence,
                 egate,
                 spanel,
-                redstonew
+                redstonew,
+                firstAidKit
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -120,6 +123,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
         GameRegistry.registerTileEntity(gutter.getTileEntityClass(), gutter.getRegistryName().toString());
         GameRegistry.registerTileEntity(spanel.getTileEntityClass(), spanel.getRegistryName().toString());
+        GameRegistry.registerTileEntity(firstAidKit.getTileEntityClass(), firstAidKit.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -159,7 +163,8 @@ public class ModBlocks {
                 efence.createItemBlock(),
                 egate.createItemBlock(),
                 spanel.createItemBlock(),
-                redstonew.createItemBlock()
+                redstonew.createItemBlock(),
+                firstAidKit.createItemBlock()
         );
     }
 
@@ -200,5 +205,6 @@ public class ModBlocks {
         egate.registerItemModel(Item.getItemFromBlock(egate));
         spanel.registerItemModel(Item.getItemFromBlock(spanel));
         redstonew.registerItemModel(Item.getItemFromBlock(redstonew));
+        firstAidKit.registerItemModel(Item.getItemFromBlock(firstAidKit));
     }
 }

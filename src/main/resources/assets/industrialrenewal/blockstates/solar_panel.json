@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "particle": "industrialrenewal:blocks/solar_panel"
+      "particle": "industrialrenewal:blocks/solar_panels"
     }
   },
   "variants": {

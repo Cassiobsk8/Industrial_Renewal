@@ -6,6 +6,7 @@ import cassiokf.industrialrenewal.entity.EntityInit;
 import cassiokf.industrialrenewal.item.ModItems;
 import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
+import cassiokf.industrialrenewal.util.GUIHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 
 @Mod(modid = References.MODID, name = References.NAME, version = References.VERSION, guiFactory = References.GUI_FACTORY)
@@ -32,6 +34,7 @@ public class IndustrialRenewal {
         EntityInit.registerEntities();
         IRConfig.preInit();
         proxy.preInit();
+        NetworkRegistry.INSTANCE.registerGuiHandler(IndustrialRenewal.instance, new GUIHandler());
     }
 
     @Mod.EventHandler
@@ -39,6 +42,7 @@ public class IndustrialRenewal {
         System.out.println(References.NAME + " is loading init!");
         ModRecipes.init();
         IRSoundHandler.registerSounds();
+        proxy.Init();
         proxy.registerBlockRenderers();
     }
 

@@ -32,6 +32,7 @@ tile.industrialrenewal.catwalk_stair.name=Ступенька
 tile.industrialrenewal.crossing_rail.name=Перекрестный путь
 tile.industrialrenewal.detector_rail.name=Детекторный путь
 tile.industrialrenewal.energy_cable.name=Энергетический кабель
+tile.industrialrenewal.firstaid_kit.name=Аптечка первой помощи
 tile.industrialrenewal.fluid_filter.name=Жидкостный фильтр (WIP)
 tile.industrialrenewal.fluid_pipe.name=Жидкостная труба
 tile.industrialrenewal.fluorescent.name=Флуоресцентный свет
@@ -68,3 +69,5 @@ gui.config.category.recipes=Рецепты
 gui.config.category.recipes.tooltip=Настройки рецептов
 gui.config.recipes.spongeiron_recipe.name=Рецепт губчатого железа
 gui.config.recipes.spongeiron_recipe.comment=Включить/выключить рецепт губчатого железа (по умолчанию - вкл.)
+
+gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Слоты для бандажей
