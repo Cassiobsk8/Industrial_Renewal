@@ -1,10 +1,15 @@
 package cassiokf.industrialrenewal.tileentity.firstaidkit;
 
+import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.network.PacketRequestUpdateFirstAidKit;
+import cassiokf.industrialrenewal.network.PacketUpdateFirstAidKit;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -12,10 +17,29 @@ import javax.annotation.Nullable;
 
 public class TileEntityFirstAidKit extends TileEntity implements ICapabilityProvider {
 
-    private ItemStackHandler inventory;
+    public ItemStackHandler inventory;
 
     public TileEntityFirstAidKit() {
-        this.inventory = new ItemStackHandler(8);
+        this.inventory = new ItemStackHandler(8) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                if (!world.isRemote) {
+                    IndustrialRenewal.network.sendToAllAround(new PacketUpdateFirstAidKit(TileEntityFirstAidKit.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onLoad() {
+        if (world.isRemote) {
+            IndustrialRenewal.network.sendToServer(new PacketRequestUpdateFirstAidKit(this));
+        }
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return new AxisAlignedBB(getPos(), getPos().add(1, 1, 1));
     }
 
     @Override

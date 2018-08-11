@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.tileentity.firstaidkit;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.network.PacketUpdateFirstAidKit;
 import cassiokf.industrialrenewal.util.GUIHandler;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -23,6 +24,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -71,6 +73,9 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
             if (stack != null) {
                 player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 150, 1, false, false));
                 stack.shrink(1);
+                TileEntityFirstAidKit te = (TileEntityFirstAidKit) world.getTileEntity(pos);
+                IndustrialRenewal.network.sendToAllAround(new PacketUpdateFirstAidKit(te), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
+                te.markDirty();
             }
             return true;
         }
