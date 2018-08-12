@@ -1,8 +1,10 @@
 {
-  "name": "Industrial Renewal",
-  "version": "0.3.0",
-  "changelog": [
-    "Work Safety Update: Added First aid kit and Fire extinguisher"
-  ],
-  "download": "https://minecraft.curseforge.com/projects/magneticraft/files"
+  "homepage": "<https://minecraft.curseforge.com/projects/industrial-renewal>",
+  "promos": {
+    "1.12.2-latest": "0.3.0",
+    "1.12.2-recommended": "0.3.0"
+  },
+  "1.12.2": {
+    "0.3.0": "Work Safety Update:\nFirst aid kit and Fire extinguisher"
+  }
 }
