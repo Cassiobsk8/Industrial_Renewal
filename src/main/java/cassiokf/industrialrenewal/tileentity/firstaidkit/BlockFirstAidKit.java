@@ -63,6 +63,10 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
         }
     }
 
+    public static EnumFacing getFaceDirection(IBlockState state) {
+        return state.getValue(FACING);
+    }
+
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (world.isRemote) {
@@ -83,7 +87,7 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
             OpenGUI(world, pos, player);
             return true;
         }
-        return false;
+        return true;
     }
 
     private ItemStack itemInKit(World world, BlockPos pos) {
