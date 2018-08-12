@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "   ",
+    "SSS",
+    "SCS"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:minecart"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "ingotSteel"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:cargo_container",
+    "count": 2
+  }
+}

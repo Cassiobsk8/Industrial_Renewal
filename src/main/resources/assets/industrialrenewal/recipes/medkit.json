@@ -1,26 +1,26 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
-    "RRR",
-    "C M",
-    "RRR"
+    "WWW",
+    "SIS",
+    "WWW"
   ],
   "key": {
-    "R": {
+    "W": {
       "type": "forge:ore_dict",
-      "ore": "ingotIron"
+      "ore": "paper"
     },
-    "C": {
+    "S": {
       "type": "forge:ore_dict",
-      "ore": "dyeYellow"
+      "ore": "string"
     },
-    "M": {
+    "I": {
       "type": "forge:ore_dict",
-      "ore": "dyeBlack"
+      "ore": "itemGhastTear"
     }
   },
   "result": {
-    "item": "industrialrenewal:block_hazard",
+    "item": "industrialrenewal:medkit",
     "count": 6
   }
 }
