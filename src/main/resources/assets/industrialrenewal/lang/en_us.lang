@@ -6,6 +6,7 @@ itemGroup.industrialrenewalrailroad=Industrial Renewal Railroad
 #Items
 
 item.industrialrenewal.ingot_steel.name=Steel Ingot
+item.industrialrenewal.item_fire_extinguisher.name=Fire Extinguisher
 item.industrialrenewal.screwdrive.name=Powered Screwdrive
 item.industrialrenewal.small_slab.name=Small Slab
 item.industrialrenewal.sponge_iron.name=Sponge Iron

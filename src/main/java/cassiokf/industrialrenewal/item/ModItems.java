@@ -18,6 +18,7 @@ public class ModItems {
     public static ItemBase spongeIron = new ItemBase("sponge_iron", References.CREATIVE_IR_TAB);
     public static ItemBase smallSlab = new ItemBase("small_slab", References.CREATIVE_IR_TAB);
     public static ItemMedKit medkit = new ItemMedKit("medkit", References.CREATIVE_IR_TAB);
+    public static ItemFireExtinguisher fireExtinguisher = new ItemFireExtinguisher("item_fire_extinguisher", References.CREATIVE_IR_TAB);
 
     public static void register(IForgeRegistry<Item> registry) {
         registry.registerAll(
@@ -29,7 +30,8 @@ public class ModItems {
                 steamLocomotive,
                 smallSlab,
                 stickIron,
-                medkit
+                medkit,
+                fireExtinguisher
         );
     }
 
@@ -43,5 +45,6 @@ public class ModItems {
         smallSlab.registerItemModel();
         stickIron.registerItemModel();
         medkit.registerItemModel();
+        fireExtinguisher.registerItemModel();
     }
 }

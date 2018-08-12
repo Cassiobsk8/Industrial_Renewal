@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.gates.BlockFireExtinguisher;
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
@@ -112,6 +113,7 @@ public class BlockColumn extends BlockBase {
         }
         return neighbourDirection == EnumFacing.UP
                 || !(nb instanceof BlockCatwalkLadder)
+                && !(nb instanceof BlockFireExtinguisher)
                 && !(nb instanceof BlockAlarm && !(neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection))
                 && !nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection));
     }
