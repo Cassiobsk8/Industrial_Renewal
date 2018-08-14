@@ -52,9 +52,9 @@ public class TileEntitySolarPanel extends TileEntity implements ICapabilityProvi
 
             }
             connections = 0;
-            for (final EnumFacing facing : EnumFacing.HORIZONTALS) {
+            for (final EnumFacing facing : EnumFacing.VALUES) {
                 final TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
-                if (tileEntity != null && !tileEntity.isInvalid()) {
+                if (facing != EnumFacing.UP && tileEntity != null && !tileEntity.isInvalid()) {
                     if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()) && !(world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockSolarPanel)) {
                         connections = connections + 1;
                     }
@@ -65,9 +65,9 @@ public class TileEntitySolarPanel extends TileEntity implements ICapabilityProvi
                 energy = energy / connections;
             }
             //System.out.println("Stored " + this.container.getEnergyStored() + " Connections " + connections + " Result " + energy);
-            for (final EnumFacing facing : EnumFacing.HORIZONTALS) {
+            for (final EnumFacing facing : EnumFacing.VALUES) {
                 final TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
-                if (tileEntity != null && !tileEntity.isInvalid()) {
+                if (facing != EnumFacing.UP && tileEntity != null && !tileEntity.isInvalid()) {
                     if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()) && !(world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockSolarPanel)) {
                         final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
                         if (consumer != null) {
