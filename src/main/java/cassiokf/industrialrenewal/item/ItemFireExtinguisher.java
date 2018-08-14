@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.item;
 
+import cassiokf.industrialrenewal.blocks.BlockFireExtinguisher;
 import cassiokf.industrialrenewal.blocks.ModBlocks;
-import cassiokf.industrialrenewal.blocks.gates.BlockFireExtinguisher;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

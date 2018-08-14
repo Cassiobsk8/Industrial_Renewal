@@ -1,6 +1,5 @@
-package cassiokf.industrialrenewal.blocks.gates;
+package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.BlockBase;
 import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;

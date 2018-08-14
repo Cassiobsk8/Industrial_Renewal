@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.gates.BlockFireExtinguisher;
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
