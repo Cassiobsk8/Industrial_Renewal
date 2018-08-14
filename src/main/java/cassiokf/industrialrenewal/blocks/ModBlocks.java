@@ -63,7 +63,7 @@ public class ModBlocks {
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
     public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREATIVE_IR_TAB);
 
-    public static BlockRedstoneWire redstonew = new BlockRedstoneWire("redstone_wire", References.CREATIVE_IR_TAB);
+    //public static BlockRedstoneWire redstonew = new BlockRedstoneWire("redstone_wire", References.CREATIVE_IR_TAB);
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
@@ -117,7 +117,7 @@ public class ModBlocks {
                 efence,
                 egate,
                 spanel,
-                redstonew,
+                //redstonew,
                 firstAidKit,
                 bufferStopRail,
                 fireExtinguisher,
@@ -172,7 +172,7 @@ public class ModBlocks {
                 efence.createItemBlock(),
                 egate.createItemBlock(),
                 spanel.createItemBlock(),
-                redstonew.createItemBlock(),
+                //redstonew.createItemBlock(),
                 firstAidKit.createItemBlock(),
                 bufferStopRail.createItemBlock(),
                 signHV.createItemBlock()
@@ -215,7 +215,7 @@ public class ModBlocks {
         efence.registerItemModel(Item.getItemFromBlock(efence));
         egate.registerItemModel(Item.getItemFromBlock(egate));
         spanel.registerItemModel(Item.getItemFromBlock(spanel));
-        redstonew.registerItemModel(Item.getItemFromBlock(redstonew));
+        //redstonew.registerItemModel(Item.getItemFromBlock(redstonew));
         firstAidKit.registerItemModel(Item.getItemFromBlock(firstAidKit));
         bufferStopRail.registerItemModel(Item.getItemFromBlock(bufferStopRail));
         signHV.registerItemModel(Item.getItemFromBlock(signHV));
