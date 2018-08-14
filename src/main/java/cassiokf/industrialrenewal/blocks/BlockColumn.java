@@ -112,6 +112,7 @@ public class BlockColumn extends BlockBase {
         }
         return neighbourDirection == EnumFacing.UP
                 || !(nb instanceof BlockCatwalkLadder)
+                && !(nb instanceof BlockSignBase)
                 && !(nb instanceof BlockFireExtinguisher)
                 && !(nb instanceof BlockAlarm && !(neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection))
                 && !nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection));

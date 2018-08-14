@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.blocks.gates.BlockFireExtinguisher;
 import cassiokf.industrialrenewal.blocks.gates.BlockGateNot;
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
@@ -74,6 +73,9 @@ public class ModBlocks {
 
     public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large", References.CREATIVE_IR_TAB);
 
+    public static BlockSignBase signHV = new BlockSignBase("sign_hv", References.CREATIVE_IR_TAB);
+    public static BlockSignBase signRA = new BlockSignBase("sign_ra", References.CREATIVE_IR_TAB);
+
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
                 //oreCopper,
@@ -118,7 +120,9 @@ public class ModBlocks {
                 redstonew,
                 firstAidKit,
                 bufferStopRail,
-                fireExtinguisher
+                fireExtinguisher,
+                signHV,
+                signRA
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -170,7 +174,8 @@ public class ModBlocks {
                 spanel.createItemBlock(),
                 redstonew.createItemBlock(),
                 firstAidKit.createItemBlock(),
-                bufferStopRail.createItemBlock()
+                bufferStopRail.createItemBlock(),
+                signHV.createItemBlock()
         );
     }
 
@@ -213,5 +218,6 @@ public class ModBlocks {
         redstonew.registerItemModel(Item.getItemFromBlock(redstonew));
         firstAidKit.registerItemModel(Item.getItemFromBlock(firstAidKit));
         bufferStopRail.registerItemModel(Item.getItemFromBlock(bufferStopRail));
+        signHV.registerItemModel(Item.getItemFromBlock(signHV));
     }
 }

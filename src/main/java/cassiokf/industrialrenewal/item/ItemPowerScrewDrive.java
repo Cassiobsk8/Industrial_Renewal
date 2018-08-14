@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
+import cassiokf.industrialrenewal.blocks.BlockSignBase;
 import cassiokf.industrialrenewal.blocks.ModBlocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -38,6 +39,10 @@ public class ItemPowerScrewDrive extends ItemBase {
                     entity.inventory.addItemStackToInventory(items);
                 }
                 world.setBlockToAir(pos);
+            }
+            if (world.getBlockState(pos).getBlock() instanceof BlockSignBase) {
+                ((BlockSignBase) world.getBlockState(pos).getBlock()).changeSign(world, pos);
+                playDrillSound(world, pos);
             }
             if (world.getBlockState(pos).getBlock() == ModBlocks.floorPipe || world.getBlockState(pos).getBlock() == ModBlocks.floorCable || world.getBlockState(pos).getBlock() == ModBlocks.floorLamp) {
                 playDrillSound(world, pos);

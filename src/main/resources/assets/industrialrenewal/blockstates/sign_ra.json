@@ -1,0 +1,47 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/signs/sign_ra"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:sign/sign_ra_gnd"
+    },
+    "facing=north,onwall=false": {
+      "model": "industrialrenewal:sign/sign_ra_gnd"
+    },
+    "facing=west,onwall=false": {
+      "model": "industrialrenewal:sign/sign_ra_gnd",
+      "y": -90
+    },
+    "facing=south,onwall=false": {
+      "model": "industrialrenewal:sign/sign_ra_gnd",
+      "y": 180
+    },
+    "facing=east,onwall=false": {
+      "model": "industrialrenewal:sign/sign_ra_gnd",
+      "y": 90
+    },
+    "facing=north,onwall=true": {
+      "model": "industrialrenewal:sign/sign_ra_wall"
+    },
+    "facing=west,onwall=true": {
+      "model": "industrialrenewal:sign/sign_ra_wall",
+      "y": -90
+    },
+    "facing=south,onwall=true": {
+      "model": "industrialrenewal:sign/sign_ra_wall",
+      "y": 180
+    },
+    "facing=east,onwall=true": {
+      "model": "industrialrenewal:sign/sign_ra_wall",
+      "y": 90
+    },
+    "inventory": {
+      "model": "industrialrenewal:sign/sign_ra_gnd",
+      "y": 180
+    }
+  }
+}
