@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.item.armour.ItemSafetyHelmet;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -20,6 +21,8 @@ public class ModItems {
     public static ItemMedKit medkit = new ItemMedKit("medkit", References.CREATIVE_IR_TAB);
     public static ItemFireExtinguisher fireExtinguisher = new ItemFireExtinguisher("item_fire_extinguisher", References.CREATIVE_IR_TAB);
 
+    public static ItemSafetyHelmet safetyHelmet = new ItemSafetyHelmet("safety_helmet", References.CREATIVE_IR_TAB);
+
     public static void register(IForgeRegistry<Item> registry) {
         registry.registerAll(
                 ingotSteel,
@@ -31,7 +34,8 @@ public class ModItems {
                 smallSlab,
                 stickIron,
                 medkit,
-                fireExtinguisher
+                fireExtinguisher,
+                safetyHelmet
         );
     }
 
@@ -46,5 +50,6 @@ public class ModItems {
         stickIron.registerItemModel();
         medkit.registerItemModel();
         fireExtinguisher.registerItemModel();
+        safetyHelmet.registerItemModel();
     }
 }

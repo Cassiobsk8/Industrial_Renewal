@@ -70,6 +70,7 @@ public class ModBlocks {
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockDetectorRail detectorRail = new BlockDetectorRail("detector_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockBoosterRail boosterRail = new BlockBoosterRail("booster_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
+    public static BlockBufferStopRail bufferStopRail = new BlockBufferStopRail("buffer_stop_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
 
     public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large", References.CREATIVE_IR_TAB);
 
@@ -116,6 +117,7 @@ public class ModBlocks {
                 spanel,
                 redstonew,
                 firstAidKit,
+                bufferStopRail,
                 fireExtinguisher
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
@@ -167,8 +169,8 @@ public class ModBlocks {
                 egate.createItemBlock(),
                 spanel.createItemBlock(),
                 redstonew.createItemBlock(),
-                firstAidKit.createItemBlock()
-                //fireExtinguisher.createItemBlock()
+                firstAidKit.createItemBlock(),
+                bufferStopRail.createItemBlock()
         );
     }
 
@@ -210,5 +212,6 @@ public class ModBlocks {
         spanel.registerItemModel(Item.getItemFromBlock(spanel));
         redstonew.registerItemModel(Item.getItemFromBlock(redstonew));
         firstAidKit.registerItemModel(Item.getItemFromBlock(firstAidKit));
+        bufferStopRail.registerItemModel(Item.getItemFromBlock(bufferStopRail));
     }
 }

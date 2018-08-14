@@ -1,0 +1,32 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/buffer_stop_rail"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:buffer_stop_rail"
+    },
+    "facing=north": {
+      "model": "industrialrenewal:buffer_stop_rail"
+    },
+    "facing=west": {
+      "model": "industrialrenewal:buffer_stop_rail",
+      "y": -90
+    },
+    "facing=south": {
+      "model": "industrialrenewal:buffer_stop_rail",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "industrialrenewal:buffer_stop_rail",
+      "y": 90
+    },
+    "inventory": {
+      "model": "industrialrenewal:buffer_stop_rail",
+      "y": 180
+    }
+  }
+}

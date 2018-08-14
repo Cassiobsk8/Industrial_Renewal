@@ -1,7 +1,9 @@
+#Wed Dec 06 12:33:40 BRST 2017
 
 itemGroup.industrialrenewal=Industrial Renewal
 itemGroup.industrialrenewalrailroad=Industrial Renewal Railroad
 
+#Items
 
 item.industrialrenewal.ingot_steel.name=Стальной слиток
 item.industrialrenewal.item_fire_extinguisher.name=Огнетушитель
@@ -14,12 +16,14 @@ item.industrialrenewal.steam_locomotive.name=Паровоз
 item.industrialrenewal.cargo_container.name=Грузовой контейнер
 item.industrialrenewal.medkit.name=Аптечка
 
+#Blocks
 
 tile.industrialrenewal.alarm.name=Промышленная сигнализация
 tile.industrialrenewal.block_chimney.name=Дымовая труба
 tile.industrialrenewal.block_hazard.name=Блок опасности
 tile.industrialrenewal.booster_rail.name=Ускоряющий путь
 tile.industrialrenewal.brace.name=Балка раскоса
+tile.industrialrenewal.buffer_stop_rail.name=Buffer Stop Rail
 tile.industrialrenewal.cart_container=Грузовой контейнер
 tile.industrialrenewal.catwalk.name=Подиум
 tile.industrialrenewal.catwalk_column.name=Колонна
@@ -56,10 +60,12 @@ tile.industrialrenewal.electric_fence.name=Электрический забор
 tile.industrialrenewal.electric_gate.name=Электрическая калитка
 tile.industrialrenewal.solar_panel.name=Основная солнечная панель
 
+#Entity
 
 entity.industrialrenewal.cargo_container.name=Грузовой контейнер
 entity.industrialrenewal.steam_locomotive.name=Паровоз
 
+#Gui
 
 gui.config.main_title=Конфигурация Industrial Renewal
 gui.config.category.recipes=Рецепты
