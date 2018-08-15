@@ -1,14 +1,10 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.blocks.gates.BlockGateNot;
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.BlockFirstAidKit;
-import cassiokf.industrialrenewal.tileentity.gates.and.BlockGateAnd;
-import cassiokf.industrialrenewal.tileentity.gates.nand.BlockGateNand;
-import cassiokf.industrialrenewal.tileentity.gates.or.BlockGateOr;
 import cassiokf.industrialrenewal.tileentity.gutter.BlockGutter;
 import cassiokf.industrialrenewal.tileentity.solarpanel.BlockSolarPanel;
 import cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge;
@@ -19,13 +15,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModBlocks {
-
-
-    //public static BlockOre oreCopper = new BlockOre("ore_copper", "oreCopper");
-    public static BlockGateAnd gateAnd = new BlockGateAnd("gate_and", References.CREATIVE_IR_TAB);
-    public static BlockGateNand gateNand = new BlockGateNand("gate_nand", References.CREATIVE_IR_TAB);
-    public static BlockGateNot gateNot = new BlockGateNot("gate_not", References.CREATIVE_IR_TAB);
-    public static BlockGateOr gateOr = new BlockGateOr("gate_or", References.CREATIVE_IR_TAB);
 
     public static BlockBase blockHazard = new BlockBase(Material.IRON, "block_hazard", References.CREATIVE_IR_TAB);
 
@@ -63,7 +52,6 @@ public class ModBlocks {
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
     public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREATIVE_IR_TAB);
 
-    //public static BlockRedstoneWire redstonew = new BlockRedstoneWire("redstone_wire", References.CREATIVE_IR_TAB);
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
@@ -75,10 +63,10 @@ public class ModBlocks {
 
     public static BlockSignBase signHV = new BlockSignBase("sign_hv", References.CREATIVE_IR_TAB);
     public static BlockSignBase signRA = new BlockSignBase("sign_ra", References.CREATIVE_IR_TAB);
+    public static BlockSignBase signC = new BlockSignBase("sign_c", References.CREATIVE_IR_TAB);
 
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
-                //oreCopper,
                 blockHazard,
                 blockIndFloor,
                 blockChimney,
@@ -87,10 +75,6 @@ public class ModBlocks {
                 detectorRail,
                 boosterRail,
                 valveLarge,
-                gateAnd,
-                gateNand,
-                gateNot,
-                gateOr,
                 alarm,
                 fluidPipe,
                 energyCable,
@@ -117,18 +101,15 @@ public class ModBlocks {
                 efence,
                 egate,
                 spanel,
-                //redstonew,
                 firstAidKit,
                 bufferStopRail,
                 fireExtinguisher,
                 signHV,
-                signRA
+                signRA,
+                signC
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
-        GameRegistry.registerTileEntity(gateAnd.getTileEntityClass(), gateAnd.getRegistryName().toString());
-        GameRegistry.registerTileEntity(gateNand.getTileEntityClass(), gateNand.getRegistryName().toString());
-        GameRegistry.registerTileEntity(gateOr.getTileEntityClass(), gateOr.getRegistryName().toString());
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
         GameRegistry.registerTileEntity(gutter.getTileEntityClass(), gutter.getRegistryName().toString());
         GameRegistry.registerTileEntity(spanel.getTileEntityClass(), spanel.getRegistryName().toString());
@@ -137,7 +118,6 @@ public class ModBlocks {
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
         registry.registerAll(
-                //oreCopper.createItemBlock(),
                 blockHazard.createItemBlock(),
                 blockIndFloor.createItemBlock(),
                 blockChimney.createItemBlock(),
@@ -146,10 +126,6 @@ public class ModBlocks {
                 detectorRail.createItemBlock(),
                 boosterRail.createItemBlock(),
                 valveLarge.createItemBlock(),
-                gateAnd.createItemBlock(),
-                gateNand.createItemBlock(),
-                gateNot.createItemBlock(),
-                gateOr.createItemBlock(),
                 alarm.createItemBlock(),
                 fluidPipe.createItemBlock(),
                 energyCable.createItemBlock(),
@@ -172,7 +148,6 @@ public class ModBlocks {
                 efence.createItemBlock(),
                 egate.createItemBlock(),
                 spanel.createItemBlock(),
-                //redstonew.createItemBlock(),
                 firstAidKit.createItemBlock(),
                 bufferStopRail.createItemBlock(),
                 signHV.createItemBlock()
@@ -180,7 +155,6 @@ public class ModBlocks {
     }
 
     public static void registerItemModels() {
-        //oreCopper.registerItemModel(Item.getItemFromBlock(oreCopper));
         blockHazard.registerItemModel(Item.getItemFromBlock(blockHazard));
         blockIndFloor.registerItemModel(Item.getItemFromBlock(blockIndFloor));
         blockChimney.registerItemModel(Item.getItemFromBlock(blockChimney));
@@ -189,11 +163,7 @@ public class ModBlocks {
         detectorRail.registerItemModel(Item.getItemFromBlock(detectorRail));
         boosterRail.registerItemModel(Item.getItemFromBlock(boosterRail));
         valveLarge.registerItemModel(Item.getItemFromBlock(valveLarge));
-        gateAnd.registerItemModel(Item.getItemFromBlock(gateAnd));
-        gateNand.registerItemModel(Item.getItemFromBlock(gateNand));
-        gateNot.registerItemModel(Item.getItemFromBlock(gateNot));
         alarm.registerItemModel(Item.getItemFromBlock(alarm));
-        gateOr.registerItemModel(Item.getItemFromBlock(gateOr));
         fluidPipe.registerItemModel(Item.getItemFromBlock(fluidPipe));
         energyCable.registerItemModel(Item.getItemFromBlock(energyCable));
         catWalk.registerItemModel(Item.getItemFromBlock(catWalk));
@@ -215,7 +185,6 @@ public class ModBlocks {
         efence.registerItemModel(Item.getItemFromBlock(efence));
         egate.registerItemModel(Item.getItemFromBlock(egate));
         spanel.registerItemModel(Item.getItemFromBlock(spanel));
-        //redstonew.registerItemModel(Item.getItemFromBlock(redstonew));
         firstAidKit.registerItemModel(Item.getItemFromBlock(firstAidKit));
         bufferStopRail.registerItemModel(Item.getItemFromBlock(bufferStopRail));
         signHV.registerItemModel(Item.getItemFromBlock(signHV));
