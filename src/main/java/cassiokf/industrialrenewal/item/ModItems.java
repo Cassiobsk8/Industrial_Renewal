@@ -14,14 +14,14 @@ public class ModItems {
     public static ItemSteelSaw steelSaw = new ItemSteelSaw("steel_saw", References.CREATIVE_IR_TAB);
 
     public static ItemMineCartCargoContainer cargoContainer = new ItemMineCartCargoContainer("cargo_container", References.CREATIVE_IRLOCOMOTIVE_TAB);
-    public static ItemSteamLocomotive steamLocomotive = new ItemSteamLocomotive("steam_locomotive", References.CREATIVE_IRLOCOMOTIVE_TAB);
+    public static ItemSteamLocomotive steamLocomotive = new ItemSteamLocomotive("steam_locomotive", References.CREAATIVE_IRWIP_TAB);
 
     public static ItemBase spongeIron = new ItemBase("sponge_iron", References.CREATIVE_IR_TAB);
     public static ItemBase smallSlab = new ItemBase("small_slab", References.CREATIVE_IR_TAB);
     public static ItemMedKit medkit = new ItemMedKit("medkit", References.CREATIVE_IR_TAB);
     public static ItemFireExtinguisher fireExtinguisher = new ItemFireExtinguisher("item_fire_extinguisher", References.CREATIVE_IR_TAB);
 
-    public static ItemSafetyHelmet safetyHelmet = new ItemSafetyHelmet("safety_helmet", References.CREATIVE_IR_TAB);
+    public static ItemSafetyHelmet safetyHelmet = new ItemSafetyHelmet("safety_helmet", References.CREAATIVE_IRWIP_TAB);
 
     public static void register(IForgeRegistry<Item> registry) {
         registry.registerAll(

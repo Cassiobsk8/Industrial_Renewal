@@ -18,16 +18,16 @@ public class ModBlocks {
 
     public static BlockBase blockHazard = new BlockBase(Material.IRON, "block_hazard", References.CREATIVE_IR_TAB);
 
-    public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor", References.CREATIVE_IR_TAB);
+    public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor", References.CREAATIVE_IRWIP_TAB);
     public static BlockChimney blockChimney = new BlockChimney("block_chimney", References.CREATIVE_IR_TAB);
     public static BlockFirstAidKit firstAidKit = new BlockFirstAidKit("firstaid_kit", References.CREATIVE_IR_TAB);
     public static BlockFireExtinguisher fireExtinguisher = new BlockFireExtinguisher("fire_extinguisher", References.CREATIVE_IR_TAB);
 
-    public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe", References.CREATIVE_IR_TAB);
-    public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable", References.CREATIVE_IR_TAB);
-    public static BlockFloorPipe floorPipe = new BlockFloorPipe("floor_pipe", References.CREATIVE_IR_TAB);
-    public static BlockFloorCable floorCable = new BlockFloorCable("floor_cable", References.CREATIVE_IR_TAB);
-    public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp", References.CREATIVE_IR_TAB);
+    public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe", References.CREAATIVE_IRWIP_TAB);
+    public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable", References.CREAATIVE_IRWIP_TAB);
+    public static BlockFloorPipe floorPipe = new BlockFloorPipe("floor_pipe", References.CREAATIVE_IRWIP_TAB);
+    public static BlockFloorCable floorCable = new BlockFloorCable("floor_cable", References.CREAATIVE_IRWIP_TAB);
+    public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockAlarm alarm = new BlockAlarm("alarm", References.CREATIVE_IR_TAB);
 
@@ -50,7 +50,7 @@ public class ModBlocks {
     public static BlockFrame frame = new BlockFrame("frame", References.CREATIVE_IR_TAB);
     public static BlockElectricFence efence = new BlockElectricFence("electric_fence", References.CREATIVE_IR_TAB);
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
-    public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREATIVE_IR_TAB);
+    public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREAATIVE_IRWIP_TAB);
 
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);

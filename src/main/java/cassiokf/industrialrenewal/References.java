@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal;
 
 import cassiokf.industrialrenewal.tab.IndustrialRenewalRailroadTab;
 import cassiokf.industrialrenewal.tab.IndustrialRenewalTab;
+import cassiokf.industrialrenewal.tab.IndustrialRenewalWIPTab;
 
 public class References {
 
@@ -13,6 +14,7 @@ public class References {
 
     public static final IndustrialRenewalTab CREATIVE_IR_TAB = new IndustrialRenewalTab();
     public static final IndustrialRenewalRailroadTab CREATIVE_IRLOCOMOTIVE_TAB = new IndustrialRenewalRailroadTab();
+    public static final IndustrialRenewalWIPTab CREAATIVE_IRWIP_TAB = new IndustrialRenewalWIPTab();
 
     public static final String GUI_FACTORY = "cassiokf.industrialrenewal.config.IRConfigGuiFactory";
 
