@@ -46,7 +46,6 @@ public class ItemFireExtinguisher extends ItemBase {
                 for (EnumFacing faces : EnumFacing.values()) {
                     IBlockState state = worldIn.getBlockState(bpos);
                     Block block = state.getBlock();
-                    if (worldIn.isRemote) System.out.println(block.getRegistryName());
                     if (worldIn.extinguishFire(player, bpos, faces)) {
                         worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, bpos.getX() + 0.5D, bpos.getY() + 0.5D, bpos.getZ() + 0.5D, 0, 1, 0);
                         playSound(worldIn, pos, "block.fire.extinguish");
