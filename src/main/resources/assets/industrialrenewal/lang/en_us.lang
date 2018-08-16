@@ -17,6 +17,11 @@ item.industrialrenewal.steam_locomotive.name=Steam Locomotive
 item.industrialrenewal.cargo_container.name=Cargo Container
 item.industrialrenewal.medkit.name=MedKit
 
+#Discs
+
+item.industrialrenewal.record_royal_entrance.name=Music Disc
+item.industrialrenewal.record_royal_entrance.des0=Royal Entrance by Visager
+
 #Blocks
 
 tile.industrialrenewal.alarm.name=Industrial Alarm

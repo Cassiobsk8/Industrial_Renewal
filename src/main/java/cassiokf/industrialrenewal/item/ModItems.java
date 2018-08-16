@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.item;
 
+import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.item.armour.ItemSafetyHelmet;
 import net.minecraft.item.Item;
@@ -23,6 +24,8 @@ public class ModItems {
 
     public static ItemSafetyHelmet safetyHelmet = new ItemSafetyHelmet("safety_helmet", References.CREAATIVE_IRWIP_TAB);
 
+    public static ItemDiscBase disc1 = new ItemDiscBase("record_royal_entrance", References.CREATIVE_IR_TAB, IRSoundHandler.DISC_1);
+
     public static void register(IForgeRegistry<Item> registry) {
         registry.registerAll(
                 ingotSteel,
@@ -35,7 +38,8 @@ public class ModItems {
                 stickIron,
                 medkit,
                 fireExtinguisher,
-                safetyHelmet
+                safetyHelmet,
+                disc1
         );
     }
 
@@ -51,5 +55,6 @@ public class ModItems {
         medkit.registerItemModel();
         fireExtinguisher.registerItemModel();
         safetyHelmet.registerItemModel();
+        disc1.registerItemModel();
     }
 }

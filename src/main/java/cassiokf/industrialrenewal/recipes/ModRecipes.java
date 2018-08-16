@@ -21,6 +21,7 @@ public class ModRecipes {
         //ModBlocks.oreCopper.initOreDict();
         ModItems.ingotSteel.initOreDict();
         ModItems.stickIron.initOreDict();
+        ModItems.disc1.initOreDict();
     }
 
 }

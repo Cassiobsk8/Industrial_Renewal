@@ -5,7 +5,7 @@
     "sounds": [
       {
         "name": "industrialrenewal:railroad/train_horn",
-        "stream": true
+        "stream": false
       }
     ]
   },
@@ -15,7 +15,7 @@
     "sounds": [
       {
         "name": "industrialrenewal:valve",
-        "stream": true
+        "stream": false
       }
     ]
   },
@@ -25,7 +25,7 @@
     "sounds": [
       {
         "name": "industrialrenewal:modern_alarm",
-        "stream": true
+        "stream": false
       }
     ]
   },
@@ -35,7 +35,7 @@
     "sounds": [
       {
         "name": "industrialrenewal:drill",
-        "stream": true
+        "stream": false
       }
     ]
   },
@@ -45,7 +45,7 @@
     "sounds": [
       {
         "name": "industrialrenewal:gate_closing",
-        "stream": true
+        "stream": false
       }
     ]
   },
@@ -55,7 +55,7 @@
     "sounds": [
       {
         "name": "industrialrenewal:gate_opening",
-        "stream": true
+        "stream": false
       }
     ]
   },
@@ -65,6 +65,16 @@
     "sounds": [
       {
         "name": "industrialrenewal:spark",
+        "stream": false
+      }
+    ]
+  },
+  "music.visager_royal_entrance": {
+    "category": "record",
+    "subtitle": "music.visager_royal_entrance",
+    "sounds": [
+      {
+        "name": "industrialrenewal:music/visager_royal_entrance",
         "stream": true
       }
     ]

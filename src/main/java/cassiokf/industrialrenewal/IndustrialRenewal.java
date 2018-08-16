@@ -37,31 +37,33 @@ public class IndustrialRenewal {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         System.out.println(References.NAME + " is loading preInit!");
+        IRSoundHandler.registerSounds();
         EntityInit.registerEntities();
         IRConfig.preInit();
         proxy.preInit();
-        NetworkRegistry.INSTANCE.registerGuiHandler(IndustrialRenewal.instance, new GUIHandler());
 
+        NetworkRegistry.INSTANCE.registerGuiHandler(IndustrialRenewal.instance, new GUIHandler());
         network = NetworkRegistry.INSTANCE.newSimpleChannel(References.MODID);
         network.registerMessage(new PacketUpdateFirstAidKit.Handler(), PacketUpdateFirstAidKit.class, 0, Side.CLIENT);
         network.registerMessage(new PacketRequestUpdateFirstAidKit.Handler(), PacketRequestUpdateFirstAidKit.class, 1, Side.SERVER);
 
         proxy.registerRenderers();
+        System.out.println("Done!");
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         System.out.println(References.NAME + " is loading init!");
         ModRecipes.init();
-        IRSoundHandler.registerSounds();
         proxy.Init();
         proxy.registerBlockRenderers();
+        System.out.println("Done!");
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         System.out.println(References.NAME + " is loading posInit!");
-
+        System.out.println("Done!");
     }
 
     @Mod.EventBusSubscriber
