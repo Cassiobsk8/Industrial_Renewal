@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.item;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +13,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 import java.util.List;
+
+import cassiokf.industrialrenewal.References;
 
 public class ItemMedKit extends ItemBase {
 
@@ -34,6 +37,6 @@ public class ItemMedKit extends ItemBase {
 
     @Override
     public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag) {
-        list.add("Use to heal");
+        list.add(I18n.format("item." + References.MODID + "." + name + ".des0"));
     }
 }
