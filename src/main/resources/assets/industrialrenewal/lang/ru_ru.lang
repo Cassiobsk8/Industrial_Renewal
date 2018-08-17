@@ -18,9 +18,9 @@ item.industrialrenewal.cargo_container.name=Грузовой контейнер
 item.industrialrenewal.medkit.name=Аптечка
 
 #ItemDescriptions
-item.industrialrenewal.screwdrive.desc=Универсальный инструмент
-item.industrialrenewal.steel_saw.desc=Пила, которая может распилить камень
-item.industrialrenewal.medkit.desc=Используйте для лечения
+item.industrialrenewal.screwdrive.des0=Универсальный инструмент
+item.industrialrenewal.steel_saw.des0=Пила, которая может распилить камень
+item.industrialrenewal.medkit.des0=Используйте для лечения
 
 #Discs
 

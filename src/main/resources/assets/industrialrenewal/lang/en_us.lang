@@ -8,19 +8,18 @@ itemGroup.industrialrenewalwip=Industrial Renewal WIP Content
 
 item.industrialrenewal.ingot_steel.name=Steel Ingot
 item.industrialrenewal.item_fire_extinguisher.name=Fire Extinguisher
-item.industrialrenewal.screwdrive.name=Powered Screwdrive
 item.industrialrenewal.small_slab.name=Small Slab
 item.industrialrenewal.sponge_iron.name=Sponge Iron
-item.industrialrenewal.steel_saw.name=Steel Saw
 item.industrialrenewal.stick_iron.name=Iron Rod
 item.industrialrenewal.steam_locomotive.name=Steam Locomotive
 item.industrialrenewal.cargo_container.name=Cargo Container
-item.industrialrenewal.medkit.name=MedKit
 
-#ItemDescriptions
-item.industrialrenewal.screwdrive.desc=A universal tool for this mod
-item.industrialrenewal.steel_saw.desc=A saw that can cut stones
-item.industrialrenewal.medkit.desc=Use to heal
+item.industrialrenewal.screwdrive.name=Powered Screwdrive
+item.industrialrenewal.screwdrive.des0=A universal tool for this mod
+item.industrialrenewal.medkit.name=MedKit
+item.industrialrenewal.medkit.des0=Use to heal
+item.industrialrenewal.steel_saw.name=Steel Saw
+item.industrialrenewal.steel_saw.des0=A saw that can cut stones
 
 #Discs
 
