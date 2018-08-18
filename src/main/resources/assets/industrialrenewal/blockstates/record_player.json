@@ -1,0 +1,47 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/record_player"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:record_player"
+    },
+    "downnoteblock=false,facing=north": {
+      "model": "industrialrenewal:record_player"
+    },
+    "downnoteblock=false,facing=west": {
+      "model": "industrialrenewal:record_player",
+      "y": -90
+    },
+    "downnoteblock=false,facing=south": {
+      "model": "industrialrenewal:record_player",
+      "y": 180
+    },
+    "downnoteblock=false,facing=east": {
+      "model": "industrialrenewal:record_player",
+      "y": 90
+    },
+    "downnoteblock=true,facing=north": {
+      "model": "industrialrenewal:record_player_connected"
+    },
+    "downnoteblock=true,facing=west": {
+      "model": "industrialrenewal:record_player_connected",
+      "y": -90
+    },
+    "downnoteblock=true,facing=south": {
+      "model": "industrialrenewal:record_player_connected",
+      "y": 180
+    },
+    "downnoteblock=true,facing=east": {
+      "model": "industrialrenewal:record_player_connected",
+      "y": 90
+    },
+    "inventory": {
+      "model": "industrialrenewal:record_player",
+      "y": 180
+    }
+  }
+}

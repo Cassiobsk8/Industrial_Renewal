@@ -6,6 +6,7 @@ import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.BlockFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.gutter.BlockGutter;
+import cassiokf.industrialrenewal.tileentity.recordplayer.BlockRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.solarpanel.BlockSolarPanel;
 import cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge;
 import net.minecraft.block.Block;
@@ -30,6 +31,7 @@ public class ModBlocks {
     public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockAlarm alarm = new BlockAlarm("alarm", References.CREATIVE_IR_TAB);
+    public static BlockRecordPlayer recordPlayer = new BlockRecordPlayer("record_player", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockCatWalk catWalk = new BlockCatWalk("catwalk", References.CREATIVE_IR_TAB);
     public static BlockCatwalkStair catwalkStair = new BlockCatwalkStair("catwalk_stair", References.CREATIVE_IR_TAB);
@@ -106,7 +108,8 @@ public class ModBlocks {
                 fireExtinguisher,
                 signHV,
                 signRA,
-                signC
+                signC,
+                recordPlayer
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -114,6 +117,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(gutter.getTileEntityClass(), gutter.getRegistryName().toString());
         GameRegistry.registerTileEntity(spanel.getTileEntityClass(), spanel.getRegistryName().toString());
         GameRegistry.registerTileEntity(firstAidKit.getTileEntityClass(), firstAidKit.getRegistryName().toString());
+        GameRegistry.registerTileEntity(recordPlayer.getTileEntityClass(), recordPlayer.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -150,7 +154,8 @@ public class ModBlocks {
                 spanel.createItemBlock(),
                 firstAidKit.createItemBlock(),
                 bufferStopRail.createItemBlock(),
-                signHV.createItemBlock()
+                signHV.createItemBlock(),
+                recordPlayer.createItemBlock()
         );
     }
 
@@ -188,5 +193,6 @@ public class ModBlocks {
         firstAidKit.registerItemModel(Item.getItemFromBlock(firstAidKit));
         bufferStopRail.registerItemModel(Item.getItemFromBlock(bufferStopRail));
         signHV.registerItemModel(Item.getItemFromBlock(signHV));
+        recordPlayer.registerItemModel(Item.getItemFromBlock(recordPlayer));
     }
 }
