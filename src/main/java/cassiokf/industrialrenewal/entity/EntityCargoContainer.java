@@ -19,7 +19,8 @@ public class EntityCargoContainer extends EntityMinecartChest {
 
     @Override
     public void killMinecart(DamageSource source) {
-        super.killMinecart(source);
+        //super.killMinecart(source);
+        this.setDead();
 
         if (!source.isExplosion() && this.world.getGameRules().getBoolean("doEntityDrops")) {
             this.entityDropItem(new ItemStack(ModItems.cargoContainer, 1), 0.0F);
