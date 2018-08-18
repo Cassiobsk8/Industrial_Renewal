@@ -1,21 +1,20 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.rails;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
-import net.minecraft.block.BlockRail;
+import net.minecraft.block.BlockRailDetector;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 
-public class BlockNormalRail extends BlockRail {
+public class BlockDetectorRail extends BlockRailDetector {
 
     protected String name;
 
-    public BlockNormalRail(String name, CreativeTabs tab) {
+    public BlockDetectorRail(String name, CreativeTabs tab) {
 
         this.name = name;
-
         setRegistryName(References.MODID, name);
         setUnlocalizedName(References.MODID + "." + name);
         setHardness(0.8f);

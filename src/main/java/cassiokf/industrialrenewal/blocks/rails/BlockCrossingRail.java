@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.rails;
 
 
 import cassiokf.industrialrenewal.IRSoundHandler;

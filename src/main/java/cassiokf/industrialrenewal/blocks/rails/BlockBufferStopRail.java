@@ -1,5 +1,6 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.rails;
 
+import cassiokf.industrialrenewal.blocks.BlockBase;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

@@ -1,18 +1,21 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.rails;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
-import net.minecraft.block.BlockRailDetector;
+import net.minecraft.block.BlockRailPowered;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
-public class BlockDetectorRail extends BlockRailDetector {
+public class BlockBoosterRail extends BlockRailPowered {
 
     protected String name;
 
-    public BlockDetectorRail(String name, CreativeTabs tab) {
+    public BlockBoosterRail(String name, CreativeTabs tab) {
 
         this.name = name;
         setRegistryName(References.MODID, name);
@@ -20,6 +23,20 @@ public class BlockDetectorRail extends BlockRailDetector {
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
         setCreativeTab(tab);
+    }
+
+    @Override
+    public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos) {
+        double d15 = Math.sqrt(cart.motionX * cart.motionX + cart.motionZ * cart.motionZ);
+        /**TODO Precisa desacelerar **/
+        if (!world.getBlockState(pos).getValue(BlockRailPowered.POWERED)) {
+            return;
+        }
+
+        if (d15 > 0.01D) {
+            cart.motionX += cart.motionX / d15 * 0.06D;
+            cart.motionZ += cart.motionZ / d15 * 0.06D;
+        }
     }
 
     @Override
