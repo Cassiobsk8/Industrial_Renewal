@@ -66,6 +66,7 @@ tile.industrialrenewal.window.name=Windows
 tile.industrialrenewal.electric_fence.name=Electric Fence
 tile.industrialrenewal.electric_gate.name=Electric Gate
 tile.industrialrenewal.record_player.name=Multi Record Player
+tile.industrialrenewal.sensor_rain.name=Rain Sensor
 tile.industrialrenewal.solar_panel.name=Basic Solar Panel
 
 #Entity

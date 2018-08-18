@@ -95,7 +95,7 @@ public class BlockGateNot extends BlockBase {
         }
     }
 
-    private Boolean out(World worldIn, BlockPos pos) {
+    private boolean out(World worldIn, BlockPos pos) {
         int powerLevel1 = getPowerLevelIn1(worldIn, pos);
         return powerLevel1 <= 0;
     }

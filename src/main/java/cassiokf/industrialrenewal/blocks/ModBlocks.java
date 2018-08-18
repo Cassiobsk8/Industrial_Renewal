@@ -7,6 +7,7 @@ import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.BlockFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.gutter.BlockGutter;
 import cassiokf.industrialrenewal.tileentity.recordplayer.BlockRecordPlayer;
+import cassiokf.industrialrenewal.tileentity.sensors.rain.BlockSensorRain;
 import cassiokf.industrialrenewal.tileentity.solarpanel.BlockSolarPanel;
 import cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge;
 import net.minecraft.block.Block;
@@ -54,6 +55,7 @@ public class ModBlocks {
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
     public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREAATIVE_IRWIP_TAB);
 
+    public static BlockSensorRain sensorRain = new BlockSensorRain("sensor_rain", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
@@ -109,7 +111,8 @@ public class ModBlocks {
                 signHV,
                 signRA,
                 signC,
-                recordPlayer
+                recordPlayer,
+                sensorRain
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -118,6 +121,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(spanel.getTileEntityClass(), spanel.getRegistryName().toString());
         GameRegistry.registerTileEntity(firstAidKit.getTileEntityClass(), firstAidKit.getRegistryName().toString());
         GameRegistry.registerTileEntity(recordPlayer.getTileEntityClass(), recordPlayer.getRegistryName().toString());
+        GameRegistry.registerTileEntity(sensorRain.getTileEntityClass(), sensorRain.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -155,7 +159,8 @@ public class ModBlocks {
                 firstAidKit.createItemBlock(),
                 bufferStopRail.createItemBlock(),
                 signHV.createItemBlock(),
-                recordPlayer.createItemBlock()
+                recordPlayer.createItemBlock(),
+                sensorRain.createItemBlock()
         );
     }
 
@@ -194,5 +199,6 @@ public class ModBlocks {
         bufferStopRail.registerItemModel(Item.getItemFromBlock(bufferStopRail));
         signHV.registerItemModel(Item.getItemFromBlock(signHV));
         recordPlayer.registerItemModel(Item.getItemFromBlock(recordPlayer));
+        sensorRain.registerItemModel(Item.getItemFromBlock(sensorRain));
     }
 }
