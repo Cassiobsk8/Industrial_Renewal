@@ -2,6 +2,7 @@
 
 itemGroup.industrialrenewal=Industrial Renewal
 itemGroup.industrialrenewalrailroad=Industrial Renewal Railroad
+itemGroup.industrialrenewalwip=Industrial Renewal WIP
 
 #Items
 
@@ -15,6 +16,16 @@ item.industrialrenewal.stick_iron.name=Железный стержень
 item.industrialrenewal.steam_locomotive.name=Паровоз
 item.industrialrenewal.cargo_container.name=Грузовой контейнер
 item.industrialrenewal.medkit.name=Аптечка
+
+#ItemDescriptions
+item.industrialrenewal.screwdrive.des0=Универсальный инструмент
+item.industrialrenewal.steel_saw.des0=Пила, которая может распилить камень
+item.industrialrenewal.medkit.des0=Используйте для лечения
+
+#Discs
+
+item.industrialrenewal.record_royal_entrance.name=Пластинка
+item.industrialrenewal.record_royal_entrance.des0=Visager - Royal Entrance
 
 #Blocks
 

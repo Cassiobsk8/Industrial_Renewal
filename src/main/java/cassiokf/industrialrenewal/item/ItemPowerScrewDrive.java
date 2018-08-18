@@ -1,8 +1,10 @@
 package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
+import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.BlockSignBase;
 import cassiokf.industrialrenewal.blocks.ModBlocks;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,7 +69,7 @@ public class ItemPowerScrewDrive extends ItemBase {
     @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag) {
-        list.add("A universal tool for this mod");
+        list.add(I18n.format("item." + References.MODID + "." + name + ".des0"));
     }
 
     private void playDrillSound(World world, BlockPos pos) {
