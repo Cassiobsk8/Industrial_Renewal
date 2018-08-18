@@ -47,6 +47,12 @@ public class BlockFireExtinguisher extends BlockBase {
             player.extinguish();
             world.spawnParticle(EnumParticleTypes.WATER_SPLASH, player.getPosition().getX(), player.getPosition().getY() + 1F, player.getPosition().getZ(), 0, 1, 0);
             world.playSound(null, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, Objects.requireNonNull(SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.fire.extinguish")))), SoundCategory.BLOCKS, 1.0F, 1.0F);
+        } else if (player.isSneaking()) {
+            if (player.inventory.addItemStackToInventory(new ItemStack(ModItems.fireExtinguisher, 1))) {
+                world.setBlockToAir(pos);
+                return true;
+            }
+            return false;
         }
         return false;
     }
