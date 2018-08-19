@@ -118,6 +118,7 @@ public class BlockPillar extends BlockBase {
                     || (nb instanceof BlockBrace && Objects.equals(neighbourState.getValue(BlockBrace.FACING).getName(), neighbourDirection.getOpposite().getName()))
                     || (nb instanceof BlockBrace && Objects.equals(neighbourState.getValue(BlockBrace.FACING).getName(), "down_" + neighbourDirection.getName()))
                     || (nb instanceof BlockAlarm && neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection)
+                    || (nb instanceof BlockSignBase && neighbourState.getValue(BlockSignBase.ONWALL) && Objects.equals(neighbourState.getValue(BlockSignBase.FACING).getName(), neighbourDirection.getOpposite().getName()))
                     || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:connector")
                     || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:metal_decoration2")
                     || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:wooden_device1")
