@@ -86,3 +86,11 @@ gui.config.recipes.spongeiron_recipe.name=Рецепт губчатого жел
 gui.config.recipes.spongeiron_recipe.comment=Включить/выключить рецепт губчатого железа (по умолчанию - вкл.)
 
 gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Слоты для медицинских наборов
+
+tile.industrialrenewal.cargo_loader.name=Грузовой погрузчик
+tile.industrialrenewal.rail_loader.name=Погрузчик
+tile.industrialrenewal.record_player.name=Мультиплеер
+tile.industrialrenewal.sensor_rain.name=Датчик дождя
+gui.industrialrenewal.blockrecordplayer.discs.tooltip=Слоты для дисков
+gui.industrialrenewal.button.play=Играть
+gui.industrialrenewal.button.stop=Стоп
