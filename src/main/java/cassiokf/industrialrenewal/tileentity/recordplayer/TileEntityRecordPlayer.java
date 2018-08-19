@@ -1,23 +1,22 @@
 package cassiokf.industrialrenewal.tileentity.recordplayer;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityRecordPlayer extends TileEntity implements ICapabilityProvider, ITickable {
+public class TileEntityRecordPlayer extends TileEntity implements ICapabilityProvider {
 
     public ItemStackHandler inventory;
     private boolean playAll = false;
@@ -32,6 +31,7 @@ public class TileEntityRecordPlayer extends TileEntity implements ICapabilityPro
         this.inventory = new ItemStackHandler(4);
     }
 
+    /*
     @Override
     public void update() {
         if (playAll) {
@@ -45,12 +45,10 @@ public class TileEntityRecordPlayer extends TileEntity implements ICapabilityPro
                 playDisk(3);
             } else {
                 ItemRecord item = (ItemRecord) this.inventory.getStackInSlot(0).getItem();
-                if (Minecraft.getMinecraft().getSoundHandler().isSoundPlaying(PositionedSoundRecord.getMusicRecord(item.getSound()))) {
-                    System.out.println("is Playing " + item.getSound());
-                }
+
             }
         }
-    }
+    }*/
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
@@ -73,6 +71,7 @@ public class TileEntityRecordPlayer extends TileEntity implements ICapabilityPro
         this.world.playEvent(1010, this.pos, 0);
     }
 
+    @SideOnly(Side.CLIENT)
     private boolean playDisk(int slot, boolean simulate) {
         ItemStack diskStack = this.inventory.getStackInSlot(slot);
         if (!diskStack.isEmpty()) {
