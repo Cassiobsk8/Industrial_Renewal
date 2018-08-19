@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.item;
 
+import cassiokf.industrialrenewal.References;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -8,14 +9,12 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-import cassiokf.industrialrenewal.References;
-
-public class ItemSteelSaw extends ItemBase {
+public class ItemSteelSaw extends ItemOreDict {
 
     private static int maxDamage = 64;
 
-    public ItemSteelSaw(String name, CreativeTabs tab) {
-        super(name, tab);
+    public ItemSteelSaw(String name, String oreName, CreativeTabs tab) {
+        super(name, oreName, tab);
         setMaxDamage(64);
         this.setNoRepair();
         maxStackSize = 1;
