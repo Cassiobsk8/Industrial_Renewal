@@ -109,7 +109,6 @@ public class BlockPillar extends BlockBase {
         Block nb = neighbourState.getBlock();
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
             return nb instanceof BlockLever
-                    || nb instanceof BlockSignBase
                     || nb instanceof BlockRedstoneTorch
                     || nb instanceof BlockTripWireHook
                     || nb instanceof BlockColumn
