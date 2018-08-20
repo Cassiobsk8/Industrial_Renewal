@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.item.armour.ItemSafetyHelmet;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -21,7 +22,7 @@ public class ModItems {
     public static ItemMedKit medkit = new ItemMedKit("medkit", References.CREATIVE_IR_TAB);
     public static ItemFireExtinguisher fireExtinguisher = new ItemFireExtinguisher("item_fire_extinguisher", References.CREATIVE_IR_TAB);
 
-    //public static ItemSafetyHelmet safetyHelmet = new ItemSafetyHelmet("safety_helmet", References.CREAATIVE_IRWIP_TAB);
+    public static ItemSafetyHelmet safetyHelmet = new ItemSafetyHelmet("safety_helmet", References.CREATIVE_IR_TAB);
 
     public static ItemDiscBase disc1 = new ItemDiscBase("record_royal_entrance", References.CREATIVE_IR_TAB, IRSoundHandler.DISC_1);
 
@@ -37,7 +38,7 @@ public class ModItems {
                 stickIron,
                 medkit,
                 fireExtinguisher,
-                //safetyHelmet,
+                safetyHelmet,
                 disc1
         );
     }
@@ -53,7 +54,7 @@ public class ModItems {
         stickIron.registerItemModel();
         medkit.registerItemModel();
         fireExtinguisher.registerItemModel();
-        //safetyHelmet.registerItemModel();
+        safetyHelmet.registerItemModel();
         disc1.registerItemModel();
     }
 }
