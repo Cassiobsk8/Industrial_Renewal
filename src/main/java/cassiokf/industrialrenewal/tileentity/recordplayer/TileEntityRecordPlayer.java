@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.recordplayer;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
@@ -7,6 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,7 +31,37 @@ public class TileEntityRecordPlayer extends TileEntity implements ICapabilityPro
     private boolean played3 = false;
 
     public TileEntityRecordPlayer() {
-        this.inventory = new ItemStackHandler(4);
+        this.inventory = new ItemStackHandler(4) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                if (!world.isRemote) {
+                    updateDiscsRender();
+                }
+            }
+        };
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        return (oldState.getBlock() != newState.getBlock());
+    }
+
+    private void updateDiscsRender() {
+        IBlockState state = this.world.getBlockState(this.pos);
+
+        boolean disc0 = !this.inventory.getStackInSlot(3).isEmpty();
+        boolean disc1 = !this.inventory.getStackInSlot(2).isEmpty();
+        boolean disc2 = !this.inventory.getStackInSlot(1).isEmpty();
+        boolean disc3 = !this.inventory.getStackInSlot(0).isEmpty();
+
+        IBlockState newState = state.withProperty(BlockRecordPlayer.DISK0, disc0)
+                .withProperty(BlockRecordPlayer.DISK1, disc1)
+                .withProperty(BlockRecordPlayer.DISK2, disc2)
+                .withProperty(BlockRecordPlayer.DISK3, disc3);
+
+        if (newState != state) {
+            this.world.setBlockState(this.pos, newState, 3);
+        }
     }
 
     /*

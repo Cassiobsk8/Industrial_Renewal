@@ -35,21 +35,26 @@ public class BlockRecordPlayer extends BlockTileEntity<TileEntityRecordPlayer> {
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool DOWNNOTEBLOCK = PropertyBool.create("downnoteblock");
+    public static final PropertyBool DISK0 = PropertyBool.create("disc0");
+    public static final PropertyBool DISK1 = PropertyBool.create("disc1");
+    public static final PropertyBool DISK2 = PropertyBool.create("disc2");
+    public static final PropertyBool DISK3 = PropertyBool.create("disc3");
 
-    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1D, 1.0D);
+    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1D, 0.875D, 1.0D);
 
     public BlockRecordPlayer(String name, CreativeTabs tab) {
         super(Material.CIRCUITS, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(DISK0, false).withProperty(DISK1, false)
+                .withProperty(DISK2, false).withProperty(DISK3, false).withProperty(DOWNNOTEBLOCK, false));
     }
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (world.isRemote) {
-            return true;
+        if (!world.isRemote) {
+            OpenGUI(world, pos, player);
         }
-        OpenGUI(world, pos, player);
         return true;
     }
 
@@ -93,7 +98,7 @@ public class BlockRecordPlayer extends BlockTileEntity<TileEntityRecordPlayer> {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, DOWNNOTEBLOCK);
+        return new BlockStateContainer(this, FACING, DOWNNOTEBLOCK, DISK0, DISK1, DISK2, DISK3);
     }
 
     @SuppressWarnings("deprecation")
