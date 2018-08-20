@@ -34,9 +34,8 @@ public class TileEntityRecordPlayer extends TileEntity implements ICapabilityPro
         this.inventory = new ItemStackHandler(4) {
             @Override
             protected void onContentsChanged(int slot) {
-                if (!world.isRemote) {
-                    updateDiscsRender();
-                }
+                updateDiscsRender();
+                markDirty();
             }
         };
     }
