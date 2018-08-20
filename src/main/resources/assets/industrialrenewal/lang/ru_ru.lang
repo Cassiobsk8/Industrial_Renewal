@@ -1,31 +1,30 @@
 #Wed Dec 06 12:33:40 BRST 2017
 
 itemGroup.industrialrenewal=Industrial Renewal
-itemGroup.industrialrenewalrailroad=Industrial Renewal Railroad
-itemGroup.industrialrenewalwip=Industrial Renewal WIP
+itemGroup.industrialrenewalrailroad=Industrial Renewal: Железная дорога
+itemGroup.industrialrenewalwip=Industrial Renewal: Содержимое в разработке
 
 #Items
 
 item.industrialrenewal.ingot_steel.name=Стальной слиток
 item.industrialrenewal.item_fire_extinguisher.name=Огнетушитель
-item.industrialrenewal.screwdrive.name=Шуруповерт
 item.industrialrenewal.small_slab.name=Маленькая плита
 item.industrialrenewal.sponge_iron.name=Губчатое железо
-item.industrialrenewal.steel_saw.name=Стальная пила
 item.industrialrenewal.stick_iron.name=Железный стержень
 item.industrialrenewal.steam_locomotive.name=Паровоз
 item.industrialrenewal.cargo_container.name=Грузовой контейнер
-item.industrialrenewal.medkit.name=Аптечка
 
-#ItemDescriptions
-item.industrialrenewal.screwdrive.des0=Универсальный инструмент
-item.industrialrenewal.steel_saw.des0=Пила, которая может распилить камень
-item.industrialrenewal.medkit.des0=Используйте для лечения
+item.industrialrenewal.screwdrive.name=Шуруповерт
+item.industrialrenewal.screwdrive.des0=Универсальный инструмент для этого мода
+item.industrialrenewal.medkit.name=Аптечка
+item.industrialrenewal.medkit.des0=Используется для лечения
+item.industrialrenewal.steel_saw.name=Стальная пила
+item.industrialrenewal.steel_saw.des0=Пила, которая может резать камни
 
 #Discs
 
-item.industrialrenewal.record_royal_entrance.name=Пластинка
-item.industrialrenewal.record_royal_entrance.des0=Visager - Royal Entrance
+item.industrialrenewal.record_royal_entrance.name=Музыкальный диск
+item.industrialrenewal.record_royal_entrance.des0=Королевский выход от Visager
 
 #Blocks
 
@@ -34,7 +33,8 @@ tile.industrialrenewal.block_chimney.name=Дымовая труба
 tile.industrialrenewal.block_hazard.name=Блок опасности
 tile.industrialrenewal.booster_rail.name=Ускоряющий путь
 tile.industrialrenewal.brace.name=Балка раскоса
-tile.industrialrenewal.buffer_stop_rail.name=Буферная остановка
+tile.industrialrenewal.buffer_stop_rail.name=Путь буферная остановка
+tile.industrialrenewal.cargo_loader.name=Грузовой погрузчик
 tile.industrialrenewal.cart_container=Грузовой контейнер
 tile.industrialrenewal.catwalk.name=Подиум
 tile.industrialrenewal.catwalk_column.name=Колонна
@@ -46,7 +46,7 @@ tile.industrialrenewal.catwalk_stair.name=Ступенька
 tile.industrialrenewal.crossing_rail.name=Перекрестный путь
 tile.industrialrenewal.detector_rail.name=Детекторный путь
 tile.industrialrenewal.energy_cable.name=Энергетический кабель
-tile.industrialrenewal.firstaid_kit.name=Аптечка
+tile.industrialrenewal.firstaid_kit.name=Коробка первой помощи
 tile.industrialrenewal.fluid_filter.name=Жидкостный фильтр (WIP)
 tile.industrialrenewal.fluid_pipe.name=Жидкостная труба
 tile.industrialrenewal.fluorescent.name=Флуоресцентный свет
@@ -61,6 +61,7 @@ tile.industrialrenewal.light.name=Внешний свет
 tile.industrialrenewal.normal_rail.name=Путь
 tile.industrialrenewal.ore_copper.name=Медная руда
 tile.industrialrenewal.platform.name=Платформа
+tile.industrialrenewal.rail_loader.name=Загружающий путь
 tile.industrialrenewal.redstone_wire.name=Редстоун провод (WIP)
 tile.industrialrenewal.roof.name=Крыша
 tile.industrialrenewal.scaffold.name=Строительные леса
@@ -70,6 +71,8 @@ tile.industrialrenewal.valve_pipe_large_open.name=Большой открыты�
 tile.industrialrenewal.window.name=Окна
 tile.industrialrenewal.electric_fence.name=Электрический забор
 tile.industrialrenewal.electric_gate.name=Электрическая калитка
+tile.industrialrenewal.record_player.name=Мульти-проигрыватель записи
+tile.industrialrenewal.sensor_rain.name=Датчик дождя
 tile.industrialrenewal.solar_panel.name=Основная солнечная панель
 
 #Entity
@@ -77,7 +80,7 @@ tile.industrialrenewal.solar_panel.name=Основная солнечная па
 entity.industrialrenewal.cargo_container.name=Грузовой контейнер
 entity.industrialrenewal.steam_locomotive.name=Паровоз
 
-#Gui
+#Config
 
 gui.config.main_title=Конфигурация Industrial Renewal
 gui.config.category.recipes=Рецепты
@@ -85,12 +88,10 @@ gui.config.category.recipes.tooltip=Настройки рецептов
 gui.config.recipes.spongeiron_recipe.name=Рецепт губчатого железа
 gui.config.recipes.spongeiron_recipe.comment=Включить/выключить рецепт губчатого железа (по умолчанию - вкл.)
 
-gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Слоты для медицинских наборов
+#GUI
 
-tile.industrialrenewal.cargo_loader.name=Грузовой погрузчик
-tile.industrialrenewal.rail_loader.name=Погрузчик
-tile.industrialrenewal.record_player.name=Мультиплеер
-tile.industrialrenewal.sensor_rain.name=Датчик дождя
+gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Слоты для аптечек
 gui.industrialrenewal.blockrecordplayer.discs.tooltip=Слоты для дисков
 gui.industrialrenewal.button.play=Играть
-gui.industrialrenewal.button.stop=Стоп
+gui.industrialrenewal.button.stop=Остановить
+
