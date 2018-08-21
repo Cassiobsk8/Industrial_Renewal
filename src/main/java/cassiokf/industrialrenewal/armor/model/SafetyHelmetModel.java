@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.armour.model;
+package cassiokf.industrialrenewal.armor.model;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
