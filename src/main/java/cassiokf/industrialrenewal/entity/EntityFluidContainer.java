@@ -1,12 +1,11 @@
 package cassiokf.industrialrenewal.entity;
 
 import cassiokf.industrialrenewal.item.ModItems;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityFluidContainer extends EntityMinecart {
+public class EntityFluidContainer extends EntityFluidBase {
 
     public EntityFluidContainer(World worldIn) {
         super(worldIn);
@@ -27,13 +26,12 @@ public class EntityFluidContainer extends EntityMinecart {
     }
 
     @Override
-    public Type getType() {
-        return Type.CHEST;
-    }
-
-    @Override
     public ItemStack getCartItem() {
         return new ItemStack(ModItems.fluidContainer);
     }
 
+    @Override
+    public Type getType() {
+        return Type.CHEST;
+    }
 }
