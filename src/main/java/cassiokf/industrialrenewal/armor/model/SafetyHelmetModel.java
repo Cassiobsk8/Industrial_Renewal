@@ -17,12 +17,12 @@ public class SafetyHelmetModel extends ModelBiped {
         this.textureWidth = 64;
         this.textureHeight = 64;
 
-        this.shape3 = new ModelRenderer(this, 30, 1);
-        this.shape3.addBox(-2.0F, -10.0F, -5.0F, 4, 4, 10, 0.0F);
-        this.shape2 = new ModelRenderer(this, 0, 11);
-        this.shape2.addBox(-4.5F, -9.0F, -4.5F, 9, 3, 9, 0.0F);
-        this.shape1 = new ModelRenderer(this, 0, 0);
+        this.shape1 = new ModelRenderer(this, 0, 41);
         this.shape1.addBox(-5.0F, -6.0F, -5.0F, 10, 1, 10, 0.0F);
+        this.shape2 = new ModelRenderer(this, 0, 52);
+        this.shape2.addBox(-4.5F, -9.0F, -4.5F, 9, 3, 9, 0.0F);
+        this.shape3 = new ModelRenderer(this, 30, 42);
+        this.shape3.addBox(-2.0F, -10.0F, -5.0F, 4, 4, 10, 0.0F);
 
         bipedHead.addChild(this.shape1);
         bipedHead.addChild(this.shape2);
