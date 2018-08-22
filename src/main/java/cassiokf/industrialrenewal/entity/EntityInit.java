@@ -10,6 +10,7 @@ public class EntityInit {
 
     public static void registerEntities() {
         RegisterEntity("cargo_container", EntityCargoContainer.class, References.ENTITY_CARGOCONTAINER_ID, 80);
+        RegisterEntity("fluid_container", EntityFluidContainer.class, References.ENTITY_FLUIDCONTAINER_ID, 80);
         RegisterEntity("steam_locomotive", EntitySteamLocomotive.class, References.ENTITY_STEAMLOCOMOTIVE_ID, 80);
     }
 

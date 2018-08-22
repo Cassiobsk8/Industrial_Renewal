@@ -15,7 +15,7 @@ item.industrialrenewal.sponge_iron.name=Sponge Iron
 item.industrialrenewal.stick_iron.name=Iron Rod
 item.industrialrenewal.steam_locomotive.name=Steam Locomotive
 item.industrialrenewal.cargo_container.name=Cargo Container
-
+item.industrialrenewal.fluid_container.name=Fluid Container
 item.industrialrenewal.screwdrive.name=Powered Screwdrive
 item.industrialrenewal.screwdrive.des0=A universal tool for this mod
 item.industrialrenewal.medkit.name=MedKit
@@ -80,6 +80,7 @@ tile.industrialrenewal.solar_panel.name=Basic Solar Panel
 #Entity
 
 entity.industrialrenewal.cargo_container.name=Cargo Container
+entity.industrialrenewal.fluid_container.name=Fluid Container
 entity.industrialrenewal.steam_locomotive.name=Steam Locomotive
 
 #Config
