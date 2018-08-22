@@ -1,0 +1,47 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:cargo_loader"
+    },
+    "facing=north,loading=false": {
+      "model": "industrialrenewal:cargo_loader"
+    },
+    "facing=west,loading=false": {
+      "model": "industrialrenewal:cargo_loader",
+      "y": -90
+    },
+    "facing=south,loading=false": {
+      "model": "industrialrenewal:cargo_loader",
+      "y": 180
+    },
+    "facing=east,loading=false": {
+      "model": "industrialrenewal:cargo_loader",
+      "y": 90
+    },
+    "facing=north,loading=true": {
+      "model": "industrialrenewal:cargo_loader_loading"
+    },
+    "facing=west,loading=true": {
+      "model": "industrialrenewal:cargo_loader_loading",
+      "y": -90
+    },
+    "facing=south,loading=true": {
+      "model": "industrialrenewal:cargo_loader_loading",
+      "y": 180
+    },
+    "facing=east,loading=true": {
+      "model": "industrialrenewal:cargo_loader_loading",
+      "y": 90
+    },
+    "inventory": {
+      "model": "industrialrenewal:cargo_loader_loading",
+      "y": 180
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "industrialrenewal:rail_loader",
+    "textures": {
+      "particle": "blocks/rail_normal"
+    }
+  },
+  "variants": {
+    "shape": {
+      "north_south": {},
+      "east_west": {}
+    },
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "west": {
+        "y": -90
+      },
+      "east": {
+        "y": 90
+      }
+    },
+    "pass": {
+      "true": {
+        "model": "industrialrenewal:rail_loader"
+      },
+      "false": {
+        "model": "industrialrenewal:rail_loader"
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:rail_loader",
+      "transform": "forge:default-block"
+    }
+  }
+}

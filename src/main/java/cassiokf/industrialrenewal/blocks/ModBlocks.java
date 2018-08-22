@@ -7,6 +7,8 @@ import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.BlockFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.gutter.BlockGutter;
+import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.BlockCargoLoader;
+import cassiokf.industrialrenewal.tileentity.railroad.railloader.BlockLoaderRail;
 import cassiokf.industrialrenewal.tileentity.recordplayer.BlockRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.sensors.rain.BlockSensorRain;
 import cassiokf.industrialrenewal.tileentity.solarpanel.BlockSolarPanel;
@@ -63,8 +65,8 @@ public class ModBlocks {
     public static BlockDetectorRail detectorRail = new BlockDetectorRail("detector_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockBoosterRail boosterRail = new BlockBoosterRail("booster_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockBufferStopRail bufferStopRail = new BlockBufferStopRail("buffer_stop_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
-    //public static BlockLoaderRail loaderRail = new BlockLoaderRail("rail_loader", References.CREATIVE_IRLOCOMOTIVE_TAB);
-    //public static BlockCargoLoader cargoLoader = new BlockCargoLoader("cargo_loader", References.CREATIVE_IRLOCOMOTIVE_TAB);
+    public static BlockLoaderRail loaderRail = new BlockLoaderRail("rail_loader", References.CREATIVE_IRLOCOMOTIVE_TAB);
+    public static BlockCargoLoader cargoLoader = new BlockCargoLoader("cargo_loader", References.CREATIVE_IRLOCOMOTIVE_TAB);
 
     public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large", References.CREATIVE_IR_TAB);
 
@@ -115,9 +117,9 @@ public class ModBlocks {
                 signRA,
                 signC,
                 recordPlayer,
-                sensorRain
-                //loaderRail,
-                //cargoLoader
+                sensorRain,
+                loaderRail,
+                cargoLoader
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -127,8 +129,8 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(firstAidKit.getTileEntityClass(), firstAidKit.getRegistryName().toString());
         GameRegistry.registerTileEntity(recordPlayer.getTileEntityClass(), recordPlayer.getRegistryName().toString());
         GameRegistry.registerTileEntity(sensorRain.getTileEntityClass(), sensorRain.getRegistryName().toString());
-        //GameRegistry.registerTileEntity(cargoLoader.getTileEntityClass(), cargoLoader.getRegistryName().toString());
-        //GameRegistry.registerTileEntity(loaderRail.getTileEntityClass(), loaderRail.getRegistryName().toString());
+        GameRegistry.registerTileEntity(cargoLoader.getTileEntityClass(), cargoLoader.getRegistryName().toString());
+        GameRegistry.registerTileEntity(loaderRail.getTileEntityClass(), loaderRail.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -167,9 +169,9 @@ public class ModBlocks {
                 bufferStopRail.createItemBlock(),
                 signHV.createItemBlock(),
                 recordPlayer.createItemBlock(),
-                sensorRain.createItemBlock()
-                //loaderRail.createItemBlock(),
-                //cargoLoader.createItemBlock()
+                sensorRain.createItemBlock(),
+                loaderRail.createItemBlock(),
+                cargoLoader.createItemBlock()
         );
     }
 
@@ -209,7 +211,7 @@ public class ModBlocks {
         signHV.registerItemModel(Item.getItemFromBlock(signHV));
         recordPlayer.registerItemModel(Item.getItemFromBlock(recordPlayer));
         sensorRain.registerItemModel(Item.getItemFromBlock(sensorRain));
-        //loaderRail.registerItemModel(Item.getItemFromBlock(loaderRail));
-        //cargoLoader.registerItemModel(Item.getItemFromBlock(cargoLoader));
+        loaderRail.registerItemModel(Item.getItemFromBlock(loaderRail));
+        cargoLoader.registerItemModel(Item.getItemFromBlock(cargoLoader));
     }
 }

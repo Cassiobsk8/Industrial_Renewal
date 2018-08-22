@@ -10,7 +10,7 @@ public class EntitySteamLocomotive extends EntityMinecartFurnace {
 
     public EntitySteamLocomotive(World worldIn) {
         super(worldIn);
-        this.setSize(1.6F, 1.4F);
+        this.setSize(1.4F, 1.2F);
     }
 
     public EntitySteamLocomotive(World worldIn, double x, double y, double z) {
