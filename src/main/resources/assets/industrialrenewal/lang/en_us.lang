@@ -8,6 +8,8 @@ itemGroup.industrialrenewalwip=Industrial Renewal WIP Content
 
 item.industrialrenewal.ingot_steel.name=Steel Ingot
 item.industrialrenewal.item_fire_extinguisher.name=Fire Extinguisher
+item.industrialrenewal.safety_belt.name=Safety Belt
+item.industrialrenewal.safety_helmet.name=Safety Helmet
 item.industrialrenewal.small_slab.name=Small Slab
 item.industrialrenewal.sponge_iron.name=Sponge Iron
 item.industrialrenewal.stick_iron.name=Iron Rod

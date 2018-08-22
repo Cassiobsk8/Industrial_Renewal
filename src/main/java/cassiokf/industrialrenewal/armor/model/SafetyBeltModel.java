@@ -1,0 +1,124 @@
+package cassiokf.industrialrenewal.armor.model;
+
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.Entity;
+
+/**
+ * ModelPlayer - Either Mojang or a mod author
+ * Created using Tabula 7.0.0
+ */
+public class SafetyBeltModel extends ModelBiped {
+    private ModelRenderer shape15;
+    private ModelRenderer shape16;
+    private ModelRenderer shape17;
+    private ModelRenderer shape18;
+    private ModelRenderer shape19;
+    private ModelRenderer shape21;
+    private ModelRenderer shape20;
+    private ModelRenderer shape22;
+    private ModelRenderer shape23;
+    private ModelRenderer shape24;
+    private ModelRenderer shape25;
+    private ModelRenderer shape26;
+    private ModelRenderer shape27;
+    private ModelRenderer shape28;
+    private ModelRenderer shape29;
+    private ModelRenderer shape30;
+    private ModelRenderer shape31;
+
+    public SafetyBeltModel() {
+        this.textureWidth = 32;
+        this.textureHeight = 32;
+        this.shape25 = new ModelRenderer(this, 24, 0);
+        this.shape25.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.shape25.addBox(-0.5F, 11.5F, 0.2F, 1, 1, 2, 0.0F);
+        this.shape16 = new ModelRenderer(this, 8, 0);
+        this.shape16.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.shape16.addBox(1.7F, -1.2F, 1.1F, 1, 10, 1, 0.0F);
+        this.setRotateAngle(shape16, 0.0F, 0.0F, 0.5759586531581287F);
+        this.shape30 = new ModelRenderer(this, 17, 0);
+        this.shape30.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.shape30.addBox(2.0F, -0.1F, -2.0F, 1, 1, 4, 0.0F);
+        this.shape19 = new ModelRenderer(this, 12, 10);
+        this.shape19.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.shape19.addBox(-4.2F, 8.0F, -2.3F, 8, 2, 1, 0.0F);
+        this.shape23 = new ModelRenderer(this, 1, 18);
+        this.shape23.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.shape23.addBox(-3.0F, 2.0F, -2.2F, 6, 1, 1, 0.0F);
+        this.shape31 = new ModelRenderer(this, 17, 0);
+        this.shape31.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.shape31.addBox(-3.0F, -0.1F, -2.0F, 1, 1, 4, 0.0F);
+        this.shape17 = new ModelRenderer(this, 4, 0);
+        this.shape17.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.shape17.addBox(-2.7F, -1.3F, 1.1F, 1, 10, 1, 0.0F);
+        this.setRotateAngle(shape17, 0.0F, 0.0F, -0.593411945678072F);
+        this.shape18 = new ModelRenderer(this, 12, 0);
+        this.shape18.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.shape18.addBox(2.0F, -0.1F, -2.1F, 1, 9, 1, 0.0F);
+        this.shape29 = new ModelRenderer(this, 27, 5);
+        this.shape29.setRotationPoint(0.0F, 12.0F, 0.0F);
+        this.shape29.addBox(-0.5F, -3.5F, 1.1F, 1, 4, 1, 0.0F);
+        this.setRotateAngle(shape29, 0.0F, 0.0F, 0.7853981633974483F);
+        this.shape24 = new ModelRenderer(this, 16, 6);
+        this.shape24.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.shape24.addBox(-0.5F, 11.5F, -2.2F, 1, 1, 3, 0.0F);
+        this.shape22 = new ModelRenderer(this, 16, 0);
+        this.shape22.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.shape22.addBox(2.1F, 8.0F, -2.15F, 2, 2, 4, 0.0F);
+        this.shape26 = new ModelRenderer(this, 15, 19);
+        this.shape26.setRotationPoint(0.0F, 12.0F, 0.0F);
+        this.shape26.addBox(-0.5F, -3.5F, -2.1F, 1, 4, 1, 0.0F);
+        this.setRotateAngle(shape26, 0.0F, 0.0F, 0.7853981633974483F);
+        this.shape27 = new ModelRenderer(this, 25, 18);
+        this.shape27.setRotationPoint(0.0F, 12.0F, 0.0F);
+        this.shape27.addBox(-0.5F, -3.5F, -2.1F, 1, 4, 1, 0.0F);
+        this.setRotateAngle(shape27, 0.0F, 0.0F, -0.7853981633974483F);
+        this.shape15 = new ModelRenderer(this, 0, 0);
+        this.shape15.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.shape15.addBox(-3.0F, -0.1F, -2.1F, 1, 9, 1, 0.0F);
+        this.shape21 = new ModelRenderer(this, 14, 13);
+        this.shape21.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.shape21.addBox(-4.2F, 8.0F, -1.85F, 2, 2, 4, 0.0F);
+        this.shape20 = new ModelRenderer(this, 0, 13);
+        this.shape20.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.shape20.addBox(-3.8F, 8.0F, 1.3F, 8, 2, 1, 0.0F);
+        this.shape28 = new ModelRenderer(this, 26, 13);
+        this.shape28.setRotationPoint(0.0F, 12.0F, 0.0F);
+        this.shape28.addBox(-0.5F, -3.5F, 1.1F, 1, 4, 1, 0.0F);
+        this.setRotateAngle(shape28, 0.0F, 0.0F, -0.7853981633974483F);
+
+        bipedBody.addChild(this.shape15);
+        bipedBody.addChild(this.shape16);
+        bipedBody.addChild(this.shape17);
+        bipedBody.addChild(this.shape18);
+        bipedBody.addChild(this.shape19);
+        bipedBody.addChild(this.shape20);
+        bipedBody.addChild(this.shape21);
+        bipedBody.addChild(this.shape22);
+        bipedBody.addChild(this.shape23);
+        bipedBody.addChild(this.shape24);
+        bipedBody.addChild(this.shape25);
+        bipedBody.addChild(this.shape26);
+        bipedBody.addChild(this.shape27);
+        bipedBody.addChild(this.shape28);
+        bipedBody.addChild(this.shape29);
+        bipedBody.addChild(this.shape30);
+        bipedBody.addChild(this.shape31);
+    }
+
+    @Override
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        super.render(entity, f, f1, f2, f3, f4, f5);
+        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+    }
+
+    /**
+     * This is a helper function from Tabula to set the rotation of model parts
+     */
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+        modelRenderer.rotateAngleX = x;
+        modelRenderer.rotateAngleY = y;
+        modelRenderer.rotateAngleZ = z;
+    }
+}
