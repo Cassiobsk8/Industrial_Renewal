@@ -10,7 +10,7 @@ public class EntityCargoContainer extends EntityMinecartChest {
 
     public EntityCargoContainer(World worldIn) {
         super(worldIn);
-        this.setSize(1.4F, 1.2F);
+        this.setSize(1.6F, 1.4F);
     }
 
     public EntityCargoContainer(World worldIn, double x, double y, double z) {

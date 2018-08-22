@@ -18,9 +18,6 @@ Industrial Floor:
 Alarm:
 ![alt text](images/02.png)
 
-Logic gates:
-![alt text](images/03.png)
-
 3D Rails:
 ![alt text](images/04.png)
 
