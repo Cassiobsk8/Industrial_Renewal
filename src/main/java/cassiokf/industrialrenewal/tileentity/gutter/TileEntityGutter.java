@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.gutter;
 
 import cassiokf.industrialrenewal.blocks.BlockRoof;
-import cassiokf.industrialrenewal.util.ValveUtils;
+import cassiokf.industrialrenewal.util.FluidTankUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -24,7 +24,7 @@ public class TileEntityGutter extends TileFluidHandler implements IFluidHandler,
     private long lastTime = System.currentTimeMillis() - PERIOD;
 
     public TileEntityGutter() {
-        tank = new ValveUtils(this, 1000);
+        tank = new FluidTankUtils(this, 1000);
     }
 
     @Override

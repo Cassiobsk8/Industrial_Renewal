@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.tileentity.valve;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.util.EnumFaceRotation;
-import cassiokf.industrialrenewal.util.ValveUtils;
+import cassiokf.industrialrenewal.util.FluidTankUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -32,7 +32,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
     private Boolean active = false;
 
     public TileEntityValvePipeLarge() {
-        tank = new ValveUtils(this, 1000);
+        tank = new FluidTankUtils(this, 1000);
     }
 
     @Override
