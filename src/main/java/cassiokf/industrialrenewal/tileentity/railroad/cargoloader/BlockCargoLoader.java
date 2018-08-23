@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.tileentity.railroad.cargoloader;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.util.GUIHandler;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
@@ -60,12 +61,17 @@ public class BlockCargoLoader extends BlockContainer {
             TileEntity tileentity = worldIn.getTileEntity(pos);
 
             if (tileentity instanceof TileEntityCargoLoader) {
-                playerIn.displayGUIChest((TileEntityCargoLoader)tileentity);
+                OpenGUI(worldIn, pos, playerIn);
+                //playerIn.displayGUIChest((TileEntityCargoLoader)tileentity);
                 playerIn.addStat(StatList.HOPPER_INSPECTED);
             }
 
             return true;
         }
+    }
+
+    private void OpenGUI(World world, BlockPos pos, EntityPlayer player) {
+        player.openGui(IndustrialRenewal.instance, GUIHandler.CARGOLOADER, world, pos.getX(), pos.getY(), pos.getZ());
     }
 
     @SuppressWarnings("deprecation")

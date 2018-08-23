@@ -3,6 +3,9 @@ package cassiokf.industrialrenewal.util;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.ContainerFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.GUIFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
+import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.ContainerCargoLoader;
+import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.GUICargoLoader;
+import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.TileEntityCargoLoader;
 import cassiokf.industrialrenewal.tileentity.recordplayer.ContainerRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.recordplayer.GUIRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.recordplayer.TileEntityRecordPlayer;
@@ -18,6 +21,7 @@ public class GUIHandler implements IGuiHandler {
 
     public static final int FIRSTAIDKIT = 0;
     public static final int RECORDPLAYER = 1;
+    public static final int CARGOLOADER = 2;
 
     @Nullable
     @Override
@@ -27,6 +31,9 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == RECORDPLAYER) {
             return new ContainerRecordPlayer(player.inventory, (TileEntityRecordPlayer) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
+        }
+        if (ID == CARGOLOADER) {
+            return new ContainerCargoLoader(player.inventory, (TileEntityCargoLoader) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
         }
         return null;
     }
@@ -39,6 +46,9 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == RECORDPLAYER) {
             return new GUIRecordPlayer(player.inventory, (TileEntityRecordPlayer) world.getTileEntity(new BlockPos(x, y, z)));
+        }
+        if (ID == CARGOLOADER) {
+            return new GUICargoLoader(player.inventory, (TileEntityCargoLoader) world.getTileEntity(new BlockPos(x, y, z)));
         }
         return null;
     }
