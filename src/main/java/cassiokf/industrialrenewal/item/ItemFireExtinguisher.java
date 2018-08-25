@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.blocks.BlockFireExtinguisher;
 import cassiokf.industrialrenewal.blocks.ModBlocks;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -45,7 +44,6 @@ public class ItemFireExtinguisher extends ItemBase {
                 worldIn.spawnParticle(EnumParticleTypes.WATER_SPLASH, bpos.offset(facing).getX() + 0.5D, bpos.offset(facing).getY() + 0.5D, bpos.offset(facing).getZ() + 0.5D, 0, 1, 0);
                 for (EnumFacing faces : EnumFacing.values()) {
                     IBlockState state = worldIn.getBlockState(bpos);
-                    Block block = state.getBlock();
                     if (worldIn.extinguishFire(player, bpos, faces)) {
                         worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, bpos.getX() + 0.5D, bpos.getY() + 0.5D, bpos.getZ() + 0.5D, 0, 1, 0);
                         playSound(worldIn, pos, "block.fire.extinguish");
