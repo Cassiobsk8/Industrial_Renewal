@@ -1,6 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
+    "model": "industrialrenewal:rail_normal",
     "textures": {
       "particle": "blocks/rail_normal"
     }
@@ -46,6 +47,23 @@
       "north_east": {
         "model": "industrialrenewal:rail_normal_curved",
         "y": 90
+      }
+    },
+    "snow": {
+      "false": {},
+      "layer1": {
+        "submodel": {
+          "snow": {
+            "model": "industrialrenewal:snow_layer1"
+          }
+        }
+      },
+      "layer2": {
+        "submodel": {
+          "snow": {
+            "model": "industrialrenewal:snow_layer2"
+          }
+        }
       }
     },
     "inventory": {
