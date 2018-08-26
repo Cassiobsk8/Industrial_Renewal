@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.tileentity.valve;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
-import cassiokf.industrialrenewal.util.EnumFaceRotation;
 import cassiokf.industrialrenewal.util.FluidTankUtils;
+import cassiokf.industrialrenewal.util.enumproperty.EnumFaceRotation;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
