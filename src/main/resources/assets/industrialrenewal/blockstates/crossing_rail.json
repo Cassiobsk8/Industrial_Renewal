@@ -18,6 +18,23 @@
         "y": 90
       }
     },
+    "snow": {
+      "false": {},
+      "layer1": {
+        "submodel": {
+          "snow1": {
+            "model": "industrialrenewal:snow_layer1"
+          }
+        }
+      },
+      "layer2": {
+        "submodel": {
+          "snow2": {
+            "model": "industrialrenewal:snow_layer2"
+          }
+        }
+      }
+    },
     "inventory": {
       "model": "industrialrenewal:rail_crossing",
       "transform": "forge:default-block"
