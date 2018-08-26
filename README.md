@@ -10,10 +10,12 @@ Railroad:
 
 ![alt text](images/07.png)
 
-![alt text](images/peek.png)
+![alt text](images/08.png)
 
 Industrial Floor:
 ![alt text](images/01.png)
+
+![alt text](images/peek.png)
 
 Alarm:
 ![alt text](images/02.png)
