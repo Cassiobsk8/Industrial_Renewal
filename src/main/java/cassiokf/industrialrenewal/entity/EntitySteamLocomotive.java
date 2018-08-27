@@ -15,12 +15,19 @@ import javax.annotation.Nullable;
 
 public class EntitySteamLocomotive extends EntityMinecart {
 
-    public ItemStackHandler inventory;
+    public ItemStackHandler inventory = new ItemStackHandler(7);
 
     public EntitySteamLocomotive(World worldIn) {
         super(worldIn);
         this.setSize(1.4F, 1.2F);
-        this.inventory = new ItemStackHandler(7);
+    }
+
+    public boolean hasPlowItem() {
+        ItemStack stack = this.inventory.getStackInSlot(6);
+        if (!stack.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 
     public EntitySteamLocomotive(World worldIn, double x, double y, double z) {
