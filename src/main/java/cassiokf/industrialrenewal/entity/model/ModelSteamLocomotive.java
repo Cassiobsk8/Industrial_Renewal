@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.entity.model;
 
+import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -131,7 +132,7 @@ public class ModelSteamLocomotive extends ModelBase {
         this.Wheel5.render(f5);
         this.Light.render(f5);
         this.Rail1.render(f5);
-        this.Grid.render(f5);
+        //this.Grid.render(f5);
         this.Wheel1.render(f5);
         this.Wheel6.render(f5);
         this.Wheel3.render(f5);
@@ -145,6 +146,9 @@ public class ModelSteamLocomotive extends ModelBase {
         this.TruckBase1.render(f5);
         this.Chamney2.render(f5);
         this.Chamney1.render(f5);
+        if (((EntitySteamLocomotive) entity).hasPlowItem()) {
+            this.Grid.render(f5);
+        }
     }
 
     /**

@@ -1,11 +1,13 @@
 package cassiokf.industrialrenewal.entity;
 
 import cassiokf.industrialrenewal.item.ModItems;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -15,11 +17,18 @@ import javax.annotation.Nullable;
 
 public class EntitySteamLocomotive extends EntityMinecart {
 
-    public ItemStackHandler inventory = new ItemStackHandler(7);
+    public ItemStackHandler inventory = new ItemStackHandler(7) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            if (!world.isRemote) {
+                onContentChange();
+            }
+        }
+    };
 
     public EntitySteamLocomotive(World worldIn) {
         super(worldIn);
-        this.setSize(1.4F, 1.2F);
+        this.setSize(1.2F, 1.1F);
     }
 
     public boolean hasPlowItem() {
@@ -28,6 +37,13 @@ public class EntitySteamLocomotive extends EntityMinecart {
             return true;
         }
         return false;
+    }
+
+    public void onContentChange() {
+        BlockPos pos = this.getPosition();
+        this.world.markBlockRangeForRenderUpdate(pos, pos);
+        IBlockState state = this.world.getBlockState(this.getPosition());
+        this.world.notifyBlockUpdate(pos, state, state, 3);
     }
 
     public EntitySteamLocomotive(World worldIn, double x, double y, double z) {
