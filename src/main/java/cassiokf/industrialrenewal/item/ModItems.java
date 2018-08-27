@@ -14,6 +14,8 @@ public class ModItems {
     public static ItemOreDict spongeIron = new ItemOreDict("sponge_iron", "spongeIron", References.CREATIVE_IR_TAB);
     public static ItemOreDict smallSlab = new ItemOreDict("small_slab", "minislabStone", References.CREATIVE_IR_TAB);
 
+    public static ItemIronPlow locomotivePlowIron = new ItemIronPlow("plow_iron", References.CREAATIVE_IRWIP_TAB);
+
     public static ItemPowerScrewDrive screwDrive = new ItemPowerScrewDrive("screwdrive", References.CREATIVE_IR_TAB);
     public static ItemSteelSaw steelSaw = new ItemSteelSaw("steel_saw", "sawStone", References.CREATIVE_IR_TAB);
 
@@ -44,7 +46,8 @@ public class ModItems {
                 fireExtinguisher,
                 safetyHelmet,
                 safetyBelt,
-                disc1
+                disc1,
+                locomotivePlowIron
         );
     }
 
@@ -63,5 +66,6 @@ public class ModItems {
         safetyHelmet.registerItemModel();
         safetyBelt.registerItemModel();
         disc1.registerItemModel();
+        locomotivePlowIron.registerItemModel();
     }
 }

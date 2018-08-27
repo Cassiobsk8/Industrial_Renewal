@@ -1,5 +1,8 @@
 package cassiokf.industrialrenewal.util;
 
+import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
+import cassiokf.industrialrenewal.entity.GUI.GUISteamLocomotive;
+import cassiokf.industrialrenewal.entity.containers.ContainerSteamLocomotive;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.ContainerFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.GUIFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
@@ -22,6 +25,7 @@ public class GUIHandler implements IGuiHandler {
     public static final int FIRSTAIDKIT = 0;
     public static final int RECORDPLAYER = 1;
     public static final int CARGOLOADER = 2;
+    public static final int STEAMLOCOMOTIVE = 3;
 
     @Nullable
     @Override
@@ -34,6 +38,9 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == CARGOLOADER) {
             return new ContainerCargoLoader(player.inventory, (TileEntityCargoLoader) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
+        }
+        if (ID == STEAMLOCOMOTIVE) {
+            return new ContainerSteamLocomotive(player.inventory, (EntitySteamLocomotive) world.getEntityByID(x));
         }
         return null;
     }
@@ -49,6 +56,9 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == CARGOLOADER) {
             return new GUICargoLoader(player.inventory, (TileEntityCargoLoader) world.getTileEntity(new BlockPos(x, y, z)));
+        }
+        if (ID == STEAMLOCOMOTIVE) {
+            return new GUISteamLocomotive(player.inventory, (EntitySteamLocomotive) world.getEntityByID(x));
         }
         return null;
     }

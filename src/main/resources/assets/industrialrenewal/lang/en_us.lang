@@ -95,6 +95,8 @@ gui.config.recipes.spongeiron_recipe.comment=Turn On/Off the sponge iron recipe 
 
 gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Slots for MedKits
 gui.industrialrenewal.blockrecordplayer.discs.tooltip=Slots for Discs
+gui.industrialrenewal.entity_steamlocomotive.plow.tooltip=Slot for Snow Plow
 gui.industrialrenewal.button.play=Play
 gui.industrialrenewal.button.stop=Stop
+gui.industrialrenewal.fuel.tooltip=Fuel
 
