@@ -12,6 +12,8 @@ public class References {
 
     public static final String VERSION = "0.4.0";
 
+    public static final String NETWORKCHANNEL = MODID + "_channel";
+
     public static final IndustrialRenewalTab CREATIVE_IR_TAB = new IndustrialRenewalTab();
     public static final IndustrialRenewalRailroadTab CREATIVE_IRLOCOMOTIVE_TAB = new IndustrialRenewalRailroadTab();
     public static final IndustrialRenewalWIPTab CREAATIVE_IRWIP_TAB = new IndustrialRenewalWIPTab();

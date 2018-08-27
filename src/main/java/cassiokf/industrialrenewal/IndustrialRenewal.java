@@ -5,8 +5,7 @@ import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.entity.EntityInit;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import cassiokf.industrialrenewal.item.ModItems;
-import cassiokf.industrialrenewal.network.PacketRequestUpdateFirstAidKit;
-import cassiokf.industrialrenewal.network.PacketUpdateFirstAidKit;
+import cassiokf.industrialrenewal.network.NetworkHandler;
 import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
 import cassiokf.industrialrenewal.util.GUIHandler;
@@ -21,16 +20,11 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
 
 
 @Mod(modid = References.MODID, name = References.NAME, version = References.VERSION, guiFactory = References.GUI_FACTORY, updateJSON = References.VERSION_CHECKER_URL)
 public class IndustrialRenewal {
-
-    public static SimpleNetworkWrapper network;
 
     @Mod.Instance(References.MODID)
     public static IndustrialRenewal instance;
@@ -44,11 +38,7 @@ public class IndustrialRenewal {
         EntityInit.registerEntities();
         IRConfig.preInit();
         proxy.preInit();
-
-        NetworkRegistry.INSTANCE.registerGuiHandler(IndustrialRenewal.instance, new GUIHandler());
-        network = NetworkRegistry.INSTANCE.newSimpleChannel(References.MODID);
-        network.registerMessage(new PacketUpdateFirstAidKit.Handler(), PacketUpdateFirstAidKit.class, 0, Side.CLIENT);
-        network.registerMessage(new PacketRequestUpdateFirstAidKit.Handler(), PacketRequestUpdateFirstAidKit.class, 1, Side.SERVER);
+        NetworkHandler.init();
 
         proxy.registerRenderers();
         System.out.println("Done!");
