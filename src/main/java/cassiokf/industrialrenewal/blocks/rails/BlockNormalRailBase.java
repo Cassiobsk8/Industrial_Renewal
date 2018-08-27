@@ -172,7 +172,7 @@ public class BlockNormalRailBase extends BlockRail {
 
     private boolean isCartRunning(EntityMinecart cart) {
         Double speed = Math.max(Math.abs(cart.motionX), Math.abs(cart.motionZ));
-        return speed > 0.1D;
+        return speed > 0.01D;
     }
 
     @Override
