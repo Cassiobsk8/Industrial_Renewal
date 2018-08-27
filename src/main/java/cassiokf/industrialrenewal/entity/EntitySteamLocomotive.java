@@ -1,15 +1,17 @@
 package cassiokf.industrialrenewal.entity;
 
 import cassiokf.industrialrenewal.item.ModItems;
-import net.minecraft.block.state.IBlockState;
+import cassiokf.industrialrenewal.network.NetworkHandler;
+import cassiokf.industrialrenewal.network.PacketReturnSteamLocomotive;
+import cassiokf.industrialrenewal.network.PacketSteamLocomotive;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -21,17 +23,20 @@ public class EntitySteamLocomotive extends EntityMinecart {
         @Override
         protected void onContentsChanged(int slot) {
             if (!world.isRemote) {
-                onContentChange();
+                NetworkHandler.INSTANCE.sendToAllAround(new PacketSteamLocomotive(EntitySteamLocomotive.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), posX, posY, posZ, 64));
             }
         }
     };
 
+    private int tick = 0;
+
     public EntitySteamLocomotive(World worldIn) {
         super(worldIn);
-        this.setSize(1.2F, 1.1F);
+        this.setSize(1.0F, 1.4F); //TODO aumentar isso sem dar problema com os blocos adjacentes
     }
 
     public boolean hasPlowItem() {
+        getPacket();
         ItemStack stack = this.inventory.getStackInSlot(6);
         if (!stack.isEmpty()) {
             return true;
@@ -39,11 +44,12 @@ public class EntitySteamLocomotive extends EntityMinecart {
         return false;
     }
 
-    public void onContentChange() {
-        BlockPos pos = this.getPosition();
-        this.world.markBlockRangeForRenderUpdate(pos, pos);
-        IBlockState state = this.world.getBlockState(this.getPosition());
-        this.world.notifyBlockUpdate(pos, state, state, 3);
+    private void getPacket() {
+        tick++;
+        tick %= 40;
+        if (world.isRemote && tick == 0) {
+            NetworkHandler.INSTANCE.sendToServer(new PacketReturnSteamLocomotive(this));
+        }
     }
 
     public EntitySteamLocomotive(World worldIn, double x, double y, double z) {
@@ -90,5 +96,4 @@ public class EntitySteamLocomotive extends EntityMinecart {
     public ItemStack getCartItem() {
         return new ItemStack(ModItems.steamLocomotive);
     }
-
 }
