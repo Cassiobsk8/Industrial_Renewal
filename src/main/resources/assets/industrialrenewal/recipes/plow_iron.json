@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "GIG"
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "barsIron"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:plow_iron",
+    "count": 1
+  }
+}
