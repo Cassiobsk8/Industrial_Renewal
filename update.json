@@ -1,10 +1,11 @@
 {
   "homepage": "<https://minecraft.curseforge.com/projects/industrial-renewal>",
   "promos": {
-    "1.12.2-latest": "0.4.0",
-    "1.12.2-recommended": "0.4.0"
+    "1.12.2-latest": "0.5.0",
+    "1.12.2-recommended": "0.5.0"
   },
   "1.12.2": {
+    "0.5.0": "New:\n-Safety Helmet\n-Safety Belt\n-Rails now can stack snow\n-zh_cn language (Thanks TartaricAcid)\n-Signal Light\n-Traffic Light\n-(Tons of WIP content improvements mostly locomotive)",
     "0.4.0": "New Blocks:\n-Buffer stop rail\n-Hazard signs (ground and wall)\n-New WIP Creative tab for blocks that is not done yet\n-New 8-bit music disc\n-New Disc player (store up to 4 discs)\n-rain sensor\nChanges:\n-Removed some WIP blocks (need to be reworked)\n-Fire extinguisher can now be pickup from ground and can cools lava\nFixes:\n-Some Localizations (Thanks slava110)\n-Fix cargo container droping minecart and chest",
     "0.3.0": "Work Safety Update:\nFirst aid kit and Fire extinguisher"
   }
