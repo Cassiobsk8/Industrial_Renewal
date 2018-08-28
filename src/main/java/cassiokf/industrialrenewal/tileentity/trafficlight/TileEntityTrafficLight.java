@@ -19,8 +19,8 @@ public class TileEntityTrafficLight extends TileEntity {
             } else if (power >= 10) {
                 return 2;
             }
-        } else if (state.getValue(BlockTrafficLight.ONWALL) && this.world.isBlockPowered(offsetPos)) {
-            int power = this.world.getStrongPower(offsetPos);
+        } else if (state.getValue(BlockTrafficLight.ONWALL) && (this.world.isBlockPowered(offsetPos) || this.world.isBlockPowered(this.pos))) {
+            int power = Math.max(this.world.getStrongPower(offsetPos), this.world.getStrongPower(this.pos));
             if (power > 3 && power < 10) {
                 return 1;
             } else if (power >= 10) {

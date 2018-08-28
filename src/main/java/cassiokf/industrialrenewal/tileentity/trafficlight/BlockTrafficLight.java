@@ -60,9 +60,11 @@ public class BlockTrafficLight extends BlockTileEntity<TileEntityTrafficLight> {
         return state.withProperty(SIGNAL, getSignal(world, pos));
     }
 
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos.up()).getBlock().isReplaceable(worldIn, pos.up());
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
+        if (side == EnumFacing.UP) {
+            return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos.up()).getBlock().isReplaceable(worldIn, pos.up());
+        }
+        return super.canPlaceBlockAt(worldIn, pos);
     }
 
     @SuppressWarnings("deprecation")
