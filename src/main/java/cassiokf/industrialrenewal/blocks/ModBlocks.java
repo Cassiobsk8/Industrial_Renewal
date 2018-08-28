@@ -13,6 +13,7 @@ import cassiokf.industrialrenewal.tileentity.recordplayer.BlockRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.sensors.rain.BlockSensorRain;
 import cassiokf.industrialrenewal.tileentity.signalindicator.BlockSignalIndicator;
 import cassiokf.industrialrenewal.tileentity.solarpanel.BlockSolarPanel;
+import cassiokf.industrialrenewal.tileentity.trafficlight.BlockTrafficLight;
 import cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -61,6 +62,7 @@ public class ModBlocks {
 
     public static BlockSensorRain sensorRain = new BlockSensorRain("sensor_rain", References.CREATIVE_IR_TAB);
     public static BlockSignalIndicator signalIndicator = new BlockSignalIndicator("signal_indicator", References.CREATIVE_IR_TAB);
+    public static BlockTrafficLight trafficLight = new BlockTrafficLight("traffic_light", References.CREATIVE_IR_TAB);
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
@@ -122,7 +124,8 @@ public class ModBlocks {
                 sensorRain,
                 loaderRail,
                 cargoLoader,
-                signalIndicator
+                signalIndicator,
+                trafficLight
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -135,6 +138,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(cargoLoader.getTileEntityClass(), cargoLoader.getRegistryName().toString());
         GameRegistry.registerTileEntity(loaderRail.getTileEntityClass(), loaderRail.getRegistryName().toString());
         GameRegistry.registerTileEntity(signalIndicator.getTileEntityClass(), signalIndicator.getRegistryName().toString());
+        GameRegistry.registerTileEntity(trafficLight.getTileEntityClass(), trafficLight.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -176,7 +180,8 @@ public class ModBlocks {
                 sensorRain.createItemBlock(),
                 loaderRail.createItemBlock(),
                 cargoLoader.createItemBlock(),
-                signalIndicator.createItemBlock()
+                signalIndicator.createItemBlock(),
+                trafficLight.createItemBlock()
         );
     }
 
@@ -219,5 +224,6 @@ public class ModBlocks {
         loaderRail.registerItemModel(Item.getItemFromBlock(loaderRail));
         cargoLoader.registerItemModel(Item.getItemFromBlock(cargoLoader));
         signalIndicator.registerItemModel(Item.getItemFromBlock(signalIndicator));
+        trafficLight.registerItemModel(Item.getItemFromBlock(trafficLight));
     }
 }

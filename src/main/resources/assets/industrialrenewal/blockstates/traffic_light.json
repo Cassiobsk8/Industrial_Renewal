@@ -1,0 +1,107 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/traffic_light"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:traffic_light_gnd_red"
+    },
+    "facing=north,onwall=false,signal=0": {
+      "model": "industrialrenewal:traffic_light_gnd_red"
+    },
+    "facing=west,onwall=false,signal=0": {
+      "model": "industrialrenewal:traffic_light_gnd_red",
+      "y": -90
+    },
+    "facing=south,onwall=false,signal=0": {
+      "model": "industrialrenewal:traffic_light_gnd_red",
+      "y": 180
+    },
+    "facing=east,onwall=false,signal=0": {
+      "model": "industrialrenewal:traffic_light_gnd_red",
+      "y": 90
+    },
+    "facing=north,onwall=false,signal=1": {
+      "model": "industrialrenewal:traffic_light_gnd_yellow"
+    },
+    "facing=west,onwall=false,signal=1": {
+      "model": "industrialrenewal:traffic_light_gnd_yellow",
+      "y": -90
+    },
+    "facing=south,onwall=false,signal=1": {
+      "model": "industrialrenewal:traffic_light_gnd_yellow",
+      "y": 180
+    },
+    "facing=east,onwall=false,signal=1": {
+      "model": "industrialrenewal:traffic_light_gnd_yellow",
+      "y": 90
+    },
+    "facing=north,onwall=false,signal=2": {
+      "model": "industrialrenewal:traffic_light_gnd_green"
+    },
+    "facing=west,onwall=false,signal=2": {
+      "model": "industrialrenewal:traffic_light_gnd_green",
+      "y": -90
+    },
+    "facing=south,onwall=false,signal=2": {
+      "model": "industrialrenewal:traffic_light_gnd_green",
+      "y": 180
+    },
+    "facing=east,onwall=false,signal=2": {
+      "model": "industrialrenewal:traffic_light_gnd_green",
+      "y": 90
+    },
+    "facing=north,onwall=true,signal=0": {
+      "model": "industrialrenewal:traffic_light_wall_red"
+    },
+    "facing=west,onwall=true,signal=0": {
+      "model": "industrialrenewal:traffic_light_wall_red",
+      "y": -90
+    },
+    "facing=south,onwall=true,signal=0": {
+      "model": "industrialrenewal:traffic_light_wall_red",
+      "y": 180
+    },
+    "facing=east,onwall=true,signal=0": {
+      "model": "industrialrenewal:traffic_light_wall_red",
+      "y": 90
+    },
+    "facing=north,onwall=true,signal=1": {
+      "model": "industrialrenewal:traffic_light_wall_yellow"
+    },
+    "facing=west,onwall=true,signal=1": {
+      "model": "industrialrenewal:traffic_light_wall_yellow",
+      "y": -90
+    },
+    "facing=south,onwall=true,signal=1": {
+      "model": "industrialrenewal:traffic_light_wall_yellow",
+      "y": 180
+    },
+    "facing=east,onwall=true,signal=1": {
+      "model": "industrialrenewal:traffic_light_wall_yellow",
+      "y": 90
+    },
+    "facing=north,onwall=true,signal=2": {
+      "model": "industrialrenewal:traffic_light_wall_green"
+    },
+    "facing=west,onwall=true,signal=2": {
+      "model": "industrialrenewal:traffic_light_wall_green",
+      "y": -90
+    },
+    "facing=south,onwall=true,signal=2": {
+      "model": "industrialrenewal:traffic_light_wall_green",
+      "y": 180
+    },
+    "facing=east,onwall=true,signal=2": {
+      "model": "industrialrenewal:traffic_light_wall_green",
+      "y": 90
+    },
+    "inventory": {
+      "model": "industrialrenewal:traffic_light_wall_red",
+      "y": 180
+    }
+  }
+}
