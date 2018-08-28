@@ -67,6 +67,7 @@ tile.industrialrenewal.rail_loader.name=Loader Rail
 tile.industrialrenewal.redstone_wire.name=Redstone Wire (WIP)
 tile.industrialrenewal.roof.name=Roof
 tile.industrialrenewal.scaffold.name=Scaffold
+tile.industrialrenewal.signal_indicator.name=Signal Indicator
 tile.industrialrenewal.sign_hv.name=Hazard Sign
 tile.industrialrenewal.valve_pipe_large.name=Fluid Valve
 tile.industrialrenewal.valve_pipe_large_open.name=Large Fluid Valve Open

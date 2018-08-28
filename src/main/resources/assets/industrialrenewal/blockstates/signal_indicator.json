@@ -1,0 +1,36 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "industrialrenewal:signal_indicator",
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "active": {
+      "true": {
+        "submodel": {
+          "green": {
+            "model": "industrialrenewal:signal_indicator_top_green"
+          }
+        }
+      },
+      "false": {
+        "submodel": {
+          "red": {
+            "model": "industrialrenewal:signal_indicator_top_red"
+          }
+        }
+      }
+    },
+    "inventory": [
+      {
+        "submodel": {
+          "green": {
+            "model": "industrialrenewal:signal_indicator_top_green"
+          }
+        }
+      }
+    ]
+  }
+}
