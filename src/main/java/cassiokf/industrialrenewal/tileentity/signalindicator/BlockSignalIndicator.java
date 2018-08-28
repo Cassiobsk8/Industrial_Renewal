@@ -1,8 +1,10 @@
 package cassiokf.industrialrenewal.tileentity.signalindicator;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -10,6 +12,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -23,11 +26,31 @@ public class BlockSignalIndicator extends BlockTileEntity<TileEntitySignalIndica
 
     protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.625D, 0.75D);
 
+    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0F, 0.25F, 0.25F, 0.625F, 1F, 0.75D);
+    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1F, 0.25F, 0.25F, 0.375F, 1F, 0.75D);
+    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0.25F, 0.375F, 0.75D, 1F, 1);
+    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0.25F, 0.625F, 0.75D, 1F, 0);
+
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+    public static final PropertyBool ONWALL = PropertyBool.create("onwall");
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     public BlockSignalIndicator(String name, CreativeTabs tab) {
         super(Material.IRON, name, tab);
         this.lightValue = 7;
+    }
+
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
+        if (side == EnumFacing.UP) {
+            return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos.up()).getBlock().isReplaceable(worldIn, pos.up());
+        }
+        return super.canPlaceBlockAt(worldIn, pos);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(ONWALL, facing != EnumFacing.UP).withProperty(ACTIVE, false);
     }
 
     private boolean getSignal(IBlockAccess world, BlockPos pos) {
@@ -53,27 +76,45 @@ public class BlockSignalIndicator extends BlockTileEntity<TileEntitySignalIndica
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, ACTIVE);
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        if (state.getValue(ONWALL)) {
+            switch (state.getValue(FACING)) {
+                default:
+                case NORTH:
+                    return NORTH_BLOCK_AABB;
+                case SOUTH:
+                    return SOUTH_BLOCK_AABB;
+                case EAST:
+                    return EAST_BLOCK_AABB;
+                case WEST:
+                    return WEST_BLOCK_AABB;
+            }
+
+        } else {
+            return AABB;
+        }
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return AABB;
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, ONWALL, ACTIVE);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(ACTIVE, meta == 1);
+        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(ONWALL, (meta & 4) > 0);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        if (state.getValue(ACTIVE)) {
-            return 1;
+        int i = 0;
+        i = i | state.getValue(FACING).getHorizontalIndex();
+
+        if (state.getValue(ONWALL)) {
+            i |= 4;
         }
-        return 0;
+        return i;
     }
 
     @SideOnly(Side.CLIENT)
