@@ -1,5 +1,8 @@
 package cassiokf.industrialrenewal.tileentity.recordplayer;
 
+import cassiokf.industrialrenewal.network.NetworkHandler;
+import cassiokf.industrialrenewal.network.PacketRecordPlayer;
+import cassiokf.industrialrenewal.network.PacketReturnRecordPlayer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemRecord;
@@ -12,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -34,10 +38,19 @@ public class TileEntityRecordPlayer extends TileEntity implements ICapabilityPro
         this.inventory = new ItemStackHandler(4) {
             @Override
             protected void onContentsChanged(int slot) {
-                updateDiscsRender();
                 markDirty();
+                if (!world.isRemote) {
+                    NetworkHandler.INSTANCE.sendToAllAround(new PacketRecordPlayer(TileEntityRecordPlayer.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
+                }
             }
         };
+    }
+
+    @Override
+    public void onLoad() {
+        if (world.isRemote) {
+            NetworkHandler.INSTANCE.sendToServer(new PacketReturnRecordPlayer(this));
+        }
     }
 
     @Override
@@ -45,22 +58,9 @@ public class TileEntityRecordPlayer extends TileEntity implements ICapabilityPro
         return (oldState.getBlock() != newState.getBlock());
     }
 
-    private void updateDiscsRender() {
-        IBlockState state = this.world.getBlockState(this.pos);
-
-        boolean disc0 = !this.inventory.getStackInSlot(3).isEmpty();
-        boolean disc1 = !this.inventory.getStackInSlot(2).isEmpty();
-        boolean disc2 = !this.inventory.getStackInSlot(1).isEmpty();
-        boolean disc3 = !this.inventory.getStackInSlot(0).isEmpty();
-
-        IBlockState newState = state.withProperty(BlockRecordPlayer.DISK0, disc0)
-                .withProperty(BlockRecordPlayer.DISK1, disc1)
-                .withProperty(BlockRecordPlayer.DISK2, disc2)
-                .withProperty(BlockRecordPlayer.DISK3, disc3);
-
-        if (newState != state) {
-            this.world.setBlockState(this.pos, newState, 3);
-        }
+    public boolean hasDiskInSlot(int slot) {
+        this.world.notifyBlockUpdate(this.pos, this.world.getBlockState(this.pos), this.world.getBlockState(this.pos), 3);
+        return !this.inventory.getStackInSlot(slot).isEmpty();
     }
 
     /*

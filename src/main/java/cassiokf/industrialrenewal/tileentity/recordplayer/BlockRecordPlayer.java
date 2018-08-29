@@ -86,7 +86,12 @@ public class BlockRecordPlayer extends BlockTileEntity<TileEntityRecordPlayer> {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        state = state.withProperty(DOWNNOTEBLOCK, isDownBlockaNoteBlock(world, pos));
+        TileEntityRecordPlayer te = (TileEntityRecordPlayer) world.getTileEntity(pos);
+        state = state.withProperty(DOWNNOTEBLOCK, isDownBlockaNoteBlock(world, pos))
+                .withProperty(DISK0, te.hasDiskInSlot(3))
+                .withProperty(DISK1, te.hasDiskInSlot(2))
+                .withProperty(DISK2, te.hasDiskInSlot(1))
+                .withProperty(DISK3, te.hasDiskInSlot(0));
         return state;
     }
 
