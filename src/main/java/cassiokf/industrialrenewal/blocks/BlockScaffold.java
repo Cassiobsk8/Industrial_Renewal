@@ -37,8 +37,15 @@ public class BlockScaffold extends BlockBase {
     protected static final AxisAlignedBB CBASE_AABB = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 1.0D, 0.9D);
 
     public BlockScaffold(String name, CreativeTabs tab) {
-        super(Material.IRON, name, tab);
-        setSoundType(SoundType.METAL);
+        super(Material.GROUND, name, tab);
+        this.setSoundType(SoundType.METAL);
+        this.setHardness(0.5f);
+    }
+
+    @Override
+    @Nullable
+    public String getHarvestTool(IBlockState state) {
+        return "pickaxe";
     }
 
     @Override
@@ -49,7 +56,7 @@ public class BlockScaffold extends BlockBase {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.scaffold)) {
-            Integer n = 1;
+            int n = 1;
             while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockScaffold) {
                 n++;
             }
