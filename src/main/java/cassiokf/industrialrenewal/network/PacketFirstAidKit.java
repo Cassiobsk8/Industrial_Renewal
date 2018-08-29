@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketUpdateFirstAidKit implements IMessage {
+public class PacketFirstAidKit implements IMessage {
 
     private BlockPos pos;
     private ItemStack stack;
@@ -23,7 +23,7 @@ public class PacketUpdateFirstAidKit implements IMessage {
     private ItemStack stack7;
 
 
-    public PacketUpdateFirstAidKit(BlockPos pos, ItemStack stack, ItemStack stack1, ItemStack stack2, ItemStack stack3, ItemStack stack4, ItemStack stack5, ItemStack stack6, ItemStack stack7) {
+    public PacketFirstAidKit(BlockPos pos, ItemStack stack, ItemStack stack1, ItemStack stack2, ItemStack stack3, ItemStack stack4, ItemStack stack5, ItemStack stack6, ItemStack stack7) {
         this.pos = pos;
         this.stack = stack;
         this.stack1 = stack1;
@@ -35,12 +35,12 @@ public class PacketUpdateFirstAidKit implements IMessage {
         this.stack7 = stack7;
     }
 
-    public PacketUpdateFirstAidKit(TileEntityFirstAidKit te) {
+    public PacketFirstAidKit(TileEntityFirstAidKit te) {
         this(te.getPos(), te.inventory.getStackInSlot(0), te.inventory.getStackInSlot(1), te.inventory.getStackInSlot(2), te.inventory.getStackInSlot(3), te.inventory.getStackInSlot(4)
                 , te.inventory.getStackInSlot(5), te.inventory.getStackInSlot(6), te.inventory.getStackInSlot(7));
     }
 
-    public PacketUpdateFirstAidKit() {
+    public PacketFirstAidKit() {
     }
 
     @Override
@@ -69,10 +69,10 @@ public class PacketUpdateFirstAidKit implements IMessage {
         stack7 = ByteBufUtils.readItemStack(buf);
     }
 
-    public static class Handler implements IMessageHandler<PacketUpdateFirstAidKit, IMessage> {
+    public static class Handler implements IMessageHandler<PacketFirstAidKit, IMessage> {
 
         @Override
-        public IMessage onMessage(PacketUpdateFirstAidKit message, MessageContext ctx) {
+        public IMessage onMessage(PacketFirstAidKit message, MessageContext ctx) {
             Minecraft.getMinecraft().addScheduledTask(() -> {
                 TileEntityFirstAidKit te = (TileEntityFirstAidKit) Minecraft.getMinecraft().world.getTileEntity(message.pos);
                 te.inventory.setStackInSlot(0, message.stack);

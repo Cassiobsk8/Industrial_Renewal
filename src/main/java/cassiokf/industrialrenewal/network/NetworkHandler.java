@@ -15,8 +15,8 @@ public class NetworkHandler {
         INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(References.NETWORKCHANNEL);
         NetworkRegistry.INSTANCE.registerGuiHandler(IndustrialRenewal.instance, new GUIHandler());
 
-        INSTANCE.registerMessage(new PacketUpdateFirstAidKit.Handler(), PacketUpdateFirstAidKit.class, 0, Side.CLIENT);
-        INSTANCE.registerMessage(new PacketRequestUpdateFirstAidKit.Handler(), PacketRequestUpdateFirstAidKit.class, 1, Side.SERVER);
+        INSTANCE.registerMessage(new PacketFirstAidKit.Handler(), PacketFirstAidKit.class, 0, Side.CLIENT);
+        INSTANCE.registerMessage(new PacketReturnFirstAidKit.Handler(), PacketReturnFirstAidKit.class, 1, Side.SERVER);
 
         INSTANCE.registerMessage(new PacketSteamLocomotive.Handler(), PacketSteamLocomotive.class, 2, Side.CLIENT);
         INSTANCE.registerMessage(new PacketReturnSteamLocomotive.Handler(), PacketReturnSteamLocomotive.class, 3, Side.SERVER);

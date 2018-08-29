@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.tileentity.firstaidkit;
 
 import cassiokf.industrialrenewal.network.NetworkHandler;
-import cassiokf.industrialrenewal.network.PacketRequestUpdateFirstAidKit;
-import cassiokf.industrialrenewal.network.PacketUpdateFirstAidKit;
+import cassiokf.industrialrenewal.network.PacketFirstAidKit;
+import cassiokf.industrialrenewal.network.PacketReturnFirstAidKit;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -24,7 +24,7 @@ public class TileEntityFirstAidKit extends TileEntity implements ICapabilityProv
             @Override
             protected void onContentsChanged(int slot) {
                 if (!world.isRemote) {
-                    NetworkHandler.INSTANCE.sendToAllAround(new PacketUpdateFirstAidKit(TileEntityFirstAidKit.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
+                    NetworkHandler.INSTANCE.sendToAllAround(new PacketFirstAidKit(TileEntityFirstAidKit.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
                 }
             }
         };
@@ -38,7 +38,7 @@ public class TileEntityFirstAidKit extends TileEntity implements ICapabilityProv
     @Override
     public void onLoad() {
         if (world.isRemote) {
-            NetworkHandler.INSTANCE.sendToServer(new PacketRequestUpdateFirstAidKit(this));
+            NetworkHandler.INSTANCE.sendToServer(new PacketReturnFirstAidKit(this));
         }
     }
 
