@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.entity.render;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.entity.EntityCargoContainer;
-import cassiokf.industrialrenewal.entity.model.ModelCargoContainer;
+import cassiokf.industrialrenewal.model.carts.ModelCargoContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;

@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.item.armor;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.armor.model.SafetyBeltModel;
+import cassiokf.industrialrenewal.model.armor.SafetyBeltModel;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;

@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.entity.render;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
-import cassiokf.industrialrenewal.entity.model.ModelSteamLocomotive;
+import cassiokf.industrialrenewal.model.carts.ModelSteamLocomotive;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;

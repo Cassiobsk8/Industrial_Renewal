@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.entity.model;
+package cassiokf.industrialrenewal.model.carts;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
