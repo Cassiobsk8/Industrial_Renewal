@@ -15,8 +15,7 @@
       "ore": "string"
     },
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "itemGhastTear"
+      "item": "minecraft:ghast_tear"
     }
   },
   "result": {
