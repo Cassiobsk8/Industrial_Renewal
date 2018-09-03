@@ -138,34 +138,47 @@ public class BlockWindow extends BlockBase {
         return EnumBlockRenderType.MODEL;
     }
 
-    /**
-     * Is the neighbouring block a valid connection for this pipe?
-     *
-     * @param ownState           This pipe's state
-     * @param neighbourState     The neighbouring block's state
-     * @param world              The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Is the neighbouring block a valid connection?
-     */
+    private boolean shouldRenderCenter(IBlockAccess world, BlockPos ownPos) {
+        return (!isThisConnected(world, ownPos, EnumFacing.SOUTH) && !isThisConnected(world, ownPos, EnumFacing.NORTH) && !isThisConnected(world, ownPos, EnumFacing.WEST) && !isThisConnected(world, ownPos, EnumFacing.EAST))
+                || ((isThisConnected(world, ownPos, EnumFacing.SOUTH) && isThisConnected(world, ownPos, EnumFacing.WEST))
+                || (isThisConnected(world, ownPos, EnumFacing.SOUTH) && isThisConnected(world, ownPos, EnumFacing.EAST))
+                || (isThisConnected(world, ownPos, EnumFacing.NORTH) && isThisConnected(world, ownPos, EnumFacing.WEST))
+                || (isThisConnected(world, ownPos, EnumFacing.NORTH) && isThisConnected(world, ownPos, EnumFacing.EAST)))
+                || (sidesConnected(world, ownPos) == 1);
+    }
+
+    private int sidesConnected(IBlockAccess world, BlockPos pos) {
+        int sides = 0;
+        for (EnumFacing faces : EnumFacing.HORIZONTALS) {
+            IBlockState neighbourState = world.getBlockState(pos.offset(faces));
+            Block nb = neighbourState.getBlock();
+            if (nb instanceof BlockWindow || nb.isFullCube(neighbourState)) {
+                sides++;
+            }
+        }
+        return sides;
+    }
+
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+        Block nb = neighbourState.getBlock();
+        if (neighbourDirection == EnumFacing.DOWN) {
+            return false;
+        }
+        if (neighbourDirection == EnumFacing.UP) {
+            return shouldRenderCenter(world, ownPos);
+        }
+        return nb instanceof BlockWindow || nb.isFullCube(neighbourState);
+    }
+
+    private boolean isThisConnected(IBlockAccess world, BlockPos pos, EnumFacing neighbourFacing) {
+        IBlockState neighbourState = world.getBlockState(pos.offset(neighbourFacing));
         Block nb = neighbourState.getBlock();
         return nb instanceof BlockWindow || nb.isFullCube(neighbourState);
     }
 
-    /**
-     * Can this pipe connect to the neighbouring block?
-     *
-     * @param ownState           This pipe's state
-     * @param worldIn            The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Can this pipe connect?
-     */
     private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
-
         return isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
     }
 
