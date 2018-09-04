@@ -9,7 +9,6 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -156,8 +155,8 @@ public class BlockRoof extends BlockBase {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        IBlockState actualState = getActualState(state, Minecraft.getMinecraft().world, pos);
-        if (isConnected(actualState, EnumFacing.DOWN) || isConnected(actualState, EnumFacing.EAST) || isConnected(actualState, EnumFacing.WEST)) {
+        //IBlockState actualState = getActualState(state, Minecraft.getMinecraft().world, pos);
+        if (isConnected(state, EnumFacing.DOWN) || isConnected(state, EnumFacing.EAST) || isConnected(state, EnumFacing.WEST)) {
             return FULL_AABB;
         } else {
             return BASE_AABB;
