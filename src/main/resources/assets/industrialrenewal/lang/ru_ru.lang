@@ -1,10 +1,8 @@
-#Wed Dec 06 12:33:40 BRST 2017
 
 itemGroup.industrialrenewal=Industrial Renewal
 itemGroup.industrialrenewalrailroad=Industrial Renewal: Железная дорога
 itemGroup.industrialrenewalwip=Industrial Renewal: Содержимое в разработке
 
-#Items
 
 item.industrialrenewal.ingot_steel.name=Стальной слиток
 item.industrialrenewal.item_fire_extinguisher.name=Огнетушитель
@@ -23,16 +21,20 @@ item.industrialrenewal.medkit.des0=Используется для лечени�
 item.industrialrenewal.steel_saw.name=Стальная пила
 item.industrialrenewal.steel_saw.des0=Пила, которая может резать камни
 
-#Discs
 
 item.industrialrenewal.record_royal_entrance.name=Музыкальный диск
 item.industrialrenewal.record_royal_entrance.des0=Королевский выход от Visager
 
-#Blocks
 
 tile.industrialrenewal.alarm.name=Промышленная сигнализация
 tile.industrialrenewal.block_chimney.name=Дымовая труба
 tile.industrialrenewal.block_hazard.name=Блок опасности
+tile.industrialrenewal.caution_hazard.name=Traffic and Caution Hazard
+tile.industrialrenewal.defective_hazard.name=Defective Machinery Hazard
+tile.industrialrenewal.safety_hazard.name=Safety and First Aid Hazard
+tile.industrialrenewal.radiation_hazard.name=Radiation Hazard
+tile.industrialrenewal.aisle_hazard.name=Housekeeping and Aisle Hazard
+tile.industrialrenewal.fire_hazard.name=Fire Prevention Hazard
 tile.industrialrenewal.booster_rail.name=Ускоряющий путь
 tile.industrialrenewal.brace.name=Балка раскоса
 tile.industrialrenewal.buffer_stop_rail.name=Путь буферная остановка
@@ -83,13 +85,11 @@ tile.industrialrenewal.record_player.name=Мульти-проигрывател�
 tile.industrialrenewal.sensor_rain.name=Датчик дождя
 tile.industrialrenewal.solar_panel.name=Основная солнечная панель
 
-#Entity
 
 entity.industrialrenewal.cargo_container.name=Грузовой контейнер
 entity.industrialrenewal.fluid_container.name=Жидкостный контейнер
 entity.industrialrenewal.steam_locomotive.name=Паровоз
 
-#Config
 
 gui.config.main_title=Конфигурация Industrial Renewal
 gui.config.category.recipes=Рецепты
@@ -97,7 +97,6 @@ gui.config.category.recipes.tooltip=Настройки рецептов
 gui.config.recipes.spongeiron_recipe.name=Рецепт губчатого железа
 gui.config.recipes.spongeiron_recipe.comment=Включить/выключить рецепт губчатого железа (по умолчанию - вкл.)
 
-#GUI
 
 gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Слоты для аптечек
 gui.industrialrenewal.blockrecordplayer.discs.tooltip=Слоты для дисков

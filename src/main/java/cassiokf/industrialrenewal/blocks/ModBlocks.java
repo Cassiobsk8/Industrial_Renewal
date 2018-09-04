@@ -6,6 +6,8 @@ import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.BlockFirstAidKit;
+import cassiokf.industrialrenewal.tileentity.fusebox.BlockFuseBox;
+import cassiokf.industrialrenewal.tileentity.fusebox.BlockFuseBoxConnector;
 import cassiokf.industrialrenewal.tileentity.gutter.BlockGutter;
 import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.BlockCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.railloader.BlockLoaderRail;
@@ -24,6 +26,12 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class ModBlocks {
 
     public static BlockBase blockHazard = new BlockBase(Material.IRON, "block_hazard", References.CREATIVE_IR_TAB);
+    public static BlockBase cautionHazard = new BlockBase(Material.IRON, "caution_hazard", References.CREATIVE_IR_TAB);
+    public static BlockBase defectiveHazard = new BlockBase(Material.IRON, "defective_hazard", References.CREATIVE_IR_TAB);
+    public static BlockBase safetyHazard = new BlockBase(Material.IRON, "safety_hazard", References.CREATIVE_IR_TAB);
+    public static BlockBase radiationHazard = new BlockBase(Material.IRON, "radiation_hazard", References.CREATIVE_IR_TAB);
+    public static BlockBase aisleHazard = new BlockBase(Material.IRON, "aisle_hazard", References.CREATIVE_IR_TAB);
+    public static BlockBase fireHazard = new BlockBase(Material.IRON, "fire_hazard", References.CREATIVE_IR_TAB);
 
     public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor", References.CREAATIVE_IRWIP_TAB);
     public static BlockChimney blockChimney = new BlockChimney("block_chimney", References.CREATIVE_IR_TAB);
@@ -63,6 +71,9 @@ public class ModBlocks {
     public static BlockSensorRain sensorRain = new BlockSensorRain("sensor_rain", References.CREATIVE_IR_TAB);
     public static BlockSignalIndicator signalIndicator = new BlockSignalIndicator("signal_indicator", References.CREATIVE_IR_TAB);
     public static BlockTrafficLight trafficLight = new BlockTrafficLight("traffic_light", References.CREATIVE_IR_TAB);
+    public static BlockFuseBox fuseBox = new BlockFuseBox("fuse_box", References.CREAATIVE_IRWIP_TAB);
+    public static BlockFuseBoxConduitExtension fuseBoxConduitExtension = new BlockFuseBoxConduitExtension("conduit_extension", References.CREAATIVE_IRWIP_TAB);
+    public static BlockFuseBoxConnector fuseBoxConnector = new BlockFuseBoxConnector("conduit_connector", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
@@ -125,7 +136,16 @@ public class ModBlocks {
                 loaderRail,
                 cargoLoader,
                 signalIndicator,
-                trafficLight
+                trafficLight,
+                fuseBox,
+                fuseBoxConduitExtension,
+                fuseBoxConnector,
+                cautionHazard,
+                defectiveHazard,
+                safetyHazard,
+                radiationHazard,
+                aisleHazard,
+                fireHazard
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -139,6 +159,8 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(loaderRail.getTileEntityClass(), loaderRail.getRegistryName().toString());
         GameRegistry.registerTileEntity(signalIndicator.getTileEntityClass(), signalIndicator.getRegistryName().toString());
         GameRegistry.registerTileEntity(trafficLight.getTileEntityClass(), trafficLight.getRegistryName().toString());
+        GameRegistry.registerTileEntity(fuseBox.getTileEntityClass(), fuseBox.getRegistryName().toString());
+        GameRegistry.registerTileEntity(fuseBoxConnector.getTileEntityClass(), fuseBoxConnector.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -181,7 +203,16 @@ public class ModBlocks {
                 loaderRail.createItemBlock(),
                 cargoLoader.createItemBlock(),
                 signalIndicator.createItemBlock(),
-                trafficLight.createItemBlock()
+                trafficLight.createItemBlock(),
+                fuseBox.createItemBlock(),
+                fuseBoxConduitExtension.createItemBlock(),
+                fuseBoxConnector.createItemBlock(),
+                cautionHazard.createItemBlock(),
+                defectiveHazard.createItemBlock(),
+                safetyHazard.createItemBlock(),
+                radiationHazard.createItemBlock(),
+                aisleHazard.createItemBlock(),
+                fireHazard.createItemBlock()
         );
     }
 
@@ -225,5 +256,14 @@ public class ModBlocks {
         cargoLoader.registerItemModel(Item.getItemFromBlock(cargoLoader));
         signalIndicator.registerItemModel(Item.getItemFromBlock(signalIndicator));
         trafficLight.registerItemModel(Item.getItemFromBlock(trafficLight));
+        fuseBox.registerItemModel(Item.getItemFromBlock(fuseBox));
+        fuseBoxConduitExtension.registerItemModel(Item.getItemFromBlock(fuseBoxConduitExtension));
+        fuseBoxConnector.registerItemModel(Item.getItemFromBlock(fuseBoxConnector));
+        cautionHazard.registerItemModel(Item.getItemFromBlock(cautionHazard));
+        defectiveHazard.registerItemModel(Item.getItemFromBlock(defectiveHazard));
+        safetyHazard.registerItemModel(Item.getItemFromBlock(safetyHazard));
+        radiationHazard.registerItemModel(Item.getItemFromBlock(radiationHazard));
+        aisleHazard.registerItemModel(Item.getItemFromBlock(aisleHazard));
+        fireHazard.registerItemModel(Item.getItemFromBlock(fireHazard));
     }
 }

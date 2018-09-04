@@ -32,7 +32,13 @@ item.industrialrenewal.record_royal_entrance.des0=Royal Entrance by Visager
 
 tile.industrialrenewal.alarm.name=Industrial Alarm
 tile.industrialrenewal.block_chimney.name=Chimney
-tile.industrialrenewal.block_hazard.name=Hazard Block
+tile.industrialrenewal.block_hazard.name=Physical Hazard
+tile.industrialrenewal.caution_hazard.name=Traffic and Caution Hazard
+tile.industrialrenewal.defective_hazard.name=Defective Machinery Hazard
+tile.industrialrenewal.safety_hazard.name=Safety and First Aid Hazard
+tile.industrialrenewal.radiation_hazard.name=Radiation Hazard
+tile.industrialrenewal.aisle_hazard.name=Housekeeping and Aisle Hazard
+tile.industrialrenewal.fire_hazard.name=Fire Prevention Hazard
 tile.industrialrenewal.booster_rail.name=Booster Rail
 tile.industrialrenewal.brace.name=Brace Beam
 tile.industrialrenewal.buffer_stop_rail.name=Buffer Stop Rail
