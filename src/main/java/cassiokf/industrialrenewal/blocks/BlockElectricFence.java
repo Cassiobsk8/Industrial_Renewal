@@ -58,10 +58,10 @@ public class BlockElectricFence extends BlockBase {
         if (entityIn instanceof EntityLivingBase) {
             entityIn.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 0.0F);
             ((EntityLivingBase) entityIn).knockBack(entityIn, 0.2f, pos.getX() - entityIn.posX, pos.getZ() - entityIn.posZ);
+            Random r = new Random();
+            float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
+            worldIn.playSound(null, pos, IRSoundHandler.EFECT_SHOCK, SoundCategory.BLOCKS, 0.6F, pitch);
         }
-        Random r = new Random();
-        float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
-        worldIn.playSound(null, pos, IRSoundHandler.EFECT_SHOCK, SoundCategory.BLOCKS, 0.6F, pitch);
     }
 
     @Override
