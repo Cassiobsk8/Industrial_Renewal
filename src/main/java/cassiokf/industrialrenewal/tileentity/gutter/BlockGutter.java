@@ -10,7 +10,6 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -110,7 +109,6 @@ public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
         IBlockState actualState = getActualState(state, worldIn, pos);
-
         EnumFacing face = actualState.getValue(FACING);
         Boolean active = actualState.getValue(ACTIVE_DOWN);
         if (face == EnumFacing.NORTH) {
@@ -146,9 +144,9 @@ public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        IBlockState actualState = getActualState(state, Minecraft.getMinecraft().world, pos);
-        EnumFacing face = actualState.getValue(FACING);
-        Boolean active = actualState.getValue(ACTIVE_DOWN);
+
+        EnumFacing face = state.getValue(FACING);
+        Boolean active = false;//state.getValue(ACTIVE_DOWN);
         if (face == EnumFacing.NORTH) {
             if (active) {
                 return NC_AABB;
