@@ -103,45 +103,19 @@ public class BlockElectricFence extends BlockBase {
         return EnumBlockRenderType.MODEL;
     }
 
-    /**
-     * Is the neighbouring block a valid connection for this pipe?
-     *
-     * @param ownState           This pipe's state
-     * @param neighbourState     The neighbouring block's state
-     * @param world              The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Is the neighbouring block a valid connection?
-     */
-    protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+    protected boolean isValidConnection(final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
+        final IBlockState neighbourState = world.getBlockState(neighbourPos);
         Block nb = neighbourState.getBlock();
-        Block nbu = world.getBlockState(ownPos.offset(EnumFacing.UP)).getBlock();
+        if (neighbourDirection == EnumFacing.DOWN) {
+            return false;
+        }
         if (neighbourDirection == EnumFacing.UP) {
-            Integer z = ownPos.getZ();
-            Integer x = ownPos.getX();
-            return nbu.isAir(neighbourState, world, ownPos.offset(EnumFacing.UP)) && (z % x % 3 == 0);
+            int z = ownPos.getZ();
+            int x = ownPos.getX();
+            return nb.isAir(neighbourState, world, neighbourPos) && (z % x % 3 == 0);
         }
         return nb instanceof BlockElectricFence || nb instanceof BlockElectricGate || nb.isFullCube(neighbourState);
-    }
-
-    /**
-     * Can this pipe connect to the neighbouring block?
-     *
-     * @param ownState           This pipe's state
-     * @param worldIn            The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Can this pipe connect?
-     */
-    private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
-        final Block neighbourBlock = neighbourState.getBlock();
-
-        final boolean neighbourIsValidForThis = isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
-        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockElectricFence) || ((BlockElectricFence) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
-
-        return neighbourIsValidForThis && thisIsValidForNeighbour;
     }
 
     @SuppressWarnings("deprecation")
@@ -149,7 +123,7 @@ public class BlockElectricFence extends BlockBase {
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
         for (final EnumFacing facing : EnumFacing.VALUES) {
             state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()),
-                    canConnectTo(state, world, pos, facing));
+                    isValidConnection(world, pos, facing));
         }
         return state;
     }
