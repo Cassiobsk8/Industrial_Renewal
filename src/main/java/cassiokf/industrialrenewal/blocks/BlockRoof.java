@@ -146,7 +146,7 @@ public class BlockRoof extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        IBlockState actualState = getActualState(state, worldIn, pos);
+        IBlockState actualState = state.getActualState(worldIn, pos);
         addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
         if (isConnected(actualState, EnumFacing.DOWN) || isConnected(actualState, EnumFacing.EAST) || isConnected(actualState, EnumFacing.WEST)) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, BOT_AABB);
@@ -155,8 +155,8 @@ public class BlockRoof extends BlockBase {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        //IBlockState actualState = getActualState(state, Minecraft.getMinecraft().world, pos);
-        if (isConnected(state, EnumFacing.DOWN) || isConnected(state, EnumFacing.EAST) || isConnected(state, EnumFacing.WEST)) {
+        IBlockState actualState = state.getActualState(source, pos);
+        if (isConnected(actualState, EnumFacing.DOWN) || isConnected(actualState, EnumFacing.EAST) || isConnected(actualState, EnumFacing.WEST)) {
             return FULL_AABB;
         } else {
             return BASE_AABB;
