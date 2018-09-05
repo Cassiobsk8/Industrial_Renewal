@@ -80,17 +80,9 @@ public class BlockRoof extends BlockBase {
         }
     }
 
-    /**
-     * Is the neighbouring block a valid connection for this pipe?
-     *
-     * @param ownState           This pipe's state
-     * @param neighbourState     The neighbouring block's state
-     * @param world              The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Is the neighbouring block a valid connection?
-     */
-    protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+    protected boolean isValidConnection(final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
+        final IBlockState neighbourState = world.getBlockState(neighbourPos);
         Block nb = neighbourState.getBlock();
         if ((neighbourDirection == EnumFacing.EAST || neighbourDirection == EnumFacing.WEST)) {
             IBlockState dState = world.getBlockState(ownPos.offset(EnumFacing.DOWN));
@@ -99,7 +91,7 @@ public class BlockRoof extends BlockBase {
             Block dBlock = dState.getBlock();
             Block sBlock = sState.getBlock();
             Block nBlock = nState.getBlock();
-            if ((sBlock instanceof BlockRoof || sBlock instanceof BlockCatwalkLadder) && (nBlock instanceof BlockRoof || nBlock instanceof BlockCatwalkLadder)) {
+            if ((sBlock instanceof BlockRoof || sBlock instanceof BlockCatwalkLadder || sBlock.isFullCube(sState)) && (nBlock instanceof BlockRoof || nBlock instanceof BlockCatwalkLadder || nBlock.isFullCube(nState))) {
                 // (block pos is Even) && (neighbour SW) && !down connection
                 return isEven(ownPos)
                         && (nb instanceof BlockRoof || nb.isFullCube(neighbourState) || nb instanceof BlockPillar || nb instanceof BlockColumn)
@@ -109,32 +101,12 @@ public class BlockRoof extends BlockBase {
         return neighbourDirection == EnumFacing.DOWN && nb.isFullCube(neighbourState);
     }
 
-    /**
-     * Can this pipe connect to the neighbouring block?
-     *
-     * @param ownState           This pipe's state
-     * @param worldIn            The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Can this pipe connect?
-     */
-    private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
-        final Block neighbourBlock = neighbourState.getBlock();
-
-        final boolean neighbourIsValidForThis = isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
-        //final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockRoof) || ((BlockRoof) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
-
-        return neighbourIsValidForThis;// && thisIsValidForNeighbour;
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
         for (final EnumFacing facing : EnumFacing.VALUES) {
             state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()),
-                    canConnectTo(state, world, pos, facing));
+                    isValidConnection(world, pos, facing));
         }
         return state;
     }
