@@ -111,9 +111,10 @@ public class BlockElectricFence extends BlockBase {
             return false;
         }
         if (neighbourDirection == EnumFacing.UP) {
-            int z = ownPos.getZ();
-            int x = ownPos.getX();
-            return nb.isAir(neighbourState, world, neighbourPos) && (z % x % 3 == 0);
+            int z = Math.abs(ownPos.getZ());
+            int x = Math.abs(ownPos.getX());
+            int w = x - z;
+            return nb.isAir(neighbourState, world, neighbourPos) && (Math.abs(w) % 3 == 0);
         }
         return nb instanceof BlockElectricFence || nb instanceof BlockElectricGate || nb.isFullCube(neighbourState);
     }
