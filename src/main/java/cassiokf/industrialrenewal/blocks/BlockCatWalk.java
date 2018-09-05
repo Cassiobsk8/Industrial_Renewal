@@ -2,10 +2,7 @@ package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLadder;
-import net.minecraft.block.BlockRailBase;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -107,17 +104,7 @@ public class BlockCatWalk extends BlockBase {
         return EnumBlockRenderType.MODEL;
     }
 
-    /**
-     * Is the neighbouring block a valid connection for this pipe?
-     *
-     * @param ownState           This pipe's state
-     * @param neighbourState     The neighbouring block's state
-     * @param world              The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Is the neighbouring block a valid connection?
-     */
-    protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+    protected boolean isValidConnection(final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         IBlockState downstate = world.getBlockState(ownPos.offset(neighbourDirection).down());
         Block nb = neighbourState.getBlock();
 
@@ -125,41 +112,37 @@ public class BlockCatWalk extends BlockBase {
 
             return nb instanceof BlockCatWalk
                     || nb.isFullCube(neighbourState)
+                    || nb instanceof BlockDoor
+                    || nb instanceof BlockElectricGate
+                    || (nb instanceof BlockStairs && (neighbourState.getValue(BlockStairs.FACING) == neighbourDirection || neighbourState.getValue(BlockStairs.FACING) == neighbourDirection.getOpposite()))
+                    || (downstate.getBlock() instanceof BlockStairs && downstate.getValue(BlockStairs.FACING) == neighbourDirection.getOpposite())
                     || nb instanceof BlockRailBase
                     || (nb instanceof BlockCatwalkHatch && neighbourState.getValue(BlockCatwalkHatch.FACING) == neighbourDirection)
                     || (nb instanceof BlockCatwalkGate && neighbourState.getValue(BlockCatwalkGate.FACING) == neighbourDirection.getOpposite())
                     || (nb instanceof BlockCatwalkStair && neighbourState.getValue(BlockCatwalkStair.FACING) == neighbourDirection)
                     || (downstate.getBlock() instanceof BlockCatwalkStair && downstate.getValue(BlockCatwalkStair.FACING) == neighbourDirection.getOpposite())
                     || (downstate.getBlock() instanceof BlockCatwalkLadder && downstate.getValue(BlockCatwalkLadder.FACING) == neighbourDirection.getOpposite())
-                    //|| downstate.getBlock() instanceof BlockIndustrialFloor || downstate.getBlock() instanceof BlockFloorLamp || downstate.getBlock() instanceof BlockFloorPipe || downstate.getBlock() instanceof BlockFloorCable
+                    || downstate.getBlock() instanceof BlockIndustrialFloor || downstate.getBlock() instanceof BlockFloorLamp || downstate.getBlock() instanceof BlockFloorPipe || downstate.getBlock() instanceof BlockFloorCable
                     || (nb instanceof BlockCatwalkLadder && neighbourState.getValue(BlockCatwalkLadder.FACING) == neighbourDirection && !neighbourState.getValue(BlockCatwalkLadder.ACTIVE));
         }
         if (neighbourDirection == EnumFacing.DOWN) {
-            return nb instanceof BlockCatwalkLadder || nb instanceof BlockLadder
+            IBlockState twodownstate = world.getBlockState(ownPos.down(2));
+            IBlockState threedownstate = world.getBlockState(ownPos.down(3));
+            Block twonb = twodownstate.getBlock();
+            Block threenb = threedownstate.getBlock();
+            return nb instanceof BlockCatwalkLadder
+                    || nb instanceof BlockLadder
                     || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp || nb instanceof BlockFloorCable || nb instanceof BlockFloorPipe
                     || nb instanceof BlockCatWalk;
         }
         return !(neighbourState.getBlock() instanceof BlockEnergyCable);
     }
 
-    /**
-     * Can this pipe connect to the neighbouring block?
-     *
-     * @param ownState           This pipe's state
-     * @param worldIn            The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Can this pipe connect?
-     */
-    private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+    private boolean canConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
-        final Block neighbourBlock = neighbourState.getBlock();
 
-        final boolean neighbourIsValidForThis = !isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
-        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockCatWalk) || ((BlockCatWalk) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
-
-        return neighbourIsValidForThis && thisIsValidForNeighbour;
+        return !isValidConnection(neighbourState, worldIn, ownPos, neighbourDirection);
     }
 
     @SuppressWarnings("deprecation")
@@ -167,7 +150,7 @@ public class BlockCatWalk extends BlockBase {
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
         for (final EnumFacing facing : EnumFacing.VALUES) {
             state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()),
-                    canConnectTo(state, world, pos, facing));
+                    canConnectTo(world, pos, facing));
         }
         return state;
     }
