@@ -12,15 +12,15 @@
     },
     "C": {
       "type": "forge:ore_dict",
-      "ore": "dyeYellow"
+      "ore": "dyeLime"
     },
     "M": {
       "type": "forge:ore_dict",
-      "ore": "dyeBlack"
+      "ore": "dyeWhite"
     }
   },
   "result": {
-    "item": "industrialrenewal:block_hazard",
+    "item": "industrialrenewal:safety_hazard",
     "count": 16
   }
 }
