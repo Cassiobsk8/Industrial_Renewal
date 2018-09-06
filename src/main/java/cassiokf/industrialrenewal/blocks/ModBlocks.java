@@ -48,6 +48,7 @@ public class ModBlocks {
     public static BlockRecordPlayer recordPlayer = new BlockRecordPlayer("record_player", References.CREATIVE_IR_TAB);
 
     public static BlockCatWalk catWalk = new BlockCatWalk("catwalk", References.CREATIVE_IR_TAB);
+    public static BlockHandRail handRail = new BlockHandRail("handrail", References.CREAATIVE_IRWIP_TAB);
     public static BlockCatwalkStair catwalkStair = new BlockCatwalkStair("catwalk_stair", References.CREATIVE_IR_TAB);
     public static BlockPillar pillar = new BlockPillar("catwalk_pillar", References.CREATIVE_IR_TAB);
     public static BlockColumn column = new BlockColumn("catwalk_column", References.CREATIVE_IR_TAB);
@@ -145,7 +146,8 @@ public class ModBlocks {
                 safetyHazard,
                 radiationHazard,
                 aisleHazard,
-                fireHazard
+                fireHazard,
+                handRail
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -212,7 +214,8 @@ public class ModBlocks {
                 safetyHazard.createItemBlock(),
                 radiationHazard.createItemBlock(),
                 aisleHazard.createItemBlock(),
-                fireHazard.createItemBlock()
+                fireHazard.createItemBlock(),
+                handRail.createItemBlock()
         );
     }
 
@@ -265,5 +268,6 @@ public class ModBlocks {
         radiationHazard.registerItemModel(Item.getItemFromBlock(radiationHazard));
         aisleHazard.registerItemModel(Item.getItemFromBlock(aisleHazard));
         fireHazard.registerItemModel(Item.getItemFromBlock(fireHazard));
+        handRail.registerItemModel(Item.getItemFromBlock(handRail));
     }
 }

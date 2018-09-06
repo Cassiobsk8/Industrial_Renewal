@@ -1,0 +1,43 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "industrialrenewal:catwalk_side",
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "west": {
+        "y": 270
+      },
+      "east": {
+        "y": 90
+      }
+    },
+    "down": {
+      "true": {
+        "submodel": {
+          "down": {
+            "model": "industrialrenewal:handrail_down"
+          }
+        }
+      },
+      "false": {}
+    },
+    "inventory": [
+      {
+        "y": 180,
+        "submodel": {
+          "down": {
+            "model": "industrialrenewal:handrail_down"
+          }
+        }
+      }
+    ]
+  }
+}
