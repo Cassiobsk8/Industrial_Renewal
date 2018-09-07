@@ -64,6 +64,7 @@ tile.industrialrenewal.gate_nand.name=Gate NAND
 tile.industrialrenewal.gate_not.name=Gate NOT
 tile.industrialrenewal.gate_or.name=Gate OR
 tile.industrialrenewal.gutter.name=Gutter
+tile.industrialrenewal.handrail.name=Handrail
 tile.industrialrenewal.industrial_floor.name=Industrial Floor
 tile.industrialrenewal.light.name=External Light
 tile.industrialrenewal.normal_rail.name=Rail
