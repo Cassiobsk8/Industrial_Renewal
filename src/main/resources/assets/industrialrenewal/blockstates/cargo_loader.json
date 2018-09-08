@@ -9,38 +9,68 @@
     "normal": {
       "model": "industrialrenewal:cargo_loader"
     },
-    "facing=north,loading=false": {
+    "facing=north,loading=false,unload=false": {
       "model": "industrialrenewal:cargo_loader"
     },
-    "facing=west,loading=false": {
+    "facing=west,loading=false,unload=false": {
       "model": "industrialrenewal:cargo_loader",
       "y": -90
     },
-    "facing=south,loading=false": {
+    "facing=south,loading=false,unload=false": {
       "model": "industrialrenewal:cargo_loader",
       "y": 180
     },
-    "facing=east,loading=false": {
+    "facing=east,loading=false,unload=false": {
       "model": "industrialrenewal:cargo_loader",
       "y": 90
     },
-    "facing=north,loading=true": {
+    "facing=north,loading=true,unload=false": {
       "model": "industrialrenewal:cargo_loader_loading"
     },
-    "facing=west,loading=true": {
+    "facing=west,loading=true,unload=false": {
       "model": "industrialrenewal:cargo_loader_loading",
       "y": -90
     },
-    "facing=south,loading=true": {
+    "facing=south,loading=true,unload=false": {
       "model": "industrialrenewal:cargo_loader_loading",
       "y": 180
     },
-    "facing=east,loading=true": {
+    "facing=east,loading=true,unload=false": {
       "model": "industrialrenewal:cargo_loader_loading",
+      "y": 90
+    },
+    "facing=north,loading=false,unload=true": {
+      "model": "industrialrenewal:cargo_unloader"
+    },
+    "facing=west,loading=false,unload=true": {
+      "model": "industrialrenewal:cargo_unloader",
+      "y": -90
+    },
+    "facing=south,loading=false,unload=true": {
+      "model": "industrialrenewal:cargo_unloader",
+      "y": 180
+    },
+    "facing=east,loading=false,unload=true": {
+      "model": "industrialrenewal:cargo_unloader",
+      "y": 90
+    },
+    "facing=north,loading=true,unload=true": {
+      "model": "industrialrenewal:cargo_unloader"
+    },
+    "facing=west,loading=true,unload=true": {
+      "model": "industrialrenewal:cargo_unloader",
+      "y": -90
+    },
+    "facing=south,loading=true,unload=true": {
+      "model": "industrialrenewal:cargo_unloader",
+      "y": 180
+    },
+    "facing=east,loading=true,unload=true": {
+      "model": "industrialrenewal:cargo_unloader",
       "y": 90
     },
     "inventory": {
-      "model": "industrialrenewal:cargo_loader_loading",
+      "model": "industrialrenewal:cargo_unloader",
       "y": 180
     }
   }

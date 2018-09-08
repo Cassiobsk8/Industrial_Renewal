@@ -7,6 +7,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.EntityMinecartChest;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -17,7 +18,7 @@ import javax.annotation.Nullable;
 
 public class BlockLoaderRail extends BlockRailFacing {
 
-    public static final PropertyBool PASS = PropertyBool.create("pass");
+    static final PropertyBool PASS = PropertyBool.create("pass");
 
     public BlockLoaderRail(String name, CreativeTabs tab) {
         super(name, tab);
@@ -32,22 +33,24 @@ public class BlockLoaderRail extends BlockRailFacing {
     @Override
     public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        boolean canPass = state.getValue(PASS);
+        boolean canPass = state.getActualState(world, pos).getValue(PASS);
         boolean dontHaveInv = !cart.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (canPass || dontHaveInv) {
+        if (canPass || dontHaveInv || !(cart instanceof EntityMinecartChest)) {
             propelMinecart(world, pos, state, cart);
             if (canPass) {
-                world.setBlockState(pos, state.withProperty(PASS, false), 3);
+                youShallNotPass(world, pos);
             }
-        }
-        else {
+        } else {
             cart.motionX = 0;
             cart.motionY = 0;
             cart.motionZ = 0;
-            TileEntityLoaderRail te = (TileEntityLoaderRail) world.getTileEntity(pos);
-            te.setEntityCart(cart);
             world.scheduleUpdate(new BlockPos(pos), this, tickRate(world));
         }
+    }
+
+    private void youShallNotPass(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        world.setBlockState(pos, state.withProperty(PASS, false), 3);
     }
 
     @Nonnull

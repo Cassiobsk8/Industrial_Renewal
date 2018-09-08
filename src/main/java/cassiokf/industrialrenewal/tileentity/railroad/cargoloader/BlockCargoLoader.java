@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.tileentity.railroad.cargoloader;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.tileentity.railroad.railloader.BlockLoaderRail;
 import cassiokf.industrialrenewal.util.GUIHandler;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
@@ -36,10 +37,10 @@ public class BlockCargoLoader extends BlockContainer {
 
     public static final PropertyBool LOADING = PropertyBool.create("loading");
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
-
-    protected String name;
-
+    public static final PropertyBool UNLOAD = PropertyBool.create("unload");
     protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1D, 1D, 1D);
+    protected static final AxisAlignedBB FULL_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 1D, 1D);
+    protected String name;
 
     public BlockCargoLoader(String name, CreativeTabs tab) {
         super(Material.IRON);
@@ -56,13 +57,11 @@ public class BlockCargoLoader extends BlockContainer {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (worldIn.isRemote) {
             return true;
-        }
-        else {
+        } else {
             TileEntity tileentity = worldIn.getTileEntity(pos);
 
             if (tileentity instanceof TileEntityCargoLoader) {
                 OpenGUI(worldIn, pos, playerIn);
-                //playerIn.displayGUIChest((TileEntityCargoLoader)tileentity);
                 playerIn.addStat(StatList.HOPPER_INSPECTED);
             }
 
@@ -74,6 +73,17 @@ public class BlockCargoLoader extends BlockContainer {
         player.openGui(IndustrialRenewal.instance, GUIHandler.CARGOLOADER, world, pos.getX(), pos.getY(), pos.getZ());
     }
 
+    private boolean isUnload(IBlockAccess world, BlockPos pos) {
+        IBlockState downState = world.getBlockState(pos.down());
+        return !(downState.getBlock() instanceof BlockLoaderRail);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
+        return state.withProperty(UNLOAD, isUnload(world, pos));
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
@@ -81,13 +91,11 @@ public class BlockCargoLoader extends BlockContainer {
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
-        if (tileentity instanceof TileEntityHopper)
-        {
-            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityHopper)tileentity);
+        if (tileentity instanceof TileEntityHopper) {
+            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityHopper) tileentity);
             worldIn.updateComparatorOutputLevel(pos, this);
         }
 
@@ -100,19 +108,17 @@ public class BlockCargoLoader extends BlockContainer {
     }
 
     @Override
-    public boolean isTopSolid(IBlockState state)
-    {
+    public boolean isTopSolid(IBlockState state) {
         return true;
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, LOADING);
+        return new BlockStateContainer(this, FACING, LOADING, UNLOAD);
     }
 
     @Override
-    public boolean hasComparatorInputOverride(IBlockState state)
-    {
+    public boolean hasComparatorInputOverride(IBlockState state) {
         return true;
     }
 
@@ -139,18 +145,20 @@ public class BlockCargoLoader extends BlockContainer {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        state = state.getActualState(source, pos);
+        if (state.getValue(UNLOAD)) {
+            return FULL_AABB;
+        }
         return BLOCK_AABB;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
-    {
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
