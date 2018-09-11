@@ -4,123 +4,21 @@
     "0": "industrialrenewal:blocks/fire_extinguisher"
   },
   "display": {
-    "thirdperson_righthand": {
-      "rotation": [
-        75,
-        45,
-        0
-      ],
-      "translation": [
-        0.00,
-        2.50,
-        0.00
-      ],
-      "scale": [
-        0.37,
-        0.37,
-        0.37
-      ]
-    },
-    "thirdperson_lefthand": {
-      "rotation": [
-        -105,
-        -75,
-        -180
-      ],
-      "translation": [
-        0.00,
-        2.50,
-        0.00
-      ],
-      "scale": [
-        0.37,
-        0.37,
-        0.37
-      ]
-    },
-    "firstperson_righthand": {
-      "rotation": [
-        0,
-        305,
-        0
-      ],
-      "translation": [
-        0.00,
-        2.50,
-        -0.00
-      ],
-      "scale": [
-        0.40,
-        0.40,
-        0.40
-      ]
-    },
-    "firstperson_lefthand": {
-      "rotation": [
-        -180,
-        -45,
-        -180
-      ],
-      "translation": [
-        0.00,
-        2.50,
-        0.00
-      ],
-      "scale": [
-        0.40,
-        0.40,
-        0.40
-      ]
-    },
     "gui": {
       "rotation": [
-        -150,
-        133,
-        180
+        30,
+        225,
+        0
       ],
       "translation": [
-        0.50,
-        0.00,
-        0.00
-      ],
-      "scale": [
-        0.70,
-        0.70,
-        0.70
-      ]
-    },
-    "head": {
-      "rotation": [
         0,
         0,
         0
       ],
-      "translation": [
-        0.00,
-        0.00,
-        0.00
-      ],
       "scale": [
-        1.00,
-        1.00,
-        1.00
-      ]
-    },
-    "fixed": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "translation": [
-        0.00,
-        0.00,
-        0.00
-      ],
-      "scale": [
-        0.50,
-        0.50,
-        0.50
+        0.625,
+        0.625,
+        0.625
       ]
     },
     "ground": {
@@ -130,14 +28,99 @@
         0
       ],
       "translation": [
-        0.00,
-        3.00,
-        0.00
+        0,
+        3,
+        0
       ],
       "scale": [
         0.25,
         0.25,
         0.25
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        75,
+        255,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
       ]
     }
   },
@@ -145,14 +128,14 @@
     {
       "name": "Cube",
       "from": [
-        4.00,
+        5.00,
         0.00,
-        0.00
+        1.00
       ],
       "to": [
-        12.00,
+        11.00,
         13.00,
-        8.00
+        7.00
       ],
       "faces": {
         "north": {
@@ -214,14 +197,14 @@
     {
       "name": "Cube",
       "from": [
-        5.00,
+        6.00,
         13.00,
-        1.00
+        2.00
       ],
       "to": [
-        11.00,
+        10.00,
         14.00,
-        7.00
+        6.00
       ],
       "faces": {
         "north": {
