@@ -23,5 +23,8 @@ public class NetworkHandler {
 
         INSTANCE.registerMessage(new PacketRecordPlayer.Handler(), PacketRecordPlayer.class, 4, Side.CLIENT);
         INSTANCE.registerMessage(new PacketReturnRecordPlayer.Handler(), PacketReturnRecordPlayer.class, 5, Side.SERVER);
+
+        INSTANCE.registerMessage(new PacketCargoLoader.Handler(), PacketCargoLoader.class, 6, Side.CLIENT);
+        INSTANCE.registerMessage(new PacketReturnCargoLoader.Handler(), PacketReturnCargoLoader.class, 7, Side.SERVER);
     }
 }

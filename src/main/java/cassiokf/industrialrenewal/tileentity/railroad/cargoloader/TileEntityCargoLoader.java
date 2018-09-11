@@ -1,5 +1,8 @@
 package cassiokf.industrialrenewal.tileentity.railroad.cargoloader;
 
+import cassiokf.industrialrenewal.network.NetworkHandler;
+import cassiokf.industrialrenewal.network.PacketCargoLoader;
+import cassiokf.industrialrenewal.network.PacketReturnCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.railloader.BlockLoaderRail;
 import cassiokf.industrialrenewal.tileentity.railroad.railloader.TileEntityLoaderRail;
 import net.minecraft.block.Block;
@@ -24,6 +27,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -33,6 +37,30 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
     private NonNullList<ItemStack> inventory = NonNullList.withSize(5, ItemStack.EMPTY);
     private int transferCooldown = -1;
     private long tickedGameTime;
+    private waitEnum waitE;
+
+    public enum waitEnum {
+        WAIT_FULL(0),
+        WAIT_EMPTY(1),
+        NO_ACTIVITY(2),
+        NEVER(3);
+
+        public int intValue;
+
+        waitEnum(int value) {
+            intValue = value;
+        }
+
+        public static waitEnum valueOf(int waitNo) {
+            if (waitNo > waitEnum.values().length - 1) {
+                waitNo = 0;
+            }
+            for (waitEnum l : waitEnum.values()) {
+                if (l.intValue == waitNo) return l;
+            }
+            throw new IllegalArgumentException("waitEnum not found");
+        }
+    }
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
@@ -43,6 +71,34 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
         IBlockState oldState = this.world.getBlockState(this.pos);
         if (oldState.getValue(BlockCargoLoader.LOADING) != value) {
             this.world.setBlockState(this.pos, oldState.withProperty(BlockCargoLoader.LOADING, value));
+            this.markDirty();
+        }
+    }
+
+    public waitEnum getWaitEnum() {
+        if (waitE == null) {
+            waitE = waitEnum.WAIT_FULL;
+        }
+        return waitE;
+    }
+
+    public void setWaitEnum(int value) {
+        waitE = waitEnum.valueOf(value);
+    }
+
+    public void setNextWaitEnum(boolean value) {
+        int old = getWaitEnum().intValue;
+        if (value) {
+            waitE = waitEnum.valueOf(old + 1);
+        }
+        NetworkHandler.INSTANCE.sendToAllAround(new PacketCargoLoader(TileEntityCargoLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
+        markDirty();
+    }
+
+    @Override
+    public void onLoad() {
+        if (world.isRemote) {
+            NetworkHandler.INSTANCE.sendToServer(new PacketReturnCargoLoader(this));
         }
     }
 
@@ -60,6 +116,9 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
     }
 
     private void letCartPass() {
+        if (getWaitEnum() == waitEnum.NEVER) {
+            return;
+        }
         if (isUnload()) {
             IBlockState oldState = this.world.getBlockState(this.pos.up());
             if (oldState.getBlock() instanceof BlockLoaderRail) {
@@ -79,8 +138,24 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
         }
     }
 
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        if (!this.checkLootAndWrite(compound)) {
+            ItemStackHelper.saveAllItems(compound, this.inventory);
+        }
+
+        compound.setInteger("TransferCooldown", this.transferCooldown);
+        compound.setInteger("EnumConfig", this.waitE.intValue);
+
+        if (this.hasCustomName()) {
+            compound.setString("CustomName", this.customName);
+        }
+
+        return super.writeToNBT(compound);
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
         this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 
         if (!this.checkLootAndRead(compound)) {
@@ -92,27 +167,15 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
         }
 
         this.transferCooldown = compound.getInteger("TransferCooldown");
-    }
+        waitE = waitEnum.valueOf(compound.getInteger("EnumConfig"));
 
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-
-        if (!this.checkLootAndWrite(compound)) {
-            ItemStackHelper.saveAllItems(compound, this.inventory);
-        }
-
-        compound.setInteger("TransferCooldown", this.transferCooldown);
-
-        if (this.hasCustomName()) {
-            compound.setString("CustomName", this.customName);
-        }
-
-        return compound;
+        super.readFromNBT(compound);
     }
 
     /**
      * Returns the number of slots in the inventory.
      */
+    @Override
     public int getSizeInventory() {
         return this.inventory.size();
     }
@@ -154,6 +217,7 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
     /**
      * Like the old updateEntity(), except more generic.
      */
+    @Override
     public void update() {
         if (this.world != null && !this.world.isRemote) {
             --this.transferCooldown;
@@ -173,13 +237,16 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
 
                 if (!this.isInventoryEmpty()) {
                     flag = this.transferItemsOut();
-                } else if (!isUnload()) {
+                } else if (!isUnload() && (getWaitEnum() == waitEnum.NO_ACTIVITY || (getWaitEnum() == waitEnum.WAIT_FULL && isInventoryFull(getInventoryForHopperTransfer(), getOutput())))) {
                     letCartPass();
                 }
+
                 setBlockState(flag);
 
                 if (!this.isFull()) {
                     flag = pullItems(this) || flag;
+                } else if (isUnload() && (getWaitEnum() == waitEnum.NO_ACTIVITY || (getWaitEnum() == waitEnum.WAIT_EMPTY && isInventoryEmpty(getSourceInventory(this), getOutput())))) {
+                    letCartPass();
                 }
 
                 if (flag) {
@@ -188,7 +255,6 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
                     return true;
                 }
             }
-
             return false;
         } else {
             return false;
@@ -228,8 +294,7 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
             EnumFacing enumfacing = getOutput();
             boolean load = !isUnload();
             if (this.isInventoryFull(iinventory, enumfacing)) {
-                if (load) {
-
+                if (load && (getWaitEnum() == waitEnum.WAIT_FULL || getWaitEnum() == waitEnum.NO_ACTIVITY)) {
                     letCartPass();
                 }
                 return false;
@@ -246,8 +311,7 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
                         this.setInventorySlotContents(i, itemstack);
                     }
                 }
-                if (load) {
-
+                if (load && (getWaitEnum() == waitEnum.NO_ACTIVITY || getWaitEnum() == waitEnum.WAIT_FULL)) {
                     letCartPass();
                 }
                 return false;
@@ -326,7 +390,7 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
             EnumFacing enumfacing = getOutput();
 
             if (isInventoryEmpty(iinventory, enumfacing)) {
-                if (unloader) {
+                if (unloader && (getWaitEnum() == waitEnum.WAIT_EMPTY || getWaitEnum() == waitEnum.NO_ACTIVITY)) {
                     letCartPass();
                 }
                 return false;
@@ -356,6 +420,9 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
                     return true;
                 }
             }
+        }
+        if (unloader && getWaitEnum() == waitEnum.NO_ACTIVITY) {
+            letCartPass();
         }
         return false;
     }
@@ -593,15 +660,18 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
         return this.transferCooldown > 8;
     }
 
+    @Override
     public String getGuiID() {
         return "minecraft:hopper";
     }
 
+    @Override
     public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
         this.fillWithLoot(playerIn);
         return new ContainerHopper(playerInventory, this, playerIn);
     }
 
+    @Override
     protected NonNullList<ItemStack> getItems() {
         return this.inventory;
     }
