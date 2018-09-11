@@ -1,6 +1,8 @@
 package cassiokf.industrialrenewal.tileentity.recordplayer;
 
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.network.NetworkHandler;
+import cassiokf.industrialrenewal.network.PacketReturnRecordPlayer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -29,15 +31,7 @@ public class GUIRecordPlayer extends GuiContainer {
 
     @Override
     protected void actionPerformed(GuiButton b) {
-        if (b.id <= 3) {
-            this.te.playDisk(b.id);
-        }
-        if (b.id == 4) {
-            this.te.playAllDisk();
-        }
-        if (b.id == 5) {
-            this.te.stop();
-        }
+        NetworkHandler.INSTANCE.sendToServer(new PacketReturnRecordPlayer(this.te, b.id));
     }
 
     @Override

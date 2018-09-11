@@ -17,28 +17,37 @@ public class PacketReturnRecordPlayer implements IMessage {
 
     private BlockPos pos;
     private int dimension;
+    private int playDisk;
+    private boolean play;
     private boolean messageValid;
 
     public PacketReturnRecordPlayer() {
         this.messageValid = false;
     }
 
-    public PacketReturnRecordPlayer(BlockPos pos, int dimension) {
+    public PacketReturnRecordPlayer(BlockPos pos, int dimension, int playDisk, boolean play) {
         this.dimension = dimension;
         this.pos = pos;
+        this.playDisk = playDisk;
+        this.play = play;
         this.messageValid = true;
     }
 
     public PacketReturnRecordPlayer(TileEntityRecordPlayer te) {
-        this(te.getPos(), te.getWorld().provider.getDimension());
+        this(te.getPos(), te.getWorld().provider.getDimension(), 0, false);
     }
 
+    public PacketReturnRecordPlayer(TileEntityRecordPlayer te, int playDisk) {
+        this(te.getPos(), te.getWorld().provider.getDimension(), playDisk, true);
+    }
 
     @Override
     public void fromBytes(ByteBuf buf) {
         try {
             pos = BlockPos.fromLong(buf.readLong());
             dimension = buf.readInt();
+            playDisk = buf.readInt();
+            play = buf.readBoolean();
         } catch (IndexOutOfBoundsException ioe) {
             System.out.println(ioe);
             return;
@@ -53,6 +62,8 @@ public class PacketReturnRecordPlayer implements IMessage {
         }
         buf.writeLong(pos.toLong());
         buf.writeInt(dimension);
+        buf.writeInt(playDisk);
+        buf.writeBoolean(play);
     }
 
     public static class Handler implements IMessageHandler<PacketReturnRecordPlayer, PacketRecordPlayer> {
@@ -65,6 +76,13 @@ public class PacketReturnRecordPlayer implements IMessage {
             WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension);
             TileEntityRecordPlayer te = (TileEntityRecordPlayer) world.getTileEntity(message.pos);
             if (te != null) {
+                if (message.play) {
+                    if (message.playDisk <= 3) {
+                        te.playDisk(message.playDisk);
+                    } else if (message.playDisk == 5) {
+                        te.stop();
+                    }
+                }
                 return new PacketRecordPlayer(te);
             } else {
                 return null;
