@@ -1,0 +1,65 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "industrialrenewal:fuse_box_conduit_split",
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "west": {
+        "y": 270
+      },
+      "east": {
+        "y": 90
+      }
+    },
+    "up": {
+      "0": {},
+      "1": {
+        "submodel": {
+          "up": {
+            "model": "industrialrenewal:fuse_box_conduit_split_connector"
+          }
+        }
+      },
+      "2": {
+        "submodel": {
+          "up": {
+            "model": "industrialrenewal:fuse_box_conduit_split_connector",
+            "y": 180
+          }
+        }
+      }
+    },
+    "power": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {},
+      "4": {},
+      "5": {},
+      "6": {},
+      "7": {},
+      "8": {},
+      "9": {},
+      "10": {},
+      "11": {},
+      "12": {},
+      "13": {},
+      "14": {},
+      "15": {}
+    },
+    "inventory": [
+      {
+        "model": "industrialrenewal:fuse_box_conduit_split",
+        "y": 180
+      }
+    ]
+  }
+}
