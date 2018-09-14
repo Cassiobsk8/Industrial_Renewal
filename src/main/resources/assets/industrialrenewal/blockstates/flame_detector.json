@@ -1,0 +1,123 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/cauldron_inner"
+    }
+  },
+  "variants": {
+    "facing": {
+      "down": {
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:flame_detector",
+            "x": -90
+          }
+        }
+      },
+      "up": {
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:flame_detector",
+            "x": 90
+          }
+        }
+      },
+      "north": {
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:flame_detector"
+          }
+        }
+      },
+      "west": {
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:flame_detector",
+            "y": -90
+          }
+        }
+      },
+      "south": {
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:flame_detector",
+            "y": 180
+          }
+        }
+      },
+      "east": {
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:flame_detector",
+            "y": 90
+          }
+        }
+      }
+    },
+    "active": {
+      "true": {},
+      "false": {}
+    },
+    "base": {
+      "up": {
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:flame_detector_base",
+            "x": 180
+          }
+        }
+      },
+      "down": {
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:flame_detector_base"
+          }
+        }
+      },
+      "north": {
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:flame_detector_base",
+            "x": 90,
+            "y": 180
+          }
+        }
+      },
+      "south": {
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:flame_detector_base",
+            "x": 90
+          }
+        }
+      },
+      "east": {
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:flame_detector_base",
+            "x": 90,
+            "y": -90
+          }
+        }
+      },
+      "west": {
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:flame_detector_base",
+            "x": 90,
+            "y": 90
+          }
+        }
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:flame_detector",
+      "submodel": {
+        "base1": {
+          "model": "industrialrenewal:flame_detector_base"
+        }
+      }
+    }
+  }
+}
