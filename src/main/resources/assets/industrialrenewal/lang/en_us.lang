@@ -55,6 +55,7 @@ tile.industrialrenewal.crossing_rail.name=Crossing Rail
 tile.industrialrenewal.detector_rail.name=Detector Rail
 tile.industrialrenewal.energy_cable.name=Energy Cable
 tile.industrialrenewal.firstaid_kit.name=First-aid Box
+tile.industrialrenewal.flame_detector.name=Flame Detector
 tile.industrialrenewal.fluid_filter.name=Fluid Filter (WIP)
 tile.industrialrenewal.fluid_pipe.name=Fluid Pipe
 tile.industrialrenewal.fluorescent.name=Fluorescent Light
