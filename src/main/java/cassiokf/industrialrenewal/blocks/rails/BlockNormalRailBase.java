@@ -34,7 +34,7 @@ public class BlockNormalRailBase extends BlockRail {
         this.name = name;
         setRegistryName(References.MODID, name);
         setUnlocalizedName(References.MODID + "." + name);
-        setHardness(0.8f);
+        setHardness(0.4f);
         //setSoundType(SoundType.METAL);
         setCreativeTab(tab);
         this.setDefaultState(blockState.getBaseState().withProperty(SNOW, EnumSnowRail.FALSE));
