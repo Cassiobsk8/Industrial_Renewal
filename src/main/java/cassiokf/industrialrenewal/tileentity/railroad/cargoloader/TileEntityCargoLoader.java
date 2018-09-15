@@ -15,8 +15,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.IHopper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
@@ -30,8 +28,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -181,23 +177,6 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
         waitE = waitEnum.valueOf(compound.getInteger("EnumConfig"));
 
         super.readFromNBT(compound);
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
-    }
-
-    @Nullable
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(getPos(), 0, getUpdateTag());
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
-        readFromNBT(pkt.getNbtCompound());
     }
 
     /**
