@@ -111,6 +111,8 @@ public class BlockCatWalk extends BlockBase {
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
 
             return nb instanceof BlockCatWalk
+                    || downstate.getBlock().isFullBlock(downstate)
+                    || downstate.getBlock().isSideSolid(downstate, world, ownPos.offset(neighbourDirection).down(), EnumFacing.UP)
                     || nb.isFullCube(neighbourState)
                     || nb instanceof BlockDoor
                     || nb instanceof BlockElectricGate
