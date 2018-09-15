@@ -10,9 +10,11 @@ import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
 import cassiokf.industrialrenewal.util.GUIHandler;
 import net.minecraft.block.Block;
+import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -21,6 +23,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+
+import java.util.Random;
 
 
 @Mod(modid = References.MODID, name = References.NAME, version = References.VERSION, guiFactory = References.GUI_FACTORY, updateJSON = References.VERSION_CHECKER_URL)
@@ -87,6 +91,16 @@ public class IndustrialRenewal {
                     FMLNetworkHandler.openGui(event.getEntityPlayer(), IndustrialRenewal.instance, GUIHandler.STEAMLOCOMOTIVE, event.getWorld(), entityID, 0, 0);
                 }
                 event.setCanceled(true);
+            }
+        }
+
+        @SubscribeEvent
+        public static void onEntityDrop(LivingDropsEvent event) {
+            if (event.getEntity() instanceof EntityZombieVillager) {
+                Random r = new Random();
+                if (r.nextInt(100) < 25) {
+                    //event.getEntity().dropItem(ModItems.instantNoodle, r.nextInt(2) + event.getLootingLevel());
+                }
             }
         }
     }

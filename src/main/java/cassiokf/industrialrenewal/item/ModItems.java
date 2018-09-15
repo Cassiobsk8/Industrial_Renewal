@@ -31,6 +31,8 @@ public class ModItems {
 
     public static ItemDiscBase disc1 = new ItemDiscBase("record_royal_entrance", References.CREATIVE_IR_TAB, IRSoundHandler.DISC_1);
 
+    //public static ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
+
     public static void register(IForgeRegistry<Item> registry) {
         registry.registerAll(
                 ingotSteel,
@@ -48,6 +50,7 @@ public class ModItems {
                 safetyBelt,
                 disc1,
                 locomotivePlowIron
+                //instantNoodle
         );
     }
 
@@ -67,5 +70,6 @@ public class ModItems {
         safetyBelt.registerItemModel();
         disc1.registerItemModel();
         locomotivePlowIron.registerItemModel();
+        //instantNoodle.registerItemModel();
     }
 }
