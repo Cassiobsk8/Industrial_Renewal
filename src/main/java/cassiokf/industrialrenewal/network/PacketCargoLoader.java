@@ -8,6 +8,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketCargoLoader implements IMessage {
 
@@ -42,14 +44,19 @@ public class PacketCargoLoader implements IMessage {
     public static class Handler implements IMessageHandler<PacketCargoLoader, IMessage> {
 
         @Override
+        @SideOnly(Side.CLIENT)
         public IMessage onMessage(PacketCargoLoader message, MessageContext ctx) {
             Minecraft.getMinecraft().addScheduledTask(() -> {
                 World world = Minecraft.getMinecraft().world;
+                if (world == null) {
+                    System.out.println("error: world is null at PacketCargoLoader");
+                    return null;
+                }
                 TileEntityCargoLoader te = (TileEntityCargoLoader) world.getTileEntity(message.pos);
                 if (te != null) {
                     te.setWaitEnum(message.enumConfig);
                 }
-                return null;//new PacketReturnCargoLoader(te);
+                return null;
             });
             return null;
         }
