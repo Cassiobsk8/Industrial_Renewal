@@ -12,6 +12,9 @@ import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.TileEntityCarg
 import cassiokf.industrialrenewal.tileentity.recordplayer.ContainerRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.recordplayer.GUIRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.recordplayer.TileEntityRecordPlayer;
+import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.ContainerEntityDetector;
+import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.GUIEntityDetector;
+import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.TileEntityEntityDetector;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -26,6 +29,7 @@ public class GUIHandler implements IGuiHandler {
     public static final int RECORDPLAYER = 1;
     public static final int CARGOLOADER = 2;
     public static final int STEAMLOCOMOTIVE = 3;
+    public static final int ENTITYDETECTOR = 4;
 
     @Nullable
     @Override
@@ -41,6 +45,9 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == STEAMLOCOMOTIVE) {
             return new ContainerSteamLocomotive(player.inventory, (EntitySteamLocomotive) world.getEntityByID(x));
+        }
+        if (ID == ENTITYDETECTOR) {
+            return new ContainerEntityDetector(player.inventory, (TileEntityEntityDetector) world.getTileEntity(new BlockPos(x, y, z)));
         }
         return null;
     }
@@ -59,6 +66,9 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == STEAMLOCOMOTIVE) {
             return new GUISteamLocomotive(player.inventory, (EntitySteamLocomotive) world.getEntityByID(x));
+        }
+        if (ID == ENTITYDETECTOR) {
+            return new GUIEntityDetector(player.inventory, (TileEntityEntityDetector) world.getTileEntity(new BlockPos(x, y, z)));
         }
         return null;
     }

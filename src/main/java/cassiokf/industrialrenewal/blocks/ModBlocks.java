@@ -13,6 +13,7 @@ import cassiokf.industrialrenewal.tileentity.locker.BlockLocker;
 import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.BlockCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.railloader.BlockLoaderRail;
 import cassiokf.industrialrenewal.tileentity.recordplayer.BlockRecordPlayer;
+import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.BlockEntityDetector;
 import cassiokf.industrialrenewal.tileentity.sensors.flamedetector.BlockFlameDetector;
 import cassiokf.industrialrenewal.tileentity.sensors.rain.BlockSensorRain;
 import cassiokf.industrialrenewal.tileentity.signalindicator.BlockSignalIndicator;
@@ -80,6 +81,7 @@ public class ModBlocks {
     public static BlockFuseBoxConduitExtension fuseBoxConduitExtension = new BlockFuseBoxConduitExtension("conduit_extension", References.CREAATIVE_IRWIP_TAB);
     public static BlockFuseBoxConnector fuseBoxConnector = new BlockFuseBoxConnector("conduit_connector", References.CREAATIVE_IRWIP_TAB);
     public static BlockFlameDetector flameDetector = new BlockFlameDetector("flame_detector", References.CREATIVE_IR_TAB);
+    public static BlockEntityDetector entityDetector = new BlockEntityDetector("entity_detector", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
@@ -154,7 +156,8 @@ public class ModBlocks {
                 fireHazard,
                 handRail,
                 flameDetector,
-                locker
+                locker,
+                entityDetector
         );
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
@@ -172,6 +175,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(fuseBoxConnector.getTileEntityClass(), fuseBoxConnector.getRegistryName().toString());
         GameRegistry.registerTileEntity(flameDetector.getTileEntityClass(), flameDetector.getRegistryName().toString());
         GameRegistry.registerTileEntity(locker.getTileEntityClass(), locker.getRegistryName().toString());
+        GameRegistry.registerTileEntity(entityDetector.getTileEntityClass(), entityDetector.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -226,7 +230,8 @@ public class ModBlocks {
                 fireHazard.createItemBlock(),
                 handRail.createItemBlock(),
                 flameDetector.createItemBlock(),
-                locker.createItemBlock()
+                locker.createItemBlock(),
+                entityDetector.createItemBlock()
         );
     }
 
@@ -282,5 +287,6 @@ public class ModBlocks {
         handRail.registerItemModel(Item.getItemFromBlock(handRail));
         flameDetector.registerItemModel(Item.getItemFromBlock(flameDetector));
         locker.registerItemModel(Item.getItemFromBlock(locker));
+        entityDetector.registerItemModel(Item.getItemFromBlock(entityDetector));
     }
 }
