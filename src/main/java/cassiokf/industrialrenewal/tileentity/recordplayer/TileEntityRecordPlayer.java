@@ -16,8 +16,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -103,7 +101,6 @@ public class TileEntityRecordPlayer extends TileEntity implements ICapabilityPro
         this.world.playEvent(1010, this.pos, 0);
     }
 
-    @SideOnly(Side.CLIENT)
     private boolean playDisk(int slot, boolean simulate) {
         ItemStack diskStack = this.inventory.getStackInSlot(slot);
         if (!diskStack.isEmpty()) {
