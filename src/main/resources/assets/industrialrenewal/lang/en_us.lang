@@ -68,6 +68,7 @@ tile.industrialrenewal.gutter.name=Gutter
 tile.industrialrenewal.handrail.name=Handrail
 tile.industrialrenewal.industrial_floor.name=Industrial Floor
 tile.industrialrenewal.light.name=External Light
+tile.industrialrenewal.locker.name=Locker
 tile.industrialrenewal.normal_rail.name=Rail
 tile.industrialrenewal.ore_copper.name=Copper Ore
 tile.industrialrenewal.platform.name=Platform

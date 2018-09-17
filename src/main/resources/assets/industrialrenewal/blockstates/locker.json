@@ -1,0 +1,54 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/locker"
+    }
+  },
+  "variants": {
+    "open": {
+      "true": {
+        "model": "industrialrenewal:locker_open"
+      },
+      "false": {
+        "model": "industrialrenewal:locker"
+      }
+    },
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
+    "down": {
+      "true": {
+        "submodel": {
+          "down": {
+            "model": "industrialrenewal:locker_down"
+          }
+        }
+      },
+      "false": {
+        "submodel": {
+          "down": {
+            "model": "industrialrenewal:locker_foot"
+          }
+        }
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:locker",
+      "submodel": {
+        "down": {
+          "model": "industrialrenewal:locker_foot"
+        }
+      }
+    }
+  }
+}
