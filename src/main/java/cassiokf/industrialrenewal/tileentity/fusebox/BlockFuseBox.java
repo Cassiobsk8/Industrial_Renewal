@@ -1,7 +1,9 @@
 package cassiokf.industrialrenewal.tileentity.fusebox;
 
+import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.blocks.BlockFuseBoxConduitExtension;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.util.GUIHandler;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -43,14 +45,21 @@ public class BlockFuseBox extends BlockTileEntity<TileEntityFuseBox> {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (world.isRemote) {
+            return true;
+        }
         TileEntityFuseBox te = (TileEntityFuseBox) world.getTileEntity(pos);
         if (!player.isSneaking()) {
             te.changeActivate();
             return true;
         } else {
-            //Open GUI
+            OpenGUI(world, pos, player);
+            return true;
         }
-        return false;
+    }
+
+    private void OpenGUI(World world, BlockPos pos, EntityPlayer player) {
+        player.openGui(IndustrialRenewal.instance, GUIHandler.FUSEBOX, world, pos.getX(), pos.getY(), pos.getZ());
     }
 
     private boolean canConnectConduit(int side, IBlockAccess world, BlockPos pos) {

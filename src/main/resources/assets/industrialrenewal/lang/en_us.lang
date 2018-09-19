@@ -61,6 +61,7 @@ tile.industrialrenewal.fluid_filter.name=Fluid Filter (WIP)
 tile.industrialrenewal.fluid_pipe.name=Fluid Pipe
 tile.industrialrenewal.fluorescent.name=Fluorescent Light
 tile.industrialrenewal.frame.name=Rail Frame
+tile.industrialrenewal.fuse_box.name=Fuse Box
 tile.industrialrenewal.gate_and.name=Gate AND
 tile.industrialrenewal.gate_nand.name=Gate NAND
 tile.industrialrenewal.gate_not.name=Gate NOT
@@ -128,4 +129,7 @@ gui.industrialrenewal.button.never=Never
 gui.industrialrenewal.button.play=Play
 gui.industrialrenewal.button.stop=Stop
 gui.industrialrenewal.fuel.tooltip=Fuel
+gui.industrialrenewal.fusebox.input=Redstone In:
+gui.industrialrenewal.fusebox.output=Redstone Out:
+gui.industrialrenewal.fusebox.slots.tooltip=Slots for Redstone Cartridges
 

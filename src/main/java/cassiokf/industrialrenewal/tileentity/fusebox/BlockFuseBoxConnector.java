@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.tileentity.fusebox;
 import cassiokf.industrialrenewal.blocks.BlockFuseBoxConduitExtension;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import cassiokf.industrialrenewal.item.ModItems;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -54,17 +55,10 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
         return blockState.getWeakPower(blockAccess, pos, side);
     }
 
-    private int getSignal(IBlockAccess world, BlockPos pos) {
-        TileEntityBoxConnector te = (TileEntityBoxConnector) world.getTileEntity(pos);
-        if (te == null) {
-            return 0;
-        }
-        return te.passRedstone();
-    }
-
     @Override
     public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        int value = state.getActualState(world, pos).getValue(POWER);
+        TileEntityBoxConnector te = (TileEntityBoxConnector) world.getTileEntity(pos);
+        int value = te.passRedstone();
         return state.getValue(FACING).rotateYCCW() == side ? value : 0;
     }
 
@@ -72,8 +66,18 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
             rotateBlock(world, pos, state);
+            return true;
         }
-        return true;
+        return false;
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighborPos) {
+        super.neighborChanged(state, worldIn, pos, blockIn, neighborPos);
+        TileEntityBoxConnector te = (TileEntityBoxConnector) worldIn.getTileEntity(pos);
+        if (te != null) {
+            te.passRedstone();
+        }
     }
 
     private void rotateBlock(World world, BlockPos pos, IBlockState state) {
@@ -97,7 +101,7 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        state = state.withProperty(UPCONDUIT, canConnectConduit(state, world, pos)).withProperty(POWER, getSignal(world, pos));
+        state = state.withProperty(UPCONDUIT, canConnectConduit(state, world, pos));
         return state;
     }
 

@@ -31,5 +31,7 @@ public class NetworkHandler {
 
         INSTANCE.registerMessage(new PacketEntityDetector.Handler(), PacketEntityDetector.class, dis++, Side.CLIENT);
         INSTANCE.registerMessage(new PacketReturnEntityDetector.Handler(), PacketReturnEntityDetector.class, dis++, Side.SERVER);
+
+        INSTANCE.registerMessage(new PacketReturnFuseBox.Handler(), PacketReturnFuseBox.class, dis++, Side.SERVER);
     }
 }

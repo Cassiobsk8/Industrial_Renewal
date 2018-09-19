@@ -1,11 +1,14 @@
 package cassiokf.industrialrenewal.util;
 
+import cassiokf.industrialrenewal.container.ContainerFuseBox;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import cassiokf.industrialrenewal.entity.GUI.GUISteamLocomotive;
 import cassiokf.industrialrenewal.entity.containers.ContainerSteamLocomotive;
+import cassiokf.industrialrenewal.gui.GUIFuseBox;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.ContainerFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.GUIFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
+import cassiokf.industrialrenewal.tileentity.fusebox.TileEntityFuseBox;
 import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.ContainerCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.GUICargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.TileEntityCargoLoader;
@@ -30,6 +33,7 @@ public class GUIHandler implements IGuiHandler {
     public static final int CARGOLOADER = 2;
     public static final int STEAMLOCOMOTIVE = 3;
     public static final int ENTITYDETECTOR = 4;
+    public static final int FUSEBOX = 5;
 
     @Nullable
     @Override
@@ -48,6 +52,9 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == ENTITYDETECTOR) {
             return new ContainerEntityDetector(player.inventory, (TileEntityEntityDetector) world.getTileEntity(new BlockPos(x, y, z)));
+        }
+        if (ID == FUSEBOX) {
+            return new ContainerFuseBox(player.inventory, (TileEntityFuseBox) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
         }
         return null;
     }
@@ -69,6 +76,9 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == ENTITYDETECTOR) {
             return new GUIEntityDetector(player.inventory, (TileEntityEntityDetector) world.getTileEntity(new BlockPos(x, y, z)));
+        }
+        if (ID == FUSEBOX) {
+            return new GUIFuseBox(player, player.inventory, (TileEntityFuseBox) world.getTileEntity(new BlockPos(x, y, z)));
         }
         return null;
     }
