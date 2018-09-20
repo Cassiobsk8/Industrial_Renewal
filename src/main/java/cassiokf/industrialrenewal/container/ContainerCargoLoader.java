@@ -1,5 +1,6 @@
-package cassiokf.industrialrenewal.tileentity.railroad.cargoloader;
+package cassiokf.industrialrenewal.container;
 
+import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.TileEntityCargoLoader;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;

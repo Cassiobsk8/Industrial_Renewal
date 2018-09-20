@@ -14,6 +14,10 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GUIFuseBox extends GuiContainer {
 
@@ -59,7 +63,7 @@ public class GUIFuseBox extends GuiContainer {
         String name = I18n.format(ModBlocks.fuseBox.getUnlocalizedName() + ".name");
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
         //fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
-/*
+
         int actualMouseX = mouseX - ((this.width - this.xSize) / 2);
         int actualMouseY = mouseY - ((this.height - this.ySize) / 2);
 
@@ -67,7 +71,7 @@ public class GUIFuseBox extends GuiContainer {
             List<String> text = new ArrayList<String>();
             text.add(TextFormatting.GRAY + I18n.format("gui.industrialrenewal.fusebox.slots.tooltip"));
             this.drawHoveringText(text, actualMouseX, actualMouseY);
-        }*/
+        }
         String output = I18n.format("gui.industrialrenewal.fusebox.output");
         String outputValue = String.valueOf(te.getPowerOut());
         String input = I18n.format("gui.industrialrenewal.fusebox.input");

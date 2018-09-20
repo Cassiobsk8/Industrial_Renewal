@@ -1,8 +1,10 @@
-package cassiokf.industrialrenewal.tileentity.recordplayer;
+package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.container.ContainerRecordPlayer;
 import cassiokf.industrialrenewal.network.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketReturnRecordPlayer;
+import cassiokf.industrialrenewal.tileentity.recordplayer.TileEntityRecordPlayer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -27,6 +29,13 @@ public class GUIRecordPlayer extends GuiContainer {
 
         this.te = te;
         this.playerInv = playerInv;
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
     @Override

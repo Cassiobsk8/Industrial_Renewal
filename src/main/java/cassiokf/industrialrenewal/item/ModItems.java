@@ -14,10 +14,10 @@ public class ModItems {
     public static ItemOreDict spongeIron = new ItemOreDict("sponge_iron", "spongeIron", References.CREATIVE_IR_TAB);
     public static ItemOreDict smallSlab = new ItemOreDict("small_slab", "minislabStone", References.CREATIVE_IR_TAB);
 
-    public static ItemCartridge cartridge_plus = new ItemCartridge("cartridge_plus", References.CREAATIVE_IRWIP_TAB);
-    public static ItemCartridge cartridge_minus = new ItemCartridge("cartridge_minus", References.CREAATIVE_IRWIP_TAB);
-    public static ItemCartridge cartridge_half = new ItemCartridge("cartridge_half", References.CREAATIVE_IRWIP_TAB);
-    public static ItemCartridge cartridge_double = new ItemCartridge("cartridge_double", References.CREAATIVE_IRWIP_TAB);
+    public static ItemCartridge cartridge_plus = new ItemCartridge("cartridge_plus", References.CREATIVE_IR_TAB);
+    public static ItemCartridge cartridge_minus = new ItemCartridge("cartridge_minus", References.CREATIVE_IR_TAB);
+    public static ItemCartridge cartridge_half = new ItemCartridge("cartridge_half", References.CREATIVE_IR_TAB);
+    public static ItemCartridge cartridge_double = new ItemCartridge("cartridge_double", References.CREATIVE_IR_TAB);
 
     public static ItemIronPlow locomotivePlowIron = new ItemIronPlow("plow_iron", References.CREAATIVE_IRWIP_TAB);
 

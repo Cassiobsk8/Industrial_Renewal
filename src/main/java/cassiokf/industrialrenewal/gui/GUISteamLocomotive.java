@@ -1,8 +1,8 @@
-package cassiokf.industrialrenewal.entity.GUI;
+package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.container.ContainerSteamLocomotive;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
-import cassiokf.industrialrenewal.entity.containers.ContainerSteamLocomotive;
 import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -27,6 +27,13 @@ public class GUISteamLocomotive extends GuiContainer {
 
         this.entity = entity;
         this.playerInv = playerInv;
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
     @Override

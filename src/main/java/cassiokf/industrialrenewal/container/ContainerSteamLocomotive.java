@@ -1,6 +1,8 @@
-package cassiokf.industrialrenewal.tileentity.firstaidkit;
+package cassiokf.industrialrenewal.container;
 
-import cassiokf.industrialrenewal.util.slots.FirstAidSlot;
+import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
+import cassiokf.industrialrenewal.util.slots.FuelSlot;
+import cassiokf.industrialrenewal.util.slots.PlowSlot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -9,64 +11,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class ContainerFirstAidKit extends Container {
+public class ContainerSteamLocomotive extends Container {
 
-    private TileEntityFirstAidKit te;
+    private EntitySteamLocomotive entity;
     private IItemHandler inventory;
 
-    public ContainerFirstAidKit(IInventory playerInv, TileEntityFirstAidKit te) {
-        this.te = te;
-        this.inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
+    public ContainerSteamLocomotive(IInventory playerInv, EntitySteamLocomotive entity) {
+        this.entity = entity;
+        this.inventory = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
 
-        this.addSlotToContainer(new FirstAidSlot(inventory, 0, 53, 29) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FirstAidSlot(inventory, 1, 71, 29) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FirstAidSlot(inventory, 2, 89, 29) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FirstAidSlot(inventory, 3, 107, 29) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
+        this.addSlotToContainer(new PlowSlot(inventory, 6, 8, 52));
 
-        this.addSlotToContainer(new FirstAidSlot(inventory, 4, 53, 47) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FirstAidSlot(inventory, 5, 71, 47) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FirstAidSlot(inventory, 6, 89, 47) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FirstAidSlot(inventory, 7, 107, 47) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
+        this.addSlotToContainer(new FuelSlot(inventory, 0, 100, 21));
+        this.addSlotToContainer(new FuelSlot(inventory, 1, 118, 21));
+        this.addSlotToContainer(new FuelSlot(inventory, 2, 136, 21));
+        this.addSlotToContainer(new FuelSlot(inventory, 3, 100, 39));
+        this.addSlotToContainer(new FuelSlot(inventory, 4, 118, 39));
+        this.addSlotToContainer(new FuelSlot(inventory, 5, 136, 39));
 
         //Player Slots
         int xPos = 8;

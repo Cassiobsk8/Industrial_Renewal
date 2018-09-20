@@ -1,7 +1,9 @@
-package cassiokf.industrialrenewal.tileentity.firstaidkit;
+package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.ModBlocks;
+import cassiokf.industrialrenewal.container.ContainerFirstAidKit;
+import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -25,6 +27,13 @@ public class GUIFirstAidKit extends GuiContainer {
 
         this.te = te;
         this.playerInv = playerInv;
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
     @Override

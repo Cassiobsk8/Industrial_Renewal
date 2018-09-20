@@ -1,22 +1,12 @@
 package cassiokf.industrialrenewal.util;
 
-import cassiokf.industrialrenewal.container.ContainerFuseBox;
+import cassiokf.industrialrenewal.container.*;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
-import cassiokf.industrialrenewal.entity.GUI.GUISteamLocomotive;
-import cassiokf.industrialrenewal.entity.containers.ContainerSteamLocomotive;
-import cassiokf.industrialrenewal.gui.GUIFuseBox;
-import cassiokf.industrialrenewal.tileentity.firstaidkit.ContainerFirstAidKit;
-import cassiokf.industrialrenewal.tileentity.firstaidkit.GUIFirstAidKit;
+import cassiokf.industrialrenewal.gui.*;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.fusebox.TileEntityFuseBox;
-import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.ContainerCargoLoader;
-import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.GUICargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.TileEntityCargoLoader;
-import cassiokf.industrialrenewal.tileentity.recordplayer.ContainerRecordPlayer;
-import cassiokf.industrialrenewal.tileentity.recordplayer.GUIRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.recordplayer.TileEntityRecordPlayer;
-import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.ContainerEntityDetector;
-import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.GUIEntityDetector;
 import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.TileEntityEntityDetector;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;

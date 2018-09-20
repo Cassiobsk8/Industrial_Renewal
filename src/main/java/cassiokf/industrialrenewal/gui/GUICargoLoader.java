@@ -1,9 +1,11 @@
-package cassiokf.industrialrenewal.tileentity.railroad.cargoloader;
+package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.ModBlocks;
+import cassiokf.industrialrenewal.container.ContainerCargoLoader;
 import cassiokf.industrialrenewal.network.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketReturnCargoLoader;
+import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.TileEntityCargoLoader;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -28,6 +30,13 @@ public class GUICargoLoader extends GuiContainer {
 
         this.te = te;
         this.playerInv = playerInv;
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
     private String getGUIButtonText() {

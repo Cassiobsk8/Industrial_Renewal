@@ -1,8 +1,7 @@
-package cassiokf.industrialrenewal.entity.containers;
+package cassiokf.industrialrenewal.container;
 
-import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
-import cassiokf.industrialrenewal.util.slots.FuelSlot;
-import cassiokf.industrialrenewal.util.slots.PlowSlot;
+import cassiokf.industrialrenewal.tileentity.recordplayer.TileEntityRecordPlayer;
+import cassiokf.industrialrenewal.util.slots.RecordSlot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -11,23 +10,39 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class ContainerSteamLocomotive extends Container {
+public class ContainerRecordPlayer extends Container {
 
-    private EntitySteamLocomotive entity;
+    private TileEntityRecordPlayer te;
     private IItemHandler inventory;
 
-    public ContainerSteamLocomotive(IInventory playerInv, EntitySteamLocomotive entity) {
-        this.entity = entity;
-        this.inventory = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
+    public ContainerRecordPlayer(IInventory playerInv, TileEntityRecordPlayer te) {
+        this.te = te;
+        this.inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
 
-        this.addSlotToContainer(new PlowSlot(inventory, 6, 8, 52));
-
-        this.addSlotToContainer(new FuelSlot(inventory, 0, 100, 21));
-        this.addSlotToContainer(new FuelSlot(inventory, 1, 118, 21));
-        this.addSlotToContainer(new FuelSlot(inventory, 2, 136, 21));
-        this.addSlotToContainer(new FuelSlot(inventory, 3, 100, 39));
-        this.addSlotToContainer(new FuelSlot(inventory, 4, 118, 39));
-        this.addSlotToContainer(new FuelSlot(inventory, 5, 136, 39));
+        this.addSlotToContainer(new RecordSlot(inventory, 0, 80, 9) {
+            @Override
+            public void onSlotChanged() {
+                te.markDirty();
+            }
+        });
+        this.addSlotToContainer(new RecordSlot(inventory, 1, 80, 27) {
+            @Override
+            public void onSlotChanged() {
+                te.markDirty();
+            }
+        });
+        this.addSlotToContainer(new RecordSlot(inventory, 2, 80, 45) {
+            @Override
+            public void onSlotChanged() {
+                te.markDirty();
+            }
+        });
+        this.addSlotToContainer(new RecordSlot(inventory, 3, 80, 63) {
+            @Override
+            public void onSlotChanged() {
+                te.markDirty();
+            }
+        });
 
         //Player Slots
         int xPos = 8;

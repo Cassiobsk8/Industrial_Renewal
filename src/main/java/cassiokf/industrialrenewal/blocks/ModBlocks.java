@@ -77,9 +77,9 @@ public class ModBlocks {
     public static BlockSensorRain sensorRain = new BlockSensorRain("sensor_rain", References.CREATIVE_IR_TAB);
     public static BlockSignalIndicator signalIndicator = new BlockSignalIndicator("signal_indicator", References.CREATIVE_IR_TAB);
     public static BlockTrafficLight trafficLight = new BlockTrafficLight("traffic_light", References.CREATIVE_IR_TAB);
-    public static BlockFuseBox fuseBox = new BlockFuseBox("fuse_box", References.CREAATIVE_IRWIP_TAB);
-    public static BlockFuseBoxConduitExtension fuseBoxConduitExtension = new BlockFuseBoxConduitExtension("conduit_extension", References.CREAATIVE_IRWIP_TAB);
-    public static BlockFuseBoxConnector fuseBoxConnector = new BlockFuseBoxConnector("conduit_connector", References.CREAATIVE_IRWIP_TAB);
+    public static BlockFuseBox fuseBox = new BlockFuseBox("fuse_box", References.CREATIVE_IR_TAB);
+    public static BlockFuseBoxConduitExtension fuseBoxConduitExtension = new BlockFuseBoxConduitExtension("conduit_extension", References.CREATIVE_IR_TAB);
+    public static BlockFuseBoxConnector fuseBoxConnector = new BlockFuseBoxConnector("conduit_connector", References.CREATIVE_IR_TAB);
     public static BlockFlameDetector flameDetector = new BlockFlameDetector("flame_detector", References.CREATIVE_IR_TAB);
     public static BlockEntityDetector entityDetector = new BlockEntityDetector("entity_detector", References.CREATIVE_IR_TAB);
 

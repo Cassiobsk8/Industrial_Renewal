@@ -1,5 +1,6 @@
-package cassiokf.industrialrenewal.tileentity.sensors.entitydetector;
+package cassiokf.industrialrenewal.container;
 
+import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.TileEntityEntityDetector;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
