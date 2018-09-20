@@ -186,7 +186,7 @@ public class TileEntityEntityDetector extends TileEntity implements ITickable {
         if (!this.world.isRemote) {
             NetworkHandler.INSTANCE.sendToAllAround(new PacketEntityDetector(TileEntityEntityDetector.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
         }
-        this.world.notifyNeighborsOfStateChange(this.pos, this.blockType, true);
+        //this.world.notifyNeighborsOfStateChange(this.pos, this.blockType, true);
         markDirty();
     }
 
