@@ -39,7 +39,7 @@ public class GUIFuseBox extends GuiContainer {
 
     @Override
     protected void handleMouseClick(Slot slotIn, int slotId, int mouseButton, ClickType type) {
-        if (te.getActive() && slotIn != null) {
+        if (te.getActive() && slotIn != null && slotIn.inventory != player.inventory) {
             NetworkHandler.INSTANCE.sendToServer(new PacketReturnFuseBox(te, player.getEntityId()));
             return;
         }

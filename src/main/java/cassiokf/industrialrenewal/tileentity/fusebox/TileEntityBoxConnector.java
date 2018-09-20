@@ -1,10 +1,11 @@
 package cassiokf.industrialrenewal.tileentity.fusebox;
 
+import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -48,11 +49,18 @@ public class TileEntityBoxConnector extends TileEntity {
         ItemStackHandler inv = getInventory();
         if (inv != null) {
             for (int i = 0; i < inv.getSlots(); i++) {
-                if (inv.getStackInSlot(i).getItem() == Items.REDSTONE) {
+                Item item = inv.getStackInSlot(i).getItem();
+                if (item == ModItems.cartridge_minus) {
                     input--;
                 }
-                if (inv.getStackInSlot(i).getItem() == Items.SNOWBALL) {
+                if (item == ModItems.cartridge_plus) {
                     input++;
+                }
+                if (item == ModItems.cartridge_half) {
+                    input = input / 2;
+                }
+                if (item == ModItems.cartridge_double) {
+                    input = input * 2;
                 }
             }
         }

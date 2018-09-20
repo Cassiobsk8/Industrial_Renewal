@@ -6,6 +6,10 @@ itemGroup.industrialrenewalwip=Industrial Renewal WIP Content
 
 #Items
 
+item.industrialrenewal.cartridge_plus.name=Redstone Cartridge Plus
+item.industrialrenewal.cartridge_minus.name=Redstone Cartridge Minus
+item.industrialrenewal.cartridge_half.name=Redstone Cartridge Half
+item.industrialrenewal.cartridge_double.name=Redstone Cartridge Double
 item.industrialrenewal.ingot_steel.name=Steel Ingot
 item.industrialrenewal.item_fire_extinguisher.name=Fire Extinguisher
 item.industrialrenewal.safety_belt.name=Safety Belt
@@ -53,6 +57,8 @@ tile.industrialrenewal.catwalk_ladder.name=Caged Ladder
 tile.industrialrenewal.catwalk_pillar.name=Pillar
 tile.industrialrenewal.catwalk_stair.name=Stair
 tile.industrialrenewal.crossing_rail.name=Crossing Rail
+tile.industrialrenewal.conduit_connector.name=Fuse Box Connector
+tile.industrialrenewal.conduit_extension.name=Fuse Box Extension
 tile.industrialrenewal.detector_rail.name=Detector Rail
 tile.industrialrenewal.energy_cable.name=Energy Cable
 tile.industrialrenewal.firstaid_kit.name=First-aid Box

@@ -69,7 +69,7 @@ public class BlockFuseBox extends BlockTileEntity<TileEntityFuseBox> {
         } else {
             posoff = pos.offset(EnumFacing.DOWN);
         }
-        return world.getBlockState(posoff).getBlock() instanceof BlockFuseBoxConduitExtension;
+        return world.getBlockState(posoff).getBlock() instanceof BlockFuseBoxConduitExtension || world.getBlockState(posoff).getBlock() instanceof BlockFuseBoxConnector;
     }
 
     @SuppressWarnings("deprecation")

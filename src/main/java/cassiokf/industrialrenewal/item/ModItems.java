@@ -14,6 +14,11 @@ public class ModItems {
     public static ItemOreDict spongeIron = new ItemOreDict("sponge_iron", "spongeIron", References.CREATIVE_IR_TAB);
     public static ItemOreDict smallSlab = new ItemOreDict("small_slab", "minislabStone", References.CREATIVE_IR_TAB);
 
+    public static ItemCartridge cartridge_plus = new ItemCartridge("cartridge_plus", References.CREAATIVE_IRWIP_TAB);
+    public static ItemCartridge cartridge_minus = new ItemCartridge("cartridge_minus", References.CREAATIVE_IRWIP_TAB);
+    public static ItemCartridge cartridge_half = new ItemCartridge("cartridge_half", References.CREAATIVE_IRWIP_TAB);
+    public static ItemCartridge cartridge_double = new ItemCartridge("cartridge_double", References.CREAATIVE_IRWIP_TAB);
+
     public static ItemIronPlow locomotivePlowIron = new ItemIronPlow("plow_iron", References.CREAATIVE_IRWIP_TAB);
 
     public static ItemPowerScrewDrive screwDrive = new ItemPowerScrewDrive("screwdrive", References.CREATIVE_IR_TAB);
@@ -49,8 +54,12 @@ public class ModItems {
                 safetyHelmet,
                 safetyBelt,
                 disc1,
-                locomotivePlowIron
+                locomotivePlowIron,
                 //instantNoodle
+                cartridge_plus,
+                cartridge_minus,
+                cartridge_half,
+                cartridge_double
         );
     }
 
@@ -71,5 +80,9 @@ public class ModItems {
         disc1.registerItemModel();
         locomotivePlowIron.registerItemModel();
         //instantNoodle.registerItemModel();
+        cartridge_plus.registerItemModel();
+        cartridge_minus.registerItemModel();
+        cartridge_half.registerItemModel();
+        cartridge_double.registerItemModel();
     }
 }
