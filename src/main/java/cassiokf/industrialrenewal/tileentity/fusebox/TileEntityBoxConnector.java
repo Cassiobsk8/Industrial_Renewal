@@ -41,7 +41,6 @@ public class TileEntityBoxConnector extends TileEntity {
         } else {
             value = 0;
         }
-        setState(value);
         return value;
     }
 
@@ -79,13 +78,6 @@ public class TileEntityBoxConnector extends TileEntity {
             return te.getInv();
         }
         return null;
-    }
-
-    private void setState(int value) {
-        IBlockState state = this.world.getBlockState(this.pos).getActualState(this.world, this.pos);
-        if (state.getValue(BlockFuseBoxConnector.POWER) != value) {
-            this.world.setBlockState(this.pos, state.withProperty(BlockFuseBoxConnector.POWER, value));
-        }
     }
 
     public int getPowerIn() {

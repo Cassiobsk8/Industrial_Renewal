@@ -3,7 +3,6 @@ package cassiokf.industrialrenewal.tileentity.fusebox;
 import cassiokf.industrialrenewal.blocks.BlockFuseBoxConduitExtension;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import cassiokf.industrialrenewal.item.ModItems;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -27,7 +26,6 @@ import javax.annotation.Nullable;
 public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnector> {
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
-    public static final PropertyInteger POWER = PropertyInteger.create("power", 0, 15);
     public static final PropertyInteger UPCONDUIT = PropertyInteger.create("up", 0, 2);
 
 
@@ -70,7 +68,7 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
         }
         return false;
     }
-
+/*
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighborPos) {
         super.neighborChanged(state, worldIn, pos, blockIn, neighborPos);
@@ -78,7 +76,7 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
         if (te != null) {
             te.passRedstone();
         }
-    }
+    }*/
 
     private void rotateBlock(World world, BlockPos pos, IBlockState state) {
         EnumFacing newFace = state.getValue(FACING).getOpposite();
@@ -113,7 +111,7 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, UPCONDUIT, POWER);
+        return new BlockStateContainer(this, FACING, UPCONDUIT);
     }
 
     @SuppressWarnings("deprecation")
