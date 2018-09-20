@@ -10,6 +10,7 @@ item.industrialrenewal.cartridge_plus.name=Redstone Cartridge Plus
 item.industrialrenewal.cartridge_minus.name=Redstone Cartridge Minus
 item.industrialrenewal.cartridge_half.name=Redstone Cartridge Half
 item.industrialrenewal.cartridge_double.name=Redstone Cartridge Double
+item.industrialrenewal.cartridge_inverter.name=Redstone Cartridge Inverter
 item.industrialrenewal.ingot_steel.name=Steel Ingot
 item.industrialrenewal.item_fire_extinguisher.name=Fire Extinguisher
 item.industrialrenewal.safety_belt.name=Safety Belt

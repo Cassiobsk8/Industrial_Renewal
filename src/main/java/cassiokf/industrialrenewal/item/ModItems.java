@@ -18,6 +18,7 @@ public class ModItems {
     public static ItemCartridge cartridge_minus = new ItemCartridge("cartridge_minus", References.CREATIVE_IR_TAB);
     public static ItemCartridge cartridge_half = new ItemCartridge("cartridge_half", References.CREATIVE_IR_TAB);
     public static ItemCartridge cartridge_double = new ItemCartridge("cartridge_double", References.CREATIVE_IR_TAB);
+    public static ItemCartridge cartridge_inverter = new ItemCartridge("cartridge_inverter", References.CREATIVE_IR_TAB);
 
     public static ItemIronPlow locomotivePlowIron = new ItemIronPlow("plow_iron", References.CREAATIVE_IRWIP_TAB);
 
@@ -59,7 +60,8 @@ public class ModItems {
                 cartridge_plus,
                 cartridge_minus,
                 cartridge_half,
-                cartridge_double
+                cartridge_double,
+                cartridge_inverter
         );
     }
 
@@ -84,5 +86,6 @@ public class ModItems {
         cartridge_minus.registerItemModel();
         cartridge_half.registerItemModel();
         cartridge_double.registerItemModel();
+        cartridge_inverter.registerItemModel();
     }
 }

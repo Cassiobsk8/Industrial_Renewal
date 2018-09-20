@@ -61,6 +61,13 @@ public class TileEntityBoxConnector extends TileEntity {
                 if (item == ModItems.cartridge_double) {
                     input = input * 2;
                 }
+                if (item == ModItems.cartridge_inverter) {
+                    if (input > 0) {
+                        input = 0;
+                    } else {
+                        input = 15;
+                    }
+                }
             }
         }
         if (input > 15) {
