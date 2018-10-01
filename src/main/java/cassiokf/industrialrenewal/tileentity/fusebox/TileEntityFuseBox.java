@@ -51,6 +51,7 @@ public class TileEntityFuseBox extends TileEntity implements ICapabilityProvider
         this.world.playSound(null, this.pos, IRSoundHandler.EFECT_SHOCK, SoundCategory.BLOCKS, 1, 1);
         player.closeScreen();
         player.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 8f);
+        player.knockBack(player, 0.4f, this.pos.getX() - player.posX, this.pos.getZ() - player.posZ);
     }
 
     public boolean getActive() {
