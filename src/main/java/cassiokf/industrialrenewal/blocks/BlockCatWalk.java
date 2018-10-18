@@ -125,10 +125,6 @@ public class BlockCatWalk extends BlockBase {
                     || (nb instanceof BlockCatwalkLadder && neighbourState.getValue(BlockCatwalkLadder.FACING) == neighbourDirection && !neighbourState.getValue(BlockCatwalkLadder.ACTIVE));
         }
         if (neighbourDirection == EnumFacing.DOWN) {
-            IBlockState twodownstate = world.getBlockState(ownPos.down(2));
-            IBlockState threedownstate = world.getBlockState(ownPos.down(3));
-            Block twonb = twodownstate.getBlock();
-            Block threenb = threedownstate.getBlock();
             return nb instanceof BlockCatwalkLadder
                     || nb instanceof BlockLadder
                     || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp || nb instanceof BlockFloorCable || nb instanceof BlockFloorPipe

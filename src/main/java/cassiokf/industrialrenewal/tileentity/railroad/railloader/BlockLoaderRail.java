@@ -1,20 +1,27 @@
 package cassiokf.industrialrenewal.tileentity.railroad.railloader;
 
+import cassiokf.industrialrenewal.blocks.ModBlocks;
 import cassiokf.industrialrenewal.blocks.rails.BlockRailFacing;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartChest;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockLoaderRail extends BlockRailFacing {
 
@@ -82,6 +89,12 @@ public class BlockLoaderRail extends BlockRailFacing {
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, PASS, SHAPE, FACING);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+        String str = I18n.format("tile.industrialrenewal.loader_rail.info") + " " + ModBlocks.cargoLoader.getLocalizedName();
+        tooltip.add(str);
     }
 
     @Override
