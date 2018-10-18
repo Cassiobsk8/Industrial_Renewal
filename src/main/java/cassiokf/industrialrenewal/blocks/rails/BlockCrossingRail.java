@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.blocks.rails;
 
 
 import cassiokf.industrialrenewal.IRSoundHandler;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
@@ -39,7 +40,7 @@ public class BlockCrossingRail extends BlockNormalRailBase {
 
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
-        tooltip.add("Make the carts honk when they pass");
+        tooltip.add(I18n.format("tile.industrialrenewal.crossing_rail.info"));
     }
 
     @Override
