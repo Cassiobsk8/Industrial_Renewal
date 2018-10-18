@@ -8,6 +8,7 @@ item.industrialrenewal.cartridge_plus.name=Redstone Cartridge Plus
 item.industrialrenewal.cartridge_minus.name=Redstone Cartridge Minus
 item.industrialrenewal.cartridge_half.name=Redstone Cartridge Half
 item.industrialrenewal.cartridge_double.name=Redstone Cartridge Double
+item.industrialrenewal.cartridge_inverter.name=Redstone Cartridge Inverter
 item.industrialrenewal.ingot_steel.name=钢锭
 item.industrialrenewal.item_fire_extinguisher.name=灭火器
 item.industrialrenewal.safety_belt.name=安全带
@@ -108,6 +109,11 @@ gui.config.category.recipes=合成相关
 gui.config.category.recipes.tooltip=合成相关配置
 gui.config.recipes.spongeiron_recipe.name=海绵铁合成表
 gui.config.recipes.spongeiron_recipe.comment=开启/关闭海绵铁合成表（默认开启）
+
+
+tile.industrialrenewal.crossing_rail.info=Make the carts honk when they pass
+tile.industrialrenewal.loader_rail.info=Use in conjunction with
+tile.industrialrenewal.sign_base.info=Shift + Right Click with Powered Screwdrive to change
 
 
 gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=医疗包格子

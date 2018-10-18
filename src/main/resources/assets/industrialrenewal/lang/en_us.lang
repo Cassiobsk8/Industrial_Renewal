@@ -18,10 +18,10 @@ item.industrialrenewal.safety_helmet.name=Safety Helmet
 item.industrialrenewal.small_slab.name=Small Slab
 item.industrialrenewal.sponge_iron.name=Sponge Iron
 item.industrialrenewal.stick_iron.name=Iron Rod
-item.industrialrenewal.steam_locomotive.name=Steam Locomotive
+item.industrialrenewal.steam_locomotive.name=Steam Locomotive (WIP)
 item.industrialrenewal.cargo_container.name=Cargo Container
-item.industrialrenewal.fluid_container.name=Fluid Container
-item.industrialrenewal.plow_iron.name=Iron Snow Plow
+item.industrialrenewal.fluid_container.name=Fluid Container (WIP)
+item.industrialrenewal.plow_iron.name=Iron Snow Plow (WIP)
 item.industrialrenewal.screwdrive.name=Powered Screwdrive
 item.industrialrenewal.screwdrive.des0=A universal tool for this mod
 item.industrialrenewal.medkit.name=MedKit
@@ -62,11 +62,11 @@ tile.industrialrenewal.crossing_rail.name=Crossing Rail
 tile.industrialrenewal.conduit_connector.name=Fuse Box Connector
 tile.industrialrenewal.conduit_extension.name=Fuse Box Extension
 tile.industrialrenewal.detector_rail.name=Detector Rail
-tile.industrialrenewal.energy_cable.name=Energy Cable
+tile.industrialrenewal.energy_cable.name=Energy Cable (WIP)
 tile.industrialrenewal.firstaid_kit.name=First-aid Box
 tile.industrialrenewal.flame_detector.name=Flame Detector
 tile.industrialrenewal.fluid_filter.name=Fluid Filter (WIP)
-tile.industrialrenewal.fluid_pipe.name=Fluid Pipe
+tile.industrialrenewal.fluid_pipe.name=Fluid Pipe (WIP)
 tile.industrialrenewal.fluorescent.name=Fluorescent Light
 tile.industrialrenewal.frame.name=Rail Frame
 tile.industrialrenewal.fuse_box.name=Fuse Box
@@ -76,7 +76,7 @@ tile.industrialrenewal.gate_not.name=Gate NOT
 tile.industrialrenewal.gate_or.name=Gate OR
 tile.industrialrenewal.gutter.name=Gutter
 tile.industrialrenewal.handrail.name=Handrail
-tile.industrialrenewal.industrial_floor.name=Industrial Floor
+tile.industrialrenewal.industrial_floor.name=Industrial Floor (WIP)
 tile.industrialrenewal.light.name=External Light
 tile.industrialrenewal.locker.name=Locker
 tile.industrialrenewal.normal_rail.name=Rail
@@ -105,8 +105,8 @@ tile.industrialrenewal.solar_panel.name=Basic Solar Panel
 #Entity
 
 entity.industrialrenewal.cargo_container.name=Cargo Container
-entity.industrialrenewal.fluid_container.name=Fluid Container
-entity.industrialrenewal.steam_locomotive.name=Steam Locomotive
+entity.industrialrenewal.fluid_container.name=Fluid Container (WIP)
+entity.industrialrenewal.steam_locomotive.name=Steam Locomotive (WIP)
 
 #Config
 
@@ -115,6 +115,12 @@ gui.config.category.recipes=Recipes
 gui.config.category.recipes.tooltip=Recipes settings
 gui.config.recipes.spongeiron_recipe.name=Sponge Iron recipe
 gui.config.recipes.spongeiron_recipe.comment=Turn On/Off the sponge iron recipe (Default true)
+
+#Info
+
+tile.industrialrenewal.crossing_rail.info=Make the carts honk when they pass
+tile.industrialrenewal.loader_rail.info=Use in conjunction with
+tile.industrialrenewal.sign_base.info=Shift + Right Click with Powered Screwdrive to change
 
 #GUI
 
