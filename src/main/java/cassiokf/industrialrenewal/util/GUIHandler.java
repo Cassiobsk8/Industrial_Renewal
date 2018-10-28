@@ -24,6 +24,7 @@ public class GUIHandler implements IGuiHandler {
     public static final int STEAMLOCOMOTIVE = 3;
     public static final int ENTITYDETECTOR = 4;
     public static final int FUSEBOX = 5;
+    public static final int MANUAL = 6;
 
     @Nullable
     @Override
@@ -69,6 +70,9 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == FUSEBOX) {
             return new GUIFuseBox(player, player.inventory, (TileEntityFuseBox) world.getTileEntity(new BlockPos(x, y, z)));
+        }
+        if (ID == MANUAL) {
+            return new GUIManual(world, player);
         }
         return null;
     }

@@ -37,6 +37,8 @@ public class ModItems {
 
     public static ItemDiscBase disc1 = new ItemDiscBase("record_royal_entrance", References.CREATIVE_IR_TAB, IRSoundHandler.DISC_1);
 
+    public static ItemBookManual manual = new ItemBookManual("ir_manual", References.CREAATIVE_IRWIP_TAB);
+
     //public static ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
 
     public static void register(IForgeRegistry<Item> registry) {
@@ -61,7 +63,8 @@ public class ModItems {
                 cartridge_minus,
                 cartridge_half,
                 cartridge_double,
-                cartridge_inverter
+                cartridge_inverter,
+                manual
         );
     }
 
@@ -87,5 +90,6 @@ public class ModItems {
         cartridge_half.registerItemModel();
         cartridge_double.registerItemModel();
         cartridge_inverter.registerItemModel();
+        manual.registerItemModel();
     }
 }

@@ -6,6 +6,7 @@ itemGroup.industrialrenewalwip=Industrial Renewal WIP Content
 
 #Items
 
+item.industrialrenewal.ir_manual.name=Industrial Renewal Manual
 item.industrialrenewal.cartridge_plus.name=Redstone Cartridge Plus
 item.industrialrenewal.cartridge_minus.name=Redstone Cartridge Minus
 item.industrialrenewal.cartridge_half.name=Redstone Cartridge Half
@@ -121,6 +122,16 @@ gui.config.recipes.spongeiron_recipe.comment=Turn On/Off the sponge iron recipe 
 tile.industrialrenewal.crossing_rail.info=Make the carts honk when they pass
 tile.industrialrenewal.loader_rail.info=Use in conjunction with
 tile.industrialrenewal.sign_base.info=Shift + Right Click with Powered Screwdrive to change
+
+#Book
+
+gui.industrialrenewal.railroad.category=Railroad
+gui.industrialrenewal.redstone.category=Redstone
+gui.industrialrenewal.catwalk.category=Catwalk
+gui.industrialrenewal.fences.category=Fences
+gui.industrialrenewal.utilities.category=Utilities
+gui.industrialrenewal.construction.category=Construction
+gui.industrialrenewal.steam_locomotive.text0=Steam Locomotive still in WIP and only runs with powered rails for now. Its intended to work like Railcraft locomotives, with additional that you can put a snow plow in it to clean the snowing tracks and not slow down the carts.
 
 #GUI
 

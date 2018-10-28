@@ -78,5 +78,15 @@
         "stream": true
       }
     ]
+  },
+  "book_flip": {
+    "category": "block",
+    "subtitle": "book_flip",
+    "sounds": [
+      {
+        "name": "industrialrenewal:book/page_flip",
+        "stream": false
+      }
+    ]
   }
 }
