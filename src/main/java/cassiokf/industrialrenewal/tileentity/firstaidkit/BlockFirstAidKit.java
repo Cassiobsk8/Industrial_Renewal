@@ -73,7 +73,7 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
         if (world.isRemote) {
             return true;
         }
-        if (!player.isSneaking() && player.inventory.getCurrentItem() == ItemStack.EMPTY) {
+        if (!player.isSneaking()) {
             ItemStack stack = itemInKit(world, pos);
             if (stack != null && player.shouldHeal() && !player.isPotionActive(MobEffects.REGENERATION)) {
                 player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 150, 1, false, false));
@@ -82,11 +82,8 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
                 NetworkHandler.INSTANCE.sendToAllAround(new PacketFirstAidKit(te), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
                 te.markDirty();
             }
-            return true;
-        }
-        if (player.isSneaking()) {
+        } else {
             OpenGUI(world, pos, player);
-            return true;
         }
         return true;
     }
