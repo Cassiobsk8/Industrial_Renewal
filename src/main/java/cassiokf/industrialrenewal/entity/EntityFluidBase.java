@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 
 public class EntityFluidBase extends EntityMinecart implements IFluidHandler {
 
-    public FluidTank tank = new FluidTank(45000);
+    public FluidTank tank = new FluidTank(32000);
     private boolean needsUpdate = false;
     private int updateTimer = 0;
 
