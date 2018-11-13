@@ -26,6 +26,8 @@ public class GUIManual extends GuiScreen {
     private static ResourceLocation bookBackground = new ResourceLocation(References.MODID, "textures/gui/book_background.png");
     private static ResourceLocation logoIMG = new ResourceLocation(References.MODID, "textures/gui/book/logo.png");
     private static ResourceLocation railroadIMG = new ResourceLocation(References.MODID, "textures/gui/book/railroad.png");
+    private static ResourceLocation redstoneIMG = new ResourceLocation(References.MODID, "textures/gui/book/redstone.png");
+    private static ResourceLocation warning = new ResourceLocation(References.MODID, "textures/gui/book/warning.png");
     private World world;
     private EntityPlayer player;
     private int xOffset;
@@ -33,6 +35,8 @@ public class GUIManual extends GuiScreen {
     private ArrayList<ItemStack> items = new ArrayList<>();
     private ArrayList<String> texts = new ArrayList<>();
     private ArrayList<ItemStack> railroadItems = new ArrayList<>();
+    private ArrayList<ItemStack> redstoneItems = new ArrayList<>();
+
     private int page = 0;
     private ButtonBookOverIcon button1;
     private ButtonBookOverIcon button2;
@@ -43,6 +47,7 @@ public class GUIManual extends GuiScreen {
     private ButtonBookOverIcon buttonRailroad1;
     private ButtonBookOverIcon buttonRailroad2;
     private ButtonBookOverIcon buttonRailroad3;
+    private ButtonBookOverIcon buttonRailroad4;
     private ButtonBookOverIcon buttonBack;
 
     public GUIManual(World world, EntityPlayer player) {
@@ -69,6 +74,11 @@ public class GUIManual extends GuiScreen {
         railroadItems.add(new ItemStack(ModItems.steamLocomotive));
         railroadItems.add(new ItemStack(ModItems.cargoContainer));
         railroadItems.add(new ItemStack(ModItems.fluidContainer));
+        railroadItems.add(new ItemStack(ModBlocks.normalRail));
+        //Redstone
+        redstoneItems.add(new ItemStack(ModBlocks.fuseBox));
+        redstoneItems.add(new ItemStack(ModBlocks.flameDetector));
+        redstoneItems.add(new ItemStack(ModBlocks.entityDetector));
     }
 
     @Override
@@ -80,17 +90,21 @@ public class GUIManual extends GuiScreen {
         mc.getTextureManager().bindTexture(bookBackground);
         drawTexturedModalRect(xOffset, yOffset, 0, 0, bookImageWidth, bookImageHeight);
         switch (page) {
-            case 0:
             default:
-                drawPictureOnTop(logoIMG, 56);
+                drawPictureOnTop(warning, 48, 0, 0);
+                drawText("Please, report this error code: " + "\n" + " \n " + "PAGEERROR" + page);
+                break;
+            case 0:
+                drawPictureOnTop(logoIMG, 56, 0, 0);
                 drawIcons(items, texts, true);
                 break;
             case 1:
-                drawPictureOnTop(railroadIMG, 54);
+                drawPictureOnTop(railroadIMG, 54, 0, 0);
                 drawIcons(railroadItems, null, true);
                 break;
             case 2:
-                drawText("Aaaaa aaaaa a a a a aaaaaaaa aaaaaa aaaaaaa aaaaaaaa sssssssssa ssssssasas asdasdasd asdasdasd asdasd asd as dasdasdasd asdasdasdas dasdas d asdasd as dasdasdas dasd asda j a adhasd asdasdasd asdasdasd asdasdasd asdasdasdasaf");
+                drawPictureOnTop(redstoneIMG, 54, 0, 0);
+                drawIcons(redstoneItems, null, true);
                 break;
             case 3:
                 break;
@@ -101,11 +115,20 @@ public class GUIManual extends GuiScreen {
             case 6:
                 break;
             case 11:
+                drawPictureOnTop(railroadIMG, 54, 0, 55);
                 drawText(I18n.format("gui.industrialrenewal.steam_locomotive.text0"));
                 break;
             case 12:
+                drawPictureOnTop(railroadIMG, 54, 0, 109);
+                drawText(I18n.format("gui.industrialrenewal.cargo_container.text0"));
                 break;
             case 13:
+                drawPictureOnTop(railroadIMG, 54, 0, 163);
+                drawText(I18n.format("gui.industrialrenewal.fluid_container.text0"));
+                break;
+            case 14:
+                drawPictureOnTop(railroadIMG, 54, 101, 0);
+                drawText(I18n.format("gui.industrialrenewal.rails.text0"));
                 break;
         }
         drawPageName();
@@ -116,15 +139,15 @@ public class GUIManual extends GuiScreen {
     private void drawText(String text) {
         int maxPixelsPerLine = 90;
         StringBuilder currentLine = new StringBuilder();
-        int currentWidth = 0, yoffset = 52, xoffset = 18, maxLineFirstPage = 10;
+        int currentWidth = 0, yoffset = 66, xoffset = 18, maxLineFirstPage = 9;
         int currentLineN = 0;
         boolean changeLine = false;
-        String[] words = text.split(" ");
+        String[] words = text.split("\\s+");
 
-        for (int i = 0; i < words.length; i++) {
-            if (currentWidth + fontRenderer.getStringWidth(words[i]) <= maxPixelsPerLine && !words[i].equals("\n")) {
-                currentLine.append(words[i]).append(" ");
-                currentWidth += fontRenderer.getStringWidth(words[i]);
+        for (String word : words) {
+            if (currentWidth + fontRenderer.getStringWidth(word) <= maxPixelsPerLine && !word.equals("$n")) {
+                currentLine.append(word).append(" ");
+                currentWidth += fontRenderer.getStringWidth(word);
             } else {
                 currentLineN++;
                 if (currentLineN > maxLineFirstPage && !changeLine) {
@@ -136,8 +159,10 @@ public class GUIManual extends GuiScreen {
                 currentLine = new StringBuilder();
                 currentWidth = 0;
                 yoffset += fontRenderer.FONT_HEIGHT;
-                currentLine.append(words[i]).append(" ");
-                currentWidth += fontRenderer.getStringWidth(words[i]);
+                if (!word.equals("$n")) {
+                    currentLine.append(word).append(" ");
+                    currentWidth += fontRenderer.getStringWidth(word);
+                }
             }
         }
         if (currentWidth != 0)
@@ -153,7 +178,7 @@ public class GUIManual extends GuiScreen {
         boolean secondSide = false;
         for (ItemStack item : array) {
             String text;
-            if (texts == null) {
+            if (texts == null || texts.get(items.indexOf(item)) == null) {
                 text = item.getDisplayName();
             } else {
                 text = texts.get(items.indexOf(item));
@@ -179,13 +204,13 @@ public class GUIManual extends GuiScreen {
         RenderHelper.enableStandardItemLighting();
     }
 
-    private void drawPictureOnTop(ResourceLocation resourceLocation, int yImage) {
+    private void drawPictureOnTop(ResourceLocation resourceLocation, int yImage, int startX, int startY) {
         int x = xOffset + 24;// + 132;
         int y = yOffset + 9;
         GlStateManager.pushMatrix();
         mc.getTextureManager().bindTexture(resourceLocation);
         //GlStateManager.scale(0.5f, 0.5f, 0.5f);
-        drawTexturedModalRect(x, y, 0, 0, 100, yImage);
+        drawTexturedModalRect(x, y, startX, startY, 100, yImage);
         GlStateManager.popMatrix();
     }
 
@@ -216,7 +241,12 @@ public class GUIManual extends GuiScreen {
             page = b.id;
         }
         if (b.id == 20) {
-            page = 0;
+            if (page <= 10) {
+                page = 0;
+            } else {
+                int x = Math.abs(page);
+                page = (int) Math.floor(x / Math.pow(10, Math.floor(Math.log10(x))));
+            }
         }
     }
 
@@ -231,6 +261,7 @@ public class GUIManual extends GuiScreen {
         buttonRailroad1.visible = page == 1;
         buttonRailroad2.visible = page == 1;
         buttonRailroad3.visible = page == 1;
+        buttonRailroad4.visible = page == 1;
         buttonBack.visible = page != 0;
     }
 
@@ -272,6 +303,9 @@ public class GUIManual extends GuiScreen {
         y = y + 20;
         buttonRailroad3 = new ButtonBookOverIcon(13, x, y, 103, 20, " ");
         this.buttonList.add(buttonRailroad3);
+        y = y + 20;
+        buttonRailroad4 = new ButtonBookOverIcon(14, x, y, 103, 20, " ");
+        this.buttonList.add(buttonRailroad4);
 
 
         buttonBack = new ButtonBookOverIcon(20, xOffset + 20, yOffset + 144, 20, 20, "<<");
