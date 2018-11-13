@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.item.ModItems;
-import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
@@ -13,7 +13,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -25,6 +27,9 @@ import java.util.List;
 public class BlockCatwalkLadder extends BlockBase {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
+    public static final PropertyBool DOWN = PropertyBool.create("down");
+
+    protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.03125D, 1.0D);
     protected static final AxisAlignedBB LADDER_EAST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 1.0D, 1.0D);
     protected static final AxisAlignedBB LADDER_WEST_AABB = new AxisAlignedBB(0.9375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB LADDER_SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0625D);
@@ -51,7 +56,7 @@ public class BlockCatwalkLadder extends BlockBase {
         int y = pos.getY();
         int z = pos.getZ();
         if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
-            world.playSound(null, (double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, SoundEvent.REGISTRY.getObject(new ResourceLocation("industrialrenewal:drill")), SoundCategory.BLOCKS, 1.0F, 1.0F);
+            world.playSound(null, pos, IRSoundHandler.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
             //state.cycleProperty(ACTIVE);
             world.setBlockState(pos, state.withProperty(ACTIVE, !state.getValue(ACTIVE)), 3);
             return true;
@@ -59,15 +64,29 @@ public class BlockCatwalkLadder extends BlockBase {
         return false;
     }
 
+    private boolean downConnection(BlockPos pos, IBlockAccess world) {
+        Block downB = world.getBlockState(pos.down()).getBlock();
+        return !(downB instanceof BlockLadder || downB instanceof BlockCatwalkLadder || downB instanceof BlockCatwalkHatch
+                || downB instanceof BlockCatwalkStair || downB instanceof BlockStairs || downB instanceof BlockTrapDoor);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
+        state = state.withProperty(DOWN, downConnection(pos, world));
+
+        return state;
+    }
+
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, ACTIVE);
+        return new BlockStateContainer(this, FACING, ACTIVE, DOWN);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(ACTIVE, Boolean.valueOf((meta & 4) > 0));
+        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(ACTIVE, (meta & 4) > 0);
     }
 
     @Override
@@ -113,9 +132,10 @@ public class BlockCatwalkLadder extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        IBlockState actualState = getActualState(state, worldIn, pos);
+        IBlockState actualState = state.getActualState(worldIn, pos);
         EnumFacing face = actualState.getValue(FACING);
         Boolean active = actualState.getValue(ACTIVE);
+        Boolean down = actualState.getValue(DOWN);
 
         if (face == EnumFacing.NORTH) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, LADDER_SOUTH_AABB);
@@ -148,6 +168,9 @@ public class BlockCatwalkLadder extends BlockBase {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
             }
+        }
+        if (down) {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, DOWN_AABB);
         }
     }
 
