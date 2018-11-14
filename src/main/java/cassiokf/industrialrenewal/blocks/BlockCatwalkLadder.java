@@ -134,8 +134,8 @@ public class BlockCatwalkLadder extends BlockBase {
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
         IBlockState actualState = state.getActualState(worldIn, pos);
         EnumFacing face = actualState.getValue(FACING);
-        Boolean active = actualState.getValue(ACTIVE);
-        Boolean down = actualState.getValue(DOWN);
+        boolean active = actualState.getValue(ACTIVE);
+        boolean down = actualState.getValue(DOWN);
 
         if (face == EnumFacing.NORTH) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, LADDER_SOUTH_AABB);
