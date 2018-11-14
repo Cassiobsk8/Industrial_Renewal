@@ -1,11 +1,10 @@
-#Wed Dec 06 12:33:40 BRST 2017
 
 itemGroup.industrialrenewal=Industrial Renewal
 itemGroup.industrialrenewalrailroad=Industrial Renewal: Железная дорога
 itemGroup.industrialrenewalwip=Industrial Renewal: Содержимое WIP
 
-#Items
 
+item.industrialrenewal.ir_manual.name=Industrial Renewal Manual
 item.industrialrenewal.cartridge_plus.name=Редстоун картридж плюс
 item.industrialrenewal.cartridge_minus.name=Редстоун картридж минус
 item.industrialrenewal.cartridge_half.name=Редстоун картридж половинный
@@ -29,12 +28,10 @@ item.industrialrenewal.medkit.des0=Используется для лечени�
 item.industrialrenewal.steel_saw.name=Стальная пила
 item.industrialrenewal.steel_saw.des0=Пила, которая может резать камни
 
-#Discs
 
 item.industrialrenewal.record_royal_entrance.name=Музыкальный диск
 item.industrialrenewal.record_royal_entrance.des0=Королевский выход от Visager
 
-#Blocks
 
 tile.industrialrenewal.alarm.name=Промышленная сигнализация
 tile.industrialrenewal.block_chimney.name=Дымовая труба
@@ -102,13 +99,11 @@ tile.industrialrenewal.record_player.name=Мульти-проигрывател�
 tile.industrialrenewal.sensor_rain.name=Датчик дождя
 tile.industrialrenewal.solar_panel.name=Основная солнечная панель
 
-#Entity
 
 entity.industrialrenewal.cargo_container.name=Грузовой контейнер
 entity.industrialrenewal.fluid_container.name=Жидкостный контейнер
 entity.industrialrenewal.steam_locomotive.name=Паровоз
 
-#Config
 
 gui.config.main_title=Конфигурация Industrial Renewal
 gui.config.category.recipes=Рецепты
@@ -116,13 +111,29 @@ gui.config.category.recipes.tooltip=Настройки рецептов
 gui.config.recipes.spongeiron_recipe.name=Рецепт губчатого железа
 gui.config.recipes.spongeiron_recipe.comment=Включить/выключить рецепт губчатого железа (по умолчанию - вкл.)
 
-#Info
 
 tile.industrialrenewal.crossing_rail.info=Заставляет вагонетки сигналить, когда они проходят
 tile.industrialrenewal.loader_rail.info=Используется совместно с
 tile.industrialrenewal.sign_base.info=Shift+ПКМ с шуруповертом, чтобы изменить
 
-#GUI
+
+gui.industrialrenewal.railroad.category=Railroad
+gui.industrialrenewal.redstone.category=Redstone
+gui.industrialrenewal.catwalk.category=Catwalk
+gui.industrialrenewal.fences.category=Fences
+gui.industrialrenewal.utilities.category=Utilities
+gui.industrialrenewal.construction.category=Construction
+gui.industrialrenewal.steam_locomotive.text0=Steam Locomotive still in WIP and only runs with powered rails for now. Its intended to work like Railcraft locomotives, with additional that you can put a snow plow in it to clean the snowing tracks and not slow down the carts.
+gui.industrialrenewal.fuse_box.text0=Made to control the amount of redstone power using redstone Catrigdes. To conect it a network or a redstone signal, use a Fuse box conector below.
+gui.industrialrenewal.cargo_container.text0=Used to transport items in the rails, can interact with hoppers, item transfer or another blocks used in carts.
+gui.industrialrenewal.fluid_container.text0=Still in WIP, carries fluids and can hold 32,000 mb.
+gui.industrialrenewal.fire_extinguisher.text0=Extinguishes nearby fires or lava blocks in a 3x3 area. You can put it on the floor by pressing Shift + right click, to grab it press shift + right click with a empty hand.
+gui.industrialrenewal.flame_detector.text0=It emits a redstone signal if there is a flame on the front. Can rotate with a wrench.
+gui.industrialrenewal.gutter.text0=Take water if placed in the end of the roof when it's raining, increases the water generation by the amount of roof tiles. To get the water just place a tank or a pipe below.
+gui.industrialrenewal.entity_detector.text0=It emits a redstone signal if the entity is in range, the range and the entity type can be change in the gui.
+gui.industrialrenewal.firt-aid_box.text0=It's a container to hold first-aids, can hold 8 stacks of 16, to open press shift + right click, when right clicked he give a regeneration II buff which lasts 7s. Only works if you don't have full health.
+gui.industrialrenewal.rails.text0=- Rail, Powered Rail, Detector Rail: $n Just like vanilla ones but 3D. $n - Buffer Stop: $n Will prevent the carts from passing. $n - Crossing Rail: $n Makes carts Horn when it passes. $n - Tranfer Rail: $n Place on top or under a Cargo Item Tranfer and will stop the carts depending on the Cargo Item Tranfer settings.
+
 
 gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Слоты для аптечек
 gui.industrialrenewal.blockrecordplayer.discs.tooltip=Слоты для дисков
