@@ -52,12 +52,8 @@ public class BlockCatwalkLadder extends BlockBase {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
         if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
             world.playSound(null, pos, IRSoundHandler.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-            //state.cycleProperty(ACTIVE);
             world.setBlockState(pos, state.withProperty(ACTIVE, !state.getValue(ACTIVE)), 3);
             return true;
         }
