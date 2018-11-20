@@ -12,6 +12,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -55,7 +56,7 @@ public class BlockElectricFence extends BlockBase {
 
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-        if (entityIn instanceof EntityLivingBase) {
+        if (entityIn instanceof EntityLivingBase && !(entityIn instanceof EntityCreature)) {
             entityIn.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 0.0F);
             ((EntityLivingBase) entityIn).knockBack(entityIn, 0.2f, pos.getX() - entityIn.posX, pos.getZ() - entityIn.posZ);
             Random r = new Random();
