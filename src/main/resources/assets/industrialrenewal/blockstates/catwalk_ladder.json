@@ -43,6 +43,7 @@
     },
     "inventory": {
       "model": "industrialrenewal:catwalk_ladder_base",
+      "y": 180,
       "submodel": {
         "cage1": {
           "model": "industrialrenewal:catwalk_ladder_caged"

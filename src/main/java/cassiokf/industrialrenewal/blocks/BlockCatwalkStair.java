@@ -14,6 +14,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -48,37 +49,44 @@ public class BlockCatwalkStair extends BlockBase {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.catwalkStair)) {
-            if (world.getBlockState(pos.offset(player.getHorizontalFacing()).up()).getBlock().isAir(world.getBlockState(pos.offset(player.getHorizontalFacing()).up()), world, pos.offset(player.getHorizontalFacing()).up())) {
-                world.setBlockState(pos.offset(player.getHorizontalFacing()).up(), ModBlocks.catwalkStair.getDefaultState().withProperty(BlockCatwalkStair.FACING, player.getHorizontalFacing()), 3);
+        Item playerItem = player.inventory.getCurrentItem().getItem();
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catwalkStair)) || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catwalkStairSteel))) {
+            BlockPos posOffset = pos.offset(player.getHorizontalFacing()).up();
+            IBlockState stateOffset = world.getBlockState(posOffset);
+            if (stateOffset.getBlock().isAir(stateOffset, world, posOffset) || stateOffset.getBlock().isReplaceable(world, posOffset)) {
+                world.setBlockState(posOffset, getBlockFromItem(playerItem).getDefaultState().withProperty(BlockCatwalkStair.FACING, player.getHorizontalFacing()), 3);
                 if (!player.isCreative()) {
-                    player.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.catwalkStair), 0, 1, null);
+                    player.inventory.clearMatchingItems(playerItem, 0, 1, null);
                 }
                 return true;
             }
-            return true;
+            return false;
         }
-        if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.catWalk)) {
-            if (world.getBlockState(pos.offset(player.getHorizontalFacing()).up()).getBlock().isAir(world.getBlockState(pos.offset(player.getHorizontalFacing()).up()), world, pos.offset(player.getHorizontalFacing()).up())) {
-                world.setBlockState(pos.offset(player.getHorizontalFacing()).up(), ModBlocks.catWalk.getDefaultState(), 3);
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catWalk)) || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catWalkSteel))) {
+            BlockPos posOffset = pos.offset(player.getHorizontalFacing()).up();
+            IBlockState stateOffset = world.getBlockState(posOffset);
+            if (stateOffset.getBlock().isAir(stateOffset, world, posOffset) || stateOffset.getBlock().isReplaceable(world, posOffset)) {
+                world.setBlockState(posOffset, getBlockFromItem(playerItem).getDefaultState(), 3);
                 if (!player.isCreative()) {
-                    player.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.catWalk), 0, 1, null);
+                    player.inventory.clearMatchingItems(playerItem, 0, 1, null);
                 }
                 return true;
             }
-            return true;
+            return false;
         }
         return false;
     }
 
     private Boolean leftConnected(IBlockState state, IBlockAccess world, BlockPos pos) {
         EnumFacing face = state.getValue(FACING);
-        Block block = world.getBlockState(pos.offset(face.rotateY().getOpposite())).getBlock();
+        BlockPos posOffset = pos.offset(face.rotateY().getOpposite());
+        IBlockState stateOffset = world.getBlockState(posOffset);
+        Block block = stateOffset.getBlock();
         if (block instanceof BlockRail) {
-            return !(world.getBlockState(pos.offset(face.rotateY().getOpposite())).getValue(BlockRail.SHAPE).toString().equals("ascending_" + face));
+            return !(stateOffset.getValue(BlockRail.SHAPE).toString().equals("ascending_" + face));
         }
         if (block instanceof BlockCatwalkStair) {
-            EnumFacing leftFace = world.getBlockState(pos.offset(face.rotateY().getOpposite())).getValue(FACING);
+            EnumFacing leftFace = stateOffset.getValue(FACING);
             return !(leftFace == face);
         }
         return true;
@@ -86,12 +94,14 @@ public class BlockCatwalkStair extends BlockBase {
 
     private Boolean rightConnected(IBlockState state, IBlockAccess world, BlockPos pos) {
         EnumFacing face = state.getValue(FACING);
-        Block block = world.getBlockState(pos.offset(face.rotateY())).getBlock();
+        BlockPos posOffset = pos.offset(face.rotateY());
+        IBlockState stateOffset = world.getBlockState(posOffset);
+        Block block = stateOffset.getBlock();
         if (block instanceof BlockRail) {
-            return !(world.getBlockState(pos.offset(face.rotateY())).getValue(BlockRail.SHAPE).toString().equals("ascending_" + face));
+            return !(stateOffset.getValue(BlockRail.SHAPE).toString().equals("ascending_" + face));
         }
         if (block instanceof BlockCatwalkStair) {
-            EnumFacing rightFace = world.getBlockState(pos.offset(face.rotateY())).getValue(FACING);
+            EnumFacing rightFace = stateOffset.getValue(FACING);
             return !(rightFace == face);
         }
         return true;

@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "industrialrenewal:catwalk_column_base",
+    "model": "industrialrenewal:catwalk_base",
     "textures": {
       "particle": "blocks/anvil_base"
     }
@@ -11,21 +11,27 @@
       "true": {
         "submodel": {
           "pipe_down": {
-            "model": "industrialrenewal:catwalk_column_down"
+            "model": "industrialrenewal:catwalk_steel_down"
           }
         }
       },
       "false": {}
     },
     "up": {
-      "true": {},
+      "true": {
+        "submodel": {
+          "pipe_up": {
+            "model": "industrialrenewal:catwalk_up"
+          }
+        }
+      },
       "false": {}
     },
     "north": {
       "true": {
         "submodel": {
           "pipe_north": {
-            "model": "industrialrenewal:catwalk_column_side"
+            "model": "industrialrenewal:catwalk_steel_side"
           }
         }
       },
@@ -35,7 +41,7 @@
       "true": {
         "submodel": {
           "pipe_south": {
-            "model": "industrialrenewal:catwalk_column_side",
+            "model": "industrialrenewal:catwalk_steel_side",
             "y": 180
           }
         }
@@ -46,7 +52,7 @@
       "true": {
         "submodel": {
           "pipe_east": {
-            "model": "industrialrenewal:catwalk_column_side",
+            "model": "industrialrenewal:catwalk_steel_side",
             "y": 90
           }
         }
@@ -57,40 +63,26 @@
       "true": {
         "submodel": {
           "pipe_west": {
-            "model": "industrialrenewal:catwalk_column_side",
+            "model": "industrialrenewal:catwalk_steel_side",
             "y": -90
           }
         }
       },
       "false": {}
     },
-    "pipe": {
-      "0": {},
-      "1": {
-        "submodel": {
-          "pipe": {
-            "model": "industrialrenewal:catwalk_column_steel_down_pipe"
-          }
-        }
-      },
-      "2": {
-        "submodel": {
-          "pipe": {
-            "model": "industrialrenewal:catwalk_column_steel_down_pipe",
-            "y": 90
-          }
-        }
-      }
-    },
     "inventory": [
       {
         "submodel": {
+          "pipe_down": {
+            "model": "industrialrenewal:catwalk_steel_down"
+          },
           "pipe_north": {
-            "model": "industrialrenewal:catwalk_column_side"
+            "model": "industrialrenewal:catwalk_steel_side",
+            "y": 90
           },
           "pipe_south": {
-            "model": "industrialrenewal:catwalk_column_side",
-            "y": 180
+            "model": "industrialrenewal:catwalk_steel_side",
+            "y": -90
           }
         }
       }

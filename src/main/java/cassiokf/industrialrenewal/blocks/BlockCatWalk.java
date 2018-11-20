@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -50,12 +51,16 @@ public class BlockCatWalk extends BlockBase {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.catWalk)) {
+        Item playerItem = player.inventory.getCurrentItem().getItem();
+        BlockPos posOffset = pos.offset(player.getHorizontalFacing());
+        IBlockState stateOffset = world.getBlockState(posOffset);
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catWalk))
+                || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catWalkSteel))) {
             if (side == EnumFacing.UP) {
-                if (world.getBlockState(pos.offset(player.getHorizontalFacing())).getBlock().isAir(world.getBlockState(pos.offset(player.getHorizontalFacing())), world, pos.offset(player.getHorizontalFacing()))) {
-                    world.setBlockState(pos.offset(player.getHorizontalFacing()), ModBlocks.catWalk.getDefaultState(), 3);
+                if (stateOffset.getBlock().isAir(stateOffset, world, posOffset) || stateOffset.getBlock().isReplaceable(world, posOffset)) {
+                    world.setBlockState(pos.offset(player.getHorizontalFacing()), getBlockFromItem(playerItem).getDefaultState(), 3);
                     if (!player.isCreative()) {
-                        player.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.catWalk), 0, 1, null);
+                        player.inventory.clearMatchingItems(playerItem, 0, 1, null);
                     }
                     return true;
                 }
@@ -63,11 +68,11 @@ public class BlockCatWalk extends BlockBase {
             }
             return false;
         }
-        if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.catwalkStair)) {
-            if (world.getBlockState(pos.offset(player.getHorizontalFacing())).getBlock().isAir(world.getBlockState(pos.offset(player.getHorizontalFacing())), world, pos.offset(player.getHorizontalFacing()))) {
-                world.setBlockState(pos.offset(player.getHorizontalFacing()), ModBlocks.catwalkStair.getDefaultState().withProperty(BlockCatwalkStair.FACING, player.getHorizontalFacing()), 3);
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catwalkStair)) || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catwalkStairSteel))) {
+            if (stateOffset.getBlock().isAir(stateOffset, world, posOffset)) {
+                world.setBlockState(posOffset, getBlockFromItem(playerItem).getDefaultState().withProperty(BlockCatwalkStair.FACING, player.getHorizontalFacing()), 3);
                 if (!player.isCreative()) {
-                    player.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.catwalkStair), 0, 1, null);
+                    player.inventory.clearMatchingItems(playerItem, 0, 1, null);
                 }
                 return true;
             }

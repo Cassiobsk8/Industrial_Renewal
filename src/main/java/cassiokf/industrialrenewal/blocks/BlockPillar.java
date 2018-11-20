@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -79,15 +80,18 @@ public class BlockPillar extends BlockBase {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.pillar)) {
+        Item playerItem = player.inventory.getCurrentItem().getItem();
+        Block clickedBlock = state.getBlock();
+        if ((playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.pillar)) && clickedBlock.equals(ModBlocks.pillar))
+                || (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.steel_pillar))) && clickedBlock.equals(ModBlocks.steel_pillar)) {
             Integer n = 1;
             while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar) {
                 n++;
             }
-            if (world.getBlockState(pos.up(n)).getBlock().isAir(world.getBlockState(pos.up(n)), world, pos.up(n))) {
-                world.setBlockState(pos.up(n), ModBlocks.pillar.getDefaultState(), 3);
+            if (world.getBlockState(pos.up(n)).getBlock().isAir(world.getBlockState(pos.up(n)), world, pos.up(n)) || world.getBlockState(pos.up(n)).getBlock().isReplaceable(world, pos.up(n))) {
+                world.setBlockState(pos.up(n), getBlockFromItem(playerItem).getDefaultState(), 3);
                 if (!player.isCreative()) {
-                    player.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.pillar), 0, 1, null);
+                    player.inventory.clearMatchingItems(playerItem, 0, 1, null);
                 }
                 return true;
             }
@@ -95,17 +99,8 @@ public class BlockPillar extends BlockBase {
         }
         return false;
     }
-    /**
-     * Is the neighbouring block a valid connection for this pipe?
-     *
-     * @param ownState           This pipe's state
-     * @param neighbourState     The neighbouring block's state
-     * @param world              The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Is the neighbouring block a valid connection?
-     */
-    protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+
+    protected boolean isValidConnection(final IBlockState neighbourState, final EnumFacing neighbourDirection) {
         Block nb = neighbourState.getBlock();
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
             return nb instanceof BlockLever
@@ -136,24 +131,11 @@ public class BlockPillar extends BlockBase {
                 || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable || nb instanceof BlockCatWalk;
     }
 
-    /**
-     * Can this pipe connect to the neighbouring block?
-     *
-     * @param ownState           This pipe's state
-     * @param worldIn            The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Can this pipe connect?
-     */
-    private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+    private boolean canConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
-        final Block neighbourBlock = neighbourState.getBlock();
 
-        final boolean neighbourIsValidForThis = isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
-        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockPillar) || ((BlockPillar) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
-
-        return neighbourIsValidForThis && thisIsValidForNeighbour;
+        return isValidConnection(neighbourState, neighbourDirection);
     }
 
     @SuppressWarnings("deprecation")
@@ -161,7 +143,7 @@ public class BlockPillar extends BlockBase {
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
         for (final EnumFacing facing : EnumFacing.VALUES) {
             state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()),
-                    canConnectTo(state, world, pos, facing));
+                    canConnectTo(world, pos, facing));
         }
         return state;
     }

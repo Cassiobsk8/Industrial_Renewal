@@ -13,6 +13,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -52,9 +54,22 @@ public class BlockCatwalkLadder extends BlockBase {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
+        Item playerItem = entity.inventory.getCurrentItem().getItem();
+        if (playerItem.equals(ModItems.screwDrive)) {
             world.playSound(null, pos, IRSoundHandler.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
             world.setBlockState(pos, state.withProperty(ACTIVE, !state.getValue(ACTIVE)), 3);
+            return true;
+        }
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.iladder)) || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.sladder))) {
+            BlockPos posOffset = pos.up();
+            IBlockState stateOffset = world.getBlockState(posOffset);
+            if (stateOffset.getBlock().isAir(stateOffset, world, posOffset) || stateOffset.getBlock().isReplaceable(world, posOffset)) {
+                EnumFacing direction = state.getValue(FACING);
+                world.setBlockState(posOffset, getBlockFromItem(playerItem).getDefaultState().withProperty(FACING, direction).withProperty(ACTIVE, !OpenIf(world, posOffset)), 3);
+                if (!entity.isCreative()) {
+                    entity.inventory.clearMatchingItems(playerItem, 0, 1, null);
+                }
+            }
             return true;
         }
         return false;

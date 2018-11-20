@@ -1,0 +1,78 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "industrialrenewal:catwalk_steel_pillar_base",
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "down": {
+      "true": {
+        "submodel": {
+          "pipe_down": {
+            "model": "industrialrenewal:catwalk_steel_pillar_down"
+          }
+        }
+      },
+      "false": {}
+    },
+    "up": {
+      "true": {
+        "submodel": {
+          "pipe_up": {
+            "model": "industrialrenewal:catwalk_steel_pillar_up"
+          }
+        }
+      },
+      "false": {}
+    },
+    "north": {
+      "true": {
+        "submodel": {
+          "pipe_north": {
+            "model": "industrialrenewal:catwalk_steel_pillar_side"
+          }
+        }
+      },
+      "false": {}
+    },
+    "south": {
+      "true": {
+        "submodel": {
+          "pipe_south": {
+            "model": "industrialrenewal:catwalk_steel_pillar_side",
+            "y": 180
+          }
+        }
+      },
+      "false": {}
+    },
+    "east": {
+      "true": {
+        "submodel": {
+          "pipe_east": {
+            "model": "industrialrenewal:catwalk_steel_pillar_side",
+            "y": 90
+          }
+        }
+      },
+      "false": {}
+    },
+    "west": {
+      "true": {
+        "submodel": {
+          "pipe_west": {
+            "model": "industrialrenewal:catwalk_steel_pillar_side",
+            "y": -90
+          }
+        }
+      },
+      "false": {}
+    },
+    "inventory": {
+      "model": "industrialrenewal:catwalk_steel_pillar_base",
+      "transform": "forge:default-block"
+    }
+  }
+}

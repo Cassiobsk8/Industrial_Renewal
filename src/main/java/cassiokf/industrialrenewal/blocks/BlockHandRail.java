@@ -69,7 +69,6 @@ public class BlockHandRail extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        IBlockState actualState = getActualState(state, worldIn, pos);
         EnumFacing face = state.getValue(FACING);
         if (face == EnumFacing.NORTH) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);

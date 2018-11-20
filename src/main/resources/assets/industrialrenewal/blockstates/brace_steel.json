@@ -1,0 +1,50 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:brace_steel"
+    },
+    "facing=north": {
+      "model": "industrialrenewal:brace_steel"
+    },
+    "facing=west": {
+      "model": "industrialrenewal:brace_steel",
+      "y": -90
+    },
+    "facing=south": {
+      "model": "industrialrenewal:brace_steel",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "industrialrenewal:brace_steel",
+      "y": 90
+    },
+    "facing=down_north": {
+      "model": "industrialrenewal:brace_steel",
+      "x": 180
+    },
+    "facing=down_west": {
+      "model": "industrialrenewal:brace_steel",
+      "x": 180,
+      "y": -90
+    },
+    "facing=down_south": {
+      "model": "industrialrenewal:brace_steel",
+      "x": 180,
+      "y": 180
+    },
+    "facing=down_east": {
+      "model": "industrialrenewal:brace_steel",
+      "x": 180,
+      "y": 90
+    },
+    "inventory": {
+      "model": "industrialrenewal:brace_steel"
+    }
+  }
+}

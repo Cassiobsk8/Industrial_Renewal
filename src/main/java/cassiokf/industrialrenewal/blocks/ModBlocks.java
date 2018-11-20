@@ -35,6 +35,7 @@ public class ModBlocks {
     public static BlockBase radiationHazard = new BlockBase(Material.IRON, "radiation_hazard", References.CREATIVE_IR_TAB);
     public static BlockBase aisleHazard = new BlockBase(Material.IRON, "aisle_hazard", References.CREATIVE_IR_TAB);
     public static BlockBase fireHazard = new BlockBase(Material.IRON, "fire_hazard", References.CREATIVE_IR_TAB);
+    public static BlockBase concrete = new BlockBase(Material.ROCK, "concrete", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor", References.CREAATIVE_IRWIP_TAB);
     public static BlockChimney blockChimney = new BlockChimney("block_chimney", References.CREATIVE_IR_TAB);
@@ -52,11 +53,17 @@ public class ModBlocks {
     public static BlockRecordPlayer recordPlayer = new BlockRecordPlayer("record_player", References.CREATIVE_IR_TAB);
 
     public static BlockCatWalk catWalk = new BlockCatWalk("catwalk", References.CREATIVE_IR_TAB);
+    public static BlockCatWalk catWalkSteel = new BlockCatWalk("catwalk_steel", References.CREAATIVE_IRWIP_TAB);
     public static BlockHandRail handRail = new BlockHandRail("handrail", References.CREATIVE_IR_TAB);
+    public static BlockHandRail handRailSteel = new BlockHandRail("handrail_steel", References.CREAATIVE_IRWIP_TAB);
     public static BlockCatwalkStair catwalkStair = new BlockCatwalkStair("catwalk_stair", References.CREATIVE_IR_TAB);
+    public static BlockCatwalkStair catwalkStairSteel = new BlockCatwalkStair("catwalk_stair_steel", References.CREAATIVE_IRWIP_TAB);
     public static BlockPillar pillar = new BlockPillar("catwalk_pillar", References.CREATIVE_IR_TAB);
+    public static BlockPillar steel_pillar = new BlockPillar("catwalk_steel_pillar", References.CREAATIVE_IRWIP_TAB);
     public static BlockColumn column = new BlockColumn("catwalk_column", References.CREATIVE_IR_TAB);
+    public static BlockColumn columSteel = new BlockColumn("catwalk_column_steel", References.CREAATIVE_IRWIP_TAB);
     public static BlockCatwalkLadder iladder = new BlockCatwalkLadder("catwalk_ladder", References.CREATIVE_IR_TAB);
+    public static BlockCatwalkLadder sladder = new BlockCatwalkLadder("catwalk_ladder_steel", References.CREAATIVE_IRWIP_TAB);
     public static BlockRoof roof = new BlockRoof("roof", References.CREATIVE_IR_TAB);
     public static BlockGutter gutter = new BlockGutter("gutter", References.CREATIVE_IR_TAB);
     public static BlockLight light = new BlockLight("light", References.CREATIVE_IR_TAB);
@@ -67,6 +74,7 @@ public class ModBlocks {
     public static BlockWindow window = new BlockWindow("window", References.CREATIVE_IR_TAB);
     public static BlockPlatform platform = new BlockPlatform("platform", References.CREATIVE_IR_TAB);
     public static BlockBrace brace = new BlockBrace("brace", References.CREATIVE_IR_TAB);
+    public static BlockBrace braceSteel = new BlockBrace("brace_steel", References.CREAATIVE_IRWIP_TAB);
     public static BlockScaffold scaffold = new BlockScaffold("scaffold", References.CREATIVE_IR_TAB);
     public static BlockFrame frame = new BlockFrame("frame", References.CREATIVE_IR_TAB);
 
@@ -100,6 +108,12 @@ public class ModBlocks {
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
                 blockHazard,
+                cautionHazard,
+                defectiveHazard,
+                safetyHazard,
+                radiationHazard,
+                aisleHazard,
+                fireHazard,
                 blockIndFloor,
                 blockChimney,
                 normalRail,
@@ -115,9 +129,11 @@ public class ModBlocks {
                 floorLamp,
                 catWalk,
                 catwalkStair,
+                catwalkStairSteel,
                 pillar,
                 column,
                 iladder,
+                sladder,
                 roof,
                 gutter,
                 light,
@@ -148,17 +164,18 @@ public class ModBlocks {
                 fuseBox,
                 fuseBoxConduitExtension,
                 fuseBoxConnector,
-                cautionHazard,
-                defectiveHazard,
-                safetyHazard,
-                radiationHazard,
-                aisleHazard,
-                fireHazard,
                 handRail,
                 flameDetector,
                 locker,
-                entityDetector
+                entityDetector,
+                steel_pillar,
+                braceSteel,
+                columSteel,
+                concrete,
+                catWalkSteel,
+                handRailSteel
         );
+
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
@@ -231,7 +248,15 @@ public class ModBlocks {
                 handRail.createItemBlock(),
                 flameDetector.createItemBlock(),
                 locker.createItemBlock(),
-                entityDetector.createItemBlock()
+                entityDetector.createItemBlock(),
+                steel_pillar.createItemBlock(),
+                braceSteel.createItemBlock(),
+                columSteel.createItemBlock(),
+                concrete.createItemBlock(),
+                catWalkSteel.createItemBlock(),
+                handRailSteel.createItemBlock(),
+                sladder.createItemBlock(),
+                catwalkStairSteel.createItemBlock()
         );
     }
 
@@ -288,5 +313,13 @@ public class ModBlocks {
         flameDetector.registerItemModel(Item.getItemFromBlock(flameDetector));
         locker.registerItemModel(Item.getItemFromBlock(locker));
         entityDetector.registerItemModel(Item.getItemFromBlock(entityDetector));
+        steel_pillar.registerItemModel(Item.getItemFromBlock(steel_pillar));
+        braceSteel.registerItemModel(Item.getItemFromBlock(braceSteel));
+        columSteel.registerItemModel(Item.getItemFromBlock(columSteel));
+        concrete.registerItemModel(Item.getItemFromBlock(concrete));
+        catWalkSteel.registerItemModel(Item.getItemFromBlock(catWalkSteel));
+        handRailSteel.registerItemModel(Item.getItemFromBlock(handRailSteel));
+        sladder.registerItemModel(Item.getItemFromBlock(sladder));
+        catwalkStairSteel.registerItemModel(Item.getItemFromBlock(catwalkStairSteel));
     }
 }

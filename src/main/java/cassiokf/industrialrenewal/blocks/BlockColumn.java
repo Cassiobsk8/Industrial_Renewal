@@ -1,12 +1,11 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -23,13 +22,19 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BlockColumn extends BlockBase {
 
-    public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
-            Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
+    //public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
+
+    public static final PropertyBool UP = PropertyBool.create("up");
+    public static final PropertyBool DOWN = PropertyBool.create("down");
+    public static final PropertyBool NORTH = PropertyBool.create("north");
+    public static final PropertyBool SOUTH = PropertyBool.create("south");
+    public static final PropertyBool EAST = PropertyBool.create("east");
+    public static final PropertyBool WEST = PropertyBool.create("west");
+    public static final PropertyInteger PIPE = PropertyInteger.create("pipe", 0, 2);
+
     private static float NORTHZ1 = 0.250f;
     private static float SOUTHZ2 = 0.750f;
     private static float WESTX1 = 0.250f;
@@ -46,7 +51,8 @@ public class BlockColumn extends BlockBase {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
+        //return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
+        return new BlockStateContainer(this, UP, DOWN, NORTH, SOUTH, EAST, WEST, PIPE);
     }
 
     @SuppressWarnings("deprecation")
@@ -77,17 +83,7 @@ public class BlockColumn extends BlockBase {
         return EnumBlockRenderType.MODEL;
     }
 
-    /**
-     * Is the neighbouring block a valid connection for this pipe?
-     *
-     * @param ownState           This pipe's state
-     * @param neighbourState     The neighbouring block's state
-     * @param world              The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Is the neighbouring block a valid connection?
-     */
-    protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+    protected boolean isValidConnection(final IBlockState neighbourState, final IBlockState ownState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         Block nb = neighbourState.getBlock();
 
         if ((nb.isFullCube(neighbourState) || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable)
@@ -110,46 +106,77 @@ public class BlockColumn extends BlockBase {
         if (nb instanceof BlockBrace) {
             return Arrays.toString(EnumFacing.HORIZONTALS).contains(neighbourState.getValue(BlockBrace.FACING).toString());
         }
-        return neighbourDirection == EnumFacing.UP
-                || !(nb instanceof BlockCatwalkLadder)
+        if (nb instanceof BlockFluidPipe) {
+            return ownState.getValue(PIPE) > 0;
+        }
+        return !(nb instanceof BlockCatwalkLadder)
                 && !(nb instanceof BlockSignBase)
                 && !(nb instanceof BlockFireExtinguisher)
                 && !(nb instanceof BlockAlarm && !(neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection))
                 && !nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection));
     }
 
-    /**
-     * Can this pipe connect to the neighbouring block?
-     *
-     * @param ownState           This pipe's state
-     * @param worldIn            The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Can this pipe connect?
-     */
     private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
         final Block neighbourBlock = neighbourState.getBlock();
 
-        final boolean neighbourIsValidForThis = isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
-        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockColumn) || ((BlockColumn) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
+        final boolean neighbourIsValidForThis = isValidConnection(neighbourState, ownState, worldIn, ownPos, neighbourDirection);
+        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockColumn) || ((BlockColumn) neighbourBlock).isValidConnection(ownState, neighbourState, worldIn, neighbourPos, neighbourDirection.getOpposite());
 
         return neighbourIsValidForThis && thisIsValidForNeighbour;
+    }
+
+    private int canConnectPipe(IBlockAccess world, BlockPos pos) {
+        IBlockState stateOffset = world.getBlockState(pos.down());
+        if (stateOffset.getBlock() instanceof BlockFluidPipe) {
+            if (pipeConnected(world, pos.down(), stateOffset, EnumFacing.DOWN)) {
+                return 0;
+            }
+            if (!pipeConnected(world, pos.down(), stateOffset, EnumFacing.NORTH) && !pipeConnected(world, pos.down(), stateOffset, EnumFacing.SOUTH)) {
+                return 2;
+            }
+            if (!pipeConnected(world, pos.down(), stateOffset, EnumFacing.EAST) && !pipeConnected(world, pos.down(), stateOffset, EnumFacing.WEST)) {
+                return 1;
+            }
+        }
+        return 0;
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        for (final EnumFacing facing : EnumFacing.VALUES) {
-            state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()),
-                    canConnectTo(state, world, pos, facing));
-        }
+        state = state.withProperty(PIPE, canConnectPipe(world, pos));
+        state = state.withProperty(UP, canConnectTo(state, world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectTo(state, world, pos, EnumFacing.DOWN))
+                .withProperty(NORTH, canConnectTo(state, world, pos, EnumFacing.NORTH)).withProperty(SOUTH, canConnectTo(state, world, pos, EnumFacing.SOUTH))
+                .withProperty(EAST, canConnectTo(state, world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectTo(state, world, pos, EnumFacing.WEST));
+
         return state;
     }
 
+    private boolean pipeConnected(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing facing) {
+        Block blockOffset = world.getBlockState(pos.offset(facing)).getBlock();
+        return blockOffset instanceof BlockFluidPipe;
+    }
+
     public final boolean isConnected(final IBlockState state, final EnumFacing facing) {
-        return state.getValue(CONNECTED_PROPERTIES.get(facing.getIndex()));
+        if (facing == EnumFacing.UP) {
+            return state.getValue(UP);
+        }
+        if (facing == EnumFacing.DOWN) {
+            return state.getValue(DOWN);
+        }
+        if (facing == EnumFacing.NORTH) {
+            return state.getValue(NORTH);
+        }
+        if (facing == EnumFacing.SOUTH) {
+            return state.getValue(SOUTH);
+        }
+        if (facing == EnumFacing.EAST) {
+            return state.getValue(EAST);
+        }
+        return state.getValue(WEST);
+        //return state.getValue(CONNECTED_PROPERTIES.get(facing.getIndex()));
     }
 
     @SuppressWarnings("deprecation")
