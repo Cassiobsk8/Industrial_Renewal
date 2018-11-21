@@ -23,13 +23,8 @@ public class ModRecipes {
                 Ingredient.fromStacks(new ItemStack(ModItems.steelSaw, 1, OreDictionary.WILDCARD_VALUE)), OreIngredient.fromItems(Items.RECORD_13,
                         Items.RECORD_11, Items.RECORD_CAT,Items.RECORD_BLOCKS, Items.RECORD_MALL, Items.RECORD_CHIRP, Items.RECORD_FAR,Items.RECORD_MELLOHI,Items.RECORD_STAL,Items.RECORD_STRAD,
                         Items.RECORD_WAIT, Items.RECORD_WARD));
-        //ModBlocks.oreCopper.initOreDict();
-        ModItems.ingotSteel.initOreDict();
-        ModItems.stickIron.initOreDict();
-        ModItems.disc1.initOreDict();
-        ModItems.steelSaw.initOreDict();
-        ModItems.spongeIron.initOreDict();
-        ModItems.smallSlab.initOreDict();
+
+        ModItems.registerOreDict();
     }
 
 }
