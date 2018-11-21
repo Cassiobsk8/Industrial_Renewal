@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SLS",
+    "ILI",
+    "SLS"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotSteel"
+    },
+    "L": {
+      "item": "minecraft:ladder"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:catwalk_ladder_steel",
+    "count": 6
+  }
+}

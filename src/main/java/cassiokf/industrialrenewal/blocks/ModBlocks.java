@@ -53,17 +53,17 @@ public class ModBlocks {
     public static BlockRecordPlayer recordPlayer = new BlockRecordPlayer("record_player", References.CREATIVE_IR_TAB);
 
     public static BlockCatWalk catWalk = new BlockCatWalk("catwalk", References.CREATIVE_IR_TAB);
-    public static BlockCatWalk catWalkSteel = new BlockCatWalk("catwalk_steel", References.CREAATIVE_IRWIP_TAB);
+    public static BlockCatWalk catWalkSteel = new BlockCatWalk("catwalk_steel", References.CREATIVE_IR_TAB);
     public static BlockHandRail handRail = new BlockHandRail("handrail", References.CREATIVE_IR_TAB);
-    public static BlockHandRail handRailSteel = new BlockHandRail("handrail_steel", References.CREAATIVE_IRWIP_TAB);
+    public static BlockHandRail handRailSteel = new BlockHandRail("handrail_steel", References.CREATIVE_IR_TAB);
     public static BlockCatwalkStair catwalkStair = new BlockCatwalkStair("catwalk_stair", References.CREATIVE_IR_TAB);
-    public static BlockCatwalkStair catwalkStairSteel = new BlockCatwalkStair("catwalk_stair_steel", References.CREAATIVE_IRWIP_TAB);
+    public static BlockCatwalkStair catwalkStairSteel = new BlockCatwalkStair("catwalk_stair_steel", References.CREATIVE_IR_TAB);
     public static BlockPillar pillar = new BlockPillar("catwalk_pillar", References.CREATIVE_IR_TAB);
-    public static BlockPillar steel_pillar = new BlockPillar("catwalk_steel_pillar", References.CREAATIVE_IRWIP_TAB);
+    public static BlockPillar steel_pillar = new BlockPillar("catwalk_steel_pillar", References.CREATIVE_IR_TAB);
     public static BlockColumn column = new BlockColumn("catwalk_column", References.CREATIVE_IR_TAB);
-    public static BlockColumn columSteel = new BlockColumn("catwalk_column_steel", References.CREAATIVE_IRWIP_TAB);
+    public static BlockColumn columSteel = new BlockColumn("catwalk_column_steel", References.CREATIVE_IR_TAB);
     public static BlockCatwalkLadder iladder = new BlockCatwalkLadder("catwalk_ladder", References.CREATIVE_IR_TAB);
-    public static BlockCatwalkLadder sladder = new BlockCatwalkLadder("catwalk_ladder_steel", References.CREAATIVE_IRWIP_TAB);
+    public static BlockCatwalkLadder sladder = new BlockCatwalkLadder("catwalk_ladder_steel", References.CREATIVE_IR_TAB);
     public static BlockRoof roof = new BlockRoof("roof", References.CREATIVE_IR_TAB);
     public static BlockGutter gutter = new BlockGutter("gutter", References.CREATIVE_IR_TAB);
     public static BlockLight light = new BlockLight("light", References.CREATIVE_IR_TAB);
@@ -74,7 +74,7 @@ public class ModBlocks {
     public static BlockWindow window = new BlockWindow("window", References.CREATIVE_IR_TAB);
     public static BlockPlatform platform = new BlockPlatform("platform", References.CREATIVE_IR_TAB);
     public static BlockBrace brace = new BlockBrace("brace", References.CREATIVE_IR_TAB);
-    public static BlockBrace braceSteel = new BlockBrace("brace_steel", References.CREAATIVE_IRWIP_TAB);
+    public static BlockBrace braceSteel = new BlockBrace("brace_steel", References.CREATIVE_IR_TAB);
     public static BlockScaffold scaffold = new BlockScaffold("scaffold", References.CREATIVE_IR_TAB);
     public static BlockFrame frame = new BlockFrame("frame", References.CREATIVE_IR_TAB);
 
@@ -108,72 +108,83 @@ public class ModBlocks {
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
                 blockHazard,
+                aisleHazard,
                 cautionHazard,
                 defectiveHazard,
-                safetyHazard,
-                radiationHazard,
-                aisleHazard,
                 fireHazard,
-                blockIndFloor,
-                blockChimney,
-                normalRail,
-                crossingRail,
-                detectorRail,
-                boosterRail,
-                valveLarge,
-                alarm,
-                fluidPipe,
-                energyCable,
-                floorPipe,
-                floorCable,
-                floorLamp,
-                catWalk,
-                catwalkStair,
-                catwalkStairSteel,
-                pillar,
-                column,
-                iladder,
-                sladder,
+                radiationHazard,
+                safetyHazard,
+                concrete,
+                //Frames
+                //Iron
+                platform,
                 roof,
-                gutter,
-                light,
-                fluorescent,
-                dummy,
-                catwalkGate,
+                frame,
                 hatch,
                 window,
-                platform,
+
+                catWalk,
+                handRail,
+                catwalkStair,
+                iladder,
+                catwalkGate,
+                pillar,
+                column,
                 brace,
-                scaffold,
-                frame,
-                efence,
-                egate,
-                spanel,
-                firstAidKit,
-                bufferStopRail,
-                fireExtinguisher,
-                signHV,
-                signRA,
-                signC,
-                recordPlayer,
+                //Steel
+                catWalkSteel,
+                handRailSteel,
+                catwalkStairSteel,
+                sladder,
+                steel_pillar,
+                columSteel,
+                braceSteel,
+                //Redstone
+                alarm,
+                entityDetector,
+                flameDetector,
                 sensorRain,
-                loaderRail,
-                cargoLoader,
-                signalIndicator,
-                trafficLight,
                 fuseBox,
                 fuseBoxConduitExtension,
                 fuseBoxConnector,
-                handRail,
-                flameDetector,
+                signalIndicator,
+                trafficLight,
+                //Utils
+                fireExtinguisher,
+                firstAidKit,
+                recordPlayer,
                 locker,
-                entityDetector,
-                steel_pillar,
-                braceSteel,
-                columSteel,
-                concrete,
-                catWalkSteel,
-                handRailSteel
+                gutter,
+                blockChimney,
+                scaffold,
+                efence,
+                egate,
+                signC,
+                signHV,
+                signRA,
+                fluorescent,
+                light,
+                //Floor
+                blockIndFloor,
+                floorCable,
+                floorLamp,
+                floorPipe,
+                //Pipes
+                energyCable,
+                fluidPipe,
+                valveLarge,
+                //Energy
+                spanel,
+                //Railroad
+                normalRail,
+                boosterRail,
+                crossingRail,
+                detectorRail,
+                loaderRail,
+                bufferStopRail,
+                cargoLoader,
+                //dummys
+                dummy
         );
 
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
@@ -198,65 +209,66 @@ public class ModBlocks {
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
         registry.registerAll(
                 blockHazard.createItemBlock(),
-                blockIndFloor.createItemBlock(),
-                blockChimney.createItemBlock(),
-                normalRail.createItemBlock(),
-                crossingRail.createItemBlock(),
-                detectorRail.createItemBlock(),
-                boosterRail.createItemBlock(),
-                valveLarge.createItemBlock(),
-                alarm.createItemBlock(),
-                fluidPipe.createItemBlock(),
-                energyCable.createItemBlock(),
-                catWalk.createItemBlock(),
-                catwalkStair.createItemBlock(),
-                pillar.createItemBlock(),
-                column.createItemBlock(),
-                iladder.createItemBlock(),
+                aisleHazard.createItemBlock(),
+                cautionHazard.createItemBlock(),
+                defectiveHazard.createItemBlock(),
+                fireHazard.createItemBlock(),
+                radiationHazard.createItemBlock(),
+                safetyHazard.createItemBlock(),
+                concrete.createItemBlock(),
+                platform.createItemBlock(),
                 roof.createItemBlock(),
-                gutter.createItemBlock(),
-                light.createItemBlock(),
-                fluorescent.createItemBlock(),
-                catwalkGate.createItemBlock(),
+                frame.createItemBlock(),
                 hatch.createItemBlock(),
                 window.createItemBlock(),
-                platform.createItemBlock(),
+                catWalk.createItemBlock(),
+                handRail.createItemBlock(),
+                catwalkStair.createItemBlock(),
+                iladder.createItemBlock(),
+                catwalkGate.createItemBlock(),
+                pillar.createItemBlock(),
+                column.createItemBlock(),
                 brace.createItemBlock(),
-                scaffold.createItemBlock(),
-                frame.createItemBlock(),
-                efence.createItemBlock(),
-                egate.createItemBlock(),
-                spanel.createItemBlock(),
-                firstAidKit.createItemBlock(),
-                bufferStopRail.createItemBlock(),
-                signHV.createItemBlock(),
-                recordPlayer.createItemBlock(),
+                catWalkSteel.createItemBlock(),
+                handRailSteel.createItemBlock(),
+                catwalkStairSteel.createItemBlock(),
+                sladder.createItemBlock(),
+                steel_pillar.createItemBlock(),
+                columSteel.createItemBlock(),
+                braceSteel.createItemBlock(),
+                alarm.createItemBlock(),
+                entityDetector.createItemBlock(),
+                flameDetector.createItemBlock(),
                 sensorRain.createItemBlock(),
-                loaderRail.createItemBlock(),
-                cargoLoader.createItemBlock(),
-                signalIndicator.createItemBlock(),
-                trafficLight.createItemBlock(),
                 fuseBox.createItemBlock(),
                 fuseBoxConduitExtension.createItemBlock(),
                 fuseBoxConnector.createItemBlock(),
-                cautionHazard.createItemBlock(),
-                defectiveHazard.createItemBlock(),
-                safetyHazard.createItemBlock(),
-                radiationHazard.createItemBlock(),
-                aisleHazard.createItemBlock(),
-                fireHazard.createItemBlock(),
-                handRail.createItemBlock(),
-                flameDetector.createItemBlock(),
+                signalIndicator.createItemBlock(),
+                trafficLight.createItemBlock(),
+                firstAidKit.createItemBlock(),
+                recordPlayer.createItemBlock(),
                 locker.createItemBlock(),
-                entityDetector.createItemBlock(),
-                steel_pillar.createItemBlock(),
-                braceSteel.createItemBlock(),
-                columSteel.createItemBlock(),
-                concrete.createItemBlock(),
-                catWalkSteel.createItemBlock(),
-                handRailSteel.createItemBlock(),
-                sladder.createItemBlock(),
-                catwalkStairSteel.createItemBlock()
+                gutter.createItemBlock(),
+                blockChimney.createItemBlock(),
+                scaffold.createItemBlock(),
+                efence.createItemBlock(),
+                egate.createItemBlock(),
+                signHV.createItemBlock(),
+                fluorescent.createItemBlock(),
+                light.createItemBlock(),
+                blockIndFloor.createItemBlock(),
+                energyCable.createItemBlock(),
+                fluidPipe.createItemBlock(),
+                valveLarge.createItemBlock(),
+                spanel.createItemBlock(),
+                normalRail.createItemBlock(),
+                boosterRail.createItemBlock(),
+                crossingRail.createItemBlock(),
+                detectorRail.createItemBlock(),
+                loaderRail.createItemBlock(),
+                bufferStopRail.createItemBlock(),
+                cargoLoader.createItemBlock()
+
         );
     }
 

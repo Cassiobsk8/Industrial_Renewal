@@ -8,14 +8,14 @@
   "key": {
     "S": {
       "type": "forge:ore_dict",
-      "ore": "stickIron"
+      "ore": "stickSteel"
     },
     "B": {
       "item": "minecraft:iron_bars"
     }
   },
   "result": {
-    "item": "industrialrenewal:catwalk",
+    "item": "industrialrenewal:catwalk_steel",
     "count": 4
   }
 }

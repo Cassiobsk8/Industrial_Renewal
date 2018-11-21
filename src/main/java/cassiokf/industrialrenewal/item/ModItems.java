@@ -11,6 +11,7 @@ public class ModItems {
 
     public static ItemOreDict ingotSteel = new ItemOreDict("ingot_steel", "ingotSteel", References.CREATIVE_IR_TAB);
     public static ItemOreDict stickIron = new ItemOreDict("stick_iron", "stickIron", References.CREATIVE_IR_TAB);
+    public static ItemOreDict stickSteel = new ItemOreDict("stick_steel", "stickSteel", References.CREATIVE_IR_TAB);
     public static ItemOreDict spongeIron = new ItemOreDict("sponge_iron", "spongeIron", References.CREATIVE_IR_TAB);
     public static ItemOreDict smallSlab = new ItemOreDict("small_slab", "minislabStone", References.CREATIVE_IR_TAB);
 
@@ -43,6 +44,7 @@ public class ModItems {
 
     public static void register(IForgeRegistry<Item> registry) {
         registry.registerAll(
+                manual,
                 ingotSteel,
                 spongeIron,
                 screwDrive,
@@ -52,6 +54,7 @@ public class ModItems {
                 steamLocomotive,
                 smallSlab,
                 stickIron,
+                stickSteel,
                 medkit,
                 fireExtinguisher,
                 safetyHelmet,
@@ -63,8 +66,7 @@ public class ModItems {
                 cartridge_minus,
                 cartridge_half,
                 cartridge_double,
-                cartridge_inverter,
-                manual
+                cartridge_inverter
         );
     }
 
@@ -91,5 +93,17 @@ public class ModItems {
         cartridge_double.registerItemModel();
         cartridge_inverter.registerItemModel();
         manual.registerItemModel();
+        stickSteel.registerItemModel();
+    }
+
+    public static void registerOreDict() {
+        //oreCopper.initOreDict();
+        ingotSteel.initOreDict();
+        stickIron.initOreDict();
+        stickSteel.initOreDict();
+        disc1.initOreDict();
+        steelSaw.initOreDict();
+        spongeIron.initOreDict();
+        smallSlab.initOreDict();
     }
 }
