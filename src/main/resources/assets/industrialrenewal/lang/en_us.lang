@@ -126,6 +126,12 @@ gui.config.category.recipes.tooltip=Recipes settings
 gui.config.recipes.spongeiron_recipe.name=Sponge Iron recipe
 gui.config.recipes.spongeiron_recipe.comment=Turn On/Off the sponge iron recipe (Default true)
 
+gui.config.category.options=Options
+gui.config.category.options.tooltip=General settings
+gui.config.recipes.startwithmanual.name=Start with manual
+gui.config.recipes.startwithmanual.comment=Turn On/Off the manual item on first spawn (Default true)
+
+
 #Info
 
 tile.industrialrenewal.crossing_rail.info=Make the carts honk when they pass
@@ -148,7 +154,7 @@ gui.industrialrenewal.fire_extinguisher.text0=Extinguishes nearby fires or lava 
 gui.industrialrenewal.flame_detector.text0=It emits a redstone signal if there is a flame on the front. Can rotate with a wrench.
 gui.industrialrenewal.gutter.text0=Take water if placed in the end of the roof when it's raining, increases the water generation by the amount of roof tiles. To get the water just place a tank or a pipe below.
 gui.industrialrenewal.entity_detector.text0=It emits a redstone signal if the entity is in range, the range and the entity type can be change in the gui.
-gui.industrialrenewal.firt-aid_box.text0=It's a container to hold first-aids, can hold 8 stacks of 16, to open press shift + right click, when right clicked he give a regeneration II buff which lasts 7s. Only works if you don't have full health.
+gui.industrialrenewal.first-aid_box.text0=It's a container to hold first-aids, can hold 8 stacks of 16, to open press shift + right click, when right clicked he give a regeneration II buff which lasts 7s. Only works if you don't have full health.
 gui.industrialrenewal.rails.text0=- Rail, Powered Rail, Detector Rail: $n Just like vanilla ones but 3D. $n - Buffer Stop: $n Will prevent the carts from passing. $n - Crossing Rail: $n Makes carts Horn when it passes. $n - Tranfer Rail: $n Place on top or under a Cargo Item Tranfer and will stop the carts depending on the Cargo Item Tranfer settings.
 
 #GUI

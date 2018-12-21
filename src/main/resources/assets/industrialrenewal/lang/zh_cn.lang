@@ -17,6 +17,7 @@ item.industrialrenewal.safety_helmet.name=安全帽
 item.industrialrenewal.small_slab.name=小石板
 item.industrialrenewal.sponge_iron.name=海绵铁
 item.industrialrenewal.stick_iron.name=铁棒
+item.industrialrenewal.stick_steel.name=Steel Rod
 item.industrialrenewal.steam_locomotive.name=蒸汽机车
 item.industrialrenewal.cargo_container.name=集装箱货车
 item.industrialrenewal.fluid_container.name=罐车
@@ -139,7 +140,7 @@ gui.industrialrenewal.fire_extinguisher.text0=Extinguishes nearby fires or lava 
 gui.industrialrenewal.flame_detector.text0=It emits a redstone signal if there is a flame on the front. Can rotate with a wrench.
 gui.industrialrenewal.gutter.text0=Take water if placed in the end of the roof when it's raining, increases the water generation by the amount of roof tiles. To get the water just place a tank or a pipe below.
 gui.industrialrenewal.entity_detector.text0=It emits a redstone signal if the entity is in range, the range and the entity type can be change in the gui.
-gui.industrialrenewal.firt-aid_box.text0=It's a container to hold first-aids, can hold 8 stacks of 16, to open press shift + right click, when right clicked he give a regeneration II buff which lasts 7s. Only works if you don't have full health.
+gui.industrialrenewal.first-aid_box.text0=It's a container to hold first-aids, can hold 8 stacks of 16, to open press shift + right click, when right clicked he give a regeneration II buff which lasts 7s. Only works if you don't have full health.
 gui.industrialrenewal.rails.text0=- Rail, Powered Rail, Detector Rail: $n Just like vanilla ones but 3D. $n - Buffer Stop: $n Will prevent the carts from passing. $n - Crossing Rail: $n Makes carts Horn when it passes. $n - Tranfer Rail: $n Place on top or under a Cargo Item Tranfer and will stop the carts depending on the Cargo Item Tranfer settings.
 
 
@@ -166,3 +167,4 @@ gui.industrialrenewal.fusebox.input=Redstone In:
 gui.industrialrenewal.fusebox.output=Redstone Out:
 gui.industrialrenewal.fusebox.slots.tooltip=Slots for Redstone Cartridges
 
+gui.industrialrenewal.firt-aid_box.text0=It's a container to hold first-aids, can hold 8 stacks of 16, to open press shift + right click, when right clicked he give a regeneration II buff which lasts 7s. Only works if you don't have full health.

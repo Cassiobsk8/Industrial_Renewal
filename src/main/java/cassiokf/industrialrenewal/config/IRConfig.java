@@ -16,8 +16,10 @@ import java.util.List;
 
 public class IRConfig {
 
+    public static final String CATEGORY_NAME_OPTIONS = "Options";
     public static final String CATEGORY_NAME_RECIPES = "Recipes";
     public static boolean spongeIronRecipeActive; //Refer to this to get the config boolean
+    public static boolean startWithManual;
     private static Configuration config = null;
 
     public static void preInit() {
@@ -52,6 +54,10 @@ public class IRConfig {
         }
 
         //All the properties
+        Property propertyStartWithManual = config.get(CATEGORY_NAME_OPTIONS, "start with manual", true);
+        propertyStartWithManual.setLanguageKey("gui.config.recipes.startwithmanual.name");
+        propertyStartWithManual.setComment("Turn On/Off the manual item on first spawn (Default true)");
+
         Property propertyRecipeSpongeIron = config.get(CATEGORY_NAME_RECIPES, "spongeiron_recipe", true);
         propertyRecipeSpongeIron.setLanguageKey("gui.config.recipes.spongeiron_recipe.name");
         propertyRecipeSpongeIron.setComment("Turn On/Off the sponge iron recipe (Default true)"); //TODO See whats going wrong
@@ -59,15 +65,19 @@ public class IRConfig {
 
         List<String> propertyOrderRecipes = new ArrayList<String>();
         //Order
+        propertyOrderRecipes.add(propertyStartWithManual.getName());
         propertyOrderRecipes.add(propertyRecipeSpongeIron.getName());
 
         //End order
+        config.setCategoryPropertyOrder(CATEGORY_NAME_OPTIONS, propertyOrderRecipes);
         config.setCategoryPropertyOrder(CATEGORY_NAME_RECIPES, propertyOrderRecipes);
 
         if (readFieldsFromConfig) {
             spongeIronRecipeActive = propertyRecipeSpongeIron.getBoolean();
+            startWithManual = propertyStartWithManual.getBoolean();
         }
 
+        propertyStartWithManual.set(startWithManual);
         propertyRecipeSpongeIron.set(spongeIronRecipeActive);
 
         if (config.hasChanged()) {

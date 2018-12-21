@@ -27,6 +27,7 @@ public class GUIManual extends GuiScreen {
     private static ResourceLocation logoIMG = new ResourceLocation(References.MODID, "textures/gui/book/logo.png");
     private static ResourceLocation railroadIMG = new ResourceLocation(References.MODID, "textures/gui/book/railroad.png");
     private static ResourceLocation redstoneIMG = new ResourceLocation(References.MODID, "textures/gui/book/redstone.png");
+    private static ResourceLocation utilsIMG = new ResourceLocation(References.MODID, "textures/gui/book/utils.png");
     private static ResourceLocation warning = new ResourceLocation(References.MODID, "textures/gui/book/warning.png");
     private World world;
     private EntityPlayer player;
@@ -36,6 +37,7 @@ public class GUIManual extends GuiScreen {
     private ArrayList<String> texts = new ArrayList<>();
     private ArrayList<ItemStack> railroadItems = new ArrayList<>();
     private ArrayList<ItemStack> redstoneItems = new ArrayList<>();
+    private ArrayList<ItemStack> utilsItems = new ArrayList<>();
 
     private int page = 0;
     private ButtonBookOverIcon button1;
@@ -48,6 +50,12 @@ public class GUIManual extends GuiScreen {
     private ButtonBookOverIcon buttonRailroad2;
     private ButtonBookOverIcon buttonRailroad3;
     private ButtonBookOverIcon buttonRailroad4;
+    private ButtonBookOverIcon buttonRedstone1;
+    private ButtonBookOverIcon buttonRedstone2;
+    private ButtonBookOverIcon buttonRedstone3;
+    private ButtonBookOverIcon buttonUtils1;
+    private ButtonBookOverIcon buttonUtils2;
+    private ButtonBookOverIcon buttonUtils3;
     private ButtonBookOverIcon buttonBack;
 
     public GUIManual(World world, EntityPlayer player) {
@@ -57,6 +65,7 @@ public class GUIManual extends GuiScreen {
         items.clear();
         texts.clear();
         railroadItems.clear();
+        utilsItems.clear();
         //FIRST PAGE
         items.add(new ItemStack(ModItems.steamLocomotive));
         texts.add(I18n.format("gui.industrialrenewal.railroad.category"));
@@ -79,6 +88,10 @@ public class GUIManual extends GuiScreen {
         redstoneItems.add(new ItemStack(ModBlocks.fuseBox));
         redstoneItems.add(new ItemStack(ModBlocks.flameDetector));
         redstoneItems.add(new ItemStack(ModBlocks.entityDetector));
+        //Utils
+        utilsItems.add(new ItemStack(ModItems.fireExtinguisher));
+        utilsItems.add(new ItemStack(ModBlocks.gutter));
+        utilsItems.add(new ItemStack(ModBlocks.firstAidKit));
     }
 
     @Override
@@ -111,6 +124,8 @@ public class GUIManual extends GuiScreen {
             case 4:
                 break;
             case 5:
+                drawPictureOnTop(utilsIMG, 54, 0, 0);
+                drawIcons(utilsItems, null, true);
                 break;
             case 6:
                 break;
@@ -130,6 +145,24 @@ public class GUIManual extends GuiScreen {
                 drawPictureOnTop(railroadIMG, 54, 101, 0);
                 drawText(I18n.format("gui.industrialrenewal.rails.text0"));
                 break;
+            case 21:
+                drawText(I18n.format("gui.industrialrenewal.fuse_box.text0"));
+                break;
+            case 22:
+                drawText(I18n.format("gui.industrialrenewal.flame_detector.text0"));
+                break;
+            case 23:
+                drawText(I18n.format("gui.industrialrenewal.entity_detector.text0"));
+                break;
+            case 51:
+                drawText(I18n.format("gui.industrialrenewal.fire_extinguisher.text0"));
+                break;
+            case 52:
+                drawText(I18n.format("gui.industrialrenewal.gutter.text0"));
+                break;
+            case 53:
+                drawText(I18n.format("gui.industrialrenewal.first-aid_box.text0"));
+                break;
         }
         drawPageName();
         drawPageNumber();
@@ -137,7 +170,7 @@ public class GUIManual extends GuiScreen {
     }
 
     private void drawText(String text) {
-        int maxPixelsPerLine = 90;
+        int maxPixelsPerLine = 93;
         StringBuilder currentLine = new StringBuilder();
         int currentWidth = 0, yoffset = 66, xoffset = 18, maxLineFirstPage = 9;
         int currentLineN = 0;
@@ -229,7 +262,7 @@ public class GUIManual extends GuiScreen {
 
     private void drawPageNumber() {
         if (page != 0) {
-            int x = xOffset + 228;
+            int x = xOffset + 222;
             int y = yOffset + 3;
             fontRenderer.drawString(String.valueOf(page), x, y, 0);
         }
@@ -237,10 +270,10 @@ public class GUIManual extends GuiScreen {
 
     @Override
     protected void actionPerformed(GuiButton b) {
-        if (b.id < 20) {
+        if (b.id < 200) {
             page = b.id;
         }
-        if (b.id == 20) {
+        if (b.id == 200) {
             if (page <= 10) {
                 page = 0;
             } else {
@@ -258,10 +291,20 @@ public class GUIManual extends GuiScreen {
         button4.visible = page == 0;
         button5.visible = page == 0;
         button6.visible = page == 0;
+
         buttonRailroad1.visible = page == 1;
         buttonRailroad2.visible = page == 1;
         buttonRailroad3.visible = page == 1;
         buttonRailroad4.visible = page == 1;
+
+        buttonRedstone1.visible = page == 2;
+        buttonRedstone2.visible = page == 2;
+        buttonRedstone3.visible = page == 2;
+
+        buttonUtils1.visible = page == 5;
+        buttonUtils2.visible = page == 5;
+        buttonUtils3.visible = page == 5;
+
         buttonBack.visible = page != 0;
     }
 
@@ -295,6 +338,7 @@ public class GUIManual extends GuiScreen {
         //PAGE 1 RAILROAD
         x = xOffset + 22;
         y = yOffset + 62;
+
         buttonRailroad1 = new ButtonBookOverIcon(11, x, y, 103, 20, " ");
         this.buttonList.add(buttonRailroad1);
         y = y + 20;
@@ -307,8 +351,33 @@ public class GUIManual extends GuiScreen {
         buttonRailroad4 = new ButtonBookOverIcon(14, x, y, 103, 20, " ");
         this.buttonList.add(buttonRailroad4);
 
+        //PAGE 2 REDSTONE
+        x = xOffset + 22;
+        y = yOffset + 62;
 
-        buttonBack = new ButtonBookOverIcon(20, xOffset + 20, yOffset + 144, 20, 20, "<<");
+        buttonRedstone1 = new ButtonBookOverIcon(21, x, y, 103, 20, " ");
+        this.buttonList.add(buttonRedstone1);
+        y = y + 20;
+        buttonRedstone2 = new ButtonBookOverIcon(22, x, y, 103, 20, " ");
+        this.buttonList.add(buttonRedstone2);
+        y = y + 20;
+        buttonRedstone3 = new ButtonBookOverIcon(23, x, y, 103, 20, " ");
+        this.buttonList.add(buttonRedstone3);
+
+        //PAGE 5 UTILS
+        x = xOffset + 22;
+        y = yOffset + 62;
+
+        buttonUtils1 = new ButtonBookOverIcon(51, x, y, 103, 20, " ");
+        this.buttonList.add(buttonUtils1);
+        y = y + 20;
+        buttonUtils2 = new ButtonBookOverIcon(52, x, y, 103, 20, " ");
+        this.buttonList.add(buttonUtils2);
+        y = y + 20;
+        buttonUtils3 = new ButtonBookOverIcon(53, x, y, 103, 20, " ");
+        this.buttonList.add(buttonUtils3);
+
+        buttonBack = new ButtonBookOverIcon(200, xOffset + 20, yOffset + 144, 20, 20, "<<");
         this.buttonList.add(buttonBack);
     }
 

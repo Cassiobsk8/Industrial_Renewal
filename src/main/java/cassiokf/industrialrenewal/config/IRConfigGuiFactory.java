@@ -45,13 +45,30 @@ public class IRConfigGuiFactory implements IModGuiFactory {
 
         private static List<IConfigElement> getConfigElements() {
             List<IConfigElement> list = new ArrayList<IConfigElement>();
-            list.add(new DummyCategoryElement(I18n.format("gui.config.category.recipes"), "gui.config.category.recipes", CategoryEntryBlocks.class));
+            list.add(new DummyCategoryElement(I18n.format("gui.config.category.options"), "gui.config.category.options", CategoryEntryOptions.class));
+            list.add(new DummyCategoryElement(I18n.format("gui.config.category.recipes"), "gui.config.category.recipes", CategoryEntryRecipes.class));
             return list;
         }
 
-        public static class CategoryEntryBlocks extends GuiConfigEntries.CategoryEntry {
+        public static class CategoryEntryOptions extends GuiConfigEntries.CategoryEntry {
 
-            public CategoryEntryBlocks(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement configElement) {
+            public CategoryEntryOptions(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement configElement) {
+                super(owningScreen, owningEntryList, configElement);
+            }
+
+            @Override
+            protected GuiScreen buildChildScreen() {
+                Configuration config = IRConfig.getConfig();
+                ConfigElement categoryBlocks = new ConfigElement(config.getCategory(IRConfig.CATEGORY_NAME_OPTIONS));
+                List<IConfigElement> propertyOnScreen = categoryBlocks.getChildElements();
+                String windowTitle = I18n.format("gui.config.category.options");
+                return new GuiConfig(owningScreen, propertyOnScreen, owningScreen.modID, this.configElement.requiresWorldRestart() || owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() || owningScreen.allRequireMcRestart, windowTitle);
+            }
+        }
+
+        public static class CategoryEntryRecipes extends GuiConfigEntries.CategoryEntry {
+
+            public CategoryEntryRecipes(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement configElement) {
                 super(owningScreen, owningEntryList, configElement);
             }
 

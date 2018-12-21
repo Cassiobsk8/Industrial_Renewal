@@ -22,6 +22,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 import java.util.Random;
@@ -80,6 +81,28 @@ public class IndustrialRenewal {
         public static void registerItems(ModelRegistryEvent event) {
             ModItems.registerModels();
             ModBlocks.registerItemModels();
+        }
+
+        //private static final String NBT_KEY = "industrialrenewal.firstjoin";
+        @SubscribeEvent
+        public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+            /*
+            if (IRConfig.startWithManual) {
+                EntityPlayer p = event.player;
+                NBTTagCompound data = p.getEntityData();
+                NBTTagCompound persistent;
+                if (!data.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
+                    data.setTag(EntityPlayer.PERSISTED_NBT_TAG, (persistent = new NBTTagCompound()));
+                } else {
+                    persistent = data.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+                }
+
+                if (!persistent.hasKey(NBT_KEY)) {
+                    Utils.sendConsoleMessage("spawning");
+                    persistent.setBoolean(NBT_KEY, true);
+                    p.inventory.addItemStackToInventory(new ItemStack(ModItems.manual, 1));
+                }
+            }*/
         }
 
         @SubscribeEvent
