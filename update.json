@@ -1,10 +1,11 @@
 {
   "homepage": "<https://minecraft.curseforge.com/projects/industrial-renewal>",
   "promos": {
-    "1.12.2-latest": "0.8.0",
-    "1.12.2-recommended": "0.8.0"
+    "1.12.2-latest": "0.8.1",
+    "1.12.2-recommended": "0.8.1"
   },
   "1.12.2": {
+    "0.8.1": "Fix:\n-Fix crash when player die nearby First aid box\nNew:\n-Electric fence config\n-Implement Double Electric Gate",
     "0.8.0": "New:\n- Manual (WIP)\nSteel Blocks Variants",
     "0.7.0": "NEW:\n- Locker\n- Entity detector\n- Fuse box w/ cartridges\nChanges:\n- clear window texture\n- catwalks no longer connects with down fullblocks\nFixes:\n- MultiDisk disconnecting player",
     "0.6.0": "NEW:\n-OSHA-specified hazards blocks variants\n-Block Handrail\n-Flame detector\nChanges:\n-window frame model\n-some blocks are cheaper\nFixes:\n-some",
