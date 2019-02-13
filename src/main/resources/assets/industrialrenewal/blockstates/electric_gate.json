@@ -1,7 +1,6 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "industrialrenewal:electric_gate_base",
     "textures": {
       "particle": "blocks/anvil_base"
     }
@@ -20,10 +19,18 @@
       }
     },
     "active": {
+      "true": {},
+      "false": {
+        "model": "industrialrenewal:electric_gate_base"
+      }
+    },
+    "inverted": {
       "true": {
-        "model": "industrialrenewal:electric_gate_base_open"
+        "model": "industrialrenewal:electric_gate_base_open_right"
       },
-      "false": {}
+      "false": {
+        "model": "industrialrenewal:electric_gate_base_open"
+      }
     },
     "up": {
       "true": {
@@ -35,8 +42,38 @@
       },
       "false": {}
     },
+    "left": {
+      "true": {
+        "submodel": {
+          "left": {
+            "model": "industrialrenewal:electric_gate_left"
+          }
+        }
+      },
+      "false": {}
+    },
+    "right": {
+      "true": {
+        "submodel": {
+          "right": {
+            "model": "industrialrenewal:electric_gate_right"
+          }
+        }
+      },
+      "false": {}
+    },
     "inventory": [
-      {}
+      {
+        "model": "industrialrenewal:electric_gate_base",
+        "submodel": {
+          "right": {
+            "model": "industrialrenewal:electric_gate_right"
+          },
+          "left": {
+            "model": "industrialrenewal:electric_gate_left"
+          }
+        }
+      }
     ]
   }
 }

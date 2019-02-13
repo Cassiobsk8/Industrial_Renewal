@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.tileentity.firstaidkit;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
-import cassiokf.industrialrenewal.blocks.ModBlocks;
 import cassiokf.industrialrenewal.network.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketFirstAidKit;
 import cassiokf.industrialrenewal.util.GUIHandler;
@@ -66,7 +65,7 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
     }
 
     public static EnumFacing getFaceDirection(IBlockState state) {
-        if (state.getBlock() == ModBlocks.firstAidKit) {
+        if (state.getBlock() instanceof BlockFirstAidKit) {
             return state.getValue(FACING);
         }
         return EnumFacing.NORTH;
