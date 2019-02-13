@@ -32,7 +32,7 @@ public class TileEntityFirstAidKit extends TileEntity implements ICapabilityProv
 
     public EnumFacing getFaceDirection() {
 
-        return BlockFirstAidKit.getFaceDirection(this.getWorld().getBlockState(this.pos));
+        return BlockFirstAidKit.getFaceDirection(this.world.getBlockState(this.pos));
     }
 
     @Override
