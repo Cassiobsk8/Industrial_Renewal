@@ -115,12 +115,13 @@ public class BlockElectricGate extends BlockBase {
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
         EnumFacing facing = state.getValue(FACING);
         IBlockState rightState = world.getBlockState(pos.offset(facing.rotateY()));
-        Block leftBlock = world.getBlockState(pos.offset(facing.rotateYCCW())).getBlock();
+        IBlockState leftState = world.getBlockState(pos.offset(facing.rotateYCCW()));
+        Block leftBlock = leftState.getBlock();
         Block rightBlock = rightState.getBlock();
         boolean leftIsGate = (leftBlock instanceof BlockElectricGate);
         boolean rightIsGate = (rightBlock instanceof BlockElectricGate);
         boolean inverted = (leftIsGate && !rightIsGate);
-        boolean rightInverted = rightIsGate ? rightState.getActualState(world, pos.offset(facing.rotateY())).getValue(INVERTED) : false;
+        boolean rightInverted = rightIsGate;
         Block dnb = world.getBlockState(pos.down()).getBlock();
 
         state = state.withProperty(UP, dnb instanceof BlockElectricGate).withProperty(INVERTED, inverted)
