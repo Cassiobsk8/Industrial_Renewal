@@ -23,6 +23,7 @@ public class References {
     public static final int ENTITY_CARGOCONTAINER_ID = 120;
     public static final int ENTITY_STEAMLOCOMOTIVE_ID = 121;
     public static final int ENTITY_FLUIDCONTAINER_ID = 122;
+    public static final int ENTITY_LOGCART_ID = 123;
 
     public static final String VERSION_CHECKER_URL = "https://raw.githubusercontent.com/Cassiobsk8/Industrial_Renewal/master/update.json";
 }

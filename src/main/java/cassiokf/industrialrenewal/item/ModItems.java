@@ -29,6 +29,7 @@ public class ModItems {
     public static ItemMineCartCargoContainer cargoContainer = new ItemMineCartCargoContainer("cargo_container", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static ItemMineCartFluidContainer fluidContainer = new ItemMineCartFluidContainer("fluid_container", References.CREAATIVE_IRWIP_TAB);
     public static ItemSteamLocomotive steamLocomotive = new ItemSteamLocomotive("steam_locomotive", References.CREAATIVE_IRWIP_TAB);
+    public static ItemLogCart logCart = new ItemLogCart("log_cart", References.CREATIVE_IRLOCOMOTIVE_TAB);
 
     public static ItemMedKit medkit = new ItemMedKit("medkit", References.CREATIVE_IR_TAB);
     public static ItemFireExtinguisher fireExtinguisher = new ItemFireExtinguisher("item_fire_extinguisher", References.CREATIVE_IR_TAB);
@@ -52,6 +53,7 @@ public class ModItems {
                 cargoContainer,
                 fluidContainer,
                 steamLocomotive,
+                logCart,
                 smallSlab,
                 stickIron,
                 stickSteel,
@@ -78,6 +80,7 @@ public class ModItems {
         cargoContainer.registerItemModel();
         fluidContainer.registerItemModel();
         steamLocomotive.registerItemModel();
+        logCart.registerItemModel();
         smallSlab.registerItemModel();
         stickIron.registerItemModel();
         medkit.registerItemModel();

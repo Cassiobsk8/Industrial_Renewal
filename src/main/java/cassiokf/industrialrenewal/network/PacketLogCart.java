@@ -1,10 +1,8 @@
 package cassiokf.industrialrenewal.network;
 
-import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
+import cassiokf.industrialrenewal.entity.EntityLogCart;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -13,31 +11,31 @@ import net.minecraftforge.fml.relauncher.Side;
 /**
  * CLIENT SIDE
  */
-public class PacketSteamLocomotive implements IMessage {
+public class PacketLogCart implements IMessage {
 
     private boolean messageValid;
 
-    private ItemStack stack;
+    private int count;
     private int id;
 
-    public PacketSteamLocomotive() {
+    public PacketLogCart() {
         this.messageValid = false;
     }
 
-    public PacketSteamLocomotive(ItemStack stack, int id) {
-        this.stack = stack;
+    public PacketLogCart(int invcount, int id) {
+        this.count = invcount;
         this.id = id;
         this.messageValid = true;
     }
 
-    public PacketSteamLocomotive(EntitySteamLocomotive entity) {
-        this(entity.inventory.getStackInSlot(6), entity.getEntityId());
+    public PacketLogCart(EntityLogCart entity) {
+        this(entity.invItensCount, entity.getEntityId());
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
         try {
-            stack = ByteBufUtils.readItemStack(buf);
+            count = buf.readInt();
             id = buf.readInt();
         } catch (IndexOutOfBoundsException ioe) {
             System.out.println(ioe);
@@ -50,15 +48,15 @@ public class PacketSteamLocomotive implements IMessage {
         if (!this.messageValid) {
             return;
         }
-        ByteBufUtils.writeItemStack(buf, stack);
+        buf.writeInt(count);
         buf.writeInt(id);
 
     }
 
-    public static class Handler implements IMessageHandler<PacketSteamLocomotive, IMessage> {
+    public static class Handler implements IMessageHandler<PacketLogCart, IMessage> {
 
         @Override
-        public IMessage onMessage(PacketSteamLocomotive message, MessageContext ctx) {
+        public IMessage onMessage(PacketLogCart message, MessageContext ctx) {
             if (!message.messageValid && ctx.side != Side.SERVER) {
                 return null;
             }
@@ -68,10 +66,10 @@ public class PacketSteamLocomotive implements IMessage {
             return null;
         }
 
-        void processMessage(PacketSteamLocomotive message, MessageContext ctx) {
-            EntitySteamLocomotive entity = (EntitySteamLocomotive) Minecraft.getMinecraft().world.getEntityByID(message.id);
+        void processMessage(PacketLogCart message, MessageContext ctx) {
+            EntityLogCart entity = (EntityLogCart) Minecraft.getMinecraft().world.getEntityByID(message.id);
             if (entity != null) {
-                entity.inventory.setStackInSlot(6, message.stack);
+                entity.invItensCount = message.count;
             }
         }
     }

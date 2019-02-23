@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.util;
 
 import cassiokf.industrialrenewal.container.*;
+import cassiokf.industrialrenewal.entity.EntityLogCart;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import cassiokf.industrialrenewal.gui.*;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
@@ -25,6 +26,7 @@ public class GUIHandler implements IGuiHandler {
     public static final int ENTITYDETECTOR = 4;
     public static final int FUSEBOX = 5;
     public static final int MANUAL = 6;
+    public static final int LOGCART = 7;
 
     @Nullable
     @Override
@@ -46,6 +48,9 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == FUSEBOX) {
             return new ContainerFuseBox(player.inventory, (TileEntityFuseBox) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
+        }
+        if (ID == LOGCART) {
+            return new ContainerLogCart(player.inventory, (EntityLogCart) world.getEntityByID(x));
         }
         return null;
     }
@@ -73,6 +78,9 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == MANUAL) {
             return new GUIManual(world, player);
+        }
+        if (ID == LOGCART) {
+            return new GUILogCart(player.inventory, (EntityLogCart) world.getEntityByID(x));
         }
         return null;
     }

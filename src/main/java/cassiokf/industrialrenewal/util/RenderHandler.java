@@ -2,9 +2,11 @@ package cassiokf.industrialrenewal.util;
 
 import cassiokf.industrialrenewal.entity.EntityCargoContainer;
 import cassiokf.industrialrenewal.entity.EntityFluidContainer;
+import cassiokf.industrialrenewal.entity.EntityLogCart;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import cassiokf.industrialrenewal.entity.render.RenderCargoContainer;
 import cassiokf.industrialrenewal.entity.render.RenderFluidContainer;
+import cassiokf.industrialrenewal.entity.render.RenderLogCart;
 import cassiokf.industrialrenewal.entity.render.RenderSteamLocomotive;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -17,7 +19,7 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityCargoContainer.class, new IRenderFactory<EntityCargoContainer>() {
             @Override
             public Render<? super EntityCargoContainer> createRenderFor(RenderManager manager) {
-                return new RenderCargoContainer(manager);
+                return new RenderCargoContainer<>(manager);
             }
         });
         RenderingRegistry.registerEntityRenderingHandler(EntityFluidContainer.class, new IRenderFactory<EntityFluidContainer>() {
@@ -29,7 +31,13 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntitySteamLocomotive.class, new IRenderFactory<EntitySteamLocomotive>() {
             @Override
             public Render<? super EntitySteamLocomotive> createRenderFor(RenderManager manager) {
-                return new RenderSteamLocomotive(manager);
+                return new RenderSteamLocomotive<>(manager);
+            }
+        });
+        RenderingRegistry.registerEntityRenderingHandler(EntityLogCart.class, new IRenderFactory<EntityLogCart>() {
+            @Override
+            public Render<? super EntityLogCart> createRenderFor(RenderManager manager) {
+                return new RenderLogCart<>(manager);
             }
         });
     }
