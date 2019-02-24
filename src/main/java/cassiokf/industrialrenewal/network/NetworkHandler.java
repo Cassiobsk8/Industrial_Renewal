@@ -36,5 +36,8 @@ public class NetworkHandler {
 
         INSTANCE.registerMessage(new PacketLogCart.Handler(), PacketLogCart.class, dis++, Side.CLIENT);
         INSTANCE.registerMessage(new PacketReturnLogCart.Handler(), PacketReturnLogCart.class, dis++, Side.SERVER);
+
+        INSTANCE.registerMessage(new PacketFluidBase.Handler(), PacketFluidBase.class, dis++, Side.CLIENT);
+        INSTANCE.registerMessage(new PacketReturnFluidBase.Handler(), PacketReturnFluidBase.class, dis++, Side.SERVER);
     }
 }

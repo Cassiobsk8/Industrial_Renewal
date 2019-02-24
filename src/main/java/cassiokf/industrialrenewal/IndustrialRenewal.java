@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal;
 
 import cassiokf.industrialrenewal.blocks.ModBlocks;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.entity.EntityFluidContainer;
 import cassiokf.industrialrenewal.entity.EntityInit;
 import cassiokf.industrialrenewal.entity.EntityLogCart;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
@@ -120,6 +121,16 @@ public class IndustrialRenewal {
                     EntityLogCart entity = (EntityLogCart) event.getTarget();
                     int entityID = entity.getEntityId();
                     FMLNetworkHandler.openGui(event.getEntityPlayer(), IndustrialRenewal.instance, GUIHandler.LOGCART, event.getWorld(), entityID, 0, 0);
+                }
+                //event.setCanceled(true);
+            } else if (event.getTarget() instanceof EntityFluidContainer && !event.getEntityPlayer().isSneaking()) {
+                EntityFluidContainer entity = (EntityFluidContainer) event.getTarget();
+                if (event.getWorld().isRemote) {
+                    entity.OpenEvent();
+                } else {
+                    int entityID = entity.getEntityId();
+                    //FluidUtil.interactWithFluidHandler(event.getEntityPlayer(), event.getHand(), event.getWorld(), event.getTarget().getPosition(), event.getFace());
+                    FMLNetworkHandler.openGui(event.getEntityPlayer(), IndustrialRenewal.instance, GUIHandler.FLUIDCART, event.getWorld(), entityID, 0, 0);
                 }
                 //event.setCanceled(true);
             }

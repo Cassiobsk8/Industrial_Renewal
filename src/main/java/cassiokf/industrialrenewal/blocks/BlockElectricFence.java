@@ -79,7 +79,6 @@ public class BlockElectricFence extends BlockBase {
     }
 
     private void DoDamage(World world, BlockPos pos, Entity entityIn, float amount) {
-        System.out.println(amount);
         entityIn.attackEntityFrom(DamageSource.LIGHTNING_BOLT, amount);
         ((EntityLivingBase) entityIn).knockBack(entityIn, 0.3f, pos.getX() - entityIn.posX, pos.getZ() - entityIn.posZ);
         Random r = new Random();
