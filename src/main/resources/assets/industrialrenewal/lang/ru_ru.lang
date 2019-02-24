@@ -12,6 +12,7 @@ item.industrialrenewal.cartridge_double.name=Редстоун картридж �
 item.industrialrenewal.cartridge_inverter.name=Редстоун картридж инвертер
 item.industrialrenewal.ingot_steel.name=Стальной слиток
 item.industrialrenewal.item_fire_extinguisher.name=Огнетушитель
+item.industrialrenewal.log_cart.name=Log Cart
 item.industrialrenewal.safety_belt.name=Ремень безопасности
 item.industrialrenewal.safety_helmet.name=Защитный шлем
 item.industrialrenewal.small_slab.name=Маленькая плита
@@ -112,6 +113,7 @@ tile.industrialrenewal.solar_panel.name=Основная солнечная па
 entity.industrialrenewal.cargo_container.name=Грузовой контейнер
 entity.industrialrenewal.fluid_container.name=Жидкостный контейнер
 entity.industrialrenewal.steam_locomotive.name=Паровоз
+entity.industrialrenewal.log_cart.name=Log Cart
 
 
 gui.config.main_title=Конфигурация Industrial Renewal
