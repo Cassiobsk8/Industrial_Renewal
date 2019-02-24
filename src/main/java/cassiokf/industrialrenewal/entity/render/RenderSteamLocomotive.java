@@ -9,10 +9,8 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
+//@SideOnly(Side.CLIENT)
 public class RenderSteamLocomotive<T extends EntitySteamLocomotive> extends Render<EntitySteamLocomotive> {
 
     public static final ResourceLocation TEXTURES = new ResourceLocation(References.MODID + ":textures/entities/steamlocomotive.png");
@@ -24,7 +22,8 @@ public class RenderSteamLocomotive<T extends EntitySteamLocomotive> extends Rend
         this.shadowSize = 0.5F;
     }
 
-    public void doRender(EntitySteamLocomotive entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    @Override
+    public void doRender(final EntitySteamLocomotive entity, double x, double y, double z, float entityYaw, final float partialTicks) {
 
         GlStateManager.pushMatrix();
         this.bindEntityTexture(entity);
@@ -42,8 +41,8 @@ public class RenderSteamLocomotive<T extends EntitySteamLocomotive> extends Rend
         float f3 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
 
         if (vec3d != null) {
-            Vec3d vec3d1 = entity.getPosOffset(d0, d1, d2, 0.30000001192092896D);
-            Vec3d vec3d2 = entity.getPosOffset(d0, d1, d2, -0.30000001192092896D);
+            Vec3d vec3d1 = entity.getPosOffset(d0, d1, d2, d3);
+            Vec3d vec3d2 = entity.getPosOffset(d0, d1, d2, -d3);
 
             if (vec3d1 == null) {
                 vec3d1 = vec3d;
@@ -66,8 +65,29 @@ public class RenderSteamLocomotive<T extends EntitySteamLocomotive> extends Rend
         }
 
         GlStateManager.translate((float) x, (float) y + 0.375F, (float) z);
+
+        // rotation fix based on notes from covertJaguar
+        double yaw = entity.rotationYaw;
+        if (yaw < 0) yaw += 360;
+        double rYaw = entityYaw;
+        if (rYaw < 0) rYaw += 360;
+        boolean applyRotateFix = false;
+
+        if (Math.abs(rYaw - yaw) > 100) {
+            applyRotateFix = true;
+        }
+
+        if (applyRotateFix) {
+            entityYaw += 180;
+            f3 = -f3;
+        }
+
         GlStateManager.rotate(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(-f3, 0.0F, 0.0F, 1.0F);
+
+        //GlStateManager.rotate(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
+        //GlStateManager.rotate(-f3, 0.0F, 0.0F, 1.0F);
+
         float f5 = (float) entity.getRollingAmplitude() - partialTicks;
         float f6 = entity.getDamage() - partialTicks;
 
@@ -94,6 +114,7 @@ public class RenderSteamLocomotive<T extends EntitySteamLocomotive> extends Rend
         }
 
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
+
     }
 
     @Override

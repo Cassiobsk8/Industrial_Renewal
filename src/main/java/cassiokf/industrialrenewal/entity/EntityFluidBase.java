@@ -21,7 +21,7 @@ public class EntityFluidBase extends EntityMinecart implements IFluidHandler {
 
     public EntityFluidBase(World worldIn) {
         super(worldIn);
-        this.setSize(1.6F, 1.4F);
+        this.setSize(1.0F, 1.0F);
     }
 
     public EntityFluidBase(World worldIn, double x, double y, double z) {

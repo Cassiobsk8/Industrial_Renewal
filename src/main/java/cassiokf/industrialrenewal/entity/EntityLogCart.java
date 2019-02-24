@@ -33,7 +33,7 @@ public class EntityLogCart extends EntityMinecart {
 
     public EntityLogCart(World worldIn) {
         super(worldIn);
-        this.setSize(1.0F, 1.4F);
+        this.setSize(1.0F, 1.0F);
     }
 
     public EntityLogCart(World worldIn, double x, double y, double z) {

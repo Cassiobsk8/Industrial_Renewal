@@ -9,7 +9,7 @@ public class EntityFluidContainer extends EntityFluidBase {
 
     public EntityFluidContainer(World worldIn) {
         super(worldIn);
-        this.setSize(1.4F, 1.2F);
+        this.setSize(1.0F, 1.0F);
     }
 
     public EntityFluidContainer(World worldIn, double x, double y, double z) {

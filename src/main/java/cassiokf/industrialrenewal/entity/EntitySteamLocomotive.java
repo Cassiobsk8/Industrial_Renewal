@@ -29,10 +29,16 @@ public class EntitySteamLocomotive extends EntityMinecart {
     };
 
     private int tick = 0;
+    public boolean cornerFlip;
+    private int wrongRender;
+    private boolean oldRender;
+    private float lastRenderYaw;
+    private double lastMotionX;
+    private double lastMotionZ;
 
     public EntitySteamLocomotive(World worldIn) {
         super(worldIn);
-        this.setSize(1.0F, 1.4F); //TODO aumentar isso sem dar problema com os blocos adjacentes
+        this.setSize(1.0F, 1.0F); //TODO aumentar isso sem dar problema com os blocos adjacentes
     }
 
     public boolean hasPlowItem() {

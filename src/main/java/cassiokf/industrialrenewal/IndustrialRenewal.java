@@ -108,20 +108,20 @@ public class IndustrialRenewal {
 
         @SubscribeEvent
         public static void onPlayerEntityInteract(PlayerInteractEvent.EntityInteract event) {
-            if (event.getTarget() instanceof EntitySteamLocomotive) {
+            if (event.getTarget() instanceof EntitySteamLocomotive && !event.getEntityPlayer().isSneaking()) {
                 if (!event.getWorld().isRemote) {
                     EntitySteamLocomotive entity = (EntitySteamLocomotive) event.getTarget();
                     int entityID = entity.getEntityId();
                     FMLNetworkHandler.openGui(event.getEntityPlayer(), IndustrialRenewal.instance, GUIHandler.STEAMLOCOMOTIVE, event.getWorld(), entityID, 0, 0);
                 }
-                event.setCanceled(true);
-            } else if (event.getTarget() instanceof EntityLogCart) {
+                //event.setCanceled(true);
+            } else if (event.getTarget() instanceof EntityLogCart && !event.getEntityPlayer().isSneaking()) {
                 if (!event.getWorld().isRemote) {
                     EntityLogCart entity = (EntityLogCart) event.getTarget();
                     int entityID = entity.getEntityId();
                     FMLNetworkHandler.openGui(event.getEntityPlayer(), IndustrialRenewal.instance, GUIHandler.LOGCART, event.getWorld(), entityID, 0, 0);
                 }
-                event.setCanceled(true);
+                //event.setCanceled(true);
             }
         }
 
