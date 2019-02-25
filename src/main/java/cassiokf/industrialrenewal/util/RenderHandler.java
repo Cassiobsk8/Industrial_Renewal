@@ -1,13 +1,7 @@
 package cassiokf.industrialrenewal.util;
 
-import cassiokf.industrialrenewal.entity.EntityCargoContainer;
-import cassiokf.industrialrenewal.entity.EntityFluidContainer;
-import cassiokf.industrialrenewal.entity.EntityLogCart;
-import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
-import cassiokf.industrialrenewal.entity.render.RenderCargoContainer;
-import cassiokf.industrialrenewal.entity.render.RenderFluidContainer;
-import cassiokf.industrialrenewal.entity.render.RenderLogCart;
-import cassiokf.industrialrenewal.entity.render.RenderSteamLocomotive;
+import cassiokf.industrialrenewal.entity.*;
+import cassiokf.industrialrenewal.entity.render.*;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
@@ -38,6 +32,12 @@ public class RenderHandler {
             @Override
             public Render<? super EntityLogCart> createRenderFor(RenderManager manager) {
                 return new RenderLogCart<>(manager);
+            }
+        });
+        RenderingRegistry.registerEntityRenderingHandler(EntityPassengerCar.class, new IRenderFactory<EntityPassengerCar>() {
+            @Override
+            public Render<? super EntityPassengerCar> createRenderFor(RenderManager manager) {
+                return new RenderPassengerCar<>(manager);
             }
         });
     }

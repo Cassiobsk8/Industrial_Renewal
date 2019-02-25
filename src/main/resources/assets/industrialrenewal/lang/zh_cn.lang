@@ -13,6 +13,7 @@ item.industrialrenewal.cartridge_inverter.name=Redstone Cartridge Inverter
 item.industrialrenewal.ingot_steel.name=钢锭
 item.industrialrenewal.item_fire_extinguisher.name=灭火器
 item.industrialrenewal.log_cart.name=Log Cart
+item.industrialrenewal.passenger_car.name=Passenger Car
 item.industrialrenewal.safety_belt.name=安全带
 item.industrialrenewal.safety_helmet.name=安全帽
 item.industrialrenewal.small_slab.name=小石板
@@ -114,6 +115,7 @@ entity.industrialrenewal.cargo_container.name=集装箱货车
 entity.industrialrenewal.fluid_container.name=罐车
 entity.industrialrenewal.steam_locomotive.name=蒸汽机车
 entity.industrialrenewal.log_cart.name=Log Cart
+entity.industrialrenewal.passenger_car.name=Passenger Car
 
 
 gui.config.main_title=工业复兴模组配置
