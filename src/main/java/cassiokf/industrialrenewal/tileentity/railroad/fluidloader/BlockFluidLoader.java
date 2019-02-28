@@ -1,7 +1,9 @@
-package cassiokf.industrialrenewal.tileentity.railroad.cargoloader;
+package cassiokf.industrialrenewal.tileentity.railroad.fluidloader;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.network.NetworkHandler;
+import cassiokf.industrialrenewal.network.PacketReturnFluidLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.railloader.BlockLoaderRail;
 import cassiokf.industrialrenewal.util.GUIHandler;
 import net.minecraft.block.BlockContainer;
@@ -17,12 +19,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -33,16 +33,14 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockCargoLoader extends BlockContainer {
+public class BlockFluidLoader extends BlockContainer {
 
-    public static final PropertyBool LOADING = PropertyBool.create("loading");
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool UNLOAD = PropertyBool.create("unload");
-    protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1D, 1D, 1D);
     protected static final AxisAlignedBB FULL_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 1D, 1D);
     protected String name;
 
-    public BlockCargoLoader(String name, CreativeTabs tab) {
+    public BlockFluidLoader(String name, CreativeTabs tab) {
         super(Material.IRON);
         this.name = name;
         setSoundType(SoundType.METAL);
@@ -57,22 +55,31 @@ public class BlockCargoLoader extends BlockContainer {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         TileEntity tileentity = worldIn.getTileEntity(pos);
         if (worldIn.isRemote) {
-            if (tileentity instanceof TileEntityCargoLoader) {
-                ((TileEntityCargoLoader) tileentity).onChange();
+            if (tileentity instanceof TileEntityFluidLoader) {
+                ((TileEntityFluidLoader) tileentity).onChange();
             }
             return true;
         } else {
-            if (tileentity instanceof TileEntityCargoLoader) {
+            if (tileentity instanceof TileEntityFluidLoader) {
                 OpenGUI(worldIn, pos, playerIn);
                 playerIn.addStat(StatList.HOPPER_INSPECTED);
             }
-
             return true;
         }
     }
 
     private void OpenGUI(World world, BlockPos pos, EntityPlayer player) {
-        player.openGui(IndustrialRenewal.instance, GUIHandler.CARGOLOADER, world, pos.getX(), pos.getY(), pos.getZ());
+        OpenEvent(world, pos);
+        player.openGui(IndustrialRenewal.instance, GUIHandler.FLUIDLOADER, world, pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public void OpenEvent(World world, BlockPos pos) {
+        if (world.isRemote) {
+            TileEntityFluidLoader te = (TileEntityFluidLoader) world.getTileEntity(pos);
+            if (te != null) {
+                NetworkHandler.INSTANCE.sendToServer(new PacketReturnFluidLoader(te));
+            }
+        }
     }
 
     private boolean isUnload(IBlockAccess world, BlockPos pos) {
@@ -89,20 +96,9 @@ public class BlockCargoLoader extends BlockContainer {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(LOADING, false);
+        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
     }
 
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-
-        if (tileentity instanceof TileEntityHopper) {
-            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityHopper) tileentity);
-            worldIn.updateComparatorOutputLevel(pos, this);
-        }
-
-        super.breakBlock(worldIn, pos, state);
-    }
 
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
@@ -116,7 +112,7 @@ public class BlockCargoLoader extends BlockContainer {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, LOADING, UNLOAD);
+        return new BlockStateContainer(this, FACING, UNLOAD);
     }
 
     @Override
@@ -132,7 +128,7 @@ public class BlockCargoLoader extends BlockContainer {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta)).withProperty(LOADING, false);
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
     }
 
     @Override
@@ -147,11 +143,7 @@ public class BlockCargoLoader extends BlockContainer {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        state = state.getActualState(source, pos);
-        if (state.getValue(UNLOAD)) {
-            return FULL_AABB;
-        }
-        return BLOCK_AABB;
+        return FULL_AABB;
     }
 
     @Override
@@ -164,14 +156,14 @@ public class BlockCargoLoader extends BlockContainer {
         return false;
     }
 
-    public Class<TileEntityCargoLoader> getTileEntityClass() {
-        return TileEntityCargoLoader.class;
+    public Class<TileEntityFluidLoader> getTileEntityClass() {
+        return TileEntityFluidLoader.class;
     }
 
     @Nullable
     @Override
-    public TileEntityCargoLoader createTileEntity(World world, IBlockState state) {
-        return new TileEntityCargoLoader();
+    public TileEntityFluidLoader createTileEntity(World world, IBlockState state) {
+        return new TileEntityFluidLoader();
     }
 
     public void registerItemModel(Item itemBlock) {
@@ -185,6 +177,6 @@ public class BlockCargoLoader extends BlockContainer {
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityCargoLoader();
+        return new TileEntityFluidLoader();
     }
 }

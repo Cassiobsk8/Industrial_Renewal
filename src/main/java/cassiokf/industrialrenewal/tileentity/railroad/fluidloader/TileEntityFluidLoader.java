@@ -1,0 +1,197 @@
+package cassiokf.industrialrenewal.tileentity.railroad.fluidloader;
+
+import cassiokf.industrialrenewal.network.NetworkHandler;
+import cassiokf.industrialrenewal.network.PacketFluidLoader;
+import cassiokf.industrialrenewal.network.PacketReturnFluidLoader;
+import cassiokf.industrialrenewal.tileentity.railroad.TileEntityBaseLoader;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+
+import java.util.List;
+
+public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITickable {
+
+    public FluidTank tank = new FluidTank(16000) {
+        @Override
+        protected void onContentsChanged() {
+            if (!world.isRemote) {
+                try {
+                    NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidLoader(TileEntityFluidLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16));
+                } catch (NullPointerException npe) {
+                    System.out.println(npe);
+                }
+            }
+        }
+    };
+    private int intLoadActivity = 0;
+    private int intUnloadActivity = 0;
+
+
+    @Override
+    public void update() {
+        if (!world.isRemote) {
+            boolean activity = false;
+
+//			up cart -> tank
+            int flowPerTick = 100;
+            boolean hasCart = false;
+
+            IFluidHandler upHandler = getInventoryUp();
+            if (upHandler != null && tank.getFluidAmount() < tank.getCapacity()) {
+                if (upHandler.drain(flowPerTick, false) != null && upHandler.drain(flowPerTick, false).amount > 0) {
+                    tank.fill(upHandler.drain(flowPerTick, true), true);
+                    activity = true;
+                    intLoadActivity = 0;
+                }
+            }
+            if (isUnload() && upHandler != null) {
+                hasCart = true;
+                if (getWaitEnum() == waitEnum.WAIT_EMPTY && (upHandler.drain(1, false) == null || upHandler.drain(1, false).amount <= 0)) {
+                    letCartPass(true);
+                }
+            }
+
+//			tank -> front/down cart
+            IFluidHandler outHandler = getInventoryForHopperTransfer();
+            if (outHandler != null && tank.getFluidAmount() > 0) {
+                if (outHandler.fill(tank.drain(1, false), false) > 0) {
+                    tank.drain(outHandler.fill(tank.drain(flowPerTick, false), true), true);
+                    activity = true;
+                    intUnloadActivity = 0;
+                }
+            }
+            if (!isUnload() && outHandler != null) {
+                hasCart = true;
+                if (getWaitEnum() == waitEnum.WAIT_FULL && outHandler.fill(tank.drain(1, false), false) <= 0) {
+                    letCartPass(true);
+                }
+            }
+
+            if (activity) {
+                this.markDirty();
+                letCartPass(false);
+            } else {
+                if (hasCart && getWaitEnum() == waitEnum.NO_ACTIVITY) {
+                    if (!isUnload()) {
+                        intLoadActivity++;
+                    } else {
+                        intUnloadActivity++;
+                    }
+                }
+            }
+
+            if (!activity && getWaitEnum() == waitEnum.NO_ACTIVITY) {
+                if (!isUnload() && intLoadActivity > 10) {
+                    intLoadActivity = 0;
+                    letCartPass(true);
+                } else if (isUnload() && intUnloadActivity > 10) {
+                    intUnloadActivity = 0;
+                    letCartPass(true);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onChange() {
+        if (!this.world.isRemote) {
+            NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidLoader(TileEntityFluidLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
+        }
+    }
+
+    @Override
+    public void onLoad() {
+        if (world.isRemote) {
+            NetworkHandler.INSTANCE.sendToServer(new PacketReturnFluidLoader(this));
+        }
+    }
+
+    private IFluidHandler getInventoryUp() {
+        BlockPos handlerPos = pos.offset(EnumFacing.UP);
+        return getInventoryAtPosition(this.getWorld(), handlerPos);
+    }
+
+    private IFluidHandler getInventoryForHopperTransfer() {
+        EnumFacing enumfacing = getOutput();
+        BlockPos handlerPos = pos.offset(enumfacing);
+        if (!isUnload()) handlerPos = handlerPos.down();
+        return getInventoryAtPosition(this.getWorld(), handlerPos);
+    }
+
+    /**
+     * Returns the IInventory (if applicable) of the TileEntity at the specified position
+     */
+    private IFluidHandler getInventoryAtPosition(World worldIn, BlockPos pos) {
+        IFluidHandler ifluid = null;
+
+        IBlockState state = worldIn.getBlockState(pos);
+        Block block = state.getBlock();
+
+        if (block.hasTileEntity(state)) {
+            TileEntity te = worldIn.getTileEntity(pos);
+
+            if (te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getOutput().getOpposite())) {
+                ifluid = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getOutput().getOpposite());
+            }
+        }
+
+        if (ifluid == null) {
+            List<Entity> list = worldIn.getEntitiesInAABBexcluding(null, new AxisAlignedBB(pos.getX() - 0.5D, pos.getY() - 0.5D, pos.getZ() - 0.5D, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), EntitySelectors.IS_ALIVE);
+
+            if (!list.isEmpty()) {
+                ifluid = list.get(worldIn.rand.nextInt(list.size())).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getOutput().getOpposite());
+            }
+        }
+
+        return ifluid;
+    }
+
+    @Override
+    public boolean isUnload() {
+        IBlockState state = this.world.getBlockState(this.pos).getActualState(this.world, this.pos);
+        return state.getValue(BlockFluidLoader.UNLOAD);
+    }
+
+    public void readTankFromNBT(NBTTagCompound tag) {
+        if (tag.hasKey("Empty")) {
+            tag.removeTag("Empty");
+        }
+        tank.readFromNBT(tag);
+    }
+
+    public void writeEntityTankToNBT(NBTTagCompound tag) {
+        tank.writeToNBT(tag);
+    }
+
+    public NBTTagCompound GetTag() {
+        NBTTagCompound tag = new NBTTagCompound();
+        writeEntityTankToNBT(tag);
+        return tag;
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        tank.writeToNBT(compound);
+        return super.writeToNBT(compound);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        tank.readFromNBT(compound);
+        super.readFromNBT(compound);
+    }
+
+}

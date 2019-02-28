@@ -8,6 +8,7 @@ import cassiokf.industrialrenewal.gui.*;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.fusebox.TileEntityFuseBox;
 import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.TileEntityCargoLoader;
+import cassiokf.industrialrenewal.tileentity.railroad.fluidloader.TileEntityFluidLoader;
 import cassiokf.industrialrenewal.tileentity.recordplayer.TileEntityRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.TileEntityEntityDetector;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,6 +30,7 @@ public class GUIHandler implements IGuiHandler {
     public static final int MANUAL = 6;
     public static final int LOGCART = 7;
     public static final int FLUIDCART = 8;
+    public static final int FLUIDLOADER = 9;
 
     @Nullable
     @Override
@@ -56,6 +58,9 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == FLUIDCART) {
             return new ContainerFluidContainer(player.inventory, (EntityFluidContainer) world.getEntityByID(x));
+        }
+        if (ID == FLUIDLOADER) {
+            return new ContainerFluidLoader(player.inventory, (TileEntityFluidLoader) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
         }
         return null;
     }
@@ -89,6 +94,9 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == FLUIDCART) {
             return new GUITankContainer(player.inventory, (EntityFluidContainer) world.getEntityByID(x));
+        }
+        if (ID == FLUIDLOADER) {
+            return new GUIFluidLoader(player.inventory, (TileEntityFluidLoader) world.getTileEntity(new BlockPos(x, y, z)));
         }
         return null;
     }

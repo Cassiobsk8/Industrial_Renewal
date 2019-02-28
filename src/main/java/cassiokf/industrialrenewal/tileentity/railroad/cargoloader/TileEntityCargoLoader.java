@@ -96,10 +96,11 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
         markDirty();
     }
 
-    private void onChange() {
-        if (!this.world.isRemote) {
-            NetworkHandler.INSTANCE.sendToAllAround(new PacketCargoLoader(TileEntityCargoLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
-        }
+    /**
+     * Gets the inventory that the provided hopper will transfer items from.
+     */
+    private static IInventory getSourceInventory(IHopper hopper) {
+        return getInventoryAtPosition(hopper.getWorld(), new BlockPos(hopper.getXPos(), hopper.getYPos() + 1.0D, hopper.getZPos()));
     }
 
     @Override
@@ -122,27 +123,39 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
         return state.getValue(BlockCargoLoader.UNLOAD);
     }
 
-    private void letCartPass() {
-        if (getWaitEnum() == waitEnum.NEVER) {
-            return;
-        }
-        if (isUnload()) {
-            IBlockState oldState = this.world.getBlockState(this.pos.up());
-            if (oldState.getBlock() instanceof BlockLoaderRail) {
-                TileEntityLoaderRail te = (TileEntityLoaderRail) this.world.getTileEntity(this.pos.up());
-                if (te != null) {
-                    te.letItGo();
+    /**
+     * Returns the IInventory (if applicable) of the TileEntity at the specified position
+     */
+    private static IInventory getInventoryAtPosition(World worldIn, BlockPos pos) {
+        IInventory iinventory = null;
+        int i = MathHelper.floor(pos.getX());
+        int j = MathHelper.floor(pos.getY());
+        int k = MathHelper.floor(pos.getZ());
+        BlockPos blockpos = new BlockPos(i, j, k);
+        IBlockState state = worldIn.getBlockState(blockpos);
+        Block block = state.getBlock();
+
+        if (block.hasTileEntity(state)) {
+            TileEntity tileentity = worldIn.getTileEntity(blockpos);
+
+            if (tileentity instanceof IInventory) {
+                iinventory = (IInventory) tileentity;
+
+                if (iinventory instanceof TileEntityChest && block instanceof BlockChest) {
+                    iinventory = ((BlockChest) block).getContainer(worldIn, blockpos, true);
                 }
             }
-            return;
         }
-        IBlockState oldState = this.world.getBlockState(this.pos.down());
-        if (oldState.getBlock() instanceof BlockLoaderRail) {
-            TileEntityLoaderRail te = (TileEntityLoaderRail) this.world.getTileEntity(this.pos.down());
-            if (te != null) {
-                te.letItGo();
+
+        if (iinventory == null) {
+            List<Entity> list = worldIn.getEntitiesInAABBexcluding(null, new AxisAlignedBB(pos.getX() - 0.5D, pos.getY() - 0.5D, pos.getZ() - 0.5D, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), EntitySelectors.HAS_INVENTORY);
+
+            if (!list.isEmpty()) {
+                iinventory = (IInventory) list.get(worldIn.rand.nextInt(list.size()));
             }
         }
+
+        return iinventory;
     }
 
     @Override
@@ -161,22 +174,10 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
         return super.writeToNBT(compound);
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-
-        if (!this.checkLootAndRead(compound)) {
-            ItemStackHelper.loadAllItems(compound, this.inventory);
+    void onChange() {
+        if (!this.world.isRemote) {
+            NetworkHandler.INSTANCE.sendToAllAround(new PacketCargoLoader(TileEntityCargoLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
         }
-
-        if (compound.hasKey("CustomName", 8)) {
-            this.customName = compound.getString("CustomName");
-        }
-
-        this.transferCooldown = compound.getInteger("TransferCooldown");
-        waitE = waitEnum.valueOf(compound.getInteger("EnumConfig"));
-
-        super.readFromNBT(compound);
     }
 
     /**
@@ -237,33 +238,26 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
         }
     }
 
-    protected boolean updateHopper() {
-        if (this.world != null && !this.world.isRemote) {
-            if (!this.isOnTransferCooldown()) {
-                boolean flag = false;
-                if (!this.isInventoryEmpty()) {
-                    flag = this.transferItemsOut();
-                } else if (!isUnload() && getWaitEnum() == waitEnum.NO_ACTIVITY) {
-                    letCartPass();
-                }
-
-                setBlockState(flag);
-
-                if (!this.isFull()) {
-                    flag = pullItems(this) || flag;
-                } else if (isUnload() && getWaitEnum() == waitEnum.NO_ACTIVITY) {
-                    letCartPass();
-                }
-
-                if (flag) {
-                    this.setTransferCooldown(1);
-                    this.markDirty();
-                    return true;
+    private void letCartPass(boolean value) {
+        if (getWaitEnum() == waitEnum.NEVER) {
+            return;
+        }
+        if (isUnload()) {
+            IBlockState oldState = this.world.getBlockState(this.pos.up());
+            if (oldState.getBlock() instanceof BlockLoaderRail) {
+                TileEntityLoaderRail te = (TileEntityLoaderRail) this.world.getTileEntity(this.pos.up());
+                if (te != null) {
+                    te.ChangePass(value);
                 }
             }
-            return false;
-        } else {
-            return false;
+            return;
+        }
+        IBlockState oldState = this.world.getBlockState(this.pos.down(2));
+        if (oldState.getBlock() instanceof BlockLoaderRail) {
+            TileEntityLoaderRail te = (TileEntityLoaderRail) this.world.getTileEntity(this.pos.down(2));
+            if (te != null) {
+                te.ChangePass(value);
+            }
         }
     }
 
@@ -291,38 +285,17 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
         return true;
     }
 
-    private boolean transferItemsOut() {
-        IInventory iinventory = this.getInventoryForHopperTransfer();
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 
-        if (iinventory == null) {
-            return false;
-        } else {
-            EnumFacing enumfacing = getOutput();
-            boolean load = !isUnload();
-            if (this.isInventoryFull(iinventory, enumfacing)) {
-                if (load && (getWaitEnum() == waitEnum.WAIT_FULL || getWaitEnum() == waitEnum.NO_ACTIVITY)) {
-                    letCartPass();
-                }
-                return false;
-            } else {
-                for (int i = 0; i < this.getSizeInventory(); ++i) {
-                    if (!this.getStackInSlot(i).isEmpty()) {
-                        ItemStack itemstack = this.getStackInSlot(i).copy();
-                        ItemStack itemstack1 = putStackInInventoryAllSlots(this, iinventory, this.decrStackSize(i, 1), enumfacing);
+        if (!this.checkLootAndRead(compound)) ItemStackHelper.loadAllItems(compound, this.inventory);
+        if (compound.hasKey("CustomName", 8)) this.customName = compound.getString("CustomName");
 
-                        if (itemstack1.isEmpty()) {
-                            iinventory.markDirty();
-                            return true;
-                        }
-                        this.setInventorySlotContents(i, itemstack);
-                    }
-                }
-                if (load && (getWaitEnum() == waitEnum.NO_ACTIVITY || getWaitEnum() == waitEnum.WAIT_FULL)) {
-                    letCartPass();
-                }
-                return false;
-            }
-        }
+        if (compound.hasKey("TransferCooldown")) this.transferCooldown = compound.getInteger("TransferCooldown");
+        if (compound.hasKey("EnumConfig")) waitE = waitEnum.valueOf(compound.getInteger("EnumConfig"));
+
+        super.readFromNBT(compound);
     }
 
     /**
@@ -381,56 +354,33 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
         return true;
     }
 
-    /**
-     * Pull dropped {@link net.minecraft.entity.item.EntityItem EntityItem}s from the world above the hopper and items
-     * from any inventory attached to this hopper into the hopper's inventory.
-     *
-     * @param hopper the hopper in question
-     * @return whether any items were successfully added to the hopper
-     */
-    private boolean pullItems(IHopper hopper) {
-        IInventory iinventory = getSourceInventory(hopper);
-        boolean unloader = isUnload();
-
-        if (iinventory != null) {
-            EnumFacing enumfacing = getOutput();
-
-            if (isInventoryEmpty(iinventory, enumfacing)) {
-                if (unloader && (getWaitEnum() == waitEnum.WAIT_EMPTY || getWaitEnum() == waitEnum.NO_ACTIVITY)) {
-                    letCartPass();
+    protected void updateHopper() {
+        if (this.world != null && !this.world.isRemote) {
+            if (!this.isOnTransferCooldown()) {
+                boolean flag = false;
+                if (!this.isInventoryEmpty()) {
+                    flag = this.transferItemsOut();
+                } else if (!isUnload() && getWaitEnum() == waitEnum.NO_ACTIVITY) {
+                    letCartPass(true);
+                    return;
                 }
-                return false;
-            }
 
-            if (iinventory instanceof ISidedInventory) {
-                ISidedInventory isidedinventory = (ISidedInventory) iinventory;
-                int[] aint = isidedinventory.getSlotsForFace(enumfacing);
+                setBlockState(flag);
 
-                for (int i : aint) {
-                    if (pullItemFromSlot(hopper, iinventory, i, enumfacing)) {
-                        return true;
-                    }
+                if (!this.isFull()) {
+                    flag = pullItems(this) || flag;
+                } else if (isUnload() && getWaitEnum() == waitEnum.NO_ACTIVITY) {
+                    letCartPass(true);
+                    return;
                 }
-            } else {
-                int j = iinventory.getSizeInventory();
 
-                for (int k = 0; k < j; ++k) {
-                    if (pullItemFromSlot(hopper, iinventory, k, enumfacing)) {
-                        return true;
-                    }
-                }
-            }
-        } else {
-            for (EntityItem entityitem : getCaptureItems(hopper.getWorld(), hopper.getXPos(), hopper.getYPos(), hopper.getZPos())) {
-                if (putDropInInventoryAllSlots(null, hopper, entityitem)) {
-                    return true;
+                if (flag) {
+                    letCartPass(false);
+                    this.setTransferCooldown(1);
+                    this.markDirty();
                 }
             }
         }
-        if (unloader && getWaitEnum() == waitEnum.NO_ACTIVITY) {
-            letCartPass();
-        }
-        return false;
     }
 
     /**
@@ -567,19 +517,90 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
         return stack;
     }
 
-    /**
-     * Returns the IInventory that this hopper is pointing into
-     */
-    private IInventory getInventoryForHopperTransfer() {
-        EnumFacing enumfacing = getOutput();
-        return getInventoryAtPosition(this.getWorld(), this.getXPos() + (double) enumfacing.getFrontOffsetX(), this.getYPos() + (double) enumfacing.getFrontOffsetY(), this.getZPos() + (double) enumfacing.getFrontOffsetZ());
+    private boolean transferItemsOut() {
+        IInventory iinventory = this.getInventoryForHopperTransfer();
+
+        if (iinventory == null) {
+            return false;
+        } else {
+            EnumFacing enumfacing = getOutput();
+            boolean load = !isUnload();
+            if (this.isInventoryFull(iinventory, enumfacing)) {
+                if (load && (getWaitEnum() == waitEnum.WAIT_FULL || getWaitEnum() == waitEnum.NO_ACTIVITY)) {
+                    letCartPass(true);
+                }
+                return false;
+            } else {
+                for (int i = 0; i < this.getSizeInventory(); ++i) {
+                    if (!this.getStackInSlot(i).isEmpty()) {
+                        ItemStack itemstack = this.getStackInSlot(i).copy();
+                        ItemStack itemstack1 = putStackInInventoryAllSlots(this, iinventory, this.decrStackSize(i, 1), enumfacing);
+
+                        if (itemstack1.isEmpty()) {
+                            iinventory.markDirty();
+                            return true;
+                        }
+                        this.setInventorySlotContents(i, itemstack);
+                    }
+                }
+                if (load && (getWaitEnum() == waitEnum.NO_ACTIVITY || getWaitEnum() == waitEnum.WAIT_FULL)) {
+                    letCartPass(true);
+                }
+                return false;
+            }
+        }
     }
 
     /**
-     * Gets the inventory that the provided hopper will transfer items from.
+     * Pull dropped {@link net.minecraft.entity.item.EntityItem EntityItem}s from the world above the hopper and items
+     * from any inventory attached to this hopper into the hopper's inventory.
+     *
+     * @param hopper the hopper in question
+     * @return whether any items were successfully added to the hopper
      */
-    private static IInventory getSourceInventory(IHopper hopper) {
-        return getInventoryAtPosition(hopper.getWorld(), hopper.getXPos(), hopper.getYPos() + 1.0D, hopper.getZPos());
+    private boolean pullItems(IHopper hopper) {
+        IInventory iinventory = getSourceInventory(hopper);
+        boolean unloader = isUnload();
+
+        if (iinventory != null) {
+            EnumFacing enumfacing = getOutput();
+
+            if (isInventoryEmpty(iinventory, enumfacing)) {
+                if (unloader && (getWaitEnum() == waitEnum.WAIT_EMPTY || getWaitEnum() == waitEnum.NO_ACTIVITY)) {
+                    letCartPass(true);
+                }
+                return false;
+            }
+
+            if (iinventory instanceof ISidedInventory) {
+                ISidedInventory isidedinventory = (ISidedInventory) iinventory;
+                int[] aint = isidedinventory.getSlotsForFace(enumfacing);
+
+                for (int i : aint) {
+                    if (pullItemFromSlot(hopper, iinventory, i, enumfacing)) {
+                        return true;
+                    }
+                }
+            } else {
+                int j = iinventory.getSizeInventory();
+
+                for (int k = 0; k < j; ++k) {
+                    if (pullItemFromSlot(hopper, iinventory, k, enumfacing)) {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            for (EntityItem entityitem : getCaptureItems(hopper.getWorld(), hopper.getXPos(), hopper.getYPos(), hopper.getZPos())) {
+                if (putDropInInventoryAllSlots(null, hopper, entityitem)) {
+                    return true;
+                }
+            }
+        }
+        if (unloader && getWaitEnum() == waitEnum.NO_ACTIVITY) {
+            letCartPass(true);
+        }
+        return false;
     }
 
     private static List<EntityItem> getCaptureItems(World worldIn, double p_184292_1_, double p_184292_3_, double p_184292_5_) {
@@ -587,38 +608,13 @@ public class TileEntityCargoLoader extends TileEntityLockableLoot implements IHo
     }
 
     /**
-     * Returns the IInventory (if applicable) of the TileEntity at the specified position
+     * Returns the IInventory that this hopper is pointing into
      */
-    private static IInventory getInventoryAtPosition(World worldIn, double x, double y, double z) {
-        IInventory iinventory = null;
-        int i = MathHelper.floor(x);
-        int j = MathHelper.floor(y);
-        int k = MathHelper.floor(z);
-        BlockPos blockpos = new BlockPos(i, j, k);
-        IBlockState state = worldIn.getBlockState(blockpos);
-        Block block = state.getBlock();
-
-        if (block.hasTileEntity(state)) {
-            TileEntity tileentity = worldIn.getTileEntity(blockpos);
-
-            if (tileentity instanceof IInventory) {
-                iinventory = (IInventory) tileentity;
-
-                if (iinventory instanceof TileEntityChest && block instanceof BlockChest) {
-                    iinventory = ((BlockChest) block).getContainer(worldIn, blockpos, true);
-                }
-            }
-        }
-
-        if (iinventory == null) {
-            List<Entity> list = worldIn.getEntitiesInAABBexcluding(null, new AxisAlignedBB(x - 0.5D, y - 0.5D, z - 0.5D, x + 0.5D, y + 0.5D, z + 0.5D), EntitySelectors.HAS_INVENTORY);
-
-            if (!list.isEmpty()) {
-                iinventory = (IInventory) list.get(worldIn.rand.nextInt(list.size()));
-            }
-        }
-
-        return iinventory;
+    private IInventory getInventoryForHopperTransfer() {
+        EnumFacing enumfacing = getOutput();
+        BlockPos pos = this.pos.offset(enumfacing);
+        if (!isUnload()) pos = pos.down();
+        return getInventoryAtPosition(this.getWorld(), pos);
     }
 
     private static boolean canCombine(ItemStack stack1, ItemStack stack2) {

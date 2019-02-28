@@ -2,6 +2,9 @@ package cassiokf.industrialrenewal.tileentity.railroad.railloader;
 
 import cassiokf.industrialrenewal.blocks.ModBlocks;
 import cassiokf.industrialrenewal.blocks.rails.BlockRailFacing;
+import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.BlockCargoLoader;
+import cassiokf.industrialrenewal.tileentity.railroad.fluidloader.BlockFluidLoader;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -10,11 +13,11 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.item.EntityMinecartChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -26,6 +29,8 @@ import java.util.List;
 public class BlockLoaderRail extends BlockRailFacing {
 
     static final PropertyBool PASS = PropertyBool.create("pass");
+
+    private int Tick = 0;
 
     public BlockLoaderRail(String name, CreativeTabs tab) {
         super(name, tab);
@@ -40,24 +45,38 @@ public class BlockLoaderRail extends BlockRailFacing {
     @Override
     public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        boolean canPass = state.getActualState(world, pos).getValue(PASS);
-        boolean dontHaveInv = !cart.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (canPass || dontHaveInv || !(cart instanceof EntityMinecartChest)) {
+        TileEntityLoaderRail te = (TileEntityLoaderRail) world.getTileEntity(pos);
+        boolean dontHaveCorrectInv = GetCartInvType(world, pos, cart) == 0;
+        boolean canPass = te.GetPass();
+
+        te.SetCart(cart);
+
+        if (dontHaveCorrectInv || canPass) {
             propelMinecart(world, pos, state, cart);
             if (canPass) {
-                youShallNotPass(world, pos);
+                //te.ChangePass(false);
             }
         } else {
-            cart.motionX = 0;
-            cart.motionY = 0;
-            cart.motionZ = 0;
-            world.scheduleUpdate(new BlockPos(pos), this, tickRate(world));
+            cart.posX = pos.getX() + 0.5D;
+            cart.posZ = pos.getZ() + 0.5D;
+            cart.motionX = 0.0D;
+            cart.motionZ = 0.0D;
+            //world.scheduleUpdate(new BlockPos(pos), this, tickRate(world));
         }
     }
 
-    private void youShallNotPass(World world, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos);
-        world.setBlockState(pos, state.withProperty(PASS, false), 3);
+    private int GetCartInvType(World world, BlockPos pos, EntityMinecart cart) {
+        Block downBlock = world.getBlockState(pos.down()).getBlock();
+        Block upBlock = world.getBlockState(pos.up(2)).getBlock();
+        boolean itemCapability = cart.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        boolean fluidCapability = cart.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+        int type = 0;
+        if (itemCapability && (downBlock instanceof BlockCargoLoader || upBlock instanceof BlockCargoLoader)) {
+            type = 1;
+        } else if (fluidCapability && (downBlock instanceof BlockFluidLoader || upBlock instanceof BlockFluidLoader)) {
+            type = 2;
+        }
+        return type;
     }
 
     @Nonnull

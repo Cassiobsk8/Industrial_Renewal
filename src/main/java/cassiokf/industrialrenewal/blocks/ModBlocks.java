@@ -11,6 +11,7 @@ import cassiokf.industrialrenewal.tileentity.fusebox.BlockFuseBoxConnector;
 import cassiokf.industrialrenewal.tileentity.gutter.BlockGutter;
 import cassiokf.industrialrenewal.tileentity.locker.BlockLocker;
 import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.BlockCargoLoader;
+import cassiokf.industrialrenewal.tileentity.railroad.fluidloader.BlockFluidLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.railloader.BlockLoaderRail;
 import cassiokf.industrialrenewal.tileentity.recordplayer.BlockRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.BlockEntityDetector;
@@ -98,6 +99,7 @@ public class ModBlocks {
     public static BlockBufferStopRail bufferStopRail = new BlockBufferStopRail("buffer_stop_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockLoaderRail loaderRail = new BlockLoaderRail("rail_loader", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockCargoLoader cargoLoader = new BlockCargoLoader("cargo_loader", References.CREATIVE_IRLOCOMOTIVE_TAB);
+    public static BlockFluidLoader fluidLoader = new BlockFluidLoader("fluid_loader", References.CREATIVE_IRLOCOMOTIVE_TAB);
 
     public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large", References.CREATIVE_IR_TAB);
 
@@ -183,6 +185,7 @@ public class ModBlocks {
                 loaderRail,
                 bufferStopRail,
                 cargoLoader,
+                fluidLoader,
                 //dummys
                 dummy
         );
@@ -196,6 +199,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(recordPlayer.getTileEntityClass(), recordPlayer.getRegistryName().toString());
         GameRegistry.registerTileEntity(sensorRain.getTileEntityClass(), sensorRain.getRegistryName().toString());
         GameRegistry.registerTileEntity(cargoLoader.getTileEntityClass(), cargoLoader.getRegistryName().toString());
+        GameRegistry.registerTileEntity(fluidLoader.getTileEntityClass(), fluidLoader.getRegistryName().toString());
         GameRegistry.registerTileEntity(loaderRail.getTileEntityClass(), loaderRail.getRegistryName().toString());
         GameRegistry.registerTileEntity(signalIndicator.getTileEntityClass(), signalIndicator.getRegistryName().toString());
         GameRegistry.registerTileEntity(trafficLight.getTileEntityClass(), trafficLight.getRegistryName().toString());
@@ -267,7 +271,8 @@ public class ModBlocks {
                 detectorRail.createItemBlock(),
                 loaderRail.createItemBlock(),
                 bufferStopRail.createItemBlock(),
-                cargoLoader.createItemBlock()
+                cargoLoader.createItemBlock(),
+                fluidLoader.createItemBlock()
 
         );
     }
@@ -310,6 +315,7 @@ public class ModBlocks {
         sensorRain.registerItemModel(Item.getItemFromBlock(sensorRain));
         loaderRail.registerItemModel(Item.getItemFromBlock(loaderRail));
         cargoLoader.registerItemModel(Item.getItemFromBlock(cargoLoader));
+        fluidLoader.registerItemModel(Item.getItemFromBlock(fluidLoader));
         signalIndicator.registerItemModel(Item.getItemFromBlock(signalIndicator));
         trafficLight.registerItemModel(Item.getItemFromBlock(trafficLight));
         fuseBox.registerItemModel(Item.getItemFromBlock(fuseBox));

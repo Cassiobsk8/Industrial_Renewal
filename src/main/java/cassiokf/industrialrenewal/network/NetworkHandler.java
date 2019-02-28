@@ -39,5 +39,8 @@ public class NetworkHandler {
 
         INSTANCE.registerMessage(new PacketFluidBase.Handler(), PacketFluidBase.class, dis++, Side.CLIENT);
         INSTANCE.registerMessage(new PacketReturnFluidBase.Handler(), PacketReturnFluidBase.class, dis++, Side.SERVER);
+
+        INSTANCE.registerMessage(new PacketFluidLoader.Handler(), PacketFluidLoader.class, dis++, Side.CLIENT);
+        INSTANCE.registerMessage(new PacketReturnFluidLoader.Handler(), PacketReturnFluidLoader.class, dis++, Side.SERVER);
     }
 }

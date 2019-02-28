@@ -1,0 +1,47 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:fluid_loader"
+    },
+    "facing=north,unload=false": {
+      "model": "industrialrenewal:fluid_loader"
+    },
+    "facing=west,unload=false": {
+      "model": "industrialrenewal:fluid_loader",
+      "y": -90
+    },
+    "facing=south,unload=false": {
+      "model": "industrialrenewal:fluid_loader",
+      "y": 180
+    },
+    "facing=east,unload=false": {
+      "model": "industrialrenewal:fluid_loader",
+      "y": 90
+    },
+    "facing=north,unload=true": {
+      "model": "industrialrenewal:fluid_unloader"
+    },
+    "facing=west,unload=true": {
+      "model": "industrialrenewal:fluid_unloader",
+      "y": -90
+    },
+    "facing=south,unload=true": {
+      "model": "industrialrenewal:fluid_unloader",
+      "y": 180
+    },
+    "facing=east,unload=true": {
+      "model": "industrialrenewal:fluid_unloader",
+      "y": 90
+    },
+    "inventory": {
+      "model": "industrialrenewal:fluid_loader",
+      "y": 180
+    }
+  }
+}
