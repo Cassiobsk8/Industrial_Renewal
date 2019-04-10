@@ -8,15 +8,15 @@ itemGroup.industrialrenewalwip=工业复兴丨未完成内容
 #Items
 
 item.industrialrenewal.ir_manual.name=工业复兴手册
-item.industrialrenewal.cartridge_plus.name=红石粉盒+
-item.industrialrenewal.cartridge_minus.name=红石粉盒-
-item.industrialrenewal.cartridge_half.name=红石粉盒½
-item.industrialrenewal.cartridge_double.name=红石粉盒x2
-item.industrialrenewal.cartridge_inverter.name=红石粉盒逆变器
+item.industrialrenewal.cartridge_plus.name=Redstone Cartridge +
+item.industrialrenewal.cartridge_minus.name=Redstone Cartridge -
+item.industrialrenewal.cartridge_half.name=Redstone Cartridge ½
+item.industrialrenewal.cartridge_double.name=Redstone Cartridge x2
+item.industrialrenewal.cartridge_inverter.name=Redstone Cartridge逆变器
 item.industrialrenewal.ingot_steel.name=钢锭
 item.industrialrenewal.item_fire_extinguisher.name=灭火器
 item.industrialrenewal.log_cart.name=Log Cart
-item.industrialrenewal.passenger_car.name=乘用车厢
+item.industrialrenewal.passenger_car.name=客运车厢
 item.industrialrenewal.safety_belt.name=安全带
 item.industrialrenewal.safety_helmet.name=安全帽
 item.industrialrenewal.small_slab.name=小石板
@@ -37,13 +37,13 @@ item.industrialrenewal.steel_saw.des0=能够切割石材的锯子
 #Discs
 
 item.industrialrenewal.record_royal_entrance.name=唱片
-item.industrialrenewal.record_royal_entrance.des0=Royal Entrance 由Visager作曲
+item.industrialrenewal.record_royal_entrance.des0=Royal Entrance，由Visager作曲
 
 #Blocks
 
 tile.industrialrenewal.alarm.name=工业报警器
 tile.industrialrenewal.block_chimney.name=烟囱
-tile.industrialrenewal.block_hazard.name=警告方块
+tile.industrialrenewal.block_hazard.name=注意风险警示块
 tile.industrialrenewal.caution_hazard.name=交通安全警示块
 tile.industrialrenewal.concrete.name=储罐方块
 tile.industrialrenewal.defective_hazard.name=设备缺陷警示块
@@ -121,7 +121,7 @@ entity.industrialrenewal.cargo_container.name=集装箱货车
 entity.industrialrenewal.fluid_container.name=流体罐车(WIP)
 entity.industrialrenewal.steam_locomotive.name=蒸汽机车(WIP)
 entity.industrialrenewal.log_cart.name=Log Cart
-entity.industrialrenewal.passenger_car.name=乘用车厢
+entity.industrialrenewal.passenger_car.name=客运车厢
 
 #Config
 
@@ -154,12 +154,12 @@ gui.industrialrenewal.fences.category=围栏
 gui.industrialrenewal.utilities.category=效用物品
 gui.industrialrenewal.construction.category=施工
 gui.industrialrenewal.steam_locomotive.text0=蒸汽机车目前还未完成，目\n前仅使用动力铁轨来驱动。\n最终目标是使它能像\nRailCraft的火车头一样工\n作。\n当铁路出现积雪时，你可以\n在车头放置一个铁雪犁来\n清理积雪的轨道，并避免因\n为积雪减慢车速。
-gui.industrialrenewal.fuse_box.text0=使用红石粉盒控制红石信\n号的强度。如果要连接网\n络或红石信号，请使用下面\n的熔断器连接线缆。
+gui.industrialrenewal.fuse_box.text0=使用Redstone Cartridge控制红石信\n号的强度。如果要连接网\n络或红石信号，请使用下面\n的熔断器连接线缆。
 gui.industrialrenewal.cargo_container.text0=用于利用铁轨运输物品，可\n与漏斗，货物转运器或其他\n类似的方块交互。
 gui.industrialrenewal.fluid_container.text0=尚未完成，可装载32,000mB的\n流体。
 gui.industrialrenewal.fire_extinguisher.text0=熄灭附近3x3区域内的火焰\n并冷却熔岩。Shift+右键\n单击可与将其放置在地面\n上，空手时Shift+右键可以\n将其取下。
 gui.industrialrenewal.flame_detector.text0=如果它的检测面有火焰，就\n会发出红石信号。可以使\n用扳手旋转。
-gui.industrialrenewal.gutter.text0=将其放置在屋顶的末端，在\n下雨的时候可以收集雨水。\n屋顶瓦片的数量越多，收集\n的雨水会越多。使用管道\n或水箱来取得收集的雨水。
+gui.industrialrenewal.gutter.text0=将其放置在屋顶的边缘，在\n下雨的时候可以收集雨水。\n屋顶方块的数量越多，收集\n的雨水会越多。使用管道\n或水箱来取得收集的雨水。
 gui.industrialrenewal.entity_detector.text0=如果实体在它的检测范围\n内，就会发出红石信号。\n范围和目标实体的类型可\n以在GUI中配置。
 gui.industrialrenewal.first-aid_box.text0=这是存放多个一个急救包\n的容器，可以容纳8组急救\n箱，每组16个。\nShift+右键使用它，可以获\n得持续7秒的生命恢复II效\n果，共恢复6点生命值(3颗心)\n只有在生命值未满的情况\n下才会生效。
 gui.industrialrenewal.rails.text0=- 轨道,充能轨道,探测轨道:\n与原版功能一致，但是使用\n了3D的模型。\n- 缓冲车挡器：\n可以阻拦车厢继续前进。\n- 交叉道口轨道：\n当车厢通过时使其鸣笛。\n- 转运轨道：\n放置在货物转运器的上方\n或下方，能根据货物转运\n器的配置来决定是否停下\n车厢。
@@ -187,4 +187,4 @@ gui.industrialrenewal.button.stop=停止
 gui.industrialrenewal.fuel.tooltip=燃料
 gui.industrialrenewal.fusebox.input=红石输入:
 gui.industrialrenewal.fusebox.output=红石输出:
-gui.industrialrenewal.fusebox.slots.tooltip=红石粉盒的格子
+gui.industrialrenewal.fusebox.slots.tooltip=Redstone Cartridge格子
