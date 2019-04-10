@@ -129,7 +129,7 @@ gui.config.main_title=工业复兴模组配置
 gui.config.category.recipes=合成配方
 gui.config.category.recipes.tooltip=合成配方配置
 gui.config.recipes.spongeiron_recipe.name=海绵铁合成表
-gui.config.recipes.spongeiron_recipe.comment=开启/关闭海绵铁合成表（默认开启）
+gui.config.recipes.spongeiron_recipe.comment=开启/关闭海绵铁合成表(默认开启)
 
 gui.config.category.options=设置
 gui.config.category.options.tooltip=常规设置
