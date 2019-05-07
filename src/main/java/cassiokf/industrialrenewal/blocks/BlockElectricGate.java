@@ -25,7 +25,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockElectricGate extends BlockBase {
+public class BlockElectricGate extends BlockBase
+{
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
@@ -51,16 +52,20 @@ public class BlockElectricGate extends BlockBase {
     protected static final AxisAlignedBB IWEST_AABB = new AxisAlignedBB(0.375D, 0.0D, -0.875, 0.625D, 1.5D, 0.125D);
     protected static final AxisAlignedBB IEAST_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.875D, 0.625D, 1.5D, 1.875D);
 
-    public BlockElectricGate(String name, CreativeTabs tab) {
+    public BlockElectricGate(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setHardness(0.8f);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (world.isRemote) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        if (world.isRemote)
+        {
             return true;
-        } else {
+        } else
+        {
             IBlockState actualState = state.getActualState(world, pos);
             boolean active = !actualState.getValue(ACTIVE);
 
@@ -73,25 +78,30 @@ public class BlockElectricGate extends BlockBase {
             IBlockState leftState = world.getBlockState(leftPos);
             boolean inverted = actualState.getValue(INVERTED);
 
-            if (!inverted && rightState.getBlock() instanceof BlockElectricGate && rightState.getActualState(world, rightPos).getValue(INVERTED)) {
+            if (!inverted && rightState.getBlock() instanceof BlockElectricGate && rightState.getActualState(world, rightPos).getValue(INVERTED))
+            {
                 ((BlockElectricGate) rightState.getBlock()).OpenUpAndDown(world, actualState, rightPos, active);
-            } else if (inverted && leftState.getBlock() instanceof BlockElectricGate && !leftState.getActualState(world, leftPos).getValue(INVERTED)) {
+            } else if (inverted && leftState.getBlock() instanceof BlockElectricGate && !leftState.getActualState(world, leftPos).getValue(INVERTED))
+            {
                 ((BlockElectricGate) leftState.getBlock()).OpenUpAndDown(world, actualState, leftPos, active);
             }
 
             //Sound
             Random r = new Random();
             float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
-            if (active) {
+            if (active)
+            {
                 world.playSound(null, pos, IRSoundHandler.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F, pitch);
-            } else {
+            } else
+            {
                 world.playSound(null, pos, IRSoundHandler.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F, pitch);
             }
         }
         return true;
     }
 
-    public void OpenUpAndDown(World world, IBlockState state, BlockPos pos, boolean active) {
+    public void OpenUpAndDown(World world, IBlockState state, BlockPos pos, boolean active)
+    {
 
         IBlockState upstate = world.getBlockState(pos.up());
         IBlockState dnstate = world.getBlockState(pos.down());
@@ -100,19 +110,42 @@ public class BlockElectricGate extends BlockBase {
 
         state = state.withProperty(ACTIVE, active);
         world.setBlockState(pos, state, 3);
-        if (upb instanceof BlockElectricGate) {
-            upstate = upstate.withProperty(ACTIVE, active);
-            world.setBlockState(pos.up(), upstate, 3);
+        if (upb instanceof BlockElectricGate)
+        {
+            OpenUp(world, pos, active);
         }
-        if (dnb instanceof BlockElectricGate) {
-            dnstate = dnstate.withProperty(ACTIVE, active);
-            world.setBlockState(pos.down(), dnstate, 3);
+        if (dnb instanceof BlockElectricGate)
+        {
+            OpenDown(world, pos, active);
+        }
+    }
+
+    public void OpenUp(World world, BlockPos pos, boolean active)
+    {
+        int n = 1;
+        while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockElectricGate)
+        {
+            IBlockState thisState = world.getBlockState(pos.up(n)).withProperty(ACTIVE, active);
+            world.setBlockState(pos.up(n), thisState, 3);
+            n++;
+        }
+    }
+
+    public void OpenDown(World world, BlockPos pos, boolean active)
+    {
+        int n = 1;
+        while (world.getBlockState(pos.down(n)).getBlock() instanceof BlockElectricGate)
+        {
+            IBlockState thisState = world.getBlockState(pos.down(n)).withProperty(ACTIVE, active);
+            world.setBlockState(pos.down(n), thisState, 3);
+            n++;
         }
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    {
         EnumFacing facing = state.getValue(FACING);
         IBlockState rightState = world.getBlockState(pos.offset(facing.rotateY()));
         IBlockState leftState = world.getBlockState(pos.offset(facing.rotateYCCW()));
@@ -123,65 +156,88 @@ public class BlockElectricGate extends BlockBase {
         boolean inverted = (leftIsGate && !rightIsGate);
         boolean rightInverted = rightIsGate;
         Block dnb = world.getBlockState(pos.down()).getBlock();
+        Block upb = world.getBlockState(pos.up()).getBlock();
+        boolean isTop = (dnb instanceof BlockElectricGate) && !(upb instanceof BlockElectricGate);
 
-        state = state.withProperty(UP, dnb instanceof BlockElectricGate).withProperty(INVERTED, inverted)
+        state = state.withProperty(UP, isTop).withProperty(INVERTED, inverted)
                 .withProperty(LEFT, !inverted)
                 .withProperty(RIGHT, !rightInverted);
 
         return state;
     }
 
-    public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
+    public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+    {
         return worldIn.getBlockState(pos).getValue(ACTIVE);
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         EnumFacing face = state.getValue(FACING);
-        if (face == EnumFacing.NORTH || face == EnumFacing.SOUTH) {
+        if (face == EnumFacing.NORTH || face == EnumFacing.SOUTH)
+        {
             return RNORTH_AABB;
-        } else {
+        } else
+        {
             return RWEST_AABB;
         }
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    {
         IBlockState actualState = getActualState(state, worldIn, pos);
         boolean active = actualState.getValue(ACTIVE);
         EnumFacing face = state.getValue(FACING);
         boolean inverted = actualState.getValue(INVERTED);
-        if (active) {
-            if (face == EnumFacing.NORTH) {
-                if (inverted) {
+        if (active)
+        {
+            if (face == EnumFacing.NORTH)
+            {
+                if (inverted)
+                {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, INORTH_AABB);
-                } else {
+                } else
+                {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
                 }
-            } else if (face == EnumFacing.SOUTH) {
-                if (inverted) {
+            } else if (face == EnumFacing.SOUTH)
+            {
+                if (inverted)
+                {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, ISOUTH_AABB);
-                } else {
+                } else
+                {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
                 }
-            } else if (face == EnumFacing.WEST) {
-                if (inverted) {
+            } else if (face == EnumFacing.WEST)
+            {
+                if (inverted)
+                {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, IWEST_AABB);
-                } else {
+                } else
+                {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
                 }
-            } else if (face == EnumFacing.EAST) {
-                if (inverted) {
+            } else if (face == EnumFacing.EAST)
+            {
+                if (inverted)
+                {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, IEAST_AABB);
-                } else {
+                } else
+                {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
                 }
             }
-        } else {
-            if (face == EnumFacing.NORTH || face == EnumFacing.SOUTH) {
+        } else
+        {
+            if (face == EnumFacing.NORTH || face == EnumFacing.SOUTH)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, CNORTH_AABB);
-            } else if (face == EnumFacing.WEST || face == EnumFacing.EAST) {
+            } else if (face == EnumFacing.WEST || face == EnumFacing.EAST)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, CWEST_AABB);
             }
         }
@@ -189,21 +245,25 @@ public class BlockElectricGate extends BlockBase {
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING, ACTIVE, UP, LEFT, RIGHT, INVERTED);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(int meta)
+    {
         return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(ACTIVE, (meta & 4) > 0);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(IBlockState state)
+    {
         int i = 0;
         i = i | state.getValue(FACING).getHorizontalIndex();
-        if (state.getValue(ACTIVE)) {
+        if (state.getValue(ACTIVE))
+        {
             i |= 4;
         }
         return i;
@@ -211,23 +271,27 @@ public class BlockElectricGate extends BlockBase {
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(ACTIVE, false);
     }
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 }
