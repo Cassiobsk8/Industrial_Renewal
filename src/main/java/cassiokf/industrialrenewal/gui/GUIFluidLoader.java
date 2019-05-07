@@ -126,7 +126,7 @@ public class GUIFluidLoader extends GuiContainer {
 
         FluidStack fluid = tank.getFluid();
 
-        if (fluid != null && amount > 0) {
+        if (fluid != null) {
             renderFluid(fluid.getFluid(), 80, 78, 16, percentage);
         }
     }

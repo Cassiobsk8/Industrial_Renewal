@@ -132,6 +132,7 @@ public class IndustrialRenewal {
                     //FluidUtil.interactWithFluidHandler(event.getEntityPlayer(), event.getHand(), event.getWorld(), event.getTarget().getPosition(), event.getFace());
                     FMLNetworkHandler.openGui(event.getEntityPlayer(), IndustrialRenewal.instance, GUIHandler.FLUIDCART, event.getWorld(), entityID, 0, 0);
                 }
+                //System.out.println(entity.tank.getFluidAmount() + " is client? " + event.getWorld().isRemote);
                 //event.setCanceled(true);
             }
         }

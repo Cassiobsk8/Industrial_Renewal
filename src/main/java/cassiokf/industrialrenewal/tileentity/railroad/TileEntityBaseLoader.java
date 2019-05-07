@@ -1,12 +1,10 @@
 package cassiokf.industrialrenewal.tileentity.railroad;
 
-import cassiokf.industrialrenewal.tileentity.railroad.fluidloader.BlockFluidLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.railloader.BlockLoaderRail;
 import cassiokf.industrialrenewal.tileentity.railroad.railloader.TileEntityLoaderRail;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -28,14 +26,6 @@ public abstract class TileEntityBaseLoader extends TileEntity {
 
     public void setWaitEnum(int value) {
         waitE = waitEnum.valueOf(value);
-    }
-
-    public EnumFacing getOutput() {
-        if (!isUnload()) {
-            return EnumFacing.DOWN;
-        }
-        IBlockState state = this.world.getBlockState(this.pos).getActualState(this.world, this.pos);
-        return state.getValue(BlockFluidLoader.FACING).getOpposite();
     }
 
     public void setNextWaitEnum(boolean value) {

@@ -15,11 +15,14 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITickable {
@@ -28,11 +31,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
         @Override
         protected void onContentsChanged() {
             if (!world.isRemote) {
-                try {
-                    NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidLoader(TileEntityFluidLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16));
-                } catch (NullPointerException npe) {
-                    System.out.println(npe);
-                }
+                NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidLoader(TileEntityFluidLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16));
             }
         }
     };
@@ -43,63 +42,69 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
     @Override
     public void update() {
         if (!world.isRemote) {
-            boolean activity = false;
+            if (this.world.getTotalWorldTime() % 8 == 0) {
+                boolean activity = false;
 
 //			up cart -> tank
-            int flowPerTick = 100;
-            boolean hasCart = false;
+                int maxFlowPerTick = 320;
+                boolean hasCart = false;
 
-            IFluidHandler upHandler = getInventoryUp();
-            if (upHandler != null && tank.getFluidAmount() < tank.getCapacity()) {
-                if (upHandler.drain(flowPerTick, false) != null && upHandler.drain(flowPerTick, false).amount > 0) {
-                    tank.fill(upHandler.drain(flowPerTick, true), true);
-                    activity = true;
-                    intLoadActivity = 0;
-                }
-            }
-            if (isUnload() && upHandler != null) {
-                hasCart = true;
-                if (getWaitEnum() == waitEnum.WAIT_EMPTY && (upHandler.drain(1, false) == null || upHandler.drain(1, false).amount <= 0)) {
-                    letCartPass(true);
-                }
-            }
-
-//			tank -> front/down cart
-            IFluidHandler outHandler = getInventoryForHopperTransfer();
-            if (outHandler != null && tank.getFluidAmount() > 0) {
-                if (outHandler.fill(tank.drain(1, false), false) > 0) {
-                    tank.drain(outHandler.fill(tank.drain(flowPerTick, false), true), true);
-                    activity = true;
-                    intUnloadActivity = 0;
-                }
-            }
-            if (!isUnload() && outHandler != null) {
-                hasCart = true;
-                if (getWaitEnum() == waitEnum.WAIT_FULL && outHandler.fill(tank.drain(1, false), false) <= 0) {
-                    letCartPass(true);
-                }
-            }
-
-            if (activity) {
-                this.markDirty();
-                letCartPass(false);
-            } else {
-                if (hasCart && getWaitEnum() == waitEnum.NO_ACTIVITY) {
-                    if (!isUnload()) {
-                        intLoadActivity++;
-                    } else {
-                        intUnloadActivity++;
+                IFluidHandler upHandler = getInventoryUp();
+                if (upHandler != null) {
+                    FluidStack drainedStack = upHandler.drain(maxFlowPerTick, false);
+                    if (tank.getFluidAmount() < tank.getCapacity()) {
+                        if (drainedStack != null && drainedStack.amount > 0) {
+                            tank.fill(upHandler.drain(maxFlowPerTick, true), true);
+                            activity = true;
+                            intLoadActivity = 0;
+                        }
+                    }
+                    if (isUnload()) {
+                        hasCart = true;
+                        if (getWaitEnum() == waitEnum.WAIT_EMPTY && (drainedStack == null || drainedStack.amount <= 0)) {
+                            letCartPass(true);
+                        }
                     }
                 }
-            }
 
-            if (!activity && getWaitEnum() == waitEnum.NO_ACTIVITY) {
-                if (!isUnload() && intLoadActivity > 10) {
-                    intLoadActivity = 0;
-                    letCartPass(true);
-                } else if (isUnload() && intUnloadActivity > 10) {
-                    intUnloadActivity = 0;
-                    letCartPass(true);
+//			tank -> front/down cart
+                IFluidHandler outHandler = getInventoryForHopperTransfer();
+                if (outHandler != null) {
+                    int fillAmount = outHandler.fill(tank.drain(maxFlowPerTick, false), false);
+                    if (tank.getFluidAmount() > 0 && fillAmount > 0) {
+                        tank.drain(outHandler.fill(tank.drain(maxFlowPerTick, false), true), true);
+                        activity = true;
+                        intUnloadActivity = 0;
+                    }
+                    if (!isUnload()) {
+                        hasCart = true;
+                        if (getWaitEnum() == waitEnum.WAIT_FULL && fillAmount <= 0) {
+                            letCartPass(true);
+                        }
+                    }
+                }
+
+                if (activity) {
+                    this.markDirty();
+                    letCartPass(false);
+                } else {
+                    if (hasCart && getWaitEnum() == waitEnum.NO_ACTIVITY) {
+                        if (!isUnload()) {
+                            intLoadActivity++;
+                        } else {
+                            intUnloadActivity++;
+                        }
+                    }
+                }
+
+                if (!activity && getWaitEnum() == waitEnum.NO_ACTIVITY) {
+                    if (!isUnload() && intLoadActivity >= 2) {
+                        intLoadActivity = 0;
+                        letCartPass(true);
+                    } else if (isUnload() && intUnloadActivity >= 2) {
+                        intUnloadActivity = 0;
+                        letCartPass(true);
+                    }
                 }
             }
         }
@@ -159,6 +164,14 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
         return ifluid;
     }
 
+    public EnumFacing getOutput() {
+        if (!isUnload()) {
+            return EnumFacing.DOWN;
+        }
+        IBlockState state = this.world.getBlockState(this.pos).getActualState(this.world, this.pos);
+        return state.getValue(BlockFluidLoader.FACING).getOpposite();
+    }
+
     @Override
     public boolean isUnload() {
         IBlockState state = this.world.getBlockState(this.pos).getActualState(this.world, this.pos);
@@ -194,4 +207,17 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
         super.readFromNBT(compound);
     }
 
+    @Override
+    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing) {
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing) {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
+        }
+        return super.getCapability(capability, facing);
+    }
 }

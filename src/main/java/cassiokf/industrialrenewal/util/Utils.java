@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
@@ -33,5 +34,24 @@ public class Utils {
             }
         }
         return isLog;
+    }
+
+    public static boolean IsInventoryEmpty(IItemHandler handler) {
+        for (int i = 0; i < handler.getSlots(); i++) {
+            if (!handler.getStackInSlot(i).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean IsInventoryFull(IItemHandler handler) {
+        int slotsFull = 0;
+        for (int i = 0; i < handler.getSlots(); i++) {
+            if (!handler.getStackInSlot(i).isEmpty()) {
+                slotsFull++;
+            }
+        }
+        return slotsFull == handler.getSlots();
     }
 }

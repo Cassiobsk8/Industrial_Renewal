@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.item.ModItems;
 import cassiokf.industrialrenewal.network.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketLogCart;
 import cassiokf.industrialrenewal.network.PacketReturnLogCart;
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class EntityLogCart extends EntityMinecart {
@@ -22,6 +24,14 @@ public class EntityLogCart extends EntityMinecart {
     public int invItensCount = 0;
     private int tick = 0;
     public ItemStackHandler inventory = new ItemStackHandler(27) {
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+            if (stack.isEmpty()) {
+                return false;
+            }
+            return Utils.isWood(stack);
+        }
+
         @Override
         protected void onContentsChanged(int slot) {
             GetInvNumber();
@@ -104,5 +114,4 @@ public class EntityLogCart extends EntityMinecart {
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) this.inventory : super.getCapability(capability, facing);
     }
-
 }

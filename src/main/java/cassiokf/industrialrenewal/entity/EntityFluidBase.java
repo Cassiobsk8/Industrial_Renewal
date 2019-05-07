@@ -26,11 +26,7 @@ public class EntityFluidBase extends EntityMinecart implements IFluidHandler {
         @Override
         protected void onContentsChanged() {
             if (!world.isRemote) {
-                try {
-                    NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidBase(EntityFluidBase.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), posX, posY, posZ, 32));
-                } catch (NullPointerException npe) {
-                    System.out.println(npe);
-                }
+                NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidBase(EntityFluidBase.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), posX, posY, posZ, 8));
             }
         }
     };
