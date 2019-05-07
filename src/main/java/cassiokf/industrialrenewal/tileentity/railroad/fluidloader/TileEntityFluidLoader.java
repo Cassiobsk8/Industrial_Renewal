@@ -45,7 +45,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
             if (this.world.getTotalWorldTime() % 8 == 0) {
                 boolean activity = false;
 
-//			up cart -> tank
+//			    up cart -> tank
                 int maxFlowPerTick = 320;
                 boolean hasCart = false;
 
@@ -126,7 +126,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
 
     private IFluidHandler getInventoryUp() {
         BlockPos handlerPos = pos.offset(EnumFacing.UP);
-        return getInventoryAtPosition(this.getWorld(), handlerPos);
+        return getInventoryAtPosition(this.world, handlerPos);
     }
 
     private IFluidHandler getInventoryForHopperTransfer() {
