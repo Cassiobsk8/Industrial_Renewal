@@ -1,0 +1,104 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/entity_detector"
+    }
+  },
+  "variants": {
+    "facing": {
+      "north": {
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:fluid_gauge"
+          }
+        }
+      },
+      "west": {
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:fluid_gauge",
+            "y": -90
+          }
+        }
+      },
+      "south": {
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:fluid_gauge",
+            "y": 180
+          }
+        }
+      },
+      "east": {
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:fluid_gauge",
+            "y": 90
+          }
+        }
+      }
+    },
+    "base": {
+      "up": {
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:fluid_gauge_base",
+            "x": 180
+          }
+        }
+      },
+      "down": {
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:fluid_gauge_base"
+          }
+        }
+      },
+      "north": {
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:fluid_gauge_base",
+            "x": 90,
+            "y": 180
+          }
+        }
+      },
+      "south": {
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:fluid_gauge_base",
+            "x": 90
+          }
+        }
+      },
+      "east": {
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:fluid_gauge_base",
+            "x": 90,
+            "y": -90
+          }
+        }
+      },
+      "west": {
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:fluid_gauge_base",
+            "x": 90,
+            "y": 90
+          }
+        }
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:fluid_gauge",
+      "y": 180,
+      "submodel": {
+        "base1": {
+          "model": "industrialrenewal:fluid_gauge_base"
+        }
+      }
+    }
+  }
+}

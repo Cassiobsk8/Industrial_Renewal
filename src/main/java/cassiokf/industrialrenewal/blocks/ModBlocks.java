@@ -2,13 +2,14 @@ package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.rails.*;
-import cassiokf.industrialrenewal.tileentity.Barrel.BlockBarrel;
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
+import cassiokf.industrialrenewal.tileentity.barrel.BlockBarrel;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.BlockFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.fusebox.BlockFuseBox;
 import cassiokf.industrialrenewal.tileentity.fusebox.BlockFuseBoxConnector;
+import cassiokf.industrialrenewal.tileentity.gauge.BlockGauge;
 import cassiokf.industrialrenewal.tileentity.gutter.BlockGutter;
 import cassiokf.industrialrenewal.tileentity.locker.BlockLocker;
 import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.BlockCargoLoader;
@@ -80,6 +81,7 @@ public class ModBlocks {
     public static BlockScaffold scaffold = new BlockScaffold("scaffold", References.CREATIVE_IR_TAB);
     public static BlockFrame frame = new BlockFrame("frame", References.CREATIVE_IR_TAB);
     public static BlockBarrel barrel = new BlockBarrel("barrel", References.CREAATIVE_IRWIP_TAB);
+    public static BlockGauge gauge = new BlockGauge("fluid_gauge", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockElectricFence efence = new BlockElectricFence("electric_fence", References.CREATIVE_IR_TAB);
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
@@ -159,6 +161,7 @@ public class ModBlocks {
                 recordPlayer,
                 locker,
                 barrel,
+                gauge,
                 gutter,
                 blockChimney,
                 scaffold,
@@ -212,6 +215,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(locker.getTileEntityClass(), locker.getRegistryName().toString());
         GameRegistry.registerTileEntity(entityDetector.getTileEntityClass(), entityDetector.getRegistryName().toString());
         GameRegistry.registerTileEntity(barrel.getTileEntityClass(), barrel.getRegistryName().toString());
+        GameRegistry.registerTileEntity(gauge.getTileEntityClass(), gauge.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -277,7 +281,8 @@ public class ModBlocks {
                 bufferStopRail.createItemBlock(),
                 cargoLoader.createItemBlock(),
                 fluidLoader.createItemBlock(),
-                barrel.createItemBlock()
+                barrel.createItemBlock(),
+                gauge.createItemBlock()
         );
     }
 
@@ -344,5 +349,6 @@ public class ModBlocks {
         sladder.registerItemModel(Item.getItemFromBlock(sladder));
         catwalkStairSteel.registerItemModel(Item.getItemFromBlock(catwalkStairSteel));
         barrel.registerItemModel(Item.getItemFromBlock(barrel));
+        gauge.registerItemModel(Item.getItemFromBlock(gauge));
     }
 }

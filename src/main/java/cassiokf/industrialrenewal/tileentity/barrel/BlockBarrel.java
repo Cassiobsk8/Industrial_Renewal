@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.tileentity.Barrel;
+package cassiokf.industrialrenewal.tileentity.barrel;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;

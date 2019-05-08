@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.network;
 
-import cassiokf.industrialrenewal.tileentity.Barrel.TileEntityBarrel;
+import cassiokf.industrialrenewal.tileentity.barrel.TileEntityBarrel;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

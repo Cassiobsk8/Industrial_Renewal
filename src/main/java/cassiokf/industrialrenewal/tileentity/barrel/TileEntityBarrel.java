@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.tileentity.Barrel;
+package cassiokf.industrialrenewal.tileentity.barrel;
 
 import cassiokf.industrialrenewal.network.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketBarrel;

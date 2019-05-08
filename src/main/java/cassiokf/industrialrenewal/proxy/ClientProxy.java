@@ -4,6 +4,8 @@ import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TESRFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
+import cassiokf.industrialrenewal.tileentity.gauge.TESRGauge;
+import cassiokf.industrialrenewal.tileentity.gauge.TileEntityGauge;
 import cassiokf.industrialrenewal.util.RenderHandler;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
@@ -37,6 +39,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void registerRenderers() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirstAidKit.class, new TESRFirstAidKit());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGauge.class, new TESRGauge());
     }
 
     @Override

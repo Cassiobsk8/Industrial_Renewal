@@ -42,6 +42,8 @@ public class ModItems {
 
     public static ItemBookManual manual = new ItemBookManual("ir_manual", References.CREAATIVE_IRWIP_TAB);
 
+    public static ItemBase pointer = new ItemBase("pointer", null);
+
     //public static ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
 
     public static void register(IForgeRegistry<Item> registry) {
@@ -70,7 +72,8 @@ public class ModItems {
                 cartridge_minus,
                 cartridge_half,
                 cartridge_double,
-                cartridge_inverter
+                cartridge_inverter,
+                pointer
         );
     }
 
@@ -100,6 +103,7 @@ public class ModItems {
         cartridge_inverter.registerItemModel();
         manual.registerItemModel();
         stickSteel.registerItemModel();
+        pointer.registerItemModel();
     }
 
     public static void registerOreDict() {
