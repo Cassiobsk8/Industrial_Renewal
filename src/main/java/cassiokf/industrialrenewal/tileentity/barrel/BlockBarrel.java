@@ -2,9 +2,9 @@ package cassiokf.industrialrenewal.tileentity.barrel;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.item.ModItems;
 import cassiokf.industrialrenewal.network.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketReturnBarrel;
-import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
@@ -19,16 +19,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BlockBarrel extends BlockContainer
 {
@@ -37,6 +42,8 @@ public class BlockBarrel extends BlockContainer
     public static final PropertyBool FRAME = PropertyBool.create("frame");
     protected static final AxisAlignedBB FULL_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 1D, 1D);
     protected String name;
+
+    private NBTTagCompound tagCompound;
 
     public BlockBarrel(String name, CreativeTabs tab)
     {
@@ -59,7 +66,7 @@ public class BlockBarrel extends BlockContainer
         NetworkHandler.INSTANCE.sendToServer(new PacketReturnBarrel(te));
         if (!worldIn.isRemote)
         {
-            Utils.sendChatMessage(te.GetChatQuantity());
+            playerIn.sendMessage(new TextComponentString(te.GetChatQuantity()));
         }
         return true;
     }
@@ -101,6 +108,45 @@ public class BlockBarrel extends BlockContainer
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return Container.calcRedstone(worldIn.getTileEntity(pos));
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
+
+        ItemStack itemst = SaveStackContainer(te);
+        spawnAsEntity(worldIn, pos, itemst);
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return null;
+    }
+
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        TileEntityBarrel te = (TileEntityBarrel) world.getTileEntity(pos);
+        return SaveStackContainer(te);
+    }
+
+    private ItemStack SaveStackContainer(TileEntityBarrel te)
+    {
+        ItemStack stack = new ItemStack(ModItems.barrel);
+        if (te != null)
+        {
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (nbt == null) nbt = new NBTTagCompound();
+            if (te.tank.getFluid() != null)
+            {
+                te.tank.writeToNBT(nbt);
+                stack.setTagCompound(nbt);
+            }
+        }
+        return stack;
     }
 
     @SuppressWarnings("deprecation")

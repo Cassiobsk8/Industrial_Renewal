@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.entity;
 
 import cassiokf.industrialrenewal.item.ModItems;
 import cassiokf.industrialrenewal.network.NetworkHandler;
-import cassiokf.industrialrenewal.network.PacketFluidBase;
 import cassiokf.industrialrenewal.network.PacketReturnFluidBase;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
@@ -16,7 +15,6 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import javax.annotation.Nullable;
 
@@ -26,7 +24,7 @@ public class EntityFluidBase extends EntityMinecart implements IFluidHandler {
         @Override
         protected void onContentsChanged() {
             if (!world.isRemote) {
-                NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidBase(EntityFluidBase.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), posX, posY, posZ, 8));
+                //NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidBase(EntityFluidBase.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), posX, posY, posZ, 8));
             }
         }
     };

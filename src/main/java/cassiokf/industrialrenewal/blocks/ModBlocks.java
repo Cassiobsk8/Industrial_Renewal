@@ -281,7 +281,6 @@ public class ModBlocks {
                 bufferStopRail.createItemBlock(),
                 cargoLoader.createItemBlock(),
                 fluidLoader.createItemBlock(),
-                barrel.createItemBlock(),
                 gauge.createItemBlock()
         );
     }

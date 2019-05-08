@@ -32,6 +32,7 @@ item.industrialrenewal.medkit.name=MedKit
 item.industrialrenewal.medkit.des0=Use to heal
 item.industrialrenewal.steel_saw.name=Steel Saw
 item.industrialrenewal.steel_saw.des0=A saw that can cut stones
+item.industrialrenewal.barrel_item.name=Barrel
 
 #Discs
 
@@ -114,6 +115,7 @@ tile.industrialrenewal.electric_gate.name=Electric Gate
 tile.industrialrenewal.record_player.name=Multi Record Player
 tile.industrialrenewal.sensor_rain.name=Rain Sensor
 tile.industrialrenewal.solar_panel.name=Basic Solar Panel
+tile.industrialrenewal.fluid_gauge.name=Gauge
 
 #Entity
 
