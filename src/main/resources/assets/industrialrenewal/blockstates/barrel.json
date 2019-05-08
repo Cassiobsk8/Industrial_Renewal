@@ -1,0 +1,34 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "frame": {
+      "true": {
+        "model": "industrialrenewal:fluid_barrel_framed"
+      },
+      "false": {
+        "model": "industrialrenewal:fluid_barrel"
+      }
+    },
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:fluid_barrel",
+      "y": 180
+    }
+  }
+}

@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.rails.*;
+import cassiokf.industrialrenewal.tileentity.Barrel.BlockBarrel;
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
@@ -78,6 +79,7 @@ public class ModBlocks {
     public static BlockBrace braceSteel = new BlockBrace("brace_steel", References.CREATIVE_IR_TAB);
     public static BlockScaffold scaffold = new BlockScaffold("scaffold", References.CREATIVE_IR_TAB);
     public static BlockFrame frame = new BlockFrame("frame", References.CREATIVE_IR_TAB);
+    public static BlockBarrel barrel = new BlockBarrel("barrel", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockElectricFence efence = new BlockElectricFence("electric_fence", References.CREATIVE_IR_TAB);
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
@@ -156,6 +158,7 @@ public class ModBlocks {
                 firstAidKit,
                 recordPlayer,
                 locker,
+                barrel,
                 gutter,
                 blockChimney,
                 scaffold,
@@ -208,6 +211,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(flameDetector.getTileEntityClass(), flameDetector.getRegistryName().toString());
         GameRegistry.registerTileEntity(locker.getTileEntityClass(), locker.getRegistryName().toString());
         GameRegistry.registerTileEntity(entityDetector.getTileEntityClass(), entityDetector.getRegistryName().toString());
+        GameRegistry.registerTileEntity(barrel.getTileEntityClass(), barrel.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -272,8 +276,8 @@ public class ModBlocks {
                 loaderRail.createItemBlock(),
                 bufferStopRail.createItemBlock(),
                 cargoLoader.createItemBlock(),
-                fluidLoader.createItemBlock()
-
+                fluidLoader.createItemBlock(),
+                barrel.createItemBlock()
         );
     }
 
@@ -339,5 +343,6 @@ public class ModBlocks {
         handRailSteel.registerItemModel(Item.getItemFromBlock(handRailSteel));
         sladder.registerItemModel(Item.getItemFromBlock(sladder));
         catwalkStairSteel.registerItemModel(Item.getItemFromBlock(catwalkStairSteel));
+        barrel.registerItemModel(Item.getItemFromBlock(barrel));
     }
 }
