@@ -80,8 +80,8 @@ public class ModBlocks {
     public static BlockBrace braceSteel = new BlockBrace("brace_steel", References.CREATIVE_IR_TAB);
     public static BlockScaffold scaffold = new BlockScaffold("scaffold", References.CREATIVE_IR_TAB);
     public static BlockFrame frame = new BlockFrame("frame", References.CREATIVE_IR_TAB);
-    public static BlockBarrel barrel = new BlockBarrel("barrel", References.CREAATIVE_IRWIP_TAB);
-    public static BlockGauge gauge = new BlockGauge("fluid_gauge", References.CREAATIVE_IRWIP_TAB);
+    public static BlockBarrel barrel = new BlockBarrel("barrel", References.CREATIVE_IR_TAB);
+    public static BlockGauge gauge = new BlockGauge("fluid_gauge", References.CREATIVE_IR_TAB);
 
     public static BlockElectricFence efence = new BlockElectricFence("electric_fence", References.CREATIVE_IR_TAB);
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
@@ -95,6 +95,7 @@ public class ModBlocks {
     public static BlockFuseBoxConnector fuseBoxConnector = new BlockFuseBoxConnector("conduit_connector", References.CREATIVE_IR_TAB);
     public static BlockFlameDetector flameDetector = new BlockFlameDetector("flame_detector", References.CREATIVE_IR_TAB);
     public static BlockEntityDetector entityDetector = new BlockEntityDetector("entity_detector", References.CREATIVE_IR_TAB);
+    public static BlockButtonRed buttonRed = new BlockButtonRed("button_red", References.CREATIVE_IR_TAB);
 
     public static BlockNormalRail normalRail = new BlockNormalRail("normal_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockCrossingRail crossingRail = new BlockCrossingRail("crossing_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
@@ -150,6 +151,7 @@ public class ModBlocks {
                 entityDetector,
                 flameDetector,
                 sensorRain,
+                buttonRed,
                 fuseBox,
                 fuseBoxConduitExtension,
                 fuseBoxConnector,
@@ -281,7 +283,8 @@ public class ModBlocks {
                 bufferStopRail.createItemBlock(),
                 cargoLoader.createItemBlock(),
                 fluidLoader.createItemBlock(),
-                gauge.createItemBlock()
+                gauge.createItemBlock(),
+                buttonRed.createItemBlock()
         );
     }
 
@@ -349,5 +352,6 @@ public class ModBlocks {
         catwalkStairSteel.registerItemModel(Item.getItemFromBlock(catwalkStairSteel));
         barrel.registerItemModel(Item.getItemFromBlock(barrel));
         gauge.registerItemModel(Item.getItemFromBlock(gauge));
+        buttonRed.registerItemModel(Item.getItemFromBlock(buttonRed));
     }
 }

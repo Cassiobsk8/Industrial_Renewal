@@ -1,0 +1,42 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/red_button"
+    }
+  },
+  "variants": {
+    "press": {
+      "true": {
+        "model": "industrialrenewal:button_red_press"
+      },
+      "false": {
+        "model": "industrialrenewal:button_red_normal"
+      }
+    },
+    "facing": {
+      "up": {
+        "x": 180
+      },
+      "down": {},
+      "north": {
+        "x": -90
+      },
+      "south": {
+        "x": -90,
+        "y": 180
+      },
+      "east": {
+        "x": -90,
+        "y": 90
+      },
+      "west": {
+        "x": -90,
+        "y": -90
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:button_red_normal"
+    }
+  }
+}
