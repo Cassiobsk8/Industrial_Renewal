@@ -116,6 +116,9 @@ tile.industrialrenewal.record_player.name=Multi Record Player
 tile.industrialrenewal.sensor_rain.name=Rain Sensor
 tile.industrialrenewal.solar_panel.name=Basic Solar Panel
 tile.industrialrenewal.fluid_gauge.name=Gauge
+tile.industrialrenewal.button_red.name=Emergency Button
+tile.industrialrenewal.fence_big_column.name=Big Fence Column
+tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
 
 #Entity
 

@@ -1,0 +1,36 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/metal"
+    }
+  },
+  "variants": {
+    "index": {
+      "0": {
+        "model": "industrialrenewal:fence_big_wire_down"
+      },
+      "1": {
+        "model": "industrialrenewal:fence_big_wire_center"
+      },
+      "2": {
+        "model": "industrialrenewal:fence_big_wire_top"
+      }
+    },
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:fence_big_wire_item"
+    }
+  }
+}

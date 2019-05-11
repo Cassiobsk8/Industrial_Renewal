@@ -84,6 +84,8 @@ public class ModBlocks {
     public static BlockGauge gauge = new BlockGauge("fluid_gauge", References.CREATIVE_IR_TAB);
 
     public static BlockElectricFence efence = new BlockElectricFence("electric_fence", References.CREATIVE_IR_TAB);
+    public static BlockElectricBigFenceColumn bigFenceColumn = new BlockElectricBigFenceColumn("fence_big_column", References.CREATIVE_IR_TAB);
+    public static BlockElectricBigFenceWire bigFenceWire = new BlockElectricBigFenceWire("fence_big_wire", References.CREATIVE_IR_TAB);
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
     public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREAATIVE_IRWIP_TAB);
 
@@ -168,6 +170,8 @@ public class ModBlocks {
                 blockChimney,
                 scaffold,
                 efence,
+                bigFenceColumn,
+                bigFenceWire,
                 egate,
                 signC,
                 signHV,
@@ -266,6 +270,8 @@ public class ModBlocks {
                 blockChimney.createItemBlock(),
                 scaffold.createItemBlock(),
                 efence.createItemBlock(),
+                bigFenceColumn.createItemBlock(),
+                bigFenceWire.createItemBlock(),
                 egate.createItemBlock(),
                 signHV.createItemBlock(),
                 fluorescent.createItemBlock(),
@@ -317,6 +323,8 @@ public class ModBlocks {
         scaffold.registerItemModel(Item.getItemFromBlock(scaffold));
         frame.registerItemModel(Item.getItemFromBlock(frame));
         efence.registerItemModel(Item.getItemFromBlock(efence));
+        bigFenceColumn.registerItemModel(Item.getItemFromBlock(bigFenceColumn));
+        bigFenceWire.registerItemModel(Item.getItemFromBlock(bigFenceWire));
         egate.registerItemModel(Item.getItemFromBlock(egate));
         spanel.registerItemModel(Item.getItemFromBlock(spanel));
         firstAidKit.registerItemModel(Item.getItemFromBlock(firstAidKit));
