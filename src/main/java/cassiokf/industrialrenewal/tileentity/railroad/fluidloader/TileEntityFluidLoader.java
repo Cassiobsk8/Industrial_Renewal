@@ -27,16 +27,18 @@ import java.util.List;
 
 public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITickable {
 
+    private int prevAmount;
+    private int intLoadActivity = 0;
+    private int intUnloadActivity = 0;
     public FluidTank tank = new FluidTank(16000) {
         @Override
         protected void onContentsChanged() {
             if (!world.isRemote) {
+                TileEntityFluidLoader.this.onChange();
                 //NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidLoader(TileEntityFluidLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16));
             }
         }
     };
-    private int intLoadActivity = 0;
-    private int intUnloadActivity = 0;
 
 
     @Override
@@ -112,8 +114,12 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
 
     @Override
     public void onChange() {
-        if (!this.world.isRemote) {
-            NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidLoader(TileEntityFluidLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
+        markDirty();
+        if (Math.abs(prevAmount - this.tank.getFluidAmount()) >= 1000) {
+            prevAmount = this.tank.getFluidAmount();
+            if (!world.isRemote) {
+                NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidLoader(TileEntityFluidLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
+            }
         }
     }
 

@@ -31,6 +31,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidUtil;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -67,6 +68,10 @@ public class BlockBarrel extends BlockContainer
         if (!worldIn.isRemote)
         {
             playerIn.sendMessage(new TextComponentString(te.GetChatQuantity()));
+        }
+        boolean save = FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing);
+        if (save) {
+            te.save();
         }
         return true;
     }

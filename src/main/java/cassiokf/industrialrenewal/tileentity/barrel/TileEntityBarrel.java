@@ -3,8 +3,11 @@ package cassiokf.industrialrenewal.tileentity.barrel;
 import cassiokf.industrialrenewal.network.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketBarrel;
 import cassiokf.industrialrenewal.network.PacketReturnBarrel;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -15,7 +18,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityBarrel extends TileFluidHandler
 {
-
+    private int prevAmount;
     public FluidTank tank = new FluidTank(32000)
     {
         @Override
@@ -23,7 +26,8 @@ public class TileEntityBarrel extends TileFluidHandler
         {
             if (!world.isRemote)
             {
-                NetworkHandler.INSTANCE.sendToAllAround(new PacketBarrel(TileEntityBarrel.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16));
+                TileEntityBarrel.this.save();
+                //NetworkHandler.INSTANCE.sendToAllAround(new PacketBarrel(TileEntityBarrel.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16));
             }
             System.out.println("Changed");
             markDirty();
@@ -31,11 +35,26 @@ public class TileEntityBarrel extends TileFluidHandler
     };
 
     @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        return oldState.getBlock() != newState.getBlock();
+    }
+
+    @Override
     public void onLoad()
     {
         if (world.isRemote)
         {
             NetworkHandler.INSTANCE.sendToServer(new PacketReturnBarrel(this));
+        }
+    }
+
+    public void save() {
+        markDirty();
+        if (Math.abs(prevAmount - this.tank.getFluidAmount()) >= 1000) {
+            prevAmount = this.tank.getFluidAmount();
+            if (!world.isRemote) {
+                NetworkHandler.INSTANCE.sendToAllAround(new PacketBarrel(this), new NetworkRegistry.TargetPoint(this.world.provider.getDimension(), this.pos.getX(), this.pos.getY(), this.pos.getZ(), 16));
+            }
         }
     }
 
