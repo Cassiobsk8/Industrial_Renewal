@@ -77,7 +77,7 @@ public class BlockElectricFence extends BlockBasicElectricFence {
             int w = x - z;
             return nb.isAir(neighbourState, world, neighbourPos) && (Math.abs(w) % 3 == 0);
         }
-        return nb instanceof BlockElectricFence || nb instanceof BlockElectricGate || neighbourState.isFullBlock() || nb instanceof BlockElectricBigFenceColumn;
+        return nb instanceof BlockElectricGate || neighbourState.isFullBlock() || nb instanceof BlockBasicElectricFence;
     }
 
     @SuppressWarnings("deprecation")

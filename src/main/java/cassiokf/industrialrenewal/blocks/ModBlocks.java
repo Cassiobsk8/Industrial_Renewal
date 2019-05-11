@@ -86,6 +86,7 @@ public class ModBlocks {
     public static BlockElectricFence efence = new BlockElectricFence("electric_fence", References.CREATIVE_IR_TAB);
     public static BlockElectricBigFenceColumn bigFenceColumn = new BlockElectricBigFenceColumn("fence_big_column", References.CREATIVE_IR_TAB);
     public static BlockElectricBigFenceWire bigFenceWire = new BlockElectricBigFenceWire("fence_big_wire", References.CREATIVE_IR_TAB);
+    public static BlockElectricBigFenceCorner bigFenceCorner = new BlockElectricBigFenceCorner("fence_big_corner", References.CREATIVE_IR_TAB);
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
     public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREAATIVE_IRWIP_TAB);
 
@@ -171,6 +172,7 @@ public class ModBlocks {
                 scaffold,
                 efence,
                 bigFenceColumn,
+                bigFenceCorner,
                 bigFenceWire,
                 egate,
                 signC,
@@ -271,6 +273,7 @@ public class ModBlocks {
                 scaffold.createItemBlock(),
                 efence.createItemBlock(),
                 bigFenceColumn.createItemBlock(),
+                bigFenceCorner.createItemBlock(),
                 bigFenceWire.createItemBlock(),
                 egate.createItemBlock(),
                 signHV.createItemBlock(),
@@ -324,6 +327,7 @@ public class ModBlocks {
         frame.registerItemModel(Item.getItemFromBlock(frame));
         efence.registerItemModel(Item.getItemFromBlock(efence));
         bigFenceColumn.registerItemModel(Item.getItemFromBlock(bigFenceColumn));
+        bigFenceCorner.registerItemModel(Item.getItemFromBlock(bigFenceCorner));
         bigFenceWire.registerItemModel(Item.getItemFromBlock(bigFenceWire));
         egate.registerItemModel(Item.getItemFromBlock(egate));
         spanel.registerItemModel(Item.getItemFromBlock(spanel));

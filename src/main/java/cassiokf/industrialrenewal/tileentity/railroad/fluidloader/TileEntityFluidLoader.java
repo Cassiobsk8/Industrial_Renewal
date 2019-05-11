@@ -31,7 +31,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
         @Override
         protected void onContentsChanged() {
             if (!world.isRemote) {
-                NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidLoader(TileEntityFluidLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16));
+                //NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidLoader(TileEntityFluidLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16));
             }
         }
     };

@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockElectricBigFenceColumn extends BlockBasicElectricFence {
+public class BlockElectricBigFenceCorner extends BlockBasicElectricFence {
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyInteger INDEX = PropertyInteger.create("index", 0, 2);
@@ -29,7 +29,7 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence {
     public static final PropertyBool ACTIVE_RIGHT_DOWN = PropertyBool.create("active_right_down");
 
 
-    public BlockElectricBigFenceColumn(String name, CreativeTabs tab) {
+    public BlockElectricBigFenceCorner(String name, CreativeTabs tab) {
         super(name, tab);
         setSoundType(SoundType.METAL);
     }
@@ -63,7 +63,7 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence {
     }
 
     private boolean IsBigFence(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock() instanceof BlockElectricBigFenceColumn;
+        return world.getBlockState(pos).getBlock() instanceof BlockElectricBigFenceCorner;
     }
 
     @Override
@@ -116,7 +116,7 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence {
         if (down && state.getValue(INDEX) != 0) return false;
         EnumFacing facing = state.getValue(FACING);
         for (final EnumFacing face : EnumFacing.HORIZONTALS) {
-            if ((left && face == facing.rotateYCCW()) || (!left && face == facing.rotateY())) {
+            if ((left && face == facing) || (!left && face == facing.rotateY())) {
                 IBlockState sideState = world.getBlockState(pos.offset(face));
                 Block block = sideState.getBlock();
                 return sideState.isFullBlock() || block instanceof BlockElectricGate || block instanceof BlockBasicElectricFence;

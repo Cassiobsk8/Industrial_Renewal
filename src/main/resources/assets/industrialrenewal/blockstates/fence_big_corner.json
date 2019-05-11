@@ -1,0 +1,99 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/metal"
+    }
+  },
+  "variants": {
+    "index": {
+      "0": {
+        "model": "industrialrenewal:fence_big_corner_down"
+      },
+      "1": {
+        "model": "industrialrenewal:fence_big_corner_center"
+      },
+      "2": {
+        "model": "industrialrenewal:fence_big_corner_top"
+      }
+    },
+    "active_left_top": {
+      "true": {
+        "submodel": {
+          "left": {
+            "model": "industrialrenewal:fence_big_side_top_l",
+            "y": 90
+          }
+        }
+      },
+      "false": {}
+    },
+    "active_right_top": {
+      "true": {
+        "submodel": {
+          "right": {
+            "model": "industrialrenewal:fence_big_side_top"
+          }
+        }
+      },
+      "false": {}
+    },
+    "active_left_down": {
+      "true": {
+        "submodel": {
+          "left": {
+            "model": "industrialrenewal:fence_big_side_down_l",
+            "y": 90
+          }
+        }
+      },
+      "false": {}
+    },
+    "active_right_down": {
+      "true": {
+        "submodel": {
+          "right": {
+            "model": "industrialrenewal:fence_big_side_down_r"
+          }
+        }
+      },
+      "false": {}
+    },
+    "active_left": {
+      "true": {
+        "submodel": {
+          "left": {
+            "model": "industrialrenewal:fence_big_side",
+            "y": -90
+          }
+        }
+      },
+      "false": {}
+    },
+    "active_right": {
+      "true": {
+        "submodel": {
+          "right": {
+            "model": "industrialrenewal:fence_big_side"
+          }
+        }
+      },
+      "false": {}
+    },
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:fence_big_corner_item"
+    }
+  }
+}
