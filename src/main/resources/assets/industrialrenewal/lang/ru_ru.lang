@@ -30,6 +30,7 @@ item.industrialrenewal.medkit.name=Аптечка
 item.industrialrenewal.medkit.des0=Используется для лечения
 item.industrialrenewal.steel_saw.name=Стальная пила
 item.industrialrenewal.steel_saw.des0=Пила, которая может резать камни
+item.industrialrenewal.barrel_item.name=Barrel
 
 
 item.industrialrenewal.record_royal_entrance.name=Музыкальный диск
@@ -52,6 +53,7 @@ tile.industrialrenewal.brace.name=Балка раскоса
 tile.industrialrenewal.brace_steel.name=Steel Brace Beam
 tile.industrialrenewal.buffer_stop_rail.name=Рельса буферной остановки
 tile.industrialrenewal.cargo_loader.name=Грузовой погрузчик
+tile.industrialrenewal.fluid_loader.name=Fluid Loader (WIP)
 tile.industrialrenewal.cart_container=Грузовой контейнер
 tile.industrialrenewal.catwalk.name=Подиум
 tile.industrialrenewal.catwalk_steel.name=Steel Catwalk
@@ -109,6 +111,11 @@ tile.industrialrenewal.electric_gate.name=Электрическая калит�
 tile.industrialrenewal.record_player.name=Мульти-проигрыватель записи
 tile.industrialrenewal.sensor_rain.name=Датчик дождя
 tile.industrialrenewal.solar_panel.name=Основная солнечная панель
+tile.industrialrenewal.fluid_gauge.name=Gauge
+tile.industrialrenewal.button_red.name=Emergency Button
+tile.industrialrenewal.fence_big_column.name=Big Fence Column
+tile.industrialrenewal.fence_big_corner.name=Big Fence Corner
+tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
 
 
 entity.industrialrenewal.cargo_container.name=Грузовой контейнер
