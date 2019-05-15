@@ -29,8 +29,6 @@ public class TileEntityBarrel extends TileFluidHandler
                 TileEntityBarrel.this.save();
                 //NetworkHandler.INSTANCE.sendToAllAround(new PacketBarrel(TileEntityBarrel.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16));
             }
-            System.out.println("Changed");
-            markDirty();
         }
     };
 

@@ -82,6 +82,12 @@ public class BlockElectricBigFenceCorner extends BlockBasicElectricFence {
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
     }
 
+    @Override
+    @Deprecated
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return state.getValue(INDEX) == 2 ? 15 : 0;
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {

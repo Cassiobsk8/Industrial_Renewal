@@ -93,7 +93,6 @@
     },
     "inventory": {
       "model": "industrialrenewal:fluid_gauge",
-      "y": 180,
       "submodel": {
         "base1": {
           "model": "industrialrenewal:fluid_gauge_base"
