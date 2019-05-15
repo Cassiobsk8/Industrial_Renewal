@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 public class TileEntityBarrel extends TileFluidHandler
 {
     private int prevAmount;
-    public FluidTank tank = new FluidTank(32000)
+    public FluidTank tank = new FluidTank(64000)
     {
         @Override
         protected void onContentsChanged()
