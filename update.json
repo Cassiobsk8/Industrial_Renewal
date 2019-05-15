@@ -1,10 +1,11 @@
 {
   "homepage": "<https://minecraft.curseforge.com/projects/industrial-renewal>",
   "promos": {
-    "1.12.2-latest": "0.8.1",
-    "1.12.2-recommended": "0.8.1"
+    "1.12.2-latest": "0.9",
+    "1.12.2-recommended": "0.9"
   },
   "1.12.2": {
+    "0.9": "New:\n\n- Log cart\n\n- Passenger cart\n\n- Fluid Barrel\n\n- Fluid Gauge\n\n- Emergency redstone button\n\n- Big electric fence\n\nChange:\n\n- electric gate now is multiblock (1 wide max)",
     "0.8.1": "Fix:\n-Fix crash when player die nearby First aid box\nNew:\n-Electric fence config\n-Implement Double Electric Gate",
     "0.8.0": "New:\n- Manual (WIP)\nSteel Blocks Variants",
     "0.7.0": "NEW:\n- Locker\n- Entity detector\n- Fuse box w/ cartridges\nChanges:\n- clear window texture\n- catwalks no longer connects with down fullblocks\nFixes:\n- MultiDisk disconnecting player",
