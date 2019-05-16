@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class TileEntityGauge extends TileEntity implements ITickable
@@ -39,7 +40,8 @@ public class TileEntityGauge extends TileEntity implements ITickable
         TileEntity te = this.world.getTileEntity(pos.offset(blockFacing));
         if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, blockFacing.getOpposite()))
         {
-            FluidStack stack = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).drain(1, false);
+            IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+            FluidStack stack = handler == null ? null : handler.drain(1, false);
             return stack != null ? stack.getLocalizedName() : "Empty";
         } else
         {
@@ -69,9 +71,9 @@ public class TileEntityGauge extends TileEntity implements ITickable
         TileEntity te = this.world.getTileEntity(pos.offset(blockFacing));
         if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, blockFacing.getOpposite()))
         {
-
-            IFluidTankProperties properties = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).getTankProperties()[0];
-            if (properties.getContents() != null)
+            IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+            IFluidTankProperties properties = handler == null ? null : handler.getTankProperties()[0];
+            if (properties != null && properties.getContents() != null)
             {
                 float currentAmount = properties.getContents().amount / 1000;
                 float totalCapacity = properties.getCapacity() / 1000;
