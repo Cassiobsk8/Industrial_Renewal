@@ -1,13 +1,10 @@
 package cassiokf.industrialrenewal.tileentity.barrel;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.blocks.BlockBasicContainer;
 import cassiokf.industrialrenewal.item.ModItems;
 import cassiokf.industrialrenewal.network.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketReturnBarrel;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
@@ -18,7 +15,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -36,27 +32,16 @@ import net.minecraftforge.fluids.FluidUtil;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockBarrel extends BlockContainer
+public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
 {
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool FRAME = PropertyBool.create("frame");
     protected static final AxisAlignedBB FULL_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 1D, 1D);
-    protected String name;
-
-    private NBTTagCompound tagCompound;
 
     public BlockBarrel(String name, CreativeTabs tab)
     {
-        super(Material.IRON);
-        this.name = name;
-        setSoundType(SoundType.METAL);
-        setHardness(0.8f);
-        setRegistryName(References.MODID, name);
-        setUnlocalizedName(References.MODID + "." + name);
-        setCreativeTab(tab);
-        setHardness(2f);
-        setResistance(5f);
+        super(name, tab, Material.IRON);
     }
 
     @Override
@@ -84,17 +69,10 @@ public class BlockBarrel extends BlockContainer
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(FRAME, placer.isSneaking());
     }
 
-
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
         return EnumBlockRenderType.MODEL;
-    }
-
-    @Override
-    public boolean isTopSolid(IBlockState state)
-    {
-        return true;
     }
 
     @Override
@@ -173,23 +151,10 @@ public class BlockBarrel extends BlockContainer
         return i;
     }
 
-
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return FULL_AABB;
-    }
-
-    @Override
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
     }
 
     public Class<TileEntityBarrel> getTileEntityClass()
@@ -202,16 +167,6 @@ public class BlockBarrel extends BlockContainer
     public TileEntityBarrel createTileEntity(World world, IBlockState state)
     {
         return new TileEntityBarrel();
-    }
-
-    public void registerItemModel(Item itemBlock)
-    {
-        IndustrialRenewal.proxy.registerItemRenderer(itemBlock, 0, name);
-    }
-
-    public Item createItemBlock()
-    {
-        return new ItemBlock(this).setRegistryName(getRegistryName());
     }
 
     @Nullable
