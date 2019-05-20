@@ -7,6 +7,7 @@ import cassiokf.industrialrenewal.tileentity.barrel.BlockBarrel;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.energy.pump.BlockElectricPump;
+import cassiokf.industrialrenewal.tileentity.energy.solarpanel.BlockSolarPanel;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.BlockFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.fusebox.BlockFuseBox;
 import cassiokf.industrialrenewal.tileentity.fusebox.BlockFuseBoxConnector;
@@ -21,7 +22,6 @@ import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.BlockEntityD
 import cassiokf.industrialrenewal.tileentity.sensors.flamedetector.BlockFlameDetector;
 import cassiokf.industrialrenewal.tileentity.sensors.rain.BlockSensorRain;
 import cassiokf.industrialrenewal.tileentity.signalindicator.BlockSignalIndicator;
-import cassiokf.industrialrenewal.tileentity.solarpanel.BlockSolarPanel;
 import cassiokf.industrialrenewal.tileentity.trafficlight.BlockTrafficLight;
 import cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge;
 import net.minecraft.block.Block;

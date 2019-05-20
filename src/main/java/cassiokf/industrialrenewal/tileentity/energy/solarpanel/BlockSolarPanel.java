@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.tileentity.solarpanel;
+package cassiokf.industrialrenewal.tileentity.energy.solarpanel;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import net.minecraft.block.SoundType;
