@@ -4,7 +4,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -12,27 +11,15 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class TileEntityGauge extends TileEntity implements ITickable
+public class TileEntityGauge extends TileEntity
 {
 
     private EnumFacing blockFacing = EnumFacing.DOWN;
-    private int tick = 0;
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
     {
         return (oldState.getBlock() != newState.getBlock());
-    }
-
-    @Override
-    public void update()
-    {
-        if (!this.world.isRemote && ((tick % 20) == 0))
-        {
-            tick = 0;
-
-        }
-        tick++;
     }
 
     public String GetText()
