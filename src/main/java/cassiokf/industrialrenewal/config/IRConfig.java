@@ -22,6 +22,7 @@ public class IRConfig {
     public static boolean startWithManual;
     public static int electricFenceMode;
     public static double electricFenceDamageAmount;
+    public static boolean pumpInfinityWater;
     private static Configuration config = null;
 
     public static void preInit() {
@@ -68,9 +69,13 @@ public class IRConfig {
         propertyElectricFenceDamageAmount.setLanguageKey("gui.config.electric_fence_damage_amount.name");
         propertyElectricFenceDamageAmount.setComment("The amount of damage the fence would cause (Default 2.0 '1 heart')");
 
+        Property propertyPumpInfinityWater = config.get(CATEGORY_NAME_OPTIONS, "pumpinfinitywater", true);
+        propertyPumpInfinityWater.setLanguageKey("gui.config.pump_infinity_water.name");
+        propertyElectricFenceDamageType.setComment("If pumps will not consume the water");
+
         Property propertyRecipeSpongeIron = config.get(CATEGORY_NAME_RECIPES, "spongeiron_recipe", true);
         propertyRecipeSpongeIron.setLanguageKey("gui.config.recipes.spongeiron_recipe.name");
-        propertyRecipeSpongeIron.setComment("Turn On/Off the sponge iron recipe (Default true)"); //TODO See whats going wrong
+        propertyRecipeSpongeIron.setComment("Turn On/Off the sponge iron recipe (Default true)"); //TODO See why i cannot use I18n here
         //End of properties
 
         List<String> propertyOrderRecipes = new ArrayList<String>();
@@ -78,6 +83,7 @@ public class IRConfig {
         propertyOrderRecipes.add(propertyStartWithManual.getName());
         propertyOrderRecipes.add(propertyElectricFenceDamageType.getName());
         propertyOrderRecipes.add(propertyElectricFenceDamageAmount.getName());
+        propertyOrderRecipes.add(propertyPumpInfinityWater.getName());
         propertyOrderRecipes.add(propertyRecipeSpongeIron.getName());
 
         //End order
@@ -88,6 +94,7 @@ public class IRConfig {
             spongeIronRecipeActive = propertyRecipeSpongeIron.getBoolean();
             startWithManual = propertyStartWithManual.getBoolean();
             electricFenceMode = propertyElectricFenceDamageType.getInt();
+            pumpInfinityWater = propertyPumpInfinityWater.getBoolean();
             electricFenceDamageAmount = propertyElectricFenceDamageAmount.getDouble();
         }
 
@@ -95,6 +102,7 @@ public class IRConfig {
         propertyRecipeSpongeIron.set(spongeIronRecipeActive);
         propertyElectricFenceDamageType.set(electricFenceMode);
         propertyElectricFenceDamageAmount.set(electricFenceDamageAmount);
+        propertyPumpInfinityWater.set(pumpInfinityWater);
 
         if (config.hasChanged()) {
             config.save();

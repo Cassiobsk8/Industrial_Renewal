@@ -116,6 +116,7 @@ tile.industrialrenewal.button_red.name=Emergency Button
 tile.industrialrenewal.fence_big_column.name=Big Fence Column
 tile.industrialrenewal.fence_big_corner.name=Big Fence Corner
 tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
+tile.industrialrenewal.electric_pump.name=Electric Pump
 
 
 entity.industrialrenewal.cargo_container.name=Грузовой контейнер
@@ -137,7 +138,7 @@ gui.config.recipes.startwithmanual.name=Start with manual
 gui.config.recipes.startwithmanual.comment=Turn On/Off the manual item on first spawn (Default true)
 gui.config.electric_fence_damage_type.name=Electric Fence Damage Mode
 gui.config.electric_fence_damage_amount.name=Electric Fence Damage Amount
-
+gui.config.pump_infinity_water.name=Pumps Infinity Water
 
 
 tile.industrialrenewal.crossing_rail.info=Заставляет вагонетки сигналить, когда они проходят

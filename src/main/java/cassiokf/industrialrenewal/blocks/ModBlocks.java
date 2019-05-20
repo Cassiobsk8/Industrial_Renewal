@@ -6,6 +6,7 @@ import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import cassiokf.industrialrenewal.tileentity.barrel.BlockBarrel;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
+import cassiokf.industrialrenewal.tileentity.energy.pump.BlockElectricPump;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.BlockFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.fusebox.BlockFuseBox;
 import cassiokf.industrialrenewal.tileentity.fusebox.BlockFuseBoxConnector;
@@ -82,6 +83,7 @@ public class ModBlocks {
     public static BlockFrame frame = new BlockFrame("frame", References.CREATIVE_IR_TAB);
     public static BlockBarrel barrel = new BlockBarrel("barrel", References.CREATIVE_IR_TAB);
     public static BlockGauge gauge = new BlockGauge("fluid_gauge", References.CREATIVE_IR_TAB);
+    public static BlockElectricPump electricPump = new BlockElectricPump("electric_pump", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockElectricFence efence = new BlockElectricFence("electric_fence", References.CREATIVE_IR_TAB);
     public static BlockElectricBigFenceColumn bigFenceColumn = new BlockElectricBigFenceColumn("fence_big_column", References.CREATIVE_IR_TAB);
@@ -189,6 +191,7 @@ public class ModBlocks {
                 energyCable,
                 fluidPipe,
                 valveLarge,
+                electricPump,
                 //Energy
                 spanel,
                 //Railroad
@@ -224,6 +227,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(entityDetector.getTileEntityClass(), entityDetector.getRegistryName().toString());
         GameRegistry.registerTileEntity(barrel.getTileEntityClass(), barrel.getRegistryName().toString());
         GameRegistry.registerTileEntity(gauge.getTileEntityClass(), gauge.getRegistryName().toString());
+        GameRegistry.registerTileEntity(electricPump.getTileEntityClass(), electricPump.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -293,7 +297,8 @@ public class ModBlocks {
                 cargoLoader.createItemBlock(),
                 fluidLoader.createItemBlock(),
                 gauge.createItemBlock(),
-                buttonRed.createItemBlock()
+                buttonRed.createItemBlock(),
+                electricPump.createItemBlock()
         );
     }
 
@@ -365,5 +370,6 @@ public class ModBlocks {
         barrel.registerItemModel(Item.getItemFromBlock(barrel));
         gauge.registerItemModel(Item.getItemFromBlock(gauge));
         buttonRed.registerItemModel(Item.getItemFromBlock(buttonRed));
+        electricPump.registerItemModel(Item.getItemFromBlock(electricPump));
     }
 }

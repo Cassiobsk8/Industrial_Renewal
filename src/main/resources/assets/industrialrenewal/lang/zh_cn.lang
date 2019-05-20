@@ -116,6 +116,7 @@ tile.industrialrenewal.button_red.name=Emergency Button
 tile.industrialrenewal.fence_big_column.name=Big Fence Column
 tile.industrialrenewal.fence_big_corner.name=Big Fence Corner
 tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
+tile.industrialrenewal.electric_pump.name=Electric Pump
 
 
 entity.industrialrenewal.cargo_container.name=集装箱货车
@@ -137,7 +138,7 @@ gui.config.recipes.startwithmanual.name=以手册开始
 gui.config.recipes.startwithmanual.comment=开启/关闭在首次进入世界时获得工业复兴手册(默认关闭)
 gui.config.electric_fence_damage_type.name=电围网伤害模式
 gui.config.electric_fence_damage_amount.name=电围网伤害量
-
+gui.config.pump_infinity_water.name=Pumps Infinity Water
 
 
 tile.industrialrenewal.crossing_rail.info=在车厢经过时鸣笛

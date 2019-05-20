@@ -1,7 +1,16 @@
 package cassiokf.industrialrenewal.util;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.wrappers.BlockLiquidWrapper;
+import net.minecraftforge.fluids.capability.wrappers.BlockWrapper;
+import net.minecraftforge.fluids.capability.wrappers.FluidBlockWrapper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -53,5 +62,15 @@ public class Utils {
             }
         }
         return slotsFull == handler.getSlots();
+    }
+
+    public static IFluidHandler wrapFluidBlock(Block block, World world, BlockPos pos) {
+        if (block instanceof IFluidBlock) {
+            return new FluidBlockWrapper((IFluidBlock) block, world, pos);
+        } else if (block instanceof BlockLiquid) {
+            return new BlockLiquidWrapper((BlockLiquid) block, world, pos);
+        } else {
+            return new BlockWrapper(block, world, pos);
+        }
     }
 }
