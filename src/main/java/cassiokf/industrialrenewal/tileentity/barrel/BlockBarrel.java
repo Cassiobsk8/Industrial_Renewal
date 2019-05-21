@@ -2,8 +2,6 @@ package cassiokf.industrialrenewal.tileentity.barrel;
 
 import cassiokf.industrialrenewal.blocks.BlockBasicContainer;
 import cassiokf.industrialrenewal.item.ModItems;
-import cassiokf.industrialrenewal.network.NetworkHandler;
-import cassiokf.industrialrenewal.network.PacketReturnBarrel;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -49,14 +47,14 @@ public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
     {
 
         TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
-        NetworkHandler.INSTANCE.sendToServer(new PacketReturnBarrel(te));
-        if (!worldIn.isRemote)
-        {
+        //NetworkHandler.INSTANCE.sendToServer(new PacketReturnBarrel(te));
+        if (!worldIn.isRemote) {
             playerIn.sendMessage(new TextComponentString(te.GetChatQuantity()));
-        }
-        boolean save = FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing);
-        if (save) {
-            te.save();
+
+            boolean save = FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing);
+            if (save) {
+                te.save();
+            }
         }
         return true;
     }

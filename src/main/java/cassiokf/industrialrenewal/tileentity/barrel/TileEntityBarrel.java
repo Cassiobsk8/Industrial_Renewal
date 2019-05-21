@@ -47,11 +47,11 @@ public class TileEntityBarrel extends TileFluidHandler
     }
 
     public void save() {
-        markDirty();
+        this.markDirty();
         if (Math.abs(prevAmount - this.tank.getFluidAmount()) >= 1000) {
             prevAmount = this.tank.getFluidAmount();
             if (!world.isRemote) {
-                NetworkHandler.INSTANCE.sendToAllAround(new PacketBarrel(this), new NetworkRegistry.TargetPoint(this.world.provider.getDimension(), this.pos.getX(), this.pos.getY(), this.pos.getZ(), 16));
+                NetworkHandler.INSTANCE.sendToAllAround(new PacketBarrel(this), new NetworkRegistry.TargetPoint(this.world.provider.getDimension(), this.pos.getX(), this.pos.getY(), this.pos.getZ(), 64));
             }
         }
     }
