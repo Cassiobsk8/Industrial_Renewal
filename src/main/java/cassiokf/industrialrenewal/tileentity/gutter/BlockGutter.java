@@ -25,7 +25,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge.getCapability;
+import static cassiokf.industrialrenewal.tileentity.Fluid.valve.BlockValvePipeLarge.getCapability;
 
 public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
 

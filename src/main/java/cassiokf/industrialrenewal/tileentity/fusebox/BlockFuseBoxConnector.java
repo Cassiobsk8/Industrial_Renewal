@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.tileentity.fusebox;
 
+import cassiokf.industrialrenewal.Registry.ModItems;
 import cassiokf.industrialrenewal.blocks.BlockFuseBoxConduitExtension;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
-import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tab;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.item.ModItems;
+import cassiokf.industrialrenewal.Registry.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 

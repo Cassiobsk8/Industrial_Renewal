@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.firstaidkit;
 
-import cassiokf.industrialrenewal.network.NetworkHandler;
+import cassiokf.industrialrenewal.Registry.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketFirstAidKit;
 import cassiokf.industrialrenewal.network.PacketReturnFirstAidKit;
 import net.minecraft.nbt.NBTTagCompound;

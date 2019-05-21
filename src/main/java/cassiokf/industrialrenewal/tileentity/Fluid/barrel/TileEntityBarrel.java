@@ -1,6 +1,6 @@
-package cassiokf.industrialrenewal.tileentity.barrel;
+package cassiokf.industrialrenewal.tileentity.Fluid.barrel;
 
-import cassiokf.industrialrenewal.network.NetworkHandler;
+import cassiokf.industrialrenewal.Registry.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketBarrel;
 import cassiokf.industrialrenewal.network.PacketReturnBarrel;
 import net.minecraft.block.state.IBlockState;

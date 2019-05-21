@@ -1,16 +1,16 @@
 package cassiokf.industrialrenewal;
 
-import cassiokf.industrialrenewal.blocks.ModBlocks;
+import cassiokf.industrialrenewal.Registry.GUIHandler;
+import cassiokf.industrialrenewal.Registry.ModBlocks;
+import cassiokf.industrialrenewal.Registry.ModItems;
+import cassiokf.industrialrenewal.Registry.NetworkHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.entity.EntityFluidContainer;
 import cassiokf.industrialrenewal.entity.EntityInit;
 import cassiokf.industrialrenewal.entity.EntityLogCart;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
-import cassiokf.industrialrenewal.item.ModItems;
-import cassiokf.industrialrenewal.network.NetworkHandler;
 import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
-import cassiokf.industrialrenewal.util.GUIHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.item.Item;

@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.blocks.gates;
 
+import cassiokf.industrialrenewal.Registry.ModItems;
 import cassiokf.industrialrenewal.blocks.BlockBase;
-import cassiokf.industrialrenewal.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.SoundType;

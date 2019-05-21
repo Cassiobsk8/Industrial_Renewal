@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.util.GUIHandler;
+import cassiokf.industrialrenewal.Registry.GUIHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

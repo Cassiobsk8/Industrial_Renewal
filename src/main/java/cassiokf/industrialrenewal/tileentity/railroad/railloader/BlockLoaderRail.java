@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.railroad.railloader;
 
-import cassiokf.industrialrenewal.blocks.ModBlocks;
+import cassiokf.industrialrenewal.Registry.ModBlocks;
 import cassiokf.industrialrenewal.blocks.rails.BlockRailFacing;
 import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.BlockCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.fluidloader.BlockFluidLoader;

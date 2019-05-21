@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.tileentity.valve;
+package cassiokf.industrialrenewal.tileentity.Fluid.valve;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.util.FluidTankUtils;
@@ -22,7 +22,7 @@ import java.util.EnumSet;
 import java.util.Random;
 import java.util.Set;
 
-import static cassiokf.industrialrenewal.tileentity.valve.BlockValvePipeLarge.ACTIVE;
+import static cassiokf.industrialrenewal.tileentity.Fluid.valve.BlockValvePipeLarge.ACTIVE;
 
 public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluidHandler, ITickable {
 

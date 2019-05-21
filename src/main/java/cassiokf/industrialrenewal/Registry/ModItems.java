@@ -1,7 +1,8 @@
-package cassiokf.industrialrenewal.item;
+package cassiokf.industrialrenewal.Registry;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.item.*;
 import cassiokf.industrialrenewal.item.armor.ItemSafetyBelt;
 import cassiokf.industrialrenewal.item.armor.ItemSafetyHelmet;
 import net.minecraft.item.Item;

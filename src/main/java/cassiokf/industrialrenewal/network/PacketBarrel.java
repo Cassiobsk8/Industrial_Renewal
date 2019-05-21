@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.network;
 
-import cassiokf.industrialrenewal.tileentity.barrel.TileEntityBarrel;
+import cassiokf.industrialrenewal.tileentity.Fluid.barrel.TileEntityBarrel;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;

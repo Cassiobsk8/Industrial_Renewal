@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.entity;
 
-import cassiokf.industrialrenewal.item.ModItems;
-import cassiokf.industrialrenewal.network.NetworkHandler;
+import cassiokf.industrialrenewal.Registry.ModItems;
+import cassiokf.industrialrenewal.Registry.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketReturnSteamLocomotive;
 import cassiokf.industrialrenewal.network.PacketSteamLocomotive;
 import net.minecraft.entity.item.EntityMinecart;

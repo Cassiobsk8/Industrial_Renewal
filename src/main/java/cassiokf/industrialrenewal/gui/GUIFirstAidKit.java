@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.blocks.ModBlocks;
+import cassiokf.industrialrenewal.Registry.ModBlocks;
 import cassiokf.industrialrenewal.container.ContainerFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
 import net.minecraft.client.gui.inventory.GuiContainer;

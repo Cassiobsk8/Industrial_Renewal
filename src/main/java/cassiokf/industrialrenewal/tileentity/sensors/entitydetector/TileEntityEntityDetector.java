@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.sensors.entitydetector;
 
-import cassiokf.industrialrenewal.network.NetworkHandler;
+import cassiokf.industrialrenewal.Registry.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketEntityDetector;
 import cassiokf.industrialrenewal.network.PacketReturnEntityDetector;
 import net.minecraft.block.state.IBlockState;

@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.fusebox;
 
-import cassiokf.industrialrenewal.item.ModItems;
+import cassiokf.industrialrenewal.Registry.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.state.IBlockState;

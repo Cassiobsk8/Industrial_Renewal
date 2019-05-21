@@ -1,5 +1,7 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.tileentity.Fluid.fluidpipe;
 
+import cassiokf.industrialrenewal.Registry.ModBlocks;
+import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
@@ -13,16 +15,12 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.FluidTankProperties;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
 
-public class BlockFluidPipe extends BlockPipeBase implements IFluidHandler {
+public class BlockFluidPipe extends BlockTileEntity<TileEntityFluidPipe> {
     public BlockFluidPipe(String name, CreativeTabs tab) {
         super(name, tab);
     }
@@ -63,28 +61,14 @@ public class BlockFluidPipe extends BlockPipeBase implements IFluidHandler {
         return false;
     }
 
-    //IFluidHandler
-
     @Override
-    public IFluidTankProperties[] getTankProperties() {
-        return new IFluidTankProperties[]{new FluidTankProperties(null, 1000, true, false)};
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        return 1000;
-    }
-
-    @Nullable
-    @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
+    public Class<TileEntityFluidPipe> getTileEntityClass() {
         return null;
     }
 
     @Nullable
     @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
+    public TileEntityFluidPipe createTileEntity(World world, IBlockState state) {
         return null;
     }
-
 }

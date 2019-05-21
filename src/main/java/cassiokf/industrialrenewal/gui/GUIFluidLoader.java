@@ -1,9 +1,9 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.blocks.ModBlocks;
+import cassiokf.industrialrenewal.Registry.ModBlocks;
+import cassiokf.industrialrenewal.Registry.NetworkHandler;
 import cassiokf.industrialrenewal.container.ContainerFluidLoader;
-import cassiokf.industrialrenewal.network.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketReturnFluidLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.fluidloader.TileEntityFluidLoader;
 import net.minecraft.client.Minecraft;

@@ -1,9 +1,9 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.blocks.ModBlocks;
+import cassiokf.industrialrenewal.Registry.ModBlocks;
+import cassiokf.industrialrenewal.Registry.NetworkHandler;
 import cassiokf.industrialrenewal.container.ContainerFuseBox;
-import cassiokf.industrialrenewal.network.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketReturnFuseBox;
 import cassiokf.industrialrenewal.tileentity.fusebox.TileEntityFuseBox;
 import net.minecraft.client.gui.inventory.GuiContainer;

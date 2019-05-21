@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.energy.batterybank;
 
-import cassiokf.industrialrenewal.network.NetworkHandler;
+import cassiokf.industrialrenewal.Registry.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketBatteryBank;
 import cassiokf.industrialrenewal.network.PacketReturnBatteryBank;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
@@ -70,7 +70,7 @@ public class TileEntityBatteryBank extends TileEntity implements ICapabilityProv
         if (Math.abs(prevAmount - this.container.getEnergyStored()) >= 10) {
             prevAmount = this.container.getEnergyStored();
             if (!world.isRemote) {
-                NetworkHandler.INSTANCE.sendToAllAround(new PacketBatteryBank(this), new NetworkRegistry.TargetPoint(this.world.provider.getDimension(), this.pos.getX(), this.pos.getY(), this.pos.getZ(), 16));
+                NetworkHandler.INSTANCE.sendToAllAround(new PacketBatteryBank(this), new NetworkRegistry.TargetPoint(this.world.provider.getDimension(), this.pos.getX(), this.pos.getY(), this.pos.getZ(), 64));
             }
         }
     }

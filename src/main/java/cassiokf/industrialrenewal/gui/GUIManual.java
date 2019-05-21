@@ -2,8 +2,8 @@ package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.blocks.ModBlocks;
-import cassiokf.industrialrenewal.item.ModItems;
+import cassiokf.industrialrenewal.Registry.ModBlocks;
+import cassiokf.industrialrenewal.Registry.ModItems;
 import cassiokf.industrialrenewal.util.buttons.ButtonBookOverIcon;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;

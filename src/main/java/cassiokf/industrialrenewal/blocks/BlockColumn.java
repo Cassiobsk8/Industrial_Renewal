@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.tileentity.Fluid.fluidpipe.BlockFluidPipe;
 import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

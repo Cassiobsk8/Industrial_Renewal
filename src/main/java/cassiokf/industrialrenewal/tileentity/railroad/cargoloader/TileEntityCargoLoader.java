@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.railroad.cargoloader;
 
-import cassiokf.industrialrenewal.network.NetworkHandler;
+import cassiokf.industrialrenewal.Registry.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketCargoLoader;
 import cassiokf.industrialrenewal.network.PacketReturnCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityBaseLoader;

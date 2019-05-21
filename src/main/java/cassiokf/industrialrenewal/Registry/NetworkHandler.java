@@ -1,8 +1,8 @@
-package cassiokf.industrialrenewal.network;
+package cassiokf.industrialrenewal.Registry;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.util.GUIHandler;
+import cassiokf.industrialrenewal.network.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;

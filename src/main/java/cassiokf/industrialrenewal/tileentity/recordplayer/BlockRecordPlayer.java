@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.tileentity.recordplayer;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.Registry.GUIHandler;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
-import cassiokf.industrialrenewal.util.GUIHandler;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.BlockNote;
 import net.minecraft.block.SoundType;

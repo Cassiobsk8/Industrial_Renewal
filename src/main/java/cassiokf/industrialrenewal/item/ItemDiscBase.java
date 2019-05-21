@@ -16,7 +16,7 @@ public class ItemDiscBase extends ItemRecord {
 
     protected String name;
 
-    protected ItemDiscBase(String name, CreativeTabs tab, SoundEvent sound) {
+    public ItemDiscBase(String name, CreativeTabs tab, SoundEvent sound) {
         super(name, sound);
         this.name = name;
         this.setRegistryName(References.MODID, name);

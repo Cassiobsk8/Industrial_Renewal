@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.proxy;
 
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.Registry.RenderHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.energy.batterybank.TESRBatteryBank;
 import cassiokf.industrialrenewal.tileentity.energy.batterybank.TileEntityBatteryBank;
@@ -8,7 +9,6 @@ import cassiokf.industrialrenewal.tileentity.firstaidkit.TESRFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.gauge.TESRGauge;
 import cassiokf.industrialrenewal.tileentity.gauge.TileEntityGauge;
-import cassiokf.industrialrenewal.util.RenderHandler;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;

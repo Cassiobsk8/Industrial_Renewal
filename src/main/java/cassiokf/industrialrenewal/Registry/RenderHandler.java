@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.util;
+package cassiokf.industrialrenewal.Registry;
 
 import cassiokf.industrialrenewal.entity.*;
 import cassiokf.industrialrenewal.entity.render.*;

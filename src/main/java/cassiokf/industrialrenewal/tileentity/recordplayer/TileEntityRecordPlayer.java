@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.recordplayer;
 
-import cassiokf.industrialrenewal.network.NetworkHandler;
+import cassiokf.industrialrenewal.Registry.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketRecordPlayer;
 import cassiokf.industrialrenewal.network.PacketReturnRecordPlayer;
 import net.minecraft.block.state.IBlockState;
