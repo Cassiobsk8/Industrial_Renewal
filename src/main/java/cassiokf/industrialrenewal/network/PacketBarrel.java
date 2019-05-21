@@ -11,11 +11,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketBarrel implements IMessage
 {
-
+    private boolean messageValid;
     private BlockPos pos;
     private NBTTagCompound tag;
 
@@ -23,6 +22,7 @@ public class PacketBarrel implements IMessage
     {
         this.pos = pos;
         this.tag = tag;
+        this.messageValid = true;
     }
 
     public PacketBarrel(TileEntityBarrel te)
@@ -32,11 +32,15 @@ public class PacketBarrel implements IMessage
 
     public PacketBarrel()
     {
+        this.messageValid = false;
     }
 
     @Override
     public void toBytes(ByteBuf buf)
     {
+        if (!this.messageValid) {
+            return;
+        }
         buf.writeLong(pos.toLong());
         ByteBufUtils.writeTag(buf, tag);
     }
@@ -44,34 +48,41 @@ public class PacketBarrel implements IMessage
     @Override
     public void fromBytes(ByteBuf buf)
     {
-        pos = BlockPos.fromLong(buf.readLong());
-        tag = ByteBufUtils.readTag(buf);
+        try {
+            pos = BlockPos.fromLong(buf.readLong());
+            tag = ByteBufUtils.readTag(buf);
+        } catch (IndexOutOfBoundsException ioe) {
+            System.out.println(ioe);
+        }
+        this.messageValid = true;
     }
 
     public static class Handler implements IMessageHandler<PacketBarrel, IMessage>
     {
 
         @Override
-        @SideOnly(Side.CLIENT)
+        //@SideOnly(Side.CLIENT)
         public IMessage onMessage(PacketBarrel message, MessageContext ctx)
         {
-            Minecraft.getMinecraft().addScheduledTask(() ->
-            {
-                World world = Minecraft.getMinecraft().world;
-                if (world == null)
-                {
-                    System.out.println("error: world is null at PacketFluidLoader");
-                    return null;
-                }
-                TileEntityBarrel te = (TileEntityBarrel) world.getTileEntity(message.pos);
-                if (te != null)
-                {
-                    te.readTankFromNBT(message.tag);
-                }
+            if (!message.messageValid && ctx.side != Side.SERVER) {
                 return null;
+            }
+            Minecraft.getMinecraft().addScheduledTask(() -> {
+                processMessage(message, ctx);
             });
             return null;
         }
 
+        void processMessage(PacketBarrel message, MessageContext ctx) {
+            World world = Minecraft.getMinecraft().world;
+            if (world == null) {
+                System.out.println("error: world is null at PacketFluidLoader");
+                return;
+            }
+            TileEntityBarrel te = (TileEntityBarrel) world.getTileEntity(message.pos);
+            if (te != null) {
+                te.readTankFromNBT(message.tag);
+            }
+        }
     }
 }

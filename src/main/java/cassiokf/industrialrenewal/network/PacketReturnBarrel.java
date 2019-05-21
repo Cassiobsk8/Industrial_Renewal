@@ -8,10 +8,11 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketReturnBarrel implements IMessage
 {
-
+    private boolean messageValid;
     private BlockPos pos;
     private int dimension;
 
@@ -19,6 +20,7 @@ public class PacketReturnBarrel implements IMessage
     {
         this.pos = pos;
         this.dimension = dimension;
+        this.messageValid = true;
     }
 
     public PacketReturnBarrel(TileEntityBarrel te)
@@ -28,11 +30,15 @@ public class PacketReturnBarrel implements IMessage
 
     public PacketReturnBarrel()
     {
+        this.messageValid = false;
     }
 
     @Override
     public void toBytes(ByteBuf buf)
     {
+        if (!this.messageValid) {
+            return;
+        }
         buf.writeLong(pos.toLong());
         buf.writeInt(dimension);
     }
@@ -40,8 +46,14 @@ public class PacketReturnBarrel implements IMessage
     @Override
     public void fromBytes(ByteBuf buf)
     {
-        pos = BlockPos.fromLong(buf.readLong());
-        dimension = buf.readInt();
+        try {
+            pos = BlockPos.fromLong(buf.readLong());
+            dimension = buf.readInt();
+        } catch (IndexOutOfBoundsException ioe) {
+            System.out.println(ioe);
+            return;
+        }
+        this.messageValid = true;
     }
 
     public static class Handler implements IMessageHandler<PacketReturnBarrel, PacketBarrel>
@@ -50,6 +62,9 @@ public class PacketReturnBarrel implements IMessage
         @Override
         public PacketBarrel onMessage(PacketReturnBarrel message, MessageContext ctx)
         {
+            if (!message.messageValid && ctx.side != Side.CLIENT) {
+                return null;
+            }
             World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension);
             TileEntityBarrel te = (TileEntityBarrel) world.getTileEntity(message.pos);
             if (te != null)
