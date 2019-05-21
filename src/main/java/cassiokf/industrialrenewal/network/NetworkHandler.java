@@ -45,5 +45,8 @@ public class NetworkHandler {
 
         INSTANCE.registerMessage(new PacketBarrel.Handler(), PacketBarrel.class, dis++, Side.CLIENT);
         INSTANCE.registerMessage(new PacketReturnBarrel.Handler(), PacketReturnBarrel.class, dis++, Side.SERVER);
+
+        INSTANCE.registerMessage(new PacketBatteryBank.Handler(), PacketBatteryBank.class, dis++, Side.CLIENT);
+        INSTANCE.registerMessage(new PacketReturnBatteryBank.Handler(), PacketReturnBatteryBank.class, dis++, Side.SERVER);
     }
 }

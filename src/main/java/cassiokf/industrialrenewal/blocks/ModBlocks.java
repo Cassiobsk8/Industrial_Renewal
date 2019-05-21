@@ -6,6 +6,7 @@ import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import cassiokf.industrialrenewal.tileentity.barrel.BlockBarrel;
 import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
 import cassiokf.industrialrenewal.tileentity.cable.TileEntityEnergyCable;
+import cassiokf.industrialrenewal.tileentity.energy.batterybank.BlockBatteryBank;
 import cassiokf.industrialrenewal.tileentity.energy.pump.BlockElectricPump;
 import cassiokf.industrialrenewal.tileentity.energy.solarpanel.BlockSolarPanel;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.BlockFirstAidKit;
@@ -83,14 +84,16 @@ public class ModBlocks {
     public static BlockFrame frame = new BlockFrame("frame", References.CREATIVE_IR_TAB);
     public static BlockBarrel barrel = new BlockBarrel("barrel", References.CREATIVE_IR_TAB);
     public static BlockGauge gauge = new BlockGauge("fluid_gauge", References.CREATIVE_IR_TAB);
-    public static BlockElectricPump electricPump = new BlockElectricPump("electric_pump", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockElectricFence efence = new BlockElectricFence("electric_fence", References.CREATIVE_IR_TAB);
     public static BlockElectricBigFenceColumn bigFenceColumn = new BlockElectricBigFenceColumn("fence_big_column", References.CREATIVE_IR_TAB);
     public static BlockElectricBigFenceWire bigFenceWire = new BlockElectricBigFenceWire("fence_big_wire", References.CREATIVE_IR_TAB);
     public static BlockElectricBigFenceCorner bigFenceCorner = new BlockElectricBigFenceCorner("fence_big_corner", References.CREATIVE_IR_TAB);
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
+
     public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREAATIVE_IRWIP_TAB);
+    public static BlockElectricPump electricPump = new BlockElectricPump("electric_pump", References.CREAATIVE_IRWIP_TAB);
+    public static BlockBatteryBank batteryBank = new BlockBatteryBank("battery_bank", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockSensorRain sensorRain = new BlockSensorRain("sensor_rain", References.CREATIVE_IR_TAB);
     public static BlockSignalIndicator signalIndicator = new BlockSignalIndicator("signal_indicator", References.CREATIVE_IR_TAB);
@@ -191,9 +194,10 @@ public class ModBlocks {
                 energyCable,
                 fluidPipe,
                 valveLarge,
-                electricPump,
                 //Energy
                 spanel,
+                batteryBank,
+                electricPump,
                 //Railroad
                 normalRail,
                 boosterRail,
@@ -228,6 +232,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(barrel.getTileEntityClass(), barrel.getRegistryName().toString());
         GameRegistry.registerTileEntity(gauge.getTileEntityClass(), gauge.getRegistryName().toString());
         GameRegistry.registerTileEntity(electricPump.getTileEntityClass(), electricPump.getRegistryName().toString());
+        GameRegistry.registerTileEntity(batteryBank.getTileEntityClass(), batteryBank.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -298,6 +303,7 @@ public class ModBlocks {
                 fluidLoader.createItemBlock(),
                 gauge.createItemBlock(),
                 buttonRed.createItemBlock(),
+                batteryBank.createItemBlock(),
                 electricPump.createItemBlock()
         );
     }
@@ -370,6 +376,7 @@ public class ModBlocks {
         barrel.registerItemModel(Item.getItemFromBlock(barrel));
         gauge.registerItemModel(Item.getItemFromBlock(gauge));
         buttonRed.registerItemModel(Item.getItemFromBlock(buttonRed));
+        batteryBank.registerItemModel(Item.getItemFromBlock(batteryBank));
         electricPump.registerItemModel(Item.getItemFromBlock(electricPump));
     }
 }

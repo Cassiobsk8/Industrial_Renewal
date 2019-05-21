@@ -121,6 +121,7 @@ tile.industrialrenewal.fence_big_column.name=Big Fence Column
 tile.industrialrenewal.fence_big_corner.name=Big Fence Corner
 tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
 tile.industrialrenewal.electric_pump.name=Electric Pump
+tile.industrialrenewal.battery_bank.name=Battery Bank
 
 #Entity
 

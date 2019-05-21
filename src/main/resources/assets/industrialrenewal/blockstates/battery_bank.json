@@ -1,0 +1,73 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/battery_pack"
+    }
+  },
+  "variants": {
+    "facing": {
+      "north": {
+        "model": "industrialrenewal:battery_bank"
+      },
+      "south": {
+        "model": "industrialrenewal:battery_bank",
+        "y": 180
+      },
+      "east": {
+        "model": "industrialrenewal:battery_bank",
+        "y": 90
+      },
+      "west": {
+        "model": "industrialrenewal:battery_bank",
+        "y": -90
+      }
+    },
+    "north": {
+      "true": {
+        "submodel": {
+          "pipe_north": {
+            "model": "industrialrenewal:battery_bank_side"
+          }
+        }
+      },
+      "false": {}
+    },
+    "south": {
+      "true": {
+        "submodel": {
+          "pipe_south": {
+            "model": "industrialrenewal:battery_bank_side"
+          }
+        }
+      },
+      "false": {}
+    },
+    "east": {
+      "true": {
+        "submodel": {
+          "pipe_east": {
+            "model": "industrialrenewal:battery_bank_side",
+            "y": -90
+          }
+        }
+      },
+      "false": {}
+    },
+    "west": {
+      "true": {
+        "submodel": {
+          "pipe_west": {
+            "model": "industrialrenewal:battery_bank_side",
+            "y": 90
+          }
+        }
+      },
+      "false": {}
+    },
+    "inventory": {
+      "model": "industrialrenewal:battery_bank",
+      "y": 180
+    }
+  }
+}

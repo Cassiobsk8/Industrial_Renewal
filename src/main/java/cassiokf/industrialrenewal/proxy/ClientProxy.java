@@ -2,6 +2,8 @@ package cassiokf.industrialrenewal.proxy;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.tileentity.energy.batterybank.TESRBatteryBank;
+import cassiokf.industrialrenewal.tileentity.energy.batterybank.TileEntityBatteryBank;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TESRFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.gauge.TESRGauge;
@@ -40,6 +42,7 @@ public class ClientProxy extends CommonProxy {
     public void registerRenderers() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirstAidKit.class, new TESRFirstAidKit());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGauge.class, new TESRGauge());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBatteryBank.class, new TESRBatteryBank());
     }
 
     @Override

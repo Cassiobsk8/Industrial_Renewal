@@ -23,15 +23,14 @@ public class TileEntitySolarPanel extends TileEntity implements ICapabilityProvi
     private final VoltsEnergyContainer container;
 
     public TileEntitySolarPanel() {
-        this.container = new VoltsEnergyContainer(256, 0, 15);
+        this.container = new VoltsEnergyContainer(600, 0, 60);
     }
 
     @Override
     public void update() {
-        if (this.hasWorld()) {
+        if (this.hasWorld() && !this.world.isRemote) {
             World world = this.getWorld();
             BlockPos pos = this.getPos();
-            int connections = 0;
             if (world.provider.hasSkyLight() && world.canBlockSeeSky(pos.offset(EnumFacing.UP))
                     && world.getSkylightSubtracted() == 0 && this.container.getEnergyStored() != this.container.getMaxEnergyStored()) {
 
@@ -47,11 +46,9 @@ public class TileEntitySolarPanel extends TileEntity implements ICapabilityProvi
                 if (result > this.container.getMaxEnergyStored()) {
                     result = this.container.getMaxEnergyStored();
                 }
-
                 this.container.setEnergyStored(result);
-
             }
-            connections = 0;
+            int connections = 0;
             for (final EnumFacing facing : EnumFacing.VALUES) {
                 final TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
                 if (facing != EnumFacing.UP && tileEntity != null && !tileEntity.isInvalid()) {
