@@ -1,8 +1,10 @@
+#Wed Dec 06 12:33:40 BRST 2017
 
 itemGroup.industrialrenewal=工业复兴
 itemGroup.industrialrenewalrailroad=工业复兴丨铁路
 itemGroup.industrialrenewalwip=工业复兴丨未完成内容
 
+#Items
 
 item.industrialrenewal.ir_manual.name=工业复兴手册
 item.industrialrenewal.cartridge_plus.name=Redstone Cartridge +
@@ -30,12 +32,14 @@ item.industrialrenewal.medkit.name=医疗包
 item.industrialrenewal.medkit.des0=用于治疗
 item.industrialrenewal.steel_saw.name=钢锯
 item.industrialrenewal.steel_saw.des0=能够切割石材的锯子
-item.industrialrenewal.barrel_item.name=Barrel
+item.industrialrenewal.barrel_item.name=大号铁桶
 
+#Discs
 
 item.industrialrenewal.record_royal_entrance.name=唱片
 item.industrialrenewal.record_royal_entrance.des0=Royal Entrance，由Visager作曲
 
+#Blocks
 
 tile.industrialrenewal.alarm.name=工业报警器
 tile.industrialrenewal.block_chimney.name=烟囱
@@ -53,7 +57,7 @@ tile.industrialrenewal.brace.name=斜向支撑梁
 tile.industrialrenewal.brace_steel.name=钢制斜向支撑梁
 tile.industrialrenewal.buffer_stop_rail.name=缓冲车挡器轨道
 tile.industrialrenewal.cargo_loader.name=货物转运器
-tile.industrialrenewal.fluid_loader.name=Fluid Loader (WIP)
+tile.industrialrenewal.fluid_loader.name=流体装载器 (WIP)
 tile.industrialrenewal.cart_container=集装箱货车
 tile.industrialrenewal.catwalk.name=栈桥
 tile.industrialrenewal.catwalk_steel.name=钢栈桥
@@ -111,14 +115,15 @@ tile.industrialrenewal.electric_gate.name=电闸门
 tile.industrialrenewal.record_player.name=多唱片播放器
 tile.industrialrenewal.sensor_rain.name=雨水传感器
 tile.industrialrenewal.solar_panel.name=基础太阳能板
-tile.industrialrenewal.fluid_gauge.name=Gauge
-tile.industrialrenewal.button_red.name=Emergency Button
-tile.industrialrenewal.fence_big_column.name=Big Fence Column
-tile.industrialrenewal.fence_big_corner.name=Big Fence Corner
-tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
-tile.industrialrenewal.electric_pump.name=Electric Pump
-tile.industrialrenewal.battery_bank.name=Battery Bank
+tile.industrialrenewal.fluid_gauge.name=压力表
+tile.industrialrenewal.button_red.name=紧急按钮
+tile.industrialrenewal.fence_big_column.name=大型围栏柱
+tile.industrialrenewal.fence_big_corner.name=大型围栏角
+tile.industrialrenewal.fence_big_wire.name=大型围栏线缆
+tile.industrialrenewal.electric_pump.name=电动泵
+tile.industrialrenewal.battery_bank.name=电池组
 
+#Entity
 
 entity.industrialrenewal.cargo_container.name=集装箱货车
 entity.industrialrenewal.fluid_container.name=流体罐车(WIP)
@@ -126,6 +131,7 @@ entity.industrialrenewal.steam_locomotive.name=蒸汽机车(WIP)
 entity.industrialrenewal.log_cart.name=Log Cart
 entity.industrialrenewal.passenger_car.name=客运车厢
 
+#Config
 
 gui.config.main_title=工业复兴模组配置
 gui.config.category.recipes=合成配方
@@ -139,13 +145,15 @@ gui.config.recipes.startwithmanual.name=以手册开始
 gui.config.recipes.startwithmanual.comment=开启/关闭在首次进入世界时获得工业复兴手册(默认关闭)
 gui.config.electric_fence_damage_type.name=电围网伤害模式
 gui.config.electric_fence_damage_amount.name=电围网伤害量
-gui.config.pump_infinity_water.name=Pumps Infinity Water
+gui.config.pump_infinity_water.name=无尽水泵
 
+#Info
 
 tile.industrialrenewal.crossing_rail.info=在车厢经过时鸣笛
 tile.industrialrenewal.loader_rail.info=需要搭配使用:
 tile.industrialrenewal.sign_base.info=Shift+右键使用电动螺丝刀来改变状态
 
+#Book
 
 gui.industrialrenewal.railroad.category=铁路交通运输
 gui.industrialrenewal.redstone.category=红石控制与使用
@@ -164,6 +172,7 @@ gui.industrialrenewal.entity_detector.text0=如果实体在它的检测范围\n�
 gui.industrialrenewal.first-aid_box.text0=这是存放多个一个急救包\n的容器，可以容纳8组急救\n箱，每组16个。\nShift+右键使用它，可以获\n得持续7秒的生命恢复II效\n果，共恢复6点生命值(3颗心)\n只有在生命值未满的情况\n下才会生效。
 gui.industrialrenewal.rails.text0=- 轨道,充能轨道,探测轨道:\n与原版功能一致，但是使用\n了3D的模型。\n- 缓冲车挡器：\n可以阻拦车厢继续前进。\n- 交叉道口轨道：\n当车厢通过时使其鸣笛。\n- 转运轨道：\n放置在货物转运器的上方\n或下方，能根据货物转运\n器的配置来决定是否停下\n车厢。
 
+#GUI
 
 gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=医疗包格子
 gui.industrialrenewal.blockrecordplayer.discs.tooltip=光盘格子
@@ -187,4 +196,3 @@ gui.industrialrenewal.fuel.tooltip=燃料
 gui.industrialrenewal.fusebox.input=红石输入:
 gui.industrialrenewal.fusebox.output=红石输出:
 gui.industrialrenewal.fusebox.slots.tooltip=Redstone Cartridge格子
-
