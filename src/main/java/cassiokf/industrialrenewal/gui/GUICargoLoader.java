@@ -62,7 +62,7 @@ public class GUICargoLoader extends GuiContainer {
     @Override
     protected void actionPerformed(GuiButton b) {
         if (b.id == 0) {
-            NetworkHandler.INSTANCE.sendToServer(new PacketReturnCargoLoader(this.te, true));
+            NetworkHandler.INSTANCE.sendToServer(new PacketReturnCargoLoader(this.te));
         }
     }
 

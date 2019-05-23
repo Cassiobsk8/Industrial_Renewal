@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 
-/**
+/*
  * SERVER SIDE
  */
 public class PacketReturnEntityDetector implements IMessage {
@@ -29,10 +29,6 @@ public class PacketReturnEntityDetector implements IMessage {
         this.pos = pos;
         this.ButtonId = ButtonId;
         this.messageValid = true;
-    }
-
-    public PacketReturnEntityDetector(TileEntityEntityDetector te) {
-        this(te.getPos(), te.getWorld().provider.getDimension(), 0);
     }
 
     public PacketReturnEntityDetector(TileEntityEntityDetector te, int ButtonId) {

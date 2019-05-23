@@ -14,7 +14,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -40,18 +39,14 @@ public class BlockEntityDetector extends BlockTileEntity<TileEntityEntityDetecto
     }
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (worldIn.isRemote) {
-            return true;
-        } else {
+        if (!worldIn.isRemote)
+        {
             TileEntity tileentity = worldIn.getTileEntity(pos);
-
             if (tileentity instanceof TileEntityEntityDetector) {
                 OpenGUI(worldIn, pos, playerIn);
-                playerIn.addStat(StatList.HOPPER_INSPECTED);
             }
-
-            return true;
         }
+        return true;
     }
 
     private void OpenGUI(World world, BlockPos pos, EntityPlayer player) {

@@ -2,9 +2,7 @@ package cassiokf.industrialrenewal.tileentity.firstaidkit;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.Registry.GUIHandler;
-import cassiokf.industrialrenewal.Registry.NetworkHandler;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
-import cassiokf.industrialrenewal.network.PacketFirstAidKit;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -25,7 +23,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -81,9 +78,6 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
             if (stack != null && player.shouldHeal() && !player.isPotionActive(MobEffects.REGENERATION)) {
                 player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 150, 1, false, false));
                 stack.shrink(1);
-                TileEntityFirstAidKit te = (TileEntityFirstAidKit) world.getTileEntity(pos);
-                NetworkHandler.INSTANCE.sendToAllAround(new PacketFirstAidKit(te), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
-                te.markDirty();
             }
         } else {
             OpenGUI(world, pos, player);
@@ -119,9 +113,7 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
                 world.spawnEntity(item);
             }
         }
-
         super.breakBlock(world, pos, state);
-        //world.removeTileEntity(pos);
     }
 
     @Override

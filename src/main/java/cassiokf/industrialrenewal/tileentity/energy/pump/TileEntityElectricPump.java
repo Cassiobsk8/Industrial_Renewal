@@ -53,7 +53,6 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
             boolean consumeFluid = !(downFluid.getTankProperties()[0].getContents() != null && downFluid.getTankProperties()[0].getContents().getFluid().equals(FluidRegistry.WATER) && IRConfig.pumpInfinityWater);
             VoltsEnergyContainer motorContainer = GetEnergyContainer();
 
-            System.out.println(motorContainer.extractEnergy(15, true));
             if (upTank.fill(downFluid.drain(Integer.MAX_VALUE, false), false) > 0 && motorContainer != null && motorContainer.getEnergyStored() >= 15) {
                 upTank.fill(downFluid.drain(Integer.MAX_VALUE, consumeFluid), true);
                 motorContainer.setEnergyStored(motorContainer.getEnergyStored() - 15);
@@ -102,8 +101,8 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
     @Override
     public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing) {
         int index = this.world.getBlockState(this.pos).getValue(BlockElectricPump.INDEX);
-        return (index == 1 && (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing)))
-                || (index == 0 && (capability == CapabilityEnergy.ENERGY || super.hasCapability(capability, facing)));
+        return (index == 1 && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == EnumFacing.UP)
+                || (index == 0 && (capability == CapabilityEnergy.ENERGY));
     }
 
     @Nullable

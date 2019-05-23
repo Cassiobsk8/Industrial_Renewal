@@ -1,8 +1,5 @@
 package cassiokf.industrialrenewal.tileentity.railroad.fluidloader;
 
-import cassiokf.industrialrenewal.Registry.NetworkHandler;
-import cassiokf.industrialrenewal.network.PacketFluidLoader;
-import cassiokf.industrialrenewal.network.PacketReturnFluidLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityBaseLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -20,23 +17,18 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITickable {
 
-    private int prevAmount;
     private int intLoadActivity = 0;
     private int intUnloadActivity = 0;
     public FluidTank tank = new FluidTank(16000) {
         @Override
         protected void onContentsChanged() {
-            if (!world.isRemote) {
-                TileEntityFluidLoader.this.onChange();
-                //NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidLoader(TileEntityFluidLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16));
-            }
+            TileEntityFluidLoader.this.Sync();
         }
     };
 
@@ -112,24 +104,6 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
         }
     }
 
-    @Override
-    public void onChange() {
-        markDirty();
-        if (Math.abs(prevAmount - this.tank.getFluidAmount()) >= 1000) {
-            prevAmount = this.tank.getFluidAmount();
-            if (!world.isRemote) {
-                NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidLoader(TileEntityFluidLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
-            }
-        }
-    }
-
-    @Override
-    public void onLoad() {
-        if (world.isRemote) {
-            NetworkHandler.INSTANCE.sendToServer(new PacketReturnFluidLoader(this));
-        }
-    }
-
     private IFluidHandler getInventoryUp() {
         BlockPos handlerPos = pos.offset(EnumFacing.UP);
         return getInventoryAtPosition(this.world, handlerPos);
@@ -182,23 +156,6 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
     public boolean isUnload() {
         IBlockState state = this.world.getBlockState(this.pos).getActualState(this.world, this.pos);
         return state.getValue(BlockFluidLoader.UNLOAD);
-    }
-
-    public void readTankFromNBT(NBTTagCompound tag) {
-        if (tag.hasKey("Empty")) {
-            tag.removeTag("Empty");
-        }
-        tank.readFromNBT(tag);
-    }
-
-    public void writeEntityTankToNBT(NBTTagCompound tag) {
-        tank.writeToNBT(tag);
-    }
-
-    public NBTTagCompound GetTag() {
-        NBTTagCompound tag = new NBTTagCompound();
-        writeEntityTankToNBT(tag);
-        return tag;
     }
 
     @Override

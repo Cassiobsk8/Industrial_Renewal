@@ -66,10 +66,12 @@ public class PacketReturnRecordPlayer implements IMessage {
         buf.writeBoolean(play);
     }
 
-    public static class Handler implements IMessageHandler<PacketReturnRecordPlayer, PacketRecordPlayer> {
+    public static class Handler implements IMessageHandler<PacketReturnRecordPlayer, IMessage>
+    {
 
         @Override
-        public PacketRecordPlayer onMessage(PacketReturnRecordPlayer message, MessageContext ctx) {
+        public IMessage onMessage(PacketReturnRecordPlayer message, MessageContext ctx)
+        {
             if (!message.messageValid && ctx.side != Side.CLIENT) {
                 return null;
             }
@@ -83,10 +85,8 @@ public class PacketReturnRecordPlayer implements IMessage {
                         te.stop();
                     }
                 }
-                return new PacketRecordPlayer(te);
-            } else {
-                return null;
             }
+            return null;
         }
 
     }

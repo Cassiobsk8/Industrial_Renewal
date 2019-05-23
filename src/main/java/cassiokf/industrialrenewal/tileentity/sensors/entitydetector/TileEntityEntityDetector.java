@@ -1,8 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.sensors.entitydetector;
 
-import cassiokf.industrialrenewal.Registry.NetworkHandler;
-import cassiokf.industrialrenewal.network.PacketEntityDetector;
-import cassiokf.industrialrenewal.network.PacketReturnEntityDetector;
+import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -11,22 +9,16 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileEntityEntityDetector extends TileEntity implements ITickable {
+public class TileEntityEntityDetector extends TileEntitySyncable implements ITickable
+{
 
     private EnumFacing blockFacing = EnumFacing.DOWN;
     private int distanceD = 6;
@@ -83,7 +75,8 @@ public class TileEntityEntityDetector extends TileEntity implements ITickable {
 
     @Override
     public void update() {
-        if (!this.world.isRemote && ((tick % 20) == 0)) {
+        if (!this.world.isRemote && ((tick % 10) == 0))
+        {
             tick = 0;
             changeState(passRedstone());
         }
@@ -95,7 +88,7 @@ public class TileEntityEntityDetector extends TileEntity implements ITickable {
         boolean actualValue = state.getValue(BlockEntityDetector.ACTIVE);
         if (actualValue != value) {
             this.world.setBlockState(this.pos, state.withProperty(BlockEntityDetector.BASE, this.getBlockFacing()).withProperty(BlockEntityDetector.ACTIVE, value), 3);
-            syncChanges();
+            this.Sync();
         }
     }
 
@@ -154,12 +147,7 @@ public class TileEntityEntityDetector extends TileEntity implements ITickable {
         if (value) {
             eEnum = TileEntityEntityDetector.entityEnum.valueOf(old + 1);
         }
-        syncChanges();
-    }
-
-    public void setEntityEnum(int value) {
-        eEnum = entityEnum.valueOf(value);
-        markDirty();
+        this.Sync();
     }
 
     public void setNextDistance() {
@@ -167,27 +155,7 @@ public class TileEntityEntityDetector extends TileEntity implements ITickable {
         if (distanceD > 8) {
             distanceD = 1;
         }
-        syncChanges();
-    }
-
-    public void setDistance(int distance) {
-        distanceD = distance;
-        markDirty();
-    }
-
-    @Override
-    public void onLoad() {
-        if (world.isRemote) {
-            NetworkHandler.INSTANCE.sendToServer(new PacketReturnEntityDetector(this));
-        }
-    }
-
-    private void syncChanges() {
-        if (!this.world.isRemote) {
-            NetworkHandler.INSTANCE.sendToAllAround(new PacketEntityDetector(TileEntityEntityDetector.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
-        }
-        //this.world.notifyNeighborsOfStateChange(this.pos, this.blockType, true);
-        markDirty();
+        this.Sync();
     }
 
     public int getDistance() {
@@ -208,22 +176,5 @@ public class TileEntityEntityDetector extends TileEntity implements ITickable {
         blockFacing = EnumFacing.getFront(tag.getInteger("baseFacing"));
         distanceD = tag.getInteger("distance");
         eEnum = entityEnum.valueOf(tag.getInteger("EnumConfig"));
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
-    }
-
-    @Nullable
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(getPos(), 0, getUpdateTag());
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
-        readFromNBT(pkt.getNbtCompound());
     }
 }

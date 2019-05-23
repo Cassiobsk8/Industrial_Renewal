@@ -1,21 +1,15 @@
 package cassiokf.industrialrenewal.tileentity.railroad;
 
+import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
 import cassiokf.industrialrenewal.tileentity.railroad.railloader.BlockLoaderRail;
 import cassiokf.industrialrenewal.tileentity.railroad.railloader.TileEntityLoaderRail;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
-public abstract class TileEntityBaseLoader extends TileEntity {
+public abstract class TileEntityBaseLoader extends TileEntitySyncable
+{
 
     public waitEnum waitE = waitEnum.NO_ACTIVITY;
-
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-        return (oldState.getBlock() != newState.getBlock());
-    }
 
     public waitEnum getWaitEnum() {
         if (waitE == null) {
@@ -28,16 +22,12 @@ public abstract class TileEntityBaseLoader extends TileEntity {
         waitE = waitEnum.valueOf(value);
     }
 
-    public void setNextWaitEnum(boolean value) {
+    public void setNextWaitEnum()
+    {
         int old = getWaitEnum().ordinal();
-        if (value) {
-            waitE = waitEnum.valueOf(old + 1);
-        }
-        onChange();
-        markDirty();
+        waitE = waitEnum.valueOf(old + 1);
+        Sync();
     }
-
-    public abstract void onChange();
 
     public abstract boolean isUnload();
 

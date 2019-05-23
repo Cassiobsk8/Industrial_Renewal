@@ -70,9 +70,7 @@ public class BlockRecordPlayer extends BlockTileEntity<TileEntityRecordPlayer> {
                 world.spawnEntity(item);
             }
         }
-
         super.breakBlock(world, pos, state);
-        //world.removeTileEntity(pos);
     }
 
     private void OpenGUI(World world, BlockPos pos, EntityPlayer player) {

@@ -69,7 +69,7 @@ public class GUIFluidLoader extends GuiContainer {
     @Override
     protected void actionPerformed(GuiButton b) {
         if (b.id == 0) {
-            NetworkHandler.INSTANCE.sendToServer(new PacketReturnFluidLoader(this.entity, true));
+            NetworkHandler.INSTANCE.sendToServer(new PacketReturnFluidLoader(this.entity));
         }
     }
 
