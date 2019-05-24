@@ -1,18 +1,21 @@
 package cassiokf.industrialrenewal.entity;
 
+import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.Registry.GUIHandler;
 import cassiokf.industrialrenewal.Registry.ModItems;
-import cassiokf.industrialrenewal.Registry.NetworkHandler;
-import cassiokf.industrialrenewal.network.PacketLogCart;
-import cassiokf.industrialrenewal.network.PacketReturnLogCart;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -22,7 +25,7 @@ import javax.annotation.Nullable;
 public class EntityLogCart extends EntityMinecart {
 
     public int invItensCount = 0;
-    private int tick = 0;
+    private static final DataParameter<Integer> COUNT = EntityDataManager.createKey(EntityLogCart.class, DataSerializers.VARINT);
     public ItemStackHandler inventory = new ItemStackHandler(27) {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
@@ -34,10 +37,7 @@ public class EntityLogCart extends EntityMinecart {
 
         @Override
         protected void onContentsChanged(int slot) {
-            GetInvNumber();
-            if (!world.isRemote) {
-                NetworkHandler.INSTANCE.sendToAllAround(new PacketLogCart(EntityLogCart.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), posX, posY, posZ, 64));
-            }
+            EntityLogCart.this.Sync();
         }
     };
 
@@ -50,17 +50,18 @@ public class EntityLogCart extends EntityMinecart {
         super(worldIn, x, y, z);
     }
 
-    private void getPacket() {
-        tick++;
-        tick %= 40;
-        if (world.isRemote && tick == 0) {
-            NetworkHandler.INSTANCE.sendToServer(new PacketReturnLogCart(this));
+    @Override
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
+    {
+        if (!this.world.isRemote && !player.isSneaking())
+        {
+            player.openGui(IndustrialRenewal.instance, GUIHandler.LOGCART, this.world, this.getEntityId(), 0, 0);
         }
+        return true;
     }
 
     @Override
     public void killMinecart(DamageSource source) {
-        //super.killMinecart(source);
         this.setDead();
 
         if (!source.isExplosion() && this.world.getGameRules().getBoolean("doEntityDrops")) {
@@ -68,18 +69,18 @@ public class EntityLogCart extends EntityMinecart {
         }
     }
 
-    public void GetInvNumber() {
-
+    private int GetInvNumber()
+    {
         int items = 0;
-        for (int i = 0; i < inventory.getSlots(); ++i) {
-            ItemStack itemstack = inventory.getStackInSlot(i);
+        for (int i = 0; i < this.inventory.getSlots(); ++i)
+        {
+            ItemStack itemstack = this.inventory.getStackInSlot(i);
             if (!itemstack.isEmpty()) {
                 items = items + 1;
             }
         }
-        if (world.isRemote) {
-            getPacket();
-        } else invItensCount = items / 3;
+        this.invItensCount = items / 3;
+        return this.invItensCount;
     }
 
     @Override
@@ -101,7 +102,7 @@ public class EntityLogCart extends EntityMinecart {
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.inventory.deserializeNBT(compound.getCompoundTag("inventory"));
-        GetInvNumber();
+        this.Sync();
     }
 
     @Override
@@ -113,5 +114,30 @@ public class EntityLogCart extends EntityMinecart {
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) this.inventory : super.getCapability(capability, facing);
+    }
+
+    public void Sync()
+    {
+        if (!this.world.isRemote)
+        {
+            this.dataManager.set(COUNT, GetInvNumber());
+        }
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.getDataManager().register(COUNT, 0);
+    }
+
+    @Override
+    public void notifyDataManagerChange(DataParameter<?> key)
+    {
+        super.notifyDataManagerChange(key);
+        if (this.world.isRemote && key.equals(COUNT))
+        {
+            this.invItensCount = this.dataManager.get(COUNT);
+        }
     }
 }

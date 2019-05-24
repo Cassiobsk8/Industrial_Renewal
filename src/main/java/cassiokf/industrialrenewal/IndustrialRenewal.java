@@ -1,14 +1,10 @@
 package cassiokf.industrialrenewal;
 
-import cassiokf.industrialrenewal.Registry.GUIHandler;
 import cassiokf.industrialrenewal.Registry.ModBlocks;
 import cassiokf.industrialrenewal.Registry.ModItems;
 import cassiokf.industrialrenewal.Registry.NetworkHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.entity.EntityFluidContainer;
 import cassiokf.industrialrenewal.entity.EntityInit;
-import cassiokf.industrialrenewal.entity.EntityLogCart;
-import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
 import net.minecraft.block.Block;
@@ -17,7 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -25,7 +20,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 import java.util.Random;
 
@@ -105,36 +99,6 @@ public class IndustrialRenewal {
                     p.inventory.addItemStackToInventory(new ItemStack(ModItems.manual, 1));
                 }
             }*/
-        }
-
-        @SubscribeEvent
-        public static void onPlayerEntityInteract(PlayerInteractEvent.EntityInteract event) {
-            if (event.getTarget() instanceof EntitySteamLocomotive && !event.getEntityPlayer().isSneaking()) {
-                if (!event.getWorld().isRemote) {
-                    EntitySteamLocomotive entity = (EntitySteamLocomotive) event.getTarget();
-                    int entityID = entity.getEntityId();
-                    FMLNetworkHandler.openGui(event.getEntityPlayer(), IndustrialRenewal.instance, GUIHandler.STEAMLOCOMOTIVE, event.getWorld(), entityID, 0, 0);
-                }
-                //event.setCanceled(true);
-            } else if (event.getTarget() instanceof EntityLogCart && !event.getEntityPlayer().isSneaking()) {
-                if (!event.getWorld().isRemote) {
-                    EntityLogCart entity = (EntityLogCart) event.getTarget();
-                    int entityID = entity.getEntityId();
-                    FMLNetworkHandler.openGui(event.getEntityPlayer(), IndustrialRenewal.instance, GUIHandler.LOGCART, event.getWorld(), entityID, 0, 0);
-                }
-                //event.setCanceled(true);
-            } else if (event.getTarget() instanceof EntityFluidContainer && !event.getEntityPlayer().isSneaking()) {
-                EntityFluidContainer entity = (EntityFluidContainer) event.getTarget();
-                if (event.getWorld().isRemote) {
-                    entity.OpenEvent();
-                } else {
-                    int entityID = entity.getEntityId();
-                    //FluidUtil.interactWithFluidHandler(event.getEntityPlayer(), event.getHand(), event.getWorld(), event.getTarget().getPosition(), event.getFace());
-                    FMLNetworkHandler.openGui(event.getEntityPlayer(), IndustrialRenewal.instance, GUIHandler.FLUIDCART, event.getWorld(), entityID, 0, 0);
-                }
-                //System.out.println(entity.tank.getFluidAmount() + " is client? " + event.getWorld().isRemote);
-                //event.setCanceled(true);
-            }
         }
 
         @SubscribeEvent

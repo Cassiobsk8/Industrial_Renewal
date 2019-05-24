@@ -146,7 +146,8 @@ public class ModelSteamLocomotive extends ModelBase {
         this.TruckBase1.render(f5);
         this.Chamney2.render(f5);
         this.Chamney1.render(f5);
-        if (((EntitySteamLocomotive) entity).hasPlowItem()) {
+        if (((EntitySteamLocomotive) entity).hasPlowItem)
+        {
             this.Grid.render(f5);
         }
     }
