@@ -44,8 +44,21 @@ public class BlockEnergyCable extends BlockPipeBase implements ITileEntityProvid
     }
 
     @Override
+    public Class getTileEntityClass()
+    {
+        return TileEntityEnergyCable.class;
+    }
+
+    @Override
     public boolean hasTileEntity(IBlockState state) {
         return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TileEntityEnergyCable();
     }
 
     @Override
@@ -69,6 +82,4 @@ public class BlockEnergyCable extends BlockPipeBase implements ITileEntityProvid
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityEnergyCable();
     }
-    //IEnergyStorage
-
 }

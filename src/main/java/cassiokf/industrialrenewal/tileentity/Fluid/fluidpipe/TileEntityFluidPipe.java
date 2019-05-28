@@ -1,9 +1,8 @@
 package cassiokf.industrialrenewal.tileentity.Fluid.fluidpipe;
 
+import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -17,9 +16,22 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityFluidPipe extends TileEntity implements ITickable, ICapabilityProvider
+public class TileEntityFluidPipe extends TileEntitySyncable implements ITickable, ICapabilityProvider
 {
-    public FluidTank tank = new FluidTank(10);
+    public FluidTank tank = new FluidTank(10)
+    {
+        @Override
+        protected void onContentsChanged()
+        {
+            TileEntityFluidPipe.this.Sync();
+        }
+    };
+/*
+    public void Sync() {
+        IBlockState state = this.world.getBlockState(this.pos);
+        this.world.notifyBlockUpdate(this.pos, state, state, 3);
+        this.world.notifyNeighborsOfStateChange(this.pos, state.getBlock(), true);
+    }*/
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
@@ -34,31 +46,21 @@ public class TileEntityFluidPipe extends TileEntity implements ITickable, ICapab
         {
             for (EnumFacing facing : EnumFacing.values())
             {
-                if (this.tank.getFluid() == null || this.tank.getFluidAmount() <= 0)
-                {
-                    break;
-                }
+                if (this.tank.getFluid() == null || this.tank.getFluidAmount() <= 0) break;
 
                 BlockPos pos = this.getPos().offset(facing);
                 TileEntity tileEntity = this.getWorld().getTileEntity(pos);
-                if (tileEntity == null)
-                {
-                    continue;
-                }
+
+                if (tileEntity == null) continue;
 
                 IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
-                if (fluidHandler == null)
-                {
-                    continue;
-                }
-                boolean isPipe = tileEntity instanceof TileEntityFluidPipe;
+                if (fluidHandler == null) continue;
 
+                boolean isPipe = tileEntity instanceof TileEntityFluidPipe;
                 if (isPipe && ((TileEntityFluidPipe) tileEntity).tank.getFluidAmount() > this.tank.getFluidAmount())
-                {
                     continue;
-                }
-                //this.setFluidAmout(-fluidHandler.fill(new FluidStack(this.tank.getFluid(), Math.min(1000, this.tank.getFluidAmount())), true));
-                this.tank.drain(fluidHandler.fill(this.tank.drain(10, false), true), true);
+
+                this.tank.drain(fluidHandler.fill(this.tank.drain(9, false), true), true);
             }
         }
     }
@@ -81,13 +83,6 @@ public class TileEntityFluidPipe extends TileEntity implements ITickable, ICapab
         return null;
     }
 
-    protected void tUpdate()
-    {
-        IBlockState blockState = this.world.getBlockState(this.pos);
-        this.world.notifyBlockUpdate(this.pos, blockState, blockState, 3);
-        this.markDirty();
-    }
-
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
@@ -103,30 +98,5 @@ public class TileEntityFluidPipe extends TileEntity implements ITickable, ICapab
         NBTTagCompound tag = tagCompound.getCompoundTag("fluid");
         tank.readFromNBT(tag);
         super.readFromNBT(tagCompound);
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag()
-    {
-        return this.writeToNBT(new NBTTagCompound());
-    }
-
-    @Override
-    public void handleUpdateTag(NBTTagCompound tag)
-    {
-        this.readFromNBT(tag);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-    {
-        this.handleUpdateTag(pkt.getNbtCompound());
-    }
-
-    @Nullable
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
-        return new SPacketUpdateTileEntity(this.pos, -1, this.getUpdateTag());
     }
 }
