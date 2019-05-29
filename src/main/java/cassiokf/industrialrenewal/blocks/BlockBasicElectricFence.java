@@ -41,6 +41,7 @@ public abstract class BlockBasicElectricFence extends BlockBase {
         int mode = IRConfig.electricFenceMode;
         float damage = (float) IRConfig.electricFenceDamageAmount;
 
+        if (mode == 4) return;
         if (mode == 0 && (entityIn instanceof EntityMob || entityIn instanceof EntityPlayer)) {
             float damageR = (entityIn instanceof EntityPlayer) ? 0f : damage;
             DoDamage(worldIn, pos, entityIn, damageR);
@@ -51,12 +52,13 @@ public abstract class BlockBasicElectricFence extends BlockBase {
         } else if (mode == 3) {
             DoDamage(worldIn, pos, entityIn, damage);
         }
-
     }
 
     private void DoDamage(World world, BlockPos pos, Entity entityIn, float amount) {
         entityIn.attackEntityFrom(DamageSource.LIGHTNING_BOLT, amount);
-        ((EntityLivingBase) entityIn).knockBack(entityIn, 0.3f, pos.getX() - entityIn.posX, pos.getZ() - entityIn.posZ);
+        float knockback = (float) IRConfig.electricFenceKnockBack;
+        if (knockback > 0)
+            ((EntityLivingBase) entityIn).knockBack(entityIn, knockback, pos.getX() - entityIn.posX, pos.getZ() - entityIn.posZ);
         Random r = new Random();
         float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
         world.playSound(null, pos, IRSoundHandler.EFECT_SHOCK, SoundCategory.BLOCKS, 0.6F, pitch);

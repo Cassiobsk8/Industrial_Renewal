@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.tileentity.gauge;
+package cassiokf.industrialrenewal.tileentity.Fluid.gauge;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import net.minecraft.block.material.Material;

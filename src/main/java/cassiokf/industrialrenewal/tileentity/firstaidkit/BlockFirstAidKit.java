@@ -1,8 +1,9 @@
 package cassiokf.industrialrenewal.tileentity.firstaidkit;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.GUIHandler;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -76,7 +77,7 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
         if (!player.isSneaking()) {
             ItemStack stack = itemInKit(world, pos);
             if (stack != null && player.shouldHeal() && !player.isPotionActive(MobEffects.REGENERATION)) {
-                player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 150, 1, false, false));
+                player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, IRConfig.medKitEffectDuration, 1, false, false));
                 stack.shrink(1);
             }
         } else {

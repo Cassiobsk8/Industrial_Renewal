@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.tileentity.gutter;
+package cassiokf.industrialrenewal.tileentity.Fluid.gutter;
 
 import cassiokf.industrialrenewal.blocks.BlockRoof;
 import cassiokf.industrialrenewal.util.FluidTankUtils;

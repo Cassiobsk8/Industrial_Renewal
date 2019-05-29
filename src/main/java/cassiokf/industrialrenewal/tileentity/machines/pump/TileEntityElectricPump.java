@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.tileentity.energy.pump;
+package cassiokf.industrialrenewal.tileentity.machines.pump;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.util.Utils;

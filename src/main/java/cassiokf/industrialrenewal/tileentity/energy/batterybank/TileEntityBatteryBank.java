@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.energy.batterybank;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,7 +21,8 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
     private final VoltsEnergyContainer container;
 
     public TileEntityBatteryBank() {
-        this.container = new VoltsEnergyContainer(1000000, 10240, 10240) {
+        this.container = new VoltsEnergyContainer(IRConfig.batteryBankCapacity, IRConfig.batteryBankMaxInput, IRConfig.batteryBankMaxOutput)
+        {
             @Override
             public void onEnergyChange()
             {

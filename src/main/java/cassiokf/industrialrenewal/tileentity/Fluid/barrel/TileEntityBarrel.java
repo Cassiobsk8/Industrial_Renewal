@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.Fluid.barrel;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.Fluid.TileFluidHandlerBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -11,7 +12,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityBarrel extends TileFluidHandlerBase
 {
-    public FluidTank tank = new FluidTank(64000)
+    public FluidTank tank = new FluidTank(IRConfig.barrelCapacity)
     {
         @Override
         public void onContentsChanged()

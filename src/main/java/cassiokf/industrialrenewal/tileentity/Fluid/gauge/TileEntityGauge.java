@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.tileentity.gauge;
+package cassiokf.industrialrenewal.tileentity.Fluid.gauge;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;

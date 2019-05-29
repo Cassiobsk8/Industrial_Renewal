@@ -119,6 +119,9 @@ tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
 tile.industrialrenewal.electric_pump.name=Electric Pump
 tile.industrialrenewal.battery_bank.name=Battery Bank
 
+# Fluids
+fluid.steam=Steam
+
 
 entity.industrialrenewal.cargo_container.name=集装箱货车
 entity.industrialrenewal.fluid_container.name=流体罐车(WIP)
@@ -139,7 +142,18 @@ gui.config.recipes.startwithmanual.name=以手册开始
 gui.config.recipes.startwithmanual.comment=开启/关闭在首次进入世界时获得工业复兴手册(默认关闭)
 gui.config.electric_fence_damage_type.name=电围网伤害模式
 gui.config.electric_fence_damage_amount.name=电围网伤害量
+gui.config.electric_fence_knockback_amount.name=Electric Fence KnockBack Amount
 gui.config.pump_infinity_water.name=Pumps Infinity Water
+gui.config.alarm_volume.name=Alarm Volume
+gui.config.barrel_capacity.name=Barrel Capacity
+gui.config.fluidcontainer_capacity.name=Fluid Container Cart Capacity
+gui.config.batterybank_capacity.name=Battery Bank Capacity
+gui.config.batterybank_input.name=Battery Bank Max Input
+gui.config.batterybank_output.name=Battery Bank Max Output
+gui.config.medkit_duration.name=MedKit Effect Duration
+gui.config.temp_mode.name=Temperature Mode
+gui.config.steam_factor.name=Steam Conversion Factor
+gui.config.nether_extinguisher.name=Fire Extinguisher on Nether
 
 
 tile.industrialrenewal.crossing_rail.info=在车厢经过时鸣笛

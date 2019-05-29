@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.util;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
@@ -88,5 +89,19 @@ public class Utils {
             }
         }
         return list;
+    }
+
+    public static float getConvertedTemperature(float temp)
+    {
+        switch (IRConfig.temperatureScale)
+        {
+            default:
+            case 0:
+                return temp;
+            case 1:
+                return (float) (temp * 1.8 + 32);
+            case 2:
+                return (float) (temp + 273.15);
+        }
     }
 }

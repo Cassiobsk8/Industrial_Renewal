@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.entity;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.entity.item.EntityMinecart;
@@ -26,7 +27,7 @@ import javax.annotation.Nullable;
 public class EntityFluidBase extends EntityMinecart implements IFluidHandler
 {
     private static final DataParameter<NBTTagCompound> TANK = EntityDataManager.createKey(EntityFluidBase.class, DataSerializers.COMPOUND_TAG);
-    public FluidTank tank = new FluidTank(32000)
+    public FluidTank tank = new FluidTank(IRConfig.fluidCartCapacity)
     {
         @Override
         protected void onContentsChanged()

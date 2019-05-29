@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.machines.steamboiler;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.tileentity.Fluid.TileFluidHandlerBase;
 import cassiokf.industrialrenewal.util.Utils;
@@ -61,6 +62,7 @@ public class TileEntitySteamBoilerElectric extends TileFluidHandlerBase implemen
     private int heat;
     private int energyPerTick = 24;
     private int oldHeat;
+    private int waterPtick = 100;
 
     public TileEntitySteamBoilerElectric()
     {
@@ -84,15 +86,16 @@ public class TileEntitySteamBoilerElectric extends TileFluidHandlerBase implemen
                 heat += 10;
                 this.energyContainer.setEnergyStored(Math.max(0, this.energyContainer.getEnergyStored() - energyPerTick));
             }
-            if (heat >= 10000 && this.waterTank.getFluidAmount() >= 100 && this.steamTank.getFluidAmount() < this.steamTank.getCapacity())
+            if (heat >= 10000 && this.waterTank.getFluidAmount() >= waterPtick && this.steamTank.getFluidAmount() < this.steamTank.getCapacity())
             {
-                this.waterTank.drain(100, true);
-                FluidStack steamStack = new FluidStack(FluidInit.STEAM, 1000);
+                FluidStack stack = this.waterTank.drain(waterPtick, true);
+                int amount = stack != null ? stack.amount : 0;
+                FluidStack steamStack = new FluidStack(FluidInit.STEAM, amount * IRConfig.steamBoilerConvertionFactor);
                 this.steamTank.fillInternal(steamStack, true);
                 heat -= 2;
             }
             heat -= 2;
-            heat = MathHelper.clamp(heat, 0, maxHeat);
+            heat = MathHelper.clamp(heat, 2420, maxHeat);
             TileEntity upTE = this.world.getTileEntity(pos.up(2));
             if (this.steamTank.getFluidAmount() > 0 && upTE != null && upTE.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN))
             {
@@ -190,7 +193,22 @@ public class TileEntitySteamBoilerElectric extends TileFluidHandlerBase implemen
 
     public String getHeatText()
     {
-        return heat / 100 + " ºC";
+        String st;
+        switch (IRConfig.temperatureScale)
+        {
+
+            default:
+            case 0:
+                st = " ºC";
+                break;
+            case 1:
+                st = " ºF";
+                break;
+            case 2:
+                st = " K";
+                break;
+        }
+        return Utils.getConvertedTemperature(heat / 100) + st;
     }
 
     public float GetEnergyFill() //0 ~ 180
