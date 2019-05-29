@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.Registry.ModBlocks;
-import cassiokf.industrialrenewal.Registry.ModItems;
+import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.ModItems;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;

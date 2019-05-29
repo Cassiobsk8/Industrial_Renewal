@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal;
 
-import cassiokf.industrialrenewal.Registry.ModBlocks;
-import cassiokf.industrialrenewal.Registry.ModItems;
-import cassiokf.industrialrenewal.Registry.NetworkHandler;
+import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.entity.EntityInit;
 import cassiokf.industrialrenewal.proxy.CommonProxy;

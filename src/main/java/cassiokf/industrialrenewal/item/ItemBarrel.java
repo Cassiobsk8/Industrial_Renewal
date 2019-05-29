@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.item;
 
-import cassiokf.industrialrenewal.Registry.ModBlocks;
+import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.Fluid.barrel.TileEntityBarrel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;

@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.Fluid.barrel;
 
-import cassiokf.industrialrenewal.Registry.ModItems;
+import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.blocks.BlockBasicContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;

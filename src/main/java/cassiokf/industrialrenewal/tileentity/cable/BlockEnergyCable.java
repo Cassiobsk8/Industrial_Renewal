@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.cable;
 
-import cassiokf.industrialrenewal.Registry.ModBlocks;
+import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.blocks.BlockPipeBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;

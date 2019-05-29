@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.sensors.entitydetector;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.Registry.GUIHandler;
+import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;

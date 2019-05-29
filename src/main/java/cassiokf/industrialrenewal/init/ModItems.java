@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.Registry;
+package cassiokf.industrialrenewal.init;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.References;

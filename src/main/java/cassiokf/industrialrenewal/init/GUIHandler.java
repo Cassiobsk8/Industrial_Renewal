@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.Registry;
+package cassiokf.industrialrenewal.init;
 
 import cassiokf.industrialrenewal.container.*;
 import cassiokf.industrialrenewal.entity.EntityFluidContainer;

@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.Registry.ModBlocks;
-import cassiokf.industrialrenewal.Registry.NetworkHandler;
+import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.container.ContainerCargoLoader;
 import cassiokf.industrialrenewal.network.PacketReturnCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.TileEntityCargoLoader;

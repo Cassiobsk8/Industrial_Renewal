@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.railroad.fluidloader;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.Registry.GUIHandler;
+import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.blocks.BlockBasicContainer;
 import cassiokf.industrialrenewal.tileentity.railroad.railloader.BlockLoaderRail;
 import net.minecraft.block.BlockHorizontal;

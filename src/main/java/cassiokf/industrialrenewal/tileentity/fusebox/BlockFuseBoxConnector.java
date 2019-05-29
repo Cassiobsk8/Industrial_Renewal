@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.fusebox;
 
-import cassiokf.industrialrenewal.Registry.ModItems;
+import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.blocks.BlockFuseBoxConduitExtension;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import net.minecraft.block.BlockHorizontal;

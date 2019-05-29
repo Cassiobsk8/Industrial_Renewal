@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.entity;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.Registry.GUIHandler;
-import cassiokf.industrialrenewal.Registry.ModItems;
+import cassiokf.industrialrenewal.init.GUIHandler;
+import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;

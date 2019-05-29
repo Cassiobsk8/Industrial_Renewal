@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.Registry.ModBlocks;
-import cassiokf.industrialrenewal.Registry.NetworkHandler;
+import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.container.ContainerEntityDetector;
 import cassiokf.industrialrenewal.network.PacketReturnEntityDetector;
 import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.TileEntityEntityDetector;

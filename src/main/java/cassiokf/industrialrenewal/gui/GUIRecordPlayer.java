@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.Registry.NetworkHandler;
+import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.container.ContainerRecordPlayer;
 import cassiokf.industrialrenewal.network.PacketReturnRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.recordplayer.TileEntityRecordPlayer;

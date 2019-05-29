@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.Registry.ModItems;
+import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.container.ContainerFluidContainer;
 import cassiokf.industrialrenewal.entity.EntityFluidContainer;
 import net.minecraft.client.Minecraft;
