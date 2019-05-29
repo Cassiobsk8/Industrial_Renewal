@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityFluidPipe extends TileEntitySyncable implements ITickable, ICapabilityProvider
 {
-    public FluidTank tank = new FluidTank(10)
+    public FluidTank tank = new FluidTank(1000)
     {
         @Override
         protected void onContentsChanged()
@@ -60,7 +60,7 @@ public class TileEntityFluidPipe extends TileEntitySyncable implements ITickable
                 if (isPipe && ((TileEntityFluidPipe) tileEntity).tank.getFluidAmount() > this.tank.getFluidAmount())
                     continue;
 
-                this.tank.drain(fluidHandler.fill(this.tank.drain(9, false), true), true);
+                this.tank.drain(fluidHandler.fill(this.tank.drain(1000, false), true), true);
             }
         }
     }

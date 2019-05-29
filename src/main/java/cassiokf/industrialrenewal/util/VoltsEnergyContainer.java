@@ -87,6 +87,7 @@ public class VoltsEnergyContainer implements IEnergyStorage, INBTSerializable<NB
 
     public void setEnergyStored(int stored) {
         this.stored = stored;
+        onEnergyChange();
     }
 
     @Override

@@ -73,4 +73,20 @@ public class Utils {
             return new BlockWrapper(block, world, pos);
         }
     }
+
+    public static List<BlockPos> getBlocksIn3x3x3Centered(BlockPos pos)
+    {
+        List<BlockPos> list = new ArrayList<BlockPos>();
+        for (int y = -1; y < 2; y++)
+        {
+            for (int z = -1; z < 2; z++)
+            {
+                for (int x = -1; x < 2; x++)
+                {
+                    list.add(new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z));
+                }
+            }
+        }
+        return list;
+    }
 }

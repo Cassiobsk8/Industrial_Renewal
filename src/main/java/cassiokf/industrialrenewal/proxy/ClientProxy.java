@@ -1,14 +1,16 @@
 package cassiokf.industrialrenewal.proxy;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.Registry.RenderHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.RenderHandler;
 import cassiokf.industrialrenewal.tileentity.energy.batterybank.TESRBatteryBank;
 import cassiokf.industrialrenewal.tileentity.energy.batterybank.TileEntityBatteryBank;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TESRFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.gauge.TESRGauge;
 import cassiokf.industrialrenewal.tileentity.gauge.TileEntityGauge;
+import cassiokf.industrialrenewal.tileentity.machines.steamboiler.TESRSteamBoiler;
+import cassiokf.industrialrenewal.tileentity.machines.steamboiler.TileEntitySteamBoilerElectric;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
@@ -26,6 +28,7 @@ public class ClientProxy extends CommonProxy {
     public void preInit() {
         IRConfig.clientPreInit();
         RenderHandler.registerEntitiesRender();
+        RenderHandler.registerCustomMeshesAndStates();
     }
 
     @Override
@@ -43,6 +46,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirstAidKit.class, new TESRFirstAidKit());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGauge.class, new TESRGauge());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBatteryBank.class, new TESRBatteryBank());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamBoilerElectric.class, new TESRSteamBoiler());
     }
 
     @Override

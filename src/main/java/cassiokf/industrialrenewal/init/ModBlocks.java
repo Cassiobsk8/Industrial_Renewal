@@ -1,8 +1,9 @@
-package cassiokf.industrialrenewal.Registry;
+package cassiokf.industrialrenewal.init;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.*;
 import cassiokf.industrialrenewal.blocks.rails.*;
+import cassiokf.industrialrenewal.fluids.BlockFluid;
 import cassiokf.industrialrenewal.tileentity.Fluid.barrel.BlockBarrel;
 import cassiokf.industrialrenewal.tileentity.Fluid.fluidpipe.BlockFluidPipe;
 import cassiokf.industrialrenewal.tileentity.Fluid.valve.BlockValvePipeLarge;
@@ -18,6 +19,7 @@ import cassiokf.industrialrenewal.tileentity.fusebox.BlockFuseBoxConnector;
 import cassiokf.industrialrenewal.tileentity.gauge.BlockGauge;
 import cassiokf.industrialrenewal.tileentity.gutter.BlockGutter;
 import cassiokf.industrialrenewal.tileentity.locker.BlockLocker;
+import cassiokf.industrialrenewal.tileentity.machines.steamboiler.BlockSteamBoilerElectric;
 import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.BlockCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.fluidloader.BlockFluidLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.railloader.BlockLoaderRail;
@@ -122,6 +124,9 @@ public class ModBlocks {
     public static BlockSignBase signRA = new BlockSignBase("sign_ra", References.CREATIVE_IR_TAB);
     public static BlockSignBase signC = new BlockSignBase("sign_c", References.CREATIVE_IR_TAB);
 
+    public static final BlockFluid steamBlock = new BlockFluid("steam", FluidInit.STEAM, References.CREAATIVE_IRWIP_TAB);
+    public static BlockSteamBoilerElectric steamBoilerElectric = new BlockSteamBoilerElectric("steam_boiler_electric", References.CREAATIVE_IRWIP_TAB);
+
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
                 blockHazard,
@@ -200,6 +205,8 @@ public class ModBlocks {
                 spanel,
                 batteryBank,
                 electricPump,
+                //Machines
+                steamBoilerElectric,
                 //Railroad
                 normalRail,
                 boosterRail,
@@ -210,7 +217,9 @@ public class ModBlocks {
                 cargoLoader,
                 fluidLoader,
                 //dummys
-                dummy
+                dummy,
+                //Fluids
+                steamBlock
         );
 
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
@@ -236,6 +245,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(electricPump.getTileEntityClass(), electricPump.getRegistryName().toString());
         GameRegistry.registerTileEntity(batteryBank.getTileEntityClass(), batteryBank.getRegistryName().toString());
         GameRegistry.registerTileEntity(fluidPipe.getTileEntityClass(), fluidPipe.getRegistryName().toString());
+        GameRegistry.registerTileEntity(steamBoilerElectric.getTileEntityClass(), steamBoilerElectric.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -307,7 +317,9 @@ public class ModBlocks {
                 gauge.createItemBlock(),
                 buttonRed.createItemBlock(),
                 batteryBank.createItemBlock(),
-                electricPump.createItemBlock()
+                electricPump.createItemBlock(),
+                steamBoilerElectric.createItemBlock(),
+                steamBlock.createItemBlock()
         );
     }
 
@@ -381,5 +393,7 @@ public class ModBlocks {
         buttonRed.registerItemModel(Item.getItemFromBlock(buttonRed));
         batteryBank.registerItemModel(Item.getItemFromBlock(batteryBank));
         electricPump.registerItemModel(Item.getItemFromBlock(electricPump));
+        steamBoilerElectric.registerItemModel(Item.getItemFromBlock(steamBoilerElectric));
+        steamBlock.registerItemModel(Item.getItemFromBlock(steamBlock));
     }
 }

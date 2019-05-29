@@ -1,10 +1,11 @@
 package cassiokf.industrialrenewal;
 
+import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.entity.EntityInit;
+import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.init.NetworkHandler;
-import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.entity.EntityInit;
 import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
 import net.minecraft.block.Block;
@@ -13,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -32,17 +34,9 @@ public class IndustrialRenewal {
     @SidedProxy(clientSide = "cassiokf.industrialrenewal.proxy.ClientProxy", serverSide = "cassiokf.industrialrenewal.proxy.CommonProxy", modId = References.MODID)
     public static CommonProxy proxy;
 
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        System.out.println(References.NAME + " is loading preInit!");
-        IRSoundHandler.registerSounds();
-        EntityInit.registerEntities();
-        IRConfig.preInit();
-        proxy.preInit();
-        NetworkHandler.init();
-
-        proxy.registerRenderers();
-        System.out.println("Done!");
+    static
+    {
+        FluidRegistry.enableUniversalBucket();
     }
 
     @Mod.EventHandler
@@ -57,6 +51,21 @@ public class IndustrialRenewal {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         System.out.println(References.NAME + " is loading posInit!");
+        System.out.println("Done!");
+    }
+
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event)
+    {
+        System.out.println(References.NAME + " is loading preInit!");
+        FluidInit.registerFluids();
+        IRSoundHandler.registerSounds();
+        EntityInit.registerEntities();
+        IRConfig.preInit();
+        proxy.preInit();
+        NetworkHandler.init();
+
+        proxy.registerRenderers();
         System.out.println("Done!");
     }
 

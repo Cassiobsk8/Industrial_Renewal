@@ -123,6 +123,9 @@ tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
 tile.industrialrenewal.electric_pump.name=Electric Pump
 tile.industrialrenewal.battery_bank.name=Battery Bank
 
+#Fluids
+fluid.steam=Steam
+
 #Entity
 
 entity.industrialrenewal.cargo_container.name=Cargo Container
