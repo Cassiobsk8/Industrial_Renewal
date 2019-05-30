@@ -69,8 +69,8 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
 
     public float GetTankFill() //0 ~ 180
     {
-        float currentAmount = container.getEnergyStored() / 1000;
-        float totalCapacity = container.getMaxEnergyStored() / 1000;
+        float currentAmount = container.getEnergyStored() / 1000F;
+        float totalCapacity = container.getMaxEnergyStored() / 1000F;
         currentAmount = currentAmount / totalCapacity;
         return currentAmount * 180f;
     }

@@ -208,29 +208,29 @@ public class TileEntitySteamBoilerElectric extends TileFluidHandlerBase implemen
                 st = " K";
                 break;
         }
-        return Utils.getConvertedTemperature(heat / 100) + st;
+        return Utils.getConvertedTemperature(heat / 100F) + st;
     }
 
     public float GetEnergyFill() //0 ~ 180
     {
-        float currentAmount = this.energyContainer.getEnergyStored() / 1000;
-        float totalCapacity = this.energyContainer.getMaxEnergyStored() / 1000;
+        float currentAmount = this.energyContainer.getEnergyStored() / 1000F;
+        float totalCapacity = this.energyContainer.getMaxEnergyStored() / 1000F;
         currentAmount = currentAmount / totalCapacity;
         return currentAmount * 180f;
     }
 
     public float GetWaterFill() //0 ~ 180
     {
-        float currentAmount = this.waterTank.getFluidAmount() / 1000;
-        float totalCapacity = this.waterTank.getCapacity() / 1000;
+        float currentAmount = this.waterTank.getFluidAmount() / 1000F;
+        float totalCapacity = this.waterTank.getCapacity() / 1000F;
         currentAmount = currentAmount / totalCapacity;
         return currentAmount * 180f;
     }
 
     public float GetSteamFill() //0 ~ 180
     {
-        float currentAmount = this.steamTank.getFluidAmount() / 1000;
-        float totalCapacity = this.steamTank.getCapacity() / 1000;
+        float currentAmount = this.steamTank.getFluidAmount() / 1000F;
+        float totalCapacity = this.steamTank.getCapacity() / 1000F;
         currentAmount = currentAmount / totalCapacity;
         return currentAmount * 180f;
     }
