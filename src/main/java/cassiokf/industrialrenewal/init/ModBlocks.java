@@ -30,6 +30,7 @@ import cassiokf.industrialrenewal.tileentity.sensors.flamedetector.BlockFlameDet
 import cassiokf.industrialrenewal.tileentity.sensors.rain.BlockSensorRain;
 import cassiokf.industrialrenewal.tileentity.signalindicator.BlockSignalIndicator;
 import cassiokf.industrialrenewal.tileentity.trafficlight.BlockTrafficLight;
+import cassiokf.industrialrenewal.tileentity.trash.BlockTrash;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -87,7 +88,9 @@ public class ModBlocks {
     public static BlockBrace braceSteel = new BlockBrace("brace_steel", References.CREATIVE_IR_TAB);
     public static BlockScaffold scaffold = new BlockScaffold("scaffold", References.CREATIVE_IR_TAB);
     public static BlockFrame frame = new BlockFrame("frame", References.CREATIVE_IR_TAB);
+
     public static BlockBarrel barrel = new BlockBarrel("barrel", References.CREATIVE_IR_TAB);
+    public static BlockTrash trash = new BlockTrash("trash", References.CREAATIVE_IRWIP_TAB);
     public static BlockGauge gauge = new BlockGauge("fluid_gauge", References.CREATIVE_IR_TAB);
 
     public static BlockElectricFence efence = new BlockElectricFence("electric_fence", References.CREATIVE_IR_TAB);
@@ -180,9 +183,6 @@ public class ModBlocks {
                 firstAidKit,
                 recordPlayer,
                 locker,
-                barrel,
-                gauge,
-                gutter,
                 blockChimney,
                 scaffold,
                 efence,
@@ -222,6 +222,11 @@ public class ModBlocks {
                 fluidLoader,
                 //dummys
                 dummy,
+                //Fluids Block
+                barrel,
+                trash,
+                gauge,
+                gutter,
                 //Fluids
                 steamBlock
         );
@@ -251,6 +256,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(fluidPipe.getTileEntityClass(), fluidPipe.getRegistryName().toString());
         GameRegistry.registerTileEntity(steamBoilerElectric.getTileEntityClass(), steamBoilerElectric.getRegistryName().toString());
         GameRegistry.registerTileEntity(steamTurbine.getTileEntityClass(), steamTurbine.getRegistryName().toString());
+        GameRegistry.registerTileEntity(trash.getTileEntityClass(), trash.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -323,6 +329,7 @@ public class ModBlocks {
                 buttonRed.createItemBlock(),
                 batteryBank.createItemBlock(),
                 electricPump.createItemBlock(),
+                trash.createItemBlock(),
                 steamBoilerElectric.createItemBlock(),
                 steamTurbine.createItemBlock(),
                 steamBlock.createItemBlock()
@@ -395,6 +402,7 @@ public class ModBlocks {
         sladder.registerItemModel(Item.getItemFromBlock(sladder));
         catwalkStairSteel.registerItemModel(Item.getItemFromBlock(catwalkStairSteel));
         barrel.registerItemModel(Item.getItemFromBlock(barrel));
+        trash.registerItemModel(Item.getItemFromBlock(trash));
         gauge.registerItemModel(Item.getItemFromBlock(gauge));
         buttonRed.registerItemModel(Item.getItemFromBlock(buttonRed));
         batteryBank.registerItemModel(Item.getItemFromBlock(batteryBank));

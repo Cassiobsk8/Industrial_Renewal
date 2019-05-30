@@ -123,7 +123,8 @@ tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
 tile.industrialrenewal.electric_pump.name=Electric Pump
 tile.industrialrenewal.battery_bank.name=Battery Bank
 tile.industrialrenewal.steam_turbine.name=Steam Turbine
-tle.industrialrenewal.steam.name=Steam
+tile.industrialrenewal.steam.name=Steam
+tile.industrialrenewal.trash.name=Trash Bin
 
 #Fluids
 fluid.steam=Steam
