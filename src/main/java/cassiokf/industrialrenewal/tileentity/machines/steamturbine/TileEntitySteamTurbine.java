@@ -92,8 +92,8 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
                 {
                     FluidStack stack = this.steamTank.drain(steamPtick, true);
                     int amount = stack != null ? stack.amount : 0;
-                    FluidStack steamStack = new FluidStack(FluidInit.STEAM, amount / IRConfig.steamBoilerConvertionFactor);
-                    this.waterTank.fillInternal(steamStack, true);
+                    FluidStack waterStack = new FluidStack(FluidRegistry.WATER, amount / IRConfig.steamBoilerConvertionFactor);
+                    this.waterTank.fillInternal(waterStack, true);
                     rotation += 10;
                 } else rotation -= 5;
 
@@ -132,7 +132,7 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
                 if (timeSincePlayed == 9)
                 {
                     timeSincePlayed = 0;
-                    this.world.playSound(null, this.pos, IRSoundHandler.MOTOR_ROTAION, SoundCategory.BLOCKS, 1.5F, Math.min(getRotation(), 0.9F));
+                    this.world.playSound(null, this.pos, IRSoundHandler.MOTOR_ROTAION, SoundCategory.BLOCKS, 0.8F, Math.min(getRotation(), 0.9F));
                 }
                 timeSincePlayed++;
             }
