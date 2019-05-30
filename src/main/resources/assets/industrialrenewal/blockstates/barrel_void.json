@@ -1,0 +1,26 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "industrialrenewal:trash",
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:trash"
+    }
+  }
+}

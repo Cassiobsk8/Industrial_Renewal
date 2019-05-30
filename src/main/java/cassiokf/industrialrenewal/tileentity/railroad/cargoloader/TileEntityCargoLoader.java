@@ -213,23 +213,6 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
         return state.getValue(BlockCargoLoader.UNLOAD);
     }
 
-    public void readTankFromNBT(NBTTagCompound tag) {
-        if (tag.hasKey("Empty")) {
-            tag.removeTag("Empty");
-        }
-        this.inventory.deserializeNBT(tag.getCompoundTag("inventory"));
-    }
-
-    public void writeEntityTankToNBT(NBTTagCompound tag) {
-        tag.setTag("inventory", inventory.serializeNBT());
-    }
-
-    public NBTTagCompound GetTag() {
-        NBTTagCompound tag = new NBTTagCompound();
-        writeEntityTankToNBT(tag);
-        return tag;
-    }
-
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setTag("inventory", inventory.serializeNBT());
@@ -250,6 +233,6 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) this.inventory : super.getCapability(capability, facing);
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.inventory) : super.getCapability(capability, facing);
     }
 }
