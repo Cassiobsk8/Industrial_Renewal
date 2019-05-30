@@ -62,8 +62,8 @@ public class TileEntityGauge extends TileEntity
             IFluidTankProperties properties = handler == null ? null : handler.getTankProperties()[0];
             if (properties != null && properties.getContents() != null)
             {
-                float currentAmount = properties.getContents().amount / 1000;
-                float totalCapacity = properties.getCapacity() / 1000;
+                float currentAmount = properties.getContents().amount / 1000f;
+                float totalCapacity = properties.getCapacity() / 1000f;
                 currentAmount = currentAmount / totalCapacity;
                 return currentAmount * 180f;
             }
