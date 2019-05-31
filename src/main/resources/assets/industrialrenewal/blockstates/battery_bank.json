@@ -1,25 +1,21 @@
 {
   "forge_marker": 1,
   "defaults": {
+    "model": "industrialrenewal:battery_bank",
     "textures": {
       "particle": "industrialrenewal:blocks/battery_pack"
     }
   },
   "variants": {
     "facing": {
-      "north": {
-        "model": "industrialrenewal:battery_bank"
-      },
+      "north": {},
       "south": {
-        "model": "industrialrenewal:battery_bank",
         "y": 180
       },
       "east": {
-        "model": "industrialrenewal:battery_bank",
         "y": 90
       },
       "west": {
-        "model": "industrialrenewal:battery_bank",
         "y": -90
       }
     },

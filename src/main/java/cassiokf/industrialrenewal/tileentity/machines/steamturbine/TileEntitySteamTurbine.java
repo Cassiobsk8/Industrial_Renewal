@@ -63,9 +63,9 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
     private boolean master;
     private int maxRotation = 16000;
     private int rotation;
-    private int energyPerTick = 240;
+    private int energyPerTick = 1024;
     private int oldRotation;
-    private int steamPtick = 100;
+    private int steamPtick = 500;
 
     private int timeSincePlayed;
 
@@ -94,12 +94,14 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
                     int amount = stack != null ? stack.amount : 0;
                     FluidStack waterStack = new FluidStack(FluidRegistry.WATER, amount / IRConfig.steamBoilerConvertionFactor);
                     this.waterTank.fillInternal(waterStack, true);
-                    rotation += 10;
-                } else rotation -= 5;
+                    float factor = amount / steamPtick;
+                    rotation += (10 * factor);
+                } else rotation -= 4;
 
-                if (rotation >= 5000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored())
+                if (rotation >= 6000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored())
                 {
-                    this.energyContainer.setEnergyStored((int) Math.min(this.energyContainer.getMaxEnergyStored(), this.energyContainer.getEnergyStored() + energyPerTick * getRotation()));
+                    int energy = (int) Math.min(this.energyContainer.getMaxEnergyStored(), this.energyContainer.getEnergyStored() + getEnergyProduction());
+                    this.energyContainer.setEnergyStored(energy);
                     rotation -= 4;
                 }
 
@@ -109,7 +111,7 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
 
                 EnumFacing facing = getBlockFacing();
                 TileEntity eTE = this.world.getTileEntity(pos.offset(facing.getOpposite(), 2).down());
-                if (eTE != null && this.steamTank.getFluidAmount() > 0 && eTE != null && eTE.hasCapability(CapabilityEnergy.ENERGY, facing))
+                if (eTE != null && this.energyContainer.getEnergyStored() > 0 && eTE.hasCapability(CapabilityEnergy.ENERGY, facing))
                 {
                     IEnergyStorage upTank = eTE.getCapability(CapabilityEnergy.ENERGY, facing);
                     this.energyContainer.extractEnergy(upTank.receiveEnergy(this.energyContainer.extractEnergy(10240, true), false), false);
@@ -195,6 +197,15 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
         return state.getValue(BlockSteamTurbine.FACING);
     }
 
+    private int getEnergyProduction()
+    {
+        int energy = Math.round(energyPerTick * getRotation());
+        float factor = this.waterTank.getFluidAmount() == 0 ? 1f : Math.max(0.5f, Math.min(1f, ((float) this.waterTank.getCapacity() / (float) this.waterTank.getFluidAmount()) - 0.5f));
+        energy = Math.round(energy * factor);
+        System.out.println(energy);
+        return energy;
+    }
+
     public String getWaterText()
     {
         return FluidRegistry.WATER.getName();
@@ -207,7 +218,7 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
 
     public String getGenerationText()
     {
-        int energy = (rotation >= 5000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored()) ? (int) (energyPerTick * getRotation()) : 0;
+        int energy = (rotation >= 6000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored()) ? getEnergyProduction() : 0;
         String text = energy + " FE/t";
         if (energy >= 1000 && energy < 1000000)
             text = energy / 1000 + "K FE/t";
@@ -250,7 +261,7 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
 
     public float GetGenerationFill() //0 ~ 180
     {
-        float currentAmount = ((rotation >= 5000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored()) ? energyPerTick * getRotation() : 0) / 100f;
+        float currentAmount = ((rotation >= 6000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored()) ? getEnergyProduction() : 0) / 100f;
         float totalCapacity = energyPerTick / 100f;
         currentAmount = currentAmount / totalCapacity;
         return currentAmount * 180f;

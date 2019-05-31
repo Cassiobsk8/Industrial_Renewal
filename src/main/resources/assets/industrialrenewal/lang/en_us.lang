@@ -122,7 +122,9 @@ tile.industrialrenewal.fence_big_corner.name=Big Fence Corner
 tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
 tile.industrialrenewal.electric_pump.name=Electric Pump
 tile.industrialrenewal.battery_bank.name=Battery Bank
+tile.industrialrenewal.steam_boiler.name=Steam Boiler
 tile.industrialrenewal.steam_turbine.name=Steam Turbine
+tile.industrialrenewal.firebox_solid.name=Steam Boiler Firebox For Solid Fuel
 tile.industrialrenewal.steam.name=Steam
 tile.industrialrenewal.trash.name=Trash Bin
 

@@ -46,6 +46,8 @@ public class ModItems {
     public static ItemBase pointer = new ItemBase("pointer", null);
     public static ItemBarrel barrel = new ItemBarrel("barrel_item", References.CREATIVE_IR_TAB);
 
+    public static ItemFireBox fireBoxSolid = new ItemFireBox("firebox_solid", 1, References.CREAATIVE_IRWIP_TAB);
+
     //public static ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
 
     public static void register(IForgeRegistry<Item> registry) {
@@ -76,7 +78,8 @@ public class ModItems {
                 cartridge_double,
                 cartridge_inverter,
                 pointer,
-                barrel
+                barrel,
+                fireBoxSolid
         );
     }
 
@@ -108,6 +111,7 @@ public class ModItems {
         stickSteel.registerItemModel();
         pointer.registerItemModel();
         barrel.registerItemModel();
+        fireBoxSolid.registerItemModel();
     }
 
     public static void registerOreDict() {

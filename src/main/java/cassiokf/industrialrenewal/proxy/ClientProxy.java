@@ -10,7 +10,7 @@ import cassiokf.industrialrenewal.tileentity.energy.batterybank.TileEntityBatter
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TESRFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.machines.steamboiler.TESRSteamBoiler;
-import cassiokf.industrialrenewal.tileentity.machines.steamboiler.TileEntitySteamBoilerElectric;
+import cassiokf.industrialrenewal.tileentity.machines.steamboiler.TileEntitySteamBoiler;
 import cassiokf.industrialrenewal.tileentity.machines.steamturbine.TESRSteamTurbine;
 import cassiokf.industrialrenewal.tileentity.machines.steamturbine.TileEntitySteamTurbine;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -48,7 +48,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirstAidKit.class, new TESRFirstAidKit());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGauge.class, new TESRGauge());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBatteryBank.class, new TESRBatteryBank());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamBoilerElectric.class, new TESRSteamBoiler());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamBoiler.class, new TESRSteamBoiler());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamTurbine.class, new TESRSteamTurbine());
     }
 

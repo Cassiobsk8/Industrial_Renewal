@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBoilerElectric>
+public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBoiler>
 {
 
     private static ItemStack pointer = new ItemStack(ModItems.pointer);
@@ -19,7 +19,7 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
     private double zPos = 0D;
 
     @Override
-    public void render(TileEntitySteamBoilerElectric te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+    public void render(TileEntitySteamBoiler te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         if (te.isMaster())
         {
@@ -68,7 +68,7 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
     /**
      * x = side / y = up / z = front
      */
-    private void RenderText(TileEntitySteamBoilerElectric te, double x, double y, double z, String st)
+    private void RenderText(TileEntitySteamBoiler te, double x, double y, double z, String st)
     {
 
         GlStateManager.pushMatrix();
@@ -97,7 +97,7 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
         GlStateManager.popMatrix();
     }
 
-    private void RenderPointer(TileEntitySteamBoilerElectric te, double x, double y, double z, float angle)
+    private void RenderPointer(TileEntitySteamBoiler te, double x, double y, double z, float angle)
     {
 
         GlStateManager.pushMatrix();

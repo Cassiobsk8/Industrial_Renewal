@@ -8,11 +8,22 @@
   "variants": {
     "master": {
       "true": {
-        "model": "industrialrenewal:steam_boiler_electric"
+        "model": "industrialrenewal:steam_boiler"
       },
       "false": {
         "model": "industrialrenewal:dummy"
       }
+    },
+    "type": {
+      "0": {},
+      "1": {
+        "submodel": {
+          "firebox": {
+            "model": "industrialrenewal:steam_boiler_firebox_solid"
+          }
+        }
+      },
+      "2": {}
     },
     "facing": {
       "north": {},
@@ -27,7 +38,7 @@
       }
     },
     "inventory": {
-      "model": "industrialrenewal:steam_boiler_electric"
+      "model": "industrialrenewal:steam_boiler"
     }
   }
 }

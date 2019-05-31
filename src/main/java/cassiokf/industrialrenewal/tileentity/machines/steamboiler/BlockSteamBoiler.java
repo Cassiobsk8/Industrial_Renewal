@@ -1,11 +1,14 @@
 package cassiokf.industrialrenewal.tileentity.machines.steamboiler;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.item.ItemFireBox;
+import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,22 +17,58 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockSteamBoilerElectric extends BlockTileEntity<TileEntitySteamBoilerElectric>
+public class BlockSteamBoiler extends BlockTileEntity<TileEntitySteamBoiler>
 {
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool MASTER = PropertyBool.create("master");
+    public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 2);
 
 
-    public BlockSteamBoilerElectric(String name, CreativeTabs tab)
+    public BlockSteamBoiler(String name, CreativeTabs tab)
     {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        TileEntitySteamBoiler tile = getTileEntity(world, pos);
+        IItemHandler itemHandler = tile.getFireBoxHandler();
+        ItemStack heldItem = player.getHeldItem(hand);
+        if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemFireBox || heldItem.getItem() instanceof ItemPowerScrewDrive))
+        {
+            if (heldItem.getItem() instanceof ItemFireBox && itemHandler.getStackInSlot(0).isEmpty())
+            {
+                if (!world.isRemote)
+                {
+                    int type = ((ItemFireBox) heldItem.getItem()).type;
+                    itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1), false);
+                    heldItem.shrink(1);
+                    tile.setType(type);
+                }
+                return true;
+            }
+            if (heldItem.getItem() instanceof ItemPowerScrewDrive && !itemHandler.getStackInSlot(0).isEmpty())
+            {
+                if (!world.isRemote)
+                {
+                    player.addItemStackToInventory(itemHandler.extractItem(0, 64, false));
+                    tile.setType(0);
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -43,7 +82,6 @@ public class BlockSteamBoilerElectric extends BlockTileEntity<TileEntitySteamBoi
     {
         if (state.getValue(MASTER))
         {
-            int index = 0;
             for (int y = -1; y < 2; y++)
             {
                 for (int z = -1; z < 2; z++)
@@ -53,7 +91,6 @@ public class BlockSteamBoilerElectric extends BlockTileEntity<TileEntitySteamBoi
                         BlockPos currentPos = new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
                         if (y != 0 || z != 0 || x != 0)
                             worldIn.setBlockState(currentPos, state.withProperty(MASTER, false));
-                        index++;
                     }
                 }
             }
@@ -63,7 +100,7 @@ public class BlockSteamBoilerElectric extends BlockTileEntity<TileEntitySteamBoi
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        TileEntitySteamBoilerElectric te = (TileEntitySteamBoilerElectric) worldIn.getTileEntity(pos);
+        TileEntitySteamBoiler te = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
         if (te != null)
         {
             te.breakMultiBlocks();
@@ -95,14 +132,22 @@ public class BlockSteamBoilerElectric extends BlockTileEntity<TileEntitySteamBoi
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, FACING, MASTER);
+        return new BlockStateContainer(this, FACING, MASTER, TYPE);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(MASTER, false);
+        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(MASTER, false).withProperty(TYPE, 0);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        TileEntitySteamBoiler te = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
+        if (te == null || !state.getValue(MASTER)) return state.withProperty(TYPE, 0);
+        return state.withProperty(TYPE, te.getType());
     }
 
     @SuppressWarnings("deprecation")
@@ -146,15 +191,15 @@ public class BlockSteamBoilerElectric extends BlockTileEntity<TileEntitySteamBoi
     }
 
     @Override
-    public Class<TileEntitySteamBoilerElectric> getTileEntityClass()
+    public Class<TileEntitySteamBoiler> getTileEntityClass()
     {
-        return TileEntitySteamBoilerElectric.class;
+        return TileEntitySteamBoiler.class;
     }
 
     @Nullable
     @Override
-    public TileEntitySteamBoilerElectric createTileEntity(World world, IBlockState state)
+    public TileEntitySteamBoiler createTileEntity(World world, IBlockState state)
     {
-        return new TileEntitySteamBoilerElectric();
+        return new TileEntitySteamBoiler();
     }
 }
