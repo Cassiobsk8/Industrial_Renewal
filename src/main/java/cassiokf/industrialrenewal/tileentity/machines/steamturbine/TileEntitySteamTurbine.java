@@ -202,7 +202,6 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
         int energy = Math.round(energyPerTick * getRotation());
         float factor = this.waterTank.getFluidAmount() == 0 ? 1f : Math.max(0.5f, Math.min(1f, ((float) this.waterTank.getCapacity() / (float) this.waterTank.getFluidAmount()) - 0.5f));
         energy = Math.round(energy * factor);
-        System.out.println(energy);
         return energy;
     }
 

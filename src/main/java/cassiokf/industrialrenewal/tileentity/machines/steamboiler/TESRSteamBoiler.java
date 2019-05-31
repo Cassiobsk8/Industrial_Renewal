@@ -3,18 +3,24 @@ package cassiokf.industrialrenewal.tileentity.machines.steamboiler;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBoiler>
 {
 
     private static ItemStack pointer = new ItemStack(ModItems.pointer);
+    private static ItemStack fire = new ItemStack(ModItems.fire);
     private double xPos = 0D;
     private double zPos = 0D;
 
@@ -39,6 +45,12 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
             doTheMath(te.getBlockFacing(), x, z, 0);
             RenderText(te, xPos, y + 0.93, zPos, te.getHeatText());
             RenderPointer(te, xPos, y + 1.19, zPos, te.getHeatFill());
+            //Fire
+            if (te.getType() == 1 && te.GetEnergyFill() > 0)
+            {
+                doTheMath(te.getBlockFacing(), x, z, 0);
+                RenderFire(te, xPos, y - 0.7, zPos);
+            }
         }
     }
 
@@ -73,6 +85,7 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
+        RenderHelper.disableStandardItemLighting();
         switch (te.getBlockFacing())
         {
             default:
@@ -94,12 +107,12 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
         GlStateManager.scale(0.01F, 0.01F, 1F);
         int xh = -Minecraft.getMinecraft().fontRenderer.getStringWidth(st) / 2;
         Minecraft.getMinecraft().fontRenderer.drawString(st, xh, 0, 0xFFFFFFFF);
+        RenderHelper.enableStandardItemLighting();
         GlStateManager.popMatrix();
     }
 
     private void RenderPointer(TileEntitySteamBoiler te, double x, double y, double z, float angle)
     {
-
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
         switch (te.getBlockFacing())
@@ -124,5 +137,44 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
         GlStateManager.rotate(-angle, 0, 0, 1);
         Minecraft.getMinecraft().getRenderItem().renderItem(pointer, ItemCameraTransforms.TransformType.GUI);
         GlStateManager.popMatrix();
+    }
+
+    private void RenderFire(TileEntitySteamBoiler te, double x, double y, double z)
+    {
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
+        GlStateManager.enableBlend();
+        RenderHelper.enableStandardItemLighting();
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+        GlStateManager.pushMatrix();
+
+        GlStateManager.translate(x, y, z);
+        switch (te.getBlockFacing())
+        {
+            default:
+                System.out.println("DEU BOSTA AKI TIO: " + te.getBlockFacing());
+                break;
+            case SOUTH:
+                GlStateManager.rotate(180F, 0, 1, 0);
+                break;
+            case NORTH:
+                break;
+            case WEST:
+                GlStateManager.rotate(90F, 0, 1, 0);
+                break;
+            case EAST:
+                GlStateManager.rotate(-90F, 0, 1, 0);
+                break;
+        }
+
+        IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(fire, te.getWorld(), null);
+        model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);
+
+        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        Minecraft.getMinecraft().getRenderItem().renderItem(fire, model);
+
+        GlStateManager.popMatrix();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.disableBlend();
     }
 }
