@@ -49,6 +49,7 @@ public class ModItems {
     public static ItemBarrel barrel = new ItemBarrel("barrel_item", References.CREATIVE_IR_TAB);
 
     public static ItemFireBox fireBoxSolid = new ItemFireBox("firebox_solid", 1, References.CREAATIVE_IRWIP_TAB);
+    public static ItemFireBox fireBoxFluid = new ItemFireBox("firebox_fluid", 2, References.CREAATIVE_IRWIP_TAB);
 
     //public static ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
 
@@ -82,7 +83,8 @@ public class ModItems {
                 pointer,
                 fire,
                 barrel,
-                fireBoxSolid
+                fireBoxSolid,
+                fireBoxFluid
         );
     }
 
@@ -116,6 +118,7 @@ public class ModItems {
         fire.registerItemModel();
         barrel.registerItemModel();
         fireBoxSolid.registerItemModel();
+        fireBoxFluid.registerItemModel();
     }
 
     public static void registerOreDict() {

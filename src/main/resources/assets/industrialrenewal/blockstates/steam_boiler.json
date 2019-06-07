@@ -23,7 +23,13 @@
           }
         }
       },
-      "2": {}
+      "2": {
+        "submodel": {
+          "firebox": {
+            "model": "industrialrenewal:steam_boiler_firebox_fluid"
+          }
+        }
+      }
     },
     "facing": {
       "north": {},

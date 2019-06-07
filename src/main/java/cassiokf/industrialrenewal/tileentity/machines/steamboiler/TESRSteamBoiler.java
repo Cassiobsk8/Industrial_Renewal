@@ -39,14 +39,14 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
             RenderPointer(te, xPos, y + 0.51, zPos, te.GetSteamFill());
             //ENERGY
             doTheMath(te.getBlockFacing(), x, z, 0);
-            RenderText(te, xPos, y + 0.18, zPos, te.getEnergyText());
-            RenderPointer(te, xPos, y + 0.44, zPos, te.GetEnergyFill());
+            RenderText(te, xPos, y + 0.18, zPos, te.getFuelText());
+            RenderPointer(te, xPos, y + 0.44, zPos, te.getFuelFill());
             //HEAT
             doTheMath(te.getBlockFacing(), x, z, 0);
             RenderText(te, xPos, y + 0.93, zPos, te.getHeatText());
             RenderPointer(te, xPos, y + 1.19, zPos, te.getHeatFill());
             //Fire
-            if (te.getType() == 1 && te.GetEnergyFill() > 0)
+            if (te.getType() > 0 && te.getFuelTime() > 0)
             {
                 doTheMath(te.getBlockFacing(), x, z, 0);
                 RenderFire(te, xPos, y - 0.7, zPos);
@@ -144,7 +144,7 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
         GlStateManager.enableRescaleNormal();
         GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
         GlStateManager.enableBlend();
-        RenderHelper.enableStandardItemLighting();
+        RenderHelper.disableStandardItemLighting();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
         GlStateManager.pushMatrix();
 
@@ -175,6 +175,7 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
 
         GlStateManager.popMatrix();
         GlStateManager.disableRescaleNormal();
+        RenderHelper.enableStandardItemLighting();
         GlStateManager.disableBlend();
     }
 }

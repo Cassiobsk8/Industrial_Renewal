@@ -12,7 +12,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class IRConfig {
 
@@ -34,6 +36,7 @@ public class IRConfig {
     public static int temperatureScale;
     public static int steamBoilerConvertionFactor;
     public static boolean fireExtinguisheronNether;
+    public static Map<String, Integer> fluidFuel;
 
     private static Configuration config = null;
 
@@ -129,6 +132,10 @@ public class IRConfig {
         propertyFireExtinguisherNether.setLanguageKey("gui.config.nether_extinguisher.name");
         propertyFireExtinguisherNether.setComment("If player can use fire extinguisher on nether lava");
 
+        Property propertyFluidFuel = config.get(CATEGORY_NAME_OPTIONS, "fluidFuel", "{lava=200, rocket_fuel=1120, pyrotheum=3200, refined_fuel=1500, ic2biogas=300, crude_oil=500, refined_oil=1000, coal=400, refined_biofuel=900, bio_diesel=600, biodiesel=600, diesel=900, fuel=1500, fluiddiesel=900, fluidnitrodiesel=1600, empoweredoil=700, kerosene=1500, lpg=1800, gasoline=1200, fire_water=1200, ethanol=900, bio.ethanol=900}");
+        propertyFluidFuel.setLanguageKey("gui.config.fluidFuel.name");
+        propertyFluidFuel.setComment("Fluid fuels and its combustion value per 1 Bucket (Default: {lava=200, rocket_fuel=1120, pyrotheum=3200, refined_fuel=1500, ic2biogas=300, crude_oil=500, refined_oil=1000, coal=400, refined_biofuel=900, bio_diesel=600, biodiesel=600, diesel=900, fuel=1500, fluiddiesel=900, fluidnitrodiesel=1600, empoweredoil=700, kerosene=1500, lpg=1800, gasoline=1200, fire_water=1200, ethanol=900, bio.ethanol=900})");
+
         //Recipes
         Property propertyRecipeSpongeIron = config.get(CATEGORY_NAME_RECIPES, "spongeiron_recipe", true);
         propertyRecipeSpongeIron.setLanguageKey("gui.config.recipes.spongeiron_recipe.name");
@@ -151,6 +158,7 @@ public class IRConfig {
         propertyOrder.add(propertyMedKitDuration.getName());
         propertyOrder.add(propertyTemperatureMode.getName());
         propertyOrder.add(propertySteamBoilerConversion.getName());
+        propertyOrder.add(propertyFluidFuel.getName());
 
         propertyOrder.add(propertyRecipeSpongeIron.getName());
 
@@ -174,6 +182,17 @@ public class IRConfig {
             medKitEffectDuration = propertyMedKitDuration.getInt();
             temperatureScale = propertyTemperatureMode.getInt();
             steamBoilerConvertionFactor = propertySteamBoilerConversion.getInt();
+            //
+            Map<String, Integer> myMap = new HashMap<String, Integer>();
+            String s = propertyFluidFuel.getString().replace("{", "").replace("}", "").replaceAll(System.getProperty("line.separator"), "").replaceAll(" ", "");
+            String[] pairs = s.split(",");
+            for (String pair : pairs)
+            {
+                String[] keyValue = pair.split("=");
+                myMap.put(keyValue[0], Integer.valueOf(keyValue[1]));
+            }
+            fluidFuel = myMap;
+            //
         }
 
         propertyStartWithManual.set(startWithManual);
@@ -191,6 +210,7 @@ public class IRConfig {
         propertyMedKitDuration.set(medKitEffectDuration);
         propertyTemperatureMode.set(temperatureScale);
         propertySteamBoilerConversion.set(steamBoilerConvertionFactor);
+        propertyFluidFuel.set(fluidFuel.toString().replaceAll(",", "," + System.getProperty("line.separator")));
 
         if (config.hasChanged()) {
             config.save();

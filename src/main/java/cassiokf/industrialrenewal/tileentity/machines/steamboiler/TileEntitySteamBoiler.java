@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -53,6 +54,22 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
         public boolean canFill()
         {
             return false;
+        }
+
+        @Override
+        public void onContentsChanged()
+        {
+            TileEntitySteamBoiler.this.Sync();
+        }
+    };
+
+    public FluidTank fuelTank = new FluidTank(32000)
+    {
+        @Override
+        public boolean canFillFluidType(FluidStack fluid)
+        {
+            System.out.println(fluid.getFluid().getName() + " " + IRConfig.fluidFuel.containsKey(fluid.getFluid().getName()));
+            return IRConfig.fluidFuel.containsKey(fluid.getFluid().getName());
         }
 
         @Override
@@ -102,10 +119,12 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
     private int oldHeat;
     private int waterPtick = 76;
 
-    private int solidFuelTime;
-    private int maxSolidFuelTime;
-    private int oldSolidFuelTime;
-    private int solidPerTick = 4;
+    private int fuelTime;
+    private int maxFuelTime;
+    private int oldFuelTime;
+
+    private int solidPerTick = 2;
+    private int fluidPerTick = 1;
 
     private boolean breaking;
 
@@ -114,25 +133,42 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
     {
         if (this.isMaster() && !this.world.isRemote && this.type > 0)
         {
+            //Fuel to Heat
             switch (this.type)
             {
                 default:
                 case 1:
-                    if (solidFuelTime >= solidPerTick || !this.solidFuelInv.getStackInSlot(0).isEmpty())
+                    if (fuelTime >= solidPerTick || !this.solidFuelInv.getStackInSlot(0).isEmpty())
                     {
                         ItemStack fuel = this.solidFuelInv.getStackInSlot(0);
-                        if (solidFuelTime == 0)
+                        if (fuelTime <= 0)
                         {
-                            solidFuelTime = TileEntityFurnace.getItemBurnTime(fuel);
-                            maxSolidFuelTime = solidFuelTime;
+                            fuelTime = TileEntityFurnace.getItemBurnTime(fuel);
+                            maxFuelTime = fuelTime;
                             fuel.shrink(1);
                         }
                         heat += 8;
-                        solidFuelTime -= solidPerTick;
+                        fuelTime -= solidPerTick;
+                    }
+                    break;
+                case 2:
+                    if (fuelTime >= fluidPerTick || this.fuelTank.getFluidAmount() > 0)
+                    {
+                        FluidStack fuel = this.fuelTank.getFluid();
+                        if (fuelTime <= 0)
+                        {
+                            fuelTime = IRConfig.fluidFuel.get(fuel.getFluid().getName()) != null ? IRConfig.fluidFuel.get(fuel.getFluid().getName()) : 0;
+                            maxFuelTime = fuelTime;
+                            fuel.amount -= Fluid.BUCKET_VOLUME;
+                            this.markDirty();
+                        }
+                        heat += 8;
+                        fuelTime -= fluidPerTick;
                     }
                     break;
             }
 
+            //Water to Steam
             if (heat >= 10000 && this.waterTank.getFluidAmount() >= waterPtick && this.steamTank.getFluidAmount() < this.steamTank.getCapacity())
             {
                 FluidStack stack = this.waterTank.drain(waterPtick, true);
@@ -146,8 +182,9 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
 
             heat -= 2;
             heat = MathHelper.clamp(heat, 2420, maxHeat);
-            solidFuelTime = Math.max(0, solidFuelTime);
+            fuelTime = Math.max(0, fuelTime);
 
+            //Auto output Steam
             TileEntity upTE = this.world.getTileEntity(pos.up(2));
             if (this.steamTank.getFluidAmount() > 0 && upTE != null && upTE.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN))
             {
@@ -155,6 +192,7 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
                 this.steamTank.drain(upTank.fill(this.steamTank.drain(10000, false), true), true);
             }
 
+            //Steam to Water if no Heat
             if (this.steamTank.getFluidAmount() > 0 && heat < 9000)
             {
                 FluidStack stack = this.steamTank.drain(10, true);
@@ -162,11 +200,12 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
                 this.waterTank.fill(stack, true);
             }
 
-            if (oldHeat != heat || solidFuelTime != oldSolidFuelTime)
+            //Sync with Client
+            if (oldHeat != heat || fuelTime != oldFuelTime)
             {
                 this.Sync();
                 oldHeat = heat;
-                oldSolidFuelTime = solidFuelTime;
+                oldFuelTime = fuelTime;
             }
         }
     }
@@ -183,6 +222,8 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
             this.getMaster().setType(type);
             return;
         }
+        dropItensInGround(solidFuelInv);
+        this.fuelTime = 0;
         this.type = type;
         IBlockState state = this.world.getBlockState(this.pos).withProperty(BlockSteamBoiler.TYPE, type);
         this.world.setBlockState(this.pos, state, 2);
@@ -221,25 +262,25 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
         }
         if (!this.world.isRemote && !breaking)
         {
-            breaking = true;
-            ItemStack stack = this.fireBoxInv.getStackInSlot(0);
-            if (!stack.isEmpty())
-            {
-                EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
-                this.world.spawnEntity(item);
-            }
-            ItemStack stack2 = this.solidFuelInv.getStackInSlot(0);
-            if (!stack2.isEmpty())
-            {
-                EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack2);
-                this.world.spawnEntity(item);
-            }
+            dropItensInGround(fireBoxInv);
+            dropItensInGround(solidFuelInv);
             List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
             for (BlockPos currentPos : list)
             {
                 Block block = world.getBlockState(currentPos).getBlock();
                 if (block instanceof BlockSteamBoiler) world.setBlockToAir(currentPos);
             }
+        }
+    }
+
+    private void dropItensInGround(ItemStackHandler inventory)
+    {
+        ItemStack stack = inventory.getStackInSlot(0);
+        if (!stack.isEmpty())
+        {
+            EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+            inventory.setStackInSlot(0, ItemStack.EMPTY);
+            this.world.spawnEntity(item);
         }
     }
 
@@ -272,7 +313,7 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
         return FluidInit.STEAM.getName();
     }
 
-    public String getEnergyText()
+    public String getFuelText()
     {
         switch (getType())
         {
@@ -284,7 +325,7 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
                 if (energy == 0) return "No Fuel";
                 return energy + " Fuel";
             case 2:
-                return "";
+                return this.fuelTank.getFluidAmount() > 0 ? this.fuelTank.getFluid().getLocalizedName() : "No Fuel";
         }
     }
 
@@ -307,7 +348,7 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
         return (int) Utils.getConvertedTemperature(heat / 100F) + st;
     }
 
-    public float GetEnergyFill() //0 ~ 180
+    public float getFuelFill() //0 ~ 180
     {
         switch (getType())
         {
@@ -315,11 +356,14 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
             case 0:
                 return 0;
             case 1:
-                float currentAmount = (float) this.solidFuelTime;
-                currentAmount = currentAmount / (float) maxSolidFuelTime;
+                float currentAmount = (float) this.fuelTime;
+                currentAmount = currentAmount / (float) maxFuelTime;
                 return currentAmount * 180f;
             case 2:
-                return 0;
+                float amount = this.fuelTank.getFluidAmount() / 1000f;
+                float totalCapacity = this.fuelTank.getCapacity() / 1000f;
+                amount = amount / totalCapacity;
+                return amount * 180f;
         }
     }
 
@@ -347,22 +391,30 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
         return currentAmount * 140f;
     }
 
+    public int getFuelTime()
+    {
+        return fuelTime;
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         NBTTagCompound waterTag = new NBTTagCompound();
         NBTTagCompound steamTag = new NBTTagCompound();
+        NBTTagCompound fuelTag = new NBTTagCompound();
         this.waterTank.writeToNBT(waterTag);
         this.steamTank.writeToNBT(steamTag);
+        this.fuelTank.writeToNBT(fuelTag);
         compound.setTag("water", waterTag);
         compound.setTag("steam", steamTag);
+        compound.setTag("fluidFuel", fuelTag);
         compound.setBoolean("master", this.getIsMaster());
         compound.setInteger("type", this.type);
         compound.setTag("firebox", this.fireBoxInv.serializeNBT());
         compound.setTag("solidfuel", this.solidFuelInv.serializeNBT());
         compound.setInteger("heat", heat);
-        compound.setInteger("fueltime", solidFuelTime);
-        compound.setInteger("maxtime", maxSolidFuelTime);
+        compound.setInteger("fueltime", fuelTime);
+        compound.setInteger("maxtime", maxFuelTime);
         return super.writeToNBT(compound);
     }
 
@@ -371,37 +423,39 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
     {
         NBTTagCompound waterTag = compound.getCompoundTag("water");
         NBTTagCompound steamTag = compound.getCompoundTag("steam");
+        NBTTagCompound fluidFuel = compound.getCompoundTag("fluidFuel");
         this.waterTank.readFromNBT(waterTag);
         this.steamTank.readFromNBT(steamTag);
+        this.fuelTank.readFromNBT(fluidFuel);
         this.master = compound.getBoolean("master");
         this.type = compound.getInteger("type");
         this.fireBoxInv.deserializeNBT(compound.getCompoundTag("firebox"));
         this.solidFuelInv.deserializeNBT(compound.getCompoundTag("solidfuel"));
         this.heat = compound.getInteger("heat");
-        this.solidFuelTime = compound.getInteger("fueltime");
-        this.maxSolidFuelTime = compound.getInteger("maxtime");
+        this.fuelTime = compound.getInteger("fueltime");
+        this.maxFuelTime = compound.getInteger("maxtime");
         super.readFromNBT(compound);
     }
 
     @Override
     public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
     {
-        EnumFacing face = this.getBlockFacing();
         TileEntitySteamBoiler masterTE = this.getMaster();
         if (masterTE == null) return false;
-
+        EnumFacing face = masterTE.getBlockFacing();
         return (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
                 || (facing == face && this.pos.equals(masterTE.getPos().down().offset(this.getBlockFacing())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                || (this.getMaster().getType() == 1 && (facing == face.getOpposite() || facing == face.rotateYCCW()) && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+                || (this.getMaster().getType() == 1 && facing == face.rotateYCCW() && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                || (this.getMaster().getType() == 2 && facing == face.rotateYCCW() && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
     }
 
     @Nullable
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing)
     {
-        EnumFacing face = this.getBlockFacing();
         TileEntitySteamBoiler masterTE = this.getMaster();
         if (masterTE == null) return super.getCapability(capability, facing);
+        EnumFacing face = masterTE.getBlockFacing();
 
         if (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.steamTank);
@@ -409,7 +463,8 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.waterTank);
         if (masterTE.getType() == 1 && (facing == face.getOpposite() || facing == face.rotateYCCW()) && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(masterTE.solidFuelInv);
-
+        if (masterTE.getType() == 2 && (facing == face.getOpposite() || facing == face.rotateYCCW()) && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.fuelTank);
         return super.getCapability(capability, facing);
     }
 

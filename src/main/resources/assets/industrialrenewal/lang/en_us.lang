@@ -165,6 +165,7 @@ gui.config.medkit_duration.name=MedKit Effect Duration
 gui.config.temp_mode.name=Temperature Mode
 gui.config.steam_factor.name=Steam Conversion Factor
 gui.config.nether_extinguisher.name=Fire Extinguisher on Nether
+gui.config.fluidFuel.name=Fluids Fuel White List
 
 #Info
 

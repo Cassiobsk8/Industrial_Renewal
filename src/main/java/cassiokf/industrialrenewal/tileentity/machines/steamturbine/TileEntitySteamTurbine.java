@@ -94,7 +94,7 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
                     int amount = stack != null ? stack.amount : 0;
                     FluidStack waterStack = new FluidStack(FluidRegistry.WATER, amount / IRConfig.steamBoilerConvertionFactor);
                     this.waterTank.fillInternal(waterStack, true);
-                    float factor = amount / steamPtick;
+                    float factor = (float) amount / (float) steamPtick;
                     rotation += (10 * factor);
                 } else rotation -= 4;
 
@@ -110,7 +110,7 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
 
 
                 EnumFacing facing = getBlockFacing();
-                TileEntity eTE = this.world.getTileEntity(pos.offset(facing.getOpposite(), 2).down());
+                TileEntity eTE = this.world.getTileEntity(pos.offset(facing.getOpposite()).down().offset(facing.rotateYCCW(), 2));
                 if (eTE != null && this.energyContainer.getEnergyStored() > 0 && eTE.hasCapability(CapabilityEnergy.ENERGY, facing))
                 {
                     IEnergyStorage upTank = eTE.getCapability(CapabilityEnergy.ENERGY, facing);
@@ -202,6 +202,7 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
         int energy = Math.round(energyPerTick * getRotation());
         float factor = this.waterTank.getFluidAmount() == 0 ? 1f : Math.max(0.5f, Math.min(1f, ((float) this.waterTank.getCapacity() / (float) this.waterTank.getFluidAmount()) - 0.5f));
         energy = Math.round(energy * factor);
+        energy = MathHelper.clamp(energy, 0, energyPerTick);
         return energy;
     }
 
@@ -323,8 +324,8 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
         if (masterTE == null) return false;
 
         return (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                || (facing == face && this.pos.equals(masterTE.getPos().down().offset(this.getBlockFacing())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                || (facing == face.getOpposite() && this.pos.equals(masterTE.getPos().down().offset(this.getBlockFacing().getOpposite())) && capability == CapabilityEnergy.ENERGY);
+                || (facing == face && this.pos.equals(masterTE.getPos().down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+                || (facing == face.rotateYCCW() && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityEnergy.ENERGY);
     }
 
     @Nullable
@@ -339,8 +340,8 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.steamTank);
         if (facing == face && this.pos.equals(masterTE.getPos().down().offset(this.getBlockFacing())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.waterTank);
-        if (facing == face.getOpposite() && this.pos.equals(masterTE.getPos().down().offset(this.getBlockFacing().getOpposite())) && capability == CapabilityEnergy.ENERGY)
-            return (T) masterTE.energyContainer;
+        if (facing == face.rotateYCCW() && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityEnergy.ENERGY)
+            return CapabilityEnergy.ENERGY.cast(masterTE.energyContainer);
 
         return super.getCapability(capability, facing);
     }

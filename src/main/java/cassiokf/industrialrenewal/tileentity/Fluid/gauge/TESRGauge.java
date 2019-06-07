@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.tileentity.Fluid.gauge;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
@@ -57,6 +58,7 @@ public class TESRGauge extends TileEntitySpecialRenderer<TileEntityGauge>
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
+        RenderHelper.disableStandardItemLighting();
         switch (te.getGaugeFacing())
         {
             default:
@@ -79,6 +81,7 @@ public class TESRGauge extends TileEntitySpecialRenderer<TileEntityGauge>
         String st = te.GetText();
         int xh = -Minecraft.getMinecraft().fontRenderer.getStringWidth(st) / 2;
         Minecraft.getMinecraft().fontRenderer.drawString(st, xh, 0, 0xFFFFFFFF);
+        RenderHelper.enableStandardItemLighting();
         GlStateManager.popMatrix();
     }
 
