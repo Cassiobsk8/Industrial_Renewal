@@ -1,9 +1,9 @@
 package cassiokf.industrialrenewal.tileentity.Fluid.fluidpipe;
 
-import cassiokf.industrialrenewal.Registry.ModBlocks;
-import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.blocks.BlockPipeBase;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,26 +15,22 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockFluidPipe extends BlockTileEntity<TileEntityFluidPipe> {
+public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipe> implements ITileEntityProvider
+{
     public BlockFluidPipe(String name, CreativeTabs tab) {
         super(name, tab);
     }
 
     @Override
     protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
-        // Connect if the neighbouring block is another pipe
-        if (super.isValidConnection(ownState, neighbourState, world, ownPos, neighbourDirection)) {
-            return true;
-        }
-
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final Block neighbourBlock = neighbourState.getBlock();
 
+        if (neighbourBlock instanceof BlockFluidPipe) return true;
         // Connect if the neighbouring block has a TileEntity with an IFluidHandler for the adjacent face
         if (neighbourBlock.hasTileEntity(neighbourState)) {
             final TileEntity tileEntity = world.getTileEntity(neighbourPos);
@@ -42,7 +38,7 @@ public class BlockFluidPipe extends BlockTileEntity<TileEntityFluidPipe> {
         }
 
         // Connect if the neighbouring block is a fluid/liquid, FluidUtil.getFluidHandler will provide an IFluidHandler wrapper to drain from it
-        return neighbourBlock instanceof IFluidBlock || neighbourBlock instanceof BlockLiquid;
+        return false;
     }
 
     @Override
@@ -62,13 +58,21 @@ public class BlockFluidPipe extends BlockTileEntity<TileEntityFluidPipe> {
     }
 
     @Override
-    public Class<TileEntityFluidPipe> getTileEntityClass() {
-        return null;
+    public Class getTileEntityClass()
+    {
+        return TileEntityFluidPipe.class;
     }
 
     @Nullable
     @Override
     public TileEntityFluidPipe createTileEntity(World world, IBlockState state) {
-        return null;
+        return new TileEntityFluidPipe();
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta)
+    {
+        return new TileEntityFluidPipe();
     }
 }

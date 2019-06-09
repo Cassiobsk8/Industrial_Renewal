@@ -1,21 +1,18 @@
 package cassiokf.industrialrenewal.tileentity.firstaidkit;
 
-import cassiokf.industrialrenewal.Registry.NetworkHandler;
-import cassiokf.industrialrenewal.network.PacketFirstAidKit;
-import cassiokf.industrialrenewal.network.PacketReturnFirstAidKit;
+import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityFirstAidKit extends TileEntity implements ICapabilityProvider {
+public class TileEntityFirstAidKit extends TileEntitySyncable implements ICapabilityProvider
+{
 
     public ItemStackHandler inventory;
 
@@ -23,9 +20,7 @@ public class TileEntityFirstAidKit extends TileEntity implements ICapabilityProv
         this.inventory = new ItemStackHandler(8) {
             @Override
             protected void onContentsChanged(int slot) {
-                if (!world.isRemote) {
-                    NetworkHandler.INSTANCE.sendToAllAround(new PacketFirstAidKit(TileEntityFirstAidKit.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
-                }
+                TileEntityFirstAidKit.this.Sync();
             }
         };
     }
@@ -33,13 +28,6 @@ public class TileEntityFirstAidKit extends TileEntity implements ICapabilityProv
     public EnumFacing getFaceDirection() {
 
         return BlockFirstAidKit.getFaceDirection(this.world.getBlockState(this.pos));
-    }
-
-    @Override
-    public void onLoad() {
-        if (world.isRemote) {
-            NetworkHandler.INSTANCE.sendToServer(new PacketReturnFirstAidKit(this));
-        }
     }
 
     @Override

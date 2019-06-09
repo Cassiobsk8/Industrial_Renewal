@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.Fluid.valve;
 
-import cassiokf.industrialrenewal.Registry.ModItems;
+import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import cassiokf.industrialrenewal.util.enumproperty.EnumFaceRotation;
 import net.minecraft.block.material.Material;

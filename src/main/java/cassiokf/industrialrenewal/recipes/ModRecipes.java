@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.recipes;
 
-import cassiokf.industrialrenewal.Registry.ModItems;
+import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.config.IRConfig;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

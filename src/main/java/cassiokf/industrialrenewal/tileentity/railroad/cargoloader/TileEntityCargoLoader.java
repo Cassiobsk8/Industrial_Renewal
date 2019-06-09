@@ -1,8 +1,5 @@
 package cassiokf.industrialrenewal.tileentity.railroad.cargoloader;
 
-import cassiokf.industrialrenewal.Registry.NetworkHandler;
-import cassiokf.industrialrenewal.network.PacketCargoLoader;
-import cassiokf.industrialrenewal.network.PacketReturnCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityBaseLoader;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
@@ -19,7 +16,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -38,9 +34,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
 
         @Override
         protected void onContentsChanged(int slot) {
-            if (!world.isRemote) {
-                markDirty();
-            }
+            TileEntityCargoLoader.this.Sync();
         }
     };
 
@@ -165,20 +159,6 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
 
     }
 
-    @Override
-    public void onChange() {
-        if (!this.world.isRemote) {
-            NetworkHandler.INSTANCE.sendToAllAround(new PacketCargoLoader(TileEntityCargoLoader.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
-        }
-    }
-
-    @Override
-    public void onLoad() {
-        if (world.isRemote) {
-            NetworkHandler.INSTANCE.sendToServer(new PacketReturnCargoLoader(this));
-        }
-    }
-
     private IItemHandler getInventoryUp() {
         BlockPos handlerPos = pos.offset(EnumFacing.UP);
         return getInventoryAtPosition(this.getWorld(), handlerPos);
@@ -233,23 +213,6 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
         return state.getValue(BlockCargoLoader.UNLOAD);
     }
 
-    public void readTankFromNBT(NBTTagCompound tag) {
-        if (tag.hasKey("Empty")) {
-            tag.removeTag("Empty");
-        }
-        this.inventory.deserializeNBT(tag.getCompoundTag("inventory"));
-    }
-
-    public void writeEntityTankToNBT(NBTTagCompound tag) {
-        tag.setTag("inventory", inventory.serializeNBT());
-    }
-
-    public NBTTagCompound GetTag() {
-        NBTTagCompound tag = new NBTTagCompound();
-        writeEntityTankToNBT(tag);
-        return tag;
-    }
-
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setTag("inventory", inventory.serializeNBT());
@@ -270,6 +233,6 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) this.inventory : super.getCapability(capability, facing);
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.inventory) : super.getCapability(capability, facing);
     }
 }

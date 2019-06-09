@@ -44,8 +44,9 @@ public class BlockNormalRailBase extends BlockRail {
     public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos) {
         if (world.getBlockState(pos).getActualState(world, pos).getValue(SNOW) == EnumSnowRail.LAYER2 && isCartRunning(cart)) {
             spawnSnowParticle(world, cart.posX, cart.posY, cart.posZ);
-            if (cart instanceof EntitySteamLocomotive) {
-                boolean plow = ((EntitySteamLocomotive) cart).hasPlowItem();
+            if (cart instanceof EntitySteamLocomotive && !world.isRemote)
+            {
+                boolean plow = ((EntitySteamLocomotive) cart).hasPlowItem;
                 if (plow) {
                     plowSnow(world, pos);
                 }

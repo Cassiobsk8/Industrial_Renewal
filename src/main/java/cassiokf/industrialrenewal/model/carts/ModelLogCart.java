@@ -161,7 +161,6 @@ public class ModelLogCart extends ModelBase {
         this.Wheel7.render(f5);
         this.Wheel6.render(f5);
 
-        ((EntityLogCart) entity).GetInvNumber();
         int items = ((EntityLogCart) entity).invItensCount;
         //Logs
         if (items > 0) this.shape23.render(f5);

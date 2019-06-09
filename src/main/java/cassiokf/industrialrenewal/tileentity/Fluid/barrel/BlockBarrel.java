@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.Fluid.barrel;
 
-import cassiokf.industrialrenewal.Registry.ModItems;
+import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.blocks.BlockBasicContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -11,12 +11,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -45,16 +43,10 @@ public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-
-        TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
-        //NetworkHandler.INSTANCE.sendToServer(new PacketReturnBarrel(te));
         if (!worldIn.isRemote) {
+            TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
             playerIn.sendMessage(new TextComponentString(te.GetChatQuantity()));
-
-            boolean save = FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing);
-            if (save) {
-                te.save();
-            }
+            FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing);
         }
         return true;
     }
@@ -68,36 +60,20 @@ public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-        return EnumBlockRenderType.MODEL;
-    }
-
-    @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACING, FRAME);
     }
 
     @Override
-    public boolean hasComparatorInputOverride(IBlockState state)
-    {
-        return true;
-    }
-
-    @Override
-    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
-    {
-        return Container.calcRedstone(worldIn.getTileEntity(pos));
-    }
-
-    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
-
-        ItemStack itemst = SaveStackContainer(te);
-        spawnAsEntity(worldIn, pos, itemst);
+        if (worldIn.getGameRules().getBoolean("doEntityDrops"))
+        {
+            TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
+            ItemStack itemst = SaveStackContainer(te);
+            spawnAsEntity(worldIn, pos, itemst);
+        }
         super.breakBlock(worldIn, pos, state);
     }
 

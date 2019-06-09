@@ -88,5 +88,15 @@
         "stream": false
       }
     ]
+  },
+  "motor_rotation": {
+    "category": "block",
+    "subtitle": "motor_rotation",
+    "sounds": [
+      {
+        "name": "industrialrenewal:motor_rotation",
+        "stream": false
+      }
+    ]
   }
 }

@@ -13,20 +13,15 @@ public class PacketReturnCargoLoader implements IMessage {
 
     private BlockPos pos;
     private int dimension;
-    private boolean next;
 
-    public PacketReturnCargoLoader(BlockPos pos, int dimension, boolean next) {
+    public PacketReturnCargoLoader(BlockPos pos, int dimension)
+    {
         this.pos = pos;
         this.dimension = dimension;
-        this.next = next;
     }
 
     public PacketReturnCargoLoader(TileEntityCargoLoader te) {
-        this(te.getPos(), te.getWorld().provider.getDimension(), false);
-    }
-
-    public PacketReturnCargoLoader(TileEntityCargoLoader te, Boolean value) {
-        this(te.getPos(), te.getWorld().provider.getDimension(), value);
+        this(te.getPos(), te.getWorld().provider.getDimension());
     }
 
     public PacketReturnCargoLoader() {
@@ -36,14 +31,12 @@ public class PacketReturnCargoLoader implements IMessage {
     public void toBytes(ByteBuf buf) {
         buf.writeLong(pos.toLong());
         buf.writeInt(dimension);
-        buf.writeBoolean(next);
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
         pos = BlockPos.fromLong(buf.readLong());
         dimension = buf.readInt();
-        next = buf.readBoolean();
     }
 
     public static class Handler implements IMessageHandler<PacketReturnCargoLoader, IMessage> {
@@ -53,7 +46,7 @@ public class PacketReturnCargoLoader implements IMessage {
             World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension);
             TileEntityCargoLoader te = (TileEntityCargoLoader) world.getTileEntity(message.pos);
             if (te != null) {
-                te.setNextWaitEnum(message.next);
+                te.setNextWaitEnum();
                 //return new PacketCargoLoader(te);
                 return null;
             } else {

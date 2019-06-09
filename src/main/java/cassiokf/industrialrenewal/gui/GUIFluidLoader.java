@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.Registry.ModBlocks;
-import cassiokf.industrialrenewal.Registry.NetworkHandler;
+import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.container.ContainerFluidLoader;
 import cassiokf.industrialrenewal.network.PacketReturnFluidLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.fluidloader.TileEntityFluidLoader;
@@ -69,7 +69,7 @@ public class GUIFluidLoader extends GuiContainer {
     @Override
     protected void actionPerformed(GuiButton b) {
         if (b.id == 0) {
-            NetworkHandler.INSTANCE.sendToServer(new PacketReturnFluidLoader(this.entity, true));
+            NetworkHandler.INSTANCE.sendToServer(new PacketReturnFluidLoader(this.entity));
         }
     }
 

@@ -13,20 +13,15 @@ public class PacketReturnFluidLoader implements IMessage {
 
     private BlockPos pos;
     private int dimension;
-    private boolean next;
 
-    public PacketReturnFluidLoader(BlockPos pos, int dimension, boolean next) {
+    public PacketReturnFluidLoader(BlockPos pos, int dimension)
+    {
         this.pos = pos;
         this.dimension = dimension;
-        this.next = next;
     }
 
     public PacketReturnFluidLoader(TileEntityFluidLoader te) {
-        this(te.getPos(), te.getWorld().provider.getDimension(), false);
-    }
-
-    public PacketReturnFluidLoader(TileEntityFluidLoader te, Boolean value) {
-        this(te.getPos(), te.getWorld().provider.getDimension(), value);
+        this(te.getPos(), te.getWorld().provider.getDimension());
     }
 
     public PacketReturnFluidLoader() {
@@ -36,25 +31,25 @@ public class PacketReturnFluidLoader implements IMessage {
     public void toBytes(ByteBuf buf) {
         buf.writeLong(pos.toLong());
         buf.writeInt(dimension);
-        buf.writeBoolean(next);
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
         pos = BlockPos.fromLong(buf.readLong());
         dimension = buf.readInt();
-        next = buf.readBoolean();
     }
 
-    public static class Handler implements IMessageHandler<PacketReturnFluidLoader, PacketFluidLoader> {
+    public static class Handler implements IMessageHandler<PacketReturnFluidLoader, IMessage>
+    {
 
         @Override
-        public PacketFluidLoader onMessage(PacketReturnFluidLoader message, MessageContext ctx) {
+        public IMessage onMessage(PacketReturnFluidLoader message, MessageContext ctx)
+        {
             World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension);
             TileEntityFluidLoader te = (TileEntityFluidLoader) world.getTileEntity(message.pos);
             if (te != null) {
-                te.setNextWaitEnum(message.next);
-                return new PacketFluidLoader(te);
+                te.setNextWaitEnum();
+                return null;
             } else {
                 return null;
             }

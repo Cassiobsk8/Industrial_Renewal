@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.Registry.ModBlocks;
+import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.blocks.BlockSignBase;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;

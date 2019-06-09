@@ -1,5 +1,7 @@
 package cassiokf.industrialrenewal.item;
 
+import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.config.IRConfig;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,8 +16,6 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-import cassiokf.industrialrenewal.References;
-
 public class ItemMedKit extends ItemBase {
 
     public ItemMedKit(String name, CreativeTabs tab) {
@@ -28,7 +28,7 @@ public class ItemMedKit extends ItemBase {
         ItemStack itemstack = player.getHeldItem(hand);
         if (player.shouldHeal() && !player.isPotionActive(MobEffects.REGENERATION)) {
             if (!worldIn.isRemote) {
-                player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 150, 1, false, false));
+                player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, IRConfig.medKitEffectDuration, 1, false, false));
             }
             itemstack.shrink(1);
         }

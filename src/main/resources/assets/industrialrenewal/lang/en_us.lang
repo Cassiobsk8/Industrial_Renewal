@@ -122,6 +122,14 @@ tile.industrialrenewal.fence_big_corner.name=Big Fence Corner
 tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
 tile.industrialrenewal.electric_pump.name=Electric Pump
 tile.industrialrenewal.battery_bank.name=Battery Bank
+tile.industrialrenewal.steam_boiler.name=Steam Boiler
+tile.industrialrenewal.steam_turbine.name=Steam Turbine
+tile.industrialrenewal.firebox_solid.name=Steam Boiler Firebox For Solid Fuel
+tile.industrialrenewal.steam.name=Steam
+tile.industrialrenewal.trash.name=Trash Bin
+
+#Fluids
+fluid.steam=Steam
 
 #Entity
 
@@ -145,7 +153,19 @@ gui.config.recipes.startwithmanual.name=Start with manual
 gui.config.recipes.startwithmanual.comment=Turn On/Off the manual item on first spawn (Default true)
 gui.config.electric_fence_damage_type.name=Electric Fence Damage Mode
 gui.config.electric_fence_damage_amount.name=Electric Fence Damage Amount
+gui.config.electric_fence_knockback_amount.name=Electric Fence KnockBack Amount
 gui.config.pump_infinity_water.name=Pumps Infinity Water
+gui.config.alarm_volume.name=Alarm Volume
+gui.config.barrel_capacity.name=Barrel Capacity
+gui.config.fluidcontainer_capacity.name=Fluid Container Cart Capacity
+gui.config.batterybank_capacity.name=Battery Bank Capacity
+gui.config.batterybank_input.name=Battery Bank Max Input
+gui.config.batterybank_output.name=Battery Bank Max Output
+gui.config.medkit_duration.name=MedKit Effect Duration
+gui.config.temp_mode.name=Temperature Mode
+gui.config.steam_factor.name=Steam Conversion Factor
+gui.config.nether_extinguisher.name=Fire Extinguisher on Nether
+gui.config.fluidFuel.name=Fluids Fuel White List
 
 #Info
 

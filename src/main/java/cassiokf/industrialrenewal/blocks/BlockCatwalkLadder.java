@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
-import cassiokf.industrialrenewal.Registry.ModBlocks;
-import cassiokf.industrialrenewal.Registry.ModItems;
+import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;

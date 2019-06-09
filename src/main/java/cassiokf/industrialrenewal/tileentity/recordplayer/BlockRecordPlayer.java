@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.recordplayer;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.Registry.GUIHandler;
+import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.BlockNote;
@@ -70,9 +70,7 @@ public class BlockRecordPlayer extends BlockTileEntity<TileEntityRecordPlayer> {
                 world.spawnEntity(item);
             }
         }
-
         super.breakBlock(world, pos, state);
-        //world.removeTileEntity(pos);
     }
 
     private void OpenGUI(World world, BlockPos pos, EntityPlayer player) {

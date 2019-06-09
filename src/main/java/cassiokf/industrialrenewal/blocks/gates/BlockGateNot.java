@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.gates;
 
-import cassiokf.industrialrenewal.Registry.ModItems;
+import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.blocks.BlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;

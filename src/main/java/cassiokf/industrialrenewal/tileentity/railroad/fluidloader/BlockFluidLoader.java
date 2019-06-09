@@ -1,14 +1,10 @@
 package cassiokf.industrialrenewal.tileentity.railroad.fluidloader;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.Registry.GUIHandler;
-import cassiokf.industrialrenewal.Registry.NetworkHandler;
-import cassiokf.industrialrenewal.network.PacketReturnFluidLoader;
+import cassiokf.industrialrenewal.init.GUIHandler;
+import cassiokf.industrialrenewal.blocks.BlockBasicContainer;
 import cassiokf.industrialrenewal.tileentity.railroad.railloader.BlockLoaderRail;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
@@ -18,12 +14,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -33,53 +25,32 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockFluidLoader extends BlockContainer {
+public class BlockFluidLoader extends BlockBasicContainer<TileEntityFluidLoader>
+{
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool UNLOAD = PropertyBool.create("unload");
     protected static final AxisAlignedBB FULL_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 1D, 1D);
-    protected String name;
 
     public BlockFluidLoader(String name, CreativeTabs tab) {
-        super(Material.IRON);
-        this.name = name;
-        setSoundType(SoundType.METAL);
-        setHardness(0.8f);
-        setRegistryName(References.MODID, name);
-        setUnlocalizedName(References.MODID + "." + name);
-        setCreativeTab(tab);
-        setHardness(2f);
-        setResistance(5f);
+        super(name, tab, Material.IRON);
     }
 
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        if (worldIn.isRemote) {
-            if (tileentity instanceof TileEntityFluidLoader) {
-                ((TileEntityFluidLoader) tileentity).onChange();
-            }
-            return true;
-        } else {
+        if (!worldIn.isRemote)
+        {
+            TileEntity tileentity = worldIn.getTileEntity(pos);
             if (tileentity instanceof TileEntityFluidLoader) {
                 OpenGUI(worldIn, pos, playerIn);
                 playerIn.addStat(StatList.HOPPER_INSPECTED);
             }
-            return true;
         }
+        return true;
     }
 
     private void OpenGUI(World world, BlockPos pos, EntityPlayer player) {
-        OpenEvent(world, pos);
         player.openGui(IndustrialRenewal.instance, GUIHandler.FLUIDLOADER, world, pos.getX(), pos.getY(), pos.getZ());
-    }
-
-    public void OpenEvent(World world, BlockPos pos) {
-        if (world.isRemote) {
-            TileEntityFluidLoader te = (TileEntityFluidLoader) world.getTileEntity(pos);
-            if (te != null) {
-                NetworkHandler.INSTANCE.sendToServer(new PacketReturnFluidLoader(te));
-            }
-        }
     }
 
     private boolean isUnload(IBlockAccess world, BlockPos pos) {
@@ -99,12 +70,6 @@ public class BlockFluidLoader extends BlockContainer {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
     }
 
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.MODEL;
-    }
-
     @Override
     public boolean isTopSolid(IBlockState state) {
         return true;
@@ -113,16 +78,6 @@ public class BlockFluidLoader extends BlockContainer {
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING, UNLOAD);
-    }
-
-    @Override
-    public boolean hasComparatorInputOverride(IBlockState state) {
-        return true;
-    }
-
-    @Override
-    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
-        return Container.calcRedstone(worldIn.getTileEntity(pos));
     }
 
     @SuppressWarnings("deprecation")
@@ -146,16 +101,6 @@ public class BlockFluidLoader extends BlockContainer {
         return FULL_AABB;
     }
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
     public Class<TileEntityFluidLoader> getTileEntityClass() {
         return TileEntityFluidLoader.class;
     }
@@ -164,14 +109,6 @@ public class BlockFluidLoader extends BlockContainer {
     @Override
     public TileEntityFluidLoader createTileEntity(World world, IBlockState state) {
         return new TileEntityFluidLoader();
-    }
-
-    public void registerItemModel(Item itemBlock) {
-        IndustrialRenewal.proxy.registerItemRenderer(itemBlock, 0, name);
-    }
-
-    public Item createItemBlock() {
-        return new ItemBlock(this).setRegistryName(getRegistryName());
     }
 
     @Nullable

@@ -1,13 +1,19 @@
 package cassiokf.industrialrenewal.entity;
 
-import cassiokf.industrialrenewal.Registry.ModItems;
-import cassiokf.industrialrenewal.Registry.NetworkHandler;
-import cassiokf.industrialrenewal.network.PacketReturnFluidBase;
+import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.GUIHandler;
+import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
@@ -18,55 +24,65 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
 
-public class EntityFluidBase extends EntityMinecart implements IFluidHandler {
-
-    public FluidTank tank = new FluidTank(32000) {
+public class EntityFluidBase extends EntityMinecart implements IFluidHandler
+{
+    private static final DataParameter<NBTTagCompound> TANK = EntityDataManager.createKey(EntityFluidBase.class, DataSerializers.COMPOUND_TAG);
+    public FluidTank tank = new FluidTank(IRConfig.fluidCartCapacity)
+    {
         @Override
-        protected void onContentsChanged() {
-            if (!world.isRemote) {
-                //NetworkHandler.INSTANCE.sendToAllAround(new PacketFluidBase(EntityFluidBase.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), posX, posY, posZ, 8));
-            }
+        protected void onContentsChanged()
+        {
+            EntityFluidBase.this.Sync();
         }
     };
 
-    public EntityFluidBase(World worldIn) {
+    public EntityFluidBase(World worldIn)
+    {
         super(worldIn);
         this.setSize(1.0F, 1.0F);
     }
 
-    public EntityFluidBase(World worldIn, double x, double y, double z) {
+    public EntityFluidBase(World worldIn, double x, double y, double z)
+    {
         super(worldIn, x, y, z);
     }
 
     @Override
-    public void killMinecart(DamageSource source) {
-        //super.killMinecart(source);
-        this.setDead();
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
+    {
+        if (!this.world.isRemote && !player.isSneaking())
+        {
+            player.openGui(IndustrialRenewal.instance, GUIHandler.FLUIDCART, this.world, this.getEntityId(), 0, 0);
+        }
+        return true;
+    }
 
-        if (!source.isExplosion() && this.world.getGameRules().getBoolean("doEntityDrops")) {
+    @Override
+    public void killMinecart(DamageSource source)
+    {
+        this.setDead();
+        if (!source.isExplosion() && this.world.getGameRules().getBoolean("doEntityDrops"))
+        {
             this.entityDropItem(new ItemStack(ModItems.cargoContainer, 1), 0.0F);
         }
     }
 
-    public void OpenEvent() {
-        if (world.isRemote) {
-            NetworkHandler.INSTANCE.sendToServer(new PacketReturnFluidBase(this));
-        }
-    }
-
     @Override
-    public Type getType() {
+    public Type getType()
+    {
         return Type.CHEST;
     }
 
     @Override
-    public ItemStack getCartItem() {
+    public ItemStack getCartItem()
+    {
         return new ItemStack(ModItems.cargoContainer);
     }
 
     @Override
-    public IFluidTankProperties[] getTankProperties() {
-        return new IFluidTankProperties[0];
+    public IFluidTankProperties[] getTankProperties()
+    {
+        return this.tank.getTankProperties();
     }
 
     @Override
@@ -77,56 +93,80 @@ public class EntityFluidBase extends EntityMinecart implements IFluidHandler {
 
     @Nullable
     @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
+    public FluidStack drain(FluidStack resource, boolean doDrain)
+    {
         return this.tank.drain(resource.amount, doDrain);
     }
 
     @Nullable
     @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
+    public FluidStack drain(int maxDrain, boolean doDrain)
+    {
         return this.tank.drain(maxDrain, doDrain);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        tank.readFromNBT(tag);
-    }
-
-    public void readTankFromNBT(NBTTagCompound tag) {
-        if (tag.hasKey("Empty")) {
-            tag.removeTag("Empty");
-        }
-        tank.readFromNBT(tag);
-    }
-
-    @Override
-    public void writeEntityToNBT(NBTTagCompound tag) {
-        super.writeEntityToNBT(tag);
-        tank.writeToNBT(tag);
-    }
-
-    public void writeEntityTankToNBT(NBTTagCompound tag) {
-        tank.writeToNBT(tag);
-    }
-
-    public NBTTagCompound GetTag() {
-        writeEntityTankToNBT(getEntityData());
-        return getEntityData();
-    }
-
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing) {
+    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
+    {
         return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
-    public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing) {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+    public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing)
+    {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
         }
         return super.getCapability(capability, facing);
     }
 
+    //SYNC
+    @Override
+    public void readEntityFromNBT(NBTTagCompound tag)
+    {
+        super.readEntityFromNBT(tag);
+        //tank.readFromNBT(tag);
+        this.dataManager.set(TANK, tag.getCompoundTag("tank"));
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound tag)
+    {
+        super.writeEntityToNBT(tag);
+        tag.setTag("tank", this.dataManager.get(TANK));
+    }
+
+    public void Sync()
+    {
+        if (!this.world.isRemote)
+        {
+            this.dataManager.set(TANK, GetTag());
+        }
+    }
+
+    public NBTTagCompound GetTag()
+    {
+        NBTTagCompound tankCompound = new NBTTagCompound();
+        tank.writeToNBT(tankCompound);
+        return tankCompound;
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.getDataManager().register(TANK, new NBTTagCompound());
+    }
+
+    @Override
+    public void notifyDataManagerChange(DataParameter<?> key)
+    {
+        super.notifyDataManagerChange(key);
+        if (this.world.isRemote && key.equals(TANK))
+        {
+            this.tank.readFromNBT(this.dataManager.get(TANK));
+        }
+    }
 }
