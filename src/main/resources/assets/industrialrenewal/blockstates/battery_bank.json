@@ -7,18 +7,6 @@
     }
   },
   "variants": {
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
-      }
-    },
     "north": {
       "true": {
         "submodel": {
@@ -33,7 +21,8 @@
       "true": {
         "submodel": {
           "pipe_south": {
-            "model": "industrialrenewal:battery_bank_side"
+            "model": "industrialrenewal:battery_bank_side",
+            "y": 180
           }
         }
       },
@@ -44,7 +33,7 @@
         "submodel": {
           "pipe_east": {
             "model": "industrialrenewal:battery_bank_side",
-            "y": -90
+            "y": 90
           }
         }
       },
@@ -55,11 +44,23 @@
         "submodel": {
           "pipe_west": {
             "model": "industrialrenewal:battery_bank_side",
-            "y": 90
+            "y": -90
           }
         }
       },
       "false": {}
+    },
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
     },
     "inventory": {
       "model": "industrialrenewal:battery_bank",
