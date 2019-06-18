@@ -91,16 +91,16 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
                 if (this.steamTank.getFluidAmount() > 0)
                 {
                     FluidStack stack = this.steamTank.drain(steamPtick, true);
-                    int amount = stack != null ? stack.amount : 0;
-                    FluidStack waterStack = new FluidStack(FluidRegistry.WATER, amount / IRConfig.steamBoilerConvertionFactor);
+                    float amount = stack != null ? stack.amount : 0f;
+                    FluidStack waterStack = new FluidStack(FluidRegistry.WATER, Math.round(amount / (float) IRConfig.steamBoilerConvertionFactor));
                     this.waterTank.fillInternal(waterStack, true);
-                    float factor = (float) amount / (float) steamPtick;
+                    float factor = amount / (float) steamPtick;
                     rotation += (10 * factor);
                 } else rotation -= 4;
 
                 if (rotation >= 6000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored())
                 {
-                    int energy = (int) Math.min(this.energyContainer.getMaxEnergyStored(), this.energyContainer.getEnergyStored() + getEnergyProduction());
+                    int energy = Math.min(this.energyContainer.getMaxEnergyStored(), this.energyContainer.getEnergyStored() + getEnergyProduction());
                     this.energyContainer.setEnergyStored(energy);
                     rotation -= 4;
                 }

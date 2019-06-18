@@ -149,7 +149,7 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
                         }
                         heat += 8;
                         fuelTime -= solidPerTick;
-                    }
+                    } else heat -= 2;
                     break;
                 case 2:
                     if (fuelTime >= fluidPerTick || this.fuelTank.getFluidAmount() > 0)
@@ -164,7 +164,7 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
                         }
                         heat += 8;
                         fuelTime -= fluidPerTick;
-                    }
+                    } else heat -= 2;
                     break;
             }
 
