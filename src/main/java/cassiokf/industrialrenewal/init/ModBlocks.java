@@ -128,6 +128,8 @@ public class ModBlocks {
     public static BlockSignBase signRA = new BlockSignBase("sign_ra", References.CREATIVE_IR_TAB);
     public static BlockSignBase signC = new BlockSignBase("sign_c", References.CREATIVE_IR_TAB);
 
+    public static BlockEotM baseEotM = new BlockEotM("eotm", References.CREATIVE_IR_TAB);
+
     public static final BlockFluid steamBlock = new BlockFluid("steam", FluidInit.STEAM, References.CREAATIVE_IRWIP_TAB);
 
     public static BlockSteamBoiler steamBoiler = new BlockSteamBoiler("steam_boiler", References.CREAATIVE_IRWIP_TAB);
@@ -228,7 +230,9 @@ public class ModBlocks {
                 gauge,
                 gutter,
                 //Fluids
-                steamBlock
+                steamBlock,
+                //Patreons
+                baseEotM
         );
 
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
@@ -332,7 +336,8 @@ public class ModBlocks {
                 trash.createItemBlock(),
                 steamBoiler.createItemBlock(),
                 steamTurbine.createItemBlock(),
-                steamBlock.createItemBlock()
+                steamBlock.createItemBlock(),
+                baseEotM.createItemBlock()
         );
     }
 
@@ -410,5 +415,6 @@ public class ModBlocks {
         steamBoiler.registerItemModel(Item.getItemFromBlock(steamBoiler));
         steamTurbine.registerItemModel(Item.getItemFromBlock(steamTurbine));
         steamBlock.registerItemModel(Item.getItemFromBlock(steamBlock));
+        baseEotM.registerItemModel(Item.getItemFromBlock(baseEotM));
     }
 }
