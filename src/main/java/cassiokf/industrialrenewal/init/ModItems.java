@@ -46,6 +46,8 @@ public class ModItems {
     public static ItemBase pointer = new ItemBase("pointer", null);
     public static ItemBase fire = new ItemBase("fire", null);
 
+    public static ItemBattery battery = new ItemBattery("battery", References.CREAATIVE_IRWIP_TAB);
+
     public static ItemBarrel barrel = new ItemBarrel("barrel_item", References.CREATIVE_IR_TAB);
 
     public static ItemFireBox fireBoxSolid = new ItemFireBox("firebox_solid", 1, References.CREAATIVE_IRWIP_TAB);
@@ -84,7 +86,8 @@ public class ModItems {
                 fire,
                 barrel,
                 fireBoxSolid,
-                fireBoxFluid
+                fireBoxFluid,
+                battery
         );
     }
 
@@ -119,6 +122,7 @@ public class ModItems {
         barrel.registerItemModel();
         fireBoxSolid.registerItemModel();
         fireBoxFluid.registerItemModel();
+        battery.registerItemModel();
     }
 
     public static void registerOreDict() {

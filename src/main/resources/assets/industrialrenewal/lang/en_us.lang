@@ -33,6 +33,7 @@ item.industrialrenewal.medkit.des0=Use to heal
 item.industrialrenewal.steel_saw.name=Steel Saw
 item.industrialrenewal.steel_saw.des0=A saw that can cut stones
 item.industrialrenewal.barrel_item.name=Barrel
+item.industrialrenewal.battery.name=Battery
 
 #Discs
 
@@ -127,6 +128,7 @@ tile.industrialrenewal.steam_turbine.name=Steam Turbine
 tile.industrialrenewal.firebox_solid.name=Steam Boiler Firebox For Solid Fuel
 tile.industrialrenewal.steam.name=Steam
 tile.industrialrenewal.trash.name=Trash Bin
+tile.industrialrenewal.eotm.name=Employee of the Month Award
 
 #Fluids
 fluid.steam=Steam
