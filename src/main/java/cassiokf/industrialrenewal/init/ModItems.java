@@ -15,6 +15,7 @@ public class ModItems {
     public static ItemOreDict stickSteel = new ItemOreDict("stick_steel", "stickSteel", References.CREATIVE_IR_TAB);
     public static ItemOreDict spongeIron = new ItemOreDict("sponge_iron", "spongeIron", References.CREATIVE_IR_TAB);
     public static ItemOreDict smallSlab = new ItemOreDict("small_slab", "minislabStone", References.CREATIVE_IR_TAB);
+    public static ItemOreDict sMotor = new ItemOreDict("motor", "motorSmall", References.CREATIVE_IR_TAB);
 
     public static ItemCartridge cartridge_plus = new ItemCartridge("cartridge_plus", References.CREATIVE_IR_TAB);
     public static ItemCartridge cartridge_minus = new ItemCartridge("cartridge_minus", References.CREATIVE_IR_TAB);
@@ -87,7 +88,8 @@ public class ModItems {
                 barrel,
                 fireBoxSolid,
                 fireBoxFluid,
-                battery
+                battery,
+                sMotor
         );
     }
 
@@ -123,6 +125,7 @@ public class ModItems {
         fireBoxSolid.registerItemModel();
         fireBoxFluid.registerItemModel();
         battery.registerItemModel();
+        sMotor.registerItemModel();
     }
 
     public static void registerOreDict() {
@@ -134,5 +137,6 @@ public class ModItems {
         steelSaw.initOreDict();
         spongeIron.initOreDict();
         smallSlab.initOreDict();
+        sMotor.initOreDict();
     }
 }

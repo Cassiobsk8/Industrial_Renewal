@@ -34,6 +34,7 @@ item.industrialrenewal.steel_saw.name=Steel Saw
 item.industrialrenewal.steel_saw.des0=A saw that can cut stones
 item.industrialrenewal.barrel_item.name=Barrel
 item.industrialrenewal.battery.name=Battery
+item.industrialrenewal.motor.name=Motor
 
 #Discs
 
