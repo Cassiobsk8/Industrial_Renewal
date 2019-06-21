@@ -1,0 +1,47 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/pipe_blue"
+    }
+  },
+  "variants": {
+    "part": {
+      "foot": {
+        "model": "industrialrenewal:bunkbed_bot"
+      },
+      "head": {
+        "model": "industrialrenewal:dummy"
+      }
+    },
+    "occupied": {
+      "true": {},
+      "false": {}
+    },
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
+    "top": {
+      "true": {
+        "submodel": {
+          "top": {
+            "model": "industrialrenewal:bunkbed_top"
+          }
+        }
+      },
+      "false": {}
+    },
+    "inventory": {
+      "model": "industrialrenewal:bunkbed_bot"
+    }
+  }
+}

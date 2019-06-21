@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.*;
 import cassiokf.industrialrenewal.blocks.rails.*;
 import cassiokf.industrialrenewal.fluids.BlockFluid;
+import cassiokf.industrialrenewal.tileentity.BlockBunkBed;
 import cassiokf.industrialrenewal.tileentity.Fluid.barrel.BlockBarrel;
 import cassiokf.industrialrenewal.tileentity.Fluid.fluidpipe.BlockFluidPipe;
 import cassiokf.industrialrenewal.tileentity.Fluid.gauge.BlockGauge;
@@ -88,6 +89,7 @@ public class ModBlocks {
     public static BlockBrace braceSteel = new BlockBrace("brace_steel", References.CREATIVE_IR_TAB);
     public static BlockScaffold scaffold = new BlockScaffold("scaffold", References.CREATIVE_IR_TAB);
     public static BlockFrame frame = new BlockFrame("frame", References.CREATIVE_IR_TAB);
+    public static BlockBunkBed bunkBed = new BlockBunkBed("bunkbed", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockBarrel barrel = new BlockBarrel("barrel", References.CREATIVE_IR_TAB);
     public static BlockTrash trash = new BlockTrash("trash", References.CREATIVE_IR_TAB);
@@ -185,6 +187,7 @@ public class ModBlocks {
                 firstAidKit,
                 recordPlayer,
                 locker,
+                bunkBed,
                 blockChimney,
                 scaffold,
                 efence,
@@ -261,6 +264,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(steamBoiler.getTileEntityClass(), steamBoiler.getRegistryName().toString());
         GameRegistry.registerTileEntity(steamTurbine.getTileEntityClass(), steamTurbine.getRegistryName().toString());
         GameRegistry.registerTileEntity(trash.getTileEntityClass(), trash.getRegistryName().toString());
+        GameRegistry.registerTileEntity(bunkBed.getTileEntityClass(), bunkBed.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -305,6 +309,7 @@ public class ModBlocks {
                 firstAidKit.createItemBlock(),
                 recordPlayer.createItemBlock(),
                 locker.createItemBlock(),
+                bunkBed.createItemBlock(),
                 gutter.createItemBlock(),
                 blockChimney.createItemBlock(),
                 scaffold.createItemBlock(),
@@ -359,6 +364,7 @@ public class ModBlocks {
         column.registerItemModel(Item.getItemFromBlock(column));
         iladder.registerItemModel(Item.getItemFromBlock(iladder));
         roof.registerItemModel(Item.getItemFromBlock(roof));
+        bunkBed.registerItemModel(Item.getItemFromBlock(bunkBed));
         gutter.registerItemModel(Item.getItemFromBlock(gutter));
         light.registerItemModel(Item.getItemFromBlock(light));
         fluorescent.registerItemModel(Item.getItemFromBlock(fluorescent));
