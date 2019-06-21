@@ -36,6 +36,8 @@ item.industrialrenewal.steel_saw.des0=A saw that can cut stones
 item.industrialrenewal.barrel_item.name=Barrel
 item.industrialrenewal.battery.name=Battery
 item.industrialrenewal.motor.name=Motor
+item.industrialrenewal.firebox_solid.name=Firebox for Solid Fuel
+item.industrialrenewal.firebox_fluid.name=Firebox for Fluid Fuel
 
 #Discs
 
@@ -123,7 +125,7 @@ tile.industrialrenewal.button_red.name=Emergency Button
 tile.industrialrenewal.fence_big_column.name=Big Fence Column
 tile.industrialrenewal.fence_big_corner.name=Big Fence Corner
 tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
-tile.industrialrenewal.electric_pump.name=Electric Pump
+tile.industrialrenewal.electric_pump.name=Electric Pump (WIP)
 tile.industrialrenewal.battery_bank.name=Battery Bank
 tile.industrialrenewal.steam_boiler.name=Steam Boiler
 tile.industrialrenewal.steam_turbine.name=Steam Turbine

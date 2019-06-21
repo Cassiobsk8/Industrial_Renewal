@@ -34,6 +34,8 @@ item.industrialrenewal.steel_saw.des0=能够切割石材的锯子
 item.industrialrenewal.barrel_item.name=大号铁桶
 item.industrialrenewal.battery.name=Battery
 item.industrialrenewal.motor.name=Motor
+item.industrialrenewal.firebox_solid.name=Firebox for Solid Fuel
+item.industrialrenewal.firebox_fluid.name=Firebox for Fluid Fuel
 
 
 item.industrialrenewal.record_royal_entrance.name=唱片
