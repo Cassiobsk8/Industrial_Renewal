@@ -7,14 +7,16 @@
   ],
   "key": {
     "R": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
     "C": {
       "type": "forge:ore_dict",
       "ore": "ingotSteel"
     },
     "M": {
-      "item": "minecraft:stick"
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
     }
   },
   "result": {

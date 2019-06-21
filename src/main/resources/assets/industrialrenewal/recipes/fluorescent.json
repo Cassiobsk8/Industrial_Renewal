@@ -15,7 +15,8 @@
       "ore": "nuggetIron"
     },
     "G": {
-      "item": "minecraft:glowstone_dust"
+      "type": "forge:ore_dict",
+      "ore": "dustGlowstone"
     }
   },
   "result": {

@@ -7,10 +7,12 @@
   ],
   "key": {
     "R": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
     "B": {
-      "item": "minecraft:glowstone_dust"
+      "type": "forge:ore_dict",
+      "ore": "dustGlowstone"
     },
     "C": {
       "type": "forge:ore_dict",

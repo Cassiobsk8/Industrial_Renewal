@@ -1,14 +1,18 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
-    "SRS",
-    "SRS",
-    "III"
+    "BBB",
+    "RBR",
+    "ISI"
   ],
   "key": {
     "R": {
       "type": "forge:ore_dict",
       "ore": "dustRedstone"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "gemLapis"
     },
     "I": {
       "type": "forge:ore_dict",
@@ -20,7 +24,7 @@
     }
   },
   "result": {
-    "item": "industrialrenewal:battery",
+    "item": "industrialrenewal:solar_panel",
     "count": 1
   }
 }

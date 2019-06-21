@@ -7,13 +7,15 @@
   ],
   "key": {
     "R": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
     "B": {
       "item": "minecraft:stone_button"
     },
     "C": {
-      "item": "minecraft:redstone_block"
+      "type": "forge:ore_dict",
+      "ore": "blockRedstone"
     }
   },
   "result": {

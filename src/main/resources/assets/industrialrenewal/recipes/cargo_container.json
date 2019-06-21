@@ -1,13 +1,16 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
-    "   ",
-    "SSS",
+    "SDS",
     "SCS"
   ],
   "key": {
     "C": {
-      "item": "minecraft:minecart"
+      "item": "industrialrenewal:minecart_flat"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "chest"
     },
     "S": {
       "type": "forge:ore_dict",

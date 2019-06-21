@@ -1,14 +1,17 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
-    "SRS",
-    "SRS",
-    "III"
+    "IBI",
+    "BBB",
+    "SRS"
   ],
   "key": {
     "R": {
       "type": "forge:ore_dict",
       "ore": "dustRedstone"
+    },
+    "B": {
+      "item": "industrialrenewal:battery"
     },
     "I": {
       "type": "forge:ore_dict",
@@ -20,7 +23,7 @@
     }
   },
   "result": {
-    "item": "industrialrenewal:battery",
+    "item": "industrialrenewal:battery_bank",
     "count": 1
   }
 }

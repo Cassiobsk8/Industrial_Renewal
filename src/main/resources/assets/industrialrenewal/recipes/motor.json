@@ -1,11 +1,14 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
-    "SRS",
-    "SRS",
+    "III",
+    "RPS",
     "III"
   ],
   "key": {
+    "P": {
+      "item": "minecraft:piston"
+    },
     "R": {
       "type": "forge:ore_dict",
       "ore": "dustRedstone"
@@ -20,7 +23,7 @@
     }
   },
   "result": {
-    "item": "industrialrenewal:battery",
+    "item": "industrialrenewal:motor",
     "count": 1
   }
 }
