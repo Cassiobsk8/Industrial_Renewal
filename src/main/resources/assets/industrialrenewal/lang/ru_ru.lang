@@ -23,6 +23,7 @@ item.industrialrenewal.stick_steel.name=Steel Rod
 item.industrialrenewal.steam_locomotive.name=Паровоз (WIP)
 item.industrialrenewal.cargo_container.name=Грузовой контейнер
 item.industrialrenewal.fluid_container.name=Жидкостный контейнер (WIP)
+item.industrialrenewal.minecart_flat.name=Flat Cart
 item.industrialrenewal.plow_iron.name=Железный снежный плуг (WIP)
 item.industrialrenewal.screwdrive.name=Шуруповерт
 item.industrialrenewal.screwdrive.des0=Универсальный инструмент для этого мода
@@ -31,6 +32,8 @@ item.industrialrenewal.medkit.des0=Используется для лечени�
 item.industrialrenewal.steel_saw.name=Стальная пила
 item.industrialrenewal.steel_saw.des0=Пила, которая может резать камни
 item.industrialrenewal.barrel_item.name=Barrel
+item.industrialrenewal.battery.name=Battery
+item.industrialrenewal.motor.name=Motor
 
 
 item.industrialrenewal.record_royal_entrance.name=Музыкальный диск
@@ -118,6 +121,12 @@ tile.industrialrenewal.fence_big_corner.name=Big Fence Corner
 tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
 tile.industrialrenewal.electric_pump.name=Electric Pump
 tile.industrialrenewal.battery_bank.name=Battery Bank
+tile.industrialrenewal.steam_boiler.name=Steam Boiler
+tile.industrialrenewal.steam_turbine.name=Steam Turbine
+tile.industrialrenewal.firebox_solid.name=Steam Boiler Firebox For Solid Fuel
+tile.industrialrenewal.steam.name=Steam
+tile.industrialrenewal.trash.name=Trash Bin
+tile.industrialrenewal.eotm.name=Employee of the Month Award
 
 # Fluids
 fluid.steam=Steam
@@ -128,6 +137,7 @@ entity.industrialrenewal.fluid_container.name=Жидкостный контей�
 entity.industrialrenewal.steam_locomotive.name=Паровоз
 entity.industrialrenewal.log_cart.name=Log Cart
 entity.industrialrenewal.passenger_car.name=Passenger Car
+entity.industrialrenewal.minecart_flat.name=Flat Cart
 
 
 gui.config.main_title=Конфигурация Industrial Renewal
@@ -154,6 +164,7 @@ gui.config.medkit_duration.name=MedKit Effect Duration
 gui.config.temp_mode.name=Temperature Mode
 gui.config.steam_factor.name=Steam Conversion Factor
 gui.config.nether_extinguisher.name=Fire Extinguisher on Nether
+gui.config.fluidFuel.name=Fluids Fuel White List
 
 
 tile.industrialrenewal.crossing_rail.info=Заставляет вагонетки сигналить, когда они проходят

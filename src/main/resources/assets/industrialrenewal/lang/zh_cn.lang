@@ -1,10 +1,8 @@
-#Wed Dec 06 12:33:40 BRST 2017
 
 itemGroup.industrialrenewal=工业复兴
 itemGroup.industrialrenewalrailroad=工业复兴丨铁路
 itemGroup.industrialrenewalwip=工业复兴丨未完成内容
 
-#Items
 
 item.industrialrenewal.ir_manual.name=工业复兴手册
 item.industrialrenewal.cartridge_plus.name=红石配线盒+
@@ -25,6 +23,7 @@ item.industrialrenewal.stick_steel.name=钢棒
 item.industrialrenewal.steam_locomotive.name=蒸汽机车(WIP)
 item.industrialrenewal.cargo_container.name=集装箱货车
 item.industrialrenewal.fluid_container.name=流体罐车(WIP)
+item.industrialrenewal.minecart_flat.name=Flat Cart
 item.industrialrenewal.plow_iron.name=铁雪犁(WIP)
 item.industrialrenewal.screwdrive.name=电动螺丝刀
 item.industrialrenewal.screwdrive.des0=这个模组的万用工具
@@ -33,13 +32,13 @@ item.industrialrenewal.medkit.des0=用于治疗
 item.industrialrenewal.steel_saw.name=钢锯
 item.industrialrenewal.steel_saw.des0=能够切割石材的锯子
 item.industrialrenewal.barrel_item.name=大号铁桶
+item.industrialrenewal.battery.name=Battery
+item.industrialrenewal.motor.name=Motor
 
-#Discs
 
 item.industrialrenewal.record_royal_entrance.name=唱片
 item.industrialrenewal.record_royal_entrance.des0=Royal Entrance，由Visager作曲
 
-#Blocks
 
 tile.industrialrenewal.alarm.name=工业报警器
 tile.industrialrenewal.block_chimney.name=烟囱
@@ -127,19 +126,19 @@ tile.industrialrenewal.steam_turbine.name=蒸汽轮机
 tile.industrialrenewal.firebox_solid.name=蒸汽锅炉燃烧室(固态燃料)
 tile.industrialrenewal.steam.name=蒸汽
 tile.industrialrenewal.trash.name=垃圾桶
+tile.industrialrenewal.eotm.name=Employee of the Month Award
 
-#Fluids
+# Fluids
 fluid.steam=蒸汽
 
-#Entity
 
 entity.industrialrenewal.cargo_container.name=集装箱货车
 entity.industrialrenewal.fluid_container.name=流体罐车(WIP)
 entity.industrialrenewal.steam_locomotive.name=蒸汽机车(WIP)
 entity.industrialrenewal.log_cart.name=原木运输车厢
 entity.industrialrenewal.passenger_car.name=客运车厢
+entity.industrialrenewal.minecart_flat.name=Flat Cart
 
-#Config
 
 gui.config.main_title=工业复兴模组配置
 gui.config.category.recipes=合成配方
@@ -167,13 +166,11 @@ gui.config.steam_factor.name=蒸汽转换比例(水:蒸汽)
 gui.config.nether_extinguisher.name=灭火器在虚空中的行为
 gui.config.fluidFuel.name=流体燃料白名单
 
-#Info
 
 tile.industrialrenewal.crossing_rail.info=在车厢经过时鸣笛
 tile.industrialrenewal.loader_rail.info=需要搭配使用:
 tile.industrialrenewal.sign_base.info=Shift+右键使用电动螺丝刀来改变状态
 
-#Book
 
 gui.industrialrenewal.railroad.category=铁路交通运输
 gui.industrialrenewal.redstone.category=红石控制与使用
@@ -192,7 +189,6 @@ gui.industrialrenewal.entity_detector.text0=如果实体在它的检测范围\n�
 gui.industrialrenewal.first-aid_box.text0=这是存放多个一个急救包\n的容器，可以容纳8组急救\n箱，每组16个。\nShift+右键使用它，可以获\n得持续7秒的生命恢复II效\n果，共恢复6点生命值(3颗心)\n只有在生命值未满的情况\n下才会生效。
 gui.industrialrenewal.rails.text0=- 轨道,充能轨道,探测轨道:\n与原版功能一致，但是使用\n了3D的模型。\n- 缓冲车挡器：\n可以阻拦车厢继续前进。\n- 交叉道口轨道：\n当车厢通过时使其鸣笛。\n- 转运轨道：\n放置在货物转运器的上方\n或下方，能根据货物转运\n器的配置来决定是否停下\n车厢。
 
-#GUI
 
 gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=放置医疗包
 gui.industrialrenewal.blockrecordplayer.discs.tooltip=放置光盘
@@ -216,3 +212,4 @@ gui.industrialrenewal.fuel.tooltip=燃料
 gui.industrialrenewal.fusebox.input=红石输入强度:
 gui.industrialrenewal.fusebox.output=红石输出强度:
 gui.industrialrenewal.fusebox.slots.tooltip=放置红石配线盒
+
