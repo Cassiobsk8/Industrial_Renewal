@@ -90,7 +90,7 @@ public class ModBlocks {
     public static BlockFrame frame = new BlockFrame("frame", References.CREATIVE_IR_TAB);
 
     public static BlockBarrel barrel = new BlockBarrel("barrel", References.CREATIVE_IR_TAB);
-    public static BlockTrash trash = new BlockTrash("trash", References.CREAATIVE_IRWIP_TAB);
+    public static BlockTrash trash = new BlockTrash("trash", References.CREATIVE_IR_TAB);
     public static BlockGauge gauge = new BlockGauge("fluid_gauge", References.CREATIVE_IR_TAB);
 
     public static BlockElectricFence efence = new BlockElectricFence("electric_fence", References.CREATIVE_IR_TAB);
@@ -99,9 +99,9 @@ public class ModBlocks {
     public static BlockElectricBigFenceCorner bigFenceCorner = new BlockElectricBigFenceCorner("fence_big_corner", References.CREATIVE_IR_TAB);
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
 
-    public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREAATIVE_IRWIP_TAB);
+    public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREATIVE_IR_TAB);
     public static BlockElectricPump electricPump = new BlockElectricPump("electric_pump", References.CREAATIVE_IRWIP_TAB);
-    public static BlockBatteryBank batteryBank = new BlockBatteryBank("battery_bank", References.CREAATIVE_IRWIP_TAB);
+    public static BlockBatteryBank batteryBank = new BlockBatteryBank("battery_bank", References.CREATIVE_IR_TAB);
 
     public static BlockSensorRain sensorRain = new BlockSensorRain("sensor_rain", References.CREATIVE_IR_TAB);
     public static BlockSignalIndicator signalIndicator = new BlockSignalIndicator("signal_indicator", References.CREATIVE_IR_TAB);
@@ -132,8 +132,8 @@ public class ModBlocks {
 
     public static final BlockFluid steamBlock = new BlockFluid("steam", FluidInit.STEAM, References.CREAATIVE_IRWIP_TAB);
 
-    public static BlockSteamBoiler steamBoiler = new BlockSteamBoiler("steam_boiler", References.CREAATIVE_IRWIP_TAB);
-    public static BlockSteamTurbine steamTurbine = new BlockSteamTurbine("steam_turbine", References.CREAATIVE_IRWIP_TAB);
+    public static BlockSteamBoiler steamBoiler = new BlockSteamBoiler("steam_boiler", References.CREATIVE_IR_TAB);
+    public static BlockSteamTurbine steamTurbine = new BlockSteamTurbine("steam_turbine", References.CREATIVE_IR_TAB);
 
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(

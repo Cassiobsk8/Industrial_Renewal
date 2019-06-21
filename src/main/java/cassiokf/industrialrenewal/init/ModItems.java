@@ -29,7 +29,7 @@ public class ModItems {
     public static ItemSteelSaw steelSaw = new ItemSteelSaw("steel_saw", "sawStone", References.CREATIVE_IR_TAB);
 
     public static ItemMineCartCargoContainer cargoContainer = new ItemMineCartCargoContainer("cargo_container", References.CREATIVE_IRLOCOMOTIVE_TAB);
-    public static ItemMineCartFluidContainer fluidContainer = new ItemMineCartFluidContainer("fluid_container", References.CREAATIVE_IRWIP_TAB);
+    public static ItemMineCartFluidContainer fluidContainer = new ItemMineCartFluidContainer("fluid_container", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static ItemSteamLocomotive steamLocomotive = new ItemSteamLocomotive("steam_locomotive", References.CREAATIVE_IRWIP_TAB);
     public static ItemLogCart logCart = new ItemLogCart("log_cart", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static ItemMineCartPassengerCar passengerCar = new ItemMineCartPassengerCar("passenger_car", References.CREATIVE_IRLOCOMOTIVE_TAB);
@@ -48,12 +48,12 @@ public class ModItems {
     public static ItemBase pointer = new ItemBase("pointer", null);
     public static ItemBase fire = new ItemBase("fire", null);
 
-    public static ItemBattery battery = new ItemBattery("battery", References.CREAATIVE_IRWIP_TAB);
+    public static ItemBattery battery = new ItemBattery("battery", References.CREATIVE_IR_TAB);
 
     public static ItemBarrel barrel = new ItemBarrel("barrel_item", References.CREATIVE_IR_TAB);
 
-    public static ItemFireBox fireBoxSolid = new ItemFireBox("firebox_solid", 1, References.CREAATIVE_IRWIP_TAB);
-    public static ItemFireBox fireBoxFluid = new ItemFireBox("firebox_fluid", 2, References.CREAATIVE_IRWIP_TAB);
+    public static ItemFireBox fireBoxSolid = new ItemFireBox("firebox_solid", 1, References.CREATIVE_IR_TAB);
+    public static ItemFireBox fireBoxFluid = new ItemFireBox("firebox_fluid", 2, References.CREATIVE_IR_TAB);
 
     //public static ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
 
