@@ -48,6 +48,14 @@ public class RenderHandler {
                 return new RenderPassengerCar<>(manager);
             }
         });
+        RenderingRegistry.registerEntityRenderingHandler(EntityFlatCart.class, new IRenderFactory<EntityFlatCart>()
+        {
+            @Override
+            public Render<? super EntityFlatCart> createRenderFor(RenderManager manager)
+            {
+                return new RenderFlatCart<>(manager);
+            }
+        });
     }
 
     public static void registerCustomMeshesAndStates()

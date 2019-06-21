@@ -14,6 +14,7 @@ public class EntityInit {
         RegisterEntity("steam_locomotive", EntitySteamLocomotive.class, References.ENTITY_STEAMLOCOMOTIVE_ID, 80);
         RegisterEntity("log_cart", EntityLogCart.class, References.ENTITY_LOGCART_ID, 80);
         RegisterEntity("passenger_car", EntityPassengerCar.class, References.ENTITY_PASSENGERCAR_ID, 80);
+        RegisterEntity("minecart_flat", EntityFlatCart.class, References.ENTITY_FLATCART_ID, 80);
     }
 
     private static void RegisterEntity(String name, Class<? extends Entity> entity, int id, int range) {

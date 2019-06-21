@@ -1,0 +1,1222 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "industrialrenewal:entities/base_cart"
+  },
+  "elements": [
+    {
+      "name": "Truck0",
+      "from": [
+        -3,
+        9,
+        1
+      ],
+      "to": [
+        6,
+        10,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            1.75,
+            6.125,
+            1.875
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            3.25,
+            1.75,
+            5,
+            1.875
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            7.875,
+            1.75,
+            9,
+            1.875
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            6.125,
+            1.75,
+            7.875,
+            1.875
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            6.125,
+            1.75,
+            5,
+            0
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            7.25,
+            0,
+            6.125,
+            1.75
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Truck1",
+      "from": [
+        10,
+        9,
+        1
+      ],
+      "to": [
+        19,
+        10,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            9,
+            2.25,
+            10.125,
+            2.375
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            7.25,
+            2.25,
+            9,
+            2.375
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            11.875,
+            2.25,
+            13,
+            2.375
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            10.125,
+            2.25,
+            11.875,
+            2.375
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            10.125,
+            2.25,
+            9,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            11.25,
+            0.5,
+            10.125,
+            2.25
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Shafts4",
+      "from": [
+        -6,
+        8,
+        7
+      ],
+      "to": [
+        22,
+        9,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            7.25,
+            2.625,
+            10.75,
+            2.75
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            7,
+            2.625,
+            7.25,
+            2.75
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            11,
+            2.625,
+            14.5,
+            2.75
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            10.75,
+            2.625,
+            11,
+            2.75
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            10.75,
+            2.625,
+            7.25,
+            2.375
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            14.25,
+            2.375,
+            10.75,
+            2.625
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Weels2",
+      "from": [
+        11,
+        6,
+        13
+      ],
+      "to": [
+        14,
+        9,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            3.125,
+            0.125,
+            3.5,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            3,
+            0.125,
+            3.125,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            3.625,
+            0.125,
+            4,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            3.5,
+            0.125,
+            3.625,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            3.5,
+            0.125,
+            3.125,
+            0
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            3.875,
+            0,
+            3.5,
+            0.125
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Shafts0",
+      "from": [
+        -1,
+        7,
+        3
+      ],
+      "to": [
+        0,
+        8,
+        13
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1.375,
+            2,
+            1.5,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0.125,
+            2,
+            1.375,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            2.75,
+            2,
+            2.875,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            1.5,
+            2,
+            2.75,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            1.5,
+            2,
+            1.375,
+            0.75
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            1.625,
+            0.75,
+            1.5,
+            2
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Shafts2",
+      "from": [
+        12,
+        7,
+        3
+      ],
+      "to": [
+        13,
+        8,
+        13
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1.375,
+            2,
+            1.5,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0.125,
+            2,
+            1.375,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            2.75,
+            2,
+            2.875,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            1.5,
+            2,
+            2.75,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            1.5,
+            2,
+            1.375,
+            0.75
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            1.625,
+            0.75,
+            1.5,
+            2
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Truck2",
+      "from": [
+        -5,
+        10,
+        -1
+      ],
+      "to": [
+        21,
+        11,
+        17
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            2.25,
+            5,
+            5.5,
+            5.125
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0,
+            5,
+            2.25,
+            5.125
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            7.75,
+            5,
+            11,
+            5.125
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            5.5,
+            5,
+            7.75,
+            5.125
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            5.5,
+            5,
+            2.25,
+            2.75
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            8.75,
+            2.75,
+            5.5,
+            5
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Weels7",
+      "from": [
+        15,
+        6,
+        2
+      ],
+      "to": [
+        18,
+        9,
+        3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            11.375,
+            0.125,
+            11.75,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            11.25,
+            0.125,
+            11.375,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            11.875,
+            0.125,
+            12.25,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            11.75,
+            0.125,
+            11.875,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            11.75,
+            0.125,
+            11.375,
+            0
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            12.125,
+            0,
+            11.75,
+            0.125
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Weels5",
+      "from": [
+        2,
+        6,
+        2
+      ],
+      "to": [
+        5,
+        9,
+        3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            9.375,
+            0.125,
+            9.75,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            9.25,
+            0.125,
+            9.375,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            9.875,
+            0.125,
+            10.25,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            9.75,
+            0.125,
+            9.875,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            9.75,
+            0.125,
+            9.375,
+            0
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            10.125,
+            0,
+            9.75,
+            0.125
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Weels1",
+      "from": [
+        2,
+        6,
+        13
+      ],
+      "to": [
+        5,
+        9,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            2.125,
+            0.125,
+            2.5,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            2,
+            0.125,
+            2.125,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            2.625,
+            0.125,
+            3,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            2.5,
+            0.125,
+            2.625,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            2.5,
+            0.125,
+            2.125,
+            0
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            2.875,
+            0,
+            2.5,
+            0.125
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Weels3",
+      "from": [
+        15,
+        6,
+        13
+      ],
+      "to": [
+        18,
+        9,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4.125,
+            0.125,
+            4.5,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            4,
+            0.125,
+            4.125,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            4.625,
+            0.125,
+            5,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            4.5,
+            0.125,
+            4.625,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            4.5,
+            0.125,
+            4.125,
+            0
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            4.875,
+            0,
+            4.5,
+            0.125
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Shafts3",
+      "from": [
+        16,
+        7,
+        3
+      ],
+      "to": [
+        17,
+        8,
+        13
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1.375,
+            2,
+            1.5,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0.125,
+            2,
+            1.375,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            2.75,
+            2,
+            2.875,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            1.5,
+            2,
+            2.75,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            1.5,
+            2,
+            1.375,
+            0.75
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            1.625,
+            0.75,
+            1.5,
+            2
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Shafts1",
+      "from": [
+        3,
+        7,
+        3
+      ],
+      "to": [
+        4,
+        8,
+        13
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1.375,
+            2,
+            1.5,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0.125,
+            2,
+            1.375,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            2.75,
+            2,
+            2.875,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            1.5,
+            2,
+            2.75,
+            2.125
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            1.5,
+            2,
+            1.375,
+            0.75
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            1.625,
+            0.75,
+            1.5,
+            2
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Weels0",
+      "from": [
+        -2,
+        6,
+        13
+      ],
+      "to": [
+        1,
+        9,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1.125,
+            0.125,
+            1.5,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            1,
+            0.125,
+            1.125,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            1.625,
+            0.125,
+            2,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            1.5,
+            0.125,
+            1.625,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            1.5,
+            0.125,
+            1.125,
+            0
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            1.875,
+            0,
+            1.5,
+            0.125
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Weels4",
+      "from": [
+        -2,
+        6,
+        2
+      ],
+      "to": [
+        1,
+        9,
+        3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8.375,
+            0.125,
+            8.75,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            8.25,
+            0.125,
+            8.375,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            8.875,
+            0.125,
+            9.25,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            8.75,
+            0.125,
+            8.875,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            8.75,
+            0.125,
+            8.375,
+            0
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            9.125,
+            0,
+            8.75,
+            0.125
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Weels6",
+      "from": [
+        11,
+        6,
+        2
+      ],
+      "to": [
+        14,
+        9,
+        3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            10.375,
+            0.125,
+            10.75,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            10.25,
+            0.125,
+            10.375,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            10.875,
+            0.125,
+            11.25,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            10.75,
+            0.125,
+            10.875,
+            0.5
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            10.75,
+            0.125,
+            10.375,
+            0
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            11.125,
+            0,
+            10.75,
+            0.125
+          ],
+          "texture": "#particle"
+        }
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        225,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        -0.75,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "head": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        13,
+        7
+      ]
+    },
+    "fixed": {
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  }
+}
