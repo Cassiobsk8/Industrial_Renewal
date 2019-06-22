@@ -1,0 +1,40 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "open": {
+      "true": {
+        "model": "industrialrenewal:bunker_hatch_opened"
+      },
+      "false": {
+        "model": "industrialrenewal:bunker_hatch_closed"
+      }
+    },
+    "master": {
+      "true": {},
+      "false": {
+        "model": "industrialrenewal:dummy"
+      }
+    },
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:bunker_hatch_closed",
+      "y": 180
+    }
+  }
+}

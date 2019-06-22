@@ -241,10 +241,13 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
         List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
         for (BlockPos currentPos : list)
         {
-            Block block = world.getBlockState(currentPos).getBlock();
-            if (block instanceof BlockSteamBoiler && ((TileEntitySteamBoiler) world.getTileEntity(currentPos)).getIsMaster())
+            if (world.getTileEntity(currentPos) instanceof TileEntitySteamBoiler)
             {
-                return ((TileEntitySteamBoiler) world.getTileEntity(currentPos));
+                TileEntitySteamBoiler te = (TileEntitySteamBoiler) world.getTileEntity(currentPos);
+                if (te != null && te.isMaster())
+                {
+                    return te;
+                }
             }
         }
         return null;
@@ -252,7 +255,7 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
 
     public void breakMultiBlocks()
     {
-        if (!this.getIsMaster())
+        if (!this.master)
         {
             if (getMaster() != null)
             {
@@ -260,8 +263,9 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
             }
             return;
         }
-        if (!this.world.isRemote && !breaking)
+        if (!breaking)
         {
+            breaking = true;
             dropItensInGround(fireBoxInv);
             dropItensInGround(solidFuelInv);
             List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);

@@ -91,6 +91,19 @@ public class Utils {
         return list;
     }
 
+    public static List<BlockPos> getBlocksIn3x1x3Centered(BlockPos pos)
+    {
+        List<BlockPos> list = new ArrayList<BlockPos>();
+        for (int z = -1; z < 2; z++)
+        {
+            for (int x = -1; x < 2; x++)
+            {
+                list.add(new BlockPos(pos.getX() + x, pos.getY(), pos.getZ() + z));
+            }
+        }
+        return list;
+    }
+
     public static float getConvertedTemperature(float temp)
     {
         switch (IRConfig.temperatureScale)

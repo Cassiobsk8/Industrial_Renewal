@@ -61,6 +61,7 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
     };
 
     private boolean master;
+    private boolean breaking;
     private int maxRotation = 16000;
     private int rotation;
     private int energyPerTick = 1024;
@@ -152,10 +153,13 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
         List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
         for (BlockPos currentPos : list)
         {
-            Block block = world.getBlockState(currentPos).getBlock();
-            if (block instanceof BlockSteamTurbine && ((TileEntitySteamTurbine) world.getTileEntity(currentPos)).getIsMaster())
+            if (world.getTileEntity(currentPos) instanceof TileEntitySteamTurbine)
             {
-                return ((TileEntitySteamTurbine) world.getTileEntity(currentPos));
+                TileEntitySteamTurbine te = (TileEntitySteamTurbine) world.getTileEntity(currentPos);
+                if (te != null && te.isMaster())
+                {
+                    return te;
+                }
             }
         }
         return null;
@@ -163,7 +167,7 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
 
     public void breakMultiBlocks()
     {
-        if (!this.getIsMaster())
+        if (!this.master)
         {
             if (getMaster() != null)
             {
@@ -171,11 +175,15 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
             }
             return;
         }
-        List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
-        for (BlockPos currentPos : list)
+        if (!breaking)
         {
-            Block block = world.getBlockState(currentPos).getBlock();
-            if (block instanceof BlockSteamTurbine) world.setBlockToAir(currentPos);
+            breaking = true;
+            List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
+            for (BlockPos currentPos : list)
+            {
+                Block block = world.getBlockState(currentPos).getBlock();
+                if (block instanceof BlockSteamTurbine) world.setBlockToAir(currentPos);
+            }
         }
     }
 

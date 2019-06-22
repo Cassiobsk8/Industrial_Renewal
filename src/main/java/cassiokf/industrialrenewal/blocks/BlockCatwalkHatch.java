@@ -66,6 +66,7 @@ public class BlockCatwalkHatch extends BlockBase {
         }
     }
 
+    @Override
     public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
         IBlockState actualState = state.getActualState(world, pos);
         if (actualState.getValue(ACTIVE)) {
@@ -75,6 +76,7 @@ public class BlockCatwalkHatch extends BlockBase {
         }
     }
 
+    @Override
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
         return worldIn.getBlockState(pos).getValue(ACTIVE);
     }
