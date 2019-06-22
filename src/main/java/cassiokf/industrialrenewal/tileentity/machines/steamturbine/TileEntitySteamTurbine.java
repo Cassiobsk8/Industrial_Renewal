@@ -3,20 +3,16 @@ package cassiokf.industrialrenewal.tileentity.machines.steamturbine;
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
-import cassiokf.industrialrenewal.tileentity.Fluid.TileFluidHandlerBase;
-import cassiokf.industrialrenewal.util.Utils;
+import cassiokf.industrialrenewal.tileentity.TileEntity3x3MachineBase;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -26,11 +22,11 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
-public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICapabilityProvider, ITickable
+public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntitySteamTurbine> implements ITickable
 {
     private final VoltsEnergyContainer energyContainer;
+
     public FluidTank waterTank = new FluidTank(32000)
     {
         @Override
@@ -54,14 +50,18 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
         }
 
         @Override
+        public boolean canDrain()
+        {
+            return false;
+        }
+
+        @Override
         public void onContentsChanged()
         {
             TileEntitySteamTurbine.this.Sync();
         }
     };
 
-    private boolean master;
-    private boolean breaking;
     private int maxRotation = 16000;
     private int rotation;
     private int energyPerTick = 1024;
@@ -77,7 +77,7 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
             @Override
             public void onEnergyChange()
             {
-                if (!world.isRemote) TileEntitySteamTurbine.this.Sync();
+                TileEntitySteamTurbine.this.Sync();
             }
         };
     }
@@ -91,7 +91,7 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
             {
                 if (this.steamTank.getFluidAmount() > 0)
                 {
-                    FluidStack stack = this.steamTank.drain(steamPtick, true);
+                    FluidStack stack = this.steamTank.drainInternal(steamPtick, true);
                     float amount = stack != null ? stack.amount : 0f;
                     FluidStack waterStack = new FluidStack(FluidRegistry.WATER, Math.round(amount / (float) IRConfig.steamBoilerConvertionFactor));
                     this.waterTank.fillInternal(waterStack, true);
@@ -142,68 +142,17 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
         }
     }
 
-    @Override
-    public void onLoad()
-    {
-        this.getIsMaster();
-    }
-
-    public TileEntitySteamTurbine getMaster()
-    {
-        List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
-        for (BlockPos currentPos : list)
-        {
-            if (world.getTileEntity(currentPos) instanceof TileEntitySteamTurbine)
-            {
-                TileEntitySteamTurbine te = (TileEntitySteamTurbine) world.getTileEntity(currentPos);
-                if (te != null && te.isMaster())
-                {
-                    return te;
-                }
-            }
-        }
-        return null;
-    }
-
-    public void breakMultiBlocks()
-    {
-        if (!this.master)
-        {
-            if (getMaster() != null)
-            {
-                getMaster().breakMultiBlocks();
-            }
-            return;
-        }
-        if (!breaking)
-        {
-            breaking = true;
-            List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
-            for (BlockPos currentPos : list)
-            {
-                Block block = world.getBlockState(currentPos).getBlock();
-                if (block instanceof BlockSteamTurbine) world.setBlockToAir(currentPos);
-            }
-        }
-    }
-
-    public boolean isMaster()
-    {
-        return this.master;
-    }
-
-    private boolean getIsMaster()
-    {
-        IBlockState state = this.world.getBlockState(this.pos);
-        if (!(state.getBlock() instanceof BlockSteamTurbine)) return false;
-        return state.getValue(BlockSteamTurbine.MASTER);
-    }
-
     public EnumFacing getBlockFacing()
     {
         IBlockState state = this.world.getBlockState(this.pos);
+        if (!(state.getBlock() instanceof BlockSteamTurbine))
+        {
+            world.removeTileEntity(pos);
+            return null;
+        }
         return state.getValue(BlockSteamTurbine.FACING);
     }
+
 
     private int getEnergyProduction()
     {
@@ -306,7 +255,6 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
         compound.setTag("water", waterTag);
         compound.setTag("steam", steamTag);
         compound.setTag("StoredIR", this.energyContainer.serializeNBT());
-        compound.setBoolean("master", this.getIsMaster());
         compound.setInteger("heat", rotation);
         return super.writeToNBT(compound);
     }
@@ -319,7 +267,6 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
         this.waterTank.readFromNBT(waterTag);
         this.steamTank.readFromNBT(steamTag);
         this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
-        this.master = compound.getBoolean("master");
         this.rotation = compound.getInteger("heat");
         super.readFromNBT(compound);
     }
@@ -346,7 +293,7 @@ public class TileEntitySteamTurbine extends TileFluidHandlerBase implements ICap
 
         if (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.steamTank);
-        if (facing == face && this.pos.equals(masterTE.getPos().down().offset(this.getBlockFacing())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (facing == face && this.pos.equals(masterTE.getPos().down().offset(masterTE.getBlockFacing())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.waterTank);
         if (facing == face.rotateYCCW() && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityEnergy.ENERGY)
             return CapabilityEnergy.ENERGY.cast(masterTE.energyContainer);

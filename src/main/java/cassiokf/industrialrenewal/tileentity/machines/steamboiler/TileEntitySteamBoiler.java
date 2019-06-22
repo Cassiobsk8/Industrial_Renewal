@@ -3,9 +3,8 @@ package cassiokf.industrialrenewal.tileentity.machines.steamboiler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.item.ItemFireBox;
-import cassiokf.industrialrenewal.tileentity.Fluid.TileFluidHandlerBase;
+import cassiokf.industrialrenewal.tileentity.TileEntity3x3MachineBase;
 import cassiokf.industrialrenewal.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -14,10 +13,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -30,9 +27,8 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 
-public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapabilityProvider, ITickable
+public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySteamBoiler> implements ITickable
 {
     public FluidTank waterTank = new FluidTank(32000)
     {
@@ -111,7 +107,6 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
         }
     };
 
-    private boolean master;
     private int type;
 
     private int maxHeat = 32000;
@@ -125,8 +120,6 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
 
     private int solidPerTick = 2;
     private int fluidPerTick = 1;
-
-    private boolean breaking;
 
     @Override
     public void update()
@@ -230,53 +223,6 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
         this.markDirty();
     }
 
-    @Override
-    public void onLoad()
-    {
-        this.getIsMaster();
-    }
-
-    public TileEntitySteamBoiler getMaster()
-    {
-        List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
-        for (BlockPos currentPos : list)
-        {
-            if (world.getTileEntity(currentPos) instanceof TileEntitySteamBoiler)
-            {
-                TileEntitySteamBoiler te = (TileEntitySteamBoiler) world.getTileEntity(currentPos);
-                if (te != null && te.isMaster())
-                {
-                    return te;
-                }
-            }
-        }
-        return null;
-    }
-
-    public void breakMultiBlocks()
-    {
-        if (!this.master)
-        {
-            if (getMaster() != null)
-            {
-                getMaster().breakMultiBlocks();
-            }
-            return;
-        }
-        if (!breaking)
-        {
-            breaking = true;
-            dropItensInGround(fireBoxInv);
-            dropItensInGround(solidFuelInv);
-            List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
-            for (BlockPos currentPos : list)
-            {
-                Block block = world.getBlockState(currentPos).getBlock();
-                if (block instanceof BlockSteamBoiler) world.setBlockToAir(currentPos);
-            }
-        }
-    }
-
     private void dropItensInGround(ItemStackHandler inventory)
     {
         ItemStack stack = inventory.getStackInSlot(0);
@@ -286,19 +232,6 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
             inventory.setStackInSlot(0, ItemStack.EMPTY);
             this.world.spawnEntity(item);
         }
-    }
-
-    public boolean isMaster()//TESR uses this
-    {
-        return this.master;
-    }
-
-    private boolean getIsMaster()
-    {
-        IBlockState state = this.world.getBlockState(this.pos);
-        if (!(state.getBlock() instanceof BlockSteamBoiler)) this.master = false;
-        else this.master = state.getValue(BlockSteamBoiler.MASTER);
-        return this.master;
     }
 
     public EnumFacing getBlockFacing()
@@ -412,7 +345,6 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
         compound.setTag("water", waterTag);
         compound.setTag("steam", steamTag);
         compound.setTag("fluidFuel", fuelTag);
-        compound.setBoolean("master", this.getIsMaster());
         compound.setInteger("type", this.type);
         compound.setTag("firebox", this.fireBoxInv.serializeNBT());
         compound.setTag("solidfuel", this.solidFuelInv.serializeNBT());
@@ -431,7 +363,6 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
         this.waterTank.readFromNBT(waterTag);
         this.steamTank.readFromNBT(steamTag);
         this.fuelTank.readFromNBT(fluidFuel);
-        this.master = compound.getBoolean("master");
         this.type = compound.getInteger("type");
         this.fireBoxInv.deserializeNBT(compound.getCompoundTag("firebox"));
         this.solidFuelInv.deserializeNBT(compound.getCompoundTag("solidfuel"));
@@ -463,7 +394,7 @@ public class TileEntitySteamBoiler extends TileFluidHandlerBase implements ICapa
 
         if (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.steamTank);
-        if (facing == face && this.pos.equals(masterTE.getPos().down().offset(this.getBlockFacing())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (facing == face && this.pos.equals(masterTE.getPos().down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.waterTank);
         if (masterTE.getType() == 1 && (facing == face.getOpposite() || facing == face.rotateYCCW()) && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(masterTE.solidFuelInv);
