@@ -1,22 +1,22 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
-    "SRS",
-    "SRS",
-    "III"
+    "RRR",
+    "SIS",
+    "RRR"
   ],
   "key": {
     "R": {
       "type": "forge:ore_dict",
-      "ore": "dustRedstone"
+      "ore": "minislabStone"
     },
     "I": {
       "type": "forge:ore_dict",
-      "ore": "ingotIron"
+      "ore": "ingotSteel"
     },
     "S": {
       "type": "forge:ore_dict",
-      "ore": "stickIron"
+      "ore": "stickSteel"
     }
   },
   "result": {
