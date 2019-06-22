@@ -1,11 +1,8 @@
 package cassiokf.industrialrenewal.entity;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -13,7 +10,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
@@ -45,16 +41,6 @@ public class EntityFluidBase extends EntityMinecart implements IFluidHandler
     public EntityFluidBase(World worldIn, double x, double y, double z)
     {
         super(worldIn, x, y, z);
-    }
-
-    @Override
-    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
-    {
-        if (!this.world.isRemote && !player.isSneaking())
-        {
-            player.openGui(IndustrialRenewal.instance, GUIHandler.FLUIDCART, this.world, this.getEntityId(), 0, 0);
-        }
-        return true;
     }
 
     @Override

@@ -53,11 +53,13 @@ public class EntityLogCart extends EntityMinecart {
     @Override
     public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
     {
-        if (!this.world.isRemote && !player.isSneaking())
+        if (!player.isSneaking())
         {
-            player.openGui(IndustrialRenewal.instance, GUIHandler.LOGCART, this.world, this.getEntityId(), 0, 0);
+            if (!this.world.isRemote)
+                player.openGui(IndustrialRenewal.instance, GUIHandler.LOGCART, this.world, this.getEntityId(), 0, 0);
+            return true;
         }
-        return true;
+        return super.processInitialInteract(player, hand);
     }
 
     @Override
