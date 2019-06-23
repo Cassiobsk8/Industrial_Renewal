@@ -169,7 +169,6 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
                 float factor = (heat / 100f) / (maxHeat / 100f);
                 amount = Math.round(amount * factor);
                 FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), amount * IRConfig.steamBoilerConvertionFactor);
-                System.out.println(FluidRegistry.getFluid("steam") + " " + steamStack);
                 this.steamTank.fillInternal(steamStack, true);
                 heat -= 2;
             }
