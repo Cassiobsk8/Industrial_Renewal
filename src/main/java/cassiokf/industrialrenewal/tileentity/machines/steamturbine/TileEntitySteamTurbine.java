@@ -46,7 +46,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         @Override
         public boolean canFillFluidType(FluidStack fluid)
         {
-            return fluid.getFluid().equals(FluidInit.STEAM);
+            return fluid.getFluid().getName().equals("steam");
         }
 
         @Override
@@ -132,7 +132,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
             }
             if (this.rotation > 0)
             {
-                if (timeSincePlayed == 9)
+                if (timeSincePlayed >= 9)
                 {
                     timeSincePlayed = 0;
                     this.world.playSound(null, this.pos, IRSoundHandler.MOTOR_ROTAION, SoundCategory.BLOCKS, 0.8F, Math.min(getRotation(), 0.9F));

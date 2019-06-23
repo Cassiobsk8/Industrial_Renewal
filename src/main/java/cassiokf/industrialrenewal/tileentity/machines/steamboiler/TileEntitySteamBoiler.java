@@ -124,7 +124,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
     @Override
     public void update()
     {
-        if (this.isMaster() && !this.world.isRemote && this.type > 0)
+        if (this.getIsMaster() && !this.world.isRemote && this.type > 0)
         {
             //Fuel to Heat
             switch (this.type)
@@ -168,7 +168,8 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
                 int amount = stack != null ? stack.amount : 0;
                 float factor = (heat / 100f) / (maxHeat / 100f);
                 amount = Math.round(amount * factor);
-                FluidStack steamStack = new FluidStack(FluidInit.STEAM, amount * IRConfig.steamBoilerConvertionFactor);
+                FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), amount * IRConfig.steamBoilerConvertionFactor);
+                System.out.println(FluidRegistry.getFluid("steam") + " " + steamStack);
                 this.steamTank.fillInternal(steamStack, true);
                 heat -= 2;
             }
@@ -220,7 +221,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
         this.type = type;
         IBlockState state = this.world.getBlockState(this.pos).withProperty(BlockSteamBoiler.TYPE, type);
         this.world.setBlockState(this.pos, state, 2);
-        this.markDirty();
+        this.Sync();
     }
 
     private void dropItensInGround(ItemStackHandler inventory)
