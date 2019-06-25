@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.init;
 
 import cassiokf.industrialrenewal.container.*;
-import cassiokf.industrialrenewal.entity.EntityFluidContainer;
 import cassiokf.industrialrenewal.entity.EntityLogCart;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import cassiokf.industrialrenewal.gui.*;
@@ -29,7 +28,6 @@ public class GUIHandler implements IGuiHandler {
     public static final int FUSEBOX = 5;
     public static final int MANUAL = 6;
     public static final int LOGCART = 7;
-    public static final int FLUIDCART = 8;
     public static final int FLUIDLOADER = 9;
 
     @Nullable
@@ -55,9 +53,6 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == LOGCART) {
             return new ContainerLogCart(player.inventory, (EntityLogCart) world.getEntityByID(x));
-        }
-        if (ID == FLUIDCART) {
-            return new ContainerFluidContainer(player.inventory, (EntityFluidContainer) world.getEntityByID(x));
         }
         if (ID == FLUIDLOADER) {
             return new ContainerFluidLoader(player.inventory, (TileEntityFluidLoader) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
@@ -91,9 +86,6 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == LOGCART) {
             return new GUILogCart(player.inventory, (EntityLogCart) world.getEntityByID(x));
-        }
-        if (ID == FLUIDCART) {
-            return new GUITankContainer(player.inventory, (EntityFluidContainer) world.getEntityByID(x));
         }
         if (ID == FLUIDLOADER) {
             return new GUIFluidLoader(player.inventory, (TileEntityFluidLoader) world.getTileEntity(new BlockPos(x, y, z)));
