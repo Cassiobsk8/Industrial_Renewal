@@ -2,10 +2,14 @@ package cassiokf.industrialrenewal.entity.render;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.entity.EntityFluidContainer;
-import cassiokf.industrialrenewal.model.carts.FluidContainerModel;
+import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.model.carts.ModelCartFluidTank;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -17,7 +21,8 @@ public class RenderFluidContainer<T extends EntityFluidContainer> extends Render
 
     public static final ResourceLocation TEXTURES = new ResourceLocation(References.MODID + ":textures/entities/fluid_container.png");
 
-    protected FluidContainerModel modelMinecart = new FluidContainerModel();
+    private static ItemStack pointer = new ItemStack(ModItems.pointer);
+    protected ModelCartFluidTank modelMinecart = new ModelCartFluidTank();
 
     public RenderFluidContainer(RenderManager renderManagerIn) {
         super(renderManagerIn);
@@ -25,6 +30,13 @@ public class RenderFluidContainer<T extends EntityFluidContainer> extends Render
     }
 
     public void doRender(EntityFluidContainer entity, double x, double y, double z, float entityYaw, float partialTicks) {
+        renderCart(entity, x, y, z, entityYaw, partialTicks);
+
+        super.doRender(entity, x, y, z, entityYaw, partialTicks);
+    }
+
+    private void renderCart(EntityFluidContainer entity, double x, double y, double z, float entityYaw, float partialTicks)
+    {
         GlStateManager.pushMatrix();
         this.bindEntityTexture(entity);
         long i = (long) entity.getEntityId() * 493286711L;
@@ -85,14 +97,46 @@ public class RenderFluidContainer<T extends EntityFluidContainer> extends Render
 
         GlStateManager.scale(-1.0F, -1.0F, 1.0F);
         this.modelMinecart.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+
+        renderText(entity, f, f1 - 50, f2 - 5.4);
+        renderPointer(entity, f, f1 - 0.55, f2 - 0.5);
+        GlStateManager.rotate(180, 0, 1, 0);
+        renderText(entity, f, f1 - 50, f2 - 5.4);
+        renderPointer(entity, f, f1 - 0.55, f2 - 0.5);
+
         GlStateManager.popMatrix();
 
         if (this.renderOutlines) {
             GlStateManager.disableOutlineMode();
             GlStateManager.disableColorMaterial();
         }
+    }
 
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
+    private void renderText(EntityFluidContainer te, double x, double y, double z)
+    {
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(0.1F, 0.1F, 0.1F);
+        GlStateManager.scale(0.07F, 0.07F, 1F);
+        //RenderHelper.disableStandardItemLighting();
+        String st = te.GetText();
+        int xh = -Minecraft.getMinecraft().fontRenderer.getStringWidth(st) / 2;
+        GlStateManager.translate(x, y, z);
+        Minecraft.getMinecraft().fontRenderer.drawString(st, xh, 0, 0xFFFFFFFF);
+        //RenderHelper.enableStandardItemLighting();
+        GlStateManager.popMatrix();
+    }
+
+    private void renderPointer(EntityFluidContainer te, double x, double y, double z)
+    {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, z);
+        GlStateManager.scale(0.15F, 0.15F, 1.0F);
+        GlStateManager.rotate(-90, 0, 0, 1);
+        GlStateManager.rotate(180, 1, 0, 0);
+        float angle = te.GetTankFill();
+        GlStateManager.rotate(-angle, 0, 0, 1);
+        Minecraft.getMinecraft().getRenderItem().renderItem(pointer, ItemCameraTransforms.TransformType.GUI);
+        GlStateManager.popMatrix();
     }
 
     @Override
