@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.recipes;
 
-import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -14,17 +14,17 @@ import net.minecraftforge.oredict.OreIngredient;
 public class ModRecipes {
 
     public static void init() {
+        ModItems.registerOreDict();
+
         if (IRConfig.spongeIronRecipeActive) {
-            GameRegistry.addSmelting(ModItems.spongeIron, new ItemStack(ModItems.ingotSteel), 0.7f);
+            GameRegistry.addSmelting(ModItems.spongeIron, new ItemStack(OreDictionary.getOres("ingotSteel").get(0).getItem()), 0.7f);
         }
-        GameRegistry.addShapelessRecipe(new ResourceLocation("industrialrenewal:small_slabs"), new ResourceLocation("small_slabs"), new ItemStack(ModItems.smallSlab, 4),
+        GameRegistry.addShapelessRecipe(new ResourceLocation("industrialrenewal:small_slabs"), new ResourceLocation("small_slabs"), new ItemStack(OreDictionary.getOres("minislabStone").get(0).getItem(), 4),
                 Ingredient.fromStacks(new ItemStack(ModItems.steelSaw, 1, OreDictionary.WILDCARD_VALUE)), Ingredient.fromStacks(new ItemStack(Blocks.STONE_SLAB, 1)));
-        GameRegistry.addShapelessRecipe(new ResourceLocation("industrialrenewal:record_royal_entrance"), new ResourceLocation("record_royal_entrance"), new ItemStack(ModItems.disc1, 1),
+        GameRegistry.addShapelessRecipe(new ResourceLocation("industrialrenewal:record_royal_entrance"), new ResourceLocation("record_royal_entrance"), new ItemStack(OreDictionary.getOres("record").get(0).getItem(), 1),
                 Ingredient.fromStacks(new ItemStack(ModItems.steelSaw, 1, OreDictionary.WILDCARD_VALUE)), OreIngredient.fromItems(Items.RECORD_13,
                         Items.RECORD_11, Items.RECORD_CAT,Items.RECORD_BLOCKS, Items.RECORD_MALL, Items.RECORD_CHIRP, Items.RECORD_FAR,Items.RECORD_MELLOHI,Items.RECORD_STAL,Items.RECORD_STRAD,
                         Items.RECORD_WAIT, Items.RECORD_WARD));
-
-        ModItems.registerOreDict();
     }
 
 }
