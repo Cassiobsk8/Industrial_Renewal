@@ -55,6 +55,8 @@ public class ModItems {
     public static ItemFireBox fireBoxSolid = new ItemFireBox("firebox_solid", 1, References.CREATIVE_IR_TAB);
     public static ItemFireBox fireBoxFluid = new ItemFireBox("firebox_fluid", 2, References.CREATIVE_IR_TAB);
 
+    public static ItemWindBlade windBlade = new ItemWindBlade("small_wind_blade", References.CREAATIVE_IRWIP_TAB);
+
     //public static ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
 
     public static void register(IForgeRegistry<Item> registry) {
@@ -91,7 +93,8 @@ public class ModItems {
                 fireBoxSolid,
                 fireBoxFluid,
                 battery,
-                sMotor
+                sMotor,
+                windBlade
         );
     }
 
@@ -129,6 +132,7 @@ public class ModItems {
         fireBoxFluid.registerItemModel();
         battery.registerItemModel();
         sMotor.registerItemModel();
+        windBlade.registerItemModel();
     }
 
     public static void registerOreDict() {

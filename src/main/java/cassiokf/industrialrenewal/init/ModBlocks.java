@@ -104,6 +104,8 @@ public class ModBlocks {
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
 
     public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREATIVE_IR_TAB);
+    public static BlockSmallWindTurbine sWindTurbine = new BlockSmallWindTurbine("small_wind_turbine", References.CREAATIVE_IRWIP_TAB);
+    public static BlockWindTurbinePillar turbinePillar = new BlockWindTurbinePillar("small_wind_turbine_pillar", References.CREAATIVE_IRWIP_TAB);
     public static BlockElectricPump electricPump = new BlockElectricPump("electric_pump", References.CREAATIVE_IRWIP_TAB);
     public static BlockBatteryBank batteryBank = new BlockBatteryBank("battery_bank", References.CREATIVE_IR_TAB);
 
@@ -214,6 +216,8 @@ public class ModBlocks {
                 valveLarge,
                 //Energy
                 spanel,
+                sWindTurbine,
+                turbinePillar,
                 batteryBank,
                 electricPump,
                 //Machines
@@ -246,6 +250,8 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
         GameRegistry.registerTileEntity(gutter.getTileEntityClass(), gutter.getRegistryName().toString());
         GameRegistry.registerTileEntity(spanel.getTileEntityClass(), spanel.getRegistryName().toString());
+        GameRegistry.registerTileEntity(sWindTurbine.getTileEntityClass(), sWindTurbine.getRegistryName().toString());
+        GameRegistry.registerTileEntity(turbinePillar.getTileEntityClass(), turbinePillar.getRegistryName().toString());
         GameRegistry.registerTileEntity(firstAidKit.getTileEntityClass(), firstAidKit.getRegistryName().toString());
         GameRegistry.registerTileEntity(recordPlayer.getTileEntityClass(), recordPlayer.getRegistryName().toString());
         GameRegistry.registerTileEntity(sensorRain.getTileEntityClass(), sensorRain.getRegistryName().toString());
@@ -331,6 +337,8 @@ public class ModBlocks {
                 fluidPipe.createItemBlock(),
                 valveLarge.createItemBlock(),
                 spanel.createItemBlock(),
+                sWindTurbine.createItemBlock(),
+                turbinePillar.createItemBlock(),
                 normalRail.createItemBlock(),
                 boosterRail.createItemBlock(),
                 crossingRail.createItemBlock(),
@@ -387,6 +395,8 @@ public class ModBlocks {
         bigFenceWire.registerItemModel(Item.getItemFromBlock(bigFenceWire));
         egate.registerItemModel(Item.getItemFromBlock(egate));
         spanel.registerItemModel(Item.getItemFromBlock(spanel));
+        sWindTurbine.registerItemModel(Item.getItemFromBlock(sWindTurbine));
+        turbinePillar.registerItemModel(Item.getItemFromBlock(turbinePillar));
         firstAidKit.registerItemModel(Item.getItemFromBlock(firstAidKit));
         bufferStopRail.registerItemModel(Item.getItemFromBlock(bufferStopRail));
         signHV.registerItemModel(Item.getItemFromBlock(signHV));
