@@ -99,7 +99,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
     {
         rotation += 3.5f * getEfficiency();
         if (rotation > 360) rotation = 0;
-        return rotation;
+        return -rotation;
     }
 
     public boolean hasBlade()
