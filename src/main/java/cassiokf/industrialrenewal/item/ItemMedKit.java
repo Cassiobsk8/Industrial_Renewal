@@ -28,7 +28,7 @@ public class ItemMedKit extends ItemBase {
         ItemStack itemstack = player.getHeldItem(hand);
         if (player.shouldHeal() && !player.isPotionActive(MobEffects.REGENERATION)) {
             if (!worldIn.isRemote) {
-                player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, IRConfig.medKitEffectDuration, 1, false, false));
+                player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, IRConfig.MainConfig.Main.medKitEffectDuration, 1, false, false));
             }
             itemstack.shrink(1);
         }

@@ -106,7 +106,7 @@ public class Utils {
 
     public static float getConvertedTemperature(float temp)
     {
-        switch (IRConfig.temperatureScale)
+        switch (IRConfig.MainConfig.Main.temperatureScale)
         {
             default:
             case 0:

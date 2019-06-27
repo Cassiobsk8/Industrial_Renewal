@@ -40,7 +40,7 @@ public class ItemFireExtinguisher extends ItemBase {
                 itemstack.shrink(1);
                 return EnumActionResult.SUCCESS;
             }
-        } else if (IRConfig.fireExtinguisheronNether || player.dimension != DimensionType.NETHER.getId())
+        } else if (IRConfig.MainConfig.Main.fireExtinguisheronNether || player.dimension != DimensionType.NETHER.getId())
         {
             ArrayList<BlockPos> list = new ArrayList<>();
             add9x9pos(list, pos);

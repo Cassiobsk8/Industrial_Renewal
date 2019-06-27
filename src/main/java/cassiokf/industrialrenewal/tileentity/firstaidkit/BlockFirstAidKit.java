@@ -77,7 +77,7 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
         if (!player.isSneaking()) {
             ItemStack stack = itemInKit(world, pos);
             if (stack != null && player.shouldHeal() && !player.isPotionActive(MobEffects.REGENERATION)) {
-                player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, IRConfig.medKitEffectDuration, 1, false, false));
+                player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, IRConfig.MainConfig.Main.medKitEffectDuration, 1, false, false));
                 stack.shrink(1);
             }
         } else {

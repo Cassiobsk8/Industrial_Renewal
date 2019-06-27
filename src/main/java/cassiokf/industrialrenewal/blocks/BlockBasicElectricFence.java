@@ -38,8 +38,8 @@ public abstract class BlockBasicElectricFence extends BlockBase {
             return;
         }
 
-        int mode = IRConfig.electricFenceMode;
-        float damage = (float) IRConfig.electricFenceDamageAmount;
+        int mode = IRConfig.MainConfig.Main.electricFenceMode;
+        float damage = (float) IRConfig.MainConfig.Main.electricFenceDamageAmount;
 
         if (mode == 4) return;
         if (mode == 0 && (entityIn instanceof EntityMob || entityIn instanceof EntityPlayer)) {
@@ -56,7 +56,7 @@ public abstract class BlockBasicElectricFence extends BlockBase {
 
     private void DoDamage(World world, BlockPos pos, Entity entityIn, float amount) {
         entityIn.attackEntityFrom(DamageSource.LIGHTNING_BOLT, amount);
-        float knockback = (float) IRConfig.electricFenceKnockBack;
+        float knockback = (float) IRConfig.MainConfig.Main.electricFenceKnockBack;
         if (knockback > 0)
             ((EntityLivingBase) entityIn).knockBack(entityIn, knockback, pos.getX() - entityIn.posX, pos.getZ() - entityIn.posZ);
         Random r = new Random();

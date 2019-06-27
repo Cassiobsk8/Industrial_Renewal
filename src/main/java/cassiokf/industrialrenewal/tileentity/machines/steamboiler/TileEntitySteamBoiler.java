@@ -64,7 +64,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
         @Override
         public boolean canFillFluidType(FluidStack fluid)
         {
-            return IRConfig.fluidFuel.containsKey(fluid.getFluid().getName());
+            return IRConfig.MainConfig.Main.fluidFuel.containsKey(fluid.getFluid().getName());
         }
 
         @Override
@@ -149,7 +149,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
                         FluidStack fuel = this.fuelTank.getFluid();
                         if (fuelTime <= 0)
                         {
-                            fuelTime = IRConfig.fluidFuel.get(fuel.getFluid().getName()) != null ? IRConfig.fluidFuel.get(fuel.getFluid().getName()) : 0;
+                            fuelTime = IRConfig.MainConfig.Main.fluidFuel.get(fuel.getFluid().getName()) != null ? IRConfig.MainConfig.Main.fluidFuel.get(fuel.getFluid().getName()) : 0;
                             maxFuelTime = fuelTime;
                             fuel.amount -= Fluid.BUCKET_VOLUME;
                             this.markDirty();
@@ -167,7 +167,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
                 int amount = stack != null ? stack.amount : 0;
                 float factor = (heat / 100f) / (maxHeat / 100f);
                 amount = Math.round(amount * factor);
-                FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), amount * IRConfig.steamBoilerConvertionFactor);
+                FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), amount * IRConfig.MainConfig.Main.steamBoilerConvertionFactor);
                 this.steamTank.fillInternal(steamStack, true);
                 heat -= 2;
             }
@@ -188,7 +188,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
             if (this.steamTank.getFluidAmount() > 0 && heat < 9000)
             {
                 FluidStack stack = this.steamTank.drain(10, true);
-                stack.amount = stack.amount / IRConfig.steamBoilerConvertionFactor;
+                stack.amount = stack.amount / IRConfig.MainConfig.Main.steamBoilerConvertionFactor;
                 this.waterTank.fill(stack, true);
             }
 
@@ -268,7 +268,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
     public String getHeatText()
     {
         String st;
-        switch (IRConfig.temperatureScale)
+        switch (IRConfig.MainConfig.Main.temperatureScale)
         {
             default:
             case 0:

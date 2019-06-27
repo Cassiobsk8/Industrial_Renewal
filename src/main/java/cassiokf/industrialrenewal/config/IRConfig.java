@@ -1,230 +1,127 @@
 package cassiokf.industrialrenewal.config;
 
-
 import cassiokf.industrialrenewal.References;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.common.config.Config;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class IRConfig {
-
-    public static final String CATEGORY_NAME_OPTIONS = "Options";
-    public static final String CATEGORY_NAME_RECIPES = "Recipes";
-    public static boolean spongeIronRecipeActive; //Refer to this to get the config boolean
-    public static boolean startWithManual;
-    public static int electricFenceMode;
-    public static double electricFenceDamageAmount;
-    public static double electricFenceKnockBack;
-    public static double alarmVolume;
-    public static boolean pumpInfinityWater;
-    public static int barrelCapacity;
-    public static int fluidCartCapacity;
-    public static int batteryBankCapacity;
-    public static int batteryBankMaxInput;
-    public static int batteryBankMaxOutput;
-    public static int medKitEffectDuration;
-    public static int temperatureScale;
-    public static int steamBoilerConvertionFactor;
-    public static boolean fireExtinguisheronNether;
-    public static Map<String, Integer> fluidFuel;
-
-    private static Configuration config = null;
-
-    public static void preInit() {
-        File configFile = new File(Loader.instance().getConfigDir(), "IndustrialRenewal.cfg");
-        config = new Configuration(configFile);
-        syncFromFiles();
+    public static Map<String, Integer> getFuelHash()
+    {
+        Map<String, Integer> fluidFuel = new HashMap<String, Integer>();
+        fluidFuel.put("lava", 200);
+        fluidFuel.put("rocket_fuel", 3200);
+        fluidFuel.put("pyrotheum", 3200);
+        fluidFuel.put("refined_fuel", 1500);
+        fluidFuel.put("ic2biogas", 300);
+        fluidFuel.put("crude_oil", 500);
+        fluidFuel.put("refined_oil", 1000);
+        fluidFuel.put("coal", 400);
+        fluidFuel.put("refined_biofuel", 900);
+        fluidFuel.put("bio_diesel", 600);
+        fluidFuel.put("biodiesel", 600);
+        fluidFuel.put("diesel", 900);
+        fluidFuel.put("fuel", 1500);
+        fluidFuel.put("fluiddiesel", 900);
+        fluidFuel.put("fluidnitrodiesel", 1600);
+        fluidFuel.put("empoweredoil", 700);
+        fluidFuel.put("kerosene", 1500);
+        fluidFuel.put("lpg", 1800);
+        fluidFuel.put("gasoline", 1200);
+        fluidFuel.put("fire_water", 1200);
+        fluidFuel.put("ethanol", 900);
+        fluidFuel.put("bio.ethanol", 900);
+        return fluidFuel;
     }
 
-    public static Configuration getConfig() {
-        return config;
-    }
+    /////////////////////NEWWWWW
+    @Config(modid = References.MODID, type = Config.Type.INSTANCE, name = References.MODID)
+    @Config.LangKey("gui.config.main_title")
+    public static class MainConfig
+    {
+        @Config.Comment("Main")
+        @Config.LangKey("gui.config.main_title")
+        @Config.RequiresMcRestart
+        public static final SubCategoryMain Main = new SubCategoryMain();
+        @Config.Comment("Recipes Configurations")
+        @Config.LangKey("gui.config.category.recipes")
+        @Config.RequiresMcRestart
+        public static final SubCategoryRecipes Recipes = new SubCategoryRecipes();
 
-    public static void clientPreInit() {
-        MinecraftForge.EVENT_BUS.register(new ConfigEventHandler());
-    }
+        public static class SubCategoryMain
+        {
 
-    public static void syncFromFiles() {
-        syncConfig(true, true);
-    }
 
-    public static void syncFromGui() {
-        syncConfig(false, true);
-    }
+            @Config.Comment("Turn On/Off the manual item on first spawn (Default true) (WIP not working yet)")
+            @Config.LangKey("gui.config.recipes.startwithmanual.name")
+            public boolean startWithManual = true;
 
-    public static void syncFromFields() {
-        syncConfig(false, false);
-    }
+            @Config.Comment("'0': Do damage only to monsters and only knockback players. '1': Do damage to monsters and player. '2': do only knockback to all living things. '3': do damage to all living things. '4': normal fence (Default 0)")
+            @Config.LangKey("gui.config.electric_fence_damage_type.name")
+            public int electricFenceMode = 0;
 
-    private static void syncConfig(boolean loadFromConfigFile, boolean readFieldsFromConfig) {
-        if (loadFromConfigFile) {
-            config.load();
+            @Config.Comment("The amount of damage the fence would cause (Default 2.0 '1 heart')")
+            @Config.LangKey("gui.config.electric_fence_damage_amount.name")
+            public double electricFenceDamageAmount = 2.0;
+
+            @Config.Comment("The amount of knockback the fence would cause (Default 0.3)")
+            @Config.LangKey("gui.config.electric_fence_knockback_amount.name")
+            public double electricFenceKnockBack = 0.3;
+
+            @Config.Comment("The volume of the alarm (Default 4.0)")
+            @Config.LangKey("gui.config.alarm_volume.name")
+            public double alarmVolume = 4.0;
+
+            @Config.Comment("If pumps will not consume the water (Default true)")
+            @Config.LangKey("gui.config.pump_infinity_water.name")
+            public boolean pumpInfinityWater = true;
+
+            @Config.Comment("The capacity of the barrel (Default 64000)")
+            @Config.LangKey("gui.config.barrel_capacity.name")
+            public int barrelCapacity = 64000;
+
+            @Config.Comment("The capacity of the Fluid Container Cart (Default 64000)")
+            @Config.LangKey("gui.config.fluidcontainer_capacity.name")
+            public int fluidCartCapacity = 64000;
+
+            @Config.Comment("The capacity of the Battery Bank (Default 1000000)")
+            @Config.LangKey("gui.config.batterybank_capacity.name")
+            public int batteryBankCapacity = 1000000;
+
+            @Config.Comment("The Max Input of the Battery Bank (Default 10240)")
+            @Config.LangKey("gui.config.batterybank_input.name")
+            public int batteryBankMaxInput = 10240;
+
+            @Config.Comment("The Max Output of the Battery Bank (Default 10240)")
+            @Config.LangKey("gui.config.batterybank_output.name")
+            public int batteryBankMaxOutput = 10240;
+
+            @Config.Comment("The time in miliseconds the medkit will regenerate players hearth (Default 150)")
+            @Config.LangKey("gui.config.medkit_duration.name")
+            public int medKitEffectDuration = 150;
+
+            @Config.Comment("'0': Celsius '1': Fahrenheit '2': Kelvin (Default 0)")
+            @Config.LangKey("gui.config.temp_mode.name")
+            public int temperatureScale = 0;
+
+            @Config.Comment("The factor steam will be generated ez: 1 Water : 10 Steam (note: real life is 1700) (Default 10)")
+            @Config.LangKey("gui.config.steam_factor.name")
+            public int steamBoilerConvertionFactor = 10;
+
+            @Config.Comment("If player can use fire extinguisher on nether lava (Default true)")
+            @Config.LangKey("gui.config.nether_extinguisher.name")
+            public boolean fireExtinguisheronNether = true;
+
+            @Config.Comment("Fluid fuels and its combustion value per 1 Bucket (Default: {lava=200, rocket_fuel=1120, pyrotheum=3200, refined_fuel=1500, ic2biogas=300, crude_oil=500, refined_oil=1000, coal=400, refined_biofuel=900, bio_diesel=600, biodiesel=600, diesel=900, fuel=1500, fluiddiesel=900, fluidnitrodiesel=1600, empoweredoil=700, kerosene=1500, lpg=1800, gasoline=1200, fire_water=1200, ethanol=900, bio.ethanol=900})")
+            @Config.LangKey("gui.config.fluidFuel.name")
+            public Map<String, Integer> fluidFuel = getFuelHash();
         }
 
-        //All the properties
-        Property propertyStartWithManual = config.get(CATEGORY_NAME_OPTIONS, "StartWithManual", true);
-        propertyStartWithManual.setLanguageKey("gui.config.recipes.startwithmanual.name");
-        propertyStartWithManual.setComment("Turn On/Off the manual item on first spawn (Default true) (WIP not working yet)");
-
-        Property propertyElectricFenceDamageType = config.get(CATEGORY_NAME_OPTIONS, "ElectricFenceDamageMode", 0);
-        propertyElectricFenceDamageType.setLanguageKey("gui.config.electric_fence_damage_type.name");
-        propertyElectricFenceDamageType.setComment("'0': Do damage only to monsters and only knockback players. '1': Do damage to monsters and player. '2': do only knockback to all living things. '3': do damage to all living things. '4': normal fence (Default 0)");
-
-        Property propertyElectricFenceDamageAmount = config.get(CATEGORY_NAME_OPTIONS, "ElectricFenceDamageAmount", 2.0);
-        propertyElectricFenceDamageAmount.setLanguageKey("gui.config.electric_fence_damage_amount.name");
-        propertyElectricFenceDamageAmount.setComment("The amount of damage the fence would cause (Default 2.0 '1 heart')");
-
-        Property propertyElectricFenceKnockBack = config.get(CATEGORY_NAME_OPTIONS, "ElectricFenceKnockBack", 0.3);
-        propertyElectricFenceKnockBack.setLanguageKey("gui.config.electric_fence_knockback_amount.name");
-        propertyElectricFenceKnockBack.setComment("The amount of knockback the fence would cause (Default 0.3)");
-
-        Property propertyAlarmVolume = config.get(CATEGORY_NAME_OPTIONS, "AlarmVolume", 4.0);
-        propertyAlarmVolume.setLanguageKey("gui.config.alarm_volume.name");
-        propertyAlarmVolume.setComment("The volume of the alarm (Default 4.0)");
-
-        Property propertyPumpInfinityWater = config.get(CATEGORY_NAME_OPTIONS, "pumpinfinitywater", true);
-        propertyPumpInfinityWater.setLanguageKey("gui.config.pump_infinity_water.name");
-        propertyPumpInfinityWater.setComment("If pumps will not consume the water");
-
-        Property propertyBarrelCapacity = config.get(CATEGORY_NAME_OPTIONS, "BarrelCapacity", 64000);
-        propertyBarrelCapacity.setLanguageKey("gui.config.barrel_capacity.name");
-        propertyBarrelCapacity.setComment("The capacity of the barrel (Default 64000)");
-
-        Property propertyFluidContainerCapacity = config.get(CATEGORY_NAME_OPTIONS, "FluidCartCapacity", 64000);
-        propertyFluidContainerCapacity.setLanguageKey("gui.config.fluidcontainer_capacity.name");
-        propertyFluidContainerCapacity.setComment("The capacity of the Fluid Container Cart (Default 64000)");
-
-        Property propertyBatteryBankCapacity = config.get(CATEGORY_NAME_OPTIONS, "BatteryBankCapacity", 1000000);
-        propertyBatteryBankCapacity.setLanguageKey("gui.config.batterybank_capacity.name");
-        propertyBatteryBankCapacity.setComment("The capacity of the Battery Bank (Default 1000000)");
-
-        Property propertyBatteryBankMaxInput = config.get(CATEGORY_NAME_OPTIONS, "BatteryBankMaxInput", 10240);
-        propertyBatteryBankMaxInput.setLanguageKey("gui.config.batterybank_input.name");
-        propertyBatteryBankMaxInput.setComment("The Max Input of the Battery Bank (Default 10240)");
-
-        Property propertyBatteryBankMaxOutput = config.get(CATEGORY_NAME_OPTIONS, "BatteryBankMaxOutput", 10240);
-        propertyBatteryBankMaxOutput.setLanguageKey("gui.config.batterybank_output.name");
-        propertyBatteryBankMaxOutput.setComment("The Max Output of the Battery Bank (Default 10240)");
-
-        Property propertyMedKitDuration = config.get(CATEGORY_NAME_OPTIONS, "MedikitDuration", 150);
-        propertyMedKitDuration.setLanguageKey("gui.config.medkit_duration.name");
-        propertyMedKitDuration.setComment("The time in miliseconds the medkit will regenerate players hearth (Default 150)");
-
-        Property propertyTemperatureMode = config.get(CATEGORY_NAME_OPTIONS, "TemperatureMode", 0);
-        propertyTemperatureMode.setLanguageKey("gui.config.temp_mode.name");
-        propertyTemperatureMode.setComment("'0': Celsius '1': Fahrenheit '2': Kelvin (Default 0)");
-
-        Property propertySteamBoilerConversion = config.get(CATEGORY_NAME_OPTIONS, "SteamConversionFactor", 10);
-        propertySteamBoilerConversion.setLanguageKey("gui.config.steam_factor.name");
-        propertySteamBoilerConversion.setComment(" The factor steam will be generated ez: 1 Water : 10 Steam (note: real life is 1700) (Default 10)");
-
-        Property propertyFireExtinguisherNether = config.get(CATEGORY_NAME_OPTIONS, "NetherExtinguisher", true);
-        propertyFireExtinguisherNether.setLanguageKey("gui.config.nether_extinguisher.name");
-        propertyFireExtinguisherNether.setComment("If player can use fire extinguisher on nether lava");
-
-        Property propertyFluidFuel = config.get(CATEGORY_NAME_OPTIONS, "fluidFuel", "{lava=200, rocket_fuel=1120, pyrotheum=3200, refined_fuel=1500, ic2biogas=300, crude_oil=500, refined_oil=1000, coal=400, refined_biofuel=900, bio_diesel=600, biodiesel=600, diesel=900, fuel=1500, fluiddiesel=900, fluidnitrodiesel=1600, empoweredoil=700, kerosene=1500, lpg=1800, gasoline=1200, fire_water=1200, ethanol=900, bio.ethanol=900}");
-        propertyFluidFuel.setLanguageKey("gui.config.fluidFuel.name");
-        propertyFluidFuel.setComment("Fluid fuels and its combustion value per 1 Bucket (Default: {lava=200, rocket_fuel=1120, pyrotheum=3200, refined_fuel=1500, ic2biogas=300, crude_oil=500, refined_oil=1000, coal=400, refined_biofuel=900, bio_diesel=600, biodiesel=600, diesel=900, fuel=1500, fluiddiesel=900, fluidnitrodiesel=1600, empoweredoil=700, kerosene=1500, lpg=1800, gasoline=1200, fire_water=1200, ethanol=900, bio.ethanol=900})");
-
-        //Recipes
-        Property propertyRecipeSpongeIron = config.get(CATEGORY_NAME_RECIPES, "spongeiron_recipe", true);
-        propertyRecipeSpongeIron.setLanguageKey("gui.config.recipes.spongeiron_recipe.name");
-        propertyRecipeSpongeIron.setComment("Turn On/Off the sponge iron recipe (Default true)");
-        //End of properties
-
-        List<String> propertyOrder = new ArrayList<String>();
-        //Order
-        propertyOrder.add(propertyStartWithManual.getName());
-        propertyOrder.add(propertyElectricFenceDamageType.getName());
-        propertyOrder.add(propertyElectricFenceDamageAmount.getName());
-        propertyOrder.add(propertyElectricFenceKnockBack.getName());
-        propertyOrder.add(propertyAlarmVolume.getName());
-        propertyOrder.add(propertyPumpInfinityWater.getName());
-        propertyOrder.add(propertyBarrelCapacity.getName());
-        propertyOrder.add(propertyFluidContainerCapacity.getName());
-        propertyOrder.add(propertyBatteryBankCapacity.getName());
-        propertyOrder.add(propertyBatteryBankMaxInput.getName());
-        propertyOrder.add(propertyBatteryBankMaxOutput.getName());
-        propertyOrder.add(propertyMedKitDuration.getName());
-        propertyOrder.add(propertyTemperatureMode.getName());
-        propertyOrder.add(propertySteamBoilerConversion.getName());
-        propertyOrder.add(propertyFluidFuel.getName());
-
-        propertyOrder.add(propertyRecipeSpongeIron.getName());
-
-        //End order
-        config.setCategoryPropertyOrder(CATEGORY_NAME_OPTIONS, propertyOrder);
-        config.setCategoryPropertyOrder(CATEGORY_NAME_RECIPES, propertyOrder);
-
-        if (readFieldsFromConfig) {
-            spongeIronRecipeActive = propertyRecipeSpongeIron.getBoolean();
-            startWithManual = propertyStartWithManual.getBoolean();
-            electricFenceMode = propertyElectricFenceDamageType.getInt();
-            electricFenceKnockBack = propertyElectricFenceKnockBack.getDouble();
-            alarmVolume = propertyAlarmVolume.getDouble();
-            pumpInfinityWater = propertyPumpInfinityWater.getBoolean();
-            electricFenceDamageAmount = propertyElectricFenceDamageAmount.getDouble();
-            barrelCapacity = propertyBarrelCapacity.getInt();
-            fluidCartCapacity = propertyFluidContainerCapacity.getInt();
-            batteryBankCapacity = propertyBatteryBankCapacity.getInt();
-            batteryBankMaxInput = propertyBatteryBankMaxInput.getInt();
-            batteryBankMaxOutput = propertyBatteryBankMaxOutput.getInt();
-            medKitEffectDuration = propertyMedKitDuration.getInt();
-            temperatureScale = propertyTemperatureMode.getInt();
-            steamBoilerConvertionFactor = propertySteamBoilerConversion.getInt();
-            //
-            Map<String, Integer> myMap = new HashMap<String, Integer>();
-            String s = propertyFluidFuel.getString().replace("{", "").replace("}", "").replaceAll(System.getProperty("line.separator"), "").replaceAll(" ", "");
-            String[] pairs = s.split(",");
-            for (String pair : pairs)
-            {
-                String[] keyValue = pair.split("=");
-                myMap.put(keyValue[0], Integer.valueOf(keyValue[1]));
-            }
-            fluidFuel = myMap;
-            //
-        }
-
-        propertyStartWithManual.set(startWithManual);
-        propertyRecipeSpongeIron.set(spongeIronRecipeActive);
-        propertyElectricFenceDamageType.set(electricFenceMode);
-        propertyElectricFenceDamageAmount.set(electricFenceDamageAmount);
-        propertyElectricFenceKnockBack.set(electricFenceKnockBack);
-        propertyAlarmVolume.set(alarmVolume);
-        propertyPumpInfinityWater.set(pumpInfinityWater);
-        propertyBarrelCapacity.set(barrelCapacity);
-        propertyFluidContainerCapacity.set(fluidCartCapacity);
-        propertyBatteryBankCapacity.set(batteryBankCapacity);
-        propertyBatteryBankMaxInput.set(batteryBankMaxInput);
-        propertyBatteryBankMaxOutput.set(batteryBankMaxOutput);
-        propertyMedKitDuration.set(medKitEffectDuration);
-        propertyTemperatureMode.set(temperatureScale);
-        propertySteamBoilerConversion.set(steamBoilerConvertionFactor);
-        propertyFluidFuel.set(fluidFuel.toString().replaceAll(",", "," + System.getProperty("line.separator")));
-
-        if (config.hasChanged()) {
-            config.save();
+        public static class SubCategoryRecipes
+        {
+            @Config.LangKey("gui.config.recipes.spongeiron_recipe.name")
+            public boolean spongeIronRecipeActive = true;
         }
     }
-
-    public static class ConfigEventHandler {
-
-        @SubscribeEvent(priority = EventPriority.LOWEST)
-        public void onEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
-            if (event.getModID().equals(References.MODID)) {
-                syncFromGui();
-            }
-        }
-    }
-
 }

@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 public class TileEntityTrash extends TileFluidHandler implements ICapabilityProvider
 {
     private final VoltsEnergyContainer energyContainer;
-    public FluidTank tank = new FluidTank(IRConfig.barrelCapacity)
+    public FluidTank tank = new FluidTank(IRConfig.MainConfig.Main.barrelCapacity)
     {
         @Override
         public int fill(FluidStack resource, boolean doFill)

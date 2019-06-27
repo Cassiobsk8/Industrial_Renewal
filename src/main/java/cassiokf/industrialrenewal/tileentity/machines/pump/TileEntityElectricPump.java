@@ -50,7 +50,7 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
         if (upTank != null) {
             Block block = this.world.getBlockState(this.pos.down()).getBlock();
             IFluidHandler downFluid = Utils.wrapFluidBlock(block, this.world, this.pos.down());
-            boolean consumeFluid = !(downFluid.getTankProperties()[0].getContents() != null && downFluid.getTankProperties()[0].getContents().getFluid().equals(FluidRegistry.WATER) && IRConfig.pumpInfinityWater);
+            boolean consumeFluid = !(downFluid.getTankProperties()[0].getContents() != null && downFluid.getTankProperties()[0].getContents().getFluid().equals(FluidRegistry.WATER) && IRConfig.MainConfig.Main.pumpInfinityWater);
             VoltsEnergyContainer motorContainer = GetEnergyContainer();
 
             if (upTank.fill(downFluid.drain(Integer.MAX_VALUE, false), false) > 0 && motorContainer != null && motorContainer.getEnergyStored() >= 15) {

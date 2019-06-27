@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityBarrel extends TileFluidHandlerBase
 {
-    public FluidTank tank = new FluidTank(IRConfig.barrelCapacity)
+    public FluidTank tank = new FluidTank(IRConfig.MainConfig.Main.barrelCapacity)
     {
         @Override
         public void onContentsChanged()

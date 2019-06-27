@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal;
 
-import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.entity.EntityInit;
 import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.init.ModBlocks;
@@ -61,7 +60,6 @@ public class IndustrialRenewal {
         FluidInit.registerFluids();
         IRSoundHandler.registerSounds();
         EntityInit.registerEntities();
-        IRConfig.preInit();
         proxy.preInit();
         NetworkHandler.init();
 

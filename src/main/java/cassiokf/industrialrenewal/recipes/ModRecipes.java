@@ -16,7 +16,8 @@ public class ModRecipes {
     public static void init() {
         ModItems.registerOreDict();
 
-        if (IRConfig.spongeIronRecipeActive) {
+        if (IRConfig.MainConfig.Recipes.spongeIronRecipeActive)
+        {
             GameRegistry.addSmelting(ModItems.spongeIron, new ItemStack(OreDictionary.getOres("ingotSteel").get(0).getItem()), 0.7f);
         }
         GameRegistry.addShapelessRecipe(new ResourceLocation("industrialrenewal:small_slabs"), new ResourceLocation("small_slabs"), new ItemStack(OreDictionary.getOres("minislabStone").get(0).getItem(), 4),

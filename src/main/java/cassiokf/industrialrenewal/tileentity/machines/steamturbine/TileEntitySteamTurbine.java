@@ -93,7 +93,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
                 {
                     FluidStack stack = this.steamTank.drainInternal(steamPtick, true);
                     float amount = stack != null ? stack.amount : 0f;
-                    FluidStack waterStack = new FluidStack(FluidRegistry.WATER, Math.round(amount / (float) IRConfig.steamBoilerConvertionFactor));
+                    FluidStack waterStack = new FluidStack(FluidRegistry.WATER, Math.round(amount / (float) IRConfig.MainConfig.Main.steamBoilerConvertionFactor));
                     this.waterTank.fillInternal(waterStack, true);
                     float factor = amount / (float) steamPtick;
                     rotation += (10 * factor);

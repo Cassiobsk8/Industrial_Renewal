@@ -24,7 +24,7 @@ public class ItemBattery extends ItemBase implements ICapabilityProvider
     public ItemBattery(String name, CreativeTabs tab)
     {
         super(name, tab);
-        this.container = new VoltsEnergyContainer(IRConfig.batteryBankCapacity / 5, IRConfig.batteryBankMaxInput / 5, IRConfig.batteryBankMaxOutput / 5);
+        this.container = new VoltsEnergyContainer(IRConfig.MainConfig.Main.batteryBankCapacity / 5, IRConfig.MainConfig.Main.batteryBankMaxInput / 5, IRConfig.MainConfig.Main.batteryBankMaxOutput / 5);
     }
 
     @SideOnly(Side.CLIENT)

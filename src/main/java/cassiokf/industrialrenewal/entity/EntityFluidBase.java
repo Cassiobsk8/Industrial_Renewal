@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 public class EntityFluidBase extends EntityMinecart implements IFluidHandler
 {
     private static final DataParameter<NBTTagCompound> TANK = EntityDataManager.createKey(EntityFluidBase.class, DataSerializers.COMPOUND_TAG);
-    public FluidTank tank = new FluidTank(IRConfig.fluidCartCapacity)
+    public FluidTank tank = new FluidTank(IRConfig.MainConfig.Main.fluidCartCapacity)
     {
         @Override
         protected void onContentsChanged()

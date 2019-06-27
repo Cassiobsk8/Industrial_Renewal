@@ -44,7 +44,7 @@ public class TileEntityAlarm extends TileEntity implements ITickable {
 
     public void playThis() {
         if (this.checkPowered()) {
-            this.getWorld().playSound(null, this.getPos(), IRSoundHandler.TILEENTITY_ALARM, SoundCategory.BLOCKS, (float) IRConfig.alarmVolume, 1.0F);
+            this.getWorld().playSound(null, this.getPos(), IRSoundHandler.TILEENTITY_ALARM, SoundCategory.BLOCKS, (float) IRConfig.MainConfig.Main.alarmVolume, 1.0F);
         }
     }
 

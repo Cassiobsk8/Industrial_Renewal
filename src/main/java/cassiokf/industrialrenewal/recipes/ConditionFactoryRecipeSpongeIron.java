@@ -11,7 +11,7 @@ import java.util.function.BooleanSupplier;
 public class ConditionFactoryRecipeSpongeIron implements IConditionFactory {
     @Override
     public BooleanSupplier parse(JsonContext context, JsonObject json) {
-        Boolean value = JsonUtils.getBoolean(json, "value", true);
-        return () -> IRConfig.spongeIronRecipeActive == value;
+        boolean value = JsonUtils.getBoolean(json, "value", true);
+        return () -> IRConfig.MainConfig.Recipes.spongeIronRecipeActive == value;
     }
 }

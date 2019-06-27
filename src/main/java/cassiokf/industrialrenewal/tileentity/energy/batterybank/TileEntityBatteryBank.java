@@ -21,7 +21,7 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
     private final VoltsEnergyContainer container;
 
     public TileEntityBatteryBank() {
-        this.container = new VoltsEnergyContainer(IRConfig.batteryBankCapacity, IRConfig.batteryBankMaxInput, IRConfig.batteryBankMaxOutput)
+        this.container = new VoltsEnergyContainer(IRConfig.MainConfig.Main.batteryBankCapacity, IRConfig.MainConfig.Main.batteryBankMaxInput, IRConfig.MainConfig.Main.batteryBankMaxOutput)
         {
             @Override
             public void onEnergyChange()
