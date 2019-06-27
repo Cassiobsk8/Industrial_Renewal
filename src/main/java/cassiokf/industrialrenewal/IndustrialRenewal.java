@@ -7,13 +7,18 @@ import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
+import cassiokf.industrialrenewal.util.ChunkManagerCallback;
 import net.minecraft.block.Block;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -24,13 +29,15 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import java.util.Random;
 
+import static cassiokf.industrialrenewal.References.MODID;
 
-@Mod(modid = References.MODID, name = References.NAME, version = References.VERSION, guiFactory = References.GUI_FACTORY, updateJSON = References.VERSION_CHECKER_URL)
+
+@Mod(modid = MODID, name = References.NAME, version = References.VERSION, guiFactory = References.GUI_FACTORY, updateJSON = References.VERSION_CHECKER_URL)
 public class IndustrialRenewal {
 
-    @Mod.Instance(References.MODID)
+    @Mod.Instance(MODID)
     public static IndustrialRenewal instance;
-    @SidedProxy(clientSide = "cassiokf.industrialrenewal.proxy.ClientProxy", serverSide = "cassiokf.industrialrenewal.proxy.CommonProxy", modId = References.MODID)
+    @SidedProxy(clientSide = "cassiokf.industrialrenewal.proxy.ClientProxy", serverSide = "cassiokf.industrialrenewal.proxy.CommonProxy", modId = MODID)
     public static CommonProxy proxy;
 
     static
@@ -62,7 +69,7 @@ public class IndustrialRenewal {
         EntityInit.registerEntities();
         proxy.preInit();
         NetworkHandler.init();
-
+        ForgeChunkManager.setForcedChunkLoadingCallback(instance, new ChunkManagerCallback());
         proxy.registerRenderers();
         System.out.println("Done!");
     }
@@ -84,6 +91,15 @@ public class IndustrialRenewal {
         public static void registerItems(ModelRegistryEvent event) {
             ModItems.registerModels();
             ModBlocks.registerItemModels();
+        }
+
+        @SubscribeEvent
+        public void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
+        {
+            if (event.getModID().equals(MODID))
+            {
+                ConfigManager.sync(MODID, Config.Type.INSTANCE);
+            }
         }
 
         //private static final String NBT_KEY = "industrialrenewal.firstjoin";

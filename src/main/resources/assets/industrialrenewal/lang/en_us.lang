@@ -38,6 +38,7 @@ item.industrialrenewal.battery.name=Battery
 item.industrialrenewal.motor.name=Motor
 item.industrialrenewal.firebox_solid.name=Firebox for Solid Fuel
 item.industrialrenewal.firebox_fluid.name=Firebox for Fluid Fuel
+item.industrialrenewal.small_wind_blade.name=Wind Generator Blades
 
 #Discs
 
@@ -135,6 +136,9 @@ tile.industrialrenewal.trash.name=Trash Bin
 tile.industrialrenewal.eotm.name=Employee of the Month Award
 tile.industrialrenewal.bunkbed.name=Bunk Bed
 tile.industrialrenewal.bunker_hatch.name=Bunker Hatch
+tile.industrialrenewal.small_wind_turbine_pillar.name=Wind Turbine Pillar
+tile.industrialrenewal.small_wind_turbine.name=Wind Turbine
+tile.industrialrenewal.chunk_loader.name=Chunk Loader (WIP)
 
 #Fluids
 fluid.steam=Steam
@@ -175,6 +179,9 @@ gui.config.temp_mode.name=Temperature Mode
 gui.config.steam_factor.name=Steam Conversion Factor
 gui.config.nether_extinguisher.name=Fire Extinguisher on Nether
 gui.config.fluidFuel.name=Fluids Fuel White List
+gui.config.hours_before_deactivation.name=Time Before Deactivate
+gui.config.chunk_loader_width.name=Chunk Load Width
+gui.config.emergency_mode.name=Deactivate Chunk Load
 
 #Info
 

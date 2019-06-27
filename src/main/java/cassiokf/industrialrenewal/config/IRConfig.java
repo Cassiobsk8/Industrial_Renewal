@@ -42,8 +42,8 @@ public class IRConfig {
     {
         @Config.Comment("Main")
         @Config.LangKey("gui.config.main_title")
-        @Config.RequiresMcRestart
         public static final SubCategoryMain Main = new SubCategoryMain();
+
         @Config.Comment("Recipes Configurations")
         @Config.LangKey("gui.config.category.recipes")
         @Config.RequiresMcRestart
@@ -51,8 +51,6 @@ public class IRConfig {
 
         public static class SubCategoryMain
         {
-
-
             @Config.Comment("Turn On/Off the manual item on first spawn (Default true) (WIP not working yet)")
             @Config.LangKey("gui.config.recipes.startwithmanual.name")
             public boolean startWithManual = true;
@@ -116,6 +114,18 @@ public class IRConfig {
             @Config.Comment("Fluid fuels and its combustion value per 1 Bucket (Default: {lava=200, rocket_fuel=1120, pyrotheum=3200, refined_fuel=1500, ic2biogas=300, crude_oil=500, refined_oil=1000, coal=400, refined_biofuel=900, bio_diesel=600, biodiesel=600, diesel=900, fuel=1500, fluiddiesel=900, fluidnitrodiesel=1600, empoweredoil=700, kerosene=1500, lpg=1800, gasoline=1200, fire_water=1200, ethanol=900, bio.ethanol=900})")
             @Config.LangKey("gui.config.fluidFuel.name")
             public Map<String, Integer> fluidFuel = getFuelHash();
+
+            @Config.LangKey("gui.config.hours_before_deactivation.name")
+            @Config.Comment("The number of hours the player will be offline before deactivating (default 2 days)")
+            public int hoursBeforeDeactivation = 2 * 24; // 2 days by default.
+
+            @Config.LangKey("gui.config.chunk_loader_width.name")
+            @Config.Comment("Width/length of chunks to be loaded, it is recommend this is an odd number")
+            public int chunkLoaderWidth = 3;
+
+            @Config.LangKey("gui.config.emergency_mode.name")
+            @Config.Comment("Disables Chunk loading, use if there is a crash happening in a chunk loaded area")
+            public boolean emergencyMode = false;
         }
 
         public static class SubCategoryRecipes

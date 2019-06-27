@@ -141,6 +141,8 @@ public class ModBlocks {
     public static BlockSteamBoiler steamBoiler = new BlockSteamBoiler("steam_boiler", References.CREATIVE_IR_TAB);
     public static BlockSteamTurbine steamTurbine = new BlockSteamTurbine("steam_turbine", References.CREATIVE_IR_TAB);
 
+    public static BlockChunkLoader chunkLoader = new BlockChunkLoader("chunk_loader", References.CREAATIVE_IRWIP_TAB);
+
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
                 blockHazard,
@@ -205,6 +207,7 @@ public class ModBlocks {
                 signRA,
                 fluorescent,
                 light,
+                chunkLoader,
                 //Floor
                 blockIndFloor,
                 floorCable,
@@ -275,6 +278,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(trash.getTileEntityClass(), trash.getRegistryName().toString());
         GameRegistry.registerTileEntity(bunkBed.getTileEntityClass(), bunkBed.getRegistryName().toString());
         GameRegistry.registerTileEntity(bunkerHatch.getTileEntityClass(), bunkerHatch.getRegistryName().toString());
+        GameRegistry.registerTileEntity(chunkLoader.getTileEntityClass(), chunkLoader.getRegistryName().toString());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -355,7 +359,8 @@ public class ModBlocks {
                 steamBoiler.createItemBlock(),
                 steamTurbine.createItemBlock(),
                 steamBlock.createItemBlock(),
-                baseEotM.createItemBlock()
+                baseEotM.createItemBlock(),
+                chunkLoader.createItemBlock()
         );
     }
 
@@ -438,5 +443,6 @@ public class ModBlocks {
         steamTurbine.registerItemModel(Item.getItemFromBlock(steamTurbine));
         steamBlock.registerItemModel(Item.getItemFromBlock(steamBlock));
         baseEotM.registerItemModel(Item.getItemFromBlock(baseEotM));
+        chunkLoader.registerItemModel(Item.getItemFromBlock(chunkLoader));
     }
 }
