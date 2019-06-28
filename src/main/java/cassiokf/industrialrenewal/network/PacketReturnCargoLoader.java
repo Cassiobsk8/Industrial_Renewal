@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.network;
 
-import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.TileEntityCargoLoader;
+import cassiokf.industrialrenewal.tileentity.railroad.TileEntityCargoLoader;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

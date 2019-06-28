@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.blocks;
 
 
 import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.tileentity.Fluid.fluidpipe.BlockFluidPipe;
+import cassiokf.industrialrenewal.tileentity.tubes.fluidpipe.BlockFluidPipe;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;

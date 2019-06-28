@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.redstone.BlockAlarm;
 import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.tileentity.alarm.BlockAlarm;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.network;
 
-import cassiokf.industrialrenewal.tileentity.recordplayer.TileEntityRecordPlayer;
+import cassiokf.industrialrenewal.tileentity.TileEntityRecordPlayer;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;

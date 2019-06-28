@@ -1,8 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.railroad;
 
 import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
-import cassiokf.industrialrenewal.tileentity.railroad.railloader.BlockLoaderRail;
-import cassiokf.industrialrenewal.tileentity.railroad.railloader.TileEntityLoaderRail;
+import cassiokf.industrialrenewal.blocks.railroad.BlockLoaderRail;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 

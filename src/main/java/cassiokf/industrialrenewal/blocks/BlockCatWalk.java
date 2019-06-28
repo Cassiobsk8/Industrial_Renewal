@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.tileentity.cable.BlockEnergyCable;
+import cassiokf.industrialrenewal.tileentity.tubes.BlockEnergyCable;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

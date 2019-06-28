@@ -5,7 +5,7 @@ import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.container.ContainerEntityDetector;
 import cassiokf.industrialrenewal.network.PacketReturnEntityDetector;
-import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.TileEntityEntityDetector;
+import cassiokf.industrialrenewal.tileentity.redstone.TileEntityEntityDetector;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

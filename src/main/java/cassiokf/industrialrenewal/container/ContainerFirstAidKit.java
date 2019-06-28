@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.container;
 
-import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
+import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
 import cassiokf.industrialrenewal.util.slots.FirstAidSlot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

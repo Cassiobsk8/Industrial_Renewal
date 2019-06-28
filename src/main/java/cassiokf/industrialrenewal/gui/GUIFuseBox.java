@@ -5,7 +5,7 @@ import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.container.ContainerFuseBox;
 import cassiokf.industrialrenewal.network.PacketReturnFuseBox;
-import cassiokf.industrialrenewal.tileentity.fusebox.TileEntityFuseBox;
+import cassiokf.industrialrenewal.tileentity.redstone.TileEntityFuseBox;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;

@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.item.ItemWindBlade;
-import cassiokf.industrialrenewal.tileentity.energy.batterybank.BlockBatteryBank;
+import cassiokf.industrialrenewal.blocks.BlockBatteryBank;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

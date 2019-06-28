@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.tileentity.Fluid.TileFluidHandlerBase;
+import cassiokf.industrialrenewal.blocks.Block3x3x3Base;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

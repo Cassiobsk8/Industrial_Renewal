@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.network;
 
-import cassiokf.industrialrenewal.tileentity.sensors.entitydetector.TileEntityEntityDetector;
+import cassiokf.industrialrenewal.tileentity.redstone.TileEntityEntityDetector;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;

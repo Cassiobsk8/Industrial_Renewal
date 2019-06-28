@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.blocks.BlockBunkerHatch;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -102,7 +103,7 @@ public class TileEntityBunkerHatch extends TileEntity
         }
     }
 
-    public boolean isMaster()//TESR uses this
+    public boolean isMaster()//tesr uses this
     {
         return this.master;
     }

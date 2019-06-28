@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.network;
 
-import cassiokf.industrialrenewal.tileentity.fusebox.TileEntityFuseBox;
+import cassiokf.industrialrenewal.tileentity.redstone.TileEntityFuseBox;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;

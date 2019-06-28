@@ -5,7 +5,7 @@ import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.container.ContainerCargoLoader;
 import cassiokf.industrialrenewal.network.PacketReturnCargoLoader;
-import cassiokf.industrialrenewal.tileentity.railroad.cargoloader.TileEntityCargoLoader;
+import cassiokf.industrialrenewal.tileentity.railroad.TileEntityCargoLoader;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.container;
 
-import cassiokf.industrialrenewal.tileentity.recordplayer.TileEntityRecordPlayer;
+import cassiokf.industrialrenewal.tileentity.TileEntityRecordPlayer;
 import cassiokf.industrialrenewal.util.slots.RecordSlot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

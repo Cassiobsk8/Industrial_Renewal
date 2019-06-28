@@ -5,7 +5,7 @@ import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.container.ContainerFluidLoader;
 import cassiokf.industrialrenewal.network.PacketReturnFluidLoader;
-import cassiokf.industrialrenewal.tileentity.railroad.fluidloader.TileEntityFluidLoader;
+import cassiokf.industrialrenewal.tileentity.railroad.TileEntityFluidLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;

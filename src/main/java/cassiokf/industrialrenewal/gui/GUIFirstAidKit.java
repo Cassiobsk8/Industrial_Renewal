@@ -3,7 +3,7 @@ package cassiokf.industrialrenewal.gui;
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.container.ContainerFirstAidKit;
-import cassiokf.industrialrenewal.tileentity.firstaidkit.TileEntityFirstAidKit;
+import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
