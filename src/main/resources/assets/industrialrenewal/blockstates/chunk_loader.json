@@ -26,6 +26,16 @@
         "y": -90
       }
     },
+    "working": {
+      "true": {
+        "submodel": {
+          "slave": {
+            "model": "industrialrenewal:chunk_loader_slave"
+          }
+        }
+      },
+      "false": {}
+    },
     "inventory": {
       "model": "industrialrenewal:chunk_loader"
     }

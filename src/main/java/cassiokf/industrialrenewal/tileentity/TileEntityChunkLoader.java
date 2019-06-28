@@ -73,6 +73,7 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
     @Override
     public void update()
     {
+        if (IRConfig.MainConfig.Main.emergencyMode) return;
         //Only process on the server
         if (world.isRemote) return;
         //If there isn't any tickets, the device is already disabled and no work to be done

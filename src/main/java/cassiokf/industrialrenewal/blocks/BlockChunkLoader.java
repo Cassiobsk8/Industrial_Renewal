@@ -21,6 +21,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 
@@ -31,6 +32,7 @@ public class BlockChunkLoader extends BlockBasicContainer<TileEntityChunkLoader>
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool MASTER = PropertyBool.create("master");
+    public static final PropertyBool WORKING = PropertyBool.create("working");
 
     public BlockChunkLoader(String name, CreativeTabs tab)
     {
@@ -48,7 +50,7 @@ public class BlockChunkLoader extends BlockBasicContainer<TileEntityChunkLoader>
             return;
         }
 
-        final IBlockState blockState = worldIn.getBlockState(pos);
+        //final IBlockState blockState = worldIn.getBlockState(pos);
         //if (blockState.getBlock() != BlockLibrary.weirding_gadget) return;
 
         final NBTTagCompound modData = ticket.getModData();
@@ -137,9 +139,16 @@ public class BlockChunkLoader extends BlockBasicContainer<TileEntityChunkLoader>
     }
 
     @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        TileEntityChunkLoader te = (TileEntityChunkLoader) worldIn.getTileEntity(pos);
+        return state.withProperty(WORKING, state.getValue(MASTER) && te != null && te.isActive());
+    }
+
+    @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, FACING, MASTER);
+        return new BlockStateContainer(this, FACING, MASTER, WORKING);
     }
 
     @SuppressWarnings("deprecation")
