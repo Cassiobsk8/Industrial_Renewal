@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.tileentity.TileEntityValvePipeLarge;
 import cassiokf.industrialrenewal.util.enumproperty.EnumFaceRotation;
 import net.minecraft.block.material.Material;
@@ -57,13 +56,6 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        //if (world.isRemote) return true;
-        if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive)
-        {
-            rotateFace(world, pos);
-            setFace(world, pos);
-            return true;
-        }
         int i = pos.getX();
         int j = pos.getY();
         int k = pos.getZ();
@@ -138,17 +130,22 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
         }
     }
 
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        rotateFace(world, pos);
+        setFace(world, pos);
+        return true;
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        //EnumFacing facing = EnumFacing.getFront((meta > 8) ? meta - 8 : meta);
         return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(ACTIVE, (meta & 8) > 0);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        //int facingbits = state.getValue(FACING).getIndex();
-        //return facingbits;
         int i = 0;
         i = i | state.getValue(FACING).getIndex();
 
@@ -261,14 +258,6 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     public void rotateFace(final World world, final BlockPos pos) {
         final EnumFaceRotation faceRotation = getFaceRotation(world, pos);
         setFaceRotation(world, pos, faceRotation.rotateClockwise());
-    }
-
-    @Override
-    public boolean rotateBlock(final World world, final BlockPos pos, final EnumFacing axis) {
-        final EnumFacing facing = getFacing(world, pos);
-        setFacing(world, pos, facing.rotateAround(axis.getAxis()));
-
-        return true;
     }
 
     @Override

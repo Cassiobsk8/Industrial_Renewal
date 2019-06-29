@@ -146,6 +146,12 @@ public class BlockChunkLoader extends BlockBasicContainer<TileEntityChunkLoader>
     }
 
     @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        return false;
+    }
+
+    @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACING, MASTER, WORKING);

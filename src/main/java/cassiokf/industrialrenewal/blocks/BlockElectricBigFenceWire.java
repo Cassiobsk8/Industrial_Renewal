@@ -59,6 +59,12 @@ public class BlockElectricBigFenceWire extends BlockBasicElectricFence {
 
     }
 
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        return false;
+    }
+
     private boolean IsBigFence(World world, BlockPos pos) {
         return world.getBlockState(pos).getBlock() instanceof BlockElectricBigFenceWire;
     }

@@ -2,8 +2,8 @@ package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.blocks.BlockSignBase;
+import cassiokf.industrialrenewal.init.ModBlocks;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -42,7 +42,8 @@ public class ItemPowerScrewDrive extends ItemBase {
                 }
                 world.setBlockToAir(pos);
             }
-            if (world.getBlockState(pos).getBlock() instanceof BlockSignBase) {
+            if (world.getBlockState(pos).getBlock() instanceof BlockSignBase && entity.isSneaking())
+            {
                 ((BlockSignBase) world.getBlockState(pos).getBlock()).changeSign(world, pos);
                 playDrillSound(world, pos);
             }
@@ -62,7 +63,14 @@ public class ItemPowerScrewDrive extends ItemBase {
                 world.setBlockState(new BlockPos(x, y, z), ModBlocks.blockIndFloor.getDefaultState(), 3);
             }
             //TODO adicionar para remover os gates
+        } else
+        {
+            if (world.getBlockState(pos).getBlock().rotateBlock(world, pos, EnumFacing.UP))
+            {
+                playDrillSound(world, pos);
+            }
         }
+
         return EnumActionResult.PASS;
     }
 

@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import cassiokf.industrialrenewal.tileentity.TileEntityBunkerHatch;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
@@ -60,6 +59,12 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
         {
             return 250;
         }
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        return false;
     }
 
     @Override

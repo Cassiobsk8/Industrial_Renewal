@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import cassiokf.industrialrenewal.tileentity.TileEntity3x3MachineBase;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
@@ -87,6 +86,12 @@ public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extend
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        return false;
     }
 
     @Override
