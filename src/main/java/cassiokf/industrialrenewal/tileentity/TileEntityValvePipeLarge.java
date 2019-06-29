@@ -1,12 +1,9 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
-import cassiokf.industrialrenewal.util.FluidTankUtils;
 import cassiokf.industrialrenewal.util.enumproperty.EnumFaceRotation;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -14,8 +11,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.*;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -24,15 +22,18 @@ import java.util.Set;
 
 import static cassiokf.industrialrenewal.blocks.BlockValvePipeLarge.ACTIVE;
 
-public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluidHandler, ITickable {
+public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements ITickable
+{
 
     private final Set<EnumFacing> enabledFacings = EnumSet.allOf(EnumFacing.class);
     private EnumFacing facing = EnumFacing.SOUTH;
     private EnumFaceRotation faceRotation = EnumFaceRotation.UP;
     private Boolean active = false;
 
-    public TileEntityValvePipeLarge() {
-        tank = new FluidTankUtils(this, 1000);
+    public FluidTank tank = new FluidTank(2000);
+
+    public TileEntityValvePipeLarge()
+    {
     }
 
     @Override
@@ -43,24 +44,34 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
     @Override
     public void update() {
 
-        if (this.hasWorld()) {
-            EnumFacing facetofill = getOutPutFace(this.getWorld(), this.getPos());
-            boolean Vactive = this.getWorld().getBlockState(pos).getValue(ACTIVE);
-            final TileEntity tileEntityS = this.getWorld().getTileEntity(this.getPos().offset(facetofill));
+        if (this.hasWorld() && !world.isRemote)
+        {
+            boolean vActive = this.getWorld().getBlockState(pos).getValue(ACTIVE);
+            if (vActive)
+            {
+                EnumFacing faceToFill = getOutPutFace();
+                TileEntity teOut = this.getWorld().getTileEntity(this.getPos().offset(faceToFill));
+                TileEntity teIn = this.getWorld().getTileEntity(this.getPos().offset(faceToFill.getOpposite()));
 
-            if (tileEntityS != null && !tileEntityS.isInvalid() && Vactive) {
-                active = true;
-                if (tileEntityS.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facetofill.getOpposite())) {
-                    IFluidHandler consumer = tileEntityS.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facetofill.getOpposite());
-                    if (consumer != null) {
-                        tank.drain(consumer.fill(tank.drain(tank.getCapacity(), false), true), true);
+                if (teOut != null && (tank.getFluidAmount() > 0 || (teIn != null
+                        && teIn.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill)))
+                        && teOut.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill.getOpposite()))
+                {
+                    IFluidHandler inTank = tank.getFluidAmount() > 0 ? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank) : teIn.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill);
+                    IFluidHandler outTank = teOut.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill.getOpposite());
+                    if (inTank != null && outTank != null)
+                    {
+                        int amount = 1000;
+                        inTank.drain(outTank.fill(inTank.drain(amount, false), true), true);
                     }
                 }
             }
-            if (!Vactive) {
-                active = false;
-            }
         }
+    }
+
+    public void setActive(boolean value)
+    {
+        active = value;
     }
 
     public void playSwitchSound() {
@@ -69,7 +80,8 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
         this.getWorld().playSound(null, this.getPos(), IRSoundHandler.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1F, pitch);
     }
 
-    public EnumFacing getOutPutFace(World world, BlockPos pos) {
+    public EnumFacing getOutPutFace()
+    {
         EnumFacing vFace = this.getFacing();
         EnumFaceRotation rFace = getFaceRotation();
 
@@ -102,51 +114,6 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
         this.facing = facing;
         markDirty();
     }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
-    }
-
-    @Nullable
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(getPos(), 0, getUpdateTag());
-    }
-
-    @Override
-    public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
-        readFromNBT(pkt.getNbtCompound());
-        notifyBlockUpdate();
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        if (resource == null)
-            return 0;
-        int canAccept = resource.amount;
-        if (canAccept <= 0)
-            return 0;
-
-        return this.tank.fill(resource, doFill);
-    }
-
-    @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
-        return this.tank.drain(resource.amount, doDrain);
-    }
-
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        //needsUpdate = true;
-        return this.tank.drain(maxDrain, doDrain);
-    }
-
-    @Override
-    public IFluidTankProperties[] getTankProperties() {
-        return new IFluidTankProperties[]{new FluidTankProperties(tank.getInfo().fluid, tank.getInfo().capacity)};
-    }
-
 
     public boolean toggleFacing(final EnumFacing facing) {
         if (enabledFacings.contains(facing)) {
@@ -198,7 +165,6 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
 
     @Override
     public void readFromNBT(final NBTTagCompound tag) {
-        super.readFromNBT(tag);
         facing = EnumFacing.getFront(tag.getInteger("facing"));
         faceRotation = EnumFaceRotation.values()[tag.getInteger("faceRotation")];
         active = tag.getBoolean("active");
@@ -209,6 +175,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
         for (final int index : enabledFacingIndices) {
             enabledFacings.add(EnumFacing.getFront(index));
         }
+        super.readFromNBT(tag);
     }
 
     @Override
@@ -229,21 +196,16 @@ public class TileEntityValvePipeLarge extends TileFluidHandler implements IFluid
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return isFacingEnabled(facing);
         }
-
         return super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing) {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            if (isFacingEnabled(facing)) {
-                return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
-            }
-
-            return null;
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && isFacingEnabled(facing))
+        {
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
         }
-
         return super.getCapability(capability, facing);
     }
 

@@ -21,10 +21,25 @@
 
     "active=false,face_rotation=right,facing=up": { "model": "industrialrenewal:valve_large","y":90},
     "active=false,face_rotation=right,facing=down": { "model": "industrialrenewal:valve_large","x":180,"y":-90},
-    "active=false,face_rotation=right,facing=south": { "model": "industrialrenewal:valve_large_up_closed"},
-    "active=false,face_rotation=right,facing=east": { "model": "industrialrenewal:valve_large_up_closed","y":-90},
-    "active=false,face_rotation=right,facing=west": { "model": "industrialrenewal:valve_large_up_closed","y":90},
-    "active=false,face_rotation=right,facing=north": { "model": "industrialrenewal:valve_large_up_closed","y":180},
+    "active=false,face_rotation=right,facing=south": {
+      "model": "industrialrenewal:valve_large_up_closed",
+      "x": 180,
+      "y": 180
+    },
+    "active=false,face_rotation=right,facing=east": {
+      "model": "industrialrenewal:valve_large_up_closed",
+      "y": 90,
+      "x": 180
+    },
+    "active=false,face_rotation=right,facing=west": {
+      "model": "industrialrenewal:valve_large_up_closed",
+      "y": -90,
+      "x": 180
+    },
+    "active=false,face_rotation=right,facing=north": {
+      "model": "industrialrenewal:valve_large_up_closed",
+      "x": 180
+    },
     "active=true,face_rotation=right,facing=up": { "model": "industrialrenewal:valve_large_open","y":90},
     "active=true,face_rotation=right,facing=down": { "model": "industrialrenewal:valve_large_open","x":180,"y":-90},
     "active=true,face_rotation=right,facing=south": { "model": "industrialrenewal:valve_large_up_open","x":180,"y":180},
@@ -47,10 +62,21 @@
 
     "active=false,face_rotation=left,facing=up": { "model": "industrialrenewal:valve_large","y":-90},
     "active=false,face_rotation=left,facing=down": { "model": "industrialrenewal:valve_large","x":180,"y":90},
-    "active=false,face_rotation=left,facing=south": { "model": "industrialrenewal:valve_large_up_closed","x":180,"y":180},
-    "active=false,face_rotation=left,facing=east": { "model": "industrialrenewal:valve_large_up_closed","y":90,"x":180},
-    "active=false,face_rotation=left,facing=west": { "model": "industrialrenewal:valve_large_up_closed","y":-90,"x":180},
-    "active=false,face_rotation=left,facing=north": { "model": "industrialrenewal:valve_large_up_closed","x":180},
+    "active=false,face_rotation=left,facing=south": {
+      "model": "industrialrenewal:valve_large_up_closed"
+    },
+    "active=false,face_rotation=left,facing=east": {
+      "model": "industrialrenewal:valve_large_up_closed",
+      "y": -90
+    },
+    "active=false,face_rotation=left,facing=west": {
+      "model": "industrialrenewal:valve_large_up_closed",
+      "y": 90
+    },
+    "active=false,face_rotation=left,facing=north": {
+      "model": "industrialrenewal:valve_large_up_closed",
+      "y": 180
+    },
     "active=true,face_rotation=left,facing=up": { "model": "industrialrenewal:valve_large_open","y":-90},
     "active=true,face_rotation=left,facing=down": { "model": "industrialrenewal:valve_large_open","x":180,"y":90},
     "active=true,face_rotation=left,facing=south": { "model": "industrialrenewal:valve_large_up_open"},

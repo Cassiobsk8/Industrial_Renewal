@@ -55,31 +55,32 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (world.isRemote) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        //if (world.isRemote) return true;
+        if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive)
+        {
+            rotateFace(world, pos);
+            setFace(world, pos);
             return true;
-        } else {
-            if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
-                rotateFace(world, pos);
-                setFace(world, pos);
-                return true;
-            } else {
-                int i = pos.getX();
-                int j = pos.getY();
-                int k = pos.getZ();
-
-                getTileEntity(world, pos).playSwitchSound();
-                state = state.cycleProperty(ACTIVE);
-                world.setBlockState(pos, state, 3);
-                world.spawnParticle(EnumParticleTypes.WATER_DROP, (double) i, (double) j, (double) k, 1.0D, 1.0D, 1.0D);
-                world.notifyNeighborsOfStateChange(pos, this, false);
-                return true;
-            }
         }
+        int i = pos.getX();
+        int j = pos.getY();
+        int k = pos.getZ();
+
+        TileEntityValvePipeLarge te = getTileEntity(world, pos);
+        te.playSwitchSound();
+        boolean active = !state.getValue(ACTIVE);
+        state = state.withProperty(ACTIVE, active);
+        te.setActive(active);
+        world.setBlockState(pos, state, 3);
+        world.spawnParticle(EnumParticleTypes.WATER_DROP, (double) i, (double) j, (double) k, 1.0D, 1.0D, 1.0D);
+        world.notifyNeighborsOfStateChange(pos, this, false);
+        return true;
     }
 
     public void setFace(World world, BlockPos pos) {
-        final TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
+        TileEntityValvePipeLarge tileEntity = getTileEntity(world, pos);
         EnumFacing vFace = getFacing(world, pos);
         EnumFaceRotation rFace = getFaceRotation(world, pos);
         if (vFace == EnumFacing.UP || vFace == EnumFacing.DOWN) {
@@ -141,7 +142,7 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     @Override
     public IBlockState getStateFromMeta(int meta) {
         //EnumFacing facing = EnumFacing.getFront((meta > 8) ? meta - 8 : meta);
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(ACTIVE, Boolean.valueOf((meta & 8) > 0));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(ACTIVE, (meta & 8) > 0);
     }
 
     @Override
@@ -149,9 +150,10 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
         //int facingbits = state.getValue(FACING).getIndex();
         //return facingbits;
         int i = 0;
-        i = i | ((EnumFacing) state.getValue(FACING)).getIndex();
+        i = i | state.getValue(FACING).getIndex();
 
-        if (((Boolean) state.getValue(ACTIVE)).booleanValue()) {
+        if (state.getValue(ACTIVE))
+        {
             i |= 8;
         }
 
