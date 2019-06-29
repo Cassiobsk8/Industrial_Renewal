@@ -214,7 +214,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
             this.getMaster().setType(type);
             return;
         }
-        dropItensInGround(solidFuelInv);
+        dropItemsInGround(solidFuelInv);
         this.fuelTime = 0;
         this.type = type;
         IBlockState state = this.world.getBlockState(this.pos).withProperty(BlockSteamBoiler.TYPE, type);
@@ -222,7 +222,13 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
         this.Sync();
     }
 
-    private void dropItensInGround(ItemStackHandler inventory)
+    public void dropAllItems()
+    {
+        dropItemsInGround(solidFuelInv);
+        dropItemsInGround(fireBoxInv);
+    }
+
+    private void dropItemsInGround(ItemStackHandler inventory)
     {
         ItemStack stack = inventory.getStackInSlot(0);
         if (!stack.isEmpty())

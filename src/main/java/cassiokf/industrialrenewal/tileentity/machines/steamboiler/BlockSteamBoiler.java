@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.tileentity.machines.steamboiler;
 
+import cassiokf.industrialrenewal.blocks.Block3x3x3Base;
 import cassiokf.industrialrenewal.item.ItemFireBox;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
-import cassiokf.industrialrenewal.blocks.Block3x3x3Base;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
@@ -44,6 +44,14 @@ public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
         {
             worldIn.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 0.3F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
         }
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TileEntitySteamBoiler te = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
+        if (te != null) te.dropAllItems();
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
