@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.tileentity.redstone.TileEntityTrafficLight;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

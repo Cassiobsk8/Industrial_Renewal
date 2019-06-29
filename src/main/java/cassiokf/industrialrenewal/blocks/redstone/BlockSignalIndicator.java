@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.tileentity.redstone.TileEntitySignalIndicator;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
