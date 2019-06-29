@@ -31,7 +31,8 @@ public class BlockBatteryBank extends BlockTileEntity<TileEntityBatteryBank> {
         super(Material.IRON, name, tab);
     }
 
-    private boolean CanConnect(IBlockAccess world, BlockPos pos, EnumFacing correspondentFacing) {
+    private boolean canConnectTo(IBlockAccess world, BlockPos pos, EnumFacing correspondentFacing)
+    {
         if (world.getBlockState(pos).getValue(FACING).getOpposite() == correspondentFacing) return false;
         TileEntity te = world.getTileEntity(pos.offset(correspondentFacing));
         return te != null && te.hasCapability(CapabilityEnergy.ENERGY, correspondentFacing.getOpposite());
@@ -40,8 +41,9 @@ public class BlockBatteryBank extends BlockTileEntity<TileEntityBatteryBank> {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        return state.withProperty(SOUTH, CanConnect(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, CanConnect(world, pos, EnumFacing.NORTH))
-                .withProperty(EAST, CanConnect(world, pos, EnumFacing.EAST)).withProperty(WEST, CanConnect(world, pos, EnumFacing.WEST));
+        EnumFacing facing = state.getValue(FACING);
+        return state.withProperty(SOUTH, canConnectTo(world, pos, facing.getOpposite())).withProperty(NORTH, canConnectTo(world, pos, facing))
+                .withProperty(EAST, canConnectTo(world, pos, facing.rotateY())).withProperty(WEST, canConnectTo(world, pos, facing.rotateYCCW()));
     }
 
     @SuppressWarnings("deprecation")

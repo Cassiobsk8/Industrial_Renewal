@@ -132,11 +132,12 @@ public class BlockWindTurbinePillar extends BlockTileEntity<TileEntityWindTurbin
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
     {
+        EnumFacing facing = state.getValue(FACING);
         boolean down = canConnectTo(world, pos, EnumFacing.DOWN);
         state = state.withProperty(DOWN, down);
         if (down)
-            state = state.withProperty(SOUTH, canConnectTo(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectTo(world, pos, EnumFacing.NORTH))
-                    .withProperty(EAST, canConnectTo(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectTo(world, pos, EnumFacing.WEST));
+            state = state.withProperty(SOUTH, canConnectTo(world, pos, facing.getOpposite())).withProperty(NORTH, canConnectTo(world, pos, facing))
+                    .withProperty(EAST, canConnectTo(world, pos, facing.rotateY())).withProperty(WEST, canConnectTo(world, pos, facing.rotateYCCW()));
         else
             state = state.withProperty(SOUTH, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(WEST, false);
         return state;
