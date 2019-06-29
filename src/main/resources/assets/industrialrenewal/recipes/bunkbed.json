@@ -5,7 +5,8 @@
   ],
   "key": {
     "C": {
-      "item": "minecraft:bed"
+      "item": "minecraft:bed",
+      "data": 0
     },
     "S": {
       "type": "forge:ore_dict",
