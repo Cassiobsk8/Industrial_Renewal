@@ -7,27 +7,33 @@
     }
   },
   "variants": {
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
     "down": {
       "true": {
         "submodel": {
           "pipe_down": {
-            "model": "industrialrenewal:roof_down",
-            "uvlock": true
+            "model": "industrialrenewal:roof_down"
           }
         }
       },
-      "false": {}
-    },
-    "up": {
-      "true": {},
       "false": {}
     },
     "north": {
       "true": {
         "submodel": {
           "pipe_north": {
-            "model": "industrialrenewal:roof_side",
-            "uvlock": true
+            "model": "industrialrenewal:roof_side"
           }
         }
       },
@@ -38,8 +44,7 @@
         "submodel": {
           "pipe_south": {
             "model": "industrialrenewal:roof_side",
-            "y": 180,
-            "uvlock": true
+            "y": 180
           }
         }
       },
@@ -50,8 +55,7 @@
         "submodel": {
           "pipe_east": {
             "model": "industrialrenewal:roof_side",
-            "y": 90,
-            "uvlock": true
+            "y": 90
           }
         }
       },
@@ -62,8 +66,7 @@
         "submodel": {
           "pipe_west": {
             "model": "industrialrenewal:roof_side",
-            "y": -90,
-            "uvlock": true
+            "y": -90
           }
         }
       },
@@ -73,13 +76,11 @@
       {
         "submodel": {
           "pipe_north": {
-            "model": "industrialrenewal:roof_side",
-            "uvlock": true
+            "model": "industrialrenewal:roof_side"
           },
           "pipe_south": {
             "model": "industrialrenewal:roof_side",
-            "y": 180,
-            "uvlock": true
+            "y": 180
           }
         }
       }
