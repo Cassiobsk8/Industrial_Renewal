@@ -5,27 +5,12 @@ import cassiokf.industrialrenewal.blocks.*;
 import cassiokf.industrialrenewal.blocks.railroad.*;
 import cassiokf.industrialrenewal.blocks.redstone.*;
 import cassiokf.industrialrenewal.fluids.BlockFluid;
-import cassiokf.industrialrenewal.blocks.BlockBunkBed;
-import cassiokf.industrialrenewal.blocks.BlockBunkerHatch;
-import cassiokf.industrialrenewal.blocks.BlockBarrel;
-import cassiokf.industrialrenewal.tileentity.tubes.fluidpipe.BlockFluidPipe;
-import cassiokf.industrialrenewal.blocks.BlockGauge;
-import cassiokf.industrialrenewal.blocks.BlockGutter;
-import cassiokf.industrialrenewal.blocks.BlockValvePipeLarge;
-import cassiokf.industrialrenewal.tileentity.tubes.BlockEnergyCable;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
-import cassiokf.industrialrenewal.blocks.BlockBatteryBank;
-import cassiokf.industrialrenewal.blocks.BlockSolarPanel;
-import cassiokf.industrialrenewal.blocks.BlockFirstAidKit;
-import cassiokf.industrialrenewal.blocks.BlockLocker;
 import cassiokf.industrialrenewal.tileentity.machines.pump.BlockElectricPump;
 import cassiokf.industrialrenewal.tileentity.machines.steamboiler.BlockSteamBoiler;
 import cassiokf.industrialrenewal.tileentity.machines.steamturbine.BlockSteamTurbine;
-import cassiokf.industrialrenewal.blocks.railroad.BlockCargoLoader;
-import cassiokf.industrialrenewal.blocks.railroad.BlockFluidLoader;
-import cassiokf.industrialrenewal.blocks.railroad.BlockLoaderRail;
-import cassiokf.industrialrenewal.blocks.BlockRecordPlayer;
-import cassiokf.industrialrenewal.blocks.BlockTrash;
+import cassiokf.industrialrenewal.tileentity.tubes.BlockEnergyCable;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
+import cassiokf.industrialrenewal.tileentity.tubes.fluidpipe.BlockFluidPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -272,6 +257,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(bunkBed.getTileEntityClass(), bunkBed.getRegistryName().toString());
         GameRegistry.registerTileEntity(bunkerHatch.getTileEntityClass(), bunkerHatch.getRegistryName().toString());
         GameRegistry.registerTileEntity(chunkLoader.getTileEntityClass(), chunkLoader.getRegistryName().toString());
+        GameRegistry.registerTileEntity(catWalk.getTileEntityClass(), catWalk.getRegistryName());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {

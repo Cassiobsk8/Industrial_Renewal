@@ -1,6 +1,8 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.tileentity.TileEntityCatWalk;
 import cassiokf.industrialrenewal.tileentity.tubes.BlockEnergyCable;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.*;
@@ -28,11 +30,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BlockCatWalk extends BlockBase {
+public class BlockCatWalk extends BlockTileEntity<TileEntityCatWalk>
+{
 
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
-    protected static final AxisAlignedBB RENDER_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0938D, 1.0D);
+    protected static final AxisAlignedBB RENDER_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.1876D, 1.0D);
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.03125D, 1.0D);
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.5D, 0.03125D);
     protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.96875D, 1.0D, 1.5D, 1.0D);
@@ -52,32 +55,51 @@ public class BlockCatWalk extends BlockBase {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        Item playerItem = player.inventory.getCurrentItem().getItem();
-        BlockPos posOffset = pos.offset(player.getHorizontalFacing());
-        IBlockState stateOffset = world.getBlockState(posOffset);
-        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catWalk))
-                || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catWalkSteel))) {
-            if (side == EnumFacing.UP) {
-                if (stateOffset.getBlock().isAir(stateOffset, world, posOffset) || stateOffset.getBlock().isReplaceable(world, posOffset)) {
-                    world.setBlockState(pos.offset(player.getHorizontalFacing()), getBlockFromItem(playerItem).getDefaultState(), 3);
-                    if (!player.isCreative()) {
+        if (hand == EnumHand.MAIN_HAND)
+        {
+            Item playerItem = player.inventory.getCurrentItem().getItem();
+            BlockPos posOffset = pos.offset(player.getHorizontalFacing());
+            IBlockState stateOffset = world.getBlockState(posOffset);
+            if (playerItem.equals(ModItems.screwDrive))
+            {
+                TileEntityCatWalk te = (TileEntityCatWalk) world.getTileEntity(pos);
+                if (te != null)
+                {
+                    te.toggleFacing(side);
+                    world.notifyBlockUpdate(pos, state, state, 2);
+                }
+            }
+            if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catWalk))
+                    || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catWalkSteel)))
+            {
+                if (side == EnumFacing.UP)
+                {
+                    if (stateOffset.getBlock().isAir(stateOffset, world, posOffset) || stateOffset.getBlock().isReplaceable(world, posOffset))
+                    {
+                        world.setBlockState(pos.offset(player.getHorizontalFacing()), getBlockFromItem(playerItem).getDefaultState(), 3);
+                        if (!player.isCreative())
+                        {
+                            player.inventory.clearMatchingItems(playerItem, 0, 1, null);
+                        }
+                        return true;
+                    }
+                    return true;
+                }
+                return false;
+            }
+            if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catwalkStair)) || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catwalkStairSteel)))
+            {
+                if (stateOffset.getBlock().isAir(stateOffset, world, posOffset))
+                {
+                    world.setBlockState(posOffset, getBlockFromItem(playerItem).getDefaultState().withProperty(BlockCatwalkStair.FACING, player.getHorizontalFacing()), 3);
+                    if (!player.isCreative())
+                    {
                         player.inventory.clearMatchingItems(playerItem, 0, 1, null);
                     }
                     return true;
                 }
                 return true;
             }
-            return false;
-        }
-        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catwalkStair)) || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catwalkStairSteel))) {
-            if (stateOffset.getBlock().isAir(stateOffset, world, posOffset)) {
-                world.setBlockState(posOffset, getBlockFromItem(playerItem).getDefaultState().withProperty(BlockCatwalkStair.FACING, player.getHorizontalFacing()), 3);
-                if (!player.isCreative()) {
-                    player.inventory.clearMatchingItems(playerItem, 0, 1, null);
-                }
-                return true;
-            }
-            return true;
         }
         return false;
     }
@@ -111,11 +133,13 @@ public class BlockCatWalk extends BlockBase {
     }
 
     protected boolean isValidConnection(final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+        TileEntityCatWalk te = (TileEntityCatWalk) world.getTileEntity(ownPos);
+        if (te != null && te.isFacingBlackListed(neighbourDirection)) return true;
+
         IBlockState downstate = world.getBlockState(ownPos.offset(neighbourDirection).down());
         Block nb = neighbourState.getBlock();
 
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
-
             return nb instanceof BlockCatWalk
                     || nb instanceof BlockDoor
                     || nb instanceof BlockElectricGate
@@ -127,7 +151,6 @@ public class BlockCatWalk extends BlockBase {
                     || (nb instanceof BlockCatwalkStair && neighbourState.getValue(BlockCatwalkStair.FACING) == neighbourDirection)
                     || (downstate.getBlock() instanceof BlockCatwalkStair && downstate.getValue(BlockCatwalkStair.FACING) == neighbourDirection.getOpposite())
                     || (downstate.getBlock() instanceof BlockCatwalkLadder && downstate.getValue(BlockCatwalkLadder.FACING) == neighbourDirection.getOpposite())
-                    || downstate.getBlock() instanceof BlockIndustrialFloor || downstate.getBlock() instanceof BlockFloorLamp || downstate.getBlock() instanceof BlockFloorPipe || downstate.getBlock() instanceof BlockFloorCable
                     || (nb instanceof BlockCatwalkLadder && neighbourState.getValue(BlockCatwalkLadder.FACING) == neighbourDirection && !neighbourState.getValue(BlockCatwalkLadder.ACTIVE));
         }
         if (neighbourDirection == EnumFacing.DOWN) {
@@ -193,5 +216,18 @@ public class BlockCatWalk extends BlockBase {
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    public Class<TileEntityCatWalk> getTileEntityClass()
+    {
+        return TileEntityCatWalk.class;
+    }
+
+    @Nullable
+    @Override
+    public TileEntityCatWalk createTileEntity(World world, IBlockState state)
+    {
+        return new TileEntityCatWalk();
     }
 }
