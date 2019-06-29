@@ -1,10 +1,11 @@
 {
   "homepage": "<https://minecraft.curseforge.com/projects/industrial-renewal>",
   "promos": {
-    "1.12.2-latest": "0.10.0",
-    "1.12.2-recommended": "0.10.0"
+    "1.12.2-latest": "0.11.0",
+    "1.12.2-recommended": "0.11.0"
   },
   "1.12.2": {
+    "0.11.0": "New:\n\n-Bunker Hatch\n\n-Wind Turbine (~110 FE/t)\n\n-Bunker bed\n\n-Chunk Loader\n\n \n\nChanges:\n\n-New Config file (Remove config file before updating)\n\n-Gauge on Fluid tank cart (Removed GUI)\n\n-Fluid valve can pull fluids\n\n-Roofs are now rotateable\n\n-catwalks rails can be disabled with power screw drive",
     "0.10.0": "New:\n\n-Flat Cart\n\n-Fluid Cart\n\n-Fluid Pipe (Still Wip)\n\n-Trash bin (Voids Energy, Itens and Fluids)\n\n-Basic Solar Panel (generates 10 FE/t)\n\n-Battery Bank (Store 1M FE)\n\n-Steam Boiler (Generate Steam from water using Solid fuel (Solid Firebox) or Fluids (Fluid Firebox))\n\n-Steam Turbine (Generates 1000 FE/t)\n\n-Electric Pump (Collect fluids below)\n\nFixes:\n\n-Fixed packet crash on load itens or fluid in carts",
     "0.9": "New:\n\n- Log cart\n\n- Passenger cart\n\n- Fluid Barrel\n\n- Fluid Gauge\n\n- Emergency redstone button\n\n- Big electric fence\n\nChange:\n\n- electric gate now is multiblock (1 wide max)",
     "0.8.1": "Fix:\n-Fix crash when player die nearby First aid box\nNew:\n-Electric fence config\n-Implement Double Electric Gate",
