@@ -101,7 +101,8 @@ public class BlockPillar extends BlockBase {
         return false;
     }
 
-    protected boolean isValidConnection(final IBlockState neighbourState, final EnumFacing neighbourDirection) {
+    protected boolean isValidConnection(IBlockAccess worldIn, BlockPos neightbourPos, final IBlockState neighbourState, final EnumFacing neighbourDirection)
+    {
         Block nb = neighbourState.getBlock();
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
             return nb instanceof BlockLever
@@ -128,7 +129,7 @@ public class BlockPillar extends BlockBase {
             return nb.isFullCube(neighbourState)
                     || nb.isTopSolid(neighbourState);
         }
-        return nb.isFullCube(neighbourState) || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
+        return nb.isFullCube(neighbourState) || neighbourState.isSideSolid(worldIn, neightbourPos, EnumFacing.DOWN) || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
                 || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable || nb instanceof BlockCatWalk;
     }
 
@@ -136,7 +137,7 @@ public class BlockPillar extends BlockBase {
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
 
-        return isValidConnection(neighbourState, neighbourDirection);
+        return isValidConnection(worldIn, neighbourPos, neighbourState, neighbourDirection);
     }
 
     @SuppressWarnings("deprecation")
