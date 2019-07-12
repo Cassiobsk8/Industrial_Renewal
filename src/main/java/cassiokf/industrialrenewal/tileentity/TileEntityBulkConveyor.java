@@ -21,9 +21,9 @@ import java.util.List;
 
 public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapabilityProvider, ITickable
 {
-    public float stack3Pos;
-    public float stack2Pos;
-    public float stack1Pos;
+    public double stack3Pos;
+    public double stack2Pos;
+    public double stack1Pos;
     public float stack3YPos;
     public float stack2YPos;
     public float stack1YPos;

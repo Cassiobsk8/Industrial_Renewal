@@ -108,6 +108,11 @@ public class Utils {
         return a + f * (b - a);
     }
 
+    public static double lerp(double a, double b, float f)
+    {
+        return a + f * (b - a);
+    }
+
     public static IFluidHandler wrapFluidBlock(Block block, World world, BlockPos pos) {
         if (block instanceof IFluidBlock) {
             return new FluidBlockWrapper((IFluidBlock) block, world, pos);
