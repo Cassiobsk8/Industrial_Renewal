@@ -139,6 +139,7 @@ tile.industrialrenewal.bunker_hatch.name=Bunker Hatch
 tile.industrialrenewal.small_wind_turbine_pillar.name=Wind Turbine Pillar
 tile.industrialrenewal.small_wind_turbine.name=Wind Turbine
 tile.industrialrenewal.chunk_loader.name=Chunk Loader (WIP)
+tile.industrialrenewal.conveyor_bulk.name=Bulk Conveyor
 
 #Fluids
 fluid.steam=Steam

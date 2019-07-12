@@ -2,16 +2,8 @@ package cassiokf.industrialrenewal.proxy;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.init.RenderHandler;
-import cassiokf.industrialrenewal.tesr.TESRGauge;
-import cassiokf.industrialrenewal.tileentity.TileEntityGauge;
-import cassiokf.industrialrenewal.tesr.TESRSmallWindTurbine;
-import cassiokf.industrialrenewal.tesr.TESRWindTurbinePillar;
-import cassiokf.industrialrenewal.tileentity.TileEntitySmallWindTurbine;
-import cassiokf.industrialrenewal.tileentity.TileEntityWindTurbinePillar;
-import cassiokf.industrialrenewal.tesr.TESRBatteryBank;
-import cassiokf.industrialrenewal.tileentity.TileEntityBatteryBank;
-import cassiokf.industrialrenewal.tesr.TESRFirstAidKit;
-import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
+import cassiokf.industrialrenewal.tesr.*;
+import cassiokf.industrialrenewal.tileentity.*;
 import cassiokf.industrialrenewal.tileentity.machines.steamboiler.TESRSteamBoiler;
 import cassiokf.industrialrenewal.tileentity.machines.steamboiler.TileEntitySteamBoiler;
 import cassiokf.industrialrenewal.tileentity.machines.steamturbine.TESRSteamTurbine;
@@ -55,6 +47,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamTurbine.class, new TESRSteamTurbine());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySmallWindTurbine.class, new TESRSmallWindTurbine());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindTurbinePillar.class, new TESRWindTurbinePillar());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBulkConveyor.class, new TESRBulkConveyor());
     }
 
     @Override

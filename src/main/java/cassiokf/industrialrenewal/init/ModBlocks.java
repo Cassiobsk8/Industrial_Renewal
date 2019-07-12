@@ -82,8 +82,8 @@ public class ModBlocks {
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
 
     public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREATIVE_IR_TAB);
-    public static BlockSmallWindTurbine sWindTurbine = new BlockSmallWindTurbine("small_wind_turbine", References.CREAATIVE_IRWIP_TAB);
-    public static BlockWindTurbinePillar turbinePillar = new BlockWindTurbinePillar("small_wind_turbine_pillar", References.CREAATIVE_IRWIP_TAB);
+    public static BlockSmallWindTurbine sWindTurbine = new BlockSmallWindTurbine("small_wind_turbine", References.CREATIVE_IR_TAB);
+    public static BlockWindTurbinePillar turbinePillar = new BlockWindTurbinePillar("small_wind_turbine_pillar", References.CREATIVE_IR_TAB);
     public static BlockElectricPump electricPump = new BlockElectricPump("electric_pump", References.CREAATIVE_IRWIP_TAB);
     public static BlockBatteryBank batteryBank = new BlockBatteryBank("battery_bank", References.CREATIVE_IR_TAB);
 
@@ -108,6 +108,8 @@ public class ModBlocks {
 
     public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large", References.CREATIVE_IR_TAB);
 
+    public static BlockBulkConveyor conveyorV = new BlockBulkConveyor("conveyor_bulk", References.CREATIVE_IR_TAB);
+
     public static BlockSignBase signHV = new BlockSignBase("sign_hv", References.CREATIVE_IR_TAB);
     public static BlockSignBase signRA = new BlockSignBase("sign_ra", References.CREATIVE_IR_TAB);
     public static BlockSignBase signC = new BlockSignBase("sign_c", References.CREATIVE_IR_TAB);
@@ -119,7 +121,7 @@ public class ModBlocks {
     public static BlockSteamBoiler steamBoiler = new BlockSteamBoiler("steam_boiler", References.CREATIVE_IR_TAB);
     public static BlockSteamTurbine steamTurbine = new BlockSteamTurbine("steam_turbine", References.CREATIVE_IR_TAB);
 
-    public static BlockChunkLoader chunkLoader = new BlockChunkLoader("chunk_loader", References.CREAATIVE_IRWIP_TAB);
+    public static BlockChunkLoader chunkLoader = new BlockChunkLoader("chunk_loader", References.CREATIVE_IR_TAB);
 
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
@@ -195,6 +197,7 @@ public class ModBlocks {
                 energyCable,
                 fluidPipe,
                 valveLarge,
+                conveyorV,
                 //Energy
                 spanel,
                 sWindTurbine,
@@ -258,6 +261,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(bunkerHatch.getTileEntityClass(), bunkerHatch.getRegistryName().toString());
         GameRegistry.registerTileEntity(chunkLoader.getTileEntityClass(), chunkLoader.getRegistryName().toString());
         GameRegistry.registerTileEntity(catWalk.getTileEntityClass(), catWalk.getRegistryName());
+        GameRegistry.registerTileEntity(conveyorV.getTileEntityClass(), conveyorV.getRegistryName());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -339,7 +343,8 @@ public class ModBlocks {
                 steamTurbine.createItemBlock(),
                 steamBlock.createItemBlock(),
                 baseEotM.createItemBlock(),
-                chunkLoader.createItemBlock()
+                chunkLoader.createItemBlock(),
+                conveyorV.createItemBlock()
         );
     }
 
@@ -423,5 +428,6 @@ public class ModBlocks {
         steamBlock.registerItemModel(Item.getItemFromBlock(steamBlock));
         baseEotM.registerItemModel(Item.getItemFromBlock(baseEotM));
         chunkLoader.registerItemModel(Item.getItemFromBlock(chunkLoader));
+        conveyorV.registerItemModel(Item.getItemFromBlock(conveyorV));
     }
 }
