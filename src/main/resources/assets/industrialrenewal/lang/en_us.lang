@@ -39,6 +39,7 @@ item.industrialrenewal.motor.name=Motor
 item.industrialrenewal.firebox_solid.name=Firebox for Solid Fuel
 item.industrialrenewal.firebox_fluid.name=Firebox for Fluid Fuel
 item.industrialrenewal.small_wind_blade.name=Wind Generator Blades
+item.industrialrenewal.chunk_hematite.name=Hematite Chunk
 
 #Discs
 
@@ -140,6 +141,7 @@ tile.industrialrenewal.small_wind_turbine_pillar.name=Wind Turbine Pillar
 tile.industrialrenewal.small_wind_turbine.name=Wind Turbine
 tile.industrialrenewal.chunk_loader.name=Chunk Loader (WIP)
 tile.industrialrenewal.conveyor_bulk.name=Bulk Conveyor
+tile.industrialrenewal.orevein_hematite.name=Hematite
 
 #Fluids
 fluid.steam=Steam

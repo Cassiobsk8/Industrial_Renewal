@@ -1,0 +1,30 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "quantity": {
+      "0": {
+        "model": "industrialrenewal:vein_hematite_1"
+      },
+      "1": {
+        "model": "industrialrenewal:vein_hematite_2"
+      },
+      "2": {
+        "model": "industrialrenewal:vein_hematite_3"
+      },
+      "3": {
+        "model": "industrialrenewal:vein_hematite_4"
+      },
+      "4": {
+        "model": "industrialrenewal:vein_hematite_5"
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:vein_hematite_1"
+    }
+  }
+}

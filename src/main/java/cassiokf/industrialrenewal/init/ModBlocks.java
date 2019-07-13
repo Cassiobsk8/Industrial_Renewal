@@ -123,8 +123,11 @@ public class ModBlocks {
 
     public static BlockChunkLoader chunkLoader = new BlockChunkLoader("chunk_loader", References.CREATIVE_IR_TAB);
 
+    public static BlockOreVein veinHematite = new BlockOreVein("orevein_hematite", References.CREAATIVE_IRWIP_TAB);
+
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
+                veinHematite,
                 blockHazard,
                 aisleHazard,
                 cautionHazard,
@@ -229,6 +232,7 @@ public class ModBlocks {
                 baseEotM
         );
 
+        GameRegistry.registerTileEntity(veinHematite.getTileEntityClass(), veinHematite.getRegistryName());
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
@@ -266,6 +270,7 @@ public class ModBlocks {
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
         registry.registerAll(
+                veinHematite.createItemBlock(),
                 blockHazard.createItemBlock(),
                 aisleHazard.createItemBlock(),
                 cautionHazard.createItemBlock(),
@@ -349,6 +354,7 @@ public class ModBlocks {
     }
 
     public static void registerItemModels() {
+        veinHematite.registerItemModel(Item.getItemFromBlock(veinHematite));
         blockHazard.registerItemModel(Item.getItemFromBlock(blockHazard));
         blockIndFloor.registerItemModel(Item.getItemFromBlock(blockIndFloor));
         blockChimney.registerItemModel(Item.getItemFromBlock(blockChimney));

@@ -57,10 +57,13 @@ public class ModItems {
 
     public static ItemWindBlade windBlade = new ItemWindBlade("small_wind_blade", References.CREATIVE_IR_TAB);
 
+    public static ItemOre hematiteChunk = new ItemOre("chunk_hematite", "oreHematite", References.CREAATIVE_IRWIP_TAB);
+
     //public static ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
 
     public static void register(IForgeRegistry<Item> registry) {
         registry.registerAll(
+                hematiteChunk,
                 manual,
                 ingotSteel,
                 spongeIron,
@@ -99,6 +102,7 @@ public class ModItems {
     }
 
     public static void registerModels() {
+        hematiteChunk.registerItemModel();
         ingotSteel.registerItemModel();
         spongeIron.registerItemModel();
         screwDrive.registerItemModel();
@@ -137,6 +141,7 @@ public class ModItems {
 
     public static void registerOreDict() {
         //oreCopper.initOreDict();
+        hematiteChunk.initOreDict();
         ingotSteel.initOreDict();
         stickIron.initOreDict();
         stickSteel.initOreDict();

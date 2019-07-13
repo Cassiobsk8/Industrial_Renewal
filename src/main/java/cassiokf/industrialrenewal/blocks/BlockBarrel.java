@@ -45,8 +45,8 @@ public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
     {
         if (!worldIn.isRemote) {
             TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
-            playerIn.sendMessage(new TextComponentString(te.GetChatQuantity()));
-            FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing);
+            if (!FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing))
+                playerIn.sendMessage(new TextComponentString(te.GetChatQuantity()));
         }
         return true;
     }
