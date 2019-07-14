@@ -122,7 +122,7 @@ public class BlockWindTurbinePillar extends BlockTileEntity<TileEntityWindTurbin
 
         if (neighbourDirection == EnumFacing.DOWN)
         {
-            return neighbourState.isFullBlock() || neighbourState.isSideSolid(worldIn, ownPos, EnumFacing.UP);
+            return !(neighbourState.getBlock() instanceof BlockWindTurbinePillar);
         }
         TileEntity te = worldIn.getTileEntity(ownPos.offset(neighbourDirection));
         return te != null && te.hasCapability(CapabilityEnergy.ENERGY, neighbourDirection.getOpposite());

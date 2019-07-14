@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.blocks.BlockSmallWindTurbine;
 import cassiokf.industrialrenewal.blocks.BlockWindTurbinePillar;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -77,7 +78,7 @@ public class TileEntityWindTurbinePillar extends TileEntitySyncable implements I
                 {
                     n++;
                 }
-                if (world.getBlockState(pos.up(n)).getBlock() instanceof BlockSmallWindTurbine)
+                if (world.getBlockState(pos.up(n)).getBlock() instanceof BlockSmallWindTurbine && world.getTileEntity(pos.up(n)) instanceof TileEntityWindTurbinePillar)
                 {
                     TileEntitySmallWindTurbine te = (TileEntitySmallWindTurbine) world.getTileEntity(pos.up(n));
                     if (te != null) energyGenerated = te.getEnergyGenerated();
@@ -107,7 +108,8 @@ public class TileEntityWindTurbinePillar extends TileEntitySyncable implements I
 
     public boolean isBase()
     {
-        return world.getBlockState(pos).getActualState(world, pos).getValue(BlockWindTurbinePillar.DOWN);
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock() instanceof BlockWindTurbinePillar && state.getActualState(world, pos).getValue(BlockWindTurbinePillar.DOWN);
     }
 
     @Override
