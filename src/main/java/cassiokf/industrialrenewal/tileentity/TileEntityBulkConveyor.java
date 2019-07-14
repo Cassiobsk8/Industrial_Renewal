@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockBulkConveyor;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -69,12 +68,19 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
             int mode = world.getBlockState(pos).getActualState(world, pos).getValue(BlockBulkConveyor.MODE);
             if (isFrontConveyor(facing, mode))
             {
-                TileEntityBulkConveyor te = (TileEntityBulkConveyor) world.getTileEntity(frontPos);
-
-                if (te == null)
+                TileEntityBulkConveyor te = null;
+                if (world.getTileEntity(frontPos) instanceof TileEntityBulkConveyor)
                 {
-                    if (mode == 1) te = (TileEntityBulkConveyor) world.getTileEntity(frontPos.up());
-                    else te = (TileEntityBulkConveyor) world.getTileEntity(frontPos.down());
+                    te = (TileEntityBulkConveyor) world.getTileEntity(frontPos);
+                } else
+                {
+                    if (mode == 1 && world.getTileEntity(frontPos.up()) instanceof TileEntityBulkConveyor)
+                    {
+                        te = (TileEntityBulkConveyor) world.getTileEntity(frontPos.up());
+                    } else if (world.getTileEntity(frontPos.down()) instanceof TileEntityBulkConveyor)
+                    {
+                        te = (TileEntityBulkConveyor) world.getTileEntity(frontPos.down());
+                    }
                 }
 
                 if (te != null && te.getBlockFacing() != getBlockFacing().getOpposite() && te.transferItem(frontPositionItem, false))
@@ -135,15 +141,19 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
 
     private boolean isFrontConveyor(EnumFacing facing, int mode)
     {
-        Block block = world.getBlockState(pos.offset(facing)).getBlock();
+        IBlockState state = world.getBlockState(pos.offset(facing));
 
-        if (!(block instanceof BlockBulkConveyor))
+        if (!(state.getBlock() instanceof BlockBulkConveyor))
         {
-            if (mode == 1) block = world.getBlockState(pos.offset(facing).up()).getBlock();
-            else block = world.getBlockState(pos.offset(facing).down()).getBlock();
-        }
-
-        return block instanceof BlockBulkConveyor;
+            if (mode == 1)
+            {
+                state = world.getBlockState(pos.offset(facing).up());
+            } else
+            {
+                state = world.getBlockState(pos.offset(facing).down());
+            }
+        } else return true;
+        return state.getBlock() instanceof BlockBulkConveyor && state.getValue(BlockBulkConveyor.FACING) == getBlockFacing();
     }
 
     private void getEntityItemAbove()
