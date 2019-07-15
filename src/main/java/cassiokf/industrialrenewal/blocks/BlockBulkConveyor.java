@@ -201,17 +201,7 @@ public class BlockBulkConveyor extends BlockTileEntity<TileEntityBulkConveyor>
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        EnumFacing face = null;
-        for (EnumFacing face1 : EnumFacing.HORIZONTALS)
-        {
-            if (facing.equals(face1))
-            {
-                face = facing.getOpposite();
-            }
-        }
-        if (face == null) face = placer.getHorizontalFacing();
-
-        return getDefaultState().withProperty(FACING, face);
+        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
     }
 
     @Override
