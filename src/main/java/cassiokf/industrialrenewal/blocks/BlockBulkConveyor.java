@@ -14,8 +14,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -69,6 +72,37 @@ public class BlockBulkConveyor extends BlockTileEntity<TileEntityBulkConveyor>
     }
 
     @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        ItemStack heldItem = playerIn.getHeldItem(hand);
+        if (!heldItem.isEmpty() && BlockBarrel.getBlockFromItem(heldItem.getItem()) instanceof BlockBulkConveyor)
+        {
+            IBlockState actualState = state.getActualState(worldIn, pos);
+            EnumFacing face = state.getValue(FACING);
+            int mode = actualState.getValue(MODE);
+            if (mode == 2 && worldIn.getBlockState(pos.offset(face).down()).getBlock().isReplaceable(worldIn, pos))
+            {
+                if (!worldIn.isRemote)
+                {
+                    worldIn.setBlockState(pos.offset(face).down(), state, 3);
+                    if (!playerIn.isCreative()) heldItem.shrink(1);
+                }
+                return true;
+            }
+            if (worldIn.getBlockState(pos.offset(face)).getBlock().isReplaceable(worldIn, pos))
+            {
+                if (!worldIn.isRemote)
+                {
+                    worldIn.setBlockState(pos.offset(face), state, 3);
+                    if (!playerIn.isCreative()) heldItem.shrink(1);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TileEntity tileentity = worldIn.getTileEntity(pos);
@@ -93,12 +127,13 @@ public class BlockBulkConveyor extends BlockTileEntity<TileEntityBulkConveyor>
         EnumFacing facing = ownState.getValue(FACING);
         IBlockState frontState = world.getBlockState(pos.offset(facing));
         IBlockState upState = world.getBlockState(pos.offset(facing).up());
+        IBlockState directUpState = world.getBlockState(pos.up());
         IBlockState downState = world.getBlockState(pos.offset(facing).down());
         IBlockState backUpState = world.getBlockState(pos.offset(facing.getOpposite()).up());
         IBlockState backState = world.getBlockState(pos.offset(facing.getOpposite()));
 
         //if (frontState.getBlock() instanceof BlockBulkConveyor && frontState.getValue(FACING) == facing) return 0;
-        if ((upState.getBlock() instanceof BlockBulkConveyor && upState.getValue(FACING).equals(facing)) && !(frontState.getBlock() instanceof BlockBulkConveyor && frontState.getValue(FACING).equals(facing)))
+        if ((upState.getBlock() instanceof BlockBulkConveyor && upState.getValue(FACING).equals(facing)) && !(directUpState.getBlock() instanceof BlockBulkConveyor) && !(frontState.getBlock() instanceof BlockBulkConveyor && frontState.getValue(FACING).equals(facing)))
             return 1;
         if ((downState.getBlock() instanceof BlockBulkConveyor && downState.getValue(FACING).equals(facing)
                 && backUpState.getBlock() instanceof BlockBulkConveyor && backUpState.getValue(FACING).equals(facing))

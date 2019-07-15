@@ -69,7 +69,7 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
             if (isFrontConveyor(facing, mode))
             {
                 TileEntityBulkConveyor te = null;
-                if (world.getTileEntity(frontPos) instanceof TileEntityBulkConveyor)
+                if (mode != 1 && world.getTileEntity(frontPos) instanceof TileEntityBulkConveyor)
                 {
                     te = (TileEntityBulkConveyor) world.getTileEntity(frontPos);
                 } else
@@ -143,7 +143,7 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
     {
         IBlockState state = world.getBlockState(pos.offset(facing));
 
-        if (!(state.getBlock() instanceof BlockBulkConveyor))
+        if (mode == 1 || !(state.getBlock() instanceof BlockBulkConveyor))
         {
             if (mode == 1)
             {
