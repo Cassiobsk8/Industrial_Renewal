@@ -61,6 +61,14 @@ public class BlockSmallWindTurbine extends BlockTileEntity<TileEntitySmallWindTu
         return false;
     }
 
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TileEntitySmallWindTurbine te = (TileEntitySmallWindTurbine) worldIn.getTileEntity(pos);
+        if (te != null) te.dropAllItems();
+        super.breakBlock(worldIn, pos, state);
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)

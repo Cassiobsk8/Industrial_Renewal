@@ -1,7 +1,8 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.item.ItemWindBlade;
 import cassiokf.industrialrenewal.blocks.BlockBatteryBank;
+import cassiokf.industrialrenewal.item.ItemWindBlade;
+import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,6 +50,11 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
                 TileEntitySmallWindTurbine.this.Sync();
             }
         };
+    }
+
+    public void dropAllItems()
+    {
+        Utils.dropInventoryItems(world, pos, bladeInv);
     }
 
     public static int getMaxGeneration()
