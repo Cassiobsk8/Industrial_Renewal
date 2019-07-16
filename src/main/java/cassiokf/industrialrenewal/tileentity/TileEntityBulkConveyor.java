@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockBulkConveyor;
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -23,9 +24,9 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
     public double stack3Pos;
     public double stack2Pos;
     public double stack1Pos;
-    public float stack3YPos;
-    public float stack2YPos;
-    public float stack1YPos;
+    public double stack3YPos;
+    public double stack2YPos;
+    public double stack1YPos;
     private int tick;
     private boolean getInThisTick;
     public ItemStackHandler inventory = new ItemStackHandler(3)
@@ -44,6 +45,11 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
     @Override
     public void update()
     {
+        if (world.isRemote)
+        {
+            doAnimation();
+        }
+
         if (tick == 1) getInThisTick = false;
         if (tick % 4 == 0)
         {
@@ -55,6 +61,52 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
             }
         }
         tick++;
+    }
+
+    private void doAnimation()
+    {
+        ItemStack stack1 = getStackInSlot(0);
+        ItemStack stack2 = getStackInSlot(1);
+        ItemStack stack3 = getStackInSlot(2);
+        int mode = getMode();
+        float yPos;
+
+        float speed = 0.33f;
+        if (!stack3.isEmpty())
+        {
+            stack3Pos = Utils.lerp(stack3Pos, -0.9D, speed);
+            yPos = mode == 0 ? 0.47f : mode == 1 ? 1.3f : 0.65f;
+            if (mode == 0) stack3YPos = yPos;
+            else stack3YPos = Utils.lerp(stack3YPos, yPos, speed);
+        } else
+        {
+            stack3Pos = -0.57f;
+            stack3YPos = mode == 0 ? 0.47f : 0.97f;
+        }
+        if (!stack2.isEmpty())
+        {
+            stack2Pos = Utils.lerp(stack2Pos, -0.57D, speed);
+            yPos = mode == 0 ? 0.47f : 0.97f;
+            if (mode == 0) stack2YPos = yPos;
+            else stack2YPos = Utils.lerp(stack2YPos, yPos, speed);
+        } else
+        {
+            stack2Pos = -0.25f;
+            if (mode == 1) stack2YPos = 0.65f;
+            if (mode == 2) stack2YPos = 1.3f;
+        }
+        if (!stack1.isEmpty())
+        {
+            stack1Pos = Utils.lerp(stack1Pos, -0.25D, speed);
+            yPos = mode == 0 ? 0.47f : mode == 1 ? 0.65f : 1.3f;
+            if (mode == 0) stack1YPos = yPos;
+            else stack1YPos = Utils.lerp(stack1YPos, yPos, speed);
+        } else
+        {
+            stack1Pos = 0f;
+            if (mode == 1) stack1YPos = 0.3f;
+            if (mode == 2) stack1YPos = 1.65f;
+        }
     }
 
     private void moveItem()
