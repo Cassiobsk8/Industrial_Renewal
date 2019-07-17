@@ -1,6 +1,6 @@
-package cassiokf.industrialrenewal.tileentity.machines.pump;
+package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.BlockBasicContainer;
+import cassiokf.industrialrenewal.tileentity.TileEntityElectricPump;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;

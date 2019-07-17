@@ -1,11 +1,9 @@
-package cassiokf.industrialrenewal.tileentity.machines.steamturbine;
+package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
-import cassiokf.industrialrenewal.tileentity.TileEntity3x3MachineBase;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -85,7 +83,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     @Override
     public void update()
     {
-        if (this.getIsMaster())
+        if (this.isMaster())
         {
             if (!this.world.isRemote)
             {
@@ -110,7 +108,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
                 rotation = MathHelper.clamp(rotation, 0, maxRotation);
 
 
-                EnumFacing facing = getBlockFacing();
+                EnumFacing facing = getMasterFacing();
                 TileEntity eTE = this.world.getTileEntity(pos.offset(facing.getOpposite()).down().offset(facing.rotateYCCW(), 2));
                 if (eTE != null && this.energyContainer.getEnergyStored() > 0 && eTE.hasCapability(CapabilityEnergy.ENERGY, facing))
                 {
@@ -141,18 +139,6 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
             }
         }
     }
-
-    public EnumFacing getBlockFacing()
-    {
-        IBlockState state = this.world.getBlockState(this.pos);
-        if (!(state.getBlock() instanceof BlockSteamTurbine))
-        {
-            world.removeTileEntity(pos);
-            return null;
-        }
-        return state.getValue(BlockSteamTurbine.FACING);
-    }
-
 
     private int getEnergyProduction()
     {
@@ -274,8 +260,8 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     @Override
     public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
     {
-        EnumFacing face = this.getBlockFacing();
         TileEntitySteamTurbine masterTE = this.getMaster();
+        EnumFacing face = masterTE.getMasterFacing();
         if (masterTE == null) return false;
 
         return (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
@@ -287,13 +273,13 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing)
     {
-        EnumFacing face = this.getBlockFacing();
         TileEntitySteamTurbine masterTE = this.getMaster();
+        EnumFacing face = masterTE.getMasterFacing();
         if (masterTE == null) return super.getCapability(capability, facing);
 
         if (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.steamTank);
-        if (facing == face && this.pos.equals(masterTE.getPos().down().offset(masterTE.getBlockFacing())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (facing == face && this.pos.equals(masterTE.getPos().down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.waterTank);
         if (facing == face.rotateYCCW() && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityEnergy.ENERGY)
             return CapabilityEnergy.ENERGY.cast(masterTE.energyContainer);

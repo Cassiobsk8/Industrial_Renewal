@@ -1,9 +1,9 @@
-package cassiokf.industrialrenewal.tileentity.machines.steamboiler;
+package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.blocks.BlockSteamBoiler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.item.ItemFireBox;
-import cassiokf.industrialrenewal.tileentity.TileEntity3x3MachineBase;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -123,7 +123,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
     @Override
     public void update()
     {
-        if (this.getIsMaster() && !this.world.isRemote && this.type > 0)
+        if (this.isMaster() && !this.world.isRemote && this.type > 0)
         {
             //Fuel to Heat
             switch (this.type)
@@ -209,7 +209,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
 
     public void setType(int type)
     {
-        if (!this.getIsMaster())
+        if (!this.isMaster())
         {
             this.getMaster().setType(type);
             return;
@@ -237,12 +237,6 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
             inventory.setStackInSlot(0, ItemStack.EMPTY);
             this.world.spawnEntity(item);
         }
-    }
-
-    public EnumFacing getBlockFacing()
-    {
-        IBlockState state = this.world.getBlockState(this.pos);
-        return state.getValue(BlockSteamBoiler.FACING);
     }
 
     public String getWaterText()
@@ -382,9 +376,9 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
     {
         TileEntitySteamBoiler masterTE = this.getMaster();
         if (masterTE == null) return false;
-        EnumFacing face = masterTE.getBlockFacing();
+        EnumFacing face = masterTE.getMasterFacing();
         return (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                || (facing == face && this.pos.equals(masterTE.getPos().down().offset(this.getBlockFacing())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+                || (facing == face && this.pos.equals(masterTE.getPos().down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
                 || (this.getMaster().getType() == 1 && facing == face.rotateYCCW() && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 || (this.getMaster().getType() == 2 && facing == face.rotateYCCW() && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
     }
@@ -395,7 +389,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
     {
         TileEntitySteamBoiler masterTE = this.getMaster();
         if (masterTE == null) return super.getCapability(capability, facing);
-        EnumFacing face = masterTE.getBlockFacing();
+        EnumFacing face = masterTE.getMasterFacing();
 
         if (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.steamTank);

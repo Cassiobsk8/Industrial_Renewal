@@ -1,5 +1,6 @@
-package cassiokf.industrialrenewal.tileentity.machines.pump;
+package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.blocks.BlockElectricPump;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;

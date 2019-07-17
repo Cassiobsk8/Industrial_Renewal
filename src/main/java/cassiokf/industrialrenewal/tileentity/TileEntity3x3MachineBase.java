@@ -5,6 +5,7 @@ import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -14,30 +15,39 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
 {
     private boolean master;
     private boolean breaking;
+    private TE masterTE;
+    private boolean masterChecked = false;
+    private boolean faceChecked = false;
+    private int faceIndex;
 
     @Override
     public void onLoad()
     {
-        this.getIsMaster();
+        this.getMaster();
     }
 
     public TE getMaster()
     {
-        List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
-        for (BlockPos currentPos : list)
+        if (masterTE == null || masterTE.isInvalid())
         {
-            Block block = world.getBlockState(currentPos).getBlock();
-            if (block instanceof Block3x3x3Base && ((TileEntity3x3MachineBase) world.getTileEntity(currentPos)).getIsMaster())
+            List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
+            for (BlockPos currentPos : list)
             {
-                return (TE) world.getTileEntity(currentPos);
+                Block block = world.getBlockState(currentPos).getBlock();
+                if (block instanceof Block3x3x3Base && ((TileEntity3x3MachineBase) world.getTileEntity(currentPos)).isMaster())
+                {
+                    masterTE = (TE) world.getTileEntity(currentPos);
+                    return masterTE;
+                }
             }
+            return null;
         }
-        return null;
+        return masterTE;
     }
 
     public void breakMultiBlocks()
     {
-        if (!this.getIsMaster())
+        if (!this.isMaster())
         {
             if (getMaster() != null)
             {
@@ -57,22 +67,32 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
         }
     }
 
-    public boolean isMaster()
+    public EnumFacing getMasterFacing()
     {
-        return this.master;
+        if (faceChecked) return EnumFacing.getFront(faceIndex);
+
+        EnumFacing facing = world.getBlockState(getMaster().getPos()).getValue(Block3x3x3Base.FACING);
+        faceChecked = true;
+        faceIndex = facing.getIndex();
+        return facing;
     }
 
-    protected boolean getIsMaster()
+    public boolean isMaster()
     {
+        if (masterChecked) return this.master;
+
         IBlockState state = this.world.getBlockState(this.pos);
         if (!(state.getBlock() instanceof Block3x3x3Base)) return false;
-        return state.getValue(Block3x3x3Base.MASTER);
+        master = state.getValue(Block3x3x3Base.MASTER);
+        this.markDirty();
+        masterChecked = true;
+        return master;
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        compound.setBoolean("master", this.getIsMaster());
+        compound.setBoolean("master", this.isMaster());
         return super.writeToNBT(compound);
     }
 

@@ -1,6 +1,7 @@
-package cassiokf.industrialrenewal.tileentity.machines.steamboiler;
+package cassiokf.industrialrenewal.tesr;
 
 import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.tileentity.TileEntitySteamBoiler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -29,26 +30,27 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
     {
         if (te.isMaster())
         {
+            EnumFacing facing = te.getMasterFacing();
             //WATER
-            doTheMath(te.getBlockFacing(), x, z, -0.69);
-            RenderText(te, xPos, y + 0.25, zPos, te.getWaterText());
-            RenderPointer(te, xPos, y + 0.51, zPos, te.GetWaterFill());
+            doTheMath(facing, x, z, -0.69);
+            RenderText(facing, xPos, y + 0.25, zPos, te.getWaterText());
+            RenderPointer(facing, xPos, y + 0.51, zPos, te.GetWaterFill());
             //STEAM
-            doTheMath(te.getBlockFacing(), x, z, 0.69);
-            RenderText(te, xPos, y + 0.25, zPos, te.getSteamText());
-            RenderPointer(te, xPos, y + 0.51, zPos, te.GetSteamFill());
+            doTheMath(facing, x, z, 0.69);
+            RenderText(facing, xPos, y + 0.25, zPos, te.getSteamText());
+            RenderPointer(facing, xPos, y + 0.51, zPos, te.GetSteamFill());
             //ENERGY
-            doTheMath(te.getBlockFacing(), x, z, 0);
-            RenderText(te, xPos, y + 0.18, zPos, te.getFuelText());
-            RenderPointer(te, xPos, y + 0.44, zPos, te.getFuelFill());
+            doTheMath(facing, x, z, 0);
+            RenderText(facing, xPos, y + 0.18, zPos, te.getFuelText());
+            RenderPointer(facing, xPos, y + 0.44, zPos, te.getFuelFill());
             //HEAT
-            doTheMath(te.getBlockFacing(), x, z, 0);
-            RenderText(te, xPos, y + 0.93, zPos, te.getHeatText());
-            RenderPointer(te, xPos, y + 1.19, zPos, te.getHeatFill());
+            doTheMath(facing, x, z, 0);
+            RenderText(facing, xPos, y + 0.93, zPos, te.getHeatText());
+            RenderPointer(facing, xPos, y + 1.19, zPos, te.getHeatFill());
             //Fire
             if (te.getType() > 0 && te.getFuelTime() > 0)
             {
-                doTheMath(te.getBlockFacing(), x, z, 0);
+                doTheMath(facing, x, z, 0);
                 RenderFire(te, xPos, y - 0.7, zPos);
             }
         }
@@ -80,16 +82,16 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
     /**
      * x = side / y = up / z = front
      */
-    private void RenderText(TileEntitySteamBoiler te, double x, double y, double z, String st)
+    private void RenderText(EnumFacing facing, double x, double y, double z, String st)
     {
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
         RenderHelper.disableStandardItemLighting();
-        switch (te.getBlockFacing())
+        switch (facing)
         {
             default:
-                System.out.println("DEU BOSTA AKI TIO: " + te.getBlockFacing());
+                System.out.println("DEU BOSTA AKI TIO: " + facing);
                 break;
             case SOUTH:
                 GlStateManager.rotate(180F, 0, 1, 0);
@@ -111,14 +113,14 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
         GlStateManager.popMatrix();
     }
 
-    private void RenderPointer(TileEntitySteamBoiler te, double x, double y, double z, float angle)
+    private void RenderPointer(EnumFacing facing, double x, double y, double z, float angle)
     {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
-        switch (te.getBlockFacing())
+        switch (facing)
         {
             default:
-                System.out.println("DEU BOSTA AKI TIO: " + te.getBlockFacing());
+                System.out.println("DEU BOSTA AKI TIO: " + facing);
                 break;
             case SOUTH:
                 GlStateManager.rotate(180F, 0, 1, 0);
@@ -149,10 +151,10 @@ public class TESRSteamBoiler extends TileEntitySpecialRenderer<TileEntitySteamBo
         GlStateManager.pushMatrix();
 
         GlStateManager.translate(x, y, z);
-        switch (te.getBlockFacing())
+        switch (te.getMasterFacing())
         {
             default:
-                System.out.println("DEU BOSTA AKI TIO: " + te.getBlockFacing());
+                System.out.println("DEU BOSTA AKI TIO: " + te.getMasterFacing());
                 break;
             case SOUTH:
                 GlStateManager.rotate(180F, 0, 1, 0);

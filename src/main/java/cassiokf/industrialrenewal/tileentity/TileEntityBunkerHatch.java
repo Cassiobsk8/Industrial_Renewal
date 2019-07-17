@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -19,11 +18,13 @@ public class TileEntityBunkerHatch extends TileEntity
 {
     private boolean master;
     private boolean breaking;
+    private TileEntityBunkerHatch masterTE;
+    private boolean masterChecked = false;
 
     @Override
     public void onLoad()
     {
-        this.getIsMaster();
+        this.isMaster();
     }
 
     public TileEntityBunkerHatch getMaster()
@@ -47,7 +48,7 @@ public class TileEntityBunkerHatch extends TileEntity
 
     public void changeOpen()
     {
-        if (!getIsMaster())
+        if (!isMaster())
         {
             if (getMaster() != null)
             {
@@ -70,7 +71,7 @@ public class TileEntityBunkerHatch extends TileEntity
 
     public void breakMultiBlocks()
     {
-        if (!this.master)
+        if (!this.isMaster())
         {
             if (getMaster() != null)
             {
@@ -105,28 +106,18 @@ public class TileEntityBunkerHatch extends TileEntity
 
     public boolean isMaster()//tesr uses this
     {
-        return this.master;
-    }
+        if (masterChecked) return this.master;
 
-    private boolean getIsMaster()
-    {
         IBlockState state = this.world.getBlockState(this.pos);
         if (!(state.getBlock() instanceof BlockBunkerHatch)) this.master = false;
         else this.master = state.getValue(BlockBunkerHatch.MASTER);
         return this.master;
     }
 
-    public EnumFacing getBlockFacing()
-    {
-        IBlockState state = this.world.getBlockState(this.pos);
-        return state.getValue(BlockBunkerHatch.FACING);
-    }
-
-
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        compound.setBoolean("master", this.getIsMaster());
+        compound.setBoolean("master", this.isMaster());
         return super.writeToNBT(compound);
     }
 

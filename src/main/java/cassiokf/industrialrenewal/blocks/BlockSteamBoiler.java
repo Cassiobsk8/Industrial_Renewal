@@ -1,8 +1,8 @@
-package cassiokf.industrialrenewal.tileentity.machines.steamboiler;
+package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.Block3x3x3Base;
 import cassiokf.industrialrenewal.item.ItemFireBox;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
+import cassiokf.industrialrenewal.tileentity.TileEntitySteamBoiler;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;

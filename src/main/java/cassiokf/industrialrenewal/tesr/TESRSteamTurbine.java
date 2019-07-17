@@ -1,6 +1,7 @@
-package cassiokf.industrialrenewal.tileentity.machines.steamturbine;
+package cassiokf.industrialrenewal.tesr;
 
 import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.tileentity.TileEntitySteamTurbine;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -24,26 +25,27 @@ public class TESRSteamTurbine extends TileEntitySpecialRenderer<TileEntitySteamT
     {
         if (te.isMaster())
         {
+            EnumFacing facing = te.getMasterFacing();
             //STEAM
-            doTheMath(te.getBlockFacing(), x, z, -1.1);
-            RenderText(te, xPos, y + 1.25, zPos, te.getSteamText());
-            RenderPointer(te, xPos, y + 1.5, zPos, te.GetSteamFill());
+            doTheMath(facing, x, z, -1.1);
+            RenderText(facing, xPos, y + 1.25, zPos, te.getSteamText());
+            RenderPointer(facing, xPos, y + 1.5, zPos, te.GetSteamFill());
             //GENERATION
-            doTheMath(te.getBlockFacing(), x, z, -1.1);
-            RenderText(te, xPos, y + 0.5, zPos, te.getGenerationText());
-            RenderPointer(te, xPos, y + 0.76, zPos, te.GetGenerationFill());
+            doTheMath(facing, x, z, -1.1);
+            RenderText(facing, xPos, y + 0.5, zPos, te.getGenerationText());
+            RenderPointer(facing, xPos, y + 0.76, zPos, te.GetGenerationFill());
             //WATER
-            doTheMath(te.getBlockFacing(), x, z, -1.1);
-            RenderText(te, xPos, y - 0.25, zPos, te.getWaterText());
-            RenderPointer(te, xPos, y + 0.01, zPos, te.GetWaterFill());
+            doTheMath(facing, x, z, -1.1);
+            RenderText(facing, xPos, y - 0.25, zPos, te.getWaterText());
+            RenderPointer(facing, xPos, y + 0.01, zPos, te.GetWaterFill());
             //ROTATION
-            doTheMath(te.getBlockFacing(), x, z, 0);
-            RenderText(te, xPos, y + 1.25, zPos, te.getRotationText());
-            RenderPointer(te, xPos, y + 1.5, zPos, te.getRotationFill());
+            doTheMath(facing, x, z, 0);
+            RenderText(facing, xPos, y + 1.25, zPos, te.getRotationText());
+            RenderPointer(facing, xPos, y + 1.5, zPos, te.getRotationFill());
             //ENERGY
-            doTheMath(te.getBlockFacing(), x, z, +1.155);
-            RenderText(te, xPos, y + 0.18, zPos, te.getEnergyText());
-            RenderPointer(te, xPos, y + 0.45, zPos, te.GetEnergyFill());
+            doTheMath(facing, x, z, +1.155);
+            RenderText(facing, xPos, y + 0.18, zPos, te.getEnergyText());
+            RenderPointer(facing, xPos, y + 0.45, zPos, te.GetEnergyFill());
         }
     }
 
@@ -73,16 +75,16 @@ public class TESRSteamTurbine extends TileEntitySpecialRenderer<TileEntitySteamT
     /**
      * x = side / y = up / z = front
      */
-    private void RenderText(TileEntitySteamTurbine te, double x, double y, double z, String st)
+    private void RenderText(EnumFacing facing, double x, double y, double z, String st)
     {
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
         RenderHelper.disableStandardItemLighting();
-        switch (te.getBlockFacing())
+        switch (facing)
         {
             default:
-                System.out.println("DEU BOSTA AKI TIO: " + te.getBlockFacing());
+                System.out.println("DEU BOSTA AKI TIO: " + facing);
                 break;
             case SOUTH:
                 GlStateManager.rotate(180F, 0, 1, 0);
@@ -104,15 +106,15 @@ public class TESRSteamTurbine extends TileEntitySpecialRenderer<TileEntitySteamT
         GlStateManager.popMatrix();
     }
 
-    private void RenderPointer(TileEntitySteamTurbine te, double x, double y, double z, float angle)
+    private void RenderPointer(EnumFacing facing, double x, double y, double z, float angle)
     {
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
-        switch (te.getBlockFacing())
+        switch (facing)
         {
             default:
-                System.out.println("DEU BOSTA AKI TIO: " + te.getBlockFacing());
+                System.out.println("DEU BOSTA AKI TIO: " + facing);
                 break;
             case SOUTH:
                 GlStateManager.rotate(180F, 0, 1, 0);

@@ -1,6 +1,6 @@
-package cassiokf.industrialrenewal.tileentity.machines.steamturbine;
+package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.Block3x3x3Base;
+import cassiokf.industrialrenewal.tileentity.TileEntitySteamTurbine;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
