@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.tileentity.tubes.BlockEnergyCable;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;

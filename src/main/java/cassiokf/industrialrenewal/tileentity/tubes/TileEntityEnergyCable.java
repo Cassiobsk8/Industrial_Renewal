@@ -1,11 +1,13 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
+import cassiokf.industrialrenewal.blocks.BlockEnergyCable;
+import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -13,33 +15,60 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public class TileEntityEnergyCable extends TileEntity implements ICapabilityProvider, ITickable {
+public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityEnergyCable> implements ICapabilityProvider, ITickable
+{
 
-    private final BaseEnergyContainer container;
+    private final VoltsEnergyContainer energyContainer;
 
 
     public TileEntityEnergyCable() {
-        this.container = new BaseEnergyContainer();
+        this.energyContainer = new VoltsEnergyContainer(10240, 1024, 1024);
     }
 
     //IEnergyStorage
 
-
     @Override
     public void update() {
-        //TODO arrumar o codigo pra distribur FE pelos cabos
-        if (this.hasWorld()) {
-            final TileEntity tileEntityS = this.getWorld().getTileEntity(this.getPos().offset(EnumFacing.SOUTH));
-
-
-            if (tileEntityS != null && !tileEntityS.isInvalid()) {
-                if (tileEntityS.hasCapability(CapabilityEnergy.ENERGY, EnumFacing.SOUTH)) {
-                    IEnergyStorage consumer = tileEntityS.getCapability(CapabilityEnergy.ENERGY, EnumFacing.SOUTH);
-                    if (consumer != null)
-                        this.container.extractEnergy(consumer.receiveEnergy(this.container.getEnergyStored(), false), false);
+        super.update();
+        if (!world.isRemote && isMaster())
+        {
+            int quantity = getPosSet().size();
+            this.energyContainer.setMaxEnergyStored(this.energyContainer.getMaxOutput() * quantity);
+            for (BlockPos posM : getPosSet().keySet())
+            {
+                TileEntity te = world.getTileEntity(posM);
+                if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, getPosSet().get(posM)))
+                {
+                    IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, getPosSet().get(posM).getOpposite());
+                    if (energyStorage != null && energyStorage.canReceive())
+                    {
+                        this.energyContainer.extractEnergy(energyStorage.receiveEnergy(this.energyContainer.extractEnergy(this.energyContainer.getMaxOutput(), true), false), false);
+                    }
                 }
             }
         }
+    }
+
+    @Override
+    public void checkForOutPuts(BlockPos bPos)
+    {
+        if (world.isRemote) return;
+        for (EnumFacing face : EnumFacing.VALUES)
+        {
+            BlockPos currentPos = pos.offset(face);
+            IBlockState state = world.getBlockState(currentPos);
+            TileEntity te = world.getTileEntity(currentPos);
+            boolean hasMachine = !(state.getBlock() instanceof BlockEnergyCable) && te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
+            if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
+                getMaster().addMachine(currentPos, face);
+            else getMaster().removeMachine(currentPos);
+        }
+    }
+
+    @Override
+    public boolean instanceOf(TileEntity te)
+    {
+        return te instanceof TileEntityEnergyCable;
     }
 
     @Override
@@ -53,33 +82,19 @@ public class TileEntityEnergyCable extends TileEntity implements ICapabilityProv
     @Nullable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityEnergy.ENERGY)
-            return (T) this.container;
+            return CapabilityEnergy.ENERGY.cast(getMaster().energyContainer);
         return super.getCapability(capability, facing);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
+        this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
         super.readFromNBT(compound);
-        this.container.deserializeNBT(compound.getCompoundTag("StoredIR"));
-        //this.container.deserializeNBT(compound);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        //compound.setInteger("StoredJAE", this.container.getEnergyStored());
-        compound.setTag("StoredIR", this.container.serializeNBT());
+        compound.setTag("StoredIR", this.energyContainer.serializeNBT());
         return super.writeToNBT(compound);
     }
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return super.getUpdatePacket();
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        this.readFromNBT(pkt.getNbtCompound());
-    }
-
 }

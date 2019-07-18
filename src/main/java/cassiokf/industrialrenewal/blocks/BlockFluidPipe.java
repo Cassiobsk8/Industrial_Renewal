@@ -1,8 +1,7 @@
-package cassiokf.industrialrenewal.tileentity.tubes.fluidpipe;
+package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.blocks.BlockPipeBase;
-import net.minecraft.block.Block;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipe;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,19 +25,19 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipe> implement
     }
 
     @Override
-    protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final Block neighbourBlock = neighbourState.getBlock();
+    public boolean canConnectToPipe(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
+    {
+        IBlockState state = worldIn.getBlockState(ownPos.offset(neighbourDirection));
+        return state.getBlock() instanceof BlockFluidPipe;
+    }
 
-        if (neighbourBlock instanceof BlockFluidPipe) return true;
-        // Connect if the neighbouring block has a TileEntity with an IFluidHandler for the adjacent face
-        if (neighbourBlock.hasTileEntity(neighbourState)) {
-            final TileEntity tileEntity = world.getTileEntity(neighbourPos);
-            return tileEntity != null && tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, neighbourDirection.getOpposite());
-        }
-
-        // Connect if the neighbouring block is a fluid/liquid, FluidUtil.getFluidHandler will provide an IFluidHandler wrapper to drain from it
-        return false;
+    @Override
+    public boolean canConnectToCapability(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
+    {
+        BlockPos pos = ownPos.offset(neighbourDirection);
+        IBlockState state = worldIn.getBlockState(pos);
+        TileEntity te = worldIn.getTileEntity(pos);
+        return !(state.getBlock() instanceof BlockFluidPipe) && te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, neighbourDirection.getOpposite());
     }
 
     @Override

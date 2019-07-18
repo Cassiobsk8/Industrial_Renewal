@@ -1,10 +1,9 @@
 package cassiokf.industrialrenewal.blocks;
 
-import com.google.common.collect.ImmutableList;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -21,8 +20,6 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public abstract class BlockPipeBase<TE extends TileEntity> extends BlockTileEntity<TE>
 {
@@ -37,11 +34,19 @@ public abstract class BlockPipeBase<TE extends TileEntity> extends BlockTileEnti
     //public static final float PIPE_MIN_POS = 0.250f;
     //public static final float PIPE_MAX_POS = 0.750f;
 
-    public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
-            Stream.of(EnumFacing.VALUES)
-                    .map(facing -> PropertyBool.create(facing.getName()))
-                    .collect(Collectors.toList())
-    );
+    public static final PropertyBool SOUTH = PropertyBool.create("south");
+    public static final PropertyBool NORTH = PropertyBool.create("north");
+    public static final PropertyBool EAST = PropertyBool.create("east");
+    public static final PropertyBool WEST = PropertyBool.create("west");
+    public static final PropertyBool UP = PropertyBool.create("up");
+    public static final PropertyBool DOWN = PropertyBool.create("down");
+
+    public static final PropertyBool CSOUTH = PropertyBool.create("c_south");
+    public static final PropertyBool CNORTH = PropertyBool.create("c_north");
+    public static final PropertyBool CEAST = PropertyBool.create("c_east");
+    public static final PropertyBool CWEST = PropertyBool.create("c_west");
+    public static final PropertyBool CUP = PropertyBool.create("c_up");
+    public static final PropertyBool CDOWN = PropertyBool.create("c_down");
 
     public BlockPipeBase(String name, CreativeTabs tab) {
         super(Material.IRON, name, tab);
@@ -50,8 +55,23 @@ public abstract class BlockPipeBase<TE extends TileEntity> extends BlockTileEnti
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TileEntityMultiBlocksTube te = (TileEntityMultiBlocksTube) worldIn.getTileEntity(pos);
+        if (te != null)
+        {
+            for (EnumFacing face : EnumFacing.VALUES)
+            {
+                BlockPos posM = pos.offset(face);
+                te.getMaster().removeMachine(posM);
+            }
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
+        return new BlockStateContainer(this, SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN);
     }
 
     @SuppressWarnings("deprecation")
@@ -81,52 +101,37 @@ public abstract class BlockPipeBase<TE extends TileEntity> extends BlockTileEnti
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
     }
-    /**
-     * Is the neighbouring block a valid connection for this pipe?
-     *
-     * @param ownState           This pipe's state
-     * @param neighbourState     The neighbouring block's state
-     * @param world              The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Is the neighbouring block a valid connection?
-     */
-    protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
-        return neighbourState.getBlock() instanceof BlockPipeBase;
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if (!worldIn.isRemote)
+        {
+            TileEntityMultiBlocksTube te = (TileEntityMultiBlocksTube) worldIn.getTileEntity(pos);
+            if (te != null) te.checkForOutPuts(pos);
+        }
     }
 
-    /**
-     * Can this pipe connect to the neighbouring block?
-     *
-     * @param ownState           This pipe's state
-     * @param worldIn            The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Can this pipe connect?
-     */
-    private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
-        final Block neighbourBlock = neighbourState.getBlock();
+    public abstract boolean canConnectToPipe(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection);
 
-        final boolean neighbourIsValidForThis = isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
-        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockPipeBase) || ((BlockPipeBase) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
-
-        return neighbourIsValidForThis && thisIsValidForNeighbour;
-    }
+    public abstract boolean canConnectToCapability(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection);
 
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        for (final EnumFacing facing : EnumFacing.VALUES) {
-            state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()), canConnectTo(state, world, pos, facing));
-        }
-
+        state = state.withProperty(SOUTH, canConnectToPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectToPipe(world, pos, EnumFacing.NORTH))
+                .withProperty(EAST, canConnectToPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectToPipe(world, pos, EnumFacing.WEST))
+                .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
+                .withProperty(CSOUTH, canConnectToCapability(world, pos, EnumFacing.SOUTH)).withProperty(CNORTH, canConnectToCapability(world, pos, EnumFacing.NORTH))
+                .withProperty(CEAST, canConnectToCapability(world, pos, EnumFacing.EAST)).withProperty(CWEST, canConnectToCapability(world, pos, EnumFacing.WEST))
+                .withProperty(CUP, canConnectToCapability(world, pos, EnumFacing.UP)).withProperty(CDOWN, canConnectToCapability(world, pos, EnumFacing.DOWN));
         return state;
     }
 
-    public final boolean isConnected(final IBlockState state, final EnumFacing facing) {
-        return state.getValue(CONNECTED_PROPERTIES.get(facing.getIndex()));
+    public final boolean isConnected(IBlockAccess world, BlockPos pos, final IBlockState state, final PropertyBool property)
+    {
+        return state.getValue(property);
     }
 
     @SuppressWarnings("deprecation")
@@ -136,34 +141,46 @@ public abstract class BlockPipeBase<TE extends TileEntity> extends BlockTileEnti
         if (!isActualState) {
             state = state.getActualState(worldIn, pos);
         }
-        if (isConnected(state, EnumFacing.NORTH)) {
+        if (isConnected(worldIn, pos, state, NORTH))
+        {
             NORTHZ1 = 0.0f;
-        } else if (!isConnected(state, EnumFacing.NORTH)) {
+        } else
+        {
             NORTHZ1 = 0.250f;
         }
-        if (isConnected(state, EnumFacing.SOUTH)) {
+        if (isConnected(worldIn, pos, state, SOUTH))
+        {
             SOUTHZ2 = 1.0f;
-        } else if (!isConnected(state, EnumFacing.SOUTH)) {
+        } else
+        {
             SOUTHZ2 = 0.750f;
         }
-        if (isConnected(state, EnumFacing.WEST)) {
+        if (isConnected(worldIn, pos, state, WEST))
+        {
             WESTX1 = 0.0f;
-        } else if (!isConnected(state, EnumFacing.WEST)) {
+        } else
+        {
             WESTX1 = 0.250f;
         }
-        if (isConnected(state, EnumFacing.EAST)) {
+        if (isConnected(worldIn, pos, state, EAST))
+        {
             EASTX2 = 1.0f;
-        } else if (!isConnected(state, EnumFacing.EAST)) {
+        } else
+        {
             EASTX2 = 0.750f;
         }
-        if (isConnected(state, EnumFacing.DOWN)) {
+        if (isConnected(worldIn, pos, state, DOWN))
+        {
             DOWNY1 = 0.0f;
-        } else if (!isConnected(state, EnumFacing.DOWN)) {
+        } else
+        {
             DOWNY1 = 0.250f;
         }
-        if (isConnected(state, EnumFacing.UP)) {
+        if (isConnected(worldIn, pos, state, UP))
+        {
             UPY2 = 1.0f;
-        } else if (!isConnected(state, EnumFacing.UP)) {
+        } else
+        {
             UPY2 = 0.750f;
         }
         final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
@@ -171,37 +188,50 @@ public abstract class BlockPipeBase<TE extends TileEntity> extends BlockTileEnti
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        IBlockState actualState = state.getActualState(source, pos);
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        IBlockState actualState = state.getActualState(worldIn, pos);
 
-        if (isConnected(actualState, EnumFacing.NORTH)) {
+        if (isConnected(worldIn, pos, actualState, NORTH))
+        {
             NORTHZ1 = 0.0f;
-        } else if (!isConnected(actualState, EnumFacing.NORTH)) {
+        } else
+        {
             NORTHZ1 = 0.250f;
         }
-        if (isConnected(actualState, EnumFacing.SOUTH)) {
+        if (isConnected(worldIn, pos, actualState, SOUTH))
+        {
             SOUTHZ2 = 1.0f;
-        } else if (!isConnected(actualState, EnumFacing.SOUTH)) {
+        } else
+        {
             SOUTHZ2 = 0.750f;
         }
-        if (isConnected(actualState, EnumFacing.WEST)) {
+        if (isConnected(worldIn, pos, actualState, WEST))
+        {
             WESTX1 = 0.0f;
-        } else if (!isConnected(actualState, EnumFacing.WEST)) {
+        } else
+        {
             WESTX1 = 0.250f;
         }
-        if (isConnected(actualState, EnumFacing.EAST)) {
+        if (isConnected(worldIn, pos, actualState, EAST))
+        {
             EASTX2 = 1.0f;
-        } else if (!isConnected(actualState, EnumFacing.EAST)) {
+        } else
+        {
             EASTX2 = 0.750f;
         }
-        if (isConnected(actualState, EnumFacing.DOWN)) {
+        if (isConnected(worldIn, pos, actualState, DOWN))
+        {
             DOWNY1 = 0.0f;
-        } else if (!isConnected(actualState, EnumFacing.DOWN)) {
+        } else
+        {
             DOWNY1 = 0.250f;
         }
-        if (isConnected(actualState, EnumFacing.UP)) {
+        if (isConnected(worldIn, pos, actualState, UP))
+        {
             UPY2 = 1.0f;
-        } else if (!isConnected(actualState, EnumFacing.UP)) {
+        } else
+        {
             UPY2 = 0.750f;
         }
         return new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);

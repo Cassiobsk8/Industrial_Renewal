@@ -3,7 +3,6 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.tileentity.TileEntityCatWalk;
-import cassiokf.industrialrenewal.tileentity.tubes.BlockEnergyCable;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

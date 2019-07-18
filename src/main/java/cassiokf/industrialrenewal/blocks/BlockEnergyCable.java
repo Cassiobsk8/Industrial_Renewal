@@ -1,8 +1,7 @@
-package cassiokf.industrialrenewal.tileentity.tubes;
+package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.blocks.BlockPipeBase;
-import net.minecraft.block.Block;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,11 +15,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public class BlockEnergyCable extends BlockPipeBase implements ITileEntityProvider {
+public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> implements ITileEntityProvider
+{
 
     public BlockEnergyCable(String name, CreativeTabs tab) {
         super(name, tab);
@@ -28,35 +27,30 @@ public class BlockEnergyCable extends BlockPipeBase implements ITileEntityProvid
     }
 
     @Override
-    protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
-
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final Block neighbourBlock = neighbourState.getBlock();
-
-        if (neighbourBlock.hasTileEntity(neighbourState)) {
-            final TileEntity tileEntity = world.getTileEntity(neighbourPos);
-
-            return tileEntity != null && tileEntity.hasCapability(CapabilityEnergy.ENERGY, neighbourDirection.getOpposite());
-
-        }
-
-        return neighbourBlock instanceof IEnergyStorage;
+    public boolean canConnectToPipe(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
+    {
+        IBlockState state = worldIn.getBlockState(ownPos.offset(neighbourDirection));
+        return state.getBlock() instanceof BlockEnergyCable;
     }
 
     @Override
-    public Class getTileEntityClass()
+    public boolean canConnectToCapability(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
+    {
+        BlockPos pos = ownPos.offset(neighbourDirection);
+        IBlockState state = worldIn.getBlockState(pos);
+        TileEntity te = worldIn.getTileEntity(pos);
+        return !(state.getBlock() instanceof BlockEnergyCable) && te != null && te.hasCapability(CapabilityEnergy.ENERGY, neighbourDirection.getOpposite());
+    }
+
+    @Override
+    public Class<TileEntityEnergyCable> getTileEntityClass()
     {
         return TileEntityEnergyCable.class;
     }
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
-
     @Nullable
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
+    public TileEntityEnergyCable createTileEntity(World world, IBlockState state)
     {
         return new TileEntityEnergyCable();
     }
