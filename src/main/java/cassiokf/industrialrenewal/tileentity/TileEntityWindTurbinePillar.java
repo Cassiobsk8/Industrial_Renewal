@@ -73,12 +73,12 @@ public class TileEntityWindTurbinePillar extends TileEntitySyncable implements I
             if (tick % 10 == 0)
             {
                 tick = 0;
-                Integer n = 1;
+                int n = 1;
                 while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockWindTurbinePillar)
                 {
                     n++;
                 }
-                if (world.getBlockState(pos.up(n)).getBlock() instanceof BlockSmallWindTurbine && world.getTileEntity(pos.up(n)) instanceof TileEntityWindTurbinePillar)
+                if (world.getBlockState(pos.up(n)).getBlock() instanceof BlockSmallWindTurbine && world.getTileEntity(pos.up(n)) instanceof TileEntitySmallWindTurbine)
                 {
                     TileEntitySmallWindTurbine te = (TileEntitySmallWindTurbine) world.getTileEntity(pos.up(n));
                     if (te != null) energyGenerated = te.getEnergyGenerated();
