@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
 public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileEntityWindTurbinePillar> implements ICapabilityProvider, ITickable
 {
     private final VoltsEnergyContainer energyContainer;
+    private final VoltsEnergyContainer dummyEnergyContainer;
 
     private int energyGenerated;
 
@@ -32,11 +33,13 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     public TileEntityWindTurbinePillar()
     {
         this.energyContainer = new VoltsEnergyContainer(1024, 1024, 1024);
+        this.dummyEnergyContainer = new VoltsEnergyContainer(0, 0, 0);
     }
 
     @Override
     public void update()
     {
+        super.update();
         if (isMaster())
         {
             if (!world.isRemote)
@@ -163,15 +166,17 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        return (capability == CapabilityEnergy.ENERGY) || super.hasCapability(capability, facing);
+        return (capability == CapabilityEnergy.ENERGY && (facing == EnumFacing.UP || isBase())) || super.hasCapability(capability, facing);
     }
 
     @Override
     @Nullable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
-        if (capability == CapabilityEnergy.ENERGY)
+        if (capability == CapabilityEnergy.ENERGY && (facing == EnumFacing.UP))
             return CapabilityEnergy.ENERGY.cast(getMaster().energyContainer);
+        if (capability == CapabilityEnergy.ENERGY && (isBase()))
+            return CapabilityEnergy.ENERGY.cast(dummyEnergyContainer);
         return super.getCapability(capability, facing);
     }
 
