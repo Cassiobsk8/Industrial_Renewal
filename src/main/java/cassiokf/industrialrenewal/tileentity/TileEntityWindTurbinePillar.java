@@ -2,12 +2,14 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockSmallWindTurbine;
 import cassiokf.industrialrenewal.blocks.BlockWindTurbinePillar;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -15,7 +17,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public class TileEntityWindTurbinePillar extends TileEntitySyncable implements ICapabilityProvider, ITickable
+public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileEntityWindTurbinePillar> implements ICapabilityProvider, ITickable
 {
     private final VoltsEnergyContainer energyContainer;
 
@@ -23,28 +25,27 @@ public class TileEntityWindTurbinePillar extends TileEntitySyncable implements I
 
     private int tick;
 
+    private EnumFacing[] faces = new EnumFacing[]{EnumFacing.UP, EnumFacing.DOWN};
+    private BlockPos turbinePos;
+    private boolean isBase;
+
     public TileEntityWindTurbinePillar()
     {
-        this.energyContainer = new VoltsEnergyContainer(1024, 1024, 1024)
-        {
-            @Override
-            public void onEnergyChange()
-            {
-                TileEntityWindTurbinePillar.this.Sync();
-            }
-        };
+        this.energyContainer = new VoltsEnergyContainer(1024, 1024, 1024);
     }
 
     @Override
     public void update()
     {
-        if (!world.isRemote)
+        if (isMaster())
         {
-            if (isBase())
+            if (!world.isRemote)
             {
-                for (EnumFacing face : EnumFacing.VALUES)
+                energyContainer.setMaxEnergyStored(Math.max(1024 * getPosSet().size(), energyContainer.getEnergyStored()));
+                for (BlockPos currentPos : getPosSet().keySet())
                 {
-                    TileEntity te = world.getTileEntity(pos.offset(face));
+                    TileEntity te = world.getTileEntity(currentPos);
+                    EnumFacing face = getPosSet().get(currentPos);
                     if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite()))
                     {
                         IEnergyStorage eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
@@ -54,38 +55,80 @@ public class TileEntityWindTurbinePillar extends TileEntitySyncable implements I
                         }
                     }
                 }
-            } else
+            } else if (getTurbinePos() != null)
             {
-                if (world.getBlockState(pos.down()).getBlock() instanceof BlockWindTurbinePillar && this.energyContainer.getEnergyStored() > 0)
+                tick++;
+                if (tick % 10 == 0)
                 {
-                    TileEntity te = world.getTileEntity(pos.down());
-                    assert te != null;
-                    IEnergyStorage downE = te.getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP);
-                    if (downE != null && downE.canReceive())
+                    tick = 0;
+                    if (world.getBlockState(turbinePos).getBlock() instanceof BlockSmallWindTurbine && world.getTileEntity(turbinePos) instanceof TileEntitySmallWindTurbine)
                     {
-                        this.energyContainer.extractEnergy(downE.receiveEnergy(this.energyContainer.extractEnergy(this.energyContainer.getMaxOutput(), true), false), false);
+                        TileEntitySmallWindTurbine te = (TileEntitySmallWindTurbine) world.getTileEntity(turbinePos);
+                        if (te != null) energyGenerated = te.getEnergyGenerated();
+                        else energyGenerated = 0;
+                    } else
+                    {
+                        energyGenerated = 0;
+                        forceNewTurbinePos();
                     }
                 }
             }
-        } else if (isBase())
+        }
+    }
+
+    @Override
+    public EnumFacing[] getFacesToCheck()
+    {
+        return faces;
+    }
+
+    @Override
+    public boolean instanceOf(TileEntity te)
+    {
+        return te instanceof TileEntityWindTurbinePillar;
+    }
+
+    @Override
+    public void checkForOutPuts(BlockPos bPos)
+    {
+        isBase = getIsBase();
+        if (world.isRemote) return;
+        for (EnumFacing face : EnumFacing.HORIZONTALS)
         {
-            tick++;
-            if (tick % 10 == 0)
+            BlockPos currentPos = pos.offset(face);
+            if (isBase)
             {
-                tick = 0;
-                int n = 1;
-                while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockWindTurbinePillar)
-                {
-                    n++;
-                }
-                if (world.getBlockState(pos.up(n)).getBlock() instanceof BlockSmallWindTurbine && world.getTileEntity(pos.up(n)) instanceof TileEntitySmallWindTurbine)
-                {
-                    TileEntitySmallWindTurbine te = (TileEntitySmallWindTurbine) world.getTileEntity(pos.up(n));
-                    if (te != null) energyGenerated = te.getEnergyGenerated();
-                    else energyGenerated = 0;
-                } else energyGenerated = 0;
+                IBlockState state = world.getBlockState(currentPos);
+                TileEntity te = world.getTileEntity(currentPos);
+                boolean hasMachine = !(state.getBlock() instanceof BlockWindTurbinePillar)
+                        && te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
+
+                if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
+                    getMaster().addMachine(currentPos, face);
+                else getMaster().removeMachine(currentPos);
+            } else
+            {
+                getMaster().removeMachine(currentPos);
             }
         }
+        this.Sync();
+    }
+
+    private BlockPos getTurbinePos()
+    {
+        if (turbinePos != null) return turbinePos;
+        return forceNewTurbinePos();
+    }
+
+    private BlockPos forceNewTurbinePos()
+    {
+        int n = 1;
+        while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockWindTurbinePillar)
+        {
+            n++;
+        }
+        if (world.getBlockState(pos.up(n)).getBlock() instanceof BlockSmallWindTurbine) turbinePos = pos.up(n);
+        return turbinePos;
     }
 
     public EnumFacing getBlockFacing()
@@ -103,13 +146,18 @@ public class TileEntityWindTurbinePillar extends TileEntitySyncable implements I
 
     public int getEnergyGenerated()
     {
-        return energyGenerated;
+        return getMaster().energyGenerated;
     }
 
     public boolean isBase()
     {
-        IBlockState state = world.getBlockState(pos);
-        return state.getBlock() instanceof BlockWindTurbinePillar && state.getActualState(world, pos).getValue(BlockWindTurbinePillar.DOWN);
+        return isBase;
+    }
+
+    public boolean getIsBase()
+    {
+        IBlockState state = world.getBlockState(pos.down());
+        return !(state.getBlock() instanceof BlockWindTurbinePillar);
     }
 
     @Override
@@ -123,21 +171,23 @@ public class TileEntityWindTurbinePillar extends TileEntitySyncable implements I
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
         if (capability == CapabilityEnergy.ENERGY)
-            return CapabilityEnergy.ENERGY.cast(this.energyContainer);
+            return CapabilityEnergy.ENERGY.cast(getMaster().energyContainer);
         return super.getCapability(capability, facing);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        super.readFromNBT(compound);
         this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
+        this.isBase = compound.getBoolean("base");
+        super.readFromNBT(compound);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         compound.setTag("StoredIR", this.energyContainer.serializeNBT());
+        compound.setBoolean("base", this.isBase);
         return super.writeToNBT(compound);
     }
 }

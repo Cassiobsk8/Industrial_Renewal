@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
+import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -10,7 +11,7 @@ import net.minecraft.world.World;
 
 import java.util.*;
 
-public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TileEntity implements ITickable
+public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TileEntitySyncable implements ITickable
 {
     private TE master;
     private boolean isMaster;
@@ -49,7 +50,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                     master = storage;
                 }
                 connectedCables.add(storage);
-                for (EnumFacing d : EnumFacing.VALUES)
+                for (EnumFacing d : getFacesToCheck())
                 {
                     TileEntity te = world.getTileEntity(storage.getPos().offset(d));
                     if (instanceOf(te) && !connectedCables.contains(te))
@@ -65,6 +66,11 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                 storage.checkForOutPuts(storage.getPos());
             }
         }
+    }
+
+    public EnumFacing[] getFacesToCheck()
+    {
+        return EnumFacing.values();
     }
 
     public abstract boolean instanceOf(TileEntity te);
