@@ -21,7 +21,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
 {
     public FluidTank tank = new FluidTank(1000);
 
-    private int maxOutput = 500;
+    private int maxOutput = 600;
 
     @Override
     public void update()
@@ -34,13 +34,12 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
             for (BlockPos posM : getPosSet().keySet())
             {
                 TileEntity te = world.getTileEntity(posM);
-                if (te != null && (!(te.getBlockType() instanceof BlockValvePipeLarge) || ((TileEntityValvePipeLarge) te).getOutPutFace() == getPosSet().get(te.getPos()))
-                        && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getPosSet().get(posM)))
+                if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getPosSet().get(posM).getOpposite()))
                 {
                     IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getPosSet().get(posM).getOpposite());
                     if (tankStorage != null && tankStorage.getTankProperties()[0].canFill())
                     {
-                        System.out.println(this.tank.drain(tankStorage.fill(this.tank.drain(maxOutput, false), true), true));
+                        this.tank.drain(tankStorage.fill(this.tank.drain(maxOutput, false), true), true);
                     }
                 }
             }
@@ -56,7 +55,9 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
             BlockPos currentPos = pos.offset(face);
             IBlockState state = world.getBlockState(currentPos);
             TileEntity te = world.getTileEntity(currentPos);
-            boolean hasMachine = !(state.getBlock() instanceof BlockFluidPipe) && te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
+            boolean hasMachine = !(state.getBlock() instanceof BlockFluidPipe)
+                    && (!(state.getBlock() instanceof BlockValvePipeLarge) || ((TileEntityValvePipeLarge) te).getOutPutFace() == face)
+                    && te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
             if (hasMachine && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).getTankProperties()[0].canFill())
                 getMaster().addMachine(currentPos, face);
             else getMaster().removeMachine(currentPos);

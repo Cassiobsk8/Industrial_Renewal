@@ -20,8 +20,6 @@ import java.util.EnumSet;
 import java.util.Random;
 import java.util.Set;
 
-import static cassiokf.industrialrenewal.blocks.BlockValvePipeLarge.ACTIVE;
-
 public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements ITickable
 {
 
@@ -46,15 +44,14 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
 
         if (this.hasWorld() && !world.isRemote)
         {
-            boolean vActive = this.getWorld().getBlockState(pos).getValue(ACTIVE);
-            if (vActive)
+            if (active)
             {
                 EnumFacing faceToFill = getOutPutFace();
-                TileEntity teOut = this.getWorld().getTileEntity(this.getPos().offset(faceToFill));
-                TileEntity teIn = this.getWorld().getTileEntity(this.getPos().offset(faceToFill.getOpposite()));
+                TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
+                TileEntity teIn = world.getTileEntity(pos.offset(faceToFill.getOpposite()));
 
-                if (teOut != null && (tank.getFluidAmount() > 0 || (teIn != null
-                        && teIn.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill)))
+                if (teOut != null
+                        && (tank.getFluidAmount() > 0 || (teIn != null && teIn.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill)))
                         && teOut.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill.getOpposite()))
                 {
                     IFluidHandler inTank = tank.getFluidAmount() > 0 ? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank) : teIn.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill);

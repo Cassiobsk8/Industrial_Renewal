@@ -25,7 +25,15 @@ import javax.annotation.Nullable;
 
 public class TileEntityElectricPump extends TileFluidHandler implements ICapabilityProvider, ITickable {
     private final VoltsEnergyContainer energyContainer;
-    public FluidTank tank = new FluidTank(0);
+
+    public FluidTank tank = new FluidTank(0)
+    {
+        @Override
+        public boolean canFill()
+        {
+            return false;
+        }
+    };
 
     public TileEntityElectricPump() {
         this.energyContainer = new VoltsEnergyContainer(960, 60, 0);

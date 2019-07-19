@@ -4,8 +4,10 @@ import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -17,13 +19,20 @@ import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> implements ITileEntityProvider
 {
 
     public BlockEnergyCable(String name, CreativeTabs tab) {
         super(name, tab);
+    }
 
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    {
+        tooltip.add("1024" + " FE/t");
+        super.addInformation(stack, player, tooltip, advanced);
     }
 
     @Override

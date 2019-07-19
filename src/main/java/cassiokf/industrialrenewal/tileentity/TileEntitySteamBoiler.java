@@ -35,7 +35,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
         @Override
         public boolean canFillFluidType(FluidStack fluid)
         {
-            return fluid.getFluid().equals(FluidRegistry.WATER);
+            return fluid != null && fluid.getFluid().equals(FluidRegistry.WATER);
         }
 
         @Override
