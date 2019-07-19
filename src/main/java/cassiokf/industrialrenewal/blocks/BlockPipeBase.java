@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -10,7 +9,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -21,7 +19,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class BlockPipeBase<TE extends TileEntity> extends BlockTileEntity<TE>
+public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extends BlockTileEntityConnectedMultiblocks<TE>
 {
 
     private static float NORTHZ1 = 0.250f;
@@ -55,21 +53,6 @@ public abstract class BlockPipeBase<TE extends TileEntity> extends BlockTileEnti
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TileEntityMultiBlocksTube te = (TileEntityMultiBlocksTube) worldIn.getTileEntity(pos);
-        if (te != null)
-        {
-            for (EnumFacing face : EnumFacing.VALUES)
-            {
-                BlockPos posM = pos.offset(face);
-                te.getMaster().removeMachine(posM);
-            }
-        }
-        super.breakBlock(worldIn, pos, state);
-    }
-
-    @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN);
     }
@@ -100,17 +83,6 @@ public abstract class BlockPipeBase<TE extends TileEntity> extends BlockTileEnti
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
-    }
-
-    @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (!worldIn.isRemote)
-        {
-            TileEntityMultiBlocksTube te = (TileEntityMultiBlocksTube) worldIn.getTileEntity(pos);
-            if (te != null) te.checkForOutPuts(pos);
-        }
     }
 
     public abstract boolean canConnectToPipe(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection);

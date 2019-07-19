@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityWindTurbinePillar;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
@@ -28,7 +27,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nullable;
 
-public class BlockWindTurbinePillar extends BlockTileEntity<TileEntityWindTurbinePillar>
+public class BlockWindTurbinePillar extends BlockTileEntityConnectedMultiblocks<TileEntityWindTurbinePillar>
 {
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
@@ -43,17 +42,6 @@ public class BlockWindTurbinePillar extends BlockTileEntity<TileEntityWindTurbin
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
-    }
-
-    @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (!worldIn.isRemote)
-        {
-            TileEntityMultiBlocksTube te = (TileEntityMultiBlocksTube) worldIn.getTileEntity(pos);
-            if (te != null) te.checkForOutPuts(pos);
-        }
     }
 
     @Override
