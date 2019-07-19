@@ -3,21 +3,17 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.blocks.BlockBulkConveyor;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapabilityProvider, ITickable
 {
@@ -57,7 +53,7 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
             if (!world.isRemote)
             {
                 moveItem();
-                getEntityItemAbove();
+                //getEntityItemAbove();
             }
         }
         tick++;
@@ -208,7 +204,7 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
         return state.getBlock() instanceof BlockBulkConveyor && state.getValue(BlockBulkConveyor.FACING) == getBlockFacing();
     }
 
-    private void getEntityItemAbove()
+    /*private void getEntityItemAbove()
     {
         List<Entity> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.up().getX(), pos.up().getY() - 1D, pos.up().getZ(), pos.up().getX() + 1D, pos.up().getY() + 0.5D, pos.up().getZ() + 1D), EntitySelectors.IS_ALIVE);
         if (!list.isEmpty() && list.get(0) instanceof EntityItem)
@@ -219,7 +215,7 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
             if (stack1.isEmpty()) entityItem.setDead();
             else entityItem.setItem(stack1);
         }
-    }
+    }*/
 
     public int getMode()
     {
