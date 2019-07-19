@@ -56,19 +56,23 @@ public class BlockValvePipeLarge extends BlockTileEntity<TileEntityValvePipeLarg
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int i = pos.getX();
-        int j = pos.getY();
-        int k = pos.getZ();
+        if (entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty())
+        {
+            int i = pos.getX();
+            int j = pos.getY();
+            int k = pos.getZ();
 
-        TileEntityValvePipeLarge te = getTileEntity(world, pos);
-        te.playSwitchSound();
-        boolean active = !state.getValue(ACTIVE);
-        state = state.withProperty(ACTIVE, active);
-        te.setActive(active);
-        world.setBlockState(pos, state, 3);
-        world.spawnParticle(EnumParticleTypes.WATER_DROP, (double) i, (double) j, (double) k, 1.0D, 1.0D, 1.0D);
-        world.notifyNeighborsOfStateChange(pos, this, false);
-        return true;
+            TileEntityValvePipeLarge te = getTileEntity(world, pos);
+            te.playSwitchSound();
+            boolean active = !state.getValue(ACTIVE);
+            state = state.withProperty(ACTIVE, active);
+            te.setActive(active);
+            world.setBlockState(pos, state, 3);
+            world.spawnParticle(EnumParticleTypes.WATER_DROP, (double) i, (double) j, (double) k, 1.0D, 1.0D, 1.0D);
+            world.notifyNeighborsOfStateChange(pos, this, false);
+            return true;
+        }
+        return false;
     }
 
     public void setFace(World world, BlockPos pos) {
