@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.tileentity.TileEntitySolarPanel;
+import cassiokf.industrialrenewal.tileentity.TileEntitySolarPanelBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -14,7 +14,8 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockSolarPanel extends BlockTileEntity<TileEntitySolarPanel> {
+public class BlockSolarPanel extends BlockTileEntity<TileEntitySolarPanelBase>
+{
 
     protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
 
@@ -30,14 +31,16 @@ public class BlockSolarPanel extends BlockTileEntity<TileEntitySolarPanel> {
     }
 
     @Override
-    public Class<TileEntitySolarPanel> getTileEntityClass() {
-        return TileEntitySolarPanel.class;
+    public Class<TileEntitySolarPanelBase> getTileEntityClass()
+    {
+        return TileEntitySolarPanelBase.class;
     }
 
     @Nullable
     @Override
-    public TileEntitySolarPanel createTileEntity(World world, IBlockState state) {
-        return new TileEntitySolarPanel();
+    public TileEntitySolarPanelBase createTileEntity(World world, IBlockState state)
+    {
+        return new TileEntitySolarPanelBase();
     }
 
     @Override

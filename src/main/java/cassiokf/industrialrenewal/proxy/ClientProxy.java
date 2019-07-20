@@ -4,10 +4,6 @@ import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.init.RenderHandler;
 import cassiokf.industrialrenewal.tesr.*;
 import cassiokf.industrialrenewal.tileentity.*;
-import cassiokf.industrialrenewal.tileentity.machines.steamboiler.TESRSteamBoiler;
-import cassiokf.industrialrenewal.tileentity.machines.steamboiler.TileEntitySteamBoiler;
-import cassiokf.industrialrenewal.tileentity.machines.steamturbine.TESRSteamTurbine;
-import cassiokf.industrialrenewal.tileentity.machines.steamturbine.TileEntitySteamTurbine;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
@@ -48,6 +44,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySmallWindTurbine.class, new TESRSmallWindTurbine());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindTurbinePillar.class, new TESRWindTurbinePillar());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBulkConveyor.class, new TESRBulkConveyor());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMining.class, new TESRMining());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolarPanelFrame.class, new TESRSolarPanelFrame());
     }
 
     @Override

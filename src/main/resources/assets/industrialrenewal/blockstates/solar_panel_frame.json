@@ -1,0 +1,27 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "industrialrenewal:solar_panel_frame",
+    "textures": {
+      "particle": "industrialrenewal:blocks/solar_panels"
+    }
+  },
+  "variants": {
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:solar_panel_frame",
+      "transform": "forge:default-block"
+    }
+  }
+}

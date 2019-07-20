@@ -120,9 +120,9 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         posSet.put(pos, face);
     }
 
-    public void removeMachine(BlockPos pos)
+    public void removeMachine(BlockPos ownPos, BlockPos machinePos)
     {
-        posSet.remove(pos);
+        posSet.remove(machinePos);
     }
 
     @Override

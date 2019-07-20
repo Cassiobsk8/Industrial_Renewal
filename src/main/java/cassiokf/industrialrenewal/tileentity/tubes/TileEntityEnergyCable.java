@@ -61,7 +61,7 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
             boolean hasMachine = !(state.getBlock() instanceof BlockEnergyCable) && te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
             if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
                 getMaster().addMachine(currentPos, face);
-            else getMaster().removeMachine(currentPos);
+            else getMaster().removeMachine(pos, currentPos);
         }
     }
 

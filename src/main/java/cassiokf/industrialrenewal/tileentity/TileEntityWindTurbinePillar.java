@@ -108,10 +108,10 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
 
                 if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
                     getMaster().addMachine(currentPos, face);
-                else getMaster().removeMachine(currentPos);
+                else getMaster().removeMachine(pos, currentPos);
             } else
             {
-                getMaster().removeMachine(currentPos);
+                getMaster().removeMachine(pos, currentPos);
             }
         }
         this.Sync();
