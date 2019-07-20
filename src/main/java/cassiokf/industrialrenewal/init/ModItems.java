@@ -56,6 +56,8 @@ public class ModItems {
     public static ItemFireBox fireBoxFluid = new ItemFireBox("firebox_fluid", 2, References.CREATIVE_IR_TAB);
 
     public static ItemWindBlade windBlade = new ItemWindBlade("small_wind_blade", References.CREATIVE_IR_TAB);
+    public static ItemDrill drillSteel = new ItemDrill("drill_steel", References.CREAATIVE_IRWIP_TAB);
+    public static ItemDrill drillDiamond = new ItemDrill("drill_diamond", References.CREAATIVE_IRWIP_TAB);
 
     public static ItemOre hematiteChunk = new ItemOre("chunk_hematite", "oreHematite", References.CREAATIVE_IRWIP_TAB);
 
@@ -97,7 +99,9 @@ public class ModItems {
                 fireBoxFluid,
                 battery,
                 sMotor,
-                windBlade
+                windBlade,
+                drillSteel,
+                drillDiamond
         );
     }
 
@@ -137,6 +141,8 @@ public class ModItems {
         battery.registerItemModel();
         sMotor.registerItemModel();
         windBlade.registerItemModel();
+        drillSteel.registerItemModel();
+        drillDiamond.registerItemModel();
     }
 
     public static void registerOreDict() {

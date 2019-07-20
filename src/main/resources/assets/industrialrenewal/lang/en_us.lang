@@ -186,6 +186,11 @@ gui.config.hours_before_deactivation.name=Time Before Deactivate
 gui.config.chunk_loader_width.name=Chunk Load Width
 gui.config.emergency_mode.name=Deactivate Chunk Load
 
+#Render
+render.industrialrenewal.energy=Energy
+render.industrialrenewal.fluid=Fluid
+render.industrialrenewal.drillheat=Drill Heat
+
 #Info
 
 tile.industrialrenewal.crossing_rail.info=Make the carts honk when they pass

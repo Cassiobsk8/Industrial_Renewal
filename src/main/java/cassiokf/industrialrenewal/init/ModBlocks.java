@@ -2,15 +2,13 @@ package cassiokf.industrialrenewal.init;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.*;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorLamp;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
 import cassiokf.industrialrenewal.blocks.railroad.*;
 import cassiokf.industrialrenewal.blocks.redstone.*;
 import cassiokf.industrialrenewal.fluids.BlockFluid;
-import cassiokf.industrialrenewal.tileentity.machines.pump.BlockElectricPump;
-import cassiokf.industrialrenewal.tileentity.machines.steamboiler.BlockSteamBoiler;
-import cassiokf.industrialrenewal.tileentity.machines.steamturbine.BlockSteamTurbine;
-import cassiokf.industrialrenewal.tileentity.tubes.BlockEnergyCable;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
-import cassiokf.industrialrenewal.tileentity.tubes.fluidpipe.BlockFluidPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -82,6 +80,7 @@ public class ModBlocks {
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
 
     public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREATIVE_IR_TAB);
+    public static BlockSolarPanelFrame fpanel = new BlockSolarPanelFrame("solar_panel_frame", References.CREATIVE_IR_TAB);
     public static BlockSmallWindTurbine sWindTurbine = new BlockSmallWindTurbine("small_wind_turbine", References.CREATIVE_IR_TAB);
     public static BlockWindTurbinePillar turbinePillar = new BlockWindTurbinePillar("small_wind_turbine_pillar", References.CREATIVE_IR_TAB);
     public static BlockElectricPump electricPump = new BlockElectricPump("electric_pump", References.CREAATIVE_IRWIP_TAB);
@@ -120,6 +119,7 @@ public class ModBlocks {
 
     public static BlockSteamBoiler steamBoiler = new BlockSteamBoiler("steam_boiler", References.CREATIVE_IR_TAB);
     public static BlockSteamTurbine steamTurbine = new BlockSteamTurbine("steam_turbine", References.CREATIVE_IR_TAB);
+    public static BlockMining mining = new BlockMining("mining", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockChunkLoader chunkLoader = new BlockChunkLoader("chunk_loader", References.CREATIVE_IR_TAB);
 
@@ -203,6 +203,7 @@ public class ModBlocks {
                 conveyorV,
                 //Energy
                 spanel,
+                fpanel,
                 sWindTurbine,
                 turbinePillar,
                 batteryBank,
@@ -210,6 +211,7 @@ public class ModBlocks {
                 //Machines
                 steamBoiler,
                 steamTurbine,
+                mining,
                 //Railroad
                 normalRail,
                 boosterRail,
@@ -234,10 +236,11 @@ public class ModBlocks {
 
         GameRegistry.registerTileEntity(veinHematite.getTileEntityClass(), veinHematite.getRegistryName());
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
-        GameRegistry.registerTileEntity(TileEntityEnergyCable.class, energyCable.getRegistryName().toString());
+        GameRegistry.registerTileEntity(energyCable.getTileEntityClass(), energyCable.getRegistryName());
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
         GameRegistry.registerTileEntity(gutter.getTileEntityClass(), gutter.getRegistryName().toString());
         GameRegistry.registerTileEntity(spanel.getTileEntityClass(), spanel.getRegistryName().toString());
+        GameRegistry.registerTileEntity(fpanel.getTileEntityClass(), fpanel.getRegistryName());
         GameRegistry.registerTileEntity(sWindTurbine.getTileEntityClass(), sWindTurbine.getRegistryName().toString());
         GameRegistry.registerTileEntity(turbinePillar.getTileEntityClass(), turbinePillar.getRegistryName().toString());
         GameRegistry.registerTileEntity(firstAidKit.getTileEntityClass(), firstAidKit.getRegistryName().toString());
@@ -260,6 +263,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(fluidPipe.getTileEntityClass(), fluidPipe.getRegistryName().toString());
         GameRegistry.registerTileEntity(steamBoiler.getTileEntityClass(), steamBoiler.getRegistryName().toString());
         GameRegistry.registerTileEntity(steamTurbine.getTileEntityClass(), steamTurbine.getRegistryName().toString());
+        GameRegistry.registerTileEntity(mining.getTileEntityClass(), mining.getRegistryName());
         GameRegistry.registerTileEntity(trash.getTileEntityClass(), trash.getRegistryName().toString());
         GameRegistry.registerTileEntity(bunkBed.getTileEntityClass(), bunkBed.getRegistryName().toString());
         GameRegistry.registerTileEntity(bunkerHatch.getTileEntityClass(), bunkerHatch.getRegistryName().toString());
@@ -329,6 +333,7 @@ public class ModBlocks {
                 fluidPipe.createItemBlock(),
                 valveLarge.createItemBlock(),
                 spanel.createItemBlock(),
+                fpanel.createItemBlock(),
                 sWindTurbine.createItemBlock(),
                 turbinePillar.createItemBlock(),
                 normalRail.createItemBlock(),
@@ -346,6 +351,7 @@ public class ModBlocks {
                 trash.createItemBlock(),
                 steamBoiler.createItemBlock(),
                 steamTurbine.createItemBlock(),
+                mining.createItemBlock(),
                 steamBlock.createItemBlock(),
                 baseEotM.createItemBlock(),
                 chunkLoader.createItemBlock(),
@@ -390,6 +396,7 @@ public class ModBlocks {
         bigFenceWire.registerItemModel(Item.getItemFromBlock(bigFenceWire));
         egate.registerItemModel(Item.getItemFromBlock(egate));
         spanel.registerItemModel(Item.getItemFromBlock(spanel));
+        fpanel.registerItemModel(Item.getItemFromBlock(fpanel));
         sWindTurbine.registerItemModel(Item.getItemFromBlock(sWindTurbine));
         turbinePillar.registerItemModel(Item.getItemFromBlock(turbinePillar));
         firstAidKit.registerItemModel(Item.getItemFromBlock(firstAidKit));
@@ -431,6 +438,7 @@ public class ModBlocks {
         electricPump.registerItemModel(Item.getItemFromBlock(electricPump));
         steamBoiler.registerItemModel(Item.getItemFromBlock(steamBoiler));
         steamTurbine.registerItemModel(Item.getItemFromBlock(steamTurbine));
+        mining.registerItemModel(Item.getItemFromBlock(mining));
         steamBlock.registerItemModel(Item.getItemFromBlock(steamBlock));
         baseEotM.registerItemModel(Item.getItemFromBlock(baseEotM));
         chunkLoader.registerItemModel(Item.getItemFromBlock(chunkLoader));
