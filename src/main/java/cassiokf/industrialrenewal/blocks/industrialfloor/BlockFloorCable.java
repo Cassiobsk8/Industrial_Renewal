@@ -1,9 +1,13 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.industrialfloor;
 
+import cassiokf.industrialrenewal.blocks.BlockEnergyCable;
 import cassiokf.industrialrenewal.init.ModBlocks;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -16,9 +20,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
-public class BlockFloorCable extends BlockEnergyCable {
+public class BlockFloorCable extends BlockEnergyCable
+{
+    public static final PropertyBool WSOUTH = PropertyBool.create("w_south");
+    public static final PropertyBool WNORTH = PropertyBool.create("w_north");
+    public static final PropertyBool WEAST = PropertyBool.create("w_east");
+    public static final PropertyBool WWEST = PropertyBool.create("w_west");
+    public static final PropertyBool WUP = PropertyBool.create("w_up");
+    public static final PropertyBool WDOWN = PropertyBool.create("w_down");
 
     public static final AxisAlignedBB FULL_BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
@@ -29,6 +42,25 @@ public class BlockFloorCable extends BlockEnergyCable {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         return false;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, SOUTH, NORTH, EAST, WEST, UP, DOWN, WSOUTH, WNORTH, WEAST, WWEST, WUP, WDOWN);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    {
+        state = state.withProperty(SOUTH, canConnectToPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectToPipe(world, pos, EnumFacing.NORTH))
+                .withProperty(EAST, canConnectToPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectToPipe(world, pos, EnumFacing.WEST))
+                .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
+                .withProperty(WSOUTH, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.SOUTH)).withProperty(WNORTH, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.NORTH))
+                .withProperty(WEAST, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.EAST)).withProperty(WWEST, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.WEST))
+                .withProperty(WUP, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.UP)).withProperty(WDOWN, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.DOWN));
+        return state;
     }
 
     @Override
@@ -54,12 +86,12 @@ public class BlockFloorCable extends BlockEnergyCable {
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
         return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor));
     }
-/*
+
     @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean p_185477_7_) {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, state.getCollisionBoundingBox(worldIn, pos));
-    }*/
+    }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {

@@ -1,5 +1,9 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorLamp;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
 import cassiokf.industrialrenewal.blocks.redstone.BlockAlarm;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import com.google.common.collect.ImmutableList;

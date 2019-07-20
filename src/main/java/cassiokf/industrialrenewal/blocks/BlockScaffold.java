@@ -142,12 +142,10 @@ public class BlockScaffold extends BlockBase {
     private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
-        final Block neighbourBlock = neighbourState.getBlock();
 
         final boolean neighbourIsValidForThis = isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
-        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockFloorLamp) || ((BlockFloorLamp) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
 
-        return neighbourIsValidForThis && thisIsValidForNeighbour;
+        return neighbourIsValidForThis;
     }
 
     @SuppressWarnings("deprecation")

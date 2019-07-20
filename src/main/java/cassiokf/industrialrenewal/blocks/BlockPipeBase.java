@@ -164,42 +164,42 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
     {
         IBlockState actualState = state.getActualState(worldIn, pos);
 
-        if (isConnected(worldIn, pos, actualState, NORTH))
+        if (isConnected(worldIn, pos, actualState, NORTH) || isConnected(worldIn, pos, actualState, CNORTH))
         {
             NORTHZ1 = 0.0f;
         } else
         {
             NORTHZ1 = 0.250f;
         }
-        if (isConnected(worldIn, pos, actualState, SOUTH))
+        if (isConnected(worldIn, pos, actualState, SOUTH) || isConnected(worldIn, pos, actualState, CSOUTH))
         {
             SOUTHZ2 = 1.0f;
         } else
         {
             SOUTHZ2 = 0.750f;
         }
-        if (isConnected(worldIn, pos, actualState, WEST))
+        if (isConnected(worldIn, pos, actualState, WEST) || isConnected(worldIn, pos, actualState, CWEST))
         {
             WESTX1 = 0.0f;
         } else
         {
             WESTX1 = 0.250f;
         }
-        if (isConnected(worldIn, pos, actualState, EAST))
+        if (isConnected(worldIn, pos, actualState, EAST) || isConnected(worldIn, pos, actualState, CEAST))
         {
             EASTX2 = 1.0f;
         } else
         {
             EASTX2 = 0.750f;
         }
-        if (isConnected(worldIn, pos, actualState, DOWN))
+        if (isConnected(worldIn, pos, actualState, DOWN) || isConnected(worldIn, pos, actualState, CDOWN))
         {
             DOWNY1 = 0.0f;
         } else
         {
             DOWNY1 = 0.250f;
         }
-        if (isConnected(worldIn, pos, actualState, UP))
+        if (isConnected(worldIn, pos, actualState, UP) || isConnected(worldIn, pos, actualState, CUP))
         {
             UPY2 = 1.0f;
         } else

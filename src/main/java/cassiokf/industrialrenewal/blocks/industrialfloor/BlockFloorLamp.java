@@ -1,5 +1,8 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.industrialfloor;
 
+import cassiokf.industrialrenewal.blocks.BlockBase;
+import cassiokf.industrialrenewal.blocks.BlockCatwalkLadder;
+import cassiokf.industrialrenewal.blocks.BlockDummy;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
 import com.google.common.collect.ImmutableList;
@@ -34,7 +37,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public class BlockFloorLamp extends BlockBase {
+public class BlockFloorLamp extends BlockBase
+{
 
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES)

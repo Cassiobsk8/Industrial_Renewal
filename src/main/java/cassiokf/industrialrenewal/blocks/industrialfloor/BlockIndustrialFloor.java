@@ -1,5 +1,7 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.industrialfloor;
 
+import cassiokf.industrialrenewal.blocks.BlockBase;
+import cassiokf.industrialrenewal.blocks.BlockCatwalkLadder;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
@@ -29,7 +31,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public class BlockIndustrialFloor extends BlockBase {
+public class BlockIndustrialFloor extends BlockBase
+{
 
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES)
@@ -110,17 +113,8 @@ public class BlockIndustrialFloor extends BlockBase {
         return 0;
     }
 
-    /**
-     * Is the neighbouring block a valid connection for this pipe?
-     *
-     * @param ownState           This pipe's state
-     * @param neighbourState     The neighbouring block's state
-     * @param world              The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Is the neighbouring block a valid connection?
-     */
-    protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+    private static boolean isValidConnection(final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection)
+    {
         Block nb = neighbourState.getBlock();
         return nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable
                 || (neighbourDirection != EnumFacing.DOWN && neighbourDirection != EnumFacing.UP && nb instanceof BlockDoor)
@@ -132,31 +126,19 @@ public class BlockIndustrialFloor extends BlockBase {
                 ;
     }
 
-    /**
-     * Can this pipe connect to the neighbouring block?
-     *
-     * @param ownState           This pipe's state
-     * @param worldIn            The world
-     * @param ownPos             This pipe's position
-     * @param neighbourDirection The direction of the neighbouring block
-     * @return Can this pipe connect?
-     */
-    private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+    public static boolean canConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection)
+    {
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
-        final Block neighbourBlock = neighbourState.getBlock();
 
-        final boolean neighbourIsValidForThis = !isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
-        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockIndustrialFloor) || ((BlockIndustrialFloor) neighbourBlock).isValidConnection(neighbourState, ownState, worldIn, neighbourPos, neighbourDirection.getOpposite());
-
-        return neighbourIsValidForThis && thisIsValidForNeighbour;
+        return !isValidConnection(neighbourState, worldIn, ownPos, neighbourDirection);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
         for (final EnumFacing facing : EnumFacing.VALUES) {
-            state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()), canConnectTo(state, world, pos, facing));
+            state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()), canConnectTo(world, pos, facing));
         }
 
         return state;

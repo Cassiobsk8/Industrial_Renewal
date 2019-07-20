@@ -1,5 +1,9 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorLamp;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.tileentity.TileEntityCatWalk;
