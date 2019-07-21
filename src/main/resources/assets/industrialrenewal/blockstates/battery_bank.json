@@ -19,11 +19,33 @@
         "y": -90
       }
     },
+    "down": {
+      "true": {
+        "submodel": {
+          "pipe_down": {
+            "model": "industrialrenewal:energy_connector_out",
+            "x": 90
+          }
+        }
+      },
+      "false": {}
+    },
+    "up": {
+      "true": {
+        "submodel": {
+          "pipe_up": {
+            "model": "industrialrenewal:energy_connector_out",
+            "x": -90
+          }
+        }
+      },
+      "false": {}
+    },
     "north": {
       "true": {
         "submodel": {
           "pipe_north": {
-            "model": "industrialrenewal:battery_bank_side"
+            "model": "industrialrenewal:energy_connector_out"
           }
         }
       },
@@ -33,7 +55,7 @@
       "true": {
         "submodel": {
           "pipe_south": {
-            "model": "industrialrenewal:battery_bank_side",
+            "model": "industrialrenewal:energy_connector_out",
             "y": 180
           }
         }
@@ -44,7 +66,7 @@
       "true": {
         "submodel": {
           "pipe_east": {
-            "model": "industrialrenewal:battery_bank_side",
+            "model": "industrialrenewal:energy_connector_out",
             "y": 90
           }
         }
@@ -55,7 +77,7 @@
       "true": {
         "submodel": {
           "pipe_west": {
-            "model": "industrialrenewal:battery_bank_side",
+            "model": "industrialrenewal:energy_connector_out",
             "y": -90
           }
         }
