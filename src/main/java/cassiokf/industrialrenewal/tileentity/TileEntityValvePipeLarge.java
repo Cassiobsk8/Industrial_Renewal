@@ -29,6 +29,14 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
     private Boolean active = false;
 
     public FluidTank tank = new FluidTank(2000);
+    public static FluidTank dummyTank = new FluidTank(0)
+    {
+        @Override
+        public boolean canFill()
+        {
+            return false;
+        }
+    };
 
     public TileEntityValvePipeLarge()
     {
@@ -190,6 +198,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
 
     @Override
     public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing) {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == getOutPutFace()) return true;
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return isFacingEnabled(facing);
         }
@@ -199,10 +208,10 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
     @Nullable
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing) {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == getOutPutFace())
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(dummyTank);
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && isFacingEnabled(facing))
-        {
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
-        }
         return super.getCapability(capability, facing);
     }
 

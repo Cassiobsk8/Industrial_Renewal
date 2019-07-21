@@ -1,8 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
 import cassiokf.industrialrenewal.blocks.BlockFluidPipe;
-import cassiokf.industrialrenewal.blocks.BlockValvePipeLarge;
-import cassiokf.industrialrenewal.tileentity.TileEntityValvePipeLarge;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -56,7 +54,6 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
             IBlockState state = world.getBlockState(currentPos);
             TileEntity te = world.getTileEntity(currentPos);
             boolean hasMachine = !(state.getBlock() instanceof BlockFluidPipe)
-                    && (!(state.getBlock() instanceof BlockValvePipeLarge) || ((TileEntityValvePipeLarge) te).getOutPutFace() == face)
                     && te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
             if (hasMachine && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).getTankProperties()[0].canFill())
                 getMaster().addMachine(currentPos, face);
