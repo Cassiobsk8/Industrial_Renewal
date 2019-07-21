@@ -395,9 +395,9 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.steamTank);
         if (facing == face && this.pos.equals(masterTE.getPos().down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.waterTank);
-        if (masterTE.getType() == 1 && (facing == face.getOpposite() || facing == face.rotateYCCW()) && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (masterTE.getType() == 1 && facing == face.rotateYCCW() && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(masterTE.solidFuelInv);
-        if (masterTE.getType() == 2 && (facing == face.getOpposite() || facing == face.rotateYCCW()) && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (masterTE.getType() == 2 && facing == face.rotateYCCW() && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.fuelTank);
         return super.getCapability(capability, facing);
     }
