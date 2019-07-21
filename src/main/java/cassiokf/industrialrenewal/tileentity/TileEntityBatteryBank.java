@@ -8,8 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -55,13 +53,11 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
             {
                 setState();
             }
-            World world = this.getWorld();
-            BlockPos pos = this.getPos();
             for (EnumFacing face : outPutFacings)
             {
                 TileEntity te = world.getTileEntity(pos.offset(face));
-                if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite())
-                        && (!(world.getBlockState(pos.offset(face)).getBlock() instanceof BlockBatteryBank) || (face == EnumFacing.DOWN && world.getBlockState(pos.offset(face)).getBlock() instanceof BlockBatteryBank))) {
+                if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite()))
+                {
                     IEnergyStorage eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
                     if (eStorage != null && eStorage.canReceive()) {
                         this.container.extractEnergy(eStorage.receiveEnergy(this.container.extractEnergy(this.container.getMaxOutput(), true), false), false);
