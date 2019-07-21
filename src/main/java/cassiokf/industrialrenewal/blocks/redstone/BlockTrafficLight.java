@@ -82,7 +82,7 @@ public class BlockTrafficLight extends BlockTileEntity<TileEntityTrafficLight> {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(ONWALL, (meta & 4) > 0);
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(ONWALL, (meta & 4) > 0);
     }
 
     @Override

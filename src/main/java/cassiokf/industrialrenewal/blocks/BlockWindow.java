@@ -129,7 +129,8 @@ public class BlockWindow extends BlockBase {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer()
+    {
         return BlockRenderLayer.TRANSLUCENT;
     }
 

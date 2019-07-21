@@ -104,7 +104,7 @@ public class BlockSignalIndicator extends BlockTileEntity<TileEntitySignalIndica
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(ONWALL, (meta & 4) > 0);
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(ONWALL, (meta & 4) > 0);
     }
 
     @Override
@@ -120,7 +120,8 @@ public class BlockSignalIndicator extends BlockTileEntity<TileEntitySignalIndica
 
     @SideOnly(Side.CLIENT)
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer()
+    {
         return BlockRenderLayer.CUTOUT;
     }
 

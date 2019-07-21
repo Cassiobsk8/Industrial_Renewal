@@ -74,7 +74,8 @@ public class BlockFloorCable extends BlockEnergyCable
     }
 
     @Override
-    public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
+    public void onPlayerDestroy(World world, BlockPos pos, IBlockState state)
+    {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();

@@ -97,7 +97,7 @@ public class BlockCargoLoader extends BlockBasicContainer<TileEntityCargoLoader>
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta)).withProperty(LOADING, false);
+        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta)).withProperty(LOADING, false);
     }
 
     @Override

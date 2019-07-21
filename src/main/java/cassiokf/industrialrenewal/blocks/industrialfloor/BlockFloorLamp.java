@@ -125,7 +125,8 @@ public class BlockFloorLamp extends BlockBase
     }
 
     @Override
-    public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
+    public void onPlayerDestroy(World world, BlockPos pos, IBlockState state)
+    {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
@@ -220,7 +221,8 @@ public class BlockFloorLamp extends BlockBase
 
     @SideOnly(Side.CLIENT)
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer()
+    {
         return BlockRenderLayer.CUTOUT;
     }
 

@@ -122,7 +122,7 @@ public class BlockCatwalkStair extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3));
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3));
     }
 
     @Override

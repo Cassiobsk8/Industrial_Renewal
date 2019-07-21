@@ -26,7 +26,7 @@ public class ItemSafetyBelt extends ItemArmor {
         super(ArmorMaterial.CHAIN, 3, EntityEquipmentSlot.CHEST);
         this.name = name;
         this.setRegistryName(References.MODID, name);
-        this.setUnlocalizedName(References.MODID + "." + name);
+        this.setTranslationKey(References.MODID + "." + name);
         this.setCreativeTab(tab);
     }
 

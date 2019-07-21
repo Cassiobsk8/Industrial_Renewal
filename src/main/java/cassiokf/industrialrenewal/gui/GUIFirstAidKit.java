@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.container.ContainerFirstAidKit;
+import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -45,7 +45,7 @@ public class GUIFirstAidKit extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String name = I18n.format(ModBlocks.firstAidKit.getUnlocalizedName() + ".name");
+        String name = I18n.format(ModBlocks.firstAidKit.getTranslationKey() + ".name");
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
         fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
 

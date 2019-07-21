@@ -1,9 +1,9 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.container.ContainerFluidLoader;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.NetworkHandler;
-import cassiokf.industrialrenewal.container.ContainerFluidLoader;
 import cassiokf.industrialrenewal.network.PacketReturnFluidLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityFluidLoader;
 import net.minecraft.client.Minecraft;
@@ -90,7 +90,7 @@ public class GUIFluidLoader extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String name = I18n.format(ModBlocks.fluidLoader.getUnlocalizedName() + ".name");
+        String name = I18n.format(ModBlocks.fluidLoader.getTranslationKey() + ".name");
         fontRenderer.drawString(name, 8, 4, 0x404040);
         fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 92, 0x404040);
 

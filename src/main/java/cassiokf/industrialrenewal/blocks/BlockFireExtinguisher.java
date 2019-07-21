@@ -66,7 +66,7 @@ public class BlockFireExtinguisher extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(ONWALL, Boolean.valueOf((meta & 4) > 0));
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(ONWALL, Boolean.valueOf((meta & 4) > 0));
     }
 
     @Override

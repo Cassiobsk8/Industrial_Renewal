@@ -19,7 +19,7 @@ public class BlockBase extends Block {
         this.name = name;
 
         setRegistryName(References.MODID, name);
-        setUnlocalizedName(References.MODID + "." + name);
+        setTranslationKey(References.MODID + "." + name);
         setCreativeTab(tab);
         setHardness(2f);
         setResistance(5f);

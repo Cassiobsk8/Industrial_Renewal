@@ -60,7 +60,7 @@ public class BlockSignBase extends BlockBase {
         Block oldBlock = world.getBlockState(pos).getBlock();
         IBlockState oldState = oldBlock.getActualState(world.getBlockState(pos), world, pos);
         int oldMeta = oldBlock.getMetaFromState(oldState);
-        EnumFacing oldFacing = EnumFacing.getHorizontal(oldMeta);
+        EnumFacing oldFacing = EnumFacing.byHorizontalIndex(oldMeta);
         boolean oldOnWall = oldState.getValue(ONWALL);
         int nextInt = signs.indexOf(oldBlock) + 1;
         if (nextInt > signs.size() - 1) {
@@ -101,7 +101,7 @@ public class BlockSignBase extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(ONWALL, (meta & 4) > 0);
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(ONWALL, (meta & 4) > 0);
     }
 
     @Override

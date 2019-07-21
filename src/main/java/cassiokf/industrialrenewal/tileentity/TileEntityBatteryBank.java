@@ -77,14 +77,14 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return (capability == CapabilityEnergy.ENERGY) || super.hasCapability(capability, facing);
+        return (capability == CapabilityEnergy.ENERGY && facing != getBlockFacing().getOpposite()) || super.hasCapability(capability, facing);
     }
 
     @Override
     @Nullable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if (capability == CapabilityEnergy.ENERGY)
-            return (T) this.container;
+        if (capability == CapabilityEnergy.ENERGY && facing != getBlockFacing().getOpposite())
+            return CapabilityEnergy.ENERGY.cast(this.container);
         return super.getCapability(capability, facing);
     }
 

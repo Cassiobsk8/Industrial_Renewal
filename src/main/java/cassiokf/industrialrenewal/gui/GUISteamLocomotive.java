@@ -1,9 +1,9 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.container.ContainerSteamLocomotive;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
+import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -45,7 +45,7 @@ public class GUISteamLocomotive extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String name = I18n.format(ModItems.steamLocomotive.getUnlocalizedName() + ".name");
+        String name = I18n.format(ModItems.steamLocomotive.getTranslationKey() + ".name");
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
         fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
 

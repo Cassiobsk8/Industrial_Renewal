@@ -96,7 +96,7 @@ public class BlockButtonRed extends BlockBase
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta > 6 ? meta - 7 : meta)).withProperty(PRESS, meta > 6);
+        return getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta > 6 ? meta - 7 : meta)).withProperty(PRESS, meta > 6);
     }
 
     @Override

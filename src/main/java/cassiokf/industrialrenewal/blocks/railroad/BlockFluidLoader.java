@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.blocks.railroad;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.blocks.BlockBasicContainer;
-import cassiokf.industrialrenewal.blocks.railroad.BlockLoaderRail;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityFluidLoader;
 import net.minecraft.block.BlockHorizontal;
@@ -84,7 +83,7 @@ public class BlockFluidLoader extends BlockBasicContainer<TileEntityFluidLoader>
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
     }
 
     @Override

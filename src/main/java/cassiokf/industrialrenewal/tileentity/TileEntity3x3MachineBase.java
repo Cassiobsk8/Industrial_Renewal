@@ -69,7 +69,7 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
 
     public EnumFacing getMasterFacing()
     {
-        if (faceChecked) return EnumFacing.getFront(faceIndex);
+        if (faceChecked) return EnumFacing.byIndex(faceIndex);
 
         EnumFacing facing = world.getBlockState(getMaster().getPos()).getValue(Block3x3x3Base.FACING);
         faceChecked = true;

@@ -1,9 +1,9 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.container.ContainerEntityDetector;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.NetworkHandler;
-import cassiokf.industrialrenewal.container.ContainerEntityDetector;
 import cassiokf.industrialrenewal.network.PacketReturnEntityDetector;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityEntityDetector;
 import net.minecraft.client.gui.GuiButton;
@@ -76,7 +76,7 @@ public class GUIEntityDetector extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String name = I18n.format(ModBlocks.entityDetector.getUnlocalizedName() + ".name");
+        String name = I18n.format(ModBlocks.entityDetector.getTranslationKey() + ".name");
 
         String distance = I18n.format("gui." + References.MODID + ".button.distance") + " " + te.getDistance();
         String entity = I18n.format("gui." + References.MODID + ".button.entity") + " " + getGUIButtonText();

@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.gui;
 
-import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.container.ContainerLogCart;
 import cassiokf.industrialrenewal.entity.EntityLogCart;
+import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -46,7 +46,7 @@ public class GUILogCart extends GuiContainer {
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String name = I18n.format(ModItems.logCart.getUnlocalizedName() + ".name");
+        String name = I18n.format(ModItems.logCart.getTranslationKey() + ".name");
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
         fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
     }

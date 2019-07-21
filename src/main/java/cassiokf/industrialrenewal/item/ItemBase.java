@@ -12,7 +12,7 @@ public class ItemBase extends Item {
     public ItemBase(String name, CreativeTabs tab) {
         this.name = name;
         setRegistryName(References.MODID, name);
-        setUnlocalizedName(References.MODID + "." + name);
+        setTranslationKey(References.MODID + "." + name);
 
         setCreativeTab(tab);
     }

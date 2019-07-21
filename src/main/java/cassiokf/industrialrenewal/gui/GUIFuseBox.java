@@ -1,9 +1,9 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.container.ContainerFuseBox;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.NetworkHandler;
-import cassiokf.industrialrenewal.container.ContainerFuseBox;
 import cassiokf.industrialrenewal.network.PacketReturnFuseBox;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityFuseBox;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -60,7 +60,7 @@ public class GUIFuseBox extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        String name = I18n.format(ModBlocks.fuseBox.getUnlocalizedName() + ".name");
+        String name = I18n.format(ModBlocks.fuseBox.getTranslationKey() + ".name");
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
         //fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
 

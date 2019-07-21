@@ -26,7 +26,7 @@ public class ItemSafetyHelmet extends ItemArmor {
         super(ArmorMaterial.DIAMOND, 1, EntityEquipmentSlot.HEAD);
         this.name = name;
         this.setRegistryName(References.MODID, name);
-        this.setUnlocalizedName(References.MODID + "." + name);
+        this.setTranslationKey(References.MODID + "." + name);
         this.setCreativeTab(tab);
     }
 

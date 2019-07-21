@@ -12,7 +12,8 @@ public class IndustrialRenewalTab extends CreativeTabs {
     }
 
     @Override
-    public ItemStack getTabIconItem() {
+    public ItemStack createIcon()
+    {
         return new ItemStack(ModItems.screwDrive);
     }
 

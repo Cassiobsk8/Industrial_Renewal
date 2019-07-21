@@ -13,7 +13,7 @@ public class ItemFoodBase extends ItemFood {
         super(amount, saturation, isWolfFood);
         this.name = name;
         setRegistryName(References.MODID, name);
-        setUnlocalizedName(References.MODID + "." + name);
+        setTranslationKey(References.MODID + "." + name);
 
         setCreativeTab(tab);
     }

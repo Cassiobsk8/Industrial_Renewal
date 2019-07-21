@@ -110,7 +110,7 @@ public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(FRAME, (meta & 4) > 0);
+        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(FRAME, (meta & 4) > 0);
     }
 
     @Override

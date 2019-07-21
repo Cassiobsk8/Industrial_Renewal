@@ -83,7 +83,7 @@ public class TileEntityGauge extends TileEntity
     public void readFromNBT(final NBTTagCompound tag)
     {
         super.readFromNBT(tag);
-        blockFacing = EnumFacing.getFront(tag.getInteger("baseFacing"));
+        blockFacing = EnumFacing.byIndex(tag.getInteger("baseFacing"));
     }
 
     @Override

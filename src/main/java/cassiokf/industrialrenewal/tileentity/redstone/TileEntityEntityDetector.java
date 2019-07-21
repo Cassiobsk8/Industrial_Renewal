@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.redstone;
 
-import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
 import cassiokf.industrialrenewal.blocks.redstone.BlockEntityDetector;
+import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -174,7 +174,7 @@ public class TileEntityEntityDetector extends TileEntitySyncable implements ITic
     @Override
     public void readFromNBT(final NBTTagCompound tag) {
         super.readFromNBT(tag);
-        blockFacing = EnumFacing.getFront(tag.getInteger("baseFacing"));
+        blockFacing = EnumFacing.byIndex(tag.getInteger("baseFacing"));
         distanceD = tag.getInteger("distance");
         eEnum = entityEnum.valueOf(tag.getInteger("EnumConfig"));
     }

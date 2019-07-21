@@ -22,7 +22,7 @@ public class BlockFluid extends BlockFluidClassic
         this.name = name;
 
         setRegistryName(References.MODID, name);
-        setUnlocalizedName(References.MODID + "." + name);
+        setTranslationKey(References.MODID + "." + name);
         setCreativeTab(tab);
     }
 

@@ -111,7 +111,7 @@ public class ChunkManagerCallback implements PlayerOrderedLoadingCallback
         final List<TileEntityChunkLoader> locatedChunkLoaders = Lists.newArrayList();
         final LinkedList<Chunk> chunksToVisit = Lists.newLinkedList();
 
-        chunksToVisit.push(world.getChunkFromChunkCoords(chunkPos.x, chunkPos.z));
+        chunksToVisit.push(world.getChunk(chunkPos.x, chunkPos.z));
 
         while (!chunksToVisit.isEmpty())
         {
@@ -172,7 +172,7 @@ public class ChunkManagerCallback implements PlayerOrderedLoadingCallback
                     final int checkSize = (int) (Math.floor(otherLoaderRadius / 2.0f) + 1 + Math.floor(chunkLoaderRadius / 2.0f) + 1);
                     if (checkSize > blea)
                     {
-                        chunksToVisit.push(world.getChunkFromChunkCoords(chunk.x + x, chunk.z + z));
+                        chunksToVisit.push(world.getChunk(chunk.x + x, chunk.z + z));
                     }
                 }
             }

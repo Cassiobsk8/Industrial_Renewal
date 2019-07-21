@@ -1,9 +1,9 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.container.ContainerCargoLoader;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.NetworkHandler;
-import cassiokf.industrialrenewal.container.ContainerCargoLoader;
 import cassiokf.industrialrenewal.network.PacketReturnCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityCargoLoader;
 import net.minecraft.client.gui.GuiButton;
@@ -83,7 +83,7 @@ public class GUICargoLoader extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String name = I18n.format(ModBlocks.cargoLoader.getUnlocalizedName() + ".name");
+        String name = I18n.format(ModBlocks.cargoLoader.getTranslationKey() + ".name");
         String waitE = getGUIButtonText();
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
         fontRenderer.drawString(waitE, (xSize / 2 - fontRenderer.getStringWidth(waitE) / 2) - 50, 59, 0xffffff);

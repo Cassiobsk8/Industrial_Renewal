@@ -83,7 +83,7 @@ public class BlockLoaderRail extends BlockRailFacing {
     public IBlockState getStateFromMeta(int meta) {
         boolean powered = (meta & 1) == 1;
         EnumRailDirection shape = EnumRailDirection.byMetadata((meta >> 1) & 1);
-        EnumFacing facing = EnumFacing.getHorizontal(meta >> 2);
+        EnumFacing facing = EnumFacing.byHorizontalIndex(meta >> 2);
 
         return getDefaultState()
                 .withProperty(SHAPE, shape)

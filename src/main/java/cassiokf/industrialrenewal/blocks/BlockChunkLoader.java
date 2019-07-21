@@ -172,7 +172,7 @@ public class BlockChunkLoader extends BlockBasicContainer<TileEntityChunkLoader>
         if (meta > 3) directionIndex -= 4;
         boolean index = true;
         if (meta > 3) index = false;
-        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(directionIndex)).withProperty(MASTER, index);
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(directionIndex)).withProperty(MASTER, index);
     }
 
     @Override

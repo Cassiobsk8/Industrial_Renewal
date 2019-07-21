@@ -20,7 +20,7 @@ public class ItemDiscBase extends ItemRecord {
         super(name, sound);
         this.name = name;
         this.setRegistryName(References.MODID, name);
-        this.setUnlocalizedName(References.MODID + "." + name);
+        this.setTranslationKey(References.MODID + "." + name);
         this.setCreativeTab(tab);
     }
 

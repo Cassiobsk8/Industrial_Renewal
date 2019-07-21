@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.blocks.gates;
 
-import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.blocks.BlockBase;
+import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.SoundType;
@@ -149,7 +149,7 @@ public class BlockGateNot extends BlockBase {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(ACTIVE, (meta & 8) > 0);
+        return getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta & 7)).withProperty(ACTIVE, (meta & 8) > 0);
     }
 
     @Override

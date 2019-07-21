@@ -33,7 +33,7 @@ public class BlockNormalRailBase extends BlockRail {
     public BlockNormalRailBase(String name, CreativeTabs tab) {
         this.name = name;
         setRegistryName(References.MODID, name);
-        setUnlocalizedName(References.MODID + "." + name);
+        setTranslationKey(References.MODID + "." + name);
         setHardness(0.4f);
         //setSoundType(SoundType.METAL);
         setCreativeTab(tab);

@@ -16,7 +16,7 @@ public class BlockDetectorRail extends BlockRailDetector {
 
         this.name = name;
         setRegistryName(References.MODID, name);
-        setUnlocalizedName(References.MODID + "." + name);
+        setTranslationKey(References.MODID + "." + name);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
         setCreativeTab(tab);

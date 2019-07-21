@@ -85,7 +85,7 @@ public class BlockElectricPump extends BlockBasicContainer<TileEntityElectricPum
         if (meta > 3) directionIndex -= 4;
         int index = 0;
         if (meta > 3) index = 1;
-        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(directionIndex)).withProperty(INDEX, index);
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(directionIndex)).withProperty(INDEX, index);
     }
 
     @Override

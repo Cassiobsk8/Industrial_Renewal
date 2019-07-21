@@ -110,7 +110,7 @@ public class BlockElectricBigFenceWire extends BlockBasicElectricFence {
         int index = 0;
         if (meta > 3 && meta < 8) index = 1;
         if (meta > 7) index = 2;
-        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(directionIndex)).withProperty(INDEX, index);
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(directionIndex)).withProperty(INDEX, index);
     }
 
     @Override

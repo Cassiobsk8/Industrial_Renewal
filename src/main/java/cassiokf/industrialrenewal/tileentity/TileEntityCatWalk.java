@@ -69,7 +69,7 @@ public class TileEntityCatWalk extends TileEntitySyncable
         final int[] enabledFacingIndices = compound.getIntArray("EnabledFacings");
         for (final int index : enabledFacingIndices)
         {
-            blackListedFaces.add(EnumFacing.getFront(index));
+            blackListedFaces.add(EnumFacing.byIndex(index));
         }
         super.readFromNBT(compound);
     }

@@ -107,7 +107,7 @@ public class BlockRecordPlayer extends BlockTileEntity<TileEntityRecordPlayer> {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3));
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3));
     }
 
     @Override
@@ -124,7 +124,8 @@ public class BlockRecordPlayer extends BlockTileEntity<TileEntityRecordPlayer> {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer()
+    {
         return BlockRenderLayer.CUTOUT;
     }
 

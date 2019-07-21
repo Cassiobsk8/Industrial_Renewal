@@ -125,7 +125,7 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
     }
 
     @Override
@@ -157,7 +157,8 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer()
+    {
         return BlockRenderLayer.CUTOUT;
     }
 

@@ -85,7 +85,8 @@ public class BlockElectricBigFenceCorner extends BlockBasicElectricFence {
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
     }
 
     @Override
@@ -109,7 +110,7 @@ public class BlockElectricBigFenceCorner extends BlockBasicElectricFence {
         int index = 0;
         if (meta > 3 && meta < 8) index = 1;
         if (meta > 7) index = 2;
-        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(directionIndex)).withProperty(INDEX, index);
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(directionIndex)).withProperty(INDEX, index);
     }
 
     @Override

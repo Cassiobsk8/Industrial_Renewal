@@ -162,7 +162,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
 
     @Override
     public void readFromNBT(final NBTTagCompound tag) {
-        facing = EnumFacing.getFront(tag.getInteger("facing"));
+        facing = EnumFacing.byIndex(tag.getInteger("facing"));
         faceRotation = EnumFaceRotation.values()[tag.getInteger("faceRotation")];
         active = tag.getBoolean("active");
 
@@ -170,7 +170,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
 
         final int[] enabledFacingIndices = tag.getIntArray("EnabledFacings");
         for (final int index : enabledFacingIndices) {
-            enabledFacings.add(EnumFacing.getFront(index));
+            enabledFacings.add(EnumFacing.byIndex(index));
         }
         super.readFromNBT(tag);
     }

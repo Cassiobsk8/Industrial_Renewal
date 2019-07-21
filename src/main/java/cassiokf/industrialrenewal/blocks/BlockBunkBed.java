@@ -41,7 +41,7 @@ public class BlockBunkBed extends BlockBed
         this.name = name;
 
         setRegistryName(References.MODID, name);
-        setUnlocalizedName(References.MODID + "." + name);
+        setTranslationKey(References.MODID + "." + name);
         setCreativeTab(tab);
         setHardness(1f);
         setResistance(5f);
@@ -75,7 +75,7 @@ public class BlockBunkBed extends BlockBed
 
     @Override
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.SOLID;
     }
