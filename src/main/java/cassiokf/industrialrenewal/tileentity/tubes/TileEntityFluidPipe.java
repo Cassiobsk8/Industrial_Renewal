@@ -32,9 +32,10 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
             for (BlockPos posM : getPosSet().keySet())
             {
                 TileEntity te = world.getTileEntity(posM);
-                if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getPosSet().get(posM).getOpposite()))
+                EnumFacing face = getPosSet().get(posM).getOpposite();
+                if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face))
                 {
-                    IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getPosSet().get(posM).getOpposite());
+                    IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
                     if (tankStorage != null && tankStorage.getTankProperties()[0].canFill())
                     {
                         this.tank.drain(tankStorage.fill(this.tank.drain(maxOutput, false), true), true);

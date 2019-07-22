@@ -35,8 +35,20 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
         }
     };
 
+    private int index = -1;
+    private int tick;
+    private int energyPerTick = 10;
+    private EnumFacing facing;
+
     public TileEntityElectricPump() {
-        this.energyContainer = new VoltsEnergyContainer(960, 60, 0);
+        this.energyContainer = new VoltsEnergyContainer(1024, 120, 0)
+        {
+            @Override
+            public boolean canExtract()
+            {
+                return false;
+            }
+        };
     }
 
     @Override
@@ -46,12 +58,23 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
 
     @Override
     public void update() {
-        if (!world.isRemote && this.world.getTotalWorldTime() % 8 == 0) {
-            int index = this.world.getBlockState(this.pos).getBlock() instanceof BlockElectricPump ? this.world.getBlockState(this.pos).getValue(BlockElectricPump.INDEX) : 0;
-            if (index == 1) {
+        if (!world.isRemote && getIdex() == 1)
+        {
+            if (tick >= 10)
+            {
+                tick = 0;
                 GetFluidDown();
             }
+            tick++;
         }
+    }
+
+    private int getIdex()
+    {
+        if (index != -1) return index;
+        IBlockState state = world.getBlockState(pos);
+        index = state.getBlock() instanceof BlockElectricPump ? state.getValue(BlockElectricPump.INDEX) : -1;
+        return index;
     }
 
     private void GetFluidDown() {
@@ -60,12 +83,12 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
             Block block = this.world.getBlockState(this.pos.down()).getBlock();
             IFluidHandler downFluid = Utils.wrapFluidBlock(block, this.world, this.pos.down());
             boolean consumeFluid = !(downFluid.getTankProperties()[0].getContents() != null && downFluid.getTankProperties()[0].getContents().getFluid().equals(FluidRegistry.WATER) && IRConfig.MainConfig.Main.pumpInfinityWater);
-            VoltsEnergyContainer motorContainer = GetEnergyContainer();
+            VoltsEnergyContainer motorEnergyContainer = GetEnergyContainer();
 
-            if (upTank.fill(downFluid.drain(Integer.MAX_VALUE, false), false) > 0 && motorContainer != null && motorContainer.getEnergyStored() >= 15) {
+            if (upTank.fill(downFluid.drain(Integer.MAX_VALUE, false), false) > 0 && motorEnergyContainer != null && motorEnergyContainer.getEnergyStored() >= (energyPerTick * 10))
+            {
                 upTank.fill(downFluid.drain(Integer.MAX_VALUE, consumeFluid), true);
-                motorContainer.setEnergyStored(motorContainer.getEnergyStored() - 15);
-                //FluidUtil.tryFluidTransfer(GetTankUp(), downFluid, Integer.MAX_VALUE, true);
+                motorEnergyContainer.setEnergyStored(motorEnergyContainer.getEnergyStored() - (energyPerTick * 10));
             }
         }
     }
@@ -90,6 +113,14 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
         return null;
     }
 
+    private EnumFacing getBlockFacing()
+    {
+        if (facing != null) return facing;
+        IBlockState state = world.getBlockState(pos);
+        facing = state.getValue(BlockElectricPump.FACING);
+        return facing;
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         NBTTagCompound tag = new NBTTagCompound();
@@ -109,18 +140,26 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
 
     @Override
     public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing) {
-        int index = this.world.getBlockState(this.pos).getValue(BlockElectricPump.INDEX);
-        return (index == 1 && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == EnumFacing.UP)
-                || (index == 0 && (capability == CapabilityEnergy.ENERGY));
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof BlockElectricPump)
+        {
+            int index = getIdex();
+            EnumFacing face = getBlockFacing();
+            return (index == 1 && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == EnumFacing.UP)
+                    || (index == 0 && capability == CapabilityEnergy.ENERGY && facing == face.getOpposite());
+        }
+        return false;
     }
 
     @Nullable
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing) {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        int index = getIdex();
+        if (index == 1 && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == EnumFacing.UP)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
-        if (capability == CapabilityEnergy.ENERGY)
-            return (T) this.energyContainer;
+        EnumFacing face = getBlockFacing();
+        if (index == 0 && capability == CapabilityEnergy.ENERGY && facing == face.getOpposite())
+            return CapabilityEnergy.ENERGY.cast(this.energyContainer);
         return super.getCapability(capability, facing);
     }
 }

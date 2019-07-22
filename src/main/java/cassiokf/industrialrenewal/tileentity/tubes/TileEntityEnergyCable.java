@@ -33,13 +33,14 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
         if (!world.isRemote && isMaster())
         {
             int quantity = getPosSet().size();
-            this.energyContainer.setMaxEnergyStored(this.energyContainer.getMaxOutput() * quantity);
+            this.energyContainer.setMaxEnergyStored(Math.max(this.energyContainer.getMaxOutput() * quantity, this.energyContainer.getEnergyStored()));
             for (BlockPos posM : getPosSet().keySet())
             {
                 TileEntity te = world.getTileEntity(posM);
-                if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, getPosSet().get(posM)))
+                EnumFacing face = getPosSet().get(posM).getOpposite();
+                if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
                 {
-                    IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, getPosSet().get(posM).getOpposite());
+                    IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
                     if (energyStorage != null && energyStorage.canReceive())
                     {
                         this.energyContainer.extractEnergy(energyStorage.receiveEnergy(this.energyContainer.extractEnergy(this.energyContainer.getMaxOutput(), true), false), false);
@@ -59,7 +60,7 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
             IBlockState state = world.getBlockState(currentPos);
             TileEntity te = world.getTileEntity(currentPos);
             boolean hasMachine = !(state.getBlock() instanceof BlockEnergyCable) && te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
-            if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
+            if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()) != null && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
                 getMaster().addMachine(currentPos, face);
             else getMaster().removeMachine(pos, currentPos);
         }
@@ -73,9 +74,7 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == CapabilityEnergy.ENERGY)
-            return true;
-        return super.hasCapability(capability, facing);
+        return capability == CapabilityEnergy.ENERGY || super.hasCapability(capability, facing);
     }
 
     @Override
