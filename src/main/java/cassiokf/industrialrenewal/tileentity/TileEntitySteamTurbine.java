@@ -183,7 +183,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
 
     public String getRotationText()
     {
-        return rotation + " rpm";
+        return rotation / 10 + " rpm";
     }
 
     public float GetEnergyFill() //0 ~ 180
