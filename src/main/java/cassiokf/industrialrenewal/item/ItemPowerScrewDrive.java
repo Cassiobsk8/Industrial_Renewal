@@ -80,7 +80,8 @@ public class ItemPowerScrewDrive extends ItemBase {
         list.add(I18n.format("item." + References.MODID + "." + name + ".des0"));
     }
 
-    private void playDrillSound(World world, BlockPos pos) {
+    public static void playDrillSound(World world, BlockPos pos)
+    {
         world.playSound(null, pos, IRSoundHandler.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 }
