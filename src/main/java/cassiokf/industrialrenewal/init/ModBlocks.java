@@ -26,17 +26,18 @@ public class ModBlocks {
     public static BlockBase fireHazard = new BlockBase(Material.IRON, "fire_hazard", References.CREATIVE_IR_TAB);
     public static BlockBase concrete = new BlockBase(Material.ROCK, "concrete", References.CREAATIVE_IRWIP_TAB);
 
-    public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor", References.CREAATIVE_IRWIP_TAB);
+    public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor", References.CREATIVE_IR_TAB);
     public static BlockChimney blockChimney = new BlockChimney("block_chimney", References.CREATIVE_IR_TAB);
     public static BlockFirstAidKit firstAidKit = new BlockFirstAidKit("firstaid_kit", References.CREATIVE_IR_TAB);
     public static BlockFireExtinguisher fireExtinguisher = new BlockFireExtinguisher("fire_extinguisher", References.CREATIVE_IR_TAB);
     public static BlockLocker locker = new BlockLocker("locker", References.CREATIVE_IR_TAB);
 
-    public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe", References.CREAATIVE_IRWIP_TAB);
-    public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable", References.CREAATIVE_IRWIP_TAB);
-    public static BlockFloorPipe floorPipe = new BlockFloorPipe("floor_pipe", References.CREAATIVE_IRWIP_TAB);
-    public static BlockFloorCable floorCable = new BlockFloorCable("floor_cable", References.CREAATIVE_IRWIP_TAB);
-    public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp", References.CREAATIVE_IRWIP_TAB);
+    public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe", References.CREATIVE_IR_TAB);
+    public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable", References.CREATIVE_IR_TAB);
+    public static BlockPillarEnergyCable pillarEnergyCable = new BlockPillarEnergyCable("iron_pillar_energy", References.CREATIVE_IR_TAB);
+    public static BlockFloorPipe floorPipe = new BlockFloorPipe("floor_pipe", References.CREATIVE_IR_TAB);
+    public static BlockFloorCable floorCable = new BlockFloorCable("floor_cable", References.CREATIVE_IR_TAB);
+    public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp", References.CREATIVE_IR_TAB);
 
     public static BlockAlarm alarm = new BlockAlarm("alarm", References.CREATIVE_IR_TAB);
     public static BlockRecordPlayer recordPlayer = new BlockRecordPlayer("record_player", References.CREATIVE_IR_TAB);
@@ -67,7 +68,7 @@ public class ModBlocks {
     public static BlockScaffold scaffold = new BlockScaffold("scaffold", References.CREATIVE_IR_TAB);
     public static BlockFrame frame = new BlockFrame("frame", References.CREATIVE_IR_TAB);
     public static BlockBunkBed bunkBed = new BlockBunkBed("bunkbed", References.CREATIVE_IR_TAB);
-    public static BlockBunkerHatch bunkerHatch = new BlockBunkerHatch("bunker_hatch", References.CREAATIVE_IRWIP_TAB);
+    public static BlockBunkerHatch bunkerHatch = new BlockBunkerHatch("bunker_hatch", References.CREATIVE_IR_TAB);
 
     public static BlockBarrel barrel = new BlockBarrel("barrel", References.CREATIVE_IR_TAB);
     public static BlockTrash trash = new BlockTrash("trash", References.CREATIVE_IR_TAB);
@@ -150,6 +151,7 @@ public class ModBlocks {
                 iladder,
                 catwalkGate,
                 pillar,
+                pillarEnergyCable,
                 column,
                 brace,
                 //Steel
@@ -295,6 +297,7 @@ public class ModBlocks {
                 iladder.createItemBlock(),
                 catwalkGate.createItemBlock(),
                 pillar.createItemBlock(),
+                pillarEnergyCable.createItemBlock(),
                 column.createItemBlock(),
                 brace.createItemBlock(),
                 catWalkSteel.createItemBlock(),
@@ -375,6 +378,7 @@ public class ModBlocks {
         catWalk.registerItemModel(Item.getItemFromBlock(catWalk));
         catwalkStair.registerItemModel(Item.getItemFromBlock(catwalkStair));
         pillar.registerItemModel(Item.getItemFromBlock(pillar));
+        pillarEnergyCable.registerItemModel(Item.getItemFromBlock(pillarEnergyCable));
         column.registerItemModel(Item.getItemFromBlock(column));
         iladder.registerItemModel(Item.getItemFromBlock(iladder));
         roof.registerItemModel(Item.getItemFromBlock(roof));

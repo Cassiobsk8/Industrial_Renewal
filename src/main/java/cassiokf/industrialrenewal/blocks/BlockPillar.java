@@ -19,9 +19,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -83,29 +82,7 @@ public class BlockPillar extends BlockBase {
         return EnumBlockRenderType.MODEL;
     }
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        Item playerItem = player.inventory.getCurrentItem().getItem();
-        Block clickedBlock = state.getBlock();
-        if ((playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.pillar)) && clickedBlock.equals(ModBlocks.pillar))
-                || (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.steel_pillar))) && clickedBlock.equals(ModBlocks.steel_pillar)) {
-            Integer n = 1;
-            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar) {
-                n++;
-            }
-            if (world.getBlockState(pos.up(n)).getBlock().isAir(world.getBlockState(pos.up(n)), world, pos.up(n)) || world.getBlockState(pos.up(n)).getBlock().isReplaceable(world, pos.up(n))) {
-                world.setBlockState(pos.up(n), getBlockFromItem(playerItem).getDefaultState(), 3);
-                if (!player.isCreative()) {
-                    player.inventory.clearMatchingItems(playerItem, 0, 1, null);
-                }
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
-
-    protected boolean isValidConnection(IBlockAccess worldIn, BlockPos neightbourPos, final IBlockState neighbourState, final EnumFacing neighbourDirection)
+    private static boolean isValidConnection(IBlockAccess worldIn, BlockPos neightbourPos, final IBlockState neighbourState, final EnumFacing neighbourDirection)
     {
         Block nb = neighbourState.getBlock();
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
@@ -137,11 +114,51 @@ public class BlockPillar extends BlockBase {
                 || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable || nb instanceof BlockCatWalk;
     }
 
-    private boolean canConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+    public static boolean canConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection)
+    {
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
 
         return isValidConnection(worldIn, neighbourPos, neighbourState, neighbourDirection);
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        ItemStack playerStack = player.getHeldItem(EnumHand.MAIN_HAND);
+        Item playerItem = playerStack.getItem();
+        Block clickedBlock = state.getBlock();
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCable)))
+        {
+            if (!world.isRemote)
+            {
+                world.setBlockState(pos, ModBlocks.pillarEnergyCable.getDefaultState(), 3);
+                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                if (!player.isCreative()) playerStack.shrink(1);
+            }
+            return true;
+        }
+        if (((playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.pillar)) || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.pillarEnergyCable))) && clickedBlock.equals(ModBlocks.pillar))
+                || (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.steel_pillar))) && clickedBlock.equals(ModBlocks.steel_pillar))
+        {
+            int n = 1;
+            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable)
+            {
+                n++;
+            }
+            if (world.getBlockState(pos.up(n)).getBlock().isAir(world.getBlockState(pos.up(n)), world, pos.up(n)) || world.getBlockState(pos.up(n)).getBlock().isReplaceable(world, pos.up(n)))
+            {
+                if (!world.isRemote)
+                {
+                    world.setBlockState(pos.up(n), getBlockFromItem(playerItem).getDefaultState(), 3);
+                    world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                    if (!player.isCreative()) playerStack.shrink(1);
+                }
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 
     @SuppressWarnings("deprecation")

@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipe;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,7 +20,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockCableTray extends BlockPipeBase<TileEntityFluidPipe> implements ITileEntityProvider
+public class BlockCableTray extends BlockPipeBase<TileEntityFluidPipe>
 {
     public BlockCableTray(String name, CreativeTabs tab)
     {
@@ -80,13 +79,6 @@ public class BlockCableTray extends BlockPipeBase<TileEntityFluidPipe> implement
     @Nullable
     @Override
     public TileEntityFluidPipe createTileEntity(World world, IBlockState state)
-    {
-        return new TileEntityFluidPipe();
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
     {
         return new TileEntityFluidPipe();
     }
