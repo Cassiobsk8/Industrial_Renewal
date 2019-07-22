@@ -25,7 +25,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
 
     private final Set<EnumFacing> enabledFacings = EnumSet.allOf(EnumFacing.class);
     private EnumFacing facing = EnumFacing.SOUTH;
-    private EnumFaceRotation faceRotation = EnumFaceRotation.UP;
+    private EnumFaceRotation faceRotation = EnumFaceRotation.DOWN;
     private Boolean active = false;
 
     public FluidTank tank = new FluidTank(2000);
