@@ -14,7 +14,7 @@ public class IndustrialRenewalRailroadTab extends CreativeTabs {
     @Override
     public ItemStack createIcon()
     {
-        return new ItemStack(ModItems.cargoContainer);
+        return new ItemStack(ModItems.fluidContainer);
     }
 
 }
