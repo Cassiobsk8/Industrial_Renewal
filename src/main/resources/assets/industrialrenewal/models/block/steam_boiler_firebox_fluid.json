@@ -1,14 +1,14 @@
 {
-  "credit": "Made with Blockbench",
+  "credit": "Made with Blockbench - CassioKF",
   "textures": {
     "1": "blocks/furnace_front_off",
     "2": "blocks/furnace_side",
     "3": "industrialrenewal:blocks/pipe",
     "4": "industrialrenewal:blocks/barrel_front_fuel",
-    "5": "blocks/anvil_base",
+    "5": "industrialrenewal:blocks/anvil_base",
     "6": "industrialrenewal:blocks/pipe_blue",
     "10": "industrialrenewal:blocks/fuse_box",
-    "11": "blocks/hopper_inside",
+    "11": "industrialrenewal:blocks/hopper_inside",
     "particle": "industrialrenewal:blocks/pipe"
   },
   "elements": [
@@ -2139,7 +2139,75 @@
     },
     {
       "from": [
-        -16,
+        -15,
+        -12,
+        20
+      ],
+      "to": [
+        -14,
+        -4,
+        28
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            8
+          ],
+          "texture": "#5"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": "#5"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            8
+          ],
+          "texture": "#5"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#11"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            8
+          ],
+          "texture": "#5"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            8
+          ],
+          "texture": "#5"
+        }
+      }
+    },
+    {
+      "from": [
+        -15.8,
         -12,
         20
       ],
@@ -2147,6 +2215,65 @@
         -15,
         -4,
         28
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            0.8,
+            8
+          ],
+          "texture": "#6"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            0.8,
+            8
+          ],
+          "texture": "#6"
+        },
+        "west": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#6"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            0.8,
+            8
+          ],
+          "texture": "#6"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            0.8,
+            8
+          ],
+          "texture": "#6"
+        }
+      }
+    },
+    {
+      "from": [
+        -16,
+        -11,
+        21
+      ],
+      "to": [
+        -15,
+        -5,
+        27
       ],
       "faces": {
         "north": {
@@ -2376,6 +2503,11 @@
     8,
     {
       "name": "fluid_barrel",
+      "origin": [
+        8,
+        8,
+        8
+      ],
       "children": [
         9,
         10,
@@ -2385,6 +2517,11 @@
         14,
         {
           "name": "octagon",
+          "origin": [
+            8,
+            8,
+            8
+          ],
           "children": [
             15,
             16,
@@ -2398,6 +2535,11 @@
         },
         {
           "name": "octagon2",
+          "origin": [
+            8,
+            8,
+            8
+          ],
           "children": [
             23,
             24,
@@ -2411,6 +2553,11 @@
         },
         {
           "name": "octagon",
+          "origin": [
+            8,
+            8,
+            8
+          ],
           "children": [
             31,
             32,
@@ -2421,6 +2568,8 @@
       ]
     },
     35,
-    36
+    36,
+    37,
+    38
   ]
 }

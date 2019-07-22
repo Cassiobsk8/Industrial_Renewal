@@ -1,61 +1,314 @@
 {
-  "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
+  "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "blocks/redstone_block",
-    "1": "blocks/gold_block"
+    "0": "industrialrenewal:blocks/cable_gold",
+    "particle": "industrialrenewal:blocks/cable_gold"
   },
+  "elements": [
+    {
+      "name": "Cube",
+      "from": [
+        7,
+        7,
+        0
+      ],
+      "to": [
+        9,
+        9,
+        6.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            14,
+            14,
+            16,
+            16
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            14,
+            0,
+            16,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            14,
+            0,
+            16,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            14,
+            0,
+            16,
+            6
+          ],
+          "texture": "#0"
+        },
+        "down": {
+          "uv": [
+            14,
+            0,
+            16,
+            6
+          ],
+          "texture": "#0"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy",
+      "from": [
+        6.25,
+        6.25,
+        0
+      ],
+      "to": [
+        7,
+        7,
+        6.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#0"
+        },
+        "down": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#0"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy",
+      "from": [
+        9,
+        6.25,
+        0
+      ],
+      "to": [
+        9.75,
+        7,
+        6.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#0"
+        },
+        "down": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#0"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy Copy",
+      "from": [
+        9,
+        9,
+        0
+      ],
+      "to": [
+        9.75,
+        9.75,
+        6.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#0"
+        },
+        "down": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#0"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy Copy Copy",
+      "from": [
+        6.25,
+        9,
+        0
+      ],
+      "to": [
+        7,
+        9.75,
+        6.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#0"
+        },
+        "down": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#0"
+        }
+      }
+    }
+  ],
   "display": {
-    "gui": {
-      "rotation": [
-        30,
-        225,
-        0
-      ],
-      "translation": [
-        0,
-        0,
-        0
-      ],
-      "scale": [
-        0.625,
-        0.625,
-        0.625
-      ]
-    },
-    "ground": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "translation": [
-        0,
-        3,
-        0
-      ],
-      "scale": [
-        0.25,
-        0.25,
-        0.25
-      ]
-    },
-    "fixed": {
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "translation": [
-        0,
-        0,
-        0
-      ],
-      "scale": [
-        0.5,
-        0.5,
-        0.5
-      ]
-    },
     "thirdperson_righthand": {
       "rotation": [
         75,
@@ -123,324 +376,37 @@
         0.4,
         0.4
       ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ]
+    },
+    "fixed": {
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
     }
-  },
-  "elements": [
-    {
-      "name": "Cube",
-      "from": [
-        6.00,
-        6.00,
-        0.00
-      ],
-      "to": [
-        10.00,
-        10.00,
-        5.00
-      ],
-      "faces": {
-        "north": {
-          "texture": "#0",
-          "uv": [
-            3.00,
-            6.00,
-            7.00,
-            10.00
-          ]
-        },
-        "east": {
-          "texture": "#0",
-          "uv": [
-            3.00,
-            6.00,
-            8.00,
-            10.00
-          ]
-        },
-        "west": {
-          "texture": "#0",
-          "uv": [
-            3.00,
-            6.00,
-            8.00,
-            10.00
-          ]
-        },
-        "up": {
-          "texture": "#0",
-          "uv": [
-            3.00,
-            6.00,
-            7.00,
-            11.00
-          ]
-        },
-        "down": {
-          "texture": "#0",
-          "uv": [
-            3.00,
-            6.00,
-            7.00,
-            11.00
-          ]
-        }
-      }
-    },
-    {
-      "name": "Cube Copy Copy",
-      "from": [
-        5.00,
-        5.00,
-        0.00
-      ],
-      "to": [
-        6.00,
-        6.00,
-        5.00
-      ],
-      "faces": {
-        "north": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            3.00
-          ]
-        },
-        "east": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            5.00
-          ],
-          "rotation": 90
-        },
-        "west": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            6.00
-          ],
-          "rotation": 90
-        },
-        "up": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            7.00
-          ],
-          "rotation": 90
-        },
-        "down": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            7.00
-          ],
-          "rotation": 90
-        }
-      }
-    },
-    {
-      "name": "Cube Copy Copy Copy",
-      "from": [
-        10.00,
-        5.00,
-        0.00
-      ],
-      "to": [
-        11.00,
-        6.00,
-        5.00
-      ],
-      "faces": {
-        "north": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            3.00
-          ]
-        },
-        "east": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            5.00
-          ],
-          "rotation": 90
-        },
-        "west": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            6.00
-          ],
-          "rotation": 90
-        },
-        "up": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            7.00
-          ],
-          "rotation": 90
-        },
-        "down": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            7.00
-          ],
-          "rotation": 90
-        }
-      }
-    },
-    {
-      "name": "Cube Copy Copy Copy Copy",
-      "from": [
-        10.00,
-        10.00,
-        0.00
-      ],
-      "to": [
-        11.00,
-        11.00,
-        5.00
-      ],
-      "faces": {
-        "north": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            3.00
-          ]
-        },
-        "east": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            5.00
-          ],
-          "rotation": 90
-        },
-        "west": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            6.00
-          ],
-          "rotation": 90
-        },
-        "up": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            7.00
-          ],
-          "rotation": 90
-        },
-        "down": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            7.00
-          ],
-          "rotation": 90
-        }
-      }
-    },
-    {
-      "name": "Cube Copy Copy Copy Copy Copy",
-      "from": [
-        5.00,
-        10.00,
-        0.00
-      ],
-      "to": [
-        6.00,
-        11.00,
-        5.00
-      ],
-      "faces": {
-        "north": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            3.00
-          ]
-        },
-        "east": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            5.00
-          ],
-          "rotation": 90
-        },
-        "west": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            6.00
-          ],
-          "rotation": 90
-        },
-        "up": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            7.00
-          ],
-          "rotation": 90
-        },
-        "down": {
-          "texture": "#1",
-          "uv": [
-            0.00,
-            2.00,
-            1.00,
-            7.00
-          ],
-          "rotation": 90
-        }
-      }
-    }
-  ]
+  }
 }

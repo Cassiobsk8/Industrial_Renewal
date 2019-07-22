@@ -1,14 +1,16 @@
 {
-  "credit": "Made with Blockbench",
+  "credit": "Made with Blockbench - CassioKF",
   "textures": {
     "0": "industrialrenewal:blocks/pipe",
-    "1": "blocks/anvil_base",
-    "2": "blocks/hopper_inside",
+    "1": "industrialrenewal:blocks/anvil_base",
+    "2": "industrialrenewal:blocks/hopper_inside",
     "3": "industrialrenewal:blocks/pipe_water",
     "4": "industrialrenewal:blocks/pipe_red",
     "5": "industrialrenewal:blocks/pipe_white",
     "6": "industrialrenewal:blocks/traffic_light",
     "7": "industrialrenewal:blocks/signs/sign_st",
+    "8": "industrialrenewal:blocks/pipe_blue",
+    "9": "industrialrenewal:blocks/fluid_pipe",
     "particle": "industrialrenewal:blocks/pipe"
   },
   "elements": [
@@ -81,12 +83,12 @@
       "from": [
         -8,
         1.37258,
-        -14
+        -14.02
       ],
       "to": [
         24,
         14.62742,
-        24
+        23.98
       ],
       "faces": {
         "north": {
@@ -196,12 +198,12 @@
       "from": [
         1.37258,
         -8,
-        -14
+        -14.01
       ],
       "to": [
         14.62742,
         24,
-        24
+        23.99
       ],
       "faces": {
         "north": {
@@ -567,13 +569,131 @@
     {
       "from": [
         4,
+        30,
+        4
+      ],
+      "to": [
+        12,
+        31,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            12,
+            1
+          ],
+          "texture": "#1"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            12,
+            1
+          ],
+          "texture": "#1"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            12,
+            1
+          ],
+          "texture": "#1"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            12,
+            1
+          ],
+          "texture": "#1"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            12,
+            12
+          ],
+          "texture": "#1"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
         31,
         4
       ],
       "to": [
         12,
-        32,
+        31.8,
         12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            15,
+            8,
+            15.8
+          ],
+          "texture": "#9"
+        },
+        "east": {
+          "uv": [
+            0,
+            15,
+            8,
+            15.8
+          ],
+          "texture": "#9"
+        },
+        "south": {
+          "uv": [
+            0,
+            15,
+            8,
+            15.8
+          ],
+          "texture": "#9"
+        },
+        "west": {
+          "uv": [
+            0,
+            15,
+            8,
+            15.8
+          ],
+          "texture": "#9"
+        },
+        "up": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": "#9"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        31,
+        5
+      ],
+      "to": [
+        11,
+        32,
+        11
       ],
       "faces": {
         "north": {
@@ -620,27 +740,140 @@
             16
           ],
           "texture": "#2"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        -12,
+        -15
+      ],
+      "to": [
+        12,
+        -4,
+        -14
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            0,
+            12,
+            1
+          ],
+          "rotation": 90,
+          "texture": "#1"
         },
-        "down": {
+        "south": {
           "uv": [
             0,
             0,
             12,
             12
           ],
+          "rotation": 180,
+          "texture": "#1"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            12,
+            1
+          ],
+          "rotation": 270,
+          "texture": "#1"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            12,
+            1
+          ],
+          "texture": "#1"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            12,
+            1
+          ],
+          "rotation": 180,
           "texture": "#1"
         }
       }
     },
     {
       "from": [
-        3,
-        -13,
+        4,
+        -12,
+        -15.8
+      ],
+      "to": [
+        12,
+        -4,
+        -15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#8"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            0.8,
+            8
+          ],
+          "texture": "#8"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            0.8,
+            8
+          ],
+          "texture": "#8"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            0.8
+          ],
+          "texture": "#8"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            0.8
+          ],
+          "texture": "#8"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        -11,
         -16
       ],
       "to": [
-        13,
-        -3,
+        11,
+        -5,
         -15
       ],
       "faces": {
@@ -661,16 +894,6 @@
             1
           ],
           "rotation": 90,
-          "texture": "#1"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            12,
-            12
-          ],
-          "rotation": 180,
           "texture": "#1"
         },
         "west": {
@@ -732,16 +955,6 @@
             15,
             16
           ],
-          "texture": "#3"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            14,
-            16
-          ],
-          "rotation": 90,
           "texture": "#3"
         },
         "down": {
@@ -8267,6 +8480,11 @@
   "groups": [
     {
       "name": "octagon",
+      "origin": [
+        8,
+        8,
+        8
+      ],
       "children": [
         0,
         1,
@@ -8290,146 +8508,206 @@
     17,
     18,
     19,
+    20,
+    21,
+    22,
+    23,
     {
       "name": "fluid_gauge",
+      "origin": [
+        8,
+        8,
+        8
+      ],
       "children": [
         {
           "name": "octagon2",
+          "origin": [
+            8,
+            8,
+            8
+          ],
           "children": [
-            20,
-            21,
-            22,
-            23
-          ]
-        },
-        24,
-        {
-          "name": "octagon",
-          "children": [
+            24,
             25,
             26,
-            27,
-            28,
+            27
+          ]
+        },
+        28,
+        {
+          "name": "octagon",
+          "origin": [
+            8,
+            8,
+            8
+          ],
+          "children": [
             29,
             30,
             31,
-            32
+            32,
+            33,
+            34,
+            35,
+            36
           ]
         },
-        33,
-        34,
-        35,
-        36,
         37,
-        38
+        38,
+        39,
+        40,
+        41,
+        42
       ]
     },
     {
       "name": "fluid_gauge2",
+      "origin": [
+        8,
+        8,
+        8
+      ],
       "children": [
         {
           "name": "octagon2",
+          "origin": [
+            8,
+            8,
+            8
+          ],
           "children": [
-            39,
-            40,
-            41,
-            42
-          ]
-        },
-        43,
-        {
-          "name": "octagon",
-          "children": [
+            43,
             44,
             45,
-            46,
-            47,
+            46
+          ]
+        },
+        47,
+        {
+          "name": "octagon",
+          "origin": [
+            8,
+            8,
+            8
+          ],
+          "children": [
             48,
             49,
             50,
-            51
+            51,
+            52,
+            53,
+            54,
+            55
           ]
         },
-        52,
-        53,
-        54,
-        55,
         56,
-        57
+        57,
+        58,
+        59,
+        60,
+        61
       ]
     },
     {
       "name": "fluid_gauge3",
+      "origin": [
+        8,
+        8,
+        8
+      ],
       "children": [
         {
           "name": "octagon2",
+          "origin": [
+            8,
+            8,
+            8
+          ],
           "children": [
-            58,
-            59,
-            60,
-            61
-          ]
-        },
-        62,
-        {
-          "name": "octagon",
-          "children": [
+            62,
             63,
             64,
-            65,
-            66,
+            65
+          ]
+        },
+        66,
+        {
+          "name": "octagon",
+          "origin": [
+            8,
+            8,
+            8
+          ],
+          "children": [
             67,
             68,
             69,
-            70
+            70,
+            71,
+            72,
+            73,
+            74
           ]
         },
-        71,
-        72,
-        73,
-        74,
         75,
-        76
+        76,
+        77,
+        78,
+        79,
+        80
       ]
     },
     {
       "name": "fluid_gauge4",
+      "origin": [
+        8,
+        8,
+        8
+      ],
       "children": [
         {
           "name": "octagon2",
+          "origin": [
+            8,
+            8,
+            8
+          ],
           "children": [
-            77,
-            78,
-            79,
-            80
-          ]
-        },
-        81,
-        {
-          "name": "octagon",
-          "children": [
+            81,
             82,
             83,
-            84,
-            85,
+            84
+          ]
+        },
+        85,
+        {
+          "name": "octagon",
+          "origin": [
+            8,
+            8,
+            8
+          ],
+          "children": [
             86,
             87,
             88,
-            89
+            89,
+            90,
+            91,
+            92,
+            93
           ]
         },
-        90,
-        91,
-        92,
-        93,
         94,
-        95
+        95,
+        96,
+        97,
+        98,
+        99
       ]
     },
-    96,
-    97,
-    98,
-    99,
     100,
     101,
     102,
@@ -8451,34 +8729,53 @@
     118,
     119,
     120,
+    121,
+    122,
+    123,
+    124,
     {
       "name": "sign_hv_wall",
+      "origin": [
+        8,
+        8,
+        8
+      ],
       "children": [
-        121
+        125
       ]
     },
     {
       "name": "sign_hv_wall2",
+      "origin": [
+        8,
+        8,
+        8
+      ],
       "children": [
-        122
+        126
       ]
     },
     {
       "name": "sign_hv_wall3",
+      "origin": [
+        8,
+        8,
+        8
+      ],
       "children": [
-        123
+        127
       ]
     },
-    124,
-    125,
-    126,
-    127,
     128,
     129,
     130,
     131,
     132,
     133,
-    134
+    134,
+    135,
+    136,
+    137,
+    138
   ]
 }

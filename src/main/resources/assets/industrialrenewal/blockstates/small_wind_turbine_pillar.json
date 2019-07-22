@@ -33,7 +33,7 @@
       "true": {
         "submodel": {
           "pipe_north": {
-            "model": "industrialrenewal:battery_bank_side"
+            "model": "industrialrenewal:energy_connector_out"
           }
         }
       },
@@ -43,7 +43,7 @@
       "true": {
         "submodel": {
           "pipe_south": {
-            "model": "industrialrenewal:battery_bank_side",
+            "model": "industrialrenewal:energy_connector_out",
             "y": 180
           }
         }
@@ -54,7 +54,7 @@
       "true": {
         "submodel": {
           "pipe_east": {
-            "model": "industrialrenewal:battery_bank_side",
+            "model": "industrialrenewal:energy_connector_out",
             "y": 90
           }
         }
@@ -65,7 +65,7 @@
       "true": {
         "submodel": {
           "pipe_west": {
-            "model": "industrialrenewal:battery_bank_side",
+            "model": "industrialrenewal:energy_connector_out",
             "y": -90
           }
         }

@@ -1,295 +1,22 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
+    "1": "industrialrenewal:blocks/pipe",
     "2": "industrialrenewal:blocks/anvil_base",
-    "4": "industrialrenewal:blocks/cable_gold",
-    "1_1": "industrialrenewal:blocks/pipe",
-    "particle": "industrialrenewal:blocks/cable_gold"
+    "3": "industrialrenewal:blocks/pipe_blue",
+    "particle": "industrialrenewal:blocks/pipe_blue"
   },
   "elements": [
     {
-      "name": "Cube",
-      "from": [
-        7,
-        7,
-        2
-      ],
-      "to": [
-        9,
-        9,
-        6.25
-      ],
-      "faces": {
-        "east": {
-          "uv": [
-            14,
-            2,
-            16,
-            6.25
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "west": {
-          "uv": [
-            14,
-            2,
-            16,
-            6.25
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "up": {
-          "uv": [
-            14,
-            2,
-            16,
-            6.25
-          ],
-          "texture": "#4"
-        },
-        "down": {
-          "uv": [
-            14,
-            2,
-            16,
-            6
-          ],
-          "texture": "#4"
-        }
-      }
-    },
-    {
-      "name": "Cube Copy Copy",
-      "from": [
-        6.25,
-        6.25,
-        2
-      ],
-      "to": [
-        7,
-        7,
-        6.25
-      ],
-      "faces": {
-        "east": {
-          "uv": [
-            0,
-            2,
-            1,
-            5
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "west": {
-          "uv": [
-            0,
-            2,
-            1,
-            6
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "up": {
-          "uv": [
-            0,
-            2,
-            1,
-            7
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "down": {
-          "uv": [
-            0,
-            2,
-            1,
-            7
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        }
-      }
-    },
-    {
-      "name": "Cube Copy Copy Copy",
-      "from": [
-        9,
-        6.25,
-        2
-      ],
-      "to": [
-        9.75,
-        7,
-        6.25
-      ],
-      "faces": {
-        "east": {
-          "uv": [
-            0,
-            2,
-            1,
-            5
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "west": {
-          "uv": [
-            0,
-            2,
-            1,
-            6
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "up": {
-          "uv": [
-            0,
-            2,
-            1,
-            7
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "down": {
-          "uv": [
-            0,
-            2,
-            1,
-            7
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        }
-      }
-    },
-    {
-      "name": "Cube Copy Copy Copy Copy",
-      "from": [
-        9,
-        9,
-        2
-      ],
-      "to": [
-        9.75,
-        9.75,
-        6.25
-      ],
-      "faces": {
-        "east": {
-          "uv": [
-            0,
-            2,
-            1,
-            5
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "west": {
-          "uv": [
-            0,
-            2,
-            1,
-            6
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "up": {
-          "uv": [
-            0,
-            2,
-            1,
-            7
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "down": {
-          "uv": [
-            0,
-            2,
-            1,
-            7
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        }
-      }
-    },
-    {
-      "name": "Cube Copy Copy Copy Copy Copy",
-      "from": [
-        6.25,
-        9,
-        2
-      ],
-      "to": [
-        7,
-        9.75,
-        6.25
-      ],
-      "faces": {
-        "east": {
-          "uv": [
-            0,
-            2,
-            1,
-            5
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "west": {
-          "uv": [
-            0,
-            2,
-            1,
-            6
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "up": {
-          "uv": [
-            0,
-            2,
-            1,
-            7
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        },
-        "down": {
-          "uv": [
-            0,
-            2,
-            1,
-            7
-          ],
-          "rotation": 90,
-          "texture": "#4"
-        }
-      }
-    },
-    {
       "from": [
         4,
         4,
-        -0.2
-      ],
-      "to": [
-        12,
-        12,
         0.9
+      ],
+      "to": [
+        12,
+        12,
+        1.9
       ],
       "faces": {
         "north": {
@@ -335,7 +62,6 @@
             8,
             1
           ],
-          "rotation": 180,
           "texture": "#2"
         },
         "down": {
@@ -345,8 +71,66 @@
             8,
             1
           ],
-          "rotation": 180,
           "texture": "#2"
+        }
+      }
+    },
+    {
+      "from": [
+        4.1,
+        4.1,
+        0
+      ],
+      "to": [
+        11.9,
+        11.9,
+        0.9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#3"
+        },
+        "east": {
+          "uv": [
+            1,
+            8,
+            1.9,
+            15.5
+          ],
+          "texture": "#3"
+        },
+        "west": {
+          "uv": [
+            1,
+            8,
+            2,
+            16
+          ],
+          "texture": "#3"
+        },
+        "up": {
+          "uv": [
+            0,
+            15,
+            8,
+            16
+          ],
+          "texture": "#3"
+        },
+        "down": {
+          "uv": [
+            0,
+            15,
+            8,
+            16
+          ],
+          "texture": "#3"
         }
       }
     },
@@ -354,49 +138,46 @@
       "from": [
         5,
         5,
-        0.9
+        -0.1
       ],
       "to": [
         11,
         11,
-        2
+        0.9
       ],
       "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            6,
+            6
+          ],
+          "texture": "#2"
+        },
         "east": {
           "uv": [
             0,
             0,
-            8,
-            1
+            1,
+            6
           ],
-          "rotation": 90,
-          "texture": "#2"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            8,
-            8
-          ],
-          "rotation": 180,
           "texture": "#2"
         },
         "west": {
           "uv": [
             0,
             0,
-            8,
-            1
+            1,
+            6
           ],
-          "rotation": 270,
           "texture": "#2"
         },
         "up": {
           "uv": [
             0,
             0,
-            8,
+            6,
             1
           ],
           "texture": "#2"
@@ -405,10 +186,9 @@
           "uv": [
             0,
             0,
-            8,
+            6,
             1
           ],
-          "rotation": 180,
           "texture": "#2"
         }
       }
@@ -432,7 +212,7 @@
             1,
             1
           ],
-          "texture": "#1_1"
+          "texture": "#1"
         },
         "east": {
           "uv": [
@@ -441,7 +221,7 @@
             1,
             1
           ],
-          "texture": "#1_1"
+          "texture": "#1"
         },
         "west": {
           "uv": [
@@ -450,7 +230,7 @@
             1,
             1
           ],
-          "texture": "#1_1"
+          "texture": "#1"
         },
         "up": {
           "uv": [
@@ -460,7 +240,7 @@
             1
           ],
           "rotation": 180,
-          "texture": "#1_1"
+          "texture": "#1"
         },
         "down": {
           "uv": [
@@ -470,7 +250,7 @@
             1
           ],
           "rotation": 180,
-          "texture": "#1_1"
+          "texture": "#1"
         }
       }
     },
@@ -493,7 +273,7 @@
             1,
             1
           ],
-          "texture": "#1_1"
+          "texture": "#1"
         },
         "east": {
           "uv": [
@@ -502,7 +282,7 @@
             1,
             1
           ],
-          "texture": "#1_1"
+          "texture": "#1"
         },
         "west": {
           "uv": [
@@ -511,7 +291,7 @@
             1,
             1
           ],
-          "texture": "#1_1"
+          "texture": "#1"
         },
         "up": {
           "uv": [
@@ -521,7 +301,7 @@
             1
           ],
           "rotation": 180,
-          "texture": "#1_1"
+          "texture": "#1"
         },
         "down": {
           "uv": [
@@ -531,7 +311,7 @@
             1
           ],
           "rotation": 180,
-          "texture": "#1_1"
+          "texture": "#1"
         }
       }
     },
@@ -554,7 +334,7 @@
             1,
             1
           ],
-          "texture": "#1_1"
+          "texture": "#1"
         },
         "east": {
           "uv": [
@@ -563,7 +343,7 @@
             1,
             1
           ],
-          "texture": "#1_1"
+          "texture": "#1"
         },
         "west": {
           "uv": [
@@ -572,7 +352,7 @@
             1,
             1
           ],
-          "texture": "#1_1"
+          "texture": "#1"
         },
         "up": {
           "uv": [
@@ -582,7 +362,7 @@
             1
           ],
           "rotation": 180,
-          "texture": "#1_1"
+          "texture": "#1"
         },
         "down": {
           "uv": [
@@ -592,7 +372,7 @@
             1
           ],
           "rotation": 180,
-          "texture": "#1_1"
+          "texture": "#1"
         }
       }
     }
@@ -716,34 +496,20 @@
     }
   },
   "groups": [
-    0,
-    1,
-    2,
-    3,
-    4,
     {
-      "name": "battery_bank_side",
+      "name": "group",
       "origin": [
         8,
         8,
         8
       ],
       "children": [
-        {
-          "name": "group",
-          "origin": [
-            8,
-            8,
-            8
-          ],
-          "children": [
-            5,
-            6,
-            7,
-            8,
-            9
-          ]
-        }
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
       ]
     }
   ]
