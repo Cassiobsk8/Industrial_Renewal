@@ -48,7 +48,7 @@ public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<Ti
                 if (!world.isRemote)
                 {
                     itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1), false);
-                    heldItem.shrink(1);
+                    if (!player.isCreative()) heldItem.shrink(1);
                 }
                 return true;
             }
@@ -56,7 +56,8 @@ public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<Ti
             {
                 if (!world.isRemote)
                 {
-                    player.addItemStackToInventory(itemHandler.extractItem(0, 64, false));
+                    ItemStack panel = itemHandler.extractItem(0, 64, false);
+                    if (!player.isCreative()) player.addItemStackToInventory(panel);
                 }
                 return true;
             }
