@@ -89,6 +89,10 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
                     }
                 }
             }
+        } else
+        {
+            rotation += 4.5f * getEfficiency();
+            if (rotation > 360) rotation = 0;
         }
     }
 
@@ -104,8 +108,6 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
 
     public float getRotation()
     {
-        rotation += 3.5f * getEfficiency();
-        if (rotation > 360) rotation = 0;
         return -rotation;
     }
 
