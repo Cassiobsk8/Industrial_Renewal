@@ -25,31 +25,32 @@ public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityW
     {
         if (te.isBase())
         {
-            doTheMath(te.getBlockFacing(), x, z);
-            RenderString(te, xPos, y + 0.75, zPos);
-            RenderPointer(te, xPos, y + 1.0, zPos);
+            doTheMath(te.getBlockFacing(), x, z, 0f);
+            RenderString(te, xPos, y + 0.73, zPos);
+            doTheMath(te.getBlockFacing(), x, z, 0.15f);
+            RenderPointer(te, xPos, y + 0.92, zPos);
         }
     }
 
-    private void doTheMath(EnumFacing facing, double x, double z)
+    private void doTheMath(EnumFacing facing, double x, double z, double sidePlus)
     {
         switch (facing)
         {
             case SOUTH:
-                xPos = x + 0.5;
-                zPos = z + 0.2;
+                xPos = x + (0.5 - sidePlus);
+                zPos = z + 0.21;
                 return;
             case NORTH:
-                xPos = x + 0.5;
-                zPos = z + 0.8;
+                xPos = x + (0.5 + sidePlus);
+                zPos = z + 0.79;
                 return;
             case EAST:
-                xPos = x + 0.2;
-                zPos = z + 0.5;
+                xPos = x + 0.21;
+                zPos = z + (0.5 + sidePlus);
                 return;
             case WEST:
-                xPos = x + 0.8;
-                zPos = z + 0.5;
+                xPos = x + 0.79;
+                zPos = z + (0.5 - sidePlus);
                 return;
         }
     }
@@ -111,7 +112,7 @@ public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityW
                 GlStateManager.rotate(-90F, 0, 1, 0);
                 break;
         }
-        GlStateManager.scale(0.3F, 0.3F, 0.3F);
+        GlStateManager.scale(0.5F, 0.5F, 0.5F);
         GlStateManager.rotate(90, 0, 0, 1);
         float angle = te.getGenerationforGauge();
         GlStateManager.rotate(-angle, 0, 0, 1);

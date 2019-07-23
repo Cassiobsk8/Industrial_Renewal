@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.blocks.BlockSmallWindTurbine;
 import cassiokf.industrialrenewal.blocks.BlockWindTurbinePillar;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
+import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +24,7 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     private final VoltsEnergyContainer dummyEnergyContainer;
 
     private int energyGenerated;
+    private float amount;
 
     private int tick;
 
@@ -144,7 +146,8 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
         float currentAmount = getEnergyGenerated();
         float totalCapacity = TileEntitySmallWindTurbine.getMaxGeneration();
         currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 180f;
+        amount = Utils.lerp(amount, currentAmount, 0.1f);
+        return amount * 90f;
     }
 
     public int getEnergyGenerated()

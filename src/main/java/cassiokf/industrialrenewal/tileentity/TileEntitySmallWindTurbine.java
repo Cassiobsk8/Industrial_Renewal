@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -59,7 +60,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
 
     public static int getMaxGeneration()
     {
-        return 150;
+        return 128;
     }
 
     @Override
@@ -131,6 +132,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
         float posMin = -2040f;
         if (pos.getY() - 62 <= 0) heightModifier = 0;
         else heightModifier = (pos.getY() - posMin) / (255 - posMin);
+        heightModifier = MathHelper.clamp(heightModifier, 0, 1);
         //System.out.println(weatherModifier + " H " + heightModifier + " " + (pos.getY()- posMin)/(255-posMin));
         return weatherModifier * heightModifier;
     }
