@@ -152,11 +152,13 @@ public class BlockPillar extends BlockBase {
                 || (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.steel_pillar))) && clickedBlock.equals(ModBlocks.steel_pillar))
         {
             int n = 1;
-            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable)
+            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar
+                    || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable
+                    || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarFluidPipe)
             {
                 n++;
             }
-            if (world.getBlockState(pos.up(n)).getBlock().isAir(world.getBlockState(pos.up(n)), world, pos.up(n)) || world.getBlockState(pos.up(n)).getBlock().isReplaceable(world, pos.up(n)))
+            if (world.getBlockState(pos.up(n)).getBlock().isReplaceable(world, pos.up(n)))
             {
                 if (!world.isRemote)
                 {

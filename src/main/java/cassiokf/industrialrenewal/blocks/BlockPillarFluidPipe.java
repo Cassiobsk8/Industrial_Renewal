@@ -128,7 +128,9 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
         if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.pillar)))
         {
             int n = 1;
-            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarFluidPipe || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar)
+            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable
+                    || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarFluidPipe
+                    || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar)
             {
                 n++;
             }
