@@ -100,7 +100,8 @@ public class BlockColumn extends BlockBase {
             if (nb instanceof BlockBrace) {
                 return Objects.equals(neighbourState.getValue(BlockBrace.FACING).getName(), neighbourDirection.getOpposite().getName()) || Objects.equals(neighbourState.getValue(BlockBrace.FACING).getName(), "down_" + neighbourDirection.getName());
             }
-            return nb instanceof BlockColumn || nb instanceof BlockPillar || nb instanceof BlockPillarEnergyCable
+            return nb instanceof BlockColumn || nb instanceof BlockPillar
+                    || nb instanceof BlockPillarEnergyCable || nb instanceof BlockPillarFluidPipe
                     || (nb instanceof BlockAlarm && neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection)
                     || (nb instanceof BlockLight && neighbourState.getValue(BlockLight.FACING) == neighbourDirection.getOpposite());
         }
@@ -133,7 +134,8 @@ public class BlockColumn extends BlockBase {
 
     private int canConnectPipe(IBlockAccess world, BlockPos pos) {
         IBlockState stateOffset = world.getBlockState(pos.down());
-        if (stateOffset.getBlock() instanceof BlockFluidPipe) {
+        if (stateOffset.getBlock() instanceof BlockPipeBase)
+        {
             if (pipeConnected(world, pos.down(), stateOffset, EnumFacing.DOWN)) {
                 return 0;
             }
@@ -160,7 +162,7 @@ public class BlockColumn extends BlockBase {
 
     private boolean pipeConnected(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing facing) {
         Block blockOffset = world.getBlockState(pos.offset(facing)).getBlock();
-        return blockOffset instanceof BlockFluidPipe;
+        return blockOffset.equals(state.getBlock());
     }
 
     public final boolean isConnected(final IBlockState state, final EnumFacing facing) {

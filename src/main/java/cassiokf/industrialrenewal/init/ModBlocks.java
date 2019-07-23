@@ -35,6 +35,7 @@ public class ModBlocks {
     public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe", References.CREATIVE_IR_TAB);
     public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable", References.CREATIVE_IR_TAB);
     public static BlockPillarEnergyCable pillarEnergyCable = new BlockPillarEnergyCable("iron_pillar_energy", References.CREATIVE_IR_TAB);
+    public static BlockPillarFluidPipe pillarFluidPipe = new BlockPillarFluidPipe("iron_pillar_pipe", References.CREATIVE_IR_TAB);
     public static BlockFloorPipe floorPipe = new BlockFloorPipe("floor_pipe", References.CREATIVE_IR_TAB);
     public static BlockFloorCable floorCable = new BlockFloorCable("floor_cable", References.CREATIVE_IR_TAB);
     public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp", References.CREATIVE_IR_TAB);
@@ -152,6 +153,7 @@ public class ModBlocks {
                 catwalkGate,
                 pillar,
                 pillarEnergyCable,
+                pillarFluidPipe,
                 column,
                 brace,
                 //Steel
@@ -297,7 +299,6 @@ public class ModBlocks {
                 iladder.createItemBlock(),
                 catwalkGate.createItemBlock(),
                 pillar.createItemBlock(),
-                pillarEnergyCable.createItemBlock(),
                 column.createItemBlock(),
                 brace.createItemBlock(),
                 catWalkSteel.createItemBlock(),
@@ -378,7 +379,6 @@ public class ModBlocks {
         catWalk.registerItemModel(Item.getItemFromBlock(catWalk));
         catwalkStair.registerItemModel(Item.getItemFromBlock(catwalkStair));
         pillar.registerItemModel(Item.getItemFromBlock(pillar));
-        pillarEnergyCable.registerItemModel(Item.getItemFromBlock(pillarEnergyCable));
         column.registerItemModel(Item.getItemFromBlock(column));
         iladder.registerItemModel(Item.getItemFromBlock(iladder));
         roof.registerItemModel(Item.getItemFromBlock(roof));

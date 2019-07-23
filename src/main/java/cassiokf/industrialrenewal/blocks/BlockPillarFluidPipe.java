@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockPillarEnergyCable extends BlockEnergyCable
+public class BlockPillarFluidPipe extends BlockFluidPipe
 {
 
     public static final PropertyBool WSOUTH = PropertyBool.create("w_south");
@@ -42,7 +42,7 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
     private static float DOWNY1 = 0.0f;
     private static float UPY2 = 1.0f;
 
-    public BlockPillarEnergyCable(String name, CreativeTabs tab)
+    public BlockPillarFluidPipe(String name, CreativeTabs tab)
     {
         super(name, tab);
         setSoundType(SoundType.METAL);
@@ -61,7 +61,7 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        ItemStack itemst = new ItemStack(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.energyCable));
+        ItemStack itemst = new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.fluidPipe));
         EntityItem entity = new EntityItem(worldIn, x, y, z, itemst);
         if (!worldIn.isRemote)
         {
@@ -120,7 +120,7 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
             {
                 world.setBlockState(pos, ModBlocks.pillar.getDefaultState(), 3);
                 if (!player.isCreative())
-                    player.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(ModBlocks.energyCable)));
+                    player.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(ModBlocks.fluidPipe)));
                 ItemPowerScrewDrive.playDrillSound(world, pos);
             }
             return true;
@@ -128,7 +128,7 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
         if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.pillar)))
         {
             int n = 1;
-            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar)
+            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarFluidPipe || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar)
             {
                 n++;
             }

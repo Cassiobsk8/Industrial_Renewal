@@ -143,7 +143,6 @@ tile.industrialrenewal.chunk_loader.name=Chunk Loader (WIP)
 tile.industrialrenewal.conveyor_bulk.name=Bulk Conveyor
 tile.industrialrenewal.orevein_hematite.name=Hematite
 tile.industrialrenewal.solar_panel_frame.name=Solar Panel Frame
-tile.industrialrenewal.iron_pillar_energy.name=Pillar Energy Cable
 
 #Fluids
 fluid.steam=Steam

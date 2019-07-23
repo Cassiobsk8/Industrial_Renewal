@@ -138,7 +138,17 @@ public class BlockPillar extends BlockBase {
             }
             return true;
         }
-        if (((playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.pillar)) || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.pillarEnergyCable))) && clickedBlock.equals(ModBlocks.pillar))
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.fluidPipe)))
+        {
+            if (!world.isRemote)
+            {
+                world.setBlockState(pos, ModBlocks.pillarFluidPipe.getDefaultState(), 3);
+                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                if (!player.isCreative()) playerStack.shrink(1);
+            }
+            return true;
+        }
+        if ((playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.pillar)) && clickedBlock.equals(ModBlocks.pillar))
                 || (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.steel_pillar))) && clickedBlock.equals(ModBlocks.steel_pillar))
         {
             int n = 1;
