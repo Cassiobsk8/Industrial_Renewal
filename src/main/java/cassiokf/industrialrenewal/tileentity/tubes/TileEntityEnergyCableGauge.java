@@ -17,12 +17,19 @@ public class TileEntityEnergyCableGauge extends TileEntityEnergyCable
 
     public String GetText()
     {
-        return getMaster().getOutPut() + " FE/t";
+        int energy = getMaster().getOutPut();
+        String text = energy + " FE";
+        if (energy >= 1000 && energy < 1000000)
+            text = energy / 1000 + "K FE";
+        if (energy >= 1000000)
+            text = energy / 1000000 + "M FE";
+        return text;
     }
 
     public float getOutPutAngle()
     {
-        float currentAmount = getMaster().getOutPut();
+        int outputs = getMaster().getOutPutCount();
+        float currentAmount = getMaster().getOutPut() / (outputs > 0 ? outputs : 1);
         float totalCapacity = energyContainer.getMaxOutput();
         currentAmount = currentAmount / totalCapacity;
         amount = Utils.lerp(amount, currentAmount, 0.1f);

@@ -48,12 +48,12 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
                     }
                 }
             }
-            if (quantity <= 0) outPut = 0;
-            else outPut = (out / quantity);
-
-            if (oldOutPut != outPut)
+            outPut = out;
+            outPutCount = getPosSet().size();
+            if ((oldOutPut != outPut) || (oldOutPutCount != outPutCount))
             {
                 oldOutPut = outPut;
+                oldOutPutCount = outPutCount;
                 this.Sync();
             }
         }

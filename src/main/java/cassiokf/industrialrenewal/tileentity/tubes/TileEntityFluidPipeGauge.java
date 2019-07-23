@@ -22,7 +22,8 @@ public class TileEntityFluidPipeGauge extends TileEntityFluidPipe
 
     public float getOutPutAngle()
     {
-        float currentAmount = getMaster().getOutPut();
+        int outputs = getMaster().getOutPutCount();
+        float currentAmount = getMaster().getOutPut() / (outputs > 0 ? outputs : 1);
         float totalCapacity = maxOutput;
         currentAmount = currentAmount / totalCapacity;
         amount = Utils.lerp(amount, currentAmount, 0.1f);
