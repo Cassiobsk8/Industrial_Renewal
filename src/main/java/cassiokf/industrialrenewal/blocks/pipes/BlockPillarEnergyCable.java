@@ -1,7 +1,9 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.pipes;
 
+import cassiokf.industrialrenewal.blocks.BlockPillar;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
@@ -136,7 +138,7 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
             {
                 if (!world.isRemote)
                 {
-                    world.setBlockState(pos.up(n), getBlockFromItem(playerItem).getDefaultState(), 3);
+                    world.setBlockState(pos.up(n), Block.getBlockFromItem(playerItem).getDefaultState(), 3);
                     world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
                     if (!player.isCreative()) playerStack.shrink(1);
                 }
@@ -222,7 +224,7 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
             EASTX2 = 0.750f;
         }
         final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
+        Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
     }
 
     @Override

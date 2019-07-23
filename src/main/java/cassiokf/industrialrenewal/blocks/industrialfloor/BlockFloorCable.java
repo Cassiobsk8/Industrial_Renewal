@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.industrialfloor;
 
-import cassiokf.industrialrenewal.blocks.BlockEnergyCable;
+import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;

@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipe;
@@ -45,20 +45,27 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipe>
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (entity.getHeldItem(EnumHand.MAIN_HAND).getItem() == ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor))
         {
-            world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1.0F, 1.0F);
-            world.setBlockState(pos, ModBlocks.floorPipe.getDefaultState(), 3);
-            if (!entity.isCreative())
+            if (!world.isRemote)
             {
-                entity.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                world.setBlockState(pos, ModBlocks.floorPipe.getDefaultState(), 3);
+                if (!entity.isCreative())
+                {
+                    entity.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                }
             }
             return true;
         }
         if (entity.getHeldItem(EnumHand.MAIN_HAND).getItem() == ItemBlock.getItemFromBlock(ModBlocks.gauge))
         {
-            world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1.0F, 1.0F);
-            world.setBlockState(pos, ModBlocks.fluidPipeGauge.getDefaultState().withProperty(BlockFluidPipeGauge.FACING, entity.getHorizontalFacing()), 3);
-            if (!entity.isCreative()) {
-                entity.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+            if (!world.isRemote)
+            {
+                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                world.setBlockState(pos, ModBlocks.fluidPipeGauge.getDefaultState().withProperty(BlockFluidPipeGauge.FACING, entity.getHorizontalFacing()), 3);
+                if (!entity.isCreative())
+                {
+                    entity.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                }
             }
             return true;
         }

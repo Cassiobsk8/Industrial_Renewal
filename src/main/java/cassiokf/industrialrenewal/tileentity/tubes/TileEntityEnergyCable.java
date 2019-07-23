@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
-import cassiokf.industrialrenewal.blocks.BlockEnergyCable;
+import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,14 +18,12 @@ import javax.annotation.Nullable;
 public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityEnergyCable> implements ICapabilityProvider, ITickable
 {
 
-    private final VoltsEnergyContainer energyContainer;
+    public final VoltsEnergyContainer energyContainer;
 
 
     public TileEntityEnergyCable() {
         this.energyContainer = new VoltsEnergyContainer(10240, 1024, 1024);
     }
-
-    //IEnergyStorage
 
     @Override
     public void update() {
@@ -34,6 +32,7 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
         {
             int quantity = getPosSet().size();
             this.energyContainer.setMaxEnergyStored(Math.max(this.energyContainer.getMaxOutput() * quantity, this.energyContainer.getEnergyStored()));
+            int out = 0;
             for (BlockPos posM : getPosSet().keySet())
             {
                 TileEntity te = world.getTileEntity(posM);
@@ -43,9 +42,19 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
                     IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
                     if (energyStorage != null && energyStorage.canReceive())
                     {
-                        this.energyContainer.extractEnergy(energyStorage.receiveEnergy(this.energyContainer.extractEnergy(this.energyContainer.getMaxOutput(), true), false), false);
+                        int energy = energyStorage.receiveEnergy(this.energyContainer.extractEnergy(this.energyContainer.getMaxOutput(), true), false);
+                        out += energy;
+                        this.energyContainer.extractEnergy(energy, false);
                     }
                 }
+            }
+            if (quantity <= 0) outPut = 0;
+            else outPut = (out / quantity);
+
+            if (oldOutPut != outPut)
+            {
+                oldOutPut = outPut;
+                this.Sync();
             }
         }
     }

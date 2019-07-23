@@ -6,9 +6,11 @@ import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorLamp;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
+import cassiokf.industrialrenewal.blocks.pipes.*;
 import cassiokf.industrialrenewal.blocks.railroad.*;
 import cassiokf.industrialrenewal.blocks.redstone.*;
 import cassiokf.industrialrenewal.fluids.BlockFluid;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableGauge;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeGauge;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -36,6 +38,7 @@ public class ModBlocks {
     public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe", References.CREATIVE_IR_TAB);
     public static BlockFluidPipeGauge fluidPipeGauge = new BlockFluidPipeGauge("fluid_pipe_gauge", References.CREATIVE_IR_TAB);
     public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable", References.CREATIVE_IR_TAB);
+    public static BlockEnergyCableGauge energyCableGauge = new BlockEnergyCableGauge("energy_cable_gauge", References.CREATIVE_IR_TAB);
     public static BlockPillarEnergyCable pillarEnergyCable = new BlockPillarEnergyCable("iron_pillar_energy", References.CREATIVE_IR_TAB);
     public static BlockPillarFluidPipe pillarFluidPipe = new BlockPillarFluidPipe("iron_pillar_pipe", References.CREATIVE_IR_TAB);
     public static BlockFloorPipe floorPipe = new BlockFloorPipe("floor_pipe", References.CREATIVE_IR_TAB);
@@ -204,6 +207,7 @@ public class ModBlocks {
                 floorPipe,
                 //Pipes
                 energyCable,
+                energyCableGauge,
                 fluidPipe,
                 fluidPipeGauge,
                 valveLarge,
@@ -244,6 +248,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(veinHematite.getTileEntityClass(), veinHematite.getRegistryName());
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(energyCable.getTileEntityClass(), energyCable.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityEnergyCableGauge.class, energyCableGauge.getRegistryName());
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
         GameRegistry.registerTileEntity(gutter.getTileEntityClass(), gutter.getRegistryName().toString());
         GameRegistry.registerTileEntity(spanel.getTileEntityClass(), spanel.getRegistryName().toString());

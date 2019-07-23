@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.init.RenderHandler;
 import cassiokf.industrialrenewal.tesr.*;
 import cassiokf.industrialrenewal.tileentity.*;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableGauge;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeGauge;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
@@ -48,6 +49,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMining.class, new TESRMining());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolarPanelFrame.class, new TESRSolarPanelFrame());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipeGauge.class, new TESRPipeGauge());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnergyCableGauge.class, new TESRCableGauge());
     }
 
     @Override

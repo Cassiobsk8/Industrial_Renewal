@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
@@ -7,12 +7,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -66,14 +64,30 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> imple
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        int i = pos.getX();
-        int j = pos.getY();
-        int k = pos.getZ();
-        if (entity.inventory.getCurrentItem().getItem() == net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor)) {
-            world.playSound(null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.NEUTRAL, 1.0F, 1.0F);
-            world.setBlockState(new BlockPos(i, j, k), ModBlocks.floorCable.getDefaultState(), 3);
-            if (!entity.isCreative()) {
-                entity.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor), 0, 1, null);
+        ItemStack playerStack = entity.getHeldItem(EnumHand.MAIN_HAND);
+        if (playerStack.getItem() == ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor))
+        {
+            if (!world.isRemote)
+            {
+                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                world.setBlockState(pos, ModBlocks.floorCable.getDefaultState(), 3);
+                if (!entity.isCreative())
+                {
+                    playerStack.shrink(1);
+                }
+            }
+            return true;
+        }
+        if (playerStack.getItem() == ItemBlock.getItemFromBlock(ModBlocks.gauge))
+        {
+            if (!world.isRemote)
+            {
+                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                world.setBlockState(pos, ModBlocks.energyCableGauge.getDefaultState().withProperty(BlockEnergyCableGauge.FACING, entity.getHorizontalFacing()), 3);
+                if (!entity.isCreative())
+                {
+                    playerStack.shrink(1);
+                }
             }
             return true;
         }

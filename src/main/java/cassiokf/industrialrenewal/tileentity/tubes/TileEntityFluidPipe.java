@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
-import cassiokf.industrialrenewal.blocks.BlockFluidPipe;
+import cassiokf.industrialrenewal.blocks.pipes.BlockFluidPipe;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -20,8 +20,6 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     public FluidTank tank = new FluidTank(1000);
 
     public int maxOutput = 600;
-    private int outPut;
-    private int oldOutPut;
 
     @Override
     public void update()
@@ -31,7 +29,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
         {
             int quantity = getPosSet().size();
             this.tank.setCapacity(Math.max(maxOutput * quantity, this.tank.getFluidAmount()));
-            if (quantity <= 0) outPut = 0;
+            int out = 0;
             for (BlockPos posM : getPosSet().keySet())
             {
                 TileEntity te = world.getTileEntity(posM);
@@ -41,22 +39,20 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
                     IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
                     if (tankStorage != null && tankStorage.getTankProperties()[0].canFill())
                     {
-                        outPut = tankStorage.fill(this.tank.drain(maxOutput, false), true);
-                        this.tank.drain(outPut, true);
+                        int fluid = tankStorage.fill(this.tank.drain(maxOutput, false), true);
+                        out += fluid;
+                        this.tank.drain(fluid, true);
                     }
                 }
             }
+            if (quantity <= 0) outPut = 0;
+            else outPut = (out / quantity);
             if (oldOutPut != outPut)
             {
                 oldOutPut = outPut;
                 this.Sync();
             }
         }
-    }
-
-    public int getOutPut()
-    {
-        return outPut;
     }
 
     @Override
@@ -106,7 +102,6 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
         NBTTagCompound tag = new NBTTagCompound();
         tank.writeToNBT(tag);
         tagCompound.setTag("fluid", tag);
-        tagCompound.setInteger("out", outPut);
         return super.writeToNBT(tagCompound);
     }
 
@@ -115,7 +110,6 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     {
         NBTTagCompound tag = tagCompound.getCompoundTag("fluid");
         tank.readFromNBT(tag);
-        outPut = tagCompound.getInteger("out");
         super.readFromNBT(tagCompound);
     }
 }

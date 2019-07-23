@@ -17,6 +17,8 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     private boolean isMaster;
     private boolean firstRun = true;
     private Map<BlockPos, EnumFacing> posSet = new HashMap<>();
+    public int outPut;
+    public int oldOutPut;
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
@@ -32,6 +34,11 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
             initializeMultiblockIfNecessary();
             firstRun = false;
         }
+    }
+
+    public int getOutPut()
+    {
+        return outPut;
     }
 
     private void initializeMultiblockIfNecessary()
@@ -129,6 +136,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     public void readFromNBT(NBTTagCompound compound)
     {
         isMaster = compound.getBoolean("isMaster");
+        outPut = compound.getInteger("out");
         super.readFromNBT(compound);
     }
 
@@ -136,6 +144,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         compound.setBoolean("isMaster", isMaster);
+        compound.setInteger("out", outPut);
         return super.writeToNBT(compound);
     }
 }

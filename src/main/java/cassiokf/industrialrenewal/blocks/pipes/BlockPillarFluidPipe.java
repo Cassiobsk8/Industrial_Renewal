@@ -1,5 +1,6 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.pipes;
 
+import cassiokf.industrialrenewal.blocks.BlockPillar;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import net.minecraft.block.SoundType;
