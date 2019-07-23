@@ -19,7 +19,9 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
 {
     public FluidTank tank = new FluidTank(1000);
 
-    private int maxOutput = 600;
+    public int maxOutput = 600;
+    private int outPut;
+    private int oldOutPut;
 
     @Override
     public void update()
@@ -28,7 +30,8 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
         if (!world.isRemote && isMaster())
         {
             int quantity = getPosSet().size();
-            this.tank.setCapacity(maxOutput * quantity);
+            this.tank.setCapacity(Math.max(maxOutput * quantity, this.tank.getFluidAmount()));
+            if (quantity <= 0) outPut = 0;
             for (BlockPos posM : getPosSet().keySet())
             {
                 TileEntity te = world.getTileEntity(posM);
@@ -38,11 +41,22 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
                     IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
                     if (tankStorage != null && tankStorage.getTankProperties()[0].canFill())
                     {
-                        this.tank.drain(tankStorage.fill(this.tank.drain(maxOutput, false), true), true);
+                        outPut = tankStorage.fill(this.tank.drain(maxOutput, false), true);
+                        this.tank.drain(outPut, true);
                     }
                 }
             }
+            if (oldOutPut != outPut)
+            {
+                oldOutPut = outPut;
+                this.Sync();
+            }
         }
+    }
+
+    public int getOutPut()
+    {
+        return outPut;
     }
 
     @Override
@@ -92,6 +106,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
         NBTTagCompound tag = new NBTTagCompound();
         tank.writeToNBT(tag);
         tagCompound.setTag("fluid", tag);
+        tagCompound.setInteger("out", outPut);
         return super.writeToNBT(tagCompound);
     }
 
@@ -100,6 +115,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     {
         NBTTagCompound tag = tagCompound.getCompoundTag("fluid");
         tank.readFromNBT(tag);
+        outPut = tagCompound.getInteger("out");
         super.readFromNBT(tagCompound);
     }
 }

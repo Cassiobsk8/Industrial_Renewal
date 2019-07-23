@@ -9,6 +9,7 @@ import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
 import cassiokf.industrialrenewal.blocks.railroad.*;
 import cassiokf.industrialrenewal.blocks.redstone.*;
 import cassiokf.industrialrenewal.fluids.BlockFluid;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeGauge;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -33,6 +34,7 @@ public class ModBlocks {
     public static BlockLocker locker = new BlockLocker("locker", References.CREATIVE_IR_TAB);
 
     public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe", References.CREATIVE_IR_TAB);
+    public static BlockFluidPipeGauge fluidPipeGauge = new BlockFluidPipeGauge("fluid_pipe_gauge", References.CREATIVE_IR_TAB);
     public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable", References.CREATIVE_IR_TAB);
     public static BlockPillarEnergyCable pillarEnergyCable = new BlockPillarEnergyCable("iron_pillar_energy", References.CREATIVE_IR_TAB);
     public static BlockPillarFluidPipe pillarFluidPipe = new BlockPillarFluidPipe("iron_pillar_pipe", References.CREATIVE_IR_TAB);
@@ -203,6 +205,7 @@ public class ModBlocks {
                 //Pipes
                 energyCable,
                 fluidPipe,
+                fluidPipeGauge,
                 valveLarge,
                 conveyorV,
                 //Energy
@@ -265,6 +268,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(electricPump.getTileEntityClass(), electricPump.getRegistryName().toString());
         GameRegistry.registerTileEntity(batteryBank.getTileEntityClass(), batteryBank.getRegistryName().toString());
         GameRegistry.registerTileEntity(fluidPipe.getTileEntityClass(), fluidPipe.getRegistryName().toString());
+        GameRegistry.registerTileEntity(TileEntityFluidPipeGauge.class, fluidPipeGauge.getRegistryName());
         GameRegistry.registerTileEntity(steamBoiler.getTileEntityClass(), steamBoiler.getRegistryName().toString());
         GameRegistry.registerTileEntity(steamTurbine.getTileEntityClass(), steamTurbine.getRegistryName().toString());
         GameRegistry.registerTileEntity(mining.getTileEntityClass(), mining.getRegistryName());
