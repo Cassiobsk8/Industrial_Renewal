@@ -68,12 +68,9 @@ public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (worldIn.getGameRules().getBoolean("doEntityDrops"))
-        {
-            TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
-            ItemStack itemst = SaveStackContainer(te);
-            spawnAsEntity(worldIn, pos, itemst);
-        }
+        TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
+        ItemStack itemst = SaveStackContainer(te);
+        spawnAsEntity(worldIn, pos, itemst);
         super.breakBlock(worldIn, pos, state);
     }
 
