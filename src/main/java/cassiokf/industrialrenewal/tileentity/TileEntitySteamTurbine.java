@@ -207,7 +207,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         float currentAmount = ((rotation >= 6000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored()) ? getEnergyProduction() : 0) / 100f;
         float totalCapacity = energyPerTick / 100f;
         currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 180f;
+        return currentAmount * 90f;
     }
 
     public float GetWaterFill() //0 ~ 180

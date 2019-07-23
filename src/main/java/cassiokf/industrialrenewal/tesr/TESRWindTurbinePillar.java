@@ -26,9 +26,9 @@ public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityW
         if (te.isBase())
         {
             doTheMath(te.getBlockFacing(), x, z, 0f);
-            RenderString(te, xPos, y + 0.73, zPos);
-            doTheMath(te.getBlockFacing(), x, z, 0.15f);
-            RenderPointer(te, xPos, y + 0.92, zPos);
+            RenderString(te, xPos, y + 0.72, zPos);
+            doTheMath(te.getBlockFacing(), x, z, 0.12f);
+            RenderPointer(te, xPos, y + 0.87, zPos);
         }
     }
 
@@ -38,18 +38,18 @@ public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityW
         {
             case SOUTH:
                 xPos = x + (0.5 - sidePlus);
-                zPos = z + 0.21;
+                zPos = z + 0.22;
                 return;
             case NORTH:
                 xPos = x + (0.5 + sidePlus);
-                zPos = z + 0.79;
+                zPos = z + 0.78;
                 return;
             case EAST:
-                xPos = x + 0.21;
+                xPos = x + 0.22;
                 zPos = z + (0.5 + sidePlus);
                 return;
             case WEST:
-                xPos = x + 0.79;
+                xPos = x + 0.78;
                 zPos = z + (0.5 - sidePlus);
                 return;
         }
@@ -82,7 +82,7 @@ public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityW
                 break;
         }
         GlStateManager.rotate(180, 1, 0, 0);
-        GlStateManager.scale(0.01F, 0.01F, 1F);
+        GlStateManager.scale(0.006F, 0.006F, 1F);
         String st = te.getEnergyGenerated() + " FE/t";
         int xh = -Minecraft.getMinecraft().fontRenderer.getStringWidth(st) / 2;
         Minecraft.getMinecraft().fontRenderer.drawString(st, xh, 0, 0xFFFFFFFF);
@@ -112,7 +112,7 @@ public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityW
                 GlStateManager.rotate(-90F, 0, 1, 0);
                 break;
         }
-        GlStateManager.scale(0.5F, 0.5F, 0.5F);
+        GlStateManager.scale(0.38F, 0.38F, 0.38F);
         GlStateManager.rotate(90, 0, 0, 1);
         float angle = te.getGenerationforGauge();
         GlStateManager.rotate(-angle, 0, 0, 1);

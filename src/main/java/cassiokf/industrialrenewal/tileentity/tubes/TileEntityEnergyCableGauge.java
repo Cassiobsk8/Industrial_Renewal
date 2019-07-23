@@ -18,11 +18,11 @@ public class TileEntityEnergyCableGauge extends TileEntityEnergyCable
     public String GetText()
     {
         int energy = getMaster().getOutPut();
-        String text = energy + " FE";
+        String text = energy + " FE/t";
         if (energy >= 1000 && energy < 1000000)
-            text = energy / 1000 + "K FE";
+            text = energy / 1000 + "K FE/t";
         if (energy >= 1000000)
-            text = energy / 1000000 + "M FE";
+            text = energy / 1000000 + "M FE/t";
         return text;
     }
 
