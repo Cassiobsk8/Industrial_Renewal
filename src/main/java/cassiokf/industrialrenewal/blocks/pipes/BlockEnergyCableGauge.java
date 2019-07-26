@@ -103,37 +103,13 @@ public class BlockEnergyCableGauge extends BlockEnergyCable
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
     {
-
-        if (!isActualState) state = state.getActualState(worldIn, pos);
-        if (isConnected(worldIn, pos, state, NORTH)) NORTHZ1 = 0.0f;
-        else NORTHZ1 = 0.250f;
-        if (isConnected(worldIn, pos, state, SOUTH)) SOUTHZ2 = 1.0f;
-        else SOUTHZ2 = 0.750f;
-        if (isConnected(worldIn, pos, state, WEST)) WESTX1 = 0.0f;
-        else WESTX1 = 0.250f;
-        if (isConnected(worldIn, pos, state, EAST)) EASTX2 = 1.0f;
-        else EASTX2 = 0.750f;
-        if (isConnected(worldIn, pos, state, DOWN)) DOWNY1 = 0.0f;
-        else DOWNY1 = 0.250f;
-        final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        IBlockState actualState = state.getActualState(worldIn, pos);
-        if (isConnected(worldIn, pos, actualState, NORTH)) NORTHZ1 = 0.0f;
-        else NORTHZ1 = 0.250f;
-        if (isConnected(worldIn, pos, actualState, SOUTH)) SOUTHZ2 = 1.0f;
-        else SOUTHZ2 = 0.750f;
-        if (isConnected(worldIn, pos, actualState, WEST)) WESTX1 = 0.0f;
-        else WESTX1 = 0.250f;
-        if (isConnected(worldIn, pos, actualState, EAST)) EASTX2 = 1.0f;
-        else EASTX2 = 0.750f;
-        if (isConnected(worldIn, pos, actualState, DOWN)) DOWNY1 = 0.0f;
-        else DOWNY1 = 0.250f;
-        return new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
+        return FULL_BLOCK_AABB;
     }
 
     @Override

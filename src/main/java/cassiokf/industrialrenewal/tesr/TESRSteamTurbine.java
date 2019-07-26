@@ -17,6 +17,7 @@ public class TESRSteamTurbine extends TileEntitySpecialRenderer<TileEntitySteamT
 {
 
     private static ItemStack pointer = new ItemStack(ModItems.pointer);
+    private static ItemStack pointerLong = new ItemStack(ModItems.pointerLong);
     private double xPos = 0D;
     private double zPos = 0D;
 
@@ -33,8 +34,8 @@ public class TESRSteamTurbine extends TileEntitySpecialRenderer<TileEntitySteamT
             //GENERATION
             doTheMath(facing, x, z, -1.1);
             RenderText(facing, xPos, y + 0.5, zPos, te.getGenerationText());
-            doTheMathLong(facing, x, z, -0.95);
-            RenderLongPointer(facing, xPos, y + 0.69, zPos, te.GetGenerationFill());
+            doTheMathLong(facing, x, z, -0.96);
+            RenderLongPointer(facing, xPos, y + 0.67, zPos, te.GetGenerationFill());
             //WATER
             doTheMath(facing, x, z, -1.1);
             RenderText(facing, xPos, y - 0.25, zPos, te.getWaterText());
@@ -184,7 +185,7 @@ public class TESRSteamTurbine extends TileEntitySpecialRenderer<TileEntitySteamT
         GlStateManager.scale(0.5F, 0.5F, 0.5F);
         GlStateManager.rotate(90, 0, 0, 1);
         GlStateManager.rotate(-angle, 0, 0, 1);
-        Minecraft.getMinecraft().getRenderItem().renderItem(pointer, ItemCameraTransforms.TransformType.GUI);
+        Minecraft.getMinecraft().getRenderItem().renderItem(pointerLong, ItemCameraTransforms.TransformType.GUI);
         GlStateManager.popMatrix();
     }
 }

@@ -16,15 +16,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TESRCableGauge extends TileEntitySpecialRenderer<TileEntityEnergyCableGauge>
 {
 
-    private static ItemStack pointer = new ItemStack(ModItems.pointer);
+    private static ItemStack pointer = new ItemStack(ModItems.pointerLong);
     private double xPos = 0D;
     private double zPos = 0D;
 
     @Override
     public void render(TileEntityEnergyCableGauge te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
-        doTheMath(te.getGaugeFacing(), x, z, 0.122f);
-        RenderPointer(te, xPos, y + 0.65, zPos);
+        doTheMath(te.getGaugeFacing(), x, z, 0.12f);
+        RenderPointer(te, xPos, y + 0.645, zPos);
         doTheMath(te.getGaugeFacing(), x, z, 0);
         RenderFluidName(te, xPos, y + 0.48, zPos);
     }

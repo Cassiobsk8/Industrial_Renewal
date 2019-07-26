@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityWindTurbinePillar>
 {
 
-    private static ItemStack pointer = new ItemStack(ModItems.pointer);
+    private static ItemStack pointer = new ItemStack(ModItems.pointerLong);
     private double xPos = 0D;
     private double zPos = 0D;
 
@@ -27,8 +27,8 @@ public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityW
         {
             doTheMath(te.getBlockFacing(), x, z, 0f);
             RenderString(te, xPos, y + 0.72, zPos);
-            doTheMath(te.getBlockFacing(), x, z, 0.12f);
-            RenderPointer(te, xPos, y + 0.87, zPos);
+            doTheMath(te.getBlockFacing(), x, z, 0.1f);
+            RenderPointer(te, xPos, y + 0.845, zPos);
         }
     }
 

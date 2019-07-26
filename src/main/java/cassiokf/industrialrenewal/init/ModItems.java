@@ -46,6 +46,7 @@ public class ModItems {
     public static ItemBookManual manual = new ItemBookManual("ir_manual", References.CREAATIVE_IRWIP_TAB);
 
     public static ItemBase pointer = new ItemBase("pointer", null);
+    public static ItemBase pointerLong = new ItemBase("pointer_long", null);
     public static ItemBase fire = new ItemBase("fire", null);
 
     public static ItemBattery battery = new ItemBattery("battery", References.CREATIVE_IR_TAB);
@@ -93,6 +94,7 @@ public class ModItems {
                 cartridge_double,
                 cartridge_inverter,
                 pointer,
+                pointerLong,
                 fire,
                 barrel,
                 fireBoxSolid,
@@ -134,6 +136,7 @@ public class ModItems {
         manual.registerItemModel();
         stickSteel.registerItemModel();
         pointer.registerItemModel();
+        pointerLong.registerItemModel();
         fire.registerItemModel();
         barrel.registerItemModel();
         fireBoxSolid.registerItemModel();
