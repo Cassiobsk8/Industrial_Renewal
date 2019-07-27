@@ -149,7 +149,6 @@ public class BlockCatWalk extends BlockTileEntity<TileEntityCatWalk>
                     || nb instanceof BlockElectricGate
                     || (nb instanceof BlockStairs && (neighbourState.getValue(BlockStairs.FACING) == neighbourDirection || neighbourState.getValue(BlockStairs.FACING) == neighbourDirection.getOpposite()))
                     || (downstate.getBlock() instanceof BlockStairs && downstate.getValue(BlockStairs.FACING) == neighbourDirection.getOpposite())
-                    || nb instanceof BlockRailBase
                     || (nb instanceof BlockCatwalkHatch && neighbourState.getValue(BlockCatwalkHatch.FACING) == neighbourDirection)
                     || (nb instanceof BlockCatwalkGate && neighbourState.getValue(BlockCatwalkGate.FACING) == neighbourDirection.getOpposite())
                     || (nb instanceof BlockCatwalkStair && neighbourState.getValue(BlockCatwalkStair.FACING) == neighbourDirection)

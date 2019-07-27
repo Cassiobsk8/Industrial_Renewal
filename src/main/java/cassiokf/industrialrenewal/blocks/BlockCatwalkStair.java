@@ -3,9 +3,7 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.tileentity.TileEntityCatWalkStair;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.BlockRail;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -106,11 +104,9 @@ public class BlockCatwalkStair extends BlockTileEntity<TileEntityCatWalkStair>
 
         BlockPos posOffset = pos.offset(face.rotateY().getOpposite());
         IBlockState stateOffset = world.getBlockState(posOffset);
-        Block block = stateOffset.getBlock();
-        if (block instanceof BlockRail) {
-            return !(stateOffset.getValue(BlockRail.SHAPE).toString().equals("ascending_" + face));
-        }
-        if (block instanceof BlockCatwalkStair) {
+
+        if (stateOffset.getBlock() instanceof BlockCatwalkStair)
+        {
             EnumFacing leftFace = stateOffset.getValue(FACING);
             return !(leftFace == face);
         }
@@ -124,11 +120,9 @@ public class BlockCatwalkStair extends BlockTileEntity<TileEntityCatWalkStair>
 
         BlockPos posOffset = pos.offset(face.rotateY());
         IBlockState stateOffset = world.getBlockState(posOffset);
-        Block block = stateOffset.getBlock();
-        if (block instanceof BlockRail) {
-            return !(stateOffset.getValue(BlockRail.SHAPE).toString().equals("ascending_" + face));
-        }
-        if (block instanceof BlockCatwalkStair) {
+
+        if (stateOffset.getBlock() instanceof BlockCatwalkStair)
+        {
             EnumFacing rightFace = stateOffset.getValue(FACING);
             return !(rightFace == face);
         }
