@@ -53,7 +53,6 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
             if (!world.isRemote)
             {
                 moveItem();
-                //getEntityItemAbove();
             }
         }
         tick++;
@@ -187,6 +186,11 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
         return false;
     }
 
+    public void dropInventory()
+    {
+        Utils.dropInventoryItems(world, pos, inventory);
+    }
+
     private boolean isFrontConveyor(EnumFacing facing, int mode)
     {
         IBlockState state = world.getBlockState(pos.offset(facing));
@@ -203,19 +207,6 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
         } else return true;
         return state.getBlock() instanceof BlockBulkConveyor && state.getValue(BlockBulkConveyor.FACING) == getBlockFacing();
     }
-
-    /*private void getEntityItemAbove()
-    {
-        List<Entity> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.up().getX(), pos.up().getY() - 1D, pos.up().getZ(), pos.up().getX() + 1D, pos.up().getY() + 0.5D, pos.up().getZ() + 1D), EntitySelectors.IS_ALIVE);
-        if (!list.isEmpty() && list.get(0) instanceof EntityItem)
-        {
-            EntityItem entityItem = (EntityItem) list.get(0);
-            ItemStack stack = entityItem.getItem().copy();
-            ItemStack stack1 = inventory.insertItem(0, stack, false);
-            if (stack1.isEmpty()) entityItem.setDead();
-            else entityItem.setItem(stack1);
-        }
-    }*/
 
     public int getMode()
     {

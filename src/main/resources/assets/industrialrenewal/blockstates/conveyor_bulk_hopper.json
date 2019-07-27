@@ -1,0 +1,57 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "mode": {
+      "0": {
+        "model": "industrialrenewal:conveyorv_hopper"
+      },
+      "1": {
+        "model": "industrialrenewal:conveyor_up"
+      },
+      "2": {
+        "model": "industrialrenewal:conveyor_down"
+      }
+    },
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
+    "front": {
+      "true": {
+        "submodel": {
+          "front": {
+            "model": "industrialrenewal:conveyor_front"
+          }
+        }
+      },
+      "false": {}
+    },
+    "back": {
+      "true": {
+        "submodel": {
+          "back": {
+            "model": "industrialrenewal:conveyor_back"
+          }
+        }
+      },
+      "false": {}
+    },
+    "inventory": {
+      "model": "industrialrenewal:conveyor",
+      "y": 180
+    }
+  }
+}

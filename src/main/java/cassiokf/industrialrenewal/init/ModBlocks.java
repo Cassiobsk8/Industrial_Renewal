@@ -12,6 +12,7 @@ import cassiokf.industrialrenewal.blocks.redstone.*;
 import cassiokf.industrialrenewal.fluids.BlockFluid;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableGauge;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeGauge;
+import cassiokf.industrialrenewal.util.EnumBulkConveyorType;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -115,7 +116,8 @@ public class ModBlocks {
 
     public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large", References.CREATIVE_IR_TAB);
 
-    public static BlockBulkConveyor conveyorV = new BlockBulkConveyor("conveyor_bulk", References.CREATIVE_IR_TAB);
+    public static BlockBulkConveyor conveyorV = new BlockBulkConveyor("conveyor_bulk", References.CREATIVE_IR_TAB, EnumBulkConveyorType.NORMAL);
+    public static BlockBulkConveyor conveyorVHopper = new BlockBulkConveyor("conveyor_bulk_hopper", References.CREATIVE_IR_TAB, EnumBulkConveyorType.HOPPER);
 
     public static BlockSignBase signHV = new BlockSignBase("sign_hv", References.CREATIVE_IR_TAB);
     public static BlockSignBase signRA = new BlockSignBase("sign_ra", References.CREATIVE_IR_TAB);
@@ -213,6 +215,7 @@ public class ModBlocks {
                 fluidPipeGauge,
                 valveLarge,
                 conveyorV,
+                conveyorVHopper,
                 //Energy
                 spanel,
                 fpanel,
@@ -287,6 +290,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(catWalk.getTileEntityClass(), catWalk.getRegistryName());
         GameRegistry.registerTileEntity(catwalkStair.getTileEntityClass(), catwalkStair.getRegistryName());
         GameRegistry.registerTileEntity(conveyorV.getTileEntityClass(), conveyorV.getRegistryName());
+        GameRegistry.registerTileEntity(conveyorVHopper.getTileEntityClass(), conveyorVHopper.getRegistryName());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
