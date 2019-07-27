@@ -1,7 +1,7 @@
 {
-  "credit": "Made with Blockbench",
+  "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "1": "blocks/anvil_base"
+    "1": "industrialrenewal:blocks/anvil_base"
   },
   "elements": [
     {
@@ -237,6 +237,15 @@
             7
           ],
           "texture": "#1"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#1"
         }
       }
     }
@@ -340,6 +349,11 @@
   "groups": [
     {
       "name": "octagon",
+      "origin": [
+        8,
+        8,
+        8
+      ],
       "children": [
         0,
         1,
