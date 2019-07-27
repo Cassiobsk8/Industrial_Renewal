@@ -1,22 +1,22 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
-    "ISI",
-    "S S",
-    "ISI"
+    "GGG",
+    "RRR",
+    "GGG"
   ],
   "key": {
-    "S": {
+    "R": {
       "type": "forge:ore_dict",
-      "ore": "minislabStone"
+      "ore": "dustRedstone"
     },
-    "I": {
+    "G": {
       "type": "forge:ore_dict",
-      "ore": "ingotIron"
+      "ore": "ingotGold"
     }
   },
   "result": {
-    "item": "industrialrenewal:fluid_pipe",
+    "item": "industrialrenewal:solar_panel_frame",
     "count": 4
   }
 }

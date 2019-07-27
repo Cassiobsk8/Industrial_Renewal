@@ -36,6 +36,8 @@ item.industrialrenewal.battery.name=Battery
 item.industrialrenewal.motor.name=Motor
 item.industrialrenewal.firebox_solid.name=Firebox for Solid Fuel
 item.industrialrenewal.firebox_fluid.name=Firebox for Fluid Fuel
+item.industrialrenewal.small_wind_blade.name=Wind Generator Blades
+item.industrialrenewal.chunk_hematite.name=Hematite Chunk
 
 
 item.industrialrenewal.record_royal_entrance.name=唱片
@@ -129,6 +131,15 @@ tile.industrialrenewal.firebox_solid.name=蒸汽锅炉燃烧室(固态燃料)
 tile.industrialrenewal.steam.name=蒸汽
 tile.industrialrenewal.trash.name=垃圾桶
 tile.industrialrenewal.eotm.name=Employee of the Month Award
+tile.industrialrenewal.bunkbed.name=Bunk Bed
+tile.industrialrenewal.bunker_hatch.name=Bunker Hatch
+tile.industrialrenewal.small_wind_turbine_pillar.name=Wind Turbine Pillar
+tile.industrialrenewal.small_wind_turbine.name=Wind Turbine
+tile.industrialrenewal.chunk_loader.name=Chunk Loader (WIP)
+tile.industrialrenewal.conveyor_bulk.name=Bulk Conveyor
+tile.industrialrenewal.orevein_hematite.name=Hematite
+tile.industrialrenewal.solar_panel_frame.name=Solar Panel Frame
+tile.industrialrenewal.energy_level.name=Energy Level Indicator
 
 # Fluids
 fluid.steam=蒸汽
@@ -167,6 +178,14 @@ gui.config.temp_mode.name=温度模式
 gui.config.steam_factor.name=蒸汽转换比例(水:蒸汽)
 gui.config.nether_extinguisher.name=灭火器在虚空中的行为
 gui.config.fluidFuel.name=流体燃料白名单
+gui.config.hours_before_deactivation.name=Time Before Deactivate
+gui.config.chunk_loader_width.name=Chunk Load Width
+gui.config.emergency_mode.name=Deactivate Chunk Load
+
+# Render
+render.industrialrenewal.energy=Energy
+render.industrialrenewal.fluid=Fluid
+render.industrialrenewal.drillheat=Drill Heat
 
 
 tile.industrialrenewal.crossing_rail.info=在车厢经过时鸣笛
