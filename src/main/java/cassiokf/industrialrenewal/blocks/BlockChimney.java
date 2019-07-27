@@ -31,7 +31,8 @@ public class BlockChimney extends BlockBase {
         int i = pos.getX();
         int j = pos.getY();
         int k = pos.getZ();
-        for (int la = 0; la < 20; ++la) {
+        for (int la = 0; la < 50; ++la)
+        {
             double d0 = (double) ((float) i) + (double) (random.nextFloat()) * 1.000000001490116D;
             double d1 = ((double) ((float) j) + (double) (random.nextFloat()) * 1.000000001490116D) + 0.5D;
             double d2 = (double) ((float) k) + (double) (random.nextFloat()) * 1.000000001490116D;
