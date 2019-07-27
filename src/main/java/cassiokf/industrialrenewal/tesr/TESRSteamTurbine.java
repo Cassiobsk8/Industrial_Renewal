@@ -18,6 +18,7 @@ public class TESRSteamTurbine extends TileEntitySpecialRenderer<TileEntitySteamT
 
     private static ItemStack pointer = new ItemStack(ModItems.pointer);
     private static ItemStack pointerLong = new ItemStack(ModItems.pointerLong);
+    private static ItemStack bar = new ItemStack(ModItems.barLevel);
     private double xPos = 0D;
     private double zPos = 0D;
 
@@ -30,24 +31,24 @@ public class TESRSteamTurbine extends TileEntitySpecialRenderer<TileEntitySteamT
             //STEAM
             doTheMath(facing, x, z, -1.1);
             RenderText(facing, xPos, y + 1.25, zPos, te.getSteamText());
-            RenderPointer(facing, xPos, y + 1.5, zPos, te.GetSteamFill());
+            RenderPointer(facing, xPos, y + 1.5, zPos, te.getSteamFill());
             //GENERATION
             doTheMath(facing, x, z, -1.1);
             RenderText(facing, xPos, y + 0.5, zPos, te.getGenerationText());
             doTheMathLong(facing, x, z, -0.96);
-            RenderLongPointer(facing, xPos, y + 0.67, zPos, te.GetGenerationFill());
+            RenderLongPointer(facing, xPos, y + 0.67, zPos, te.getGenerationFill());
             //WATER
             doTheMath(facing, x, z, -1.1);
             RenderText(facing, xPos, y - 0.25, zPos, te.getWaterText());
-            RenderPointer(facing, xPos, y + 0.01, zPos, te.GetWaterFill());
+            RenderPointer(facing, xPos, y + 0.01, zPos, te.getWaterFill());
             //ROTATION
             doTheMath(facing, x, z, 0);
             RenderText(facing, xPos, y + 1.25, zPos, te.getRotationText());
             RenderPointer(facing, xPos, y + 1.5, zPos, te.getRotationFill());
             //ENERGY
-            doTheMath(facing, x, z, +1.155);
-            RenderText(facing, xPos, y + 0.18, zPos, te.getEnergyText());
-            RenderPointer(facing, xPos, y + 0.45, zPos, te.GetEnergyFill());
+            doTheMath(facing, x, z, +1.165);
+            RenderText(facing, xPos, y + 0.1, zPos, te.getEnergyText());
+            RenderBar(facing, xPos, y + 0.184, zPos, te.getEnergyFill());
         }
     }
 
@@ -57,18 +58,18 @@ public class TESRSteamTurbine extends TileEntitySpecialRenderer<TileEntitySteamT
         {
             case SOUTH:
                 xPos = x + (0.5 - sidePlus);
-                zPos = z - 0.96;
+                zPos = z - 0.95;
                 return;
             case NORTH:
                 xPos = x + (0.5 + sidePlus);
-                zPos = z + 1.96;
+                zPos = z + 1.95;
                 return;
             case EAST:
-                xPos = x - 0.96;
+                xPos = x - 0.95;
                 zPos = z + (0.5 + sidePlus);
                 return;
             case WEST:
-                xPos = x + 1.96;
+                xPos = x + 1.95;
                 zPos = z + (0.5 - sidePlus);
                 return;
         }
@@ -186,6 +187,33 @@ public class TESRSteamTurbine extends TileEntitySpecialRenderer<TileEntitySteamT
         GlStateManager.rotate(90, 0, 0, 1);
         GlStateManager.rotate(-angle, 0, 0, 1);
         Minecraft.getMinecraft().getRenderItem().renderItem(pointerLong, ItemCameraTransforms.TransformType.GUI);
+        GlStateManager.popMatrix();
+    }
+
+    private void RenderBar(EnumFacing facing, double x, double y, double z, float fill)
+    {
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, z);
+        switch (facing)
+        {
+            default:
+                break;
+            case SOUTH:
+                GlStateManager.rotate(180F, 0, 1, 0);
+                break;
+            case NORTH:
+                break;
+            case WEST:
+                GlStateManager.rotate(90F, 0, 1, 0);
+                break;
+            case EAST:
+                GlStateManager.rotate(-90F, 0, 1, 0);
+                break;
+        }
+        GlStateManager.scale(1.2F, fill * 1.2F, 0.05F);
+        //GlStateManager.rotate(-angle, 0, 0, 1);
+        Minecraft.getMinecraft().getRenderItem().renderItem(bar, ItemCameraTransforms.TransformType.GUI);
         GlStateManager.popMatrix();
     }
 }

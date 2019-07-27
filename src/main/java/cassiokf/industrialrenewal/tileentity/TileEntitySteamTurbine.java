@@ -186,12 +186,12 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         return rotation / 10 + " rpm";
     }
 
-    public float GetEnergyFill() //0 ~ 180
+    public float getEnergyFill() //0 ~ 1
     {
         float currentAmount = this.energyContainer.getEnergyStored() / 1000;
         float totalCapacity = this.energyContainer.getMaxEnergyStored() / 1000;
         currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 180f;
+        return currentAmount;
     }
 
     private float getRotation()
@@ -202,7 +202,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         return currentAmount;
     }
 
-    public float GetGenerationFill() //0 ~ 180
+    public float getGenerationFill() //0 ~ 180
     {
         float currentAmount = ((rotation >= 6000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored()) ? getEnergyProduction() : 0) / 100f;
         float totalCapacity = energyPerTick / 100f;
@@ -210,7 +210,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         return currentAmount * 90f;
     }
 
-    public float GetWaterFill() //0 ~ 180
+    public float getWaterFill() //0 ~ 180
     {
         float currentAmount = this.waterTank.getFluidAmount() / 1000f;
         float totalCapacity = this.waterTank.getCapacity() / 1000f;
@@ -218,7 +218,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         return currentAmount * 180f;
     }
 
-    public float GetSteamFill() //0 ~ 180
+    public float getSteamFill() //0 ~ 180
     {
         float currentAmount = this.steamTank.getFluidAmount() / 1000f;
         float totalCapacity = this.steamTank.getCapacity() / 1000f;
