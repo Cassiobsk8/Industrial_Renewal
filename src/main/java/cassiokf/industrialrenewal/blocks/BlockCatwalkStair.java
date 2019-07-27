@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityCatWalkStair;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
@@ -60,6 +61,7 @@ public class BlockCatwalkStair extends BlockTileEntity<TileEntityCatWalkStair>
                 if (te != null)
                 {
                     te.toggleFacing(side);
+                    ItemPowerScrewDrive.playDrillSound(world, pos);
                     world.notifyBlockUpdate(pos, state, state, 2);
                 }
             }
