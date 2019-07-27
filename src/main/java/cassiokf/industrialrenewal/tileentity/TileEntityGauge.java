@@ -15,7 +15,9 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 public class TileEntityGauge extends TileEntity
 {
 
-    private EnumFacing blockFacing = EnumFacing.DOWN;
+    private EnumFacing baseFacing = EnumFacing.DOWN;
+    private EnumFacing indicatorHorizontalFacing;
+    private IFluidHandler tankStorage;
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
@@ -25,11 +27,9 @@ public class TileEntityGauge extends TileEntity
 
     public String GetText()
     {
-        TileEntity te = this.world.getTileEntity(pos.offset(blockFacing));
-        if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, blockFacing.getOpposite()))
+        if (getTankStorage() != null)
         {
-            IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-            FluidStack stack = handler == null ? null : handler.drain(1, false);
+            FluidStack stack = tankStorage.drain(1, false);
             return stack != null ? stack.getLocalizedName() : "Empty";
         } else
         {
@@ -37,30 +37,34 @@ public class TileEntityGauge extends TileEntity
         }
     }
 
-    public EnumFacing getBlockFacing()
+    public EnumFacing getBaseFacing()
     {
-        return blockFacing;
+        return baseFacing;
     }
 
-    public void setBlockFacing(EnumFacing facing)
+    public void setBaseFacing(EnumFacing facing)
     {
-        blockFacing = facing;
+        baseFacing = facing;
         markDirty();
     }
 
     public EnumFacing getGaugeFacing()
     {
-        EnumFacing value = this.world.getBlockState(this.pos).getValue(BlockGauge.FACING);
-        return value;
+        if (indicatorHorizontalFacing != null) return indicatorHorizontalFacing;
+        return forceIndicatorCheck();
+    }
+
+    public EnumFacing forceIndicatorCheck()
+    {
+        indicatorHorizontalFacing = this.world.getBlockState(this.pos).getValue(BlockGauge.FACING);
+        return indicatorHorizontalFacing;
     }
 
     public float GetTankFill() //0 ~ 180
     {
-        TileEntity te = this.world.getTileEntity(pos.offset(blockFacing));
-        if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, blockFacing.getOpposite()))
+        if (getTankStorage() != null)
         {
-            IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-            IFluidTankProperties properties = handler == null ? null : handler.getTankProperties()[0];
+            IFluidTankProperties properties = tankStorage.getTankProperties()[0];
             if (properties != null && properties.getContents() != null)
             {
                 float currentAmount = properties.getContents().amount / 1000f;
@@ -72,10 +76,32 @@ public class TileEntityGauge extends TileEntity
         return 0;
     }
 
+    private IFluidHandler getTankStorage()
+    {
+        if (tankStorage != null) return tankStorage;
+        return forceCheck();
+    }
+
+    public IFluidHandler forceCheck()
+    {
+        TileEntity te = this.world.getTileEntity(pos.offset(baseFacing));
+        if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, baseFacing.getOpposite()))
+        {
+            IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, baseFacing.getOpposite());
+            if (handler != null)
+            {
+                tankStorage = handler;
+                return tankStorage;
+            }
+        }
+        tankStorage = null;
+        return null;
+    }
+
     @Override
     public NBTTagCompound writeToNBT(final NBTTagCompound tag)
     {
-        tag.setInteger("baseFacing", blockFacing.getIndex());
+        tag.setInteger("baseFacing", baseFacing.getIndex());
         return super.writeToNBT(tag);
     }
 
@@ -83,7 +109,7 @@ public class TileEntityGauge extends TileEntity
     public void readFromNBT(final NBTTagCompound tag)
     {
         super.readFromNBT(tag);
-        blockFacing = EnumFacing.byIndex(tag.getInteger("baseFacing"));
+        baseFacing = EnumFacing.byIndex(tag.getInteger("baseFacing"));
     }
 
     @Override

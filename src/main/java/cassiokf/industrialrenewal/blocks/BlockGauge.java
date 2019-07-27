@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.tileentity.TileEntityGauge;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -40,7 +41,24 @@ public class BlockGauge extends BlockTileEntity<TileEntityGauge>
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
     {
         TileEntityGauge te = (TileEntityGauge) world.getTileEntity(pos);
-        return state.withProperty(BASE, te.getBlockFacing());
+        return state.withProperty(BASE, te.getBaseFacing());
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        TileEntityGauge te = (TileEntityGauge) worldIn.getTileEntity(pos);
+        if (te != null && worldIn.isRemote) te.forceCheck();
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        boolean rotated = super.rotateBlock(world, pos, axis);
+        TileEntityGauge te = (TileEntityGauge) world.getTileEntity(pos);
+        if (te != null && world.isRemote) te.forceIndicatorCheck();
+        return rotated;
     }
 
     @Nonnull
@@ -77,7 +95,7 @@ public class BlockGauge extends BlockTileEntity<TileEntityGauge>
     {
         TileEntityGauge te = (TileEntityGauge) worldIn.getTileEntity(pos);
         EnumFacing facing = state.getValue(BASE);
-        te.setBlockFacing(facing);
+        te.setBaseFacing(facing);
     }
 
     @SuppressWarnings("deprecation")

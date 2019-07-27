@@ -63,7 +63,7 @@ public class TESRGauge extends TileEntitySpecialRenderer<TileEntityGauge>
         switch (te.getGaugeFacing())
         {
             default:
-                System.out.println("DEU BOSTA AKI TIO: " + te.getBlockFacing());
+                System.out.println("DEU BOSTA AKI TIO: " + te.getBaseFacing());
                 break;
             case SOUTH:
                 GlStateManager.rotate(180F, 0, 1, 0);
@@ -94,7 +94,7 @@ public class TESRGauge extends TileEntitySpecialRenderer<TileEntityGauge>
         switch (te.getGaugeFacing())
         {
             default:
-                System.out.println("DEU BOSTA AKI TIO: " + te.getBlockFacing());
+                System.out.println("DEU BOSTA AKI TIO: " + te.getBaseFacing());
                 break;
             case SOUTH:
                 GlStateManager.rotate(180F, 0, 1, 0);
