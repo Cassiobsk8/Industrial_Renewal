@@ -130,10 +130,17 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
                     }
                 }
 
-                if (te != null && te.getBlockFacing() != getBlockFacing().getOpposite() && te.transferItem(frontPositionItem, false))
+                if (te != null)
                 {
-                    inventory.setStackInSlot(2, ItemStack.EMPTY);
-                    frontPositionItem = ItemStack.EMPTY;
+                    if (te.getBlockFacing() == getBlockFacing() && te.transferItem(frontPositionItem, false))
+                    {
+                        inventory.setStackInSlot(2, ItemStack.EMPTY);
+                        frontPositionItem = ItemStack.EMPTY;
+                    } else if (te.getBlockFacing() != getBlockFacing().getOpposite() && te.transferItem(frontPositionItem, 1, false))
+                    {
+                        inventory.setStackInSlot(2, ItemStack.EMPTY);
+                        frontPositionItem = ItemStack.EMPTY;
+                    }
                 }
             } else if (world.getBlockState(frontPos).getBlock().isAir(world.getBlockState(frontPos), world, frontPos))
             {
@@ -155,7 +162,7 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
             MiddlePositionItem = ItemStack.EMPTY;
         }
         ItemStack backPositionItem = inventory.getStackInSlot(0);
-        if (!backPositionItem.isEmpty() && MiddlePositionItem.isEmpty() && (!getInThisTick || (facing == EnumFacing.SOUTH || facing == EnumFacing.NORTH)))
+        if (!backPositionItem.isEmpty() && MiddlePositionItem.isEmpty() && !getInThisTick)
         {
             moveItemInternaly(0, 1);
         }
@@ -176,9 +183,14 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
 
     public boolean transferItem(ItemStack stack, boolean simulate)
     {
+        return transferItem(stack, 0, simulate);
+    }
+
+    public boolean transferItem(ItemStack stack, int slot, boolean simulate)
+    {
         if (inventory.getStackInSlot(0).isEmpty() && !stack.isEmpty())
         {
-            if (!simulate) inventory.setStackInSlot(0, stack);
+            if (!simulate) inventory.setStackInSlot(slot, stack);
             getInThisTick = true;
             Sync();
             return true;
