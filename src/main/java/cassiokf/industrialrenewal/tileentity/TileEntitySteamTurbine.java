@@ -64,7 +64,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     private int rotation;
     private int energyPerTick = 1024;
     private int oldRotation;
-    private int steamPtick = 500;
+    private int steamPtick = 200;
 
     private int timeSincePlayed;
 

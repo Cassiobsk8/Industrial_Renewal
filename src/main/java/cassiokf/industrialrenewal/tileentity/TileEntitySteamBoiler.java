@@ -111,7 +111,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
     private int maxHeat = 32000;
     private int heat;
     private int oldHeat;
-    private int waterPtick = 76;
+    private int waterPtick = 32;
 
     private int fuelTime;
     private int maxFuelTime;
@@ -123,81 +123,83 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
     @Override
     public void update()
     {
-        if (this.isMaster() && !this.world.isRemote && this.type > 0)
+        if (this.isMaster() && !this.world.isRemote)
         {
-            //Fuel to Heat
-            switch (this.type)
+            if (this.type > 0)
             {
-                default:
-                case 1:
-                    if (fuelTime >= solidPerTick || !this.solidFuelInv.getStackInSlot(0).isEmpty())
-                    {
-                        ItemStack fuel = this.solidFuelInv.getStackInSlot(0);
-                        if (fuelTime <= 0)
+                //Fuel to Heat
+                switch (this.type)
+                {
+                    default:
+                    case 1:
+                        if (fuelTime >= solidPerTick || !this.solidFuelInv.getStackInSlot(0).isEmpty())
                         {
-                            fuelTime = TileEntityFurnace.getItemBurnTime(fuel);
-                            maxFuelTime = fuelTime;
-                            fuel.shrink(1);
-                        }
-                        heat += 8;
-                        fuelTime -= solidPerTick;
-                    } else heat -= 2;
-                    break;
-                case 2:
-                    if (fuelTime >= fluidPerTick || this.fuelTank.getFluidAmount() > 0)
-                    {
-                        FluidStack fuel = this.fuelTank.getFluid();
-                        if (fuelTime <= 0)
+                            ItemStack fuel = this.solidFuelInv.getStackInSlot(0);
+                            if (fuelTime <= 0)
+                            {
+                                fuelTime = TileEntityFurnace.getItemBurnTime(fuel);
+                                maxFuelTime = fuelTime;
+                                fuel.shrink(1);
+                            }
+                            heat += 8;
+                            fuelTime -= solidPerTick;
+                        } else heat -= 2;
+                        break;
+                    case 2:
+                        if (fuelTime >= fluidPerTick || this.fuelTank.getFluidAmount() > 0)
                         {
-                            fuelTime = IRConfig.MainConfig.Main.fluidFuel.get(fuel.getFluid().getName()) != null ? IRConfig.MainConfig.Main.fluidFuel.get(fuel.getFluid().getName()) : 0;
-                            maxFuelTime = fuelTime;
-                            fuel.amount -= Fluid.BUCKET_VOLUME;
-                            this.markDirty();
-                        }
-                        heat += 8;
-                        fuelTime -= fluidPerTick;
-                    } else heat -= 2;
-                    break;
-            }
+                            FluidStack fuel = this.fuelTank.getFluid();
+                            if (fuelTime <= 0)
+                            {
+                                fuelTime = IRConfig.MainConfig.Main.fluidFuel.get(fuel.getFluid().getName()) != null ? IRConfig.MainConfig.Main.fluidFuel.get(fuel.getFluid().getName()) : 0;
+                                maxFuelTime = fuelTime;
+                                fuel.amount -= Fluid.BUCKET_VOLUME;
+                                this.markDirty();
+                            }
+                            heat += 8;
+                            fuelTime -= fluidPerTick;
+                        } else heat -= 2;
+                        break;
+                }
 
-            //Water to Steam
-            if (heat >= 10000 && this.waterTank.getFluidAmount() >= waterPtick && this.steamTank.getFluidAmount() < this.steamTank.getCapacity())
-            {
-                FluidStack stack = this.waterTank.drain(waterPtick, true);
-                int amount = stack != null ? stack.amount : 0;
-                float factor = (heat / 100f) / (maxHeat / 100f);
-                amount = Math.round(amount * factor);
-                FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), amount * IRConfig.MainConfig.Main.steamBoilerConvertionFactor);
-                this.steamTank.fillInternal(steamStack, true);
+                //Water to Steam
+                if (heat >= 10000 && this.waterTank.getFluidAmount() >= waterPtick && this.steamTank.getFluidAmount() < this.steamTank.getCapacity())
+                {
+                    int amount = waterPtick;
+                    float factor = (heat / 100f) / (maxHeat / 100f);
+                    amount = Math.round(amount * factor);
+                    this.waterTank.drain(amount, true);
+                    FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), amount * IRConfig.MainConfig.Main.steamBoilerConvertionFactor);
+                    this.steamTank.fillInternal(steamStack, true);
+                    heat -= 2;
+                }
+
                 heat -= 2;
-            }
+                heat = MathHelper.clamp(heat, 2420, maxHeat);
+                fuelTime = Math.max(0, fuelTime);
 
-            heat -= 2;
-            heat = MathHelper.clamp(heat, 2420, maxHeat);
-            fuelTime = Math.max(0, fuelTime);
+                //Auto output Steam
+                TileEntity upTE = this.world.getTileEntity(pos.up(2));
+                if (this.steamTank.getFluidAmount() > 0 && upTE != null && upTE.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN))
+                {
+                    IFluidHandler upTank = upTE.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN);
+                    this.steamTank.drain(upTank.fill(this.steamTank.drain(10000, false), true), true);
+                }
 
-            //Auto output Steam
-            TileEntity upTE = this.world.getTileEntity(pos.up(2));
-            if (this.steamTank.getFluidAmount() > 0 && upTE != null && upTE.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN))
-            {
-                IFluidHandler upTank = upTE.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN);
-                this.steamTank.drain(upTank.fill(this.steamTank.drain(10000, false), true), true);
-            }
-
-            //Steam to Water if no Heat
-            if (this.steamTank.getFluidAmount() > 0 && heat < 9000)
-            {
-                FluidStack stack = this.steamTank.drain(10, true);
-                stack.amount = stack.amount / IRConfig.MainConfig.Main.steamBoilerConvertionFactor;
-                this.waterTank.fill(stack, true);
-            }
-
+                //Steam to Water if no Heat
+                if (this.steamTank.getFluidAmount() > 0 && heat < 9000)
+                {
+                    FluidStack stack = this.steamTank.drain(10, true);
+                    stack.amount = stack.amount / IRConfig.MainConfig.Main.steamBoilerConvertionFactor;
+                    this.waterTank.fill(stack, true);
+                }
+            } else heat -= 6;
             //Sync with Client
             if (oldHeat != heat || fuelTime != oldFuelTime)
             {
-                this.Sync();
                 oldHeat = heat;
                 oldFuelTime = fuelTime;
+                this.Sync();
             }
         }
     }
