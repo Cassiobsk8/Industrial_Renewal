@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -43,13 +42,9 @@ public class TileEntityAlarm extends TileEntity implements ITickable {
     }
 
     public void playThis() {
-        if (this.checkPowered()) {
-            this.getWorld().playSound(null, this.getPos(), IRSoundHandler.TILEENTITY_ALARM, SoundCategory.BLOCKS, (float) IRConfig.MainConfig.Main.alarmVolume, 1.0F);
+        if (this.checkPowered() && !world.isRemote)
+        {
+            world.playSound(null, pos, IRSoundHandler.TILEENTITY_ALARM, SoundCategory.BLOCKS, (float) IRConfig.MainConfig.Main.alarmVolume, 1.0F);
         }
-    }
-
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-        return (oldState.getBlock() != newState.getBlock());
     }
 }
