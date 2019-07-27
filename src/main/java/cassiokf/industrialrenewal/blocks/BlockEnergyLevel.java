@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.tileentity.TileEntityEnergyLevel;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -84,11 +83,11 @@ public class BlockEnergyLevel extends BlockTileEntity<TileEntityEnergyLevel>
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor)
     {
-        TileEntityEnergyLevel te = (TileEntityEnergyLevel) worldIn.getTileEntity(pos);
-        if (te != null && worldIn.isRemote) te.forceCheck();
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        super.onNeighborChange(world, pos, neighbor);
+        TileEntityEnergyLevel te = (TileEntityEnergyLevel) world.getTileEntity(pos);
+        if (te != null) te.forceCheck();
     }
 
     @Override

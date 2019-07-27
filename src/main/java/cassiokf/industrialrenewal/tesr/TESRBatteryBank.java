@@ -30,18 +30,18 @@ public class TESRBatteryBank extends TileEntitySpecialRenderer<TileEntityBattery
         switch (facing) {
             case SOUTH:
                 xPos = x + 0.5;
-                zPos = z - 0.02;
+                zPos = z - 0.023;
                 return;
             case NORTH:
                 xPos = x + 0.5;
-                zPos = z + 1.02;
+                zPos = z + 1.023;
                 return;
             case EAST:
                 xPos = x - 0.023;
                 zPos = z + 0.5;
                 return;
             case WEST:
-                xPos = x + 1.02;
+                xPos = x + 1.023;
                 zPos = z + 0.5;
                 return;
         }

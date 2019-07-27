@@ -76,7 +76,7 @@ public class TileEntityEnergyLevel extends TileEntity
             currentAmount = currentAmount / totalCapacity;
             return currentAmount;
         }
-        return 0;
+        return 0f;
     }
 
     private IEnergyStorage getEnergyStorage()
@@ -111,8 +111,8 @@ public class TileEntityEnergyLevel extends TileEntity
     @Override
     public void readFromNBT(final NBTTagCompound tag)
     {
-        super.readFromNBT(tag);
         baseFacing = EnumFacing.byIndex(tag.getInteger("baseFacing"));
+        super.readFromNBT(tag);
     }
 
     @Override
