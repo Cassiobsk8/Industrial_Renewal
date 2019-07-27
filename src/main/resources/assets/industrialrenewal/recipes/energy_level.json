@@ -19,11 +19,11 @@
       "ore": "ingotIron"
     },
     "P": {
-      "item": "industrialrenewal:fluid_pipe"
+      "item": "industrialrenewal:energy_cable"
     }
   },
   "result": {
-    "item": "industrialrenewal:fluid_gauge",
+    "item": "industrialrenewal:energy_level",
     "count": 2
   }
 }

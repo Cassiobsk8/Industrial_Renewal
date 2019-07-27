@@ -24,8 +24,8 @@ public class TESRPipeGauge extends TileEntitySpecialRenderer<TileEntityFluidPipe
     public void render(TileEntityFluidPipeGauge te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         doTheMath(te.getGaugeFacing(), x, z);
-        RenderFluidName(te, xPos, y + 0.66, zPos);
-        RenderPointer(te, xPos, y + 0.83, zPos);
+        RenderFluidName(te, xPos, y + 0.56, zPos);
+        RenderPointer(te, xPos, y + 0.73, zPos);
     }
 
     private void doTheMath(EnumFacing facing, double x, double z)
