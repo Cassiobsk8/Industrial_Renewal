@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityBatteryBank;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -44,6 +45,7 @@ public class BlockBatteryBank extends BlockTileEntity<TileEntityBatteryBank> {
         {
             TileEntityBatteryBank te = (TileEntityBatteryBank) worldIn.getTileEntity(pos);
             te.toggleFacing(facing);
+            ItemPowerScrewDrive.playDrillSound(worldIn, pos);
             return true;
         }
         return false;
