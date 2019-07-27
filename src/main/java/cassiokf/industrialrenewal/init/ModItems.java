@@ -48,6 +48,7 @@ public class ModItems {
     public static ItemBase pointer = new ItemBase("pointer", null);
     public static ItemBase pointerLong = new ItemBase("pointer_long", null);
     public static ItemBase fire = new ItemBase("fire", null);
+    public static ItemBase barLevel = new ItemBase("bar_level", null);
 
     public static ItemBattery battery = new ItemBattery("battery", References.CREATIVE_IR_TAB);
 
@@ -95,6 +96,7 @@ public class ModItems {
                 cartridge_inverter,
                 pointer,
                 pointerLong,
+                barLevel,
                 fire,
                 barrel,
                 fireBoxSolid,
@@ -137,6 +139,7 @@ public class ModItems {
         stickSteel.registerItemModel();
         pointer.registerItemModel();
         pointerLong.registerItemModel();
+        barLevel.registerItemModel();
         fire.registerItemModel();
         barrel.registerItemModel();
         fireBoxSolid.registerItemModel();

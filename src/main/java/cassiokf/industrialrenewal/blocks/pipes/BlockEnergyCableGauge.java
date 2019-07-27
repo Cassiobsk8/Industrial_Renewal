@@ -92,7 +92,7 @@ public class BlockEnergyCableGauge extends BlockEnergyCable
             {
                 world.setBlockState(pos, ModBlocks.energyCable.getDefaultState(), 3);
                 if (!entity.isCreative())
-                    entity.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(ModBlocks.gauge)));
+                    entity.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(ModBlocks.energyLevel)));
                 ItemPowerScrewDrive.playDrillSound(world, pos);
             }
         }

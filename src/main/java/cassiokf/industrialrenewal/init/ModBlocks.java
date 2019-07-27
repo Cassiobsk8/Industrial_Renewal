@@ -79,6 +79,7 @@ public class ModBlocks {
     public static BlockBarrel barrel = new BlockBarrel("barrel", References.CREATIVE_IR_TAB);
     public static BlockTrash trash = new BlockTrash("trash", References.CREATIVE_IR_TAB);
     public static BlockGauge gauge = new BlockGauge("fluid_gauge", References.CREATIVE_IR_TAB);
+    public static BlockEnergyLevel energyLevel = new BlockEnergyLevel("energy_level", References.CREATIVE_IR_TAB);
 
     public static BlockElectricFence efence = new BlockElectricFence("electric_fence", References.CREATIVE_IR_TAB);
     public static BlockElectricBigFenceColumn bigFenceColumn = new BlockElectricBigFenceColumn("fence_big_column", References.CREATIVE_IR_TAB);
@@ -238,6 +239,7 @@ public class ModBlocks {
                 barrel,
                 trash,
                 gauge,
+                energyLevel,
                 gutter,
                 //Fluids
                 steamBlock,
@@ -270,6 +272,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(entityDetector.getTileEntityClass(), entityDetector.getRegistryName().toString());
         GameRegistry.registerTileEntity(barrel.getTileEntityClass(), barrel.getRegistryName().toString());
         GameRegistry.registerTileEntity(gauge.getTileEntityClass(), gauge.getRegistryName().toString());
+        GameRegistry.registerTileEntity(energyLevel.getTileEntityClass(), energyLevel.getRegistryName());
         GameRegistry.registerTileEntity(electricPump.getTileEntityClass(), electricPump.getRegistryName().toString());
         GameRegistry.registerTileEntity(batteryBank.getTileEntityClass(), batteryBank.getRegistryName().toString());
         GameRegistry.registerTileEntity(fluidPipe.getTileEntityClass(), fluidPipe.getRegistryName().toString());
@@ -358,6 +361,7 @@ public class ModBlocks {
                 cargoLoader.createItemBlock(),
                 fluidLoader.createItemBlock(),
                 gauge.createItemBlock(),
+                energyLevel.createItemBlock(),
                 buttonRed.createItemBlock(),
                 batteryBank.createItemBlock(),
                 electricPump.createItemBlock(),
@@ -446,6 +450,7 @@ public class ModBlocks {
         barrel.registerItemModel(Item.getItemFromBlock(barrel));
         trash.registerItemModel(Item.getItemFromBlock(trash));
         gauge.registerItemModel(Item.getItemFromBlock(gauge));
+        energyLevel.registerItemModel(Item.getItemFromBlock(energyLevel));
         buttonRed.registerItemModel(Item.getItemFromBlock(buttonRed));
         batteryBank.registerItemModel(Item.getItemFromBlock(batteryBank));
         electricPump.registerItemModel(Item.getItemFromBlock(electricPump));

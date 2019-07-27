@@ -78,7 +78,7 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> imple
             }
             return true;
         }
-        if (playerStack.getItem() == ItemBlock.getItemFromBlock(ModBlocks.gauge))
+        if (playerStack.getItem() == ItemBlock.getItemFromBlock(ModBlocks.energyLevel))
         {
             if (!world.isRemote)
             {
