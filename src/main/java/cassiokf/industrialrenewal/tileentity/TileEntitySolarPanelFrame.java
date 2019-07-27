@@ -78,7 +78,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
                     if (tileEntity != null && !tileEntity.isInvalid())
                     {
                         EnumFacing facing = getPosSet().get(posT);
-                        if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()) && !(world.getBlockState(posT).getBlock() instanceof BlockSolarPanelFrame))
+                        if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
                         {
                             final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
                             if (consumer != null)

@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.tileentity.TileEntityGauge;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -45,11 +44,11 @@ public class BlockGauge extends BlockTileEntity<TileEntityGauge>
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor)
     {
-        TileEntityGauge te = (TileEntityGauge) worldIn.getTileEntity(pos);
-        if (te != null && worldIn.isRemote) te.forceCheck();
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        super.onNeighborChange(world, pos, neighbor);
+        TileEntityGauge te = (TileEntityGauge) world.getTileEntity(pos);
+        if (te != null) te.forceCheck();
     }
 
     @Override
