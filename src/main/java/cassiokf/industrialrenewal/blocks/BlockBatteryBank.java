@@ -13,6 +13,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -52,6 +54,14 @@ public class BlockBatteryBank extends BlockTileEntity<TileEntityBatteryBank> {
     }
 
     @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        TileEntityBatteryBank te = (TileEntityBatteryBank) worldIn.getTileEntity(pos);
+        if (te != null) te.forceFaceCheck();
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+    }
+
+    @Override
     public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
         return false;
@@ -79,29 +89,6 @@ public class BlockBatteryBank extends BlockTileEntity<TileEntityBatteryBank> {
         return new BlockStateContainer(this, FACING, SOUTH, NORTH, WEST, EAST, UP, DOWN);
     }
 
-    /*@SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        EnumFacing facing = state.getValue(FACING);
-        return state.withProperty(SOUTH, canConnectTo(world, pos, facing.getOpposite()))
-                .withProperty(NORTH, canConnectTo(world, pos, facing))
-                .withProperty(EAST, canConnectTo(world, pos, facing.rotateY()))
-                .withProperty(WEST, canConnectTo(world, pos, facing.rotateYCCW()))
-                .withProperty(UP, canConnectTo(world, pos, EnumFacing.UP))
-                .withProperty(DOWN, canConnectTo(world, pos, EnumFacing.DOWN));
-    }*/
-
-    private boolean canConnectTo(IBlockAccess world, BlockPos pos, EnumFacing correspondentFacing)
-    {
-        if (world.getBlockState(pos).getValue(FACING).getOpposite() == correspondentFacing) return false;
-        TileEntityBatteryBank te = (TileEntityBatteryBank) world.getTileEntity(pos);
-        if (te != null)
-        {
-            return te.isFacingOutput(correspondentFacing);
-        }
-        return false;
-    }
-
     @Override
     @Deprecated
     public boolean isOpaqueCube(IBlockState state) {
@@ -112,6 +99,12 @@ public class BlockBatteryBank extends BlockTileEntity<TileEntityBatteryBank> {
     @Deprecated
     public boolean isFullCube(IBlockState state) {
         return false;
+    }
+
+    @Override
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {

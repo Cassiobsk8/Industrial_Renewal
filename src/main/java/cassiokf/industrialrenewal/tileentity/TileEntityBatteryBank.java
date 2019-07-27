@@ -23,6 +23,7 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
     private final VoltsEnergyContainer dummyEnergy;
     private final Set<EnumFacing> outPutFacings = new HashSet<>();
     private boolean needSync = true;
+    private EnumFacing blockFacing;
 
     public TileEntityBatteryBank() {
         this.container = new VoltsEnergyContainer(IRConfig.MainConfig.Main.batteryBankCapacity, IRConfig.MainConfig.Main.batteryBankMaxInput, IRConfig.MainConfig.Main.batteryBankMaxOutput)
@@ -115,8 +116,14 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
     }
 
     public EnumFacing getBlockFacing() {
-        EnumFacing value = this.world.getBlockState(this.pos).getValue(BlockBatteryBank.FACING);
-        return value;
+        if (blockFacing != null) return blockFacing;
+        return forceFaceCheck();
+    }
+
+    public EnumFacing forceFaceCheck()
+    {
+        blockFacing = world.getBlockState(pos).getValue(BlockBatteryBank.FACING);
+        return blockFacing;
     }
 
     public float GetTankFill() //0 ~ 180
@@ -124,7 +131,7 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
         float currentAmount = container.getEnergyStored() / 1000F;
         float totalCapacity = container.getMaxEnergyStored() / 1000F;
         currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 180f;
+        return currentAmount;
     }
 
     @Override
@@ -153,6 +160,7 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
         {
             outPutFacings.add(EnumFacing.byIndex(index));
         }
+        blockFacing = EnumFacing.byHorizontalIndex(compound.getInteger("face"));
         super.readFromNBT(compound);
     }
 
@@ -163,6 +171,7 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
                 .mapToInt(EnumFacing::getIndex)
                 .toArray();
         compound.setIntArray("OutputFacings", enabledFacingIndices);
+        compound.setInteger("face", getBlockFacing().getHorizontalIndex());
         return super.writeToNBT(compound);
     }
 }

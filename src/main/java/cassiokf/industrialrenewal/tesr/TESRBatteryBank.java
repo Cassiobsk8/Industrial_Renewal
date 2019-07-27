@@ -15,15 +15,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TESRBatteryBank extends TileEntitySpecialRenderer<TileEntityBatteryBank> {
 
-    private static ItemStack pointer = new ItemStack(ModItems.pointer);
+    private static ItemStack pointer = new ItemStack(ModItems.barLevel);
     private double xPos = 0D;
     private double zPos = 0D;
 
     @Override
     public void render(TileEntityBatteryBank te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         doTheMath(te.getBlockFacing(), x, z);
-        RenderEnergyQuantity(te, xPos, y + 0.62, zPos);
-        RenderPointer(te, xPos, y + 0.75, zPos);
+        RenderEnergyQuantity(te, xPos, y + 0.43, zPos);
+        RenderPointer(te, xPos, y + 0.49, zPos);
     }
 
     private void doTheMath(EnumFacing facing, double x, double z) {
@@ -37,7 +37,7 @@ public class TESRBatteryBank extends TileEntitySpecialRenderer<TileEntityBattery
                 zPos = z + 1.02;
                 return;
             case EAST:
-                xPos = x - 0.02;
+                xPos = x - 0.023;
                 zPos = z + 0.5;
                 return;
             case WEST:
@@ -80,13 +80,14 @@ public class TESRBatteryBank extends TileEntitySpecialRenderer<TileEntityBattery
         GlStateManager.popMatrix();
     }
 
-    private void RenderPointer(TileEntityBatteryBank te, double x, double y, double z) {
+    private void RenderPointer(TileEntityBatteryBank te, double x, double y, double z)
+    {
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
-        switch (te.getBlockFacing()) {
+        switch (te.getBlockFacing())
+        {
             default:
-                System.out.println("DEU BOSTA AKI TIO: " + te.getBlockFacing());
                 break;
             case SOUTH:
                 GlStateManager.rotate(180F, 0, 1, 0);
@@ -100,10 +101,9 @@ public class TESRBatteryBank extends TileEntitySpecialRenderer<TileEntityBattery
                 GlStateManager.rotate(-90F, 0, 1, 0);
                 break;
         }
-        GlStateManager.scale(0.15F, 0.15F, 0.15F);
-        GlStateManager.rotate(90, 0, 0, 1);
         float angle = te.GetTankFill();
-        GlStateManager.rotate(-angle, 0, 0, 1);
+        GlStateManager.scale(0.7F, angle * 0.7F, 0.05F);
+        //GlStateManager.rotate(-angle, 0, 0, 1);
         Minecraft.getMinecraft().getRenderItem().renderItem(pointer, ItemCameraTransforms.TransformType.GUI);
         GlStateManager.popMatrix();
     }
