@@ -127,15 +127,15 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
                     this.Sync();
                     oldRotation = rotation;
                 }
-            }
-            if (this.rotation > 0)
-            {
-                if (timeSincePlayed >= 9)
+                if (this.rotation > 0)
                 {
-                    timeSincePlayed = 0;
-                    this.world.playSound(null, this.pos, IRSoundHandler.MOTOR_ROTAION, SoundCategory.BLOCKS, 0.8F, Math.min(getRotation(), 0.9F));
+                    if (timeSincePlayed >= 9)
+                    {
+                        timeSincePlayed = 0;
+                        this.world.playSound(null, this.pos, IRSoundHandler.MOTOR_ROTAION, SoundCategory.BLOCKS, 0.8F, Math.min(getRotation(), 0.9F));
+                    }
+                    timeSincePlayed++;
                 }
-                timeSincePlayed++;
             }
         }
     }

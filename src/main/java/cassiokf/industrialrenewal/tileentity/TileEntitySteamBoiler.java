@@ -193,7 +193,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
                     stack.amount = stack.amount / IRConfig.MainConfig.Main.steamBoilerConvertionFactor;
                     this.waterTank.fill(stack, true);
                 }
-            } else heat -= 6;
+            } else if (heat > 2420) heat -= 6;
             //Sync with Client
             if (oldHeat != heat || fuelTime != oldFuelTime)
             {
@@ -220,7 +220,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
         this.fuelTime = 0;
         this.type = type;
         IBlockState state = this.world.getBlockState(this.pos).withProperty(BlockSteamBoiler.TYPE, type);
-        this.world.setBlockState(this.pos, state, 2);
+        this.world.setBlockState(this.pos, state, 3);
         this.Sync();
     }
 
