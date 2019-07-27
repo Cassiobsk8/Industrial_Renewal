@@ -61,9 +61,7 @@ public class BlockCatWalk extends BlockTileEntity<TileEntityCatWalk>
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (hand == EnumHand.MAIN_HAND)
         {
-            Item playerItem = player.inventory.getCurrentItem().getItem();
-            BlockPos posOffset = pos.offset(player.getHorizontalFacing());
-            IBlockState stateOffset = world.getBlockState(posOffset);
+            Item playerItem = player.getHeldItem(EnumHand.MAIN_HAND).getItem();
             if (playerItem.equals(ModItems.screwDrive))
             {
                 TileEntityCatWalk te = (TileEntityCatWalk) world.getTileEntity(pos);
@@ -73,12 +71,14 @@ public class BlockCatWalk extends BlockTileEntity<TileEntityCatWalk>
                     world.notifyBlockUpdate(pos, state, state, 2);
                 }
             }
+            BlockPos posOffset = pos.offset(player.getHorizontalFacing());
+            IBlockState stateOffset = world.getBlockState(posOffset);
             if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catWalk))
                     || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catWalkSteel)))
             {
                 if (side == EnumFacing.UP)
                 {
-                    if (stateOffset.getBlock().isAir(stateOffset, world, posOffset) || stateOffset.getBlock().isReplaceable(world, posOffset))
+                    if (stateOffset.getBlock().isReplaceable(world, posOffset))
                     {
                         world.setBlockState(pos.offset(player.getHorizontalFacing()), getBlockFromItem(playerItem).getDefaultState(), 3);
                         if (!player.isCreative())
