@@ -84,7 +84,6 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
         IBlockState state = this.world.getBlockState(this.pos);
         if (!(state.getBlock() instanceof Block3x3x3Base)) return false;
         master = state.getValue(Block3x3x3Base.MASTER);
-        this.markDirty();
         masterChecked = true;
         return master;
     }
@@ -93,6 +92,7 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         compound.setBoolean("master", this.isMaster());
+        compound.setBoolean("checked", this.masterChecked);
         return super.writeToNBT(compound);
     }
 
@@ -100,6 +100,7 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
     public void readFromNBT(NBTTagCompound compound)
     {
         this.master = compound.getBoolean("master");
+        this.masterChecked = compound.getBoolean("checked");
         super.readFromNBT(compound);
     }
 }
