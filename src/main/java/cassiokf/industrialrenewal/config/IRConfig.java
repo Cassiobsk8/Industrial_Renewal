@@ -130,6 +130,12 @@ public class IRConfig {
             @Config.LangKey("gui.config.blade_durability.name")
             @Config.Comment("How many hours will a blade last (default 48 hours)")
             public int ironBladeDurability = 48 * 60;
+
+            @Config.Comment("The amount of FE/t a base solar panel can generate")
+            public int baseSolarPanelMaxGeneration = 15;
+
+            @Config.Comment("How much the frame multiplies the solar panel generation contained in it")
+            public int panelFrameMultiplier = 2;
         }
 
         public static class SubCategoryRecipes

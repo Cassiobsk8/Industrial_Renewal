@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockSolarPanel;
 import cassiokf.industrialrenewal.blocks.BlockSolarPanelFrame;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
@@ -12,8 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -149,17 +148,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
         if (world.provider.hasSkyLight() && world.canBlockSeeSky(pos.offset(EnumFacing.UP))
                 && world.getSkylightSubtracted() == 0 && this.energyContainer.getEnergyStored() != this.energyContainer.getMaxEnergyStored())
         {
-
-            int i = world.getLightFor(EnumSkyBlock.SKY, pos) - world.getSkylightSubtracted();
-            float f = world.getCelestialAngleRadians(1.0F);
-            if (i > 0)
-            {
-                float f1 = f < (float) Math.PI ? 0.0F : ((float) Math.PI * 2F);
-                f = f + (f1 - f) * 0.2F;
-                i = Math.round((float) i * MathHelper.cos(f));
-            }
-            i = MathHelper.clamp(i, 0, 15);
-            int result = getMaster().energyContainer.getEnergyStored() + ((i * panelReady.size()) * getMultiplier());
+            int result = getMaster().energyContainer.getEnergyStored() + ((TileEntitySolarPanelBase.getGeneration(world, pos) * panelReady.size()) * getMultiplier());
             if (result > getMaster().energyContainer.getMaxEnergyStored())
             {
                 result = getMaster().energyContainer.getMaxEnergyStored();
@@ -175,9 +164,9 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
         super.removeMachine(ownPos, machinePos);
     }
 
-    public int getMultiplier()
+    private int getMultiplier()
     {
-        return 2;
+        return IRConfig.MainConfig.Main.panelFrameMultiplier;
     }
 
     public void dropAllItems()
