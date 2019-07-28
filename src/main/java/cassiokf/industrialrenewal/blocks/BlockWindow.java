@@ -48,22 +48,26 @@ public class BlockWindow extends BlockBase {
 
         if (isConnected(actualState, EnumFacing.NORTH)) {
             NORTHZ1 = 0.0f;
-        } else if (!isConnected(actualState, EnumFacing.NORTH)) {
+        } else
+        {
             NORTHZ1 = 0.4375f;
         }
         if (isConnected(actualState, EnumFacing.SOUTH)) {
             SOUTHZ2 = 1.0f;
-        } else if (!isConnected(actualState, EnumFacing.SOUTH)) {
+        } else
+        {
             SOUTHZ2 = 0.5625f;
         }
         if (isConnected(actualState, EnumFacing.WEST)) {
             WESTX1 = 0.0f;
-        } else if (!isConnected(actualState, EnumFacing.WEST)) {
+        } else
+        {
             WESTX1 = 0.4375f;
         }
         if (isConnected(actualState, EnumFacing.EAST)) {
             EASTX2 = 1.0f;
-        } else if (!isConnected(actualState, EnumFacing.EAST)) {
+        } else
+        {
             EASTX2 = 0.5625f;
         }
         return new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
@@ -77,22 +81,26 @@ public class BlockWindow extends BlockBase {
         }
         if (isConnected(state, EnumFacing.NORTH)) {
             NORTHZ1 = 0.0f;
-        } else if (!isConnected(state, EnumFacing.NORTH)) {
+        } else
+        {
             NORTHZ1 = 0.4375f;
         }
         if (isConnected(state, EnumFacing.SOUTH)) {
             SOUTHZ2 = 1.0f;
-        } else if (!isConnected(state, EnumFacing.SOUTH)) {
+        } else
+        {
             SOUTHZ2 = 0.5625f;
         }
         if (isConnected(state, EnumFacing.WEST)) {
             WESTX1 = 0.0f;
-        } else if (!isConnected(state, EnumFacing.WEST)) {
+        } else
+        {
             WESTX1 = 0.4375f;
         }
         if (isConnected(state, EnumFacing.EAST)) {
             EASTX2 = 1.0f;
-        } else if (!isConnected(state, EnumFacing.EAST)) {
+        } else
+        {
             EASTX2 = 0.5625f;
         }
         final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
@@ -153,7 +161,8 @@ public class BlockWindow extends BlockBase {
         for (EnumFacing faces : EnumFacing.HORIZONTALS) {
             IBlockState neighbourState = world.getBlockState(pos.offset(faces));
             Block nb = neighbourState.getBlock();
-            if (nb instanceof BlockWindow || nb.isFullCube(neighbourState)) {
+            if (nb instanceof BlockWindow || nb.isFullCube(neighbourState) || nb instanceof BlockBaseWall)
+            {
                 sides++;
             }
         }
@@ -168,13 +177,13 @@ public class BlockWindow extends BlockBase {
         if (neighbourDirection == EnumFacing.UP) {
             return shouldRenderCenter(world, ownPos);
         }
-        return nb instanceof BlockWindow || nb.isFullCube(neighbourState);
+        return nb instanceof BlockWindow || nb.isFullCube(neighbourState) || nb instanceof BlockBaseWall;
     }
 
     private boolean isThisConnected(IBlockAccess world, BlockPos pos, EnumFacing neighbourFacing) {
         IBlockState neighbourState = world.getBlockState(pos.offset(neighbourFacing));
         Block nb = neighbourState.getBlock();
-        return nb instanceof BlockWindow || nb.isFullCube(neighbourState);
+        return nb instanceof BlockWindow || nb.isFullCube(neighbourState) || nb instanceof BlockBaseWall;
     }
 
     private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
