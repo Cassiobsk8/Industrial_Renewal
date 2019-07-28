@@ -126,6 +126,10 @@ public class IRConfig {
             @Config.LangKey("gui.config.emergency_mode.name")
             @Config.Comment("Disables Chunk loading, use if there is a crash happening in a chunk loaded area")
             public boolean emergencyMode = false;
+
+            @Config.LangKey("gui.config.blade_durability.name")
+            @Config.Comment("How many hours will a blade last (default 48 hours)")
+            public int ironBladeDurability = 48 * 60;
         }
 
         public static class SubCategoryRecipes

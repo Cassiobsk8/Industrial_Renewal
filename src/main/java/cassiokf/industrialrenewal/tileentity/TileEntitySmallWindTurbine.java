@@ -19,6 +19,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class TileEntitySmallWindTurbine extends TileEntitySyncable implements ICapabilityProvider, ITickable
 {
@@ -40,6 +41,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
     };
     private float rotation;
     private int energyGenerated;
+    private int tickToDamage;
 
     public TileEntitySmallWindTurbine()
     {
@@ -74,6 +76,12 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
                 int energyGen = Math.round(getMaxGeneration() * getEfficiency());
                 energyGenerated = this.energyContainer.receiveEnergy(energyGen, false);
                 this.markDirty();
+                if (tickToDamage >= 1200 && energyGen > 0)
+                {
+                    tickToDamage = 0;
+                    bladeInv.getStackInSlot(0).attemptDamageItem(1, new Random(), null);
+                }
+                tickToDamage++;
             }
             //OutPut Energy
             if (this.energyContainer.getEnergyStored() > 0)
@@ -165,6 +173,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
         this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
         this.bladeInv.deserializeNBT(compound.getCompoundTag("bladeInv"));
         this.energyGenerated = compound.getInteger("generation");
+        this.tickToDamage = compound.getInteger("damageTick");
         //this.rotation = compound.getFloat("rotation");
         super.readFromNBT(compound);
     }
@@ -175,6 +184,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
         compound.setTag("StoredIR", this.energyContainer.serializeNBT());
         compound.setTag("bladeInv", this.bladeInv.serializeNBT());
         compound.setInteger("generation", this.energyGenerated);
+        compound.setInteger("damageTick", tickToDamage);
         //compound.setFloat("rotation", this.rotation);
         return super.writeToNBT(compound);
     }
