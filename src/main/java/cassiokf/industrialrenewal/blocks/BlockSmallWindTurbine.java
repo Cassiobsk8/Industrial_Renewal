@@ -62,6 +62,12 @@ public class BlockSmallWindTurbine extends BlockTileEntity<TileEntitySmallWindTu
     }
 
     @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        return false;
+    }
+
+    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TileEntitySmallWindTurbine te = (TileEntitySmallWindTurbine) worldIn.getTileEntity(pos);
