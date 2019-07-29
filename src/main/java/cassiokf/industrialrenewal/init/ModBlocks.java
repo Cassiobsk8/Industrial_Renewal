@@ -112,6 +112,7 @@ public class ModBlocks {
     public static BlockBoosterRail boosterRail = new BlockBoosterRail("booster_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockBufferStopRail bufferStopRail = new BlockBufferStopRail("buffer_stop_rail", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockLoaderRail loaderRail = new BlockLoaderRail("rail_loader", References.CREATIVE_IRLOCOMOTIVE_TAB);
+    public static BlockRailGate railGate = new BlockRailGate("rail_gate", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockCargoLoader cargoLoader = new BlockCargoLoader("cargo_loader", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static BlockFluidLoader fluidLoader = new BlockFluidLoader("fluid_loader", References.CREATIVE_IRLOCOMOTIVE_TAB);
 
@@ -235,6 +236,7 @@ public class ModBlocks {
                 crossingRail,
                 detectorRail,
                 loaderRail,
+                railGate,
                 bufferStopRail,
                 cargoLoader,
                 fluidLoader,
@@ -365,6 +367,7 @@ public class ModBlocks {
                 crossingRail.createItemBlock(),
                 detectorRail.createItemBlock(),
                 loaderRail.createItemBlock(),
+                railGate.createItemBlock(),
                 bufferStopRail.createItemBlock(),
                 cargoLoader.createItemBlock(),
                 fluidLoader.createItemBlock(),
@@ -431,6 +434,7 @@ public class ModBlocks {
         recordPlayer.registerItemModel(Item.getItemFromBlock(recordPlayer));
         sensorRain.registerItemModel(Item.getItemFromBlock(sensorRain));
         loaderRail.registerItemModel(Item.getItemFromBlock(loaderRail));
+        railGate.registerItemModel(Item.getItemFromBlock(railGate));
         cargoLoader.registerItemModel(Item.getItemFromBlock(cargoLoader));
         fluidLoader.registerItemModel(Item.getItemFromBlock(fluidLoader));
         signalIndicator.registerItemModel(Item.getItemFromBlock(signalIndicator));
