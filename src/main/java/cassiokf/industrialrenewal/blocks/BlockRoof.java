@@ -110,7 +110,7 @@ public class BlockRoof extends BlockBase {
                         && !dState.isFullCube();
             }
         }
-        return neighbourDirection == EnumFacing.DOWN && neighbourState.isFullCube();
+        return neighbourDirection == EnumFacing.DOWN && (neighbourState.isFullCube() || neighbourState.isTopSolid());
     }
 
     @SuppressWarnings("deprecation")

@@ -201,6 +201,12 @@ public class BlockBaseWall extends BlockBase
     }
 
     @Override
+    public boolean isTopSolid(IBlockState state)
+    {
+        return true;
+    }
+
+    @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;

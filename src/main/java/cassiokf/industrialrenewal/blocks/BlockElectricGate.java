@@ -166,6 +166,7 @@ public class BlockElectricGate extends BlockBase
         return state;
     }
 
+    @Override
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
     {
         return worldIn.getBlockState(pos).getValue(ACTIVE);
