@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.BlockGauge;
+import cassiokf.industrialrenewal.blocks.BlockEnergyLevel;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -63,7 +63,7 @@ public class TileEntityEnergyLevel extends TileEntity
 
     public EnumFacing forceIndicatorCheck()
     {
-        indicatorHorizontalFacing = this.world.getBlockState(this.pos).getValue(BlockGauge.FACING);
+        indicatorHorizontalFacing = this.world.getBlockState(this.pos).getValue(BlockEnergyLevel.FACING);
         return indicatorHorizontalFacing;
     }
 

@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.tileentity.TileEntityEnergyLevel;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -22,7 +23,7 @@ import javax.annotation.Nullable;
 
 public class BlockEnergyLevel extends BlockTileEntity<TileEntityEnergyLevel>
 {
-    public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final IProperty<EnumFacing> BASE = PropertyDirection.create("base");
 
     public BlockEnergyLevel(String name, CreativeTabs tab)
@@ -30,7 +31,7 @@ public class BlockEnergyLevel extends BlockTileEntity<TileEntityEnergyLevel>
         super(Material.IRON, name, tab);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
-        this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.UP));
+        this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.NORTH));
 
     }
 

@@ -1,6 +1,5 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "ModelCartFluidTank",
 	"textures": {
 		"0": "industrialrenewal:entities/fluid_container"
 	},
