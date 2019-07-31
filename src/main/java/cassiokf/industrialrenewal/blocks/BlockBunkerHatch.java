@@ -32,7 +32,6 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
     public static final PropertyBool OPEN = PropertyBool.create("open");
 
     protected static final AxisAlignedBB RENDER_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB NO_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 
     public BlockBunkerHatch(String name, CreativeTabs tab)
     {
@@ -177,7 +176,7 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
         Boolean active = actualState.getValue(OPEN);
         if (active)
         {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, NO_AABB);
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
         } else
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, RENDER_AABB);
