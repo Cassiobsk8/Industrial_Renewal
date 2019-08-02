@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.proxy;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.init.RenderHandler;
+import cassiokf.industrialrenewal.model.ModelLoaderCustom;
 import cassiokf.industrialrenewal.tesr.*;
 import cassiokf.industrialrenewal.tileentity.*;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableGauge;
@@ -10,6 +11,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 public class ClientProxy extends CommonProxy {
@@ -51,6 +53,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipeGauge.class, new TESRPipeGauge());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnergyCableGauge.class, new TESRCableGauge());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnergyLevel.class, new TESREnergyFill());
+
+        ModelLoaderRegistry.registerLoader(new ModelLoaderCustom());
     }
 
     @Override
