@@ -6,7 +6,6 @@ import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableGauge;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -42,26 +41,27 @@ public class BlockEnergyCableGauge extends BlockEnergyCable
         super(name, tab);
     }
 
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING, SOUTH, NORTH, EAST, WEST, UP, DOWN);
-    }
+    /*
+        @Override
+        protected BlockStateContainer createBlockState()
+        {
+            return new BlockStateContainer(this, FACING, SOUTH, NORTH, EAST, WEST, UP, DOWN);
+        }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
-    {
-        EnumFacing facing = state.getValue(FACING);
-        state = state.withProperty(SOUTH, canConnectPipe(world, pos, facing.getOpposite()))
-                .withProperty(NORTH, canConnectPipe(world, pos, facing))
-                .withProperty(EAST, canConnectPipe(world, pos, facing.rotateY()))
-                .withProperty(WEST, canConnectPipe(world, pos, facing.rotateYCCW()))
-                .withProperty(UP, canConnectPipe(world, pos, EnumFacing.UP))
-                .withProperty(DOWN, canConnectPipe(world, pos, EnumFacing.DOWN));
-        return state;
-    }
-
+        @SuppressWarnings("deprecation")
+        @Override
+        public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+        {
+            EnumFacing facing = state.getValue(FACING);
+            state = state.withProperty(SOUTH, canConnectPipe(world, pos, facing.getOpposite()))
+                    .withProperty(NORTH, canConnectPipe(world, pos, facing))
+                    .withProperty(EAST, canConnectPipe(world, pos, facing.rotateY()))
+                    .withProperty(WEST, canConnectPipe(world, pos, facing.rotateYCCW()))
+                    .withProperty(UP, canConnectPipe(world, pos, EnumFacing.UP))
+                    .withProperty(DOWN, canConnectPipe(world, pos, EnumFacing.DOWN));
+            return state;
+        }
+    */
     private boolean canConnectPipe(IBlockAccess world, BlockPos pos, EnumFacing facing)
     {
         return canConnectToPipe(world, pos, facing) || canConnectToCapability(world, pos, facing);

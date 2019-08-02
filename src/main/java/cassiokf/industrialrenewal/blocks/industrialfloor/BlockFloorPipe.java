@@ -5,7 +5,6 @@ import cassiokf.industrialrenewal.blocks.pipes.BlockFluidPipe;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -60,25 +59,26 @@ public class BlockFloorPipe extends BlockFluidPipe
 
     }
 
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, SOUTH, NORTH, EAST, WEST, UP, DOWN, WSOUTH, WNORTH, WEAST, WWEST, WUP, WDOWN);
-    }
+    /*
+        @Override
+        protected BlockStateContainer createBlockState()
+        {
+            return new BlockStateContainer(this, SOUTH, NORTH, EAST, WEST, UP, DOWN, WSOUTH, WNORTH, WEAST, WWEST, WUP, WDOWN);
+        }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
-    {
-        state = state.withProperty(SOUTH, canConnectPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectPipe(world, pos, EnumFacing.NORTH))
-                .withProperty(EAST, canConnectPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectPipe(world, pos, EnumFacing.WEST))
-                .withProperty(UP, canConnectPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectPipe(world, pos, EnumFacing.DOWN))
-                .withProperty(WSOUTH, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.SOUTH)).withProperty(WNORTH, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.NORTH))
-                .withProperty(WEAST, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.EAST)).withProperty(WWEST, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.WEST))
-                .withProperty(WUP, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.UP)).withProperty(WDOWN, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.DOWN));
-        return state;
-    }
-
+        @SuppressWarnings("deprecation")
+        @Override
+        public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+        {
+            state = state.withProperty(SOUTH, canConnectPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectPipe(world, pos, EnumFacing.NORTH))
+                    .withProperty(EAST, canConnectPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectPipe(world, pos, EnumFacing.WEST))
+                    .withProperty(UP, canConnectPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectPipe(world, pos, EnumFacing.DOWN))
+                    .withProperty(WSOUTH, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.SOUTH)).withProperty(WNORTH, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.NORTH))
+                    .withProperty(WEAST, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.EAST)).withProperty(WWEST, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.WEST))
+                    .withProperty(WUP, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.UP)).withProperty(WDOWN, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.DOWN));
+            return state;
+        }
+    */
     private boolean canConnectPipe(IBlockAccess world, BlockPos pos, EnumFacing facing)
     {
         return canConnectToPipe(world, pos, facing) || canConnectToCapability(world, pos, facing);

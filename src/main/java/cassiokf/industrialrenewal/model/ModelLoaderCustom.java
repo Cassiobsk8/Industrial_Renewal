@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.model;
 
-import cassiokf.industrialrenewal.model.smartmodel.RoofModel;
+import cassiokf.industrialrenewal.model.smartmodel.*;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
@@ -32,6 +32,18 @@ public class ModelLoaderCustom implements ICustomModelLoader
         if (modelName.equals("roofmodel"))
         {
             return new RoofModel();
+        } else if (modelName.equals("pipe_fluid"))
+        {
+            return new PipeBaseModel();
+        } else if (modelName.equals("pipe_energy"))
+        {
+            return new EnergyCableBaseModel();
+        } else if (modelName.equals("pillar_energy"))
+        {
+            return new PillarEnergyCableBaseModel();
+        } else if (modelName.equals("pillar_fluid"))
+        {
+            return new PillarFluidPipeBaseModel();
         } else
         {
             return ModelLoaderRegistry.getMissingModel();

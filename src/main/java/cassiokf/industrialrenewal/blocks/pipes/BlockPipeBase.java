@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.blocks.BlockTileEntityConnectedMultiblocks;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -16,6 +17,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.common.property.Properties;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -33,19 +38,27 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
     //public static final float PIPE_MIN_POS = 0.250f;
     //public static final float PIPE_MAX_POS = 0.750f;
 
-    public static final PropertyBool SOUTH = PropertyBool.create("south");
-    public static final PropertyBool NORTH = PropertyBool.create("north");
-    public static final PropertyBool EAST = PropertyBool.create("east");
-    public static final PropertyBool WEST = PropertyBool.create("west");
-    public static final PropertyBool UP = PropertyBool.create("up");
-    public static final PropertyBool DOWN = PropertyBool.create("down");
+    public static final IUnlistedProperty<Boolean> SOUTH = new Properties.PropertyAdapter<>(PropertyBool.create("south"));
+    public static final IUnlistedProperty<Boolean> NORTH = new Properties.PropertyAdapter<>(PropertyBool.create("north"));
+    public static final IUnlistedProperty<Boolean> EAST = new Properties.PropertyAdapter<>(PropertyBool.create("east"));
+    public static final IUnlistedProperty<Boolean> WEST = new Properties.PropertyAdapter<>(PropertyBool.create("west"));
+    public static final IUnlistedProperty<Boolean> UP = new Properties.PropertyAdapter<>(PropertyBool.create("up"));
+    public static final IUnlistedProperty<Boolean> DOWN = new Properties.PropertyAdapter<>(PropertyBool.create("down"));
 
-    public static final PropertyBool CSOUTH = PropertyBool.create("c_south");
-    public static final PropertyBool CNORTH = PropertyBool.create("c_north");
-    public static final PropertyBool CEAST = PropertyBool.create("c_east");
-    public static final PropertyBool CWEST = PropertyBool.create("c_west");
-    public static final PropertyBool CUP = PropertyBool.create("c_up");
-    public static final PropertyBool CDOWN = PropertyBool.create("c_down");
+    public static final IUnlistedProperty<Boolean> CSOUTH = new Properties.PropertyAdapter<>(PropertyBool.create("c_south"));
+    public static final IUnlistedProperty<Boolean> CNORTH = new Properties.PropertyAdapter<>(PropertyBool.create("c_north"));
+    public static final IUnlistedProperty<Boolean> CEAST = new Properties.PropertyAdapter<>(PropertyBool.create("c_east"));
+    public static final IUnlistedProperty<Boolean> CWEST = new Properties.PropertyAdapter<>(PropertyBool.create("c_west"));
+    public static final IUnlistedProperty<Boolean> CUP = new Properties.PropertyAdapter<>(PropertyBool.create("c_up"));
+    public static final IUnlistedProperty<Boolean> CDOWN = new Properties.PropertyAdapter<>(PropertyBool.create("c_down"));
+
+    //Pillar use Only
+    public static final IUnlistedProperty<Boolean> WSOUTH = new Properties.PropertyAdapter<>(PropertyBool.create("w_south"));
+    public static final IUnlistedProperty<Boolean> WNORTH = new Properties.PropertyAdapter<>(PropertyBool.create("w_north"));
+    public static final IUnlistedProperty<Boolean> WEAST = new Properties.PropertyAdapter<>(PropertyBool.create("w_east"));
+    public static final IUnlistedProperty<Boolean> WWEST = new Properties.PropertyAdapter<>(PropertyBool.create("w_west"));
+    public static final IUnlistedProperty<Boolean> WUP = new Properties.PropertyAdapter<>(PropertyBool.create("w_up"));
+    public static final IUnlistedProperty<Boolean> WDOWN = new Properties.PropertyAdapter<>(PropertyBool.create("w_down"));
 
     public BlockPipeBase(String name, CreativeTabs tab) {
         super(Material.IRON, name, tab);
@@ -55,7 +68,9 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN);
+        IProperty[] listedProperties = new IProperty[]{}; // listed properties
+        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN};
+        return new ExtendedBlockState(this, listedProperties, unlistedProperties);
     }
 
     @SuppressWarnings("deprecation")
@@ -90,30 +105,37 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
 
     public abstract boolean canConnectToCapability(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection);
 
-    @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        state = state.withProperty(SOUTH, canConnectToPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectToPipe(world, pos, EnumFacing.NORTH))
-                .withProperty(EAST, canConnectToPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectToPipe(world, pos, EnumFacing.WEST))
-                .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
-                .withProperty(CSOUTH, canConnectToCapability(world, pos, EnumFacing.SOUTH)).withProperty(CNORTH, canConnectToCapability(world, pos, EnumFacing.NORTH))
-                .withProperty(CEAST, canConnectToCapability(world, pos, EnumFacing.EAST)).withProperty(CWEST, canConnectToCapability(world, pos, EnumFacing.WEST))
-                .withProperty(CUP, canConnectToCapability(world, pos, EnumFacing.UP)).withProperty(CDOWN, canConnectToCapability(world, pos, EnumFacing.DOWN));
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        if (state instanceof IExtendedBlockState)
+        {
+            IExtendedBlockState eState = (IExtendedBlockState) state;
+            return eState.withProperty(SOUTH, canConnectToPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectToPipe(world, pos, EnumFacing.NORTH))
+                    .withProperty(EAST, canConnectToPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectToPipe(world, pos, EnumFacing.WEST))
+                    .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
+                    .withProperty(CSOUTH, canConnectToCapability(world, pos, EnumFacing.SOUTH)).withProperty(CNORTH, canConnectToCapability(world, pos, EnumFacing.NORTH))
+                    .withProperty(CEAST, canConnectToCapability(world, pos, EnumFacing.EAST)).withProperty(CWEST, canConnectToCapability(world, pos, EnumFacing.WEST))
+                    .withProperty(CUP, canConnectToCapability(world, pos, EnumFacing.UP)).withProperty(CDOWN, canConnectToCapability(world, pos, EnumFacing.DOWN));
+        }
         return state;
     }
 
-    public final boolean isConnected(IBlockAccess world, BlockPos pos, final IBlockState state, final PropertyBool property)
+    public final boolean isConnected(IBlockAccess world, BlockPos pos, IBlockState state, final IUnlistedProperty<Boolean> property)
     {
-        return state.getValue(property);
+        if (state instanceof IExtendedBlockState)
+        {
+            state = getExtendedState(state, world, pos);
+            IExtendedBlockState eState = (IExtendedBlockState) state;
+            return eState.getValue(property);
+        }
+        return false;
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
 
-        if (!isActualState) {
-            state = state.getActualState(worldIn, pos);
-        }
         if (isConnected(worldIn, pos, state, NORTH) || isConnected(worldIn, pos, state, CNORTH))
         {
             NORTHZ1 = 0.0f;
@@ -163,44 +185,42 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        IBlockState actualState = state.getActualState(worldIn, pos);
-
-        if (isConnected(worldIn, pos, actualState, NORTH) || isConnected(worldIn, pos, actualState, CNORTH))
+        if (isConnected(worldIn, pos, state, NORTH) || isConnected(worldIn, pos, state, CNORTH))
         {
             NORTHZ1 = 0.0f;
         } else
         {
             NORTHZ1 = 0.250f;
         }
-        if (isConnected(worldIn, pos, actualState, SOUTH) || isConnected(worldIn, pos, actualState, CSOUTH))
+        if (isConnected(worldIn, pos, state, SOUTH) || isConnected(worldIn, pos, state, CSOUTH))
         {
             SOUTHZ2 = 1.0f;
         } else
         {
             SOUTHZ2 = 0.750f;
         }
-        if (isConnected(worldIn, pos, actualState, WEST) || isConnected(worldIn, pos, actualState, CWEST))
+        if (isConnected(worldIn, pos, state, WEST) || isConnected(worldIn, pos, state, CWEST))
         {
             WESTX1 = 0.0f;
         } else
         {
             WESTX1 = 0.250f;
         }
-        if (isConnected(worldIn, pos, actualState, EAST) || isConnected(worldIn, pos, actualState, CEAST))
+        if (isConnected(worldIn, pos, state, EAST) || isConnected(worldIn, pos, state, CEAST))
         {
             EASTX2 = 1.0f;
         } else
         {
             EASTX2 = 0.750f;
         }
-        if (isConnected(worldIn, pos, actualState, DOWN) || isConnected(worldIn, pos, actualState, CDOWN))
+        if (isConnected(worldIn, pos, state, DOWN) || isConnected(worldIn, pos, state, CDOWN))
         {
             DOWNY1 = 0.0f;
         } else
         {
             DOWNY1 = 0.250f;
         }
-        if (isConnected(worldIn, pos, actualState, UP) || isConnected(worldIn, pos, actualState, CUP))
+        if (isConnected(worldIn, pos, state, UP) || isConnected(worldIn, pos, state, CUP))
         {
             UPY2 = 1.0f;
         } else

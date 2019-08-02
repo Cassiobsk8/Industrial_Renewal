@@ -5,7 +5,7 @@ import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -21,20 +21,15 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockPillarEnergyCable extends BlockEnergyCable
 {
-
-    public static final PropertyBool WSOUTH = PropertyBool.create("w_south");
-    public static final PropertyBool WNORTH = PropertyBool.create("w_north");
-    public static final PropertyBool WEAST = PropertyBool.create("w_east");
-    public static final PropertyBool WWEST = PropertyBool.create("w_west");
-    public static final PropertyBool WUP = PropertyBool.create("w_up");
-    public static final PropertyBool WDOWN = PropertyBool.create("w_down");
-
     private static float NORTHZ1 = 0.250f;
     private static float SOUTHZ2 = 0.750f;
     private static float WESTX1 = 0.250f;
@@ -52,7 +47,9 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, SOUTH, NORTH, EAST, WEST, UP, DOWN, WSOUTH, WNORTH, WEAST, WWEST, WUP, WDOWN);
+        IProperty[] listedProperties = new IProperty[]{}; // listed properties
+        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN, WSOUTH, WNORTH, WEAST, WWEST, WUP, WDOWN};
+        return new ExtendedBlockState(this, listedProperties, unlistedProperties);
     }
 
     @Override
@@ -149,40 +146,46 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
         return false;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        state = state.withProperty(SOUTH, canConnectPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectPipe(world, pos, EnumFacing.NORTH))
-                .withProperty(EAST, canConnectPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectPipe(world, pos, EnumFacing.WEST))
-                .withProperty(UP, canConnectPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectPipe(world, pos, EnumFacing.DOWN))
-                .withProperty(WSOUTH, BlockPillar.canConnectTo(world, pos, EnumFacing.SOUTH)).withProperty(WNORTH, BlockPillar.canConnectTo(world, pos, EnumFacing.NORTH))
-                .withProperty(WEAST, BlockPillar.canConnectTo(world, pos, EnumFacing.EAST)).withProperty(WWEST, BlockPillar.canConnectTo(world, pos, EnumFacing.WEST))
-                .withProperty(WUP, BlockPillar.canConnectTo(world, pos, EnumFacing.UP)).withProperty(WDOWN, BlockPillar.canConnectTo(world, pos, EnumFacing.DOWN));
+        if (state instanceof IExtendedBlockState)
+        {
+            IExtendedBlockState eState = (IExtendedBlockState) state;
+            return eState.withProperty(SOUTH, canConnectToPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectToPipe(world, pos, EnumFacing.NORTH))
+                    .withProperty(EAST, canConnectToPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectToPipe(world, pos, EnumFacing.WEST))
+                    .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
+                    .withProperty(CSOUTH, canConnectToCapability(world, pos, EnumFacing.SOUTH)).withProperty(CNORTH, canConnectToCapability(world, pos, EnumFacing.NORTH))
+                    .withProperty(CEAST, canConnectToCapability(world, pos, EnumFacing.EAST)).withProperty(CWEST, canConnectToCapability(world, pos, EnumFacing.WEST))
+                    .withProperty(CUP, canConnectToCapability(world, pos, EnumFacing.UP)).withProperty(CDOWN, canConnectToCapability(world, pos, EnumFacing.DOWN))
+                    .withProperty(WSOUTH, BlockPillar.canConnectTo(world, pos, EnumFacing.SOUTH)).withProperty(WNORTH, BlockPillar.canConnectTo(world, pos, EnumFacing.NORTH))
+                    .withProperty(WEAST, BlockPillar.canConnectTo(world, pos, EnumFacing.EAST)).withProperty(WWEST, BlockPillar.canConnectTo(world, pos, EnumFacing.WEST))
+                    .withProperty(WUP, BlockPillar.canConnectTo(world, pos, EnumFacing.UP)).withProperty(WDOWN, BlockPillar.canConnectTo(world, pos, EnumFacing.DOWN));
+        }
         return state;
     }
 
-    private boolean canConnectPipe(IBlockAccess world, BlockPos pos, EnumFacing facing)
+    public final boolean isConnected(IBlockAccess world, BlockPos pos, IBlockState state, final EnumFacing facing)
     {
-        return canConnectToPipe(world, pos, facing) || canConnectToCapability(world, pos, facing);
-    }
-
-    public final boolean isConnected(final IBlockState state, final EnumFacing facing)
-    {
-        switch (facing)
+        if (state instanceof IExtendedBlockState)
         {
-            case DOWN:
-                return state.getValue(WDOWN);
-            case UP:
-                return state.getValue(WUP);
-            case NORTH:
-                return state.getValue(WNORTH);
-            case SOUTH:
-                return state.getValue(WSOUTH);
-            case WEST:
-                return state.getValue(WWEST);
-            case EAST:
-                return state.getValue(WEAST);
+            state = getExtendedState(state, world, pos);
+            IExtendedBlockState eState = (IExtendedBlockState) state;
+            switch (facing)
+            {
+                case DOWN:
+                    return eState.getValue(WDOWN);
+                case UP:
+                    return eState.getValue(WUP);
+                case NORTH:
+                    return eState.getValue(WNORTH);
+                case SOUTH:
+                    return eState.getValue(WSOUTH);
+                case WEST:
+                    return eState.getValue(WWEST);
+                case EAST:
+                    return eState.getValue(WEAST);
+            }
         }
         return false;
     }
@@ -191,35 +194,31 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
     {
-        if (!isActualState)
-        {
-            state = state.getActualState(worldIn, pos);
-        }
-        if (isConnected(state, EnumFacing.NORTH))
+        if (isConnected(worldIn, pos, state, EnumFacing.NORTH))
         {
             NORTHZ1 = 0.0f;
-        } else if (!isConnected(state, EnumFacing.NORTH))
+        } else if (!isConnected(worldIn, pos, state, EnumFacing.NORTH))
         {
             NORTHZ1 = 0.250f;
         }
-        if (isConnected(state, EnumFacing.SOUTH))
+        if (isConnected(worldIn, pos, state, EnumFacing.SOUTH))
         {
             SOUTHZ2 = 1.0f;
-        } else if (!isConnected(state, EnumFacing.SOUTH))
+        } else if (!isConnected(worldIn, pos, state, EnumFacing.SOUTH))
         {
             SOUTHZ2 = 0.750f;
         }
-        if (isConnected(state, EnumFacing.WEST))
+        if (isConnected(worldIn, pos, state, EnumFacing.WEST))
         {
             WESTX1 = 0.0f;
-        } else if (!isConnected(state, EnumFacing.WEST))
+        } else if (!isConnected(worldIn, pos, state, EnumFacing.WEST))
         {
             WESTX1 = 0.250f;
         }
-        if (isConnected(state, EnumFacing.EAST))
+        if (isConnected(worldIn, pos, state, EnumFacing.EAST))
         {
             EASTX2 = 1.0f;
-        } else if (!isConnected(state, EnumFacing.EAST))
+        } else if (!isConnected(worldIn, pos, state, EnumFacing.EAST))
         {
             EASTX2 = 0.750f;
         }
@@ -228,35 +227,33 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        IBlockState actualState = state.getActualState(source, pos);
-
-        if (isConnected(actualState, EnumFacing.NORTH))
+        if (isConnected(worldIn, pos, state, EnumFacing.NORTH))
         {
             NORTHZ1 = 0.0f;
-        } else if (!isConnected(actualState, EnumFacing.NORTH))
+        } else if (!isConnected(worldIn, pos, state, EnumFacing.NORTH))
         {
             NORTHZ1 = 0.250f;
         }
-        if (isConnected(actualState, EnumFacing.SOUTH))
+        if (isConnected(worldIn, pos, state, EnumFacing.SOUTH))
         {
             SOUTHZ2 = 1.0f;
-        } else if (!isConnected(actualState, EnumFacing.SOUTH))
+        } else if (!isConnected(worldIn, pos, state, EnumFacing.SOUTH))
         {
             SOUTHZ2 = 0.750f;
         }
-        if (isConnected(actualState, EnumFacing.WEST))
+        if (isConnected(worldIn, pos, state, EnumFacing.WEST))
         {
             WESTX1 = 0.0f;
-        } else if (!isConnected(actualState, EnumFacing.WEST))
+        } else if (!isConnected(worldIn, pos, state, EnumFacing.WEST))
         {
             WESTX1 = 0.250f;
         }
-        if (isConnected(actualState, EnumFacing.EAST))
+        if (isConnected(worldIn, pos, state, EnumFacing.EAST))
         {
             EASTX2 = 1.0f;
-        } else if (!isConnected(actualState, EnumFacing.EAST))
+        } else if (!isConnected(worldIn, pos, state, EnumFacing.EAST))
         {
             EASTX2 = 0.750f;
         }

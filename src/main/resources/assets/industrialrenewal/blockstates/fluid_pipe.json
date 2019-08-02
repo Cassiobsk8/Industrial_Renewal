@@ -1,150 +1,18 @@
 {
   "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:pipe_center",
-    "textures": {
-      "particle": "industrialrenewal:blocks/pipe"
-    }
-  },
   "variants": {
-    "down": {
-      "true": {
-        "submodel": {
-          "pipe_down": {
-            "model": "industrialrenewal:pipe_side",
-            "x": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "up": {
-      "true": {
-        "submodel": {
-          "pipe_up": {
-            "model": "industrialrenewal:pipe_side",
-            "x": -90
-          }
-        }
-      },
-      "false": {}
-    },
-    "north": {
-      "true": {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:pipe_side"
-          }
-        }
-      },
-      "false": {}
-    },
-    "south": {
-      "true": {
-        "submodel": {
-          "pipe_south": {
-            "model": "industrialrenewal:pipe_side",
-            "y": 180
-          }
-        }
-      },
-      "false": {}
-    },
-    "east": {
-      "true": {
-        "submodel": {
-          "pipe_east": {
-            "model": "industrialrenewal:pipe_side",
-            "y": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "west": {
-      "true": {
-        "submodel": {
-          "pipe_west": {
-            "model": "industrialrenewal:pipe_side",
-            "y": -90
-          }
-        }
-      },
-      "false": {}
-    },
-    "c_down": {
-      "true": {
-        "submodel": {
-          "pipe_down": {
-            "model": "industrialrenewal:pipe_side_cap",
-            "x": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "c_up": {
-      "true": {
-        "submodel": {
-          "pipe_up": {
-            "model": "industrialrenewal:pipe_side_cap",
-            "x": -90
-          }
-        }
-      },
-      "false": {}
-    },
-    "c_north": {
-      "true": {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:pipe_side_cap"
-          }
-        }
-      },
-      "false": {}
-    },
-    "c_south": {
-      "true": {
-        "submodel": {
-          "pipe_south": {
-            "model": "industrialrenewal:pipe_side_cap",
-            "y": 180
-          }
-        }
-      },
-      "false": {}
-    },
-    "c_east": {
-      "true": {
-        "submodel": {
-          "pipe_east": {
-            "model": "industrialrenewal:pipe_side_cap",
-            "y": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "c_west": {
-      "true": {
-        "submodel": {
-          "pipe_west": {
-            "model": "industrialrenewal:pipe_side_cap",
-            "y": -90
-          }
-        }
-      },
-      "false": {}
+    "normal": {
+      "model": "industrialrenewal:smartmodel/pipe_fluid"
     },
     "inventory": [
       {
+        "model": "industrialrenewal:pipe_fluid/pipe_center",
         "submodel": {
           "pipe_north": {
-            "model": "industrialrenewal:pipe_side"
+            "model": "industrialrenewal:pipe_fluid/pipe_side"
           },
           "pipe_south": {
-            "model": "industrialrenewal:pipe_side",
+            "model": "industrialrenewal:pipe_fluid/pipe_side",
             "y": 180
           }
         }
