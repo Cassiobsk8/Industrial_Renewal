@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:pipe_energy/cable_meter"
+    }
+  }
+}

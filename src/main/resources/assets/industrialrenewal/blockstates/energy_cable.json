@@ -6,7 +6,16 @@
     },
     "inventory": [
       {
-        "model": "industrialrenewal:pipe_energy/cable_center"
+        "model": "industrialrenewal:pipe_energy/cable_center",
+        "submodel": {
+          "pipe_north": {
+            "model": "industrialrenewal:pipe_energy/cable_side"
+          },
+          "pipe_south": {
+            "model": "industrialrenewal:pipe_energy/cable_side",
+            "y": 180
+          }
+        }
       }
     ]
   }

@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.model.smartmodel;
 
+import cassiokf.industrialrenewal.model.smartmodel.composite.RoofComposite;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

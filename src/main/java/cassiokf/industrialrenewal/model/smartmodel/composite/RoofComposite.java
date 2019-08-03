@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.model.smartmodel;
+package cassiokf.industrialrenewal.model.smartmodel.composite;
 
 import cassiokf.industrialrenewal.blocks.BlockRoof;
 import net.minecraft.block.state.IBlockState;

@@ -5,22 +5,23 @@ import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableGauge;
 import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -29,58 +30,35 @@ public class BlockEnergyCableGauge extends BlockEnergyCable
 {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-    private static float NORTHZ1 = 0.250f;
-    private static float SOUTHZ2 = 0.750f;
-    private static float WESTX1 = 0.250f;
-    private static float EASTX2 = 0.750f;
-    private static float DOWNY1 = 0.250f;
-    private static float UPY2 = 1f;
-
     public BlockEnergyCableGauge(String name, CreativeTabs tab)
     {
         super(name, tab);
     }
 
-    /*
-        @Override
-        protected BlockStateContainer createBlockState()
-        {
-            return new BlockStateContainer(this, FACING, SOUTH, NORTH, EAST, WEST, UP, DOWN);
-        }
 
-        @SuppressWarnings("deprecation")
-        @Override
-        public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        IProperty[] listedProperties = new IProperty[]{FACING}; // listed properties
+        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN};
+        return new ExtendedBlockState(this, listedProperties, unlistedProperties);
+    }
+
+    @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        if (state instanceof IExtendedBlockState)
         {
             EnumFacing facing = state.getValue(FACING);
-            state = state.withProperty(SOUTH, canConnectPipe(world, pos, facing.getOpposite()))
-                    .withProperty(NORTH, canConnectPipe(world, pos, facing))
-                    .withProperty(EAST, canConnectPipe(world, pos, facing.rotateY()))
-                    .withProperty(WEST, canConnectPipe(world, pos, facing.rotateYCCW()))
-                    .withProperty(UP, canConnectPipe(world, pos, EnumFacing.UP))
-                    .withProperty(DOWN, canConnectPipe(world, pos, EnumFacing.DOWN));
-            return state;
+            IExtendedBlockState eState = (IExtendedBlockState) state;
+            return eState.withProperty(SOUTH, canConnectToPipe(world, pos, facing.getOpposite())).withProperty(NORTH, canConnectToPipe(world, pos, facing))
+                    .withProperty(EAST, canConnectToPipe(world, pos, facing.rotateY())).withProperty(WEST, canConnectToPipe(world, pos, facing.rotateYCCW()))
+                    .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
+                    .withProperty(CSOUTH, canConnectToCapability(world, pos, facing.getOpposite())).withProperty(CNORTH, canConnectToCapability(world, pos, facing))
+                    .withProperty(CEAST, canConnectToCapability(world, pos, facing.rotateY())).withProperty(CWEST, canConnectToCapability(world, pos, facing.rotateYCCW()))
+                    .withProperty(CUP, canConnectToCapability(world, pos, EnumFacing.UP)).withProperty(CDOWN, canConnectToCapability(world, pos, EnumFacing.DOWN));
         }
-    */
-    private boolean canConnectPipe(IBlockAccess world, BlockPos pos, EnumFacing facing)
-    {
-        return canConnectToPipe(world, pos, facing) || canConnectToCapability(world, pos, facing);
-    }
-
-    @Override
-    public boolean canConnectToPipe(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
-    {
-        IBlockState state = worldIn.getBlockState(ownPos.offset(neighbourDirection));
-        return state.getBlock() instanceof BlockEnergyCable;
-    }
-
-    @Override
-    public boolean canConnectToCapability(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
-    {
-        BlockPos pos = ownPos.offset(neighbourDirection);
-        IBlockState state = worldIn.getBlockState(pos);
-        TileEntity te = worldIn.getTileEntity(pos);
-        return !(state.getBlock() instanceof BlockEnergyCable) && te != null && te.hasCapability(CapabilityEnergy.ENERGY, neighbourDirection.getOpposite());
+        return state;
     }
 
     @Override
@@ -97,19 +75,6 @@ public class BlockEnergyCableGauge extends BlockEnergyCable
             }
         }
         return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
-    {
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
-    {
-        return FULL_BLOCK_AABB;
     }
 
     @Override

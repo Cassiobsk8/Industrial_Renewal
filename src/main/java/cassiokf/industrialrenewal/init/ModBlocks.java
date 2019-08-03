@@ -10,6 +10,8 @@ import cassiokf.industrialrenewal.blocks.pipes.*;
 import cassiokf.industrialrenewal.blocks.railroad.*;
 import cassiokf.industrialrenewal.blocks.redstone.*;
 import cassiokf.industrialrenewal.fluids.BlockFluid;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableGauge;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeGauge;
 import cassiokf.industrialrenewal.util.EnumBulkConveyorType;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -211,9 +213,9 @@ public class ModBlocks {
                 //floorPipe,
                 //Pipes
                 energyCable,
-                //energyCableGauge,
+                energyCableGauge,
                 fluidPipe,
-                //fluidPipeGauge,
+                fluidPipeGauge,
                 valveLarge,
                 conveyorV,
                 conveyorVHopper,
@@ -255,7 +257,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(veinHematite.getTileEntityClass(), veinHematite.getRegistryName());
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
         GameRegistry.registerTileEntity(energyCable.getTileEntityClass(), energyCable.getRegistryName());
-        //GameRegistry.registerTileEntity(TileEntityEnergyCableGauge.class, energyCableGauge.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityEnergyCableGauge.class, energyCableGauge.getRegistryName());
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
         GameRegistry.registerTileEntity(gutter.getTileEntityClass(), gutter.getRegistryName().toString());
         GameRegistry.registerTileEntity(spanel.getTileEntityClass(), spanel.getRegistryName().toString());
@@ -281,7 +283,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(electricPump.getTileEntityClass(), electricPump.getRegistryName().toString());
         GameRegistry.registerTileEntity(batteryBank.getTileEntityClass(), batteryBank.getRegistryName().toString());
         GameRegistry.registerTileEntity(fluidPipe.getTileEntityClass(), fluidPipe.getRegistryName().toString());
-        //GameRegistry.registerTileEntity(TileEntityFluidPipeGauge.class, fluidPipeGauge.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityFluidPipeGauge.class, fluidPipeGauge.getRegistryName());
         GameRegistry.registerTileEntity(steamBoiler.getTileEntityClass(), steamBoiler.getRegistryName().toString());
         GameRegistry.registerTileEntity(steamTurbine.getTileEntityClass(), steamTurbine.getRegistryName().toString());
         GameRegistry.registerTileEntity(mining.getTileEntityClass(), mining.getRegistryName());

@@ -1,88 +1,25 @@
 {
   "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:pipe_center_gauge",
-    "textures": {
-      "particle": "industrialrenewal:blocks/pipe"
-    }
-  },
   "variants": {
+    "normal": {
+      "model": "industrialrenewal:smartmodel/pipe_fluid_gauge"
+    },
     "facing": {
-      "north": {},
+      "north": {
+        "model": "industrialrenewal:smartmodel/pipe_fluid_gauge"
+      },
       "south": {
+        "model": "industrialrenewal:smartmodel/pipe_fluid_gauge",
         "y": 180
       },
       "east": {
+        "model": "industrialrenewal:smartmodel/pipe_fluid_gauge",
         "y": 90
       },
       "west": {
+        "model": "industrialrenewal:smartmodel/pipe_fluid_gauge",
         "y": -90
       }
-    },
-    "down": {
-      "true": {
-        "submodel": {
-          "pipe_down": {
-            "model": "industrialrenewal:pipe_side",
-            "x": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "up": {
-      "true": {
-        "submodel": {
-          "pipe_up": {
-            "model": "industrialrenewal:pipe_side",
-            "x": -90
-          }
-        }
-      },
-      "false": {}
-    },
-    "north": {
-      "true": {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:pipe_side"
-          }
-        }
-      },
-      "false": {}
-    },
-    "south": {
-      "true": {
-        "submodel": {
-          "pipe_south": {
-            "model": "industrialrenewal:pipe_side",
-            "y": 180
-          }
-        }
-      },
-      "false": {}
-    },
-    "east": {
-      "true": {
-        "submodel": {
-          "pipe_east": {
-            "model": "industrialrenewal:pipe_side",
-            "y": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "west": {
-      "true": {
-        "submodel": {
-          "pipe_west": {
-            "model": "industrialrenewal:pipe_side",
-            "y": -90
-          }
-        }
-      },
-      "false": {}
     },
     "inventory": [
       {

@@ -44,6 +44,12 @@ public class ModelLoaderCustom implements ICustomModelLoader
         } else if (modelName.equals("pillar_fluid"))
         {
             return new PillarFluidPipeBaseModel();
+        } else if (modelName.equals("pipe_energy_gauge"))
+        {
+            return new GaugeEnergyCableBaseModel();
+        } else if (modelName.equals("pipe_fluid_gauge"))
+        {
+            return new GaugeFluidPipeBaseModel();
         } else
         {
             return ModelLoaderRegistry.getMissingModel();
