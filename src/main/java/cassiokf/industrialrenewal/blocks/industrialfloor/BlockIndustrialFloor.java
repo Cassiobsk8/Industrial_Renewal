@@ -21,6 +21,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.common.property.Properties;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -31,13 +35,12 @@ import java.util.stream.Stream;
 public class BlockIndustrialFloor extends BlockBase
 {
 
-    public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
+    public static final ImmutableList<IUnlistedProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES)
-                    .map(facing -> PropertyBool.create(facing.getName()))
+                    .map(facing -> new Properties.PropertyAdapter<>(PropertyBool.create(facing.getName())))
                     .collect(Collectors.toList())
     );
     protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.0D, 0.875D, 0.0D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB UP_DOWN_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
     protected static final AxisAlignedBB NONE_AABB = new AxisAlignedBB(0.3125D, 0.3125D, 0.3125D, 0.6875D, 0.6875D, 0.6875D);
     protected static final AxisAlignedBB C_UP_AABB = new AxisAlignedBB(0.0D, 0.9375D, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -56,47 +59,58 @@ public class BlockIndustrialFloor extends BlockBase
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        IBlockState actualState = getActualState(state, source, pos);
-        if (isConnected(actualState, EnumFacing.UP) && !isConnected(actualState, EnumFacing.DOWN)) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        if (isConnected(worldIn, pos, state, EnumFacing.UP) && !isConnected(worldIn, pos, state, EnumFacing.DOWN))
+        {
             return UP_AABB;
         }
-        if (!isConnected(actualState, EnumFacing.UP) && isConnected(actualState, EnumFacing.DOWN)) {
+        if (!isConnected(worldIn, pos, state, EnumFacing.UP) && isConnected(worldIn, pos, state, EnumFacing.DOWN))
+        {
             return DOWN_AABB;
         }
-        if (!isConnected(actualState, EnumFacing.UP) && !isConnected(actualState, EnumFacing.DOWN)) {
+        if (!isConnected(worldIn, pos, state, EnumFacing.UP) && !isConnected(worldIn, pos, state, EnumFacing.DOWN))
+        {
             return NONE_AABB;
         }
-        return UP_DOWN_AABB;
+        return FULL_BLOCK_AABB;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        IBlockState actualState = getActualState(state, worldIn, pos);
-        if (isConnected(actualState, EnumFacing.UP)) {
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    {
+        if (isConnected(worldIn, pos, state, EnumFacing.UP))
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, C_UP_AABB);
         }
-        if (isConnected(actualState, EnumFacing.DOWN)) {
+        if (isConnected(worldIn, pos, state, EnumFacing.DOWN))
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, C_DOWN_AABB);
         }
-        if (isConnected(actualState, EnumFacing.NORTH)) {
+        if (isConnected(worldIn, pos, state, EnumFacing.NORTH))
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, C_NORTH_AABB);
         }
-        if (isConnected(actualState, EnumFacing.SOUTH)) {
+        if (isConnected(worldIn, pos, state, EnumFacing.SOUTH))
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, C_SOUTH_AABB);
         }
-        if (isConnected(actualState, EnumFacing.WEST)) {
+        if (isConnected(worldIn, pos, state, EnumFacing.WEST))
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, C_WEST_AABB);
         }
-        if (isConnected(actualState, EnumFacing.EAST)) {
+        if (isConnected(worldIn, pos, state, EnumFacing.EAST))
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, C_EAST_AABB);
         }
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
+        IProperty[] listedProperties = new IProperty[]{}; // listed properties
+        IUnlistedProperty[] unlistedProperties = CONNECTED_PROPERTIES.toArray(new IUnlistedProperty[CONNECTED_PROPERTIES.size()]);
+        return new ExtendedBlockState(this, listedProperties, unlistedProperties);
     }
 
     @SuppressWarnings("deprecation")
@@ -131,18 +145,30 @@ public class BlockIndustrialFloor extends BlockBase
         return !isValidConnection(neighbourState, worldIn, ownPos, neighbourDirection);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        for (final EnumFacing facing : EnumFacing.VALUES) {
-            state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()), canConnectTo(world, pos, facing));
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        if (state instanceof IExtendedBlockState)
+        {
+            IExtendedBlockState eState = (IExtendedBlockState) state;
+            for (final EnumFacing facing : EnumFacing.VALUES)
+            {
+                eState = eState.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()), canConnectTo(world, pos, facing));
+            }
+            return eState;
         }
-
         return state;
     }
 
-    public final boolean isConnected(final IBlockState state, final EnumFacing facing) {
-        return state.getValue(CONNECTED_PROPERTIES.get(facing.getIndex()));
+    public final boolean isConnected(IBlockAccess world, BlockPos pos, IBlockState state, final EnumFacing facing)
+    {
+        if (state instanceof IExtendedBlockState)
+        {
+            state = getExtendedState(state, world, pos);
+            IExtendedBlockState eState = (IExtendedBlockState) state;
+            return eState.getValue(CONNECTED_PROPERTIES.get(facing.getIndex()));
+        }
+        return false;
     }
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {

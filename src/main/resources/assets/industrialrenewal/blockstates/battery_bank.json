@@ -85,8 +85,7 @@
       "false": {}
     },
     "inventory": {
-      "model": "industrialrenewal:battery_bank",
-      "y": 180
+      "model": "industrialrenewal:battery_bank"
     }
   }
 }

@@ -1,84 +1,15 @@
 {
   "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:dummy",
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
   "variants": {
-    "down": {
-      "true": {
-        "submodel": {
-          "pipe_down": {
-            "model": "industrialrenewal:floor_down"
-          }
-        }
-      },
-      "false": {}
-    },
-    "up": {
-      "true": {
-        "submodel": {
-          "pipe_up": {
-            "model": "industrialrenewal:floor_empty",
-            "uvlock": true
-          }
-        }
-      },
-      "false": {}
-    },
-    "north": {
-      "true": {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:floor_side"
-          }
-        }
-      },
-      "false": {}
-    },
-    "south": {
-      "true": {
-        "submodel": {
-          "pipe_south": {
-            "model": "industrialrenewal:floor_side",
-            "y": 180
-          }
-        }
-      },
-      "false": {}
-    },
-    "east": {
-      "true": {
-        "submodel": {
-          "pipe_east": {
-            "model": "industrialrenewal:floor_side",
-            "y": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "west": {
-      "true": {
-        "submodel": {
-          "pipe_west": {
-            "model": "industrialrenewal:floor_side",
-            "y": -90
-          }
-        }
-      },
-      "false": {}
+    "normal": {
+      "model": "industrialrenewal:smartmodel/indfloor"
     },
     "inventory": [
       {
+        "model": "industrialrenewal:ind_floor/floor_side_up",
         "submodel": {
-          "pipe_up": {
-            "model": "industrialrenewal:floor_empty"
-          },
           "pipe_down": {
-            "model": "industrialrenewal:floor_down"
+            "model": "industrialrenewal:ind_floor/floor_side_down"
           }
         }
       }

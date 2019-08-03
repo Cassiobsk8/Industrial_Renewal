@@ -50,6 +50,9 @@ public class ModelLoaderCustom implements ICustomModelLoader
         } else if (modelName.equals("pipe_fluid_gauge"))
         {
             return new GaugeFluidPipeBaseModel();
+        } else if (modelName.equals("indfloor"))
+        {
+            return new IndFloorModel();
         } else
         {
             return ModelLoaderRegistry.getMissingModel();
