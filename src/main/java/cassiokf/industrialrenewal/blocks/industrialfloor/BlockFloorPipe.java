@@ -3,8 +3,9 @@ package cassiokf.industrialrenewal.blocks.industrialfloor;
 
 import cassiokf.industrialrenewal.blocks.pipes.BlockFluidPipe;
 import cassiokf.industrialrenewal.init.ModBlocks;
-import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -19,6 +20,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -26,19 +30,9 @@ import java.util.Random;
 
 public class BlockFloorPipe extends BlockFluidPipe
 {
-    public static final PropertyBool WSOUTH = PropertyBool.create("w_south");
-    public static final PropertyBool WNORTH = PropertyBool.create("w_north");
-    public static final PropertyBool WEAST = PropertyBool.create("w_east");
-    public static final PropertyBool WWEST = PropertyBool.create("w_west");
-    public static final PropertyBool WUP = PropertyBool.create("w_up");
-    public static final PropertyBool WDOWN = PropertyBool.create("w_down");
-
-    public static final AxisAlignedBB FULL_BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-
     public BlockFloorPipe(String name, CreativeTabs tab) {
         super(name, tab);
     }
-
 
     @Override
     public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
@@ -59,29 +53,25 @@ public class BlockFloorPipe extends BlockFluidPipe
 
     }
 
-    /*
-        @Override
-        protected BlockStateContainer createBlockState()
-        {
-            return new BlockStateContainer(this, SOUTH, NORTH, EAST, WEST, UP, DOWN, WSOUTH, WNORTH, WEAST, WWEST, WUP, WDOWN);
-        }
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        IProperty[] listedProperties = new IProperty[]{}; // listed properties
+        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN, WSOUTH, WNORTH, WEAST, WWEST, WUP, WDOWN};
+        return new ExtendedBlockState(this, listedProperties, unlistedProperties);
+    }
 
-        @SuppressWarnings("deprecation")
-        @Override
-        public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        if (state instanceof IExtendedBlockState)
         {
-            state = state.withProperty(SOUTH, canConnectPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectPipe(world, pos, EnumFacing.NORTH))
-                    .withProperty(EAST, canConnectPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectPipe(world, pos, EnumFacing.WEST))
-                    .withProperty(UP, canConnectPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectPipe(world, pos, EnumFacing.DOWN))
-                    .withProperty(WSOUTH, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.SOUTH)).withProperty(WNORTH, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.NORTH))
+            IExtendedBlockState eState = (IExtendedBlockState) super.getExtendedState(state, world, pos);
+            return eState.withProperty(WSOUTH, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.SOUTH)).withProperty(WNORTH, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.NORTH))
                     .withProperty(WEAST, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.EAST)).withProperty(WWEST, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.WEST))
                     .withProperty(WUP, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.UP)).withProperty(WDOWN, BlockIndustrialFloor.canConnectTo(world, pos, EnumFacing.DOWN));
-            return state;
         }
-    */
-    private boolean canConnectPipe(IBlockAccess world, BlockPos pos, EnumFacing facing)
-    {
-        return canConnectToPipe(world, pos, facing) || canConnectToCapability(world, pos, facing);
+        return state;
     }
 
     @Override

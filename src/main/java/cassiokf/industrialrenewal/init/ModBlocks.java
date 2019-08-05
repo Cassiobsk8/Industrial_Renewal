@@ -208,9 +208,9 @@ public class ModBlocks {
                 chunkLoader,
                 //Floor
                 blockIndFloor,
-                //floorCable,
+                floorCable,
                 floorLamp,
-                //floorPipe,
+                floorPipe,
                 //Pipes
                 energyCable,
                 energyCableGauge,

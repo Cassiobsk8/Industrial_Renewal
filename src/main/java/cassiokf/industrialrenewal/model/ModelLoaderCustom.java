@@ -53,6 +53,15 @@ public class ModelLoaderCustom implements ICustomModelLoader
         } else if (modelName.equals("indfloor"))
         {
             return new IndFloorModel();
+        } else if (modelName.equals("indfloor_lamp"))
+        {
+            return new IndFloorLampModel();
+        } else if (modelName.equals("floor_cable"))
+        {
+            return new FloorEnergyCableModel();
+        } else if (modelName.equals("floor_pipe"))
+        {
+            return new FloorFluidPipeIModel();
         } else
         {
             return ModelLoaderRegistry.getMissingModel();
