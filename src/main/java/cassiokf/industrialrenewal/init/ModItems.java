@@ -61,7 +61,7 @@ public class ModItems {
     public static ItemDrill drillSteel = new ItemDrill("drill_steel", References.CREAATIVE_IRWIP_TAB);
     public static ItemDrill drillDiamond = new ItemDrill("drill_diamond", References.CREAATIVE_IRWIP_TAB);
 
-    public static ItemOre hematiteChunk = new ItemOre("chunk_hematite", "oreHematite", References.CREAATIVE_IRWIP_TAB);
+    public static ItemOre hematiteChunk = new ItemOre("chunk_hematite", "oreIron", References.CREAATIVE_IRWIP_TAB);
 
     //public static ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
 

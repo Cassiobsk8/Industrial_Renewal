@@ -23,7 +23,6 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -91,7 +90,7 @@ public class BlockRoof extends BlockBase {
         return (number % 2) == 0;
     }
 
-    private boolean canConnectTo(@NotNull final IBlockAccess world, @NotNull final BlockPos ownPos, final EnumFacing ownFacing, final EnumFacing neighbourDirection)
+    private boolean canConnectTo(final IBlockAccess world, final BlockPos ownPos, final EnumFacing ownFacing, final EnumFacing neighbourDirection)
     {
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final IBlockState neighbourState = world.getBlockState(neighbourPos);

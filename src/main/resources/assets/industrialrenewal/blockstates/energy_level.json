@@ -1,22 +1,37 @@
 {
   "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:energy_level",
-    "textures": {
-      "particle": "industrialrenewal:blocks/entity_detector"
-    }
-  },
   "variants": {
     "facing": {
-      "north": {},
+      "north": {
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:energy_level"
+          }
+        }
+      },
       "west": {
-        "y": -90
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:energy_level",
+            "y": -90
+          }
+        }
       },
       "south": {
-        "y": 180
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:energy_level",
+            "y": 180
+          }
+        }
       },
       "east": {
-        "y": 90
+        "submodel": {
+          "master": {
+            "model": "industrialrenewal:energy_level",
+            "y": 90
+          }
+        }
       }
     },
     "base": {

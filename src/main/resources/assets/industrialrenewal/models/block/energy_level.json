@@ -3,7 +3,8 @@
   "textures": {
     "0": "industrialrenewal:blocks/energy_level",
     "1": "industrialrenewal:blocks/anvil_base",
-    "3": "industrialrenewal:blocks/traffic_light"
+    "3": "industrialrenewal:blocks/traffic_light",
+    "particle": "industrialrenewal:blocks/anvil_base"
   },
   "elements": [
     {
