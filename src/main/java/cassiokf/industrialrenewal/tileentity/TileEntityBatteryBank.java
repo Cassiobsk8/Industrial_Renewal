@@ -1,9 +1,8 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.BlockBatteryBank;
+import cassiokf.industrialrenewal.blocks.BlockTileEntityConnected;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -52,7 +51,7 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
         if (this.hasWorld() && !this.world.isRemote) {
             if (needSync)
             {
-                setState();
+                //setState();
             }
             for (EnumFacing face : outPutFacings)
             {
@@ -73,30 +72,13 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
         if (outPutFacings.contains(facing))
         {
             outPutFacings.remove(facing);
-            setState();
+            this.Sync();
             return false;
         } else
         {
             outPutFacings.add(facing);
-            setState();
-            return true;
-        }
-    }
-
-    private void setState()
-    {
-        if (!world.isRemote)
-        {
-            IBlockState state = world.getBlockState(pos);
-            EnumFacing facing = state.getValue(BlockBatteryBank.FACING);
-            state = state.withProperty(BlockBatteryBank.SOUTH, isFacingOutput(facing.getOpposite()))
-                    .withProperty(BlockBatteryBank.NORTH, isFacingOutput(facing))
-                    .withProperty(BlockBatteryBank.EAST, isFacingOutput(facing.rotateY()))
-                    .withProperty(BlockBatteryBank.WEST, isFacingOutput(facing.rotateYCCW()))
-                    .withProperty(BlockBatteryBank.UP, isFacingOutput(EnumFacing.UP))
-                    .withProperty(BlockBatteryBank.DOWN, isFacingOutput(EnumFacing.DOWN));
-            world.setBlockState(pos, state, 3);
             this.Sync();
+            return true;
         }
     }
 
@@ -122,7 +104,7 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
 
     public EnumFacing forceFaceCheck()
     {
-        blockFacing = world.getBlockState(pos).getValue(BlockBatteryBank.FACING);
+        blockFacing = world.getBlockState(pos).getValue(BlockTileEntityConnected.FACING);
         return blockFacing;
     }
 

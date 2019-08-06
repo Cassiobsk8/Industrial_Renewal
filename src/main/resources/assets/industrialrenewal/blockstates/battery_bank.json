@@ -1,88 +1,30 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "industrialrenewal:battery_bank",
     "textures": {
       "particle": "industrialrenewal:blocks/battery_pack"
     }
   },
   "variants": {
+    "normal": {
+      "model": "industrialrenewal:smartmodel/battery_bank"
+    },
     "facing": {
-      "north": {},
+      "north": {
+        "model": "industrialrenewal:smartmodel/battery_bank"
+      },
       "south": {
+        "model": "industrialrenewal:smartmodel/battery_bank",
         "y": 180
       },
       "east": {
+        "model": "industrialrenewal:smartmodel/battery_bank",
         "y": 90
       },
       "west": {
+        "model": "industrialrenewal:smartmodel/battery_bank",
         "y": -90
       }
-    },
-    "down": {
-      "true": {
-        "submodel": {
-          "pipe_down": {
-            "model": "industrialrenewal:energy_connector_out",
-            "x": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "up": {
-      "true": {
-        "submodel": {
-          "pipe_up": {
-            "model": "industrialrenewal:energy_connector_out",
-            "x": -90
-          }
-        }
-      },
-      "false": {}
-    },
-    "north": {
-      "true": {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:energy_connector_out"
-          }
-        }
-      },
-      "false": {}
-    },
-    "south": {
-      "true": {
-        "submodel": {
-          "pipe_south": {
-            "model": "industrialrenewal:energy_connector_out",
-            "y": 180
-          }
-        }
-      },
-      "false": {}
-    },
-    "east": {
-      "true": {
-        "submodel": {
-          "pipe_east": {
-            "model": "industrialrenewal:energy_connector_out",
-            "y": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "west": {
-      "true": {
-        "submodel": {
-          "pipe_west": {
-            "model": "industrialrenewal:energy_connector_out",
-            "y": -90
-          }
-        }
-      },
-      "false": {}
     },
     "inventory": {
       "model": "industrialrenewal:battery_bank"

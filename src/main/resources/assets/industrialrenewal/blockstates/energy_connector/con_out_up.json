@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:energy_connector/con_out_up"
+    }
+  }
+}

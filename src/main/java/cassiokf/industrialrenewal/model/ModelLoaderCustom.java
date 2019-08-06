@@ -62,6 +62,9 @@ public class ModelLoaderCustom implements ICustomModelLoader
         } else if (modelName.equals("floor_pipe"))
         {
             return new FloorFluidPipeIModel();
+        } else if (modelName.equals("battery_bank"))
+        {
+            return new BatteryBankIModel();
         } else
         {
             return ModelLoaderRegistry.getMissingModel();
