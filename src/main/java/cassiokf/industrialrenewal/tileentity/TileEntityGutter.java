@@ -36,7 +36,6 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
     @Override
     public void update()
     {
-        super.update();
         if (this.hasWorld() && !world.isRemote)
         {
             if (isMaster())

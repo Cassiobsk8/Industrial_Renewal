@@ -15,7 +15,6 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 {
     private TE master;
     private boolean isMaster;
-    private boolean firstRun = true;
     private Map<BlockPos, EnumFacing> posSet = new HashMap<>();
     int outPut;
     int oldOutPut;
@@ -29,13 +28,9 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     }
 
     @Override
-    public void update()
+    public void onLoad()
     {
-        if (firstRun)
-        {
-            initializeMultiblockIfNecessary();
-            firstRun = false;
-        }
+        initializeMultiblockIfNecessary();
     }
 
     public int getOutPut()

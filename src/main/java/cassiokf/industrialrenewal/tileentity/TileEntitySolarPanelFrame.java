@@ -54,6 +54,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     @Override
     public void onLoad()
     {
+        super.onLoad();
         if (this.hasWorld() && !this.world.isRemote)
         {
             checkIfIsReady();
@@ -63,7 +64,6 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     @Override
     public void update()
     {
-        super.update();
         if (this.hasWorld() && !this.world.isRemote)
         {
             if (isMaster())

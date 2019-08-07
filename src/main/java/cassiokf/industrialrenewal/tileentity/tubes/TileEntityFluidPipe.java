@@ -24,7 +24,6 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     @Override
     public void update()
     {
-        super.update();
         if (!world.isRemote && isMaster())
         {
             int quantity = getPosSet().size();
@@ -37,7 +36,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
                 if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face))
                 {
                     IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
-                    if (tankStorage != null && tankStorage.getTankProperties()[0].canFill())
+                    if (tankStorage != null && tankStorage.getTankProperties()[0].canFill() && this.tank.drain(maxOutput, false) != null)
                     {
                         int fluid = tankStorage.fill(this.tank.drain(maxOutput, false), true);
                         out += fluid;

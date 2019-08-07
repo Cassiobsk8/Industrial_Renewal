@@ -27,7 +27,6 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
 
     @Override
     public void update() {
-        super.update();
         if (!world.isRemote && isMaster())
         {
             int quantity = getPosSet().size();

@@ -41,7 +41,6 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     @Override
     public void update()
     {
-        super.update();
         if (isMaster())
         {
             if (!world.isRemote)
