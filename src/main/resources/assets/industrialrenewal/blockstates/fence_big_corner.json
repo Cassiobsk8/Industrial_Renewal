@@ -6,94 +6,39 @@
     }
   },
   "variants": {
+    "normal": {
+      "model": "industrialrenewal:smartmodel/fence_big_corner"
+    },
     "index": {
       "0": {
-        "model": "industrialrenewal:fence_big_corner_down"
+        "model": "industrialrenewal:smartmodel/fence_big_corner"
       },
       "1": {
-        "model": "industrialrenewal:fence_big_corner_center"
+        "model": "industrialrenewal:smartmodel/fence_big_corner"
       },
       "2": {
-        "model": "industrialrenewal:fence_big_corner_top"
+        "model": "industrialrenewal:smartmodel/fence_big_corner"
       }
     },
-    "active_left_top": {
-      "true": {
-        "submodel": {
-          "left": {
-            "model": "industrialrenewal:fence_big_side_top_l",
-            "y": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "active_right_top": {
-      "true": {
-        "submodel": {
-          "right": {
-            "model": "industrialrenewal:fence_big_side_top"
-          }
-        }
-      },
-      "false": {}
-    },
-    "active_left_down": {
-      "true": {
-        "submodel": {
-          "left": {
-            "model": "industrialrenewal:fence_big_side_down_l",
-            "y": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "active_right_down": {
-      "true": {
-        "submodel": {
-          "right": {
-            "model": "industrialrenewal:fence_big_side_down_r"
-          }
-        }
-      },
-      "false": {}
-    },
-    "active_left": {
-      "true": {
-        "submodel": {
-          "left": {
-            "model": "industrialrenewal:fence_big_side",
-            "y": -90
-          }
-        }
-      },
-      "false": {}
-    },
-    "active_right": {
-      "true": {
-        "submodel": {
-          "right": {
-            "model": "industrialrenewal:fence_big_side"
-          }
-        }
-      },
-      "false": {}
-    },
     "facing": {
-      "north": {},
+      "north": {
+        "model": "industrialrenewal:smartmodel/fence_big_corner"
+      },
       "south": {
+        "model": "industrialrenewal:smartmodel/fence_big_corner",
         "y": 180
       },
       "east": {
+        "model": "industrialrenewal:smartmodel/fence_big_corner",
         "y": 90
       },
       "west": {
+        "model": "industrialrenewal:smartmodel/fence_big_corner",
         "y": -90
       }
     },
     "inventory": {
-      "model": "industrialrenewal:fence_big_corner_item"
+      "model": "industrialrenewal:fence_big/fence_big_corner_core"
     }
   }
 }

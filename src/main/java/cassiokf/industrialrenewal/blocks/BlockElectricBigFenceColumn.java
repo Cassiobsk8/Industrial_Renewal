@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyInteger;
@@ -15,18 +16,24 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.common.property.Properties;
 
 public class BlockElectricBigFenceColumn extends BlockBasicElectricFence {
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
+
     public static final PropertyInteger INDEX = PropertyInteger.create("index", 0, 2);
 
-    public static final PropertyBool ACTIVE_LEFT = PropertyBool.create("active_left");
-    public static final PropertyBool ACTIVE_RIGHT = PropertyBool.create("active_right");
-    public static final PropertyBool ACTIVE_LEFT_TOP = PropertyBool.create("active_left_top");
-    public static final PropertyBool ACTIVE_RIGHT_TOP = PropertyBool.create("active_right_top");
-    public static final PropertyBool ACTIVE_LEFT_DOWN = PropertyBool.create("active_left_down");
-    public static final PropertyBool ACTIVE_RIGHT_DOWN = PropertyBool.create("active_right_down");
+    public static final IUnlistedProperty<Boolean> CORE = new Properties.PropertyAdapter<>(PropertyBool.create("core"));
+    public static final IUnlistedProperty<Boolean> ACTIVE_LEFT = new Properties.PropertyAdapter<>(PropertyBool.create("active_left"));
+    public static final IUnlistedProperty<Boolean> ACTIVE_RIGHT = new Properties.PropertyAdapter<>(PropertyBool.create("active_right"));
+    public static final IUnlistedProperty<Boolean> ACTIVE_LEFT_TOP = new Properties.PropertyAdapter<>(PropertyBool.create("active_left_top"));
+    public static final IUnlistedProperty<Boolean> ACTIVE_RIGHT_TOP = new Properties.PropertyAdapter<>(PropertyBool.create("active_right_top"));
+    public static final IUnlistedProperty<Boolean> ACTIVE_LEFT_DOWN = new Properties.PropertyAdapter<>(PropertyBool.create("active_left_down"));
+    public static final IUnlistedProperty<Boolean> ACTIVE_RIGHT_DOWN = new Properties.PropertyAdapter<>(PropertyBool.create("active_right_down"));
 
 
     public BlockElectricBigFenceColumn(String name, CreativeTabs tab) {
@@ -59,7 +66,6 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence {
                 break;
         }
         super.breakBlock(worldIn, pos, state);
-
     }
 
     @Override
@@ -68,7 +74,8 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence {
         return false;
     }
 
-    private boolean IsBigFence(World world, BlockPos pos) {
+    public boolean IsBigFence(World world, BlockPos pos)
+    {
         return world.getBlockState(pos).getBlock() instanceof BlockElectricBigFenceColumn;
     }
 
@@ -80,8 +87,11 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence {
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, INDEX, ACTIVE_LEFT, ACTIVE_RIGHT, ACTIVE_LEFT_TOP, ACTIVE_RIGHT_TOP, ACTIVE_LEFT_DOWN, ACTIVE_RIGHT_DOWN);
+    protected BlockStateContainer createBlockState()
+    {
+        IProperty[] listedProperties = new IProperty[]{FACING, INDEX}; // listed properties
+        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{CORE, ACTIVE_LEFT, ACTIVE_RIGHT, ACTIVE_LEFT_TOP, ACTIVE_RIGHT_TOP, ACTIVE_LEFT_DOWN, ACTIVE_RIGHT_DOWN};
+        return new ExtendedBlockState(this, listedProperties, unlistedProperties);
     }
 
     @Override
@@ -121,12 +131,13 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence {
         return i;
     }
 
-    private boolean ActiveSide(IBlockAccess world, BlockPos pos, boolean left, boolean top, boolean down) {
-        IBlockState state = world.getBlockState(pos);
-        if (!top && state.getValue(INDEX) == 2) return false;
-        if (top && state.getValue(INDEX) != 2) return false;
-        if (!down && state.getValue(INDEX) == 0) return false;
-        if (down && state.getValue(INDEX) != 0) return false;
+    public boolean ActiveSide(IBlockAccess world, BlockPos pos, IBlockState state, boolean left, boolean top, boolean down)
+    {
+        int index = state.getValue(INDEX);
+        if (!top && index == 2) return false;
+        if (top && index != 2) return false;
+        if (!down && index == 0) return false;
+        if (down && index != 0) return false;
         EnumFacing facing = state.getValue(FACING);
         for (final EnumFacing face : EnumFacing.HORIZONTALS) {
             if ((left && face == facing.rotateYCCW()) || (!left && face == facing.rotateY())) {
@@ -138,12 +149,27 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence {
         return false;
     }
 
+    private boolean isCore(IBlockState state)
+    {
+        int index = state.getValue(INDEX);
+        return index == 1;
+    }
+
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        state = state.withProperty(ACTIVE_LEFT, ActiveSide(world, pos, true, false, false)).withProperty(ACTIVE_RIGHT, ActiveSide(world, pos, false, false, false))
-                .withProperty(ACTIVE_LEFT_TOP, ActiveSide(world, pos, true, true, false)).withProperty(ACTIVE_RIGHT_TOP, ActiveSide(world, pos, false, true, false))
-                .withProperty(ACTIVE_LEFT_DOWN, ActiveSide(world, pos, true, false, true)).withProperty(ACTIVE_RIGHT_DOWN, ActiveSide(world, pos, false, false, true));
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        if (state instanceof IExtendedBlockState)
+        {
+            IExtendedBlockState eState = (IExtendedBlockState) state;
+            return eState.withProperty(CORE, isCore(state))
+                    .withProperty(ACTIVE_LEFT, ActiveSide(world, pos, state, true, false, false))
+                    .withProperty(ACTIVE_RIGHT, ActiveSide(world, pos, state, false, false, false))
+                    .withProperty(ACTIVE_LEFT_TOP, ActiveSide(world, pos, state, true, true, false))
+                    .withProperty(ACTIVE_RIGHT_TOP, ActiveSide(world, pos, state, false, true, false))
+                    .withProperty(ACTIVE_LEFT_DOWN, ActiveSide(world, pos, state, true, false, true))
+                    .withProperty(ACTIVE_RIGHT_DOWN, ActiveSide(world, pos, state, false, false, true));
+        }
         return state;
     }
 }

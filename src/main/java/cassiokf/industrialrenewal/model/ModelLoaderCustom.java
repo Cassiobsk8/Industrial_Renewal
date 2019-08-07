@@ -68,6 +68,12 @@ public class ModelLoaderCustom implements ICustomModelLoader
         } else if (modelName.equals("turbine_pillar"))
         {
             return new TurbinePillarIModel();
+        } else if (modelName.equals("fence_big_column"))
+        {
+            return new BigFenceColumnIModel();
+        } else if (modelName.equals("fence_big_corner"))
+        {
+            return new BigFenceCornerIModel();
         } else
         {
             return ModelLoaderRegistry.getMissingModel();
