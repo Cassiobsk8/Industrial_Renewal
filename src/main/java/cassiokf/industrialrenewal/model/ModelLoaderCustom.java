@@ -65,6 +65,9 @@ public class ModelLoaderCustom implements ICustomModelLoader
         } else if (modelName.equals("battery_bank"))
         {
             return new BatteryBankIModel();
+        } else if (modelName.equals("turbine_pillar"))
+        {
+            return new TurbinePillarIModel();
         } else
         {
             return ModelLoaderRegistry.getMissingModel();

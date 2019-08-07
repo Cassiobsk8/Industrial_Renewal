@@ -9,7 +9,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class BlockTileEntityConnectedMultiblocks<TE extends TileEntityMultiBlocksTube> extends BlockTileEntity<TE>
+public abstract class BlockTileEntityConnectedMultiblocks<TE extends TileEntityMultiBlocksTube> extends BlockTileEntityConnected<TE>
 {
 
     public BlockTileEntityConnectedMultiblocks(Material material, String name, CreativeTabs tab)

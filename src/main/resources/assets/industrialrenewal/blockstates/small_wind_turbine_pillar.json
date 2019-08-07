@@ -1,76 +1,30 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "industrialrenewal:small_wind_turbine_pillar",
     "textures": {
       "particle": "industrialrenewal:blocks/pipe"
     }
   },
   "variants": {
+    "normal": {
+      "model": "industrialrenewal:smartmodel/turbine_pillar"
+    },
     "facing": {
-      "north": {},
+      "north": {
+        "model": "industrialrenewal:smartmodel/turbine_pillar"
+      },
       "south": {
+        "model": "industrialrenewal:smartmodel/turbine_pillar",
         "y": 180
       },
       "east": {
+        "model": "industrialrenewal:smartmodel/turbine_pillar",
         "y": 90
       },
       "west": {
+        "model": "industrialrenewal:smartmodel/turbine_pillar",
         "y": -90
       }
-    },
-    "down": {
-      "true": {
-        "submodel": {
-          "pipe_down": {
-            "model": "industrialrenewal:small_wind_turbine_pillar_base"
-          }
-        }
-      },
-      "false": {}
-    },
-    "north": {
-      "true": {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:energy_connector_out"
-          }
-        }
-      },
-      "false": {}
-    },
-    "south": {
-      "true": {
-        "submodel": {
-          "pipe_south": {
-            "model": "industrialrenewal:energy_connector_out",
-            "y": 180
-          }
-        }
-      },
-      "false": {}
-    },
-    "east": {
-      "true": {
-        "submodel": {
-          "pipe_east": {
-            "model": "industrialrenewal:energy_connector_out",
-            "y": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "west": {
-      "true": {
-        "submodel": {
-          "pipe_west": {
-            "model": "industrialrenewal:energy_connector_out",
-            "y": -90
-          }
-        }
-      },
-      "false": {}
     },
     "inventory": {
       "model": "industrialrenewal:small_wind_turbine_pillar",

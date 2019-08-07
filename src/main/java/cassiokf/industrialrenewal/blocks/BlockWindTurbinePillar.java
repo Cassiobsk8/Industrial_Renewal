@@ -3,16 +3,11 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityWindTurbinePillar;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -23,6 +18,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nullable;
@@ -30,58 +26,11 @@ import javax.annotation.Nullable;
 public class BlockWindTurbinePillar extends BlockTileEntityConnectedMultiblocks<TileEntityWindTurbinePillar>
 {
 
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
-    public static final PropertyBool SOUTH = PropertyBool.create("south");
-    public static final PropertyBool NORTH = PropertyBool.create("north");
-    public static final PropertyBool EAST = PropertyBool.create("east");
-    public static final PropertyBool WEST = PropertyBool.create("west");
-    public static final PropertyBool DOWN = PropertyBool.create("down");
-
     public BlockWindTurbinePillar(String name, CreativeTabs tab)
     {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING, SOUTH, NORTH, WEST, EAST, DOWN);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(FACING).getIndex();
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(final IBlockState state)
-    {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isFullCube(final IBlockState state)
-    {
-        return false;
     }
 
     @Override
@@ -97,7 +46,7 @@ public class BlockWindTurbinePillar extends BlockTileEntityConnectedMultiblocks<
         Block clickedBlock = state.getBlock();
         if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.turbinePillar)) && clickedBlock.equals(ModBlocks.turbinePillar))
         {
-            Integer n = 1;
+            int n = 1;
             while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockWindTurbinePillar)
             {
                 n++;
@@ -128,18 +77,27 @@ public class BlockWindTurbinePillar extends BlockTileEntityConnectedMultiblocks<
         return te != null && te.hasCapability(CapabilityEnergy.ENERGY, neighbourDirection.getOpposite());
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        EnumFacing facing = state.getValue(FACING);
-        boolean down = canConnectTo(world, pos, EnumFacing.DOWN);
-        state = state.withProperty(DOWN, down);
-        if (down)
-            state = state.withProperty(SOUTH, canConnectTo(world, pos, facing.getOpposite())).withProperty(NORTH, canConnectTo(world, pos, facing))
-                    .withProperty(EAST, canConnectTo(world, pos, facing.rotateY())).withProperty(WEST, canConnectTo(world, pos, facing.rotateYCCW()));
-        else
-            state = state.withProperty(SOUTH, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(WEST, false);
+        if (state instanceof IExtendedBlockState)
+        {
+            EnumFacing facing = state.getValue(FACING);
+            IExtendedBlockState eState = (IExtendedBlockState) state;
+            boolean down = canConnectTo(world, pos, EnumFacing.DOWN);
+            eState = eState.withProperty(DOWN, down).withProperty(UP, false);
+            if (down)
+                eState = eState.withProperty(SOUTH, canConnectTo(world, pos, facing.getOpposite()))
+                        .withProperty(NORTH, canConnectTo(world, pos, facing))
+                        .withProperty(EAST, canConnectTo(world, pos, facing.rotateY()))
+                        .withProperty(WEST, canConnectTo(world, pos, facing.rotateYCCW()));
+            else
+                eState = eState.withProperty(SOUTH, false)
+                        .withProperty(NORTH, false)
+                        .withProperty(EAST, false)
+                        .withProperty(WEST, false);
+            return eState;
+        }
         return state;
     }
 
