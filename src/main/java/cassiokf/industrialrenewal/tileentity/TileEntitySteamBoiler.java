@@ -6,6 +6,7 @@ import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.item.ItemFireBox;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -274,13 +275,13 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
         {
             default:
             case 0:
-                st = " ºC";
+                st = " " + I18n.format("render.industrialrenewal.c");
                 break;
             case 1:
-                st = " ºF";
+                st = " " + I18n.format("render.industrialrenewal.f");
                 break;
             case 2:
-                st = " K";
+                st = " " + I18n.format("render.industrialrenewal.k");
                 break;
         }
         return (int) Utils.getConvertedTemperature(heat / 100F) + st;

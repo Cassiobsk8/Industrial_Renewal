@@ -193,6 +193,9 @@ gui.config.blade_durability.name=Wind Turbine Bade durability
 render.industrialrenewal.energy=Energy
 render.industrialrenewal.fluid=Fluid
 render.industrialrenewal.drillheat=Drill Heat
+render.industrialrenewal.c=°C
+render.industrialrenewal.k=K
+render.industrialrenewal.f=°F
 
 #Info
 
