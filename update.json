@@ -1,8 +1,8 @@
 {
   "homepage": "<https://minecraft.curseforge.com/projects/industrial-renewal>",
   "promos": {
-    "1.12.2-latest": "0.12.1",
-    "1.12.2-recommended": "0.12.1"
+    "1.12.2-latest": "0.12.2",
+    "1.12.2-recommended": "0.12.2"
   },
   "1.12.2": {
     "0.12.1": "fix Crash with thermal dynamics fluiducts",
