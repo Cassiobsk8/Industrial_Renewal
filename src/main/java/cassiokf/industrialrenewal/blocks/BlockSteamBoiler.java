@@ -42,7 +42,7 @@ public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
         TileEntitySteamBoiler te = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
         if (te != null && te.isMaster() && te.getType() == 1 && te.getFuelFill() > 0 && rand.nextInt(24) == 0)
         {
-            worldIn.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 0.3F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
+            worldIn.playSound(null, pos, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 0.3F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F);
         }
     }
 
