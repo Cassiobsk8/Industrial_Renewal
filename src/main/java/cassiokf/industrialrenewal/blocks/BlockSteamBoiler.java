@@ -64,22 +64,17 @@ public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
         {
             if (heldItem.getItem() instanceof ItemFireBox && itemHandler.getStackInSlot(0).isEmpty())
             {
-                if (!world.isRemote)
-                {
-                    int type = ((ItemFireBox) heldItem.getItem()).type;
-                    itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1), false);
-                    heldItem.shrink(1);
-                    tile.setType(type);
-                }
+                int type = ((ItemFireBox) heldItem.getItem()).type;
+                itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1), false);
+                tile.setType(type);
+                if (!world.isRemote && !player.isCreative()) heldItem.shrink(1);
                 return true;
             }
             if (heldItem.getItem() instanceof ItemPowerScrewDrive && !itemHandler.getStackInSlot(0).isEmpty())
             {
-                if (!world.isRemote)
-                {
-                    player.addItemStackToInventory(itemHandler.extractItem(0, 64, false));
-                    tile.setType(0);
-                }
+                ItemStack stack = itemHandler.extractItem(0, 64, false);
+                if (!world.isRemote && !player.isCreative()) player.addItemStackToInventory(stack);
+                tile.setType(0);
                 return true;
             }
         }
