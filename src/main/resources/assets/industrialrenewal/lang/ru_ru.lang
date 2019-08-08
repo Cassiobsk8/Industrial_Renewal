@@ -1,10 +1,12 @@
+#Wed Dec 06 12:33:40 BRST 2017
 
 itemGroup.industrialrenewal=Industrial Renewal
 itemGroup.industrialrenewalrailroad=Industrial Renewal: Железная дорога
 itemGroup.industrialrenewalwip=Industrial Renewal: Содержимое WIP
 
+#Items
 
-item.industrialrenewal.ir_manual.name=Industrial Renewal Manual
+item.industrialrenewal.ir_manual.name=Руководство по Industrial Renewal
 item.industrialrenewal.cartridge_plus.name=Редстоун картридж плюс
 item.industrialrenewal.cartridge_minus.name=Редстоун картридж минус
 item.industrialrenewal.cartridge_half.name=Редстоун картридж половинный
@@ -12,18 +14,18 @@ item.industrialrenewal.cartridge_double.name=Редстоун картридж �
 item.industrialrenewal.cartridge_inverter.name=Редстоун картридж инвертер
 item.industrialrenewal.ingot_steel.name=Стальной слиток
 item.industrialrenewal.item_fire_extinguisher.name=Огнетушитель
-item.industrialrenewal.log_cart.name=Log Cart
-item.industrialrenewal.passenger_car.name=Passenger Car
+item.industrialrenewal.log_cart.name=Тележка для бревен
+item.industrialrenewal.passenger_car.name=Пассажирская тележка
 item.industrialrenewal.safety_belt.name=Ремень безопасности
 item.industrialrenewal.safety_helmet.name=Защитный шлем
 item.industrialrenewal.small_slab.name=Маленькая плита
 item.industrialrenewal.sponge_iron.name=Губчатое железо
 item.industrialrenewal.stick_iron.name=Железный стержень
-item.industrialrenewal.stick_steel.name=Steel Rod
+item.industrialrenewal.stick_steel.name=Стальной стержень
 item.industrialrenewal.steam_locomotive.name=Паровоз (WIP)
 item.industrialrenewal.cargo_container.name=Грузовой контейнер
-item.industrialrenewal.fluid_container.name=Жидкостный контейнер (WIP)
-item.industrialrenewal.minecart_flat.name=Flat Cart
+item.industrialrenewal.fluid_container.name=Жидкостный контейнер
+item.industrialrenewal.minecart_flat.name=Плоская тележка
 item.industrialrenewal.plow_iron.name=Железный снежный плуг (WIP)
 item.industrialrenewal.screwdrive.name=Шуруповерт
 item.industrialrenewal.screwdrive.des0=Универсальный инструмент для этого мода
@@ -31,24 +33,26 @@ item.industrialrenewal.medkit.name=Аптечка
 item.industrialrenewal.medkit.des0=Используется для лечения
 item.industrialrenewal.steel_saw.name=Стальная пила
 item.industrialrenewal.steel_saw.des0=Пила, которая может резать камни
-item.industrialrenewal.barrel_item.name=Barrel
-item.industrialrenewal.battery.name=Battery
-item.industrialrenewal.motor.name=Motor
-item.industrialrenewal.firebox_solid.name=Firebox for Solid Fuel
-item.industrialrenewal.firebox_fluid.name=Firebox for Fluid Fuel
-item.industrialrenewal.small_wind_blade.name=Wind Generator Blades
-item.industrialrenewal.chunk_hematite.name=Hematite Chunk
+item.industrialrenewal.barrel_item.name=Бочка
+item.industrialrenewal.battery.name=Батарея
+item.industrialrenewal.motor.name=Двигатель
+item.industrialrenewal.firebox_solid.name=Топка для твердого топлива
+item.industrialrenewal.firebox_fluid.name=Топка для жидкого топлива
+item.industrialrenewal.small_wind_blade.name=Лопасти ветрогенератора
+item.industrialrenewal.chunk_hematite.name=Кусок гематита
 
+#Discs
 
 item.industrialrenewal.record_royal_entrance.name=Музыкальный диск
 item.industrialrenewal.record_royal_entrance.des0=Королевский выход от Visager
 
+#Blocks
 
 tile.industrialrenewal.alarm.name=Промышленная сигнализация
 tile.industrialrenewal.block_chimney.name=Дымовая труба
 tile.industrialrenewal.block_hazard.name=Блок опасности
 tile.industrialrenewal.caution_hazard.name=Опасность движения и предупреждение
-tile.industrialrenewal.concrete.name=Concrete
+tile.industrialrenewal.concrete.name=Бетон
 tile.industrialrenewal.defective_hazard.name=Опасность повреждения оборудования
 tile.industrialrenewal.entity_detector.name=Детектор существ
 tile.industrialrenewal.safety_hazard.name=Безопасность и опасность первой помощи
@@ -57,32 +61,32 @@ tile.industrialrenewal.aisle_hazard.name=Уборка и проход опасн
 tile.industrialrenewal.fire_hazard.name=Опасность возгорания
 tile.industrialrenewal.booster_rail.name=Ускоряющая рельса
 tile.industrialrenewal.brace.name=Балка раскоса
-tile.industrialrenewal.brace_steel.name=Steel Brace Beam
+tile.industrialrenewal.brace_steel.name=Стальная балка раскоса
 tile.industrialrenewal.buffer_stop_rail.name=Рельса буферной остановки
-tile.industrialrenewal.cargo_loader.name=Грузовой погрузчик
-tile.industrialrenewal.fluid_loader.name=Fluid Loader (WIP)
+tile.industrialrenewal.cargo_loader.name=Грузовой погрузчик (WIP)
+tile.industrialrenewal.fluid_loader.name=Жидкостный загрузчик (WIP)
 tile.industrialrenewal.cart_container=Грузовой контейнер
 tile.industrialrenewal.catwalk.name=Подиум
-tile.industrialrenewal.catwalk_steel.name=Steel Catwalk
+tile.industrialrenewal.catwalk_steel.name=Стальной подиум
 tile.industrialrenewal.catwalk_column.name=Колонна
-tile.industrialrenewal.catwalk_column_steel.name=Steel Column
+tile.industrialrenewal.catwalk_column_steel.name=Стальная колонна
 tile.industrialrenewal.catwalk_gate.name=Подиумная калитка
 tile.industrialrenewal.catwalk_hatch.name=Люк
 tile.industrialrenewal.catwalk_ladder.name=Лестница в клетке
-tile.industrialrenewal.catwalk_ladder_steel.name=Caged Steel Ladder
+tile.industrialrenewal.catwalk_ladder_steel.name=Стальная лестница в клетке
 tile.industrialrenewal.catwalk_pillar.name=Столб
-tile.industrialrenewal.catwalk_steel_pillar.name=Steel Pillar
+tile.industrialrenewal.catwalk_steel_pillar.name=Стальной столб
 tile.industrialrenewal.catwalk_stair.name=Ступенька
-tile.industrialrenewal.catwalk_stair_steel.name=Steel Stair
+tile.industrialrenewal.catwalk_stair_steel.name=Стальная ступенька
 tile.industrialrenewal.crossing_rail.name=Перекрестная рельса
 tile.industrialrenewal.conduit_connector.name=Соединитель блока предохранителей
 tile.industrialrenewal.conduit_extension.name=Расширение блока предохранителей
 tile.industrialrenewal.detector_rail.name=Детекторная рельса
-tile.industrialrenewal.energy_cable.name=Энергетический кабель (WIP)
+tile.industrialrenewal.energy_cable.name=Энергетический кабель
 tile.industrialrenewal.firstaid_kit.name=Коробка первой помощи
 tile.industrialrenewal.flame_detector.name=Детектор пламени
 tile.industrialrenewal.fluid_filter.name=Жидкостный фильтр (WIP)
-tile.industrialrenewal.fluid_pipe.name=Жидкостная труба (WIP)
+tile.industrialrenewal.fluid_pipe.name=Жидкостная труба
 tile.industrialrenewal.fluorescent.name=Флуоресцентный свет
 tile.industrialrenewal.frame.name=Рамка рельсы
 tile.industrialrenewal.fuse_box.name=Блок предохранителей
@@ -92,8 +96,8 @@ tile.industrialrenewal.gate_not.name=Гейт НЕ
 tile.industrialrenewal.gate_or.name=Гейт ИЛИ
 tile.industrialrenewal.gutter.name=Сточная канава
 tile.industrialrenewal.handrail.name=Поручень
-tile.industrialrenewal.handrail_steel.name=Steel Handrail
-tile.industrialrenewal.industrial_floor.name=Промышленный пол (WIP)
+tile.industrialrenewal.handrail_steel.name=Стальной поручень
+tile.industrialrenewal.industrial_floor.name=Промышленный пол
 tile.industrialrenewal.light.name=Внешний свет
 tile.industrialrenewal.locker.name=Блокировщик
 tile.industrialrenewal.normal_rail.name=Рельса
@@ -118,46 +122,48 @@ tile.industrialrenewal.electric_gate.name=Электрическая калит�
 tile.industrialrenewal.record_player.name=Мульти-проигрыватель записи
 tile.industrialrenewal.sensor_rain.name=Датчик дождя
 tile.industrialrenewal.solar_panel.name=Основная солнечная панель
-tile.industrialrenewal.fluid_gauge.name=Gauge
-tile.industrialrenewal.button_red.name=Emergency Button
-tile.industrialrenewal.fence_big_column.name=Big Fence Column
-tile.industrialrenewal.fence_big_corner.name=Big Fence Corner
-tile.industrialrenewal.fence_big_wire.name=Big Fence Wire
-tile.industrialrenewal.electric_pump.name=Electric Pump
-tile.industrialrenewal.battery_bank.name=Battery Bank
-tile.industrialrenewal.steam_boiler.name=Steam Boiler
-tile.industrialrenewal.steam_turbine.name=Steam Turbine
-tile.industrialrenewal.firebox_solid.name=Steam Boiler Firebox For Solid Fuel
-tile.industrialrenewal.steam.name=Steam
-tile.industrialrenewal.trash.name=Trash Bin
-tile.industrialrenewal.eotm.name=Employee of the Month Award
-tile.industrialrenewal.bunkbed.name=Bunk Bed
-tile.industrialrenewal.bunker_hatch.name=Bunker Hatch
-tile.industrialrenewal.small_wind_turbine_pillar.name=Wind Turbine Pillar
-tile.industrialrenewal.small_wind_turbine.name=Wind Turbine
-tile.industrialrenewal.chunk_loader.name=Chunk Loader (WIP)
-tile.industrialrenewal.conveyor_bulk.name=Bulk Conveyor
-tile.industrialrenewal.orevein_hematite.name=Hematite
-tile.industrialrenewal.solar_panel_frame.name=Solar Panel Frame
-tile.industrialrenewal.energy_level.name=Energy Level Indicator
+tile.industrialrenewal.fluid_gauge.name=Датчик жидкости
+tile.industrialrenewal.button_red.name=Тревожная кнопка
+tile.industrialrenewal.fence_big_column.name=Большая колонна забора
+tile.industrialrenewal.fence_big_corner.name=Большой уголок забора
+tile.industrialrenewal.fence_big_wire.name=Большой провод забора
+tile.industrialrenewal.electric_pump.name=Электрическая помпа (WIP)
+tile.industrialrenewal.battery_bank.name=Аккумуляторная батарея
+tile.industrialrenewal.steam_boiler.name=Паровой котел
+tile.industrialrenewal.steam_turbine.name=Паровая турбина
+tile.industrialrenewal.firebox_solid.name=Топка парового котла на твердом топливе
+tile.industrialrenewal.steam.name=Пар
+tile.industrialrenewal.trash.name=Корзина
+tile.industrialrenewal.eotm.name=Награда "Сотрудник месяца"
+tile.industrialrenewal.bunkbed.name=Двухъярусная кровать
+tile.industrialrenewal.bunker_hatch.name=Люк бункера
+tile.industrialrenewal.small_wind_turbine_pillar.name=Столб ветровой турбины
+tile.industrialrenewal.small_wind_turbine.name=Ветровая турбина
+tile.industrialrenewal.chunk_loader.name=Загрузчик чанка
+tile.industrialrenewal.conveyor_bulk.name=Насыпной конвейер
+tile.industrialrenewal.orevein_hematite.name=Гематит
+tile.industrialrenewal.solar_panel_frame.name=Рамка солнечной батареи
+tile.industrialrenewal.energy_level.name=Индикатор уровня энергии
 
-# Fluids
+#Fluids
 fluid.steam=Steam
 
+#Entity
 
 entity.industrialrenewal.cargo_container.name=Грузовой контейнер
 entity.industrialrenewal.fluid_container.name=Жидкостный контейнер
-entity.industrialrenewal.steam_locomotive.name=Паровоз
-entity.industrialrenewal.log_cart.name=Log Cart
-entity.industrialrenewal.passenger_car.name=Passenger Car
-entity.industrialrenewal.minecart_flat.name=Flat Cart
+entity.industrialrenewal.steam_locomotive.name=Паровоз (WIP)
+entity.industrialrenewal.log_cart.name=Тележка для бревен
+entity.industrialrenewal.passenger_car.name=Пассажирская тележка
+entity.industrialrenewal.minecart_flat.name=Плоская тележка
 
+#Config
 
-gui.config.main_title=Конфигурация Industrial Renewal
-gui.config.category.recipes=Рецепты
-gui.config.category.recipes.tooltip=Настройки рецептов
-gui.config.recipes.spongeiron_recipe.name=Рецепт губчатого железа
-gui.config.recipes.spongeiron_recipe.comment=Включить/выключить рецепт губчатого железа (по умолчанию - вкл.)
+gui.config.main_title=Industrial Renewal Configuration
+gui.config.category.recipes=Recipes
+gui.config.category.recipes.tooltip=Recipes settings
+gui.config.recipes.spongeiron_recipe.name=Sponge Iron recipe
+gui.config.recipes.spongeiron_recipe.comment=Turn On/Off the sponge iron recipe (Default true)
 
 gui.config.category.options=Options
 gui.config.category.options.tooltip=General settings
@@ -183,37 +189,40 @@ gui.config.chunk_loader_width.name=Chunk Load Width
 gui.config.emergency_mode.name=Deactivate Chunk Load
 gui.config.blade_durability.name=Wind Turbine Bade durability
 
-# Render
-render.industrialrenewal.energy=Energy
-render.industrialrenewal.fluid=Fluid
-render.industrialrenewal.drillheat=Drill Heat
+#Render
+render.industrialrenewal.energy=Энергия
+render.industrialrenewal.fluid=Жидкость
+render.industrialrenewal.drillheat=Нагрев дрели
 render.industrialrenewal.c=°C
 render.industrialrenewal.k=K
 render.industrialrenewal.f=°F
 
+#Info
 
 tile.industrialrenewal.crossing_rail.info=Заставляет вагонетки сигналить, когда они проходят
 tile.industrialrenewal.loader_rail.info=Используется совместно с
 tile.industrialrenewal.sign_base.info=Shift+ПКМ с шуруповертом, чтобы изменить
 
+#Book
 
-gui.industrialrenewal.railroad.category=Railroad
-gui.industrialrenewal.redstone.category=Redstone
-gui.industrialrenewal.catwalk.category=Catwalk
-gui.industrialrenewal.fences.category=Fences
-gui.industrialrenewal.utilities.category=Utilities
-gui.industrialrenewal.construction.category=Construction
-gui.industrialrenewal.steam_locomotive.text0=Steam Locomotive still in WIP and only runs with powered rails for now. Its intended to work like Railcraft locomotives, with additional that you can put a snow plow in it to clean the snowing tracks and not slow down the carts.
-gui.industrialrenewal.fuse_box.text0=Made to control the amount of redstone power using redstone Catrigdes. To conect it a network or a redstone signal, use a Fuse box conector below.
-gui.industrialrenewal.cargo_container.text0=Used to transport items in the rails, can interact with hoppers, item transfer or another blocks used in carts.
-gui.industrialrenewal.fluid_container.text0=Still in WIP, carries fluids and can hold 32,000 mb.
-gui.industrialrenewal.fire_extinguisher.text0=Extinguishes nearby fires or lava blocks in a 3x3 area. You can put it on the floor by pressing Shift + right click, to grab it press shift + right click with a empty hand.
-gui.industrialrenewal.flame_detector.text0=It emits a redstone signal if there is a flame on the front. Can rotate with a wrench.
-gui.industrialrenewal.gutter.text0=Take water if placed in the end of the roof when it's raining, increases the water generation by the amount of roof tiles. To get the water just place a tank or a pipe below.
-gui.industrialrenewal.entity_detector.text0=It emits a redstone signal if the entity is in range, the range and the entity type can be change in the gui.
-gui.industrialrenewal.first-aid_box.text0=It's a container to hold first-aids, can hold 8 stacks of 16, to open press shift + right click, when right clicked he give a regeneration II buff which lasts 7s. Only works if you don't have full health.
-gui.industrialrenewal.rails.text0=- Rail, Powered Rail, Detector Rail: $n Just like vanilla ones but 3D. $n - Buffer Stop: $n Will prevent the carts from passing. $n - Crossing Rail: $n Makes carts Horn when it passes. $n - Tranfer Rail: $n Place on top or under a Cargo Item Tranfer and will stop the carts depending on the Cargo Item Tranfer settings.
+gui.industrialrenewal.railroad.category=Железная дорога
+gui.industrialrenewal.redstone.category=Редстоун
+gui.industrialrenewal.catwalk.category=Подиум
+gui.industrialrenewal.fences.category=Заборы
+gui.industrialrenewal.utilities.category=Утилиты
+gui.industrialrenewal.construction.category=Строительство
+gui.industrialrenewal.steam_locomotive.text0=Паровоз все еще работает в режиме WIP и пока работает только с энергорельсами. Он предназначен как для работы с локомотивами Railcraft, с дополнительным, что вы можете положить в него снегоочиститель, чтобы убрать следы снега и не замедлять вагонетки.
+gui.industrialrenewal.fuse_box.text0=Сделано, чтобы контролировать количество силы красного камня, используя редстоун картриджи. Чтобы подключить его к сети или к сигналу редстоун, используйте коннектор блока предохранителей ниже.
+gui.industrialrenewal.cargo_container.text0=Используется для перевозки предметов на рельсах, может взаимодействовать с бункерами, переносом предметов или другими блоками, используемыми в вагонетках.
+gui.industrialrenewal.fluid_container.text0=Все еще в WIP, несет жидкости и может вместить 32,000 mb.
+gui.industrialrenewal.fire_extinguisher.text0=Тушит близлежащие пожары или блоки лавы в области 3х3. Вы можете положить его на пол, нажав Shift+ПКМ, чтобы схватить его, нажмите Shift+ПКМ пустой рукой.
+gui.industrialrenewal.flame_detector.text0=Он излучает сигнал красного камня, если на передней панели есть пламя. Можно вращать с помощью гаечного ключа.
+gui.industrialrenewal.gutter.text0=Возьмите воду, если поместить в конце крыши, когда идет дождь, увеличивает количество воды в объеме черепицы. Чтобы получить воду просто поместите бак или трубу ниже.
+gui.industrialrenewal.entity_detector.text0=Он излучает сигнал красного камня, если объект находится в диапазоне, диапазон и тип объекта могут быть изменены в графическом интерфейсе.
+gui.industrialrenewal.first-aid_box.text0=Это контейнер для хранения первой помощи, может содержать 8 стаков по 16, чтобы открыть нажмите Shift+ПКМ, при щелчке ПКМ он дает эффект регенерации II, который длится 7 с. Работает только если у вас нет полного здоровья.
+gui.industrialrenewal.rails.text0=- Рельса, энергорельса, детектор рельса: $n Такие же, как ванильные, но в 3D. $n - Буфер стоп: $n Будет препятствовать прохождению вагонеток. $n - Перекрестная рельса: $n Вагонетка подает звуковой сигнал, когда проходит. $n - Трансфер рельса: $n Поместите сверху или под транспортировкой грузовых предметов и остановите тележки в зависимости от настроек трансфера грузовых предметов.
 
+#GUI
 
 gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Слоты для аптечек
 gui.industrialrenewal.blockrecordplayer.discs.tooltip=Слоты для дисков
@@ -238,4 +247,3 @@ gui.industrialrenewal.fusebox.input=Редстоун вход:
 gui.industrialrenewal.fusebox.output=Редстоун выход:
 gui.industrialrenewal.fusebox.slots.tooltip=Слоты для редстоун картриджей
 
-gui.industrialrenewal.firt-aid_box.text0=It's a container to hold first-aids, can hold 8 stacks of 16, to open press shift + right click, when right clicked he give a regeneration II buff which lasts 7s. Only works if you don't have full health.
