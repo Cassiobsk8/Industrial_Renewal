@@ -111,6 +111,9 @@ public class IRConfig {
             @Config.LangKey("gui.config.nether_extinguisher.name")
             public boolean fireExtinguisheronNether = true;
 
+            @Config.Comment("The amount of damage the razor wire would cause (Default 2.0 '1 heart')")
+            public float razorWireDammage = 2.0f;
+
             @Config.Comment("Fluid fuels and its combustion value per 1 Bucket (Default: {lava=200, rocket_fuel=1120, pyrotheum=3200, refined_fuel=1500, ic2biogas=300, crude_oil=500, refined_oil=1000, coal=400, refined_biofuel=900, bio_diesel=600, biodiesel=600, diesel=900, fuel=1500, fluiddiesel=900, fluidnitrodiesel=1600, empoweredoil=700, kerosene=1500, lpg=1800, gasoline=1200, fire_water=1200, ethanol=900, bio.ethanol=900})")
             @Config.LangKey("gui.config.fluidFuel.name")
             public Map<String, Integer> fluidFuel = getFuelHash();

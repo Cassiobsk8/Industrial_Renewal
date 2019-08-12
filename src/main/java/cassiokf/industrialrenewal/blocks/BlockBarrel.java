@@ -33,7 +33,6 @@ public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool FRAME = PropertyBool.create("frame");
-    protected static final AxisAlignedBB FULL_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 1D, 1D);
 
     public BlockBarrel(String name, CreativeTabs tab)
     {
@@ -125,7 +124,7 @@ public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return FULL_AABB;
+        return FULL_BLOCK_AABB;
     }
 
     public Class<TileEntityBarrel> getTileEntityClass()

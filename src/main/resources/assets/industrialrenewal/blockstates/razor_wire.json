@@ -1,0 +1,41 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "industrialrenewal:razor_wire",
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
+    "frame": {
+      "true": {
+        "submodel": {
+          "r": {
+            "model": "industrialrenewal:razor_wire_r"
+          }
+        }
+      },
+      "false": {}
+    },
+    "inventory": {
+      "model": "industrialrenewal:razor_wire",
+      "submodel": {
+        "r": {
+          "model": "industrialrenewal:razor_wire_r"
+        }
+      }
+    }
+  }
+}
