@@ -4,11 +4,13 @@ import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
@@ -28,9 +30,50 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
             if (tick2 % 4 == 0)
             {
                 tick2 = 0;
-                getEntityItemAbove();
+                if (!getInvAbove()) getEntityItemAbove();
+                hopperToConveyor();
             }
             tick2++;
+        }
+    }
+
+    private boolean getInvAbove()
+    {
+        if (hopperInv.getStackInSlot(0).isEmpty())
+        {
+            TileEntity te = world.getTileEntity(pos.up());
+            if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN))
+            {
+                IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+                if (itemHandler != null)
+                {
+                    int itemsPerTick = 8;
+                    for (int i = 0; i < itemHandler.getSlots(); i++)
+                    {
+                        ItemStack stack = itemHandler.extractItem(i, itemsPerTick, true);
+                        ItemStack left = hopperInv.insertItem(0, stack, false);
+                        if (!ItemStack.areItemStacksEqual(stack, left))
+                        {
+                            int toExtract = stack.getCount() - left.getCount();
+                            itemHandler.extractItem(i, toExtract, false);
+                            markDirty();
+                            break;
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void hopperToConveyor()
+    {
+        if (!hopperInv.getStackInSlot(0).isEmpty())
+        {
+            ItemStack stack = hopperInv.getStackInSlot(0).copy();
+            ItemStack stack1 = inventory.insertItem(1, stack, false);
+            hopperInv.getStackInSlot(0).shrink(stack.getCount() - stack1.getCount());
         }
     }
 
@@ -46,12 +89,6 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
                 ItemStack stack1 = hopperInv.insertItem(0, stack, false);
                 if (stack1.isEmpty()) entityItem.setDead();
                 else entityItem.setItem(stack1);
-            }
-            if (!hopperInv.getStackInSlot(0).isEmpty())
-            {
-                ItemStack stack = hopperInv.getStackInSlot(0).copy();
-                ItemStack stack1 = inventory.insertItem(1, stack, false);
-                hopperInv.getStackInSlot(0).shrink(stack.getCount() - stack1.getCount());
             }
         }
     }
