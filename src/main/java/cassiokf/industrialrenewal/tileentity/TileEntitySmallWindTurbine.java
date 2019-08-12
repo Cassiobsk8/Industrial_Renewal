@@ -75,13 +75,15 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
             {
                 int energyGen = Math.round(getMaxGeneration() * getEfficiency());
                 energyGenerated = this.energyContainer.receiveEnergy(energyGen, false);
-                this.markDirty();
                 if (tickToDamage >= 1200 && energyGen > 0)
                 {
                     tickToDamage = 0;
                     bladeInv.getStackInSlot(0).attemptDamageItem(1, new Random(), null);
                 }
-                tickToDamage++;
+                if (tickToDamage < 1201) tickToDamage++;
+            } else
+            {
+                energyGenerated = 0;
             }
             //OutPut Energy
             if (this.energyContainer.getEnergyStored() > 0)

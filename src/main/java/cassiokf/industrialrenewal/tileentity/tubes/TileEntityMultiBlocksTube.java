@@ -102,6 +102,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         this.master = master;
         isMaster = master == this;
         if (!isMaster) posSet.clear();
+        markDirty();
     }
 
     public Map<BlockPos, EnumFacing> getPosSet()

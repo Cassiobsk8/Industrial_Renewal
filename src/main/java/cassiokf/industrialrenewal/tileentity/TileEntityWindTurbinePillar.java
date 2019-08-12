@@ -61,21 +61,21 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
                 }
             } else if (getTurbinePos() != null)
             {
-                tick++;
                 if (tick % 10 == 0)
                 {
                     tick = 0;
                     if (world.getBlockState(turbinePos).getBlock() instanceof BlockSmallWindTurbine && world.getTileEntity(turbinePos) instanceof TileEntitySmallWindTurbine)
                     {
                         TileEntitySmallWindTurbine te = (TileEntitySmallWindTurbine) world.getTileEntity(turbinePos);
-                        if (te != null) energyGenerated = te.getEnergyGenerated();
-                        else energyGenerated = 0;
+                        if (te != null) getMaster().energyGenerated = te.getEnergyGenerated();
+                        else getMaster().energyGenerated = 0;
                     } else
                     {
-                        energyGenerated = 0;
+                        getMaster().energyGenerated = 0;
                         forceNewTurbinePos();
                     }
                 }
+                tick++;
             }
         }
     }
@@ -96,6 +96,7 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     public void checkForOutPuts(BlockPos bPos)
     {
         isBase = getIsBase();
+        if (isBase) forceNewTurbinePos();
         if (world.isRemote) return;
         for (EnumFacing face : EnumFacing.HORIZONTALS)
         {
@@ -124,14 +125,16 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
         return forceNewTurbinePos();
     }
 
+
     private BlockPos forceNewTurbinePos()
     {
         int n = 1;
-        while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockWindTurbinePillar)
+        while (world.getTileEntity(pos.up(n)) instanceof TileEntityWindTurbinePillar)
         {
             n++;
         }
-        if (world.getBlockState(pos.up(n)).getBlock() instanceof BlockSmallWindTurbine) turbinePos = pos.up(n);
+        if (world.getTileEntity(pos.up(n)) instanceof TileEntitySmallWindTurbine) turbinePos = pos.up(n);
+        else turbinePos = null;
         return turbinePos;
     }
 
@@ -152,6 +155,12 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     public int getEnergyGenerated()
     {
         return getMaster().energyGenerated;
+    }
+
+    public String getText()
+    {
+        if (getMaster().getTurbinePos() == null) return "No Turbine";
+        return getEnergyGenerated() + " FE/t";
     }
 
     public boolean isBase()

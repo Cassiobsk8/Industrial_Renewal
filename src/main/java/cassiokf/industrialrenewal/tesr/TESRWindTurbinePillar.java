@@ -83,7 +83,7 @@ public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityW
         }
         GlStateManager.rotate(180, 1, 0, 0);
         GlStateManager.scale(0.006F, 0.006F, 1F);
-        String st = te.getEnergyGenerated() + " FE/t";
+        String st = te.getText();
         int xh = -Minecraft.getMinecraft().fontRenderer.getStringWidth(st) / 2;
         Minecraft.getMinecraft().fontRenderer.drawString(st, xh, 0, 0xFFFFFFFF);
         RenderHelper.enableStandardItemLighting();
