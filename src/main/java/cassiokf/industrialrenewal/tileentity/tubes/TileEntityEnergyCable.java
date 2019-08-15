@@ -22,7 +22,14 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
 
 
     public TileEntityEnergyCable() {
-        this.energyContainer = new VoltsEnergyContainer(10240, 1024, 1024);
+        this.energyContainer = new VoltsEnergyContainer(10240, 1024, 1024)
+        {
+            @Override
+            public void onEnergyChange()
+            {
+                TileEntityEnergyCable.this.markDirty();
+            }
+        };
     }
 
     @Override

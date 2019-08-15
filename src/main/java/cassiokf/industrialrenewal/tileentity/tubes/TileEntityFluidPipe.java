@@ -17,7 +17,14 @@ import javax.annotation.Nullable;
 
 public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFluidPipe> implements ITickable, ICapabilityProvider
 {
-    public FluidTank tank = new FluidTank(1000);
+    public FluidTank tank = new FluidTank(1000)
+    {
+        @Override
+        protected void onContentsChanged()
+        {
+            TileEntityFluidPipe.this.markDirty();
+        }
+    };
 
     public int maxOutput = 600;
 

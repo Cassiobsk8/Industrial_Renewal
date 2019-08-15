@@ -24,7 +24,14 @@ public class TileEntitySolarPanelBase extends TileEntity implements ICapabilityP
 
     public TileEntitySolarPanelBase()
     {
-        this.energyContainer = new VoltsEnergyContainer(600, 0, 120);
+        this.energyContainer = new VoltsEnergyContainer(600, 0, 120)
+        {
+            @Override
+            public void onEnergyChange()
+            {
+                TileEntitySolarPanelBase.this.markDirty();
+            }
+        };
     }
 
     @Override

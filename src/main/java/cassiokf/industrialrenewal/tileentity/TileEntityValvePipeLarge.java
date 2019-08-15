@@ -26,7 +26,14 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
     private EnumFaceRotation faceRotation = EnumFaceRotation.DOWN;
     private Boolean active = false;
 
-    public FluidTank tank = new FluidTank(2000);
+    public FluidTank tank = new FluidTank(2000)
+    {
+        @Override
+        protected void onContentsChanged()
+        {
+            TileEntityValvePipeLarge.this.markDirty();
+        }
+    };
     public static FluidTank dummyTank = new FluidTank(0)
     {
         @Override
@@ -159,6 +166,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
 
     @Override
     public void readFromNBT(final NBTTagCompound tag) {
+        tank.readFromNBT(tag);
         facing = EnumFacing.byIndex(tag.getInteger("facing"));
         faceRotation = EnumFaceRotation.values()[tag.getInteger("faceRotation")];
         active = tag.getBoolean("active");
@@ -174,6 +182,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
 
     @Override
     public NBTTagCompound writeToNBT(final NBTTagCompound tag) {
+        tank.writeToNBT(tag);
         final int[] enabledFacingIndices = enabledFacings.stream()
                 .mapToInt(EnumFacing::getIndex)
                 .toArray();

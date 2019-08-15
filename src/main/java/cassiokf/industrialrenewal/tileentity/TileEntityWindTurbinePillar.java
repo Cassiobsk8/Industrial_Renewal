@@ -34,7 +34,14 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
 
     public TileEntityWindTurbinePillar()
     {
-        this.energyContainer = new VoltsEnergyContainer(1024, 1024, 1024);
+        this.energyContainer = new VoltsEnergyContainer(1024, 1024, 1024)
+        {
+            @Override
+            public void onEnergyChange()
+            {
+                TileEntityWindTurbinePillar.this.markDirty();
+            }
+        };
         this.dummyEnergyContainer = new VoltsEnergyContainer(0, 0, 0);
     }
 

@@ -29,6 +29,12 @@ public class TileEntityDamIntake extends TileEntity implements ITickable
         {
             return false;
         }
+
+        @Override
+        protected void onContentsChanged()
+        {
+            TileEntityDamIntake.this.markDirty();
+        }
     };
     int waterAmount = -1;
     List<BlockPos> connectedWalls = new ArrayList<BlockPos>();

@@ -33,6 +33,12 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
         {
             return false;
         }
+
+        @Override
+        protected void onContentsChanged()
+        {
+            TileEntityElectricPump.this.markDirty();
+        }
     };
 
     private int index = -1;
@@ -47,6 +53,12 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
             public boolean canExtract()
             {
                 return false;
+            }
+
+            @Override
+            public void onEnergyChange()
+            {
+                TileEntityElectricPump.this.markDirty();
             }
         };
     }

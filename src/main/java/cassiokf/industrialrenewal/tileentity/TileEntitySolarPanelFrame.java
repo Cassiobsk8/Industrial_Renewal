@@ -48,7 +48,14 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
 
     public TileEntitySolarPanelFrame()
     {
-        this.energyContainer = new VoltsEnergyContainer(600, 0, 1024);
+        this.energyContainer = new VoltsEnergyContainer(600, 0, 1024)
+        {
+            @Override
+            public void onEnergyChange()
+            {
+                TileEntitySolarPanelFrame.this.markDirty();
+            }
+        };
     }
 
     @Override

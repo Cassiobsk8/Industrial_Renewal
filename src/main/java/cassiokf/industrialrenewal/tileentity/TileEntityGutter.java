@@ -29,6 +29,12 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
         {
             return false;
         }
+
+        @Override
+        protected void onContentsChanged()
+        {
+            TileEntityGutter.this.markDirty();
+        }
     };
     private int tick;
     private int fillAmount;
