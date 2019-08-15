@@ -113,7 +113,7 @@ public class EntityFluidBase extends EntityMinecart implements IFluidHandler
     public void readEntityFromNBT(NBTTagCompound tag)
     {
         super.readEntityFromNBT(tag);
-        //tank.readFromNBT(tag);
+        tank.readFromNBT(tag);
         this.dataManager.set(TANK, tag.getCompoundTag("tank"));
     }
 
@@ -121,6 +121,7 @@ public class EntityFluidBase extends EntityMinecart implements IFluidHandler
     public void writeEntityToNBT(NBTTagCompound tag)
     {
         super.writeEntityToNBT(tag);
+        tank.writeToNBT(tag);
         tag.setTag("tank", this.dataManager.get(TANK));
     }
 
