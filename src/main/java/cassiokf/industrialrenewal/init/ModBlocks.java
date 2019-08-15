@@ -28,7 +28,8 @@ public class ModBlocks {
     public static BlockBase radiationHazard = new BlockBase(Material.IRON, "radiation_hazard", References.CREATIVE_IR_TAB);
     public static BlockBase aisleHazard = new BlockBase(Material.IRON, "aisle_hazard", References.CREATIVE_IR_TAB);
     public static BlockBase fireHazard = new BlockBase(Material.IRON, "fire_hazard", References.CREATIVE_IR_TAB);
-    public static BlockBase concrete = new BlockBase(Material.ROCK, "concrete", References.CREAATIVE_IRWIP_TAB);
+
+    public static BlockConcrete concrete = new BlockConcrete(Material.ROCK, "concrete", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor", References.CREATIVE_IR_TAB);
     public static BlockChimney blockChimney = new BlockChimney("block_chimney", References.CREATIVE_IR_TAB);
@@ -89,6 +90,8 @@ public class ModBlocks {
     public static BlockBaseWall concreteWall = new BlockBaseWall("wall_concrete", References.CREATIVE_IR_TAB);
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
     public static BlockRazorWire razorWire = new BlockRazorWire("razor_wire", References.CREATIVE_IR_TAB);
+
+    public static BlockDamIntake damIntake = new BlockDamIntake("dam_intake", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREATIVE_IR_TAB);
     public static BlockSolarPanelFrame fpanel = new BlockSolarPanelFrame("solar_panel_frame", References.CREATIVE_IR_TAB);
@@ -202,6 +205,7 @@ public class ModBlocks {
                 bigFenceWire,
                 egate,
                 razorWire,
+                damIntake,
                 signC,
                 signHV,
                 signRA,
@@ -297,6 +301,8 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(catwalkStair.getTileEntityClass(), catwalkStair.getRegistryName());
         GameRegistry.registerTileEntity(conveyorV.getTileEntityClass(), conveyorV.getRegistryName());
         GameRegistry.registerTileEntity(conveyorVHopper.getTileEntityClass(), conveyorVHopper.getRegistryName());
+        GameRegistry.registerTileEntity(damIntake.getTileEntityClass(), damIntake.getRegistryName());
+        GameRegistry.registerTileEntity(concrete.getTileEntityClass(), concrete.getRegistryName());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -354,6 +360,7 @@ public class ModBlocks {
                 bigFenceWire.createItemBlock(),
                 egate.createItemBlock(),
                 razorWire.createItemBlock(),
+                damIntake.createItemBlock(),
                 signHV.createItemBlock(),
                 fluorescent.createItemBlock(),
                 light.createItemBlock(),
@@ -428,6 +435,7 @@ public class ModBlocks {
         concreteWall.registerItemModel(Item.getItemFromBlock(concreteWall));
         egate.registerItemModel(Item.getItemFromBlock(egate));
         razorWire.registerItemModel(Item.getItemFromBlock(razorWire));
+        damIntake.registerItemModel(Item.getItemFromBlock(damIntake));
         spanel.registerItemModel(Item.getItemFromBlock(spanel));
         fpanel.registerItemModel(Item.getItemFromBlock(fpanel));
         sWindTurbine.registerItemModel(Item.getItemFromBlock(sWindTurbine));
