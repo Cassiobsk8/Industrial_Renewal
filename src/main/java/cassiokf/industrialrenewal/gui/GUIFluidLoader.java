@@ -66,10 +66,20 @@ public class GUIFluidLoader extends GuiContainer {
         return waitE;
     }
 
+    private String getGUIModeText()
+    {
+        if (entity.isUnload()) return I18n.format("gui.industrialrenewal.button.unloader_mode");
+        return I18n.format("gui.industrialrenewal.button.loader_mode");
+    }
+
     @Override
     protected void actionPerformed(GuiButton b) {
         if (b.id == 0) {
-            NetworkHandler.INSTANCE.sendToServer(new PacketReturnFluidLoader(this.entity));
+            NetworkHandler.INSTANCE.sendToServer(new PacketReturnFluidLoader(this.entity, false));
+        }
+        if (b.id == 1)
+        {
+            NetworkHandler.INSTANCE.sendToServer(new PacketReturnFluidLoader(this.entity, true));
         }
     }
 
@@ -79,6 +89,7 @@ public class GUIFluidLoader extends GuiContainer {
         int posX1 = ((this.width - this.xSize) / 2);
         int posY1 = ((this.height - this.ySize) / 2);
         this.buttonList.add(new GuiButton(0, posX1 + 7, posY1 + 53, 61, 18, ""));
+        this.buttonList.add(new GuiButton(1, posX1 + 7, posY1 + 18, 52, 18, ""));
     }
 
     @Override
@@ -95,7 +106,9 @@ public class GUIFluidLoader extends GuiContainer {
         fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 92, 0x404040);
 
         String waitE = getGUIButtonText();
+        String mode = getGUIModeText();
         fontRenderer.drawString(waitE, (xSize / 2 - fontRenderer.getStringWidth(waitE) / 2) - 50, 59, 0xffffff);
+        fontRenderer.drawString(mode, (xSize / 2 - fontRenderer.getStringWidth(mode) / 2) - 55, 24, 0xffffff);
 
         int amount = entity.tank.getFluidAmount();
         // ProgressBar
@@ -127,7 +140,7 @@ public class GUIFluidLoader extends GuiContainer {
         FluidStack fluid = tank.getFluid();
 
         if (fluid != null) {
-            renderFluid(fluid.getFluid(), 80, 78, 16, percentage);
+            renderFluid(fluid.getFluid(), 80, 79, 16, percentage);
         }
     }
 

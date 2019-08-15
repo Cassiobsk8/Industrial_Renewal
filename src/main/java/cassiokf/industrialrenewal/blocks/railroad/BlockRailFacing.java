@@ -43,8 +43,9 @@ public abstract class BlockRailFacing extends BlockRailBase {
         setCreativeTab(tab);
     }
 
-    protected void propelMinecart(World world, BlockPos pos, IBlockState state, EntityMinecart minecart) {
-        BlockRailBase.EnumRailDirection dir = getRailDirection(world, pos, state, minecart);
+    public static void propelMinecart(IBlockState state, EntityMinecart minecart)
+    {
+        BlockRailBase.EnumRailDirection dir = state.getValue(BlockRailFacing.SHAPE);
         EnumFacing facing = state.getValue(FACING);
         if (dir == BlockRailBase.EnumRailDirection.EAST_WEST) {
             if (facing == EnumFacing.EAST) {

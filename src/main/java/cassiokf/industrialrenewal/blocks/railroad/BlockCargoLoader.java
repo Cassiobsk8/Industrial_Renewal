@@ -8,7 +8,6 @@ import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,7 +19,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -30,11 +28,8 @@ import javax.annotation.Nullable;
 public class BlockCargoLoader extends BlockBasicContainer<TileEntityCargoLoader>
 {
 
-    public static final PropertyBool LOADING = PropertyBool.create("loading");
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool UNLOAD = PropertyBool.create("unload");
-    protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1D, 1D, 1D);
-    protected static final AxisAlignedBB FULL_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 1D, 1D);
 
     public BlockCargoLoader(String name, CreativeTabs tab) {
         super(name, tab, Material.IRON);
@@ -70,7 +65,7 @@ public class BlockCargoLoader extends BlockBasicContainer<TileEntityCargoLoader>
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(LOADING, false);
+        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
     }
 
     @Override
@@ -85,19 +80,14 @@ public class BlockCargoLoader extends BlockBasicContainer<TileEntityCargoLoader>
     }
 
     @Override
-    public boolean isTopSolid(IBlockState state) {
-        return true;
-    }
-
-    @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, LOADING, UNLOAD);
+        return new BlockStateContainer(this, FACING, UNLOAD);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta)).withProperty(LOADING, false);
+        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
     }
 
     @Override
@@ -105,19 +95,6 @@ public class BlockCargoLoader extends BlockBasicContainer<TileEntityCargoLoader>
         return state.getValue(FACING).getHorizontalIndex();
     }
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        return face == EnumFacing.UP ? BlockFaceShape.BOWL : BlockFaceShape.UNDEFINED;
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        state = state.getActualState(source, pos);
-        if (state.getValue(UNLOAD)) {
-            return FULL_AABB;
-        }
-        return BLOCK_AABB;
-    }
 
     public Class<TileEntityCargoLoader> getTileEntityClass() {
         return TileEntityCargoLoader.class;

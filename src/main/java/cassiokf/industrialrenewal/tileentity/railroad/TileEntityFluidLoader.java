@@ -1,17 +1,14 @@
 package cassiokf.industrialrenewal.tileentity.railroad;
 
+import cassiokf.industrialrenewal.blocks.BlockChunkLoader;
 import cassiokf.industrialrenewal.blocks.railroad.BlockFluidLoader;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
+import cassiokf.industrialrenewal.util.Utils;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -19,166 +16,229 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITickable {
 
-    private int intLoadActivity = 0;
-    private int intUnloadActivity = 0;
     public FluidTank tank = new FluidTank(16000) {
+        @Override
+        public boolean canFill()
+        {
+            return !TileEntityFluidLoader.this.isUnload();
+        }
+
         @Override
         protected void onContentsChanged() {
             TileEntityFluidLoader.this.Sync();
         }
     };
+    private int maxFlowPerTick = 200;
+    private boolean checked = false;
+    private boolean master;
+    private boolean oldLoading;
+    private float ySlide = 0;
 
+    private int cartFluidAmount;
+    private int cartFluidCapacity;
 
     @Override
-    public void update() {
-        if (!world.isRemote) {
-            if (this.world.getTotalWorldTime() % 8 == 0) {
-                boolean activity = false;
-
-//			    up cart -> tank
-                int maxFlowPerTick = 320;
-                boolean hasCart = false;
-
-                IFluidHandler upHandler = getInventoryUp();
-                if (upHandler != null) {
-                    FluidStack drainedStack = upHandler.drain(maxFlowPerTick, false);
-                    if (tank.getFluidAmount() < tank.getCapacity()) {
-                        if (drainedStack != null && drainedStack.amount > 0) {
-                            tank.fill(upHandler.drain(maxFlowPerTick, true), true);
-                            activity = true;
-                            intLoadActivity = 0;
-                        }
-                    }
-                    if (isUnload()) {
-                        hasCart = true;
-                        if (getWaitEnum() == waitEnum.WAIT_EMPTY && (drainedStack == null || drainedStack.amount <= 0)) {
-                            letCartPass(true);
-                        }
+    public void update()
+    {
+        if (isMaster())
+        {
+            if (!world.isRemote)
+            {
+                if (cartActivity > 0)
+                {
+                    cartActivity--;
+                    Sync();
+                }
+                if (isUnload() && tank.getFluidAmount() > 0)
+                {
+                    TileEntity te = world.getTileEntity(pos.offset(getBlockFacing().getOpposite()));
+                    if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getBlockFacing()))
+                    {
+                        IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getBlockFacing());
+                        if (handler != null)
+                            tank.drain(handler.fill(tank.drain(maxFlowPerTick, false), true), true);
                     }
                 }
-
-//			tank -> front/down cart
-                IFluidHandler outHandler = getInventoryForHopperTransfer();
-                if (outHandler != null) {
-                    int fillAmount = outHandler.fill(tank.drain(maxFlowPerTick, false), false);
-                    if (tank.getFluidAmount() > 0 && fillAmount > 0) {
-                        tank.drain(outHandler.fill(tank.drain(maxFlowPerTick, false), true), true);
-                        activity = true;
-                        intUnloadActivity = 0;
-                    }
-                    if (!isUnload()) {
-                        hasCart = true;
-                        if (getWaitEnum() == waitEnum.WAIT_FULL && fillAmount <= 0) {
-                            letCartPass(true);
-                        }
-                    }
-                }
-
-                if (activity) {
-                    this.markDirty();
-                    letCartPass(false);
-                } else {
-                    if (hasCart && getWaitEnum() == waitEnum.NO_ACTIVITY) {
-                        if (!isUnload()) {
-                            intLoadActivity++;
-                        } else {
-                            intUnloadActivity++;
-                        }
-                    }
-                }
-
-                if (!activity && getWaitEnum() == waitEnum.NO_ACTIVITY) {
-                    if (!isUnload() && intLoadActivity >= 2) {
-                        intLoadActivity = 0;
-                        letCartPass(true);
-                    } else if (isUnload() && intUnloadActivity >= 2) {
-                        intUnloadActivity = 0;
-                        letCartPass(true);
-                    }
+            } else
+            {
+                if (loading)
+                {
+                    ySlide = Utils.lerp(ySlide, 0.5f, 0.08f);
+                } else
+                {
+                    ySlide = Utils.lerp(ySlide, 0, 0.04f);
                 }
             }
         }
     }
 
-    private IFluidHandler getInventoryUp() {
-        BlockPos handlerPos = pos.offset(EnumFacing.UP);
-        return getInventoryAtPosition(this.world, handlerPos);
+    public boolean isMaster()
+    {
+        if (!checked)
+        {
+            master = world.getBlockState(pos).getValue(BlockChunkLoader.MASTER);
+            checked = true;
+        }
+        return master;
     }
 
-    private IFluidHandler getInventoryForHopperTransfer() {
-        EnumFacing enumfacing = getOutput();
-        BlockPos handlerPos = pos.offset(enumfacing);
-        if (!isUnload()) handlerPos = handlerPos.down();
-        return getInventoryAtPosition(this.getWorld(), handlerPos);
+    public String getTankText()
+    {
+        if (tank.getFluid() == null) return I18n.format("gui.industrialrenewal.fluid.empty");
+        return I18n.format("render.industrialrenewal.fluid") + ": " + tank.getFluid().getLocalizedName();
     }
 
-    /**
-     * Returns the IInventory (if applicable) of the TileEntity at the specified position
-     */
-    private IFluidHandler getInventoryAtPosition(World worldIn, BlockPos pos) {
-        IFluidHandler ifluid = null;
-
-        IBlockState state = worldIn.getBlockState(pos);
-        Block block = state.getBlock();
-
-        if (block.hasTileEntity(state)) {
-            TileEntity te = worldIn.getTileEntity(pos);
-
-            if (te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getOutput().getOpposite())) {
-                ifluid = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getOutput().getOpposite());
-            }
-        }
-
-        if (ifluid == null) {
-            List<Entity> list = worldIn.getEntitiesInAABBexcluding(null, new AxisAlignedBB(pos.getX() - 0.5D, pos.getY() - 0.5D, pos.getZ() - 0.5D, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), EntitySelectors.IS_ALIVE);
-
-            if (!list.isEmpty()) {
-                ifluid = list.get(worldIn.rand.nextInt(list.size())).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getOutput().getOpposite());
-            }
-        }
-
-        return ifluid;
+    public String getCartName()
+    {
+        if (cartActivity <= 0) return "No Cart";
+        return cartName;
     }
 
-    public EnumFacing getOutput() {
-        if (!isUnload()) {
-            return EnumFacing.DOWN;
-        }
-        IBlockState state = this.world.getBlockState(this.pos).getActualState(this.world, this.pos);
-        return state.getValue(BlockFluidLoader.FACING).getOpposite();
+    public float getSlide()
+    {
+        return ySlide;
+    }
+
+    public float getCartFluidAngle()
+    {
+        if (cartActivity <= 0) return 0;
+        float currentAmount = cartFluidAmount / 1000F;
+        float totalCapacity = cartFluidCapacity / 1000F;
+        currentAmount = currentAmount / totalCapacity;
+        return currentAmount * 180f;
+    }
+
+    public float getTankFluidAngle()
+    {
+        float currentAmount = this.tank.getFluidAmount() / 1000F;
+        float totalCapacity = this.tank.getCapacity() / 1000F;
+        currentAmount = currentAmount / totalCapacity;
+        return currentAmount * 180f;
     }
 
     @Override
-    public boolean isUnload() {
-        IBlockState state = this.world.getBlockState(this.pos).getActualState(this.world, this.pos);
-        return state.getValue(BlockFluidLoader.UNLOAD);
+    public boolean onMinecartPass(EntityMinecart cart, TileEntityLoaderRail loaderRail)
+    {
+        if (!world.isRemote && isMaster())
+        {
+            cartName = cart.getName();
+            cartActivity = 10;
+            IFluidHandler cartCapability = cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP);
+            if (cartCapability != null)
+            {
+                cartFluidAmount = cartCapability.getTankProperties()[0].getContents() != null
+                        ? cartCapability.getTankProperties()[0].getContents().amount
+                        : 0;
+                cartFluidCapacity = cartCapability.getTankProperties()[0].getCapacity();
+                if (isUnload())
+                {
+                    FluidStack cartStack = cartCapability.getTankProperties()[0].getContents();
+                    if (cartStack != null && cartStack.amount > 0 && tank.getFluidAmount() < tank.getCapacity())
+                    {
+                        cartCapability.drain(tank.fillInternal(cartCapability.drain(maxFlowPerTick, false), true), true);
+                        loading = true;
+                        if (loading != oldLoading)
+                        {
+                            oldLoading = loading;
+                            Sync();
+                        }
+                        return true;
+                    }
+                    loading = false;
+                    if (loading != oldLoading)
+                    {
+                        oldLoading = loading;
+                        Sync();
+                    }
+                    if (waitE == waitEnum.WAIT_EMPTY)
+                    {
+                        return cartStack != null && cartStack.amount > 0;
+                    }
+                    if (waitE == waitEnum.WAIT_FULL)
+                    {
+                        return cartStack == null || cartStack.amount < cartCapability.getTankProperties()[0].getCapacity();
+                    }
+                    if (waitE == waitEnum.NO_ACTIVITY) return false;
+                } else
+                {
+                    FluidStack cartStack = cartCapability.getTankProperties()[0].getContents();
+                    if (tank.getFluidAmount() > 0 && (cartStack == null || cartStack.amount < cartCapability.getTankProperties()[0].getCapacity()))
+                    {
+                        tank.drain(cartCapability.fill(tank.drain(maxFlowPerTick, false), true), true);
+                        loading = true;
+                        if (loading != oldLoading)
+                        {
+                            oldLoading = loading;
+                            Sync();
+                        }
+                        return true;
+                    }
+                    loading = false;
+                    if (loading != oldLoading)
+                    {
+                        oldLoading = loading;
+                        Sync();
+                    }
+                    if (waitE == waitEnum.WAIT_FULL)
+                    {
+                        return cartStack == null || cartStack.amount < cartCapability.getTankProperties()[0].getCapacity();
+                    }
+                    if (waitE == waitEnum.WAIT_EMPTY)
+                    {
+                        return cartStack != null && cartStack.amount > 0;
+                    }
+                    if (waitE == waitEnum.NO_ACTIVITY) return false;
+                }
+            }
+        }
+        return waitE == waitEnum.NEVER; //false
+    }
+
+    @Override
+    public boolean isUnload()
+    {
+        return unload;
+    }
+
+    @Override
+    public EnumFacing getBlockFacing()
+    {
+        if (blockFacing == null) blockFacing = world.getBlockState(pos).getValue(BlockFluidLoader.FACING);
+        return blockFacing;
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         tank.writeToNBT(compound);
+        compound.setInteger("capacity", cartFluidCapacity);
+        compound.setInteger("cartAmount", cartFluidAmount);
+        compound.setInteger("activity", cartActivity);
         return super.writeToNBT(compound);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         tank.readFromNBT(compound);
+        cartFluidCapacity = compound.getInteger("capacity");
+        cartFluidAmount = compound.getInteger("cartAmount");
+        cartActivity = compound.getInteger("activity");
         super.readFromNBT(compound);
     }
 
     @Override
     public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing) {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+        return (facing == getBlockFacing().getOpposite() && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+                || super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing) {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+        if (facing == getBlockFacing().getOpposite() && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
         }
         return super.getCapability(capability, facing);

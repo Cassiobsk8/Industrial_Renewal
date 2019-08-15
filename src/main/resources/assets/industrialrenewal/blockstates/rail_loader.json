@@ -23,14 +23,6 @@
         "y": 90
       }
     },
-    "pass": {
-      "true": {
-        "model": "industrialrenewal:rail_loader"
-      },
-      "false": {
-        "model": "industrialrenewal:rail_loader"
-      }
-    },
     "inventory": {
       "model": "industrialrenewal:rail_loader",
       "transform": "forge:default-block"

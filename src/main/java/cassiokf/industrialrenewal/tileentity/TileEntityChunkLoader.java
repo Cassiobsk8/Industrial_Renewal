@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.blocks.BlockChunkLoader;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.util.ChunkManagerCallback;
 import com.google.common.collect.ImmutableList;
@@ -36,6 +37,8 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
     private boolean isActive;
     private boolean scheduleNeighbourCheck = true;
     private List<BlockPos> nearbyGadgets = Lists.newArrayList();
+    private boolean checked = false;
+    private boolean master;
 
     public void setTicket(@Nonnull Ticket ticket)
     {
@@ -73,7 +76,7 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        if (IRConfig.MainConfig.Main.emergencyMode) return;
+        if (IRConfig.MainConfig.Main.emergencyMode || !isMaster()) return;
         //Only process on the server
         if (world.isRemote) return;
         //If there isn't any tickets, the device is already disabled and no work to be done
@@ -111,6 +114,16 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
         {
             disable();
         }
+    }
+
+    private boolean isMaster()
+    {
+        if (!checked)
+        {
+            master = world.getBlockState(pos).getValue(BlockChunkLoader.MASTER);
+            checked = true;
+        }
+        return master;
     }
 
     private void checkNeighbours()

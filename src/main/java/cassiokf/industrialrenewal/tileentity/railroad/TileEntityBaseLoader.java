@@ -1,14 +1,18 @@
 package cassiokf.industrialrenewal.tileentity.railroad;
 
 import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
-import cassiokf.industrialrenewal.blocks.railroad.BlockLoaderRail;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 
 public abstract class TileEntityBaseLoader extends TileEntitySyncable
 {
-
+    public EnumFacing blockFacing;
     public waitEnum waitE = waitEnum.NO_ACTIVITY;
+    public boolean unload;
+    public boolean loading;
+    public String cartName;
+    public int cartActivity;
 
     public waitEnum getWaitEnum() {
         if (waitE == null) {
@@ -28,40 +32,33 @@ public abstract class TileEntityBaseLoader extends TileEntitySyncable
         Sync();
     }
 
+    public void changeUnload()
+    {
+        unload = !unload;
+        Sync();
+    }
+
+    public abstract EnumFacing getBlockFacing();
+
     public abstract boolean isUnload();
 
-    public void letCartPass(boolean value) {
-        if (getWaitEnum() == waitEnum.NEVER) {
-            return;
-        }
-        if (isUnload()) {
-            IBlockState oldState = this.world.getBlockState(this.pos.up());
-            if (oldState.getBlock() instanceof BlockLoaderRail) {
-                TileEntityLoaderRail te = (TileEntityLoaderRail) this.world.getTileEntity(this.pos.up());
-                if (te != null) {
-                    te.ChangePass(value);
-                }
-            }
-            return;
-        }
-        IBlockState oldState = this.world.getBlockState(this.pos.down(2));
-        if (oldState.getBlock() instanceof BlockLoaderRail) {
-            TileEntityLoaderRail te = (TileEntityLoaderRail) this.world.getTileEntity(this.pos.down(2));
-            if (te != null) {
-                te.ChangePass(value);
-            }
-        }
-    }
+    public abstract boolean onMinecartPass(EntityMinecart entityMinecart, TileEntityLoaderRail loaderRail);
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setInteger("EnumConfig", this.waitE.intValue);
+        compound.setBoolean("unload", unload);
+        compound.setBoolean("loading", loading);
+        compound.setString("cartname", cartName);
         return super.writeToNBT(compound);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        if (compound.hasKey("EnumConfig")) waitE = waitEnum.valueOf(compound.getInteger("EnumConfig"));
+        waitE = waitEnum.valueOf(compound.getInteger("EnumConfig"));
+        unload = compound.getBoolean("unload");
+        loading = compound.getBoolean("loading");
+        cartName = compound.getString("cartname");
         super.readFromNBT(compound);
     }
 

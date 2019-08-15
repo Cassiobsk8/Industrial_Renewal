@@ -2,115 +2,131 @@ package cassiokf.industrialrenewal.tileentity.railroad;
 
 import cassiokf.industrialrenewal.blocks.railroad.BlockCargoLoader;
 import cassiokf.industrialrenewal.util.Utils;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITickable {
 
     public ItemStackHandler inventory = new ItemStackHandler(5) {
         @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            return true;
-        }
-
-        @Override
         protected void onContentsChanged(int slot) {
             TileEntityCargoLoader.this.Sync();
         }
     };
+    private int itemsPerTick = 1;
 
-    private int intLoadActivity = 0;
     private int intUnloadActivity = 0;
 
-
     @Override
-    public void update() {
-        if (!world.isRemote) {
-
-            if (this.world.getTotalWorldTime() % 8 == 0) {
-                int itemsPerTick = 8;
-                boolean activity = false;
-                boolean hasCart = false;
-
-                //Pull from up cart/te
-                IItemHandler handlerPull = getInventoryUp();
-
-                if (handlerPull != null) {
-                    boolean needBreak = false;
-                    for (int i = 0; i < handlerPull.getSlots(); i++) {
-                        for (int j = 0; j < this.inventory.getSlots(); j++) {
-                            ItemStack stack = handlerPull.extractItem(i, itemsPerTick, true);
-                            ItemStack left = this.inventory.insertItem(j, stack, false);
-                            if (left.isEmpty() || left.getCount() < stack.getCount()) {
-                                activity = true;
-                                intLoadActivity = 0;
-                            }
-                            if (!ItemStack.areItemStacksEqual(stack, left)) {
-                                int toExtract = stack.getCount() - left.getCount();
-                                handlerPull.extractItem(i, toExtract, false);
-                                markDirty();
-                                needBreak = true;
-                                break;
-                            }
-                        }
-                        if (needBreak) {
-                            break;
-                        }
-                    }
-                    if (isUnload()) {
-                        hasCart = true;
-                        if (getWaitEnum() == waitEnum.WAIT_EMPTY && Utils.IsInventoryEmpty(handlerPull)) {
-                            letCartPass(true);
-                        }
-                    }
-                    //Collect items in world above
-                } else {
-                    List<EntityItem> items = this.world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(this.pos.getX(), this.pos.getY() + 0.5, this.pos.getZ(), this.pos.getX() + 1, this.pos.getY() + 2, this.pos.getZ() + 1));
-                    if (!items.isEmpty()) {
-                        boolean needBreak = false;
-                        for (int i = 0; i < this.inventory.getSlots(); i++) {
-                            for (EntityItem item : items) {
-                                if (item != null && !item.isDead) {
-                                    ItemStack left = this.inventory.insertItem(i, item.getItem(), false);
-                                    item.setItem(left);
-                                    markDirty();
-                                    needBreak = true;
-                                    break;
+    public void update()
+    {
+        if (!world.isRemote)
+        {
+            if (isUnload())
+            {
+                TileEntity te = world.getTileEntity(pos.offset(getBlockFacing().getOpposite()));
+                if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getBlockFacing()))
+                {
+                    IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getBlockFacing());
+                    if (handler != null)
+                    {
+                        for (int i = 0; i < inventory.getSlots(); i++)
+                        {
+                            if (!inventory.getStackInSlot(i).isEmpty())
+                            {
+                                for (int j = 0; j < handler.getSlots(); j++)
+                                {
+                                    ItemStack stack = this.inventory.extractItem(i, itemsPerTick, true);
+                                    if (handler.isItemValid(j, stack))
+                                    {
+                                        ItemStack left = handler.insertItem(j, stack, false);
+                                        if (!ItemStack.areItemStacksEqual(stack, left))
+                                        {
+                                            int toExtract = stack.getCount() - left.getCount();
+                                            this.inventory.extractItem(i, toExtract, false);
+                                        }
+                                    }
                                 }
-                            }
-                            if (needBreak) {
-                                break;
                             }
                         }
                     }
                 }
-                //push from output te or cart
-                IItemHandler handlerPush = getInventoryForHopperTransfer();
-                if (handlerPush != null && this.inventory != null) {
+            }
+        }
+    }
+
+    @Override
+    public boolean onMinecartPass(EntityMinecart cart, TileEntityLoaderRail loaderRail)
+    {
+        if (!world.isRemote)
+        {
+            IItemHandler cartCapability = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+            if (cartCapability != null)
+            {
+                if (isUnload()) //From cart to inventory
+                {
+                    boolean needBreak = false;
+                    boolean activity = false;
+                    for (int i = 0; i < cartCapability.getSlots(); i++)
+                    {
+                        for (int j = 0; j < this.inventory.getSlots(); j++)
+                        {
+                            ItemStack stack = cartCapability.extractItem(i, itemsPerTick, true);
+                            ItemStack left = this.inventory.insertItem(j, stack, false);
+                            if (left.isEmpty() || left.getCount() < stack.getCount())
+                            {
+                                activity = true;
+                            }
+                            if (!ItemStack.areItemStacksEqual(stack, left))
+                            {
+                                int toExtract = stack.getCount() - left.getCount();
+                                cartCapability.extractItem(i, toExtract, false);
+                                needBreak = true;
+                                break;
+                            }
+                        }
+                        if (needBreak)
+                        {
+                            break;
+                        }
+                    }
+                    if (activity)
+                    {
+                        loading = true;
+                        return true;
+                    }
+                    loading = false;
+                    if (waitE == waitEnum.WAIT_EMPTY)
+                    {
+                        return !Utils.IsInventoryEmpty(cartCapability);
+                    }
+                    if (waitE == waitEnum.WAIT_FULL)
+                    {
+                        return intUnloadActivity < 2 || !Utils.IsInventoryFull(cartCapability);
+                    }
+                    if (waitE == waitEnum.NO_ACTIVITY) return false;
+                } else //From inventory to cart
+                {
+                    boolean needBreak = false;
+                    boolean activity = false;
+
                     for (int i = 0; i < this.inventory.getSlots(); i++) {
-                        for (int j = 0; j < handlerPush.getSlots(); j++) {
+                        for (int j = 0; j < cartCapability.getSlots(); j++)
+                        {
                             ItemStack stack = this.inventory.extractItem(i, itemsPerTick, true);
-                            if (handlerPush.isItemValid(j, stack)) {
-                                ItemStack left = handlerPush.insertItem(j, stack, false);
+                            if (cartCapability.isItemValid(j, stack))
+                            {
+                                ItemStack left = cartCapability.insertItem(j, stack, false);
                                 if (left.isEmpty() || left.getCount() < stack.getCount()) {
                                     activity = true;
                                     intUnloadActivity = 0;
@@ -118,99 +134,49 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                                 if (!ItemStack.areItemStacksEqual(stack, left)) {
                                     int toExtract = stack.getCount() - left.getCount();
                                     this.inventory.extractItem(i, toExtract, false);
-                                    markDirty();
-                                    return;
+                                    needBreak = true;
+                                    break;
                                 }
                             }
                         }
-                    }
-                    if (!isUnload()) {
-                        hasCart = true;
-                        if (getWaitEnum() == waitEnum.WAIT_FULL && Utils.IsInventoryFull(handlerPush) && !activity) {
-                            letCartPass(true);
+                        if (needBreak)
+                        {
+                            break;
                         }
                     }
-                }
-                //No Activity Check
-                if (activity) {
-                    this.markDirty();
-                    letCartPass(false);
-                } else {
-                    if (hasCart && getWaitEnum() == waitEnum.NO_ACTIVITY) {
-                        if (!isUnload()) {
-                            intLoadActivity++;
-                        } else {
-                            intUnloadActivity++;
-                        }
+
+                    if (activity)
+                    {
+                        loading = true;
+                        return true;
+                    } else intUnloadActivity++;
+                    loading = false;
+                    if (waitE == waitEnum.WAIT_FULL)
+                    {
+                        return intUnloadActivity < 2 || !Utils.IsInventoryFull(cartCapability);
                     }
-                }
-
-                if (!activity && getWaitEnum() == waitEnum.NO_ACTIVITY) {
-                    if (!isUnload() && intLoadActivity >= 2) {
-                        intLoadActivity = 0;
-                        letCartPass(true);
-                    } else if (isUnload() && intUnloadActivity >= 2) {
-                        intUnloadActivity = 0;
-                        letCartPass(true);
+                    if (waitE == waitEnum.WAIT_EMPTY)
+                    {
+                        return !Utils.IsInventoryEmpty(cartCapability);
                     }
+                    if (waitE == waitEnum.NO_ACTIVITY) return false;
                 }
             }
         }
-
-    }
-
-    private IItemHandler getInventoryUp() {
-        BlockPos handlerPos = pos.offset(EnumFacing.UP);
-        return getInventoryAtPosition(this.getWorld(), handlerPos);
-    }
-
-    private IItemHandler getInventoryForHopperTransfer() {
-        EnumFacing enumfacing = getOutput();
-        BlockPos handlerPos = pos.offset(enumfacing);
-        if (!isUnload()) handlerPos = handlerPos.down();
-        return getInventoryAtPosition(this.getWorld(), handlerPos);
-    }
-
-    /**
-     * Returns the IInventory (if applicable) of the TileEntity at the specified position
-     */
-    private IItemHandler getInventoryAtPosition(World worldIn, BlockPos pos) {
-        IItemHandler iHandler = null;
-
-        IBlockState state = worldIn.getBlockState(pos);
-        Block block = state.getBlock();
-
-        if (block.hasTileEntity(state)) {
-            TileEntity te = worldIn.getTileEntity(pos);
-
-            if (te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getOutput().getOpposite())) {
-                iHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getOutput().getOpposite());
-            }
-        }
-
-        if (iHandler == null) {
-            List<Entity> list = worldIn.getEntitiesInAABBexcluding(null, new AxisAlignedBB(pos.getX() - 0.5D, pos.getY() - 0.5D, pos.getZ() - 0.5D, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), EntitySelectors.IS_ALIVE);
-
-            if (!list.isEmpty()) {
-                iHandler = list.get(worldIn.rand.nextInt(list.size())).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getOutput().getOpposite());
-            }
-        }
-
-        return iHandler;
-    }
-
-    public EnumFacing getOutput() {
-        if (!isUnload()) {
-            return EnumFacing.DOWN;
-        }
-        IBlockState state = this.world.getBlockState(this.pos).getActualState(this.world, this.pos);
-        return state.getValue(BlockCargoLoader.FACING).getOpposite();
+        return waitE == waitEnum.NEVER; //false
     }
 
     @Override
-    public boolean isUnload() {
-        IBlockState state = this.world.getBlockState(this.pos).getActualState(this.world, this.pos);
-        return state.getValue(BlockCargoLoader.UNLOAD);
+    public boolean isUnload()
+    {
+        return unload;
+    }
+
+    @Override
+    public EnumFacing getBlockFacing()
+    {
+        if (blockFacing == null) blockFacing = world.getBlockState(pos).getValue(BlockCargoLoader.FACING);
+        return blockFacing;
     }
 
     @Override
@@ -227,12 +193,15 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+        return (facing == getBlockFacing().getOpposite() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                || super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.inventory) : super.getCapability(capability, facing);
+        if (facing == getBlockFacing().getOpposite() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.inventory);
+        return super.getCapability(capability, facing);
     }
 }

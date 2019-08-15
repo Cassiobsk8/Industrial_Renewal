@@ -49,6 +49,7 @@ public class ModItems {
     public static ItemBase pointerLong = new ItemBase("pointer_long", null);
     public static ItemBase fire = new ItemBase("fire", null);
     public static ItemBase barLevel = new ItemBase("bar_level", null);
+    public static ItemBase fluidLoaderArm = new ItemBase("fluid_loader_arm", null);
 
     public static ItemBattery battery = new ItemBattery("battery", References.CREATIVE_IR_TAB);
 
@@ -105,7 +106,8 @@ public class ModItems {
                 sMotor,
                 windBlade,
                 drillSteel,
-                drillDiamond
+                drillDiamond,
+                fluidLoaderArm
         );
     }
 
@@ -140,6 +142,7 @@ public class ModItems {
         pointer.registerItemModel();
         pointerLong.registerItemModel();
         barLevel.registerItemModel();
+        fluidLoaderArm.registerItemModel();
         fire.registerItemModel();
         barrel.registerItemModel();
         fireBoxSolid.registerItemModel();
