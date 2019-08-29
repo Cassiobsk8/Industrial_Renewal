@@ -11,6 +11,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
@@ -27,6 +28,12 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
     private boolean getInThisTick;
     public ItemStackHandler inventory = new ItemStackHandler(3)
     {
+        @Override
+        public int getSlots()
+        {
+            return 1;
+        }
+
         @Override
         protected void onContentsChanged(int slot)
         {
@@ -234,13 +241,15 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        return false;
+        return facing == getBlockFacing().getOpposite() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
     }
 
     @Override
     @Nullable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
+        if (facing == getBlockFacing().getOpposite() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.inventory);
         return super.getCapability(capability, facing);
     }
 
