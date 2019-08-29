@@ -73,8 +73,13 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
             TileEntity te = world.getTileEntity(currentPos);
             boolean hasMachine = !(state.getBlock() instanceof BlockFluidPipe)
                     && te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
-            if (hasMachine && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).getTankProperties()[0].canFill())
+            if (hasMachine && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()) != null
+                    && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).getTankProperties() != null
+                    && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).getTankProperties().length > 0
+                    && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).getTankProperties()[0].canFill())
+            {
                 getMaster().addMachine(currentPos, face);
+            }
             else getMaster().removeMachine(pos, currentPos);
         }
     }
