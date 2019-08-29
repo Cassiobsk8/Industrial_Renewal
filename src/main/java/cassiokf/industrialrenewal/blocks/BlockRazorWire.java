@@ -40,8 +40,11 @@ public class BlockRazorWire extends BlockBase
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        entityIn.setInWeb();
-        entityIn.attackEntityFrom(DamageSource.CACTUS, IRConfig.MainConfig.Main.razorWireDammage);
+        if (entityIn instanceof EntityLivingBase)
+        {
+            entityIn.setInWeb();
+            entityIn.attackEntityFrom(DamageSource.CACTUS, IRConfig.MainConfig.Main.razorWireDammage);
+        }
     }
 
     @Override
