@@ -2,8 +2,8 @@
   "type": "forge:ore_shaped",
   "pattern": [
     "HFS",
-    " FG",
-    "MHS"
+    "MFG",
+    "TFS"
   ],
   "key": {
     "S": {
@@ -16,6 +16,9 @@
     "F": {
       "item": "industrialrenewal:frame"
     },
+    "T": {
+      "item": "industrialrenewal:barrel_item"
+    },
     "M": {
       "item": "industrialrenewal:motor"
     },
@@ -24,7 +27,7 @@
     }
   },
   "result": {
-    "item": "industrialrenewal:cargo_loader",
+    "item": "industrialrenewal:fluid_loader",
     "count": 1
   }
 }

@@ -1,0 +1,23 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "DSD",
+    "SRS"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:iron_door"
+    },
+    "R": {
+      "item": "industrialrenewal:normal_rail"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:rail_gate",
+    "count": 1
+  }
+}
