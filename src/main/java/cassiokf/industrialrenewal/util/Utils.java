@@ -128,6 +128,20 @@ public class Utils {
         }
     }
 
+    public static float getInvNorm(IItemHandler inventory)
+    {
+        float items = 0;
+        for (int i = 0; i < inventory.getSlots(); ++i)
+        {
+            ItemStack itemstack = inventory.getStackInSlot(i);
+            if (!itemstack.isEmpty())
+            {
+                items = items + 1;
+            }
+        }
+        return items / (float) inventory.getSlots();
+    }
+
     public static List<BlockPos> getBlocksIn3x3x3Centered(BlockPos pos)
     {
         List<BlockPos> list = new ArrayList<BlockPos>();

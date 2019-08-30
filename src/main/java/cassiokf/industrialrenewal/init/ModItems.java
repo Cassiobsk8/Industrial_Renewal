@@ -50,6 +50,7 @@ public class ModItems {
     public static ItemBase fire = new ItemBase("fire", null);
     public static ItemBase barLevel = new ItemBase("bar_level", null);
     public static ItemBase fluidLoaderArm = new ItemBase("fluid_loader_arm", null);
+    public static ItemBase tambor = new ItemBase("rotary_drum", null);
 
     public static ItemBattery battery = new ItemBattery("battery", References.CREATIVE_IR_TAB);
 
@@ -107,7 +108,8 @@ public class ModItems {
                 windBlade,
                 drillSteel,
                 drillDiamond,
-                fluidLoaderArm
+                fluidLoaderArm,
+                tambor
         );
     }
 
@@ -143,6 +145,7 @@ public class ModItems {
         pointerLong.registerItemModel();
         barLevel.registerItemModel();
         fluidLoaderArm.registerItemModel();
+        tambor.registerItemModel();
         fire.registerItemModel();
         barrel.registerItemModel();
         fireBoxSolid.registerItemModel();

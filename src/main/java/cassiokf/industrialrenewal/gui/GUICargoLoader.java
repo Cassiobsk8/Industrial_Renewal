@@ -59,10 +59,20 @@ public class GUICargoLoader extends GuiContainer {
         return waitE;
     }
 
+    private String getGUIModeText()
+    {
+        if (te.isUnload()) return I18n.format("gui.industrialrenewal.button.unloader_mode");
+        return I18n.format("gui.industrialrenewal.button.loader_mode");
+    }
+
     @Override
     protected void actionPerformed(GuiButton b) {
         if (b.id == 0) {
-            NetworkHandler.INSTANCE.sendToServer(new PacketReturnCargoLoader(this.te));
+            NetworkHandler.INSTANCE.sendToServer(new PacketReturnCargoLoader(this.te, false));
+        }
+        if (b.id == 1)
+        {
+            NetworkHandler.INSTANCE.sendToServer(new PacketReturnCargoLoader(this.te, true));
         }
     }
 
@@ -72,6 +82,7 @@ public class GUICargoLoader extends GuiContainer {
         int posX1 = ((this.width - this.xSize) / 2);
         int posY1 = ((this.height - this.ySize) / 2);
         this.buttonList.add(new GuiButton(0, posX1 + 7, posY1 + 53, 61, 18, ""));
+        this.buttonList.add(new GuiButton(1, posX1 + 7, posY1 + 18, 52, 18, ""));
     }
 
     @Override
@@ -85,8 +96,10 @@ public class GUICargoLoader extends GuiContainer {
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         String name = I18n.format(ModBlocks.cargoLoader.getTranslationKey() + ".name");
         String waitE = getGUIButtonText();
+        String mode = getGUIModeText();
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
         fontRenderer.drawString(waitE, (xSize / 2 - fontRenderer.getStringWidth(waitE) / 2) - 50, 59, 0xffffff);
+        fontRenderer.drawString(mode, (xSize / 2 - fontRenderer.getStringWidth(mode) / 2) - 55, 24, 0xffffff);
         fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
 
         int actualMouseX = mouseX - ((this.width - this.xSize) / 2);

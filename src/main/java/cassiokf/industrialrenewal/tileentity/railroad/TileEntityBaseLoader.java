@@ -11,7 +11,7 @@ public abstract class TileEntityBaseLoader extends TileEntitySyncable
     public waitEnum waitE = waitEnum.NO_ACTIVITY;
     public boolean unload;
     public boolean loading;
-    public String cartName;
+    public String cartName = "";
     public int cartActivity;
 
     public waitEnum getWaitEnum() {

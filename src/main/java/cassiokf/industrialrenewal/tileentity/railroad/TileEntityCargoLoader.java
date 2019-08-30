@@ -1,13 +1,16 @@
 package cassiokf.industrialrenewal.tileentity.railroad;
 
+import cassiokf.industrialrenewal.blocks.BlockChunkLoader;
 import cassiokf.industrialrenewal.blocks.railroad.BlockCargoLoader;
 import cassiokf.industrialrenewal.util.Utils;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -23,18 +26,25 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
             TileEntityCargoLoader.this.Sync();
         }
     };
-    private int itemsPerTick = 1;
+    private int itemsPerTick = 16;
 
     private int intUnloadActivity = 0;
+    private boolean checked = false;
+    private boolean master;
 
     @Override
     public void update()
     {
-        if (!world.isRemote)
+        if (!world.isRemote && isMaster())
         {
             if (isUnload())
             {
-                TileEntity te = world.getTileEntity(pos.offset(getBlockFacing().getOpposite()));
+                if (cartActivity > 0)
+                {
+                    cartActivity--;
+                    Sync();
+                }
+                TileEntity te = world.getTileEntity(pos.down().offset(getBlockFacing().getOpposite()));
                 if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getBlockFacing()))
                 {
                     IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getBlockFacing());
@@ -47,7 +57,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                                 for (int j = 0; j < handler.getSlots(); j++)
                                 {
                                     ItemStack stack = this.inventory.extractItem(i, itemsPerTick, true);
-                                    if (handler.isItemValid(j, stack))
+                                    if (!stack.isEmpty() && handler.isItemValid(j, stack))
                                     {
                                         ItemStack left = handler.insertItem(j, stack, false);
                                         if (!ItemStack.areItemStacksEqual(stack, left))
@@ -70,6 +80,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
     {
         if (!world.isRemote)
         {
+            cartActivity = 10;
             IItemHandler cartCapability = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
             if (cartCapability != null)
             {
@@ -82,17 +93,21 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                         for (int j = 0; j < this.inventory.getSlots(); j++)
                         {
                             ItemStack stack = cartCapability.extractItem(i, itemsPerTick, true);
-                            ItemStack left = this.inventory.insertItem(j, stack, false);
-                            if (left.isEmpty() || left.getCount() < stack.getCount())
+                            if (!stack.isEmpty())
                             {
-                                activity = true;
-                            }
-                            if (!ItemStack.areItemStacksEqual(stack, left))
-                            {
-                                int toExtract = stack.getCount() - left.getCount();
-                                cartCapability.extractItem(i, toExtract, false);
-                                needBreak = true;
-                                break;
+                                ItemStack left = this.inventory.insertItem(j, stack, false);
+                                if (left.isEmpty() || left.getCount() < stack.getCount())
+                                {
+                                    activity = true;
+                                    intUnloadActivity = 0;
+                                }
+                                if (!ItemStack.areItemStacksEqual(stack, left))
+                                {
+                                    int toExtract = stack.getCount() - left.getCount();
+                                    cartCapability.extractItem(i, toExtract, false);
+                                    needBreak = true;
+                                    break;
+                                }
                             }
                         }
                         if (needBreak)
@@ -104,7 +119,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                     {
                         loading = true;
                         return true;
-                    }
+                    } else intUnloadActivity++;
                     loading = false;
                     if (waitE == waitEnum.WAIT_EMPTY)
                     {
@@ -124,7 +139,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                         for (int j = 0; j < cartCapability.getSlots(); j++)
                         {
                             ItemStack stack = this.inventory.extractItem(i, itemsPerTick, true);
-                            if (cartCapability.isItemValid(j, stack))
+                            if (!stack.isEmpty() && cartCapability.isItemValid(j, stack))
                             {
                                 ItemStack left = cartCapability.insertItem(j, stack, false);
                                 if (left.isEmpty() || left.getCount() < stack.getCount()) {
@@ -166,6 +181,43 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
         return waitE == waitEnum.NEVER; //false
     }
 
+    public String getModeText()
+    {
+        String mode = I18n.format("tesr.ir.mode") + ": ";
+        if (isUnload()) return mode + I18n.format("gui.industrialrenewal.button.unloader_mode");
+        return mode + I18n.format("gui.industrialrenewal.button.loader_mode");
+    }
+
+    public String getTankText()
+    {
+        return I18n.format("tesr.ir.inventory");
+    }
+
+    public float getCartFluidAngle()
+    {
+        if (cartActivity <= 0) return 0;
+        float currentAmount = Utils.getInvNorm(inventory);
+        float totalCapacity = inventory.getSlots();
+        currentAmount = currentAmount / totalCapacity;
+        return currentAmount * 180f;
+    }
+
+    public boolean isMaster()
+    {
+        if (!checked)
+        {
+            master = world.getBlockState(pos).getValue(BlockChunkLoader.MASTER);
+            checked = true;
+        }
+        return master;
+    }
+
+    private BlockPos getMasterPos()
+    {
+        if (world.getBlockState(pos).getValue(BlockCargoLoader.MASTER)) return pos;
+        return BlockCargoLoader.getMasterPos(world, pos, getBlockFacing());
+    }
+
     @Override
     public boolean isUnload()
     {
@@ -182,26 +234,38 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setTag("inventory", inventory.serializeNBT());
+        compound.setInteger("activity", cartActivity);
         return super.writeToNBT(compound);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         this.inventory.deserializeNBT(compound.getCompoundTag("inventory"));
+        cartActivity = compound.getInteger("activity");
         super.readFromNBT(compound);
+    }
+
+    public <T> T getInternalCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.inventory);
     }
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return (facing == getBlockFacing().getOpposite() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        BlockPos masterPos = getMasterPos();
+        if (masterPos == null) return false;
+        return (pos.equals(masterPos.up()) && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 || super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if (facing == getBlockFacing().getOpposite() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.inventory);
+        BlockPos masterPos = getMasterPos();
+        if (masterPos == null) return super.getCapability(capability, facing);
+        TileEntityCargoLoader te = (TileEntityCargoLoader) world.getTileEntity(masterPos);
+        if (te != null && pos.equals(masterPos.up()) && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(te.inventory);
         return super.getCapability(capability, facing);
     }
 }

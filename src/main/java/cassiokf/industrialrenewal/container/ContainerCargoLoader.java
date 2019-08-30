@@ -17,7 +17,7 @@ public class ContainerCargoLoader extends Container {
 
     public ContainerCargoLoader(IInventory playerInv, TileEntityCargoLoader te) {
         this.te = te;
-        this.inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
+        this.inventory = te.getInternalCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
 
         this.addSlotToContainer(new SlotItemHandler(inventory, 0, 62, 20) {
             @Override
