@@ -165,6 +165,8 @@ gui.config.category.recipes.tooltip=Recipes settings
 gui.config.recipes.spongeiron_recipe.name=Sponge Iron recipe
 gui.config.recipes.spongeiron_recipe.comment=Turn On/Off the sponge iron recipe (Default true)
 
+#TESR
+
 gui.config.category.options=Options
 gui.config.category.options.tooltip=General settings
 gui.config.recipes.startwithmanual.name=Start with manual
@@ -188,6 +190,8 @@ gui.config.hours_before_deactivation.name=Time Before Deactivate
 gui.config.chunk_loader_width.name=Chunk Load Width
 gui.config.emergency_mode.name=Deactivate Chunk Load
 gui.config.blade_durability.name=Wind Turbine Bade durability
+tesr.ir.mode=Mode
+tesr.ir.inventory=Inventory
 
 #Render
 render.industrialrenewal.energy=Energy

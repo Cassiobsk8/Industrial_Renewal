@@ -32,10 +32,10 @@ import java.util.Random;
 import static cassiokf.industrialrenewal.References.MODID;
 
 
-@Mod(modid = MODID, name = References.NAME, version = References.VERSION, guiFactory = References.GUI_FACTORY, updateJSON = References.VERSION_CHECKER_URL)
+@Mod(modid = References.MODID, name = References.NAME, version = References.VERSION, guiFactory = References.GUI_FACTORY, updateJSON = References.VERSION_CHECKER_URL)
 public class IndustrialRenewal {
 
-    @Mod.Instance(MODID)
+    @Mod.Instance(References.MODID)
     public static IndustrialRenewal instance;
     @SidedProxy(clientSide = "cassiokf.industrialrenewal.proxy.ClientProxy", serverSide = "cassiokf.industrialrenewal.proxy.CommonProxy", modId = MODID)
     public static CommonProxy proxy;

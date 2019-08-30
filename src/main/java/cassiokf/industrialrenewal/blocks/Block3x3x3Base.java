@@ -80,8 +80,7 @@ public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extend
                 {
                     EnumFacing facing = player.getHorizontalFacing();
                     BlockPos currentPos = new BlockPos(pos.offset(facing, z).offset(facing.rotateY(), x).offset(EnumFacing.UP, y));
-                    IBlockState state = worldIn.getBlockState(currentPos);
-                    if (!state.getBlock().isReplaceable(worldIn, currentPos)) return false;
+                    if (!isReplaceable(worldIn, currentPos)) return false;
                 }
             }
         }
