@@ -140,6 +140,12 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         }
     }
 
+    @Override
+    public boolean instanceOf(TileEntity tileEntity)
+    {
+        return tileEntity instanceof TileEntitySteamTurbine;
+    }
+
     private int getEnergyProduction()
     {
         int energy = Math.round(energyPerTick * getRotation());

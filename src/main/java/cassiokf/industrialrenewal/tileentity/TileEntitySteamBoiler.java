@@ -205,6 +205,12 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
         }
     }
 
+    @Override
+    public boolean instanceOf(TileEntity tileEntity)
+    {
+        return tileEntity instanceof TileEntitySteamBoiler;
+    }
+
     public int getType()
     {
         return this.type;

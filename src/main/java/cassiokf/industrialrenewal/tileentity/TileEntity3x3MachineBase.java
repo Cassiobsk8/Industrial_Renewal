@@ -5,6 +5,7 @@ import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -33,10 +34,11 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
             List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
             for (BlockPos currentPos : list)
             {
-                Block block = world.getBlockState(currentPos).getBlock();
-                if (block instanceof Block3x3x3Base && ((TileEntity3x3MachineBase) world.getTileEntity(currentPos)).isMaster())
+                TileEntity te = world.getTileEntity(currentPos);
+                if (te != null && te instanceof TileEntity3x3MachineBase && ((TileEntity3x3MachineBase) te).isMaster()
+                        && instanceOf(te))
                 {
-                    masterTE = (TE) world.getTileEntity(currentPos);
+                    masterTE = (TE) te;
                     return masterTE;
                 }
             }
@@ -44,6 +46,8 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
         }
         return masterTE;
     }
+
+    public abstract boolean instanceOf(TileEntity tileEntity);
 
     public void breakMultiBlocks()
     {

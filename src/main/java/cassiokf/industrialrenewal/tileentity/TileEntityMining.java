@@ -9,6 +9,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
@@ -144,6 +145,11 @@ public class TileEntityMining extends TileEntity3x3MachineBase<TileEntityMining>
         }
     }
 
+    @Override
+    public boolean instanceOf(TileEntity tileEntity)
+    {
+        return tileEntity instanceof TileEntityMining;
+    }
 
     private void spawnFluidParticle(double x, double y, double z, Block block)
     {
