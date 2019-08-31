@@ -1,15 +1,16 @@
 package cassiokf.industrialrenewal.init;
 
 import cassiokf.industrialrenewal.container.*;
+import cassiokf.industrialrenewal.entity.EntityHopperCart;
 import cassiokf.industrialrenewal.entity.EntityLogCart;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import cassiokf.industrialrenewal.gui.*;
 import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
-import cassiokf.industrialrenewal.tileentity.redstone.TileEntityFuseBox;
+import cassiokf.industrialrenewal.tileentity.TileEntityRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityFluidLoader;
-import cassiokf.industrialrenewal.tileentity.TileEntityRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityEntityDetector;
+import cassiokf.industrialrenewal.tileentity.redstone.TileEntityFuseBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -29,6 +30,7 @@ public class GUIHandler implements IGuiHandler {
     public static final int MANUAL = 6;
     public static final int LOGCART = 7;
     public static final int FLUIDLOADER = 9;
+    public static final int HOPPERCART = 10;
 
     @Nullable
     @Override
@@ -56,6 +58,10 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == FLUIDLOADER) {
             return new ContainerFluidLoader(player.inventory, (TileEntityFluidLoader) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
+        }
+        if (ID == HOPPERCART)
+        {
+            return new ContainerHopperCart(player.inventory, (EntityHopperCart) world.getEntityByID(x));
         }
         return null;
     }
@@ -89,6 +95,10 @@ public class GUIHandler implements IGuiHandler {
         }
         if (ID == FLUIDLOADER) {
             return new GUIFluidLoader(player.inventory, (TileEntityFluidLoader) world.getTileEntity(new BlockPos(x, y, z)));
+        }
+        if (ID == HOPPERCART)
+        {
+            return new GUIHopperCart(player.inventory, (EntityHopperCart) world.getEntityByID(x));
         }
         return null;
     }

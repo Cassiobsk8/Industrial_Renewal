@@ -29,6 +29,7 @@ public class ModItems {
     public static ItemSteelSaw steelSaw = new ItemSteelSaw("steel_saw", "sawStone", References.CREATIVE_IR_TAB);
 
     public static ItemMineCartCargoContainer cargoContainer = new ItemMineCartCargoContainer("cargo_container", References.CREATIVE_IRLOCOMOTIVE_TAB);
+    public static ItemHopperCart hopperCart = new ItemHopperCart("cart_hopper", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static ItemMineCartFluidContainer fluidContainer = new ItemMineCartFluidContainer("fluid_container", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static ItemSteamLocomotive steamLocomotive = new ItemSteamLocomotive("steam_locomotive", References.CREAATIVE_IRWIP_TAB);
     public static ItemLogCart logCart = new ItemLogCart("log_cart", References.CREATIVE_IRLOCOMOTIVE_TAB);
@@ -76,6 +77,7 @@ public class ModItems {
                 screwDrive,
                 steelSaw,
                 cargoContainer,
+                hopperCart,
                 fluidContainer,
                 steamLocomotive,
                 logCart,
@@ -120,6 +122,7 @@ public class ModItems {
         screwDrive.registerItemModel();
         steelSaw.registerItemModel();
         cargoContainer.registerItemModel();
+        hopperCart.registerItemModel();
         fluidContainer.registerItemModel();
         steamLocomotive.registerItemModel();
         logCart.registerItemModel();

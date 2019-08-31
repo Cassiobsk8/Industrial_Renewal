@@ -15,6 +15,7 @@ item.industrialrenewal.cartridge_inverter.name=Redstone Cartridge Inverter
 item.industrialrenewal.ingot_steel.name=Steel Ingot
 item.industrialrenewal.item_fire_extinguisher.name=Fire Extinguisher
 item.industrialrenewal.log_cart.name=Log Cart
+item.industrialrenewal.cart_hopper.name=Hopper Cargo Cart
 item.industrialrenewal.passenger_car.name=Passenger Cart
 item.industrialrenewal.safety_belt.name=Safety Belt
 item.industrialrenewal.safety_helmet.name=Safety Helmet
@@ -159,6 +160,7 @@ entity.industrialrenewal.steam_locomotive.name=Steam Locomotive (WIP)
 entity.industrialrenewal.log_cart.name=Log Cart
 entity.industrialrenewal.passenger_car.name=Passenger Cart
 entity.industrialrenewal.minecart_flat.name=Flat Cart
+entity.industrialrenewal.cart_hopper.name=Hopper Cargo Cart
 
 #Config
 

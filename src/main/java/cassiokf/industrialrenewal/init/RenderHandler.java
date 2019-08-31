@@ -56,6 +56,7 @@ public class RenderHandler {
                 return new RenderFlatCart<>(manager);
             }
         });
+        RenderingRegistry.registerEntityRenderingHandler(EntityHopperCart.class, RenderHopperCart::new);
     }
 
     public static void registerCustomMeshesAndStates()
