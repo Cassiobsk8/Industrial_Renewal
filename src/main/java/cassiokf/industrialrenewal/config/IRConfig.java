@@ -95,6 +95,12 @@ public class IRConfig {
             @Config.LangKey("gui.config.batterybank_output.name")
             public int batteryBankMaxOutput = 10240;
 
+            @Config.Comment("The Max Output and Input of the Energy cable per connector (Default 1024)")
+            public int maxEnergyCableTransferAmount = 1024;
+
+            @Config.Comment("The Max Output and Input of the Fluid Pipe per connector (Default 600)")
+            public int maxFluidPipeTransferAmount = 600;
+
             @Config.Comment("The time in miliseconds the medkit will regenerate players hearth (Default 150)")
             @Config.LangKey("gui.config.medkit_duration.name")
             public int medKitEffectDuration = 150;

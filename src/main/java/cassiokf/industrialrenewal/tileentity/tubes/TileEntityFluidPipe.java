@@ -1,23 +1,22 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
-import cassiokf.industrialrenewal.blocks.pipes.BlockFluidPipe;
-import net.minecraft.block.state.IBlockState;
+import cassiokf.industrialrenewal.config.IRConfig;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFluidPipe> implements ITickable, ICapabilityProvider
+public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFluidPipe> implements ICapabilityProvider
 {
-    public FluidTank tank = new FluidTank(1000)
+    public FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME)
     {
         @Override
         protected void onContentsChanged()
@@ -26,7 +25,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
         }
     };
 
-    public int maxOutput = 600;
+    public int maxOutput = IRConfig.MainConfig.Main.maxFluidPipeTransferAmount;
 
     @Override
     public void update()
@@ -35,23 +34,10 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
         {
             int quantity = getPosSet().size();
             this.tank.setCapacity(Math.max(maxOutput * quantity, this.tank.getFluidAmount()));
-            int out = 0;
-            for (BlockPos posM : getPosSet().keySet())
-            {
-                TileEntity te = world.getTileEntity(posM);
-                EnumFacing face = getPosSet().get(posM).getOpposite();
-                if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face))
-                {
-                    IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
-                    if (tankStorage != null && tankStorage.getTankProperties()[0].canFill() && this.tank.drain(maxOutput, false) != null)
-                    {
-                        int fluid = tankStorage.fill(this.tank.drain(maxOutput, false), true);
-                        out += fluid;
-                        this.tank.drain(fluid, true);
-                    }
-                }
-            }
-            outPut = out;
+
+            int canAccept = moveFluid(true, 1);
+            outPut = canAccept > 0 ? moveFluid(false, canAccept) : 0;
+
             outPutCount = getPosSet().size();
             if ((oldOutPut != outPut) || (oldOutPutCount != outPutCount))
             {
@@ -62,6 +48,39 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
         }
     }
 
+    public int moveFluid(boolean simulate, int validOutputs)
+    {
+        int canAccept = 0;
+        int out = 0;
+        int realMaxOutput = Math.min(tank.getFluidAmount() / validOutputs, maxOutput);
+        for (BlockPos posM : getPosSet().keySet())
+        {
+            TileEntity te = world.getTileEntity(posM);
+            EnumFacing face = getPosSet().get(posM).getOpposite();
+            if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face))
+            {
+                IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
+                if (tankStorage != null
+                        && tankStorage.getTankProperties() != null
+                        && tankStorage.getTankProperties().length > 0
+                        && tankStorage.getTankProperties()[0].canFill()
+                        && this.tank.drain(maxOutput, false) != null)
+                {
+                    int fluid = tankStorage.fill(this.tank.drain(realMaxOutput, false), !simulate);
+                    if (simulate)
+                    {
+                        if (fluid > 0) canAccept++;
+                    } else
+                    {
+                        out += fluid;
+                        this.tank.drain(fluid, true);
+                    }
+                }
+            }
+        }
+        return simulate ? canAccept : out;
+    }
+
     @Override
     public void checkForOutPuts(BlockPos bPos)
     {
@@ -69,14 +88,18 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
         for (EnumFacing face : EnumFacing.VALUES)
         {
             BlockPos currentPos = pos.offset(face);
-            IBlockState state = world.getBlockState(currentPos);
             TileEntity te = world.getTileEntity(currentPos);
-            boolean hasMachine = !(state.getBlock() instanceof BlockFluidPipe)
-                    && te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
-            if (hasMachine && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()) != null
-                    && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).getTankProperties() != null
-                    && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).getTankProperties().length > 0
-                    && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).getTankProperties()[0].canFill())
+            boolean hasMachine = te != null
+                    && !(te instanceof TileEntityFluidPipe)
+                    && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
+            IFluidHandler machineCap = null;
+            if (hasMachine)
+                machineCap = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
+            if (hasMachine
+                    && machineCap != null
+                    && machineCap.getTankProperties() != null
+                    && machineCap.getTankProperties().length > 0
+                    && machineCap.getTankProperties()[0].canFill())
             {
                 getMaster().addMachine(currentPos, face);
             }
@@ -103,7 +126,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && getMaster() != null)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(getMaster().tank);
         return super.getCapability(capability, facing);
     }

@@ -17,9 +17,9 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     private boolean isMaster;
     private Map<BlockPos, EnumFacing> posSet = new HashMap<>();
     int outPut;
-    int oldOutPut;
+    int oldOutPut = -1;
     int outPutCount;
-    int oldOutPutCount;
+    int oldOutPutCount = -1;
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
@@ -43,9 +43,9 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         return outPutCount;
     }
 
-    private void initializeMultiblockIfNecessary()
+    public void initializeMultiblockIfNecessary()
     {
-        if (master == null || master.isInvalid())
+        if (master == null || master.isInvalid()) //TODO Run only in Server
         {
             List<TE> connectedCables = new ArrayList<TE>();
             Stack<TE> traversingCables = new Stack<TE>();
@@ -73,6 +73,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
             {
                 storage.setMaster(master);
                 storage.checkForOutPuts(storage.getPos());
+                storage.markDirty();
             }
         }
     }

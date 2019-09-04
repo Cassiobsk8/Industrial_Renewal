@@ -1,12 +1,10 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
-import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -15,14 +13,14 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityEnergyCable> implements ICapabilityProvider, ITickable
+public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityEnergyCable> implements ICapabilityProvider
 {
 
     public final VoltsEnergyContainer energyContainer;
 
 
     public TileEntityEnergyCable() {
-        this.energyContainer = new VoltsEnergyContainer(10240, 1024, 1024)
+        this.energyContainer = new VoltsEnergyContainer(10240, IRConfig.MainConfig.Main.maxEnergyCableTransferAmount, IRConfig.MainConfig.Main.maxEnergyCableTransferAmount)
         {
             @Override
             public void onEnergyChange()
@@ -38,23 +36,10 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
         {
             int quantity = getPosSet().size();
             this.energyContainer.setMaxEnergyStored(Math.max(this.energyContainer.getMaxOutput() * quantity, this.energyContainer.getEnergyStored()));
-            int out = 0;
-            for (BlockPos posM : getPosSet().keySet())
-            {
-                TileEntity te = world.getTileEntity(posM);
-                EnumFacing face = getPosSet().get(posM).getOpposite();
-                if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
-                {
-                    IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
-                    if (energyStorage != null && energyStorage.canReceive())
-                    {
-                        int energy = energyStorage.receiveEnergy(this.energyContainer.extractEnergy(this.energyContainer.getMaxOutput(), true), false);
-                        out += energy;
-                        this.energyContainer.extractEnergy(energy, false);
-                    }
-                }
-            }
-            outPut = out;
+
+            int canAccept = moveEnergy(true, 1);
+            outPut = canAccept > 0 ? moveEnergy(false, canAccept) : 0;
+
             outPutCount = getPosSet().size();
             if ((oldOutPut != outPut) || (oldOutPutCount != outPutCount))
             {
@@ -65,6 +50,35 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
         }
     }
 
+    public int moveEnergy(boolean simulate, int validOutputs)
+    {
+        int canAccept = 0;
+        int out = 0;
+        int realMaxOutput = Math.min(energyContainer.getEnergyStored() / validOutputs, this.energyContainer.getMaxOutput());
+        for (BlockPos posM : getPosSet().keySet())
+        {
+            TileEntity te = world.getTileEntity(posM);
+            EnumFacing face = getPosSet().get(posM).getOpposite();
+            if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
+            {
+                IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
+                if (energyStorage != null && energyStorage.canReceive())
+                {
+                    int energy = energyStorage.receiveEnergy(this.energyContainer.extractEnergy(realMaxOutput, true), simulate);
+                    if (simulate)
+                    {
+                        if (energy > 0) canAccept++;
+                    } else
+                    {
+                        out += energy;
+                        this.energyContainer.extractEnergy(energy, false);
+                    }
+                }
+            }
+        }
+        return simulate ? canAccept : out;
+    }
+
     @Override
     public void checkForOutPuts(BlockPos bPos)
     {
@@ -72,10 +86,13 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
         for (EnumFacing face : EnumFacing.VALUES)
         {
             BlockPos currentPos = pos.offset(face);
-            IBlockState state = world.getBlockState(currentPos);
             TileEntity te = world.getTileEntity(currentPos);
-            boolean hasMachine = !(state.getBlock() instanceof BlockEnergyCable) && te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
-            if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()) != null && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
+            boolean hasMachine = te != null
+                    && !(te instanceof TileEntityEnergyCable)
+                    && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
+            IEnergyStorage eStorage = null;
+            if (hasMachine) eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
+            if (hasMachine && eStorage != null && eStorage.canReceive())
                 getMaster().addMachine(currentPos, face);
             else getMaster().removeMachine(pos, currentPos);
         }
@@ -95,7 +112,7 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
     @Override
     @Nullable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if (capability == CapabilityEnergy.ENERGY)
+        if (capability == CapabilityEnergy.ENERGY && getMaster() != null)
             return CapabilityEnergy.ENERGY.cast(getMaster().energyContainer);
         return super.getCapability(capability, facing);
     }
