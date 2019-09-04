@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.BlockSmallWindTurbine;
 import cassiokf.industrialrenewal.blocks.BlockWindTurbinePillar;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import cassiokf.industrialrenewal.util.Utils;
@@ -9,7 +8,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -18,13 +16,12 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileEntityWindTurbinePillar> implements ICapabilityProvider, ITickable
+public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileEntityWindTurbinePillar> implements ICapabilityProvider
 {
     private final VoltsEnergyContainer energyContainer;
     private final VoltsEnergyContainer dummyEnergyContainer;
 
-    private int energyGenerated;
-    private float amount;
+    private float amount;//For Lerp
 
     private int tick;
 
@@ -53,6 +50,7 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
             if (!world.isRemote)
             {
                 energyContainer.setMaxEnergyStored(Math.max(1024 * getPosSet().size(), energyContainer.getEnergyStored()));
+                int energyReceived = 0;
                 for (BlockPos currentPos : getPosSet().keySet())
                 {
                     TileEntity te = world.getTileEntity(currentPos);
@@ -62,23 +60,27 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
                         IEnergyStorage eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
                         if (eStorage != null && eStorage.canReceive())
                         {
-                            this.energyContainer.extractEnergy(eStorage.receiveEnergy(this.energyContainer.extractEnergy(this.energyContainer.getMaxOutput(), true), false), false);
+                            energyReceived += eStorage.receiveEnergy(this.energyContainer.extractEnergy(this.energyContainer.getMaxOutput(), true), false);
+                            this.energyContainer.extractEnergy(energyReceived, false);
                         }
                     }
                 }
-            } else if (getTurbinePos() != null)
+
+                outPut = energyReceived;
+
+                if (oldOutPut != outPut)
+                {
+                    oldOutPut = outPut;
+                    this.Sync();
+                }
+            } else if (getTurbinePos() != null && isBase)
             {
                 if (tick % 10 == 0)
                 {
                     tick = 0;
-                    if (world.getBlockState(turbinePos).getBlock() instanceof BlockSmallWindTurbine && world.getTileEntity(turbinePos) instanceof TileEntitySmallWindTurbine)
+                    this.Sync();
+                    if (!(world.getTileEntity(turbinePos) instanceof TileEntitySmallWindTurbine))
                     {
-                        TileEntitySmallWindTurbine te = (TileEntitySmallWindTurbine) world.getTileEntity(turbinePos);
-                        if (te != null) getMaster().energyGenerated = te.getEnergyGenerated();
-                        else getMaster().energyGenerated = 0;
-                    } else
-                    {
-                        getMaster().energyGenerated = 0;
                         forceNewTurbinePos();
                     }
                 }
@@ -156,17 +158,17 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
         float totalCapacity = TileEntitySmallWindTurbine.getMaxGeneration();
         currentAmount = currentAmount / totalCapacity;
         amount = Utils.lerp(amount, currentAmount, 0.1f);
-        return amount * 90f;
+        return Math.min(amount, 1) * 90f;
     }
 
     public int getEnergyGenerated()
     {
-        return getMaster().energyGenerated;
+        return getMaster().outPut;
     }
 
     public String getText()
     {
-        if (getMaster().getTurbinePos() == null) return "No Turbine";
+        if (getMaster() == null || getMaster().getTurbinePos() == null) return "No Turbine";
         return getEnergyGenerated() + " FE/t";
     }
 
@@ -203,6 +205,10 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     {
         this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
         this.isBase = compound.getBoolean("base");
+        TileEntityWindTurbinePillar te = null;
+        if (compound.hasKey("masterPos") && hasWorld())
+            te = (TileEntityWindTurbinePillar) world.getTileEntity(BlockPos.fromLong(compound.getLong("masterPos")));
+        if (te != null) this.setMaster(te);
         super.readFromNBT(compound);
     }
 
@@ -211,6 +217,7 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     {
         compound.setTag("StoredIR", this.energyContainer.serializeNBT());
         compound.setBoolean("base", this.isBase);
+        if (getMaster() != null) compound.setLong("masterPos", getMaster().getPos().toLong());
         return super.writeToNBT(compound);
     }
 }

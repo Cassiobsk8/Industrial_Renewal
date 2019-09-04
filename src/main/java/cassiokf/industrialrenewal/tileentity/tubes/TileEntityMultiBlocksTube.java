@@ -16,8 +16,8 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     private TE master;
     private boolean isMaster;
     private Map<BlockPos, EnumFacing> posSet = new HashMap<>();
-    int outPut;
-    int oldOutPut = -1;
+    public int outPut;
+    public int oldOutPut = -1;
     int outPutCount;
     int oldOutPutCount = -1;
 
@@ -43,9 +43,9 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         return outPutCount;
     }
 
-    public void initializeMultiblockIfNecessary()
+    private void initializeMultiblockIfNecessary()
     {
-        if (master == null || master.isInvalid()) //TODO Run only in Server
+        if (master == null || master.isInvalid())
         {
             List<TE> connectedCables = new ArrayList<TE>();
             Stack<TE> traversingCables = new Stack<TE>();
@@ -75,6 +75,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                 storage.checkForOutPuts(storage.getPos());
                 storage.markDirty();
             }
+            markDirty();
         }
     }
 
@@ -98,7 +99,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         return master;
     }
 
-    void setMaster(TE master)
+    public void setMaster(TE master)
     {
         this.master = master;
         isMaster = master == this;
