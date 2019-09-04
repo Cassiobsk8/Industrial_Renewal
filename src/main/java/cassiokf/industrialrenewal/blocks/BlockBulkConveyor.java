@@ -19,9 +19,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -33,6 +35,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public class BlockBulkConveyor extends BlockBase
 {
@@ -136,7 +139,26 @@ public class BlockBulkConveyor extends BlockBase
             worldIn.updateComparatorOutputLevel(pos, this);
         }
 
+        if (type.equals(EnumBulkConveyorType.HOPPER))
+        {
+            int x = pos.getX();
+            int y = pos.getY();
+            int z = pos.getZ();
+            ItemStack itemst = new ItemStack(Item.getItemFromBlock(Blocks.HOPPER));
+            EntityItem entity = new EntityItem(worldIn, x, y, z, itemst);
+            if (!worldIn.isRemote)
+            {
+                worldIn.spawnEntity(entity);
+            }
+        }
+
         super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random par2Random, int par3)
+    {
+        return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.conveyorV)).getItem();
     }
 
     @Override

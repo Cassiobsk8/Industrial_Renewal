@@ -18,7 +18,14 @@ import java.util.List;
 
 public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
 {
-    public ItemStackHandler hopperInv = new ItemStackHandler(1);
+    public ItemStackHandler hopperInv = new ItemStackHandler(1)
+    {
+        @Override
+        protected void onContentsChanged(int slot)
+        {
+            TileEntityBulkConveyorHopper.this.markDirty();
+        }
+    };
     private int tick2;
 
     @Override
@@ -96,8 +103,8 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
     @Override
     public void dropInventory()
     {
-        super.dropInventory();
         Utils.dropInventoryItems(world, pos, hopperInv);
+        super.dropInventory();
     }
 
     @Override

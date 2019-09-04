@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -205,9 +206,26 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
         return false;
     }
 
+    public static void dropInventoryItems(World worldIn, BlockPos pos, ItemStackHandler inventory)
+    {
+        double x = pos.getX();
+        double y = pos.getY();
+        double z = pos.getZ();
+
+        for (int i = 0; i < 3; ++i)
+        {
+            ItemStack itemstack = inventory.getStackInSlot(i);
+
+            if (!itemstack.isEmpty())
+            {
+                Utils.spawnItemStack(worldIn, x, y, z, itemstack);
+            }
+        }
+    }
+
     public void dropInventory()
     {
-        Utils.dropInventoryItems(world, pos, inventory);
+        dropInventoryItems(world, pos, inventory);
     }
 
     private boolean isFrontConveyor(EnumFacing facing, int mode)
