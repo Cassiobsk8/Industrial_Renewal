@@ -26,8 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -86,12 +85,13 @@ public class BlockBulkConveyor extends BlockBase
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack heldItem = playerIn.getHeldItem(hand);
-        if (!heldItem.isEmpty())
+        if (!heldItem.isEmpty() && hand.equals(EnumHand.MAIN_HAND))
         {
             if (type.equals(EnumBulkConveyorType.NORMAL) && heldItem.getItem().equals(Item.getItemFromBlock(Blocks.HOPPER)))
             {
                 EnumFacing facing1 = state.getValue(FACING);
                 worldIn.setBlockState(pos, ModBlocks.conveyorVHopper.getDefaultState().withProperty(FACING, facing1), 3);
+                worldIn.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
                 if (!playerIn.isCreative()) heldItem.shrink(1);
                 return true;
             } else if (type.equals(EnumBulkConveyorType.HOPPER) && heldItem.getItem().equals(ModItems.screwDrive))
