@@ -21,7 +21,6 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
     private final VoltsEnergyContainer container;
     private final VoltsEnergyContainer dummyEnergy;
     private final Set<EnumFacing> outPutFacings = new HashSet<>();
-    private boolean needSync = true;
     private EnumFacing blockFacing;
 
     public TileEntityBatteryBank() {
@@ -49,10 +48,6 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
     @Override
     public void update() {
         if (this.hasWorld() && !this.world.isRemote) {
-            if (needSync)
-            {
-                //setState();
-            }
             for (EnumFacing face : outPutFacings)
             {
                 TileEntity te = world.getTileEntity(pos.offset(face));
