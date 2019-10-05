@@ -37,6 +37,7 @@ public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBattery
         {
             TileEntityBatteryBank te = (TileEntityBatteryBank) worldIn.getTileEntity(pos);
             if (te != null) te.toggleFacing(facing);
+            worldIn.notifyBlockUpdate(pos, state, state, 3);
             if (!worldIn.isRemote) ItemPowerScrewDrive.playDrillSound(worldIn, pos);
             return true;
         }
