@@ -5,6 +5,7 @@ import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyor;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyorHopper;
+import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyorInserter;
 import cassiokf.industrialrenewal.util.EnumBulkConveyorType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
@@ -87,19 +88,40 @@ public class BlockBulkConveyor extends BlockBase
         ItemStack heldItem = playerIn.getHeldItem(hand);
         if (!heldItem.isEmpty() && hand.equals(EnumHand.MAIN_HAND))
         {
-            if (type.equals(EnumBulkConveyorType.NORMAL) && heldItem.getItem().equals(Item.getItemFromBlock(Blocks.HOPPER)))
+            if (type.equals(EnumBulkConveyorType.NORMAL))
             {
-                EnumFacing facing1 = state.getValue(FACING);
-                worldIn.setBlockState(pos, ModBlocks.conveyorVHopper.getDefaultState().withProperty(FACING, facing1), 3);
-                worldIn.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
-                if (!playerIn.isCreative()) heldItem.shrink(1);
-                return true;
-            } else if (type.equals(EnumBulkConveyorType.HOPPER) && heldItem.getItem().equals(ModItems.screwDrive))
+                if (heldItem.getItem().equals(Item.getItemFromBlock(Blocks.HOPPER)))
+                {
+                    EnumFacing facing1 = state.getValue(FACING);
+                    worldIn.setBlockState(pos, ModBlocks.conveyorVHopper.getDefaultState().withProperty(FACING, facing1), 3);
+                    worldIn.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                    if (!playerIn.isCreative()) heldItem.shrink(1);
+                    return true;
+                }
+                if (heldItem.getItem().equals(Item.getItemFromBlock(Blocks.DISPENSER)))
+                {
+                    EnumFacing facing1 = state.getValue(FACING);
+                    worldIn.setBlockState(pos, ModBlocks.conveyorVInserter.getDefaultState().withProperty(FACING, facing1), 3);
+                    worldIn.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                    if (!playerIn.isCreative()) heldItem.shrink(1);
+                    return true;
+                }
+            } else if (heldItem.getItem().equals(ModItems.screwDrive))
             {
-                EnumFacing facing1 = state.getValue(FACING);
-                worldIn.setBlockState(pos, ModBlocks.conveyorV.getDefaultState().withProperty(FACING, facing1), 3);
-                ItemPowerScrewDrive.playDrillSound(worldIn, pos);
-                return true;
+                if (type.equals(EnumBulkConveyorType.HOPPER))
+                {
+                    EnumFacing facing1 = state.getValue(FACING);
+                    worldIn.setBlockState(pos, ModBlocks.conveyorV.getDefaultState().withProperty(FACING, facing1), 3);
+                    ItemPowerScrewDrive.playDrillSound(worldIn, pos);
+                    return true;
+                }
+                if (type.equals(EnumBulkConveyorType.INSERTER))
+                {
+                    EnumFacing facing1 = state.getValue(FACING);
+                    worldIn.setBlockState(pos, ModBlocks.conveyorV.getDefaultState().withProperty(FACING, facing1), 3);
+                    ItemPowerScrewDrive.playDrillSound(worldIn, pos);
+                    return true;
+                }
             } else if (Block.getBlockFromItem(heldItem.getItem()) instanceof BlockBulkConveyor)
             {
                 IBlockState actualState = state.getActualState(worldIn, pos);
@@ -139,12 +161,14 @@ public class BlockBulkConveyor extends BlockBase
             worldIn.updateComparatorOutputLevel(pos, this);
         }
 
-        if (type.equals(EnumBulkConveyorType.HOPPER))
+        if (!type.equals(EnumBulkConveyorType.NORMAL))
         {
             int x = pos.getX();
             int y = pos.getY();
             int z = pos.getZ();
-            ItemStack itemst = new ItemStack(Item.getItemFromBlock(Blocks.HOPPER));
+            ItemStack itemst = type.equals(EnumBulkConveyorType.HOPPER)
+                    ? new ItemStack(Item.getItemFromBlock(Blocks.HOPPER))
+                    : new ItemStack(Item.getItemFromBlock(Blocks.DISPENSER));
             EntityItem entity = new EntityItem(worldIn, x, y, z, itemst);
             if (!worldIn.isRemote)
             {
@@ -191,6 +215,8 @@ public class BlockBulkConveyor extends BlockBase
 
     private boolean getFront(IBlockAccess world, BlockPos pos, IBlockState ownState, final int mode)
     {
+        if (type.equals(EnumBulkConveyorType.INSERTER)) return false;
+
         EnumFacing facing = ownState.getValue(FACING);
         IBlockState frontState = world.getBlockState(pos.offset(ownState.getValue(FACING)));
         IBlockState downState = world.getBlockState(pos.offset(facing).down());
@@ -326,7 +352,8 @@ public class BlockBulkConveyor extends BlockBase
     public Class<? extends TileEntityBulkConveyor> getTileEntityClass()
     {
         if (type == EnumBulkConveyorType.NORMAL) return TileEntityBulkConveyor.class;
-        return TileEntityBulkConveyorHopper.class;
+        if (type == EnumBulkConveyorType.HOPPER) return TileEntityBulkConveyorHopper.class;
+        return TileEntityBulkConveyorInserter.class;
     }
 
     @Nullable
@@ -334,6 +361,7 @@ public class BlockBulkConveyor extends BlockBase
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         if (type == EnumBulkConveyorType.NORMAL) return new TileEntityBulkConveyor();
-        return new TileEntityBulkConveyorHopper();
+        if (type == EnumBulkConveyorType.HOPPER) return new TileEntityBulkConveyorHopper();
+        return new TileEntityBulkConveyorInserter();
     }
 }

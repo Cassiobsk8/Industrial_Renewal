@@ -124,6 +124,7 @@ public class ModBlocks {
 
     public static BlockBulkConveyor conveyorV = new BlockBulkConveyor("conveyor_bulk", References.CREATIVE_IR_TAB, EnumBulkConveyorType.NORMAL);
     public static BlockBulkConveyor conveyorVHopper = new BlockBulkConveyor("conveyor_bulk_hopper", References.CREATIVE_IR_TAB, EnumBulkConveyorType.HOPPER);
+    public static BlockBulkConveyor conveyorVInserter = new BlockBulkConveyor("conveyor_bulk_inserter", References.CREATIVE_IR_TAB, EnumBulkConveyorType.INSERTER);
 
     public static BlockSignBase signHV = new BlockSignBase("sign_hv", References.CREATIVE_IR_TAB);
     public static BlockSignBase signRA = new BlockSignBase("sign_ra", References.CREATIVE_IR_TAB);
@@ -225,6 +226,7 @@ public class ModBlocks {
                 valveLarge,
                 conveyorV,
                 conveyorVHopper,
+                conveyorVInserter,
                 //Energy
                 spanel,
                 fpanel,
@@ -301,6 +303,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(catwalkStair.getTileEntityClass(), catwalkStair.getRegistryName());
         GameRegistry.registerTileEntity(conveyorV.getTileEntityClass(), conveyorV.getRegistryName());
         GameRegistry.registerTileEntity(conveyorVHopper.getTileEntityClass(), conveyorVHopper.getRegistryName());
+        GameRegistry.registerTileEntity(conveyorVInserter.getTileEntityClass(), conveyorVInserter.getRegistryName());
         GameRegistry.registerTileEntity(damIntake.getTileEntityClass(), damIntake.getRegistryName());
         GameRegistry.registerTileEntity(concrete.getTileEntityClass(), concrete.getRegistryName());
     }

@@ -152,15 +152,10 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
                 }
             } else if (world.getBlockState(frontPos).getBlock().isAir(world.getBlockState(frontPos), world, frontPos))
             {
-                double multiplierX = BlockBulkConveyor.getMotionX(facing);
-                double multiplierZ = BlockBulkConveyor.getMotionZ(facing);
-                EntityItem entityitem = new EntityItem(world, frontPos.getX() + 0.5D, frontPos.getY() + 0.5D, frontPos.getZ() + 0.5D, frontPositionItem);
-                entityitem.motionY = 0;
-                entityitem.motionX = multiplierX * 0.2;
-                entityitem.motionZ = multiplierZ * 0.2;
-                world.spawnEntity(entityitem);
-                inventory.setStackInSlot(2, ItemStack.EMPTY);
-                frontPositionItem = ItemStack.EMPTY;
+                if (dropFrontItem(facing, frontPositionItem, frontPos))
+                {
+                    frontPositionItem = ItemStack.EMPTY;
+                }
             }
         }
         ItemStack MiddlePositionItem = inventory.getStackInSlot(1);
@@ -204,6 +199,19 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
             return true;
         }
         return false;
+    }
+
+    public boolean dropFrontItem(EnumFacing facing, ItemStack frontPositionItem, BlockPos frontPos)
+    {
+        double multiplierX = BlockBulkConveyor.getMotionX(facing);
+        double multiplierZ = BlockBulkConveyor.getMotionZ(facing);
+        EntityItem entityitem = new EntityItem(world, frontPos.getX() + 0.5D, frontPos.getY() + 0.5D, frontPos.getZ() + 0.5D, frontPositionItem);
+        entityitem.motionY = 0;
+        entityitem.motionX = multiplierX * 0.2;
+        entityitem.motionZ = multiplierZ * 0.2;
+        world.spawnEntity(entityitem);
+        inventory.setStackInSlot(2, ItemStack.EMPTY);
+        return true;
     }
 
     public static void dropInventoryItems(World worldIn, BlockPos pos, ItemStackHandler inventory)
