@@ -73,13 +73,13 @@ public class BlockGauge extends BlockTileEntity<TileEntityGauge>
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(FACING).getIndex();
+        return state.getValue(FACING).getHorizontalIndex();
     }
 
     @Nonnull
