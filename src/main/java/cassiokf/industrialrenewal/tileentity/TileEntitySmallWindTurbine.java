@@ -80,6 +80,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
                 {
                     tickToDamage = 0;
                     bladeInv.getStackInSlot(0).attemptDamageItem(1, new Random(), null);
+                    if (bladeInv.getStackInSlot(0).getItemDamage() < 0) bladeInv.setStackInSlot(0, ItemStack.EMPTY);
                 }
                 if (tickToDamage < 1201) tickToDamage++;
             } else
