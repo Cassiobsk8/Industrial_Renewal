@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockBatteryBank;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.item.ItemWindBlade;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
@@ -62,7 +63,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
 
     public static int getMaxGeneration()
     {
-        return 128;
+        return IRConfig.MainConfig.Main.maxEnergySWindTurbine;
     }
 
     @Override
