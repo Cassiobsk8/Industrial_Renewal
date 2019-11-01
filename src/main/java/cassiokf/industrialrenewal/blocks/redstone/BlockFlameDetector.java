@@ -40,25 +40,17 @@ public class BlockFlameDetector extends BlockTileEntity<TileEntityFlameDetector>
 
     }
 
-    private boolean getActiveness(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntityFlameDetector te = (TileEntityFlameDetector) world.getTileEntity(pos);
-        if (te == null) {
-            return false;
-        }
-        return te.passRedstone();
-    }
-
     @Nonnull
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
         TileEntityFlameDetector te = (TileEntityFlameDetector) world.getTileEntity(pos);
-        return state.withProperty(ACTIVE, getActiveness(state, world, pos)).withProperty(BASE, te.getBlockFacing());
+        return state.withProperty(BASE, te.getBlockFacing());
     }
 
     @Override
     public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
-        return side != state.getValue(FACING);
+        return side != state.getValue(FACING).getOpposite();
     }
 
     @SuppressWarnings("deprecation")

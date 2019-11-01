@@ -88,8 +88,9 @@ public class TileEntityEntityDetector extends TileEntitySyncable implements ITic
         IBlockState state = this.world.getBlockState(this.pos).getActualState(this.world, this.pos);
         boolean actualValue = state.getValue(BlockEntityDetector.ACTIVE);
         if (actualValue != value) {
-            this.world.setBlockState(this.pos, state.withProperty(BlockEntityDetector.BASE, this.getBlockFacing()).withProperty(BlockEntityDetector.ACTIVE, value), 3);
+            this.world.setBlockState(this.pos, state.withProperty(BlockEntityDetector.ACTIVE, value), 3);
             this.Sync();
+            world.notifyNeighborsOfStateChange(this.pos.offset(getBlockFacing()), state.getBlock(), true);
         }
     }
 
