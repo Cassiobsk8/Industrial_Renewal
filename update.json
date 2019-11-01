@@ -1,10 +1,11 @@
 {
   "homepage": "<https://minecraft.curseforge.com/projects/industrial-renewal>",
   "promos": {
-    "1.12.2-latest": "0.13.0",
-    "1.12.2-recommended": "0.12.2"
+    "1.12.2-latest": "0.13.1",
+    "1.12.2-recommended": "0.13.1"
   },
   "1.12.2": {
+    "0.13.1": "Fix:\nGauges wrong state crash\nConfig to change wind turbine base generation\nFix detectors not activate redstone if theres a block between",
     "0.13.0": "Rail Gate\n\nRazor wire\n\nCargo/Fluid cart Transfer\n\nBulk cargo cart\n\nBulk conveyor Inserter (right click bulk conveyor Dispenser)\n\nFixes:\n\nSave content fixes\n\nsee more on github.",
     "0.12.1": "fix Crash with thermal dynamics fluiducts",
     "0.12.0": "NEW: \n\nEnergy Cable (1024 FE/t per connector)\n\nFluid Pipe (600 mB/t per connector)\n\nBulk conveyor (Transport itens)\n\nSolar Frame (generates twice per solar panel)\n\nEnergy level indicator (Shows the block energy level)\n\nChanges:\n\nValve pipe now pull fluids from containers",
