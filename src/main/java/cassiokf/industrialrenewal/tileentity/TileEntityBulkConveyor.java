@@ -115,39 +115,36 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
     private void moveItem()
     {
         ItemStack frontPositionItem = inventory.getStackInSlot(2);
-        if (!(world.getBlockState(pos).getBlock() instanceof BlockBulkConveyor)) return;
-        EnumFacing facing = world.getBlockState(pos).getValue(BlockBulkConveyor.FACING);
+        IBlockState ownState = world.getBlockState(pos);
+        if (!(ownState.getBlock() instanceof BlockBulkConveyor)) return;
+
+        EnumFacing facing = ownState.getValue(BlockBulkConveyor.FACING);
         if (!frontPositionItem.isEmpty())
         {
             BlockPos frontPos = pos.offset(facing);
-            int mode = world.getBlockState(pos).getActualState(world, pos).getValue(BlockBulkConveyor.MODE);
-            if (isFrontConveyor(facing, mode))
+            int mode = ownState.getActualState(world, pos).getValue(BlockBulkConveyor.MODE);
+            BlockPos targetConveyorPos = frontConveyor(facing, mode);
+            if (targetConveyorPos != null)
             {
                 TileEntityBulkConveyor te = null;
-                if (mode != 1 && world.getTileEntity(frontPos) instanceof TileEntityBulkConveyor)
+                if (world.getTileEntity(targetConveyorPos) instanceof TileEntityBulkConveyor)
                 {
-                    te = (TileEntityBulkConveyor) world.getTileEntity(frontPos);
-                } else
-                {
-                    if (mode == 1 && world.getTileEntity(frontPos.up()) instanceof TileEntityBulkConveyor)
-                    {
-                        te = (TileEntityBulkConveyor) world.getTileEntity(frontPos.up());
-                    } else if (world.getTileEntity(frontPos.down()) instanceof TileEntityBulkConveyor)
-                    {
-                        te = (TileEntityBulkConveyor) world.getTileEntity(frontPos.down());
-                    }
+                    te = (TileEntityBulkConveyor) world.getTileEntity(targetConveyorPos);
                 }
 
                 if (te != null)
                 {
                     if (te.getBlockFacing() == getBlockFacing() && te.transferItem(frontPositionItem, false))
-                    {
+                    { // IF IS STRAIGHT
                         inventory.setStackInSlot(2, ItemStack.EMPTY);
                         frontPositionItem = ItemStack.EMPTY;
-                    } else if (te.getBlockFacing() != getBlockFacing().getOpposite() && te.transferItem(frontPositionItem, 1, false))
-                    {
-                        inventory.setStackInSlot(2, ItemStack.EMPTY);
-                        frontPositionItem = ItemStack.EMPTY;
+                    } else if (te.getBlockFacing() != getBlockFacing().getOpposite() && te.getStackInSlot(1).isEmpty())
+                    { // IF IS CORNER
+                        if (te.transferItem(frontPositionItem, 1, false))
+                        {
+                            inventory.setStackInSlot(2, ItemStack.EMPTY);
+                            frontPositionItem = ItemStack.EMPTY;
+                        }
                     }
                 }
             } else if (world.getBlockState(frontPos).getBlock().isAir(world.getBlockState(frontPos), world, frontPos))
@@ -170,6 +167,28 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
             moveItemInternaly(0, 1);
         }
         getInThisTick = false;
+    }
+
+    private BlockPos frontConveyor(EnumFacing facing, int mode)
+    {
+        BlockPos frontPos = pos.offset(facing);
+        if (mode == 1 || !(world.getBlockState(frontPos).getBlock() instanceof BlockBulkConveyor))
+        {
+            if (mode == 1)
+            {
+                frontPos = pos.offset(facing).up();
+            } else
+            {
+                frontPos = pos.offset(facing).down();
+            }
+        } else
+        {
+            return frontPos;
+        }
+        IBlockState frontState = world.getBlockState(frontPos);
+        return (frontState.getBlock() instanceof BlockBulkConveyor
+                && frontState.getValue(BlockBulkConveyor.FACING) == getBlockFacing())
+                ? frontPos : null;
     }
 
     private void moveItemInternaly(int from, int to)
@@ -234,23 +253,6 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
     public void dropInventory()
     {
         dropInventoryItems(world, pos, inventory);
-    }
-
-    private boolean isFrontConveyor(EnumFacing facing, int mode)
-    {
-        IBlockState state = world.getBlockState(pos.offset(facing));
-
-        if (mode == 1 || !(state.getBlock() instanceof BlockBulkConveyor))
-        {
-            if (mode == 1)
-            {
-                state = world.getBlockState(pos.offset(facing).up());
-            } else
-            {
-                state = world.getBlockState(pos.offset(facing).down());
-            }
-        } else return true;
-        return state.getBlock() instanceof BlockBulkConveyor && state.getValue(BlockBulkConveyor.FACING) == getBlockFacing();
     }
 
     public int getMode()
