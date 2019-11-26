@@ -1,6 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
+    "model": "industrialrenewal:rail_crossing",
     "textures": {
       "particle": "blocks/rail_normal"
     }
@@ -16,7 +17,15 @@
       "east_west": {
         "model": "industrialrenewal:rail_crossing",
         "y": 90
-      }
+      },
+      "ascending_east": {},
+      "ascending_west": {},
+      "ascending_north": {},
+      "ascending_south": {},
+      "south_east": {},
+      "south_west": {},
+      "north_west": {},
+      "north_east": {}
     },
     "snow": {
       "false": {},

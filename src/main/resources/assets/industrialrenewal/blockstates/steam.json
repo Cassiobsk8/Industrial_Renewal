@@ -6,6 +6,12 @@
       "custom": {
         "fluid": "steam"
       }
+    },
+    "inventory": {
+      "model": "forge:fluid",
+      "custom": {
+        "fluid": "steam"
+      }
     }
   }
 }
