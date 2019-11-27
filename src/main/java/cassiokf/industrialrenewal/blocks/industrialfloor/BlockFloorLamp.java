@@ -90,6 +90,12 @@ public class BlockFloorLamp extends BlockIndustrialFloor
         return false;
     }
 
+    @Deprecated
+    public boolean isTopSolid(IBlockState state)
+    {
+        return true;
+    }
+
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         if (face == EnumFacing.DOWN) {
