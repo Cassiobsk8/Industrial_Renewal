@@ -48,7 +48,7 @@ public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
                 + ":");
         tooltip.add(" -" + I18n.format("info.industrialrenewal.firebox"));
         tooltip.add(" -" + Blocks.WATER.getLocalizedName()
-                + " "
+                + ": "
                 + IRConfig.MainConfig.Main.steamBoilerWaterPerTick
                 + " mB/t");
         tooltip.add(I18n.format("info.industrialrenewal.produces")
