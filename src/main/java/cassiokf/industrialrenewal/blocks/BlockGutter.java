@@ -10,9 +10,13 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -47,6 +51,19 @@ public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    {
+        tooltip.add(I18n.format("info.industrialrenewal.produces")
+                + ": ");
+        tooltip.add(Blocks.WATER.getLocalizedName()
+                + (" 1")
+                + " mB/t "
+                + I18n.format("info.industrialrenewal.gutter"));
+        tooltip.add(I18n.format("info.industrialrenewal.gutter2"));
+        super.addInformation(stack, player, tooltip, advanced);
     }
 
     private Boolean downConnected(IBlockAccess world, BlockPos pos) {

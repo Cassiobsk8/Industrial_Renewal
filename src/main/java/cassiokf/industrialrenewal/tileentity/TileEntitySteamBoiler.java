@@ -112,7 +112,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
     private int maxHeat = 32000;
     private int heat;
     private int oldHeat;
-    private int waterPtick = 32;
+    private int waterPtick = IRConfig.MainConfig.Main.steamBoilerWaterPerTick;
 
     private int fuelTime;
     private int maxFuelTime;
@@ -170,7 +170,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
                     float factor = (heat / 100f) / (maxHeat / 100f);
                     amount = Math.round(amount * factor);
                     this.waterTank.drain(amount, true);
-                    FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), amount * IRConfig.MainConfig.Main.steamBoilerConvertionFactor);
+                    FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), amount * IRConfig.MainConfig.Main.steamBoilerConversionFactor);
                     this.steamTank.fillInternal(steamStack, true);
                     heat -= 2;
                 }
@@ -191,7 +191,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
                 if (this.steamTank.getFluidAmount() > 0 && heat < 9000)
                 {
                     FluidStack stack = this.steamTank.drain(10, true);
-                    stack.amount = stack.amount / IRConfig.MainConfig.Main.steamBoilerConvertionFactor;
+                    stack.amount = stack.amount / IRConfig.MainConfig.Main.steamBoilerConversionFactor;
                     this.waterTank.fill(stack, true);
                 }
             } else if (heat > 2420) heat -= 6;

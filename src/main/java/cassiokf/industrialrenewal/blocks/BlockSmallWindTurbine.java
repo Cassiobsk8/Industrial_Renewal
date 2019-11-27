@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.item.ItemWindBlade;
 import cassiokf.industrialrenewal.tileentity.TileEntitySmallWindTurbine;
@@ -9,6 +10,8 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockSmallWindTurbine extends BlockTileEntity<TileEntitySmallWindTurbine>
 {
@@ -59,6 +63,16 @@ public class BlockSmallWindTurbine extends BlockTileEntity<TileEntitySmallWindTu
             }
         }
         return false;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    {
+        tooltip.add(I18n.format("info.industrialrenewal.produces")
+                + ": "
+                + (IRConfig.MainConfig.Main.maxEnergySWindTurbine)
+                + " FE/t");
+        super.addInformation(stack, player, tooltip, advanced);
     }
 
     @Override

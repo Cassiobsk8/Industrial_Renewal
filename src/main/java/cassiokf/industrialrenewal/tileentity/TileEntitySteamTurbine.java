@@ -62,9 +62,9 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
 
     private int maxRotation = 16000;
     private int rotation;
-    private int energyPerTick = 1024;
+    private int energyPerTick = IRConfig.MainConfig.Main.steamTurbineEnergyPerTick;
     private int oldRotation;
-    private int steamPtick = 200;
+    private int steamPtick = IRConfig.MainConfig.Main.steamTurbineSteamPerTick;
 
     private int timeSincePlayed;
 
@@ -91,7 +91,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
                 {
                     FluidStack stack = this.steamTank.drainInternal(steamPtick, true);
                     float amount = stack != null ? stack.amount : 0f;
-                    FluidStack waterStack = new FluidStack(FluidRegistry.WATER, Math.round(amount / (float) IRConfig.MainConfig.Main.steamBoilerConvertionFactor));
+                    FluidStack waterStack = new FluidStack(FluidRegistry.WATER, Math.round(amount / (float) IRConfig.MainConfig.Main.steamBoilerConversionFactor));
                     this.waterTank.fillInternal(waterStack, true);
                     float factor = amount / (float) steamPtick;
                     rotation += (10 * factor);

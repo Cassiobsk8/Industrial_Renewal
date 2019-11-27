@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntitySolarPanelFrame;
 import net.minecraft.block.Block;
@@ -10,6 +11,8 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<TileEntitySolarPanelFrame>
 {
@@ -33,6 +37,20 @@ public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<Ti
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    {
+        tooltip.add(I18n.format("info.industrialrenewal.requires")
+                + ": "
+                + ModBlocks.spanel.getLocalizedName());
+        tooltip.add(I18n.format("info.industrialrenewal.produces")
+                + ": "
+                + ("Solar panel")
+                + " * 2"
+                + " FE/t");
+        super.addInformation(stack, player, tooltip, advanced);
     }
 
     @Override

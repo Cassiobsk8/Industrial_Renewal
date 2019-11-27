@@ -43,7 +43,7 @@ public class BlockRazorWire extends BlockBase
         if (entityIn instanceof EntityLivingBase)
         {
             entityIn.setInWeb();
-            entityIn.attackEntityFrom(DamageSource.CACTUS, IRConfig.MainConfig.Main.razorWireDammage);
+            entityIn.attackEntityFrom(DamageSource.CACTUS, IRConfig.MainConfig.Main.razorWireDamage);
         }
     }
 

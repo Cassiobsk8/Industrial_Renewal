@@ -1,5 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.item.ItemFireBox;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntitySteamBoiler;
@@ -8,8 +10,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -23,6 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
@@ -33,6 +39,25 @@ public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
     {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    {
+        tooltip.add(I18n.format("info.industrialrenewal.requires")
+                + ":");
+        tooltip.add(" -" + I18n.format("info.industrialrenewal.firebox"));
+        tooltip.add(" -" + Blocks.WATER.getLocalizedName()
+                + " "
+                + IRConfig.MainConfig.Main.steamBoilerWaterPerTick
+                + " mB/t");
+        tooltip.add(I18n.format("info.industrialrenewal.produces")
+                + " "
+                + FluidInit.STEAM.getName()
+                + ": "
+                + (IRConfig.MainConfig.Main.steamBoilerWaterPerTick * IRConfig.MainConfig.Main.steamBoilerConversionFactor)
+                + " mB/t");
+        super.addInformation(stack, player, tooltip, advanced);
     }
 
     @SideOnly(Side.CLIENT)

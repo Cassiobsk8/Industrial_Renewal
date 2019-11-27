@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
 import net.minecraft.block.ITileEntityProvider;
@@ -29,7 +30,7 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> imple
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
     {
-        tooltip.add("1024" + " FE/t");
+        tooltip.add(IRConfig.MainConfig.Main.maxEnergyCableTransferAmount + " FE/t");
         super.addInformation(stack, player, tooltip, advanced);
     }
 

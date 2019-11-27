@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipe;
 import net.minecraft.block.state.IBlockState;
@@ -75,7 +76,7 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipe>
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
     {
-        tooltip.add("600" + " mB/t");
+        tooltip.add(IRConfig.MainConfig.Main.maxFluidPipeTransferAmount + " mB/t");
         super.addInformation(stack, player, tooltip, advanced);
     }
 

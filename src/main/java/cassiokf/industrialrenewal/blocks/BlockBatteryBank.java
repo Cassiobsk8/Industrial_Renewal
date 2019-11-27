@@ -1,11 +1,14 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityBatteryBank;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,15 +22,23 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBatteryBank>
 {
-
-
-
     public BlockBatteryBank(String name, CreativeTabs tab) {
         super(Material.IRON, name, tab);
         setDefaultState(getDefaultState());
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    {
+        tooltip.add(I18n.format("info.industrialrenewal.capacity")
+                + ": "
+                + (IRConfig.MainConfig.Main.batteryBankCapacity)
+                + " FE/t");
+        super.addInformation(stack, player, tooltip, advanced);
     }
 
     @Override
