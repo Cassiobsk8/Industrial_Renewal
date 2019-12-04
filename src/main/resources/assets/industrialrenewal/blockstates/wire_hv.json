@@ -1,0 +1,30 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "facing": {
+      "north": {
+        "model": "industrialrenewal:hv/hv_isolator"
+      },
+      "south": {
+        "model": "industrialrenewal:hv/hv_isolator",
+        "y": 180
+      },
+      "east": {
+        "model": "industrialrenewal:hv/hv_isolator",
+        "y": 90
+      },
+      "west": {
+        "model": "industrialrenewal:hv/hv_isolator",
+        "y": -90
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:hv/hv_isolator"
+    }
+  }
+}

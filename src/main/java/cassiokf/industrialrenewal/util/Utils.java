@@ -184,4 +184,9 @@ public class Utils {
                 return (float) (temp + 273.15);
         }
     }
+
+    public static float normalize(float value, float min, float max)
+    {
+        return (value - min) / (max - min);
+    }
 }

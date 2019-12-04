@@ -55,6 +55,8 @@ public class ModItems {
 
     public static ItemBattery battery = new ItemBattery("battery", References.CREATIVE_IR_TAB);
 
+    public static ItemCoilHV coilHV = new ItemCoilHV("coil_hv", References.CREAATIVE_IRWIP_TAB);
+
     public static ItemBarrel barrel = new ItemBarrel("barrel_item", References.CREATIVE_IR_TAB);
 
     public static ItemFireBox fireBoxSolid = new ItemFireBox("firebox_solid", 1, References.CREATIVE_IR_TAB);
@@ -98,6 +100,9 @@ public class ModItems {
                 cartridge_half,
                 cartridge_double,
                 cartridge_inverter,
+
+                coilHV,
+
                 pointer,
                 pointerLong,
                 barLevel,
@@ -143,6 +148,7 @@ public class ModItems {
         cartridge_double.registerItemModel();
         cartridge_inverter.registerItemModel();
         manual.registerItemModel();
+        coilHV.registerItemModel();
         stickSteel.registerItemModel();
         pointer.registerItemModel();
         pointerLong.registerItemModel();
