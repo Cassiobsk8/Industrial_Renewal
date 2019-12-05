@@ -1,9 +1,8 @@
 package cassiokf.industrialrenewal.item;
 
-import cassiokf.industrialrenewal.blocks.pipes.BlockWireBase;
-import cassiokf.industrialrenewal.tileentity.TileEntityWireBase;
+import cassiokf.industrialrenewal.tileentity.TileEntityTransformerHV;
 import cassiokf.industrialrenewal.util.Utils;
-import net.minecraft.block.Block;
+import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,9 +19,10 @@ import java.util.List;
 
 public class ItemCoilHV extends ItemBase
 {
-    private TileEntityWireBase firstConnection;
+    private IConnectorHV firstConnection;
     private EnumFacing firstConnectionSide;
     private boolean isSecond = false;
+    private BlockPos firstPos;
 
     public ItemCoilHV(String name, CreativeTabs tab)
     {
@@ -41,29 +41,29 @@ public class ItemCoilHV extends ItemBase
     {
         if (!worldIn.isRemote)
         {
-            Block block = worldIn.getBlockState(pos).getBlock();
-            if (hand.equals(EnumHand.MAIN_HAND) && block instanceof BlockWireBase)
+            if (hand.equals(EnumHand.MAIN_HAND))
             {
-                TileEntityWireBase te = (TileEntityWireBase) worldIn.getTileEntity(pos);
+                IConnectorHV te = (IConnectorHV) worldIn.getTileEntity(pos);
                 if (te == null) return EnumActionResult.FAIL;
-
+                if (te instanceof TileEntityTransformerHV) te = ((TileEntityTransformerHV) te).getMaster();
                 if (!isSecond)
                 {
-                    if (te.canConnectToSide(facing))
+                    if (te.canConnectToSide(pos, facing))
                     {
                         firstConnection = te;
                         firstConnectionSide = facing;
                         isSecond = true;
-                        Utils.sendChatMessage("Connected from: " + pos);
+                        firstPos = pos;
+                        Utils.sendChatMessage("Connection Start");
                         return EnumActionResult.SUCCESS;
                     }
                 } else
                 {
-                    if (firstConnection != null && te != firstConnection && te.canConnectToSide(facing))
+                    if (firstConnection != null && te != firstConnection && te.canConnectToSide(pos, facing))
                     {
                         isSecond = false;
                         te.connectSide(facing, firstConnection, firstConnectionSide);
-                        Utils.sendChatMessage("Connected from: " + firstConnection.getPos() + " to: " + pos);
+                        Utils.sendChatMessage("Connected Distance: " + Utils.getDistancePointToPoint(firstPos, pos));
                         return EnumActionResult.SUCCESS;
                     }
                 }

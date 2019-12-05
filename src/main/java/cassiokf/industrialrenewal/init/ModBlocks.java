@@ -138,6 +138,7 @@ public class ModBlocks {
     public static BlockSteamBoiler steamBoiler = new BlockSteamBoiler("steam_boiler", References.CREATIVE_IR_TAB);
     public static BlockSteamTurbine steamTurbine = new BlockSteamTurbine("steam_turbine", References.CREATIVE_IR_TAB);
     public static BlockMining mining = new BlockMining("mining", References.CREAATIVE_IRWIP_TAB);
+    public static BlockTransformerHV transformerHV = new BlockTransformerHV("transformer_hv", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockChunkLoader chunkLoader = new BlockChunkLoader("chunk_loader", References.CREATIVE_IR_TAB);
 
@@ -236,6 +237,7 @@ public class ModBlocks {
                 turbinePillar,
                 batteryBank,
                 electricPump,
+                transformerHV,
                 //Machines
                 steamBoiler,
                 steamTurbine,
@@ -291,6 +293,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(gauge.getTileEntityClass(), gauge.getRegistryName().toString());
         GameRegistry.registerTileEntity(energyLevel.getTileEntityClass(), energyLevel.getRegistryName());
         GameRegistry.registerTileEntity(electricPump.getTileEntityClass(), electricPump.getRegistryName().toString());
+        GameRegistry.registerTileEntity(transformerHV.getTileEntityClass(), transformerHV.getRegistryName());
         GameRegistry.registerTileEntity(batteryBank.getTileEntityClass(), batteryBank.getRegistryName().toString());
         GameRegistry.registerTileEntity(fluidPipe.getTileEntityClass(), fluidPipe.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityFluidPipeGauge.class, fluidPipeGauge.getRegistryName());
@@ -394,6 +397,7 @@ public class ModBlocks {
                 batteryBank.createItemBlock(),
                 electricPump.createItemBlock(),
                 trash.createItemBlock(),
+                transformerHV.createItemBlock(),
                 steamBoiler.createItemBlock(),
                 steamTurbine.createItemBlock(),
                 mining.createItemBlock(),
@@ -486,6 +490,7 @@ public class ModBlocks {
         buttonRed.registerItemModel(Item.getItemFromBlock(buttonRed));
         batteryBank.registerItemModel(Item.getItemFromBlock(batteryBank));
         electricPump.registerItemModel(Item.getItemFromBlock(electricPump));
+        transformerHV.registerItemModel(Item.getItemFromBlock(transformerHV));
         steamBoiler.registerItemModel(Item.getItemFromBlock(steamBoiler));
         steamTurbine.registerItemModel(Item.getItemFromBlock(steamTurbine));
         mining.registerItemModel(Item.getItemFromBlock(mining));

@@ -158,6 +158,25 @@ public class Utils {
         return list;
     }
 
+    public static List<BlockPos> getBlocksIn3x2x3CenteredPlus1OnTop(BlockPos pos)
+    {
+        List<BlockPos> list = new ArrayList<BlockPos>();
+        for (int y = -1; y < 2; y++)
+        {
+            for (int z = -1; z < 2; z++)
+            {
+                for (int x = -1; x < 2; x++)
+                {
+                    if (y != 1 || (z == 0 && x == 0))
+                    {
+                        list.add(new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z));
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
     public static List<BlockPos> getBlocksIn3x1x3Centered(BlockPos pos)
     {
         List<BlockPos> list = new ArrayList<BlockPos>();
@@ -185,8 +204,27 @@ public class Utils {
         }
     }
 
+    public static String formatEnergyString(int energy)
+    {
+        String text = energy + " FE";
+        if (energy >= 1000 && energy < 1000000)
+            text = energy / 1000 + "K FE";
+        if (energy >= 1000000)
+            text = energy / 1000000 + "M FE";
+        return text;
+    }
+
     public static float normalize(float value, float min, float max)
     {
         return (value - min) / (max - min);
+    }
+
+    public static double getDistancePointToPoint(BlockPos pos1, BlockPos pos2)
+    {
+        double deltaX = pos1.getX() - pos2.getX();
+        double deltaY = pos1.getY() - pos2.getY();
+        double deltaZ = pos1.getZ() - pos2.getZ();
+
+        return Math.sqrt((deltaX * deltaX) + (deltaY * deltaY) + (deltaZ * deltaZ));
     }
 }

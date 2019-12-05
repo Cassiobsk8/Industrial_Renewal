@@ -1,0 +1,51 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/pipe"
+    }
+  },
+  "variants": {
+    "master": {
+      "true": {
+        "model": "industrialrenewal:hv/transformer_hv"
+      },
+      "false": {
+        "model": "industrialrenewal:dummy"
+      }
+    },
+    "output": {
+      "0": {
+      },
+      "1": {
+        "submodel": {
+          "in": {
+            "model": "industrialrenewal:hv/transformer_hv_in"
+          }
+        }
+      },
+      "2": {
+        "submodel": {
+          "out": {
+            "model": "industrialrenewal:hv/transformer_hv_out"
+          }
+        }
+      }
+    },
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:hv/transformer_hv"
+    }
+  }
+}

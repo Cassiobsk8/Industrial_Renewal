@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import cassiokf.industrialrenewal.tileentity.TileEntityWireBase;
+import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -28,6 +29,14 @@ public class BlockWireBase extends BlockTileEntity<TileEntityWireBase>
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        IConnectorHV connector = (IConnectorHV) worldIn.getTileEntity(pos);
+        if (connector != null) connector.removeAllConnections();
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override

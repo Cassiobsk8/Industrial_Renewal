@@ -35,7 +35,8 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
             for (BlockPos currentPos : list)
             {
                 TileEntity te = world.getTileEntity(currentPos);
-                if (te != null && te instanceof TileEntity3x3MachineBase && ((TileEntity3x3MachineBase) te).isMaster()
+                if (te instanceof TileEntity3x3MachineBase
+                        && ((TileEntity3x3MachineBase) te).isMaster()
                         && instanceOf(te))
                 {
                     masterTE = (TE) te;
@@ -45,6 +46,11 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
             return null;
         }
         return masterTE;
+    }
+
+    public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
+    {
+        return Utils.getBlocksIn3x3x3Centered(centerPosition);
     }
 
     public abstract boolean instanceOf(TileEntity tileEntity);
@@ -62,7 +68,7 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
         if (!breaking)
         {
             breaking = true;
-            List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
+            List<BlockPos> list = getListOfBlockPositions(this.pos);
             for (BlockPos currentPos : list)
             {
                 Block block = world.getBlockState(currentPos).getBlock();
