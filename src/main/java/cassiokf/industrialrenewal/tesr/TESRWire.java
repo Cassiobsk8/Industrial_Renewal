@@ -2,13 +2,11 @@ package cassiokf.industrialrenewal.tesr;
 
 import cassiokf.industrialrenewal.tileentity.TileEntityWireBase;
 import cassiokf.industrialrenewal.util.Utils;
-import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,7 +16,7 @@ import java.awt.*;
 @SideOnly(Side.CLIENT)
 public class TESRWire extends TileEntitySpecialRenderer<TileEntityWireBase>
 {
-    public static void renderWire(TileEntity te, IConnectorHV endTE, double x, double y, double z)
+    public static void renderWire(BlockPos startPos, BlockPos endTE, double x, double y, double z)
     {
         y = y - 0.9D;
         Tessellator tessellator = Tessellator.getInstance();
@@ -27,12 +25,9 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWireBase>
         Color c = new Color(56, 56, 56, 255);
         Color c2 = new Color(43, 43, 43, 255);
 
-        BlockPos startPos = te.getPos();
-        BlockPos endPos = endTE.getConnectorPos();
-
-        double d6 = endPos.getX() + 0.4D;
-        double d7 = endPos.getY();
-        double d8 = endPos.getZ() + 0.4D;
+        double d6 = endTE.getX() + 0.4D;
+        double d7 = endTE.getY();
+        double d8 = endTE.getZ() + 0.4D;
         double d9 = (Math.PI / 2D);
         double d2 = Math.cos(d9) * 0.4D;
         double d3 = Math.sin(d9) * 0.4D;
@@ -116,13 +111,13 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWireBase>
     @Override
     public void render(TileEntityWireBase te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
-        if (((IConnectorHV) te).getRightConnection() != null)
+        if (te.isRightConnected())
         {
-            renderWire(te, ((IConnectorHV) te).getRightConnection(), x, y, z);
+            renderWire(te.getPos(), te.rightConnectionPos, x, y, z);
         }
-        if (((IConnectorHV) te).getLeftOrCentralConnection() != null)
+        if (te.isLeftConnected())
         {
-            renderWire(te, ((IConnectorHV) te).getLeftOrCentralConnection(), x, y, z);
+            renderWire(te.getPos(), te.leftConnectionPos, x, y, z);
         }
     }
 

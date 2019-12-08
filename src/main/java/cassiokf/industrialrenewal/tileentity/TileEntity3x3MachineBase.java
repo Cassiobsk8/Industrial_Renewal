@@ -68,6 +68,7 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
         if (!breaking)
         {
             breaking = true;
+            onMasterBreak();
             List<BlockPos> list = getListOfBlockPositions(this.pos);
             for (BlockPos currentPos : list)
             {
@@ -75,6 +76,10 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
                 if (block instanceof Block3x3x3Base) world.setBlockToAir(currentPos);
             }
         }
+    }
+
+    public void onMasterBreak()
+    {
     }
 
     public EnumFacing getMasterFacing()

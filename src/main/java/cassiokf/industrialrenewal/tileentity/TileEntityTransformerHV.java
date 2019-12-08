@@ -1,9 +1,11 @@
 package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -21,13 +23,13 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     private final VoltsEnergyContainer energyContainer;
 
     private final VoltsEnergyContainer dummyEnergyContainer;
+    IConnectorHV otherSideTransformer;
     public boolean isOutPut;
     private BlockPos cableConnectionPos;
-    private boolean initialized = false;
-    private IConnectorHV cableConnection;
     private int energyTransfer;
     private int oldEnergyTransfer;
     private boolean oldOutPut;
+    private boolean isConnected;
 
     public TileEntityTransformerHV()
     {
@@ -69,16 +71,6 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     }
 
     @Override
-    public void onLoad()
-    {
-        super.onLoad();
-        if (cableConnectionPos != null) cableConnection = (IConnectorHV) world.getTileEntity(cableConnectionPos);
-        else cableConnection = null;
-        initialized = true;
-        this.Sync();
-    }
-
-    @Override
     public void update()
     {
         if (this.isMaster())
@@ -88,22 +80,13 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
             {
                 if (!isOutPut)
                 {
-                    IConnectorHV connectorHV = getOtterSideEnergyStorage();
-                    IEnergyStorage inputStorage = null;
-                    if (connectorHV != null) inputStorage = connectorHV.getEnergyStorage();
-
-                    if (inputStorage != null && energyContainer.getEnergyStored() > 0)
+                    if (otherSideTransformer != null && energyContainer.getEnergyStored() > 0)
                     {
                         int energy = energyContainer.extractEnergy(energyContainer.getMaxInput(), true);
-                        energyTransfer = inputStorage.receiveEnergy(energy, false);
-                        energyContainer.extractEnergy(energyTransfer, false);
+                        int energy1 = otherSideTransformer.receiveEnergy(energy, false);
+                        energyTransfer = energyContainer.extractEnergy(energy1, false);
                     } else energyTransfer = 0;
 
-                    if (energyTransfer != oldEnergyTransfer)
-                    {
-                        oldEnergyTransfer = energyTransfer;
-                        this.Sync();
-                    }
                 } else
                 {
                     //OUTPUT ENERGY
@@ -114,18 +97,18 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
                         if (outTileEntity != null && outTileEntity.hasCapability(CapabilityEnergy.ENERGY, getMasterFacing().getOpposite()))
                         {
                             IEnergyStorage outPutStorage = outTileEntity.getCapability(CapabilityEnergy.ENERGY, getMasterFacing().getOpposite());
-                            energyTransfer = outPutStorage.receiveEnergy(
-                                    energyContainer.extractEnergy(energyContainer.getMaxOutput(), true), false);
+                            int energy = energyContainer.extractEnergy(energyContainer.getMaxOutput(), true);
+                            int energy1 = outPutStorage.receiveEnergy(energy, false);
 
-                            energyContainer.extractEnergy(energyTransfer, false);
+                            energyTransfer = energyContainer.extractEnergy(energy1, false);
                         } else energyTransfer = 0;
                     } else energyTransfer = 0;
+                }
 
-                    if (energyTransfer != oldEnergyTransfer)
-                    {
-                        oldEnergyTransfer = energyTransfer;
-                        this.Sync();
-                    }
+                if (energyTransfer != oldEnergyTransfer)
+                {
+                    oldEnergyTransfer = energyTransfer;
+                    this.Sync();
                 }
             }
         }
@@ -141,24 +124,32 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
             oldOutPut = isOutPut;
             IBlockState state = world.getBlockState(pos);
             world.notifyBlockUpdate(pos, state, state, 2);
-            getMaster().Sync();
+            this.Sync();
+            this.checkIfNeedsNetworkRefresh();
         }
     }
 
-    @Override
-    public void breakMultiBlocks()
+    private void checkIfNeedsNetworkRefresh()
     {
-        if (!this.isMaster())
+        if (isConnected() && isMaster())
         {
-            if (getMaster() != null)
+            TileEntity te = world.getTileEntity(cableConnectionPos);
+            if (te instanceof IConnectorHV)
             {
-                getMaster().breakMultiBlocks();
+                if ((isOutPut && !((IConnectorHV) te).isOutput()) || (!isOutPut && ((IConnectorHV) te).isOutput()))
+                {
+                    setOtherSideTransformer((IConnectorHV) te);
+                    ((IConnectorHV) te).setOtherSideTransformer(this);
+                } else
+                {
+                    setOtherSideTransformer(null);
+                    ((IConnectorHV) te).setOtherSideTransformer(null);
+                }
+            } else if (te instanceof TileEntityWireBase)
+            {
+                ((TileEntityWireBase) te).forceRecheck();
             }
-            return;
         }
-        if (cableConnection != null) removeConnection(cableConnection);
-
-        super.breakMultiBlocks();
     }
 
     @Override
@@ -175,7 +166,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
 
     public String getGenerationText()
     {
-        int energy = (this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored()) ? energyTransfer : 0;
+        int energy = energyTransfer;
         return Utils.formatEnergyString(energy) + " FE/t";
     }
 
@@ -190,9 +181,10 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        if (cableConnection != null) compound.setLong("leftCon", cableConnection.getConnectorPos().toLong());
-        else compound.setLong("leftCon", 0L);
+        if (cableConnectionPos != null) compound.setLong("conP", cableConnectionPos.toLong());
+        else compound.setLong("conP", 0L);
 
+        compound.setBoolean("connected", isConnected);
         compound.setBoolean("isOutPut", isOutPut);
         compound.setInteger("transfer", energyTransfer);
         compound.setTag("StoredIR", this.energyContainer.serializeNBT());
@@ -202,12 +194,11 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        long cPos = compound.getLong("leftCon");
-        cableConnectionPos = cPos != 0L ? BlockPos.fromLong(cPos) : null;
+        long conL = compound.getLong("conP");
+        if (conL == 0L) cableConnectionPos = null;
+        else cableConnectionPos = BlockPos.fromLong(conL);
 
-        if (initialized)
-            cableConnection = cableConnectionPos == null ? null : (IConnectorHV) world.getTileEntity(cableConnectionPos);
-
+        isConnected = compound.getBoolean("connected");
         isOutPut = compound.getBoolean("isOutPut");
         energyTransfer = compound.getInteger("transfer");
         this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
@@ -244,21 +235,57 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     }
 
     @Override
-    public EnumFacing getBlockFacing()
+    public void onMasterBreak()
     {
-        return getMasterFacing();
+        if (isConnected())
+        {
+            removeConnectionAndSpawn();
+        }
+    }
+
+    private void disableConnectedCables(BlockPos connectedPos)
+    {
+        TileEntity te = world.getTileEntity(connectedPos);
+        if (te instanceof TileEntityWireBase)
+        {
+            ((TileEntityWireBase) te).removeConnection(getConnectorPos());
+        } else if (te instanceof IConnectorHV)
+        {
+            ((IConnectorHV) te).removeConnection();
+        }
+    }
+
+    public void removeConnectionAndSpawn()
+    {
+        BlockPos connectorPos = getConnectorPos();
+        if (!world.isRemote)
+            Utils.spawnItemStack(world, connectorPos.getX(), connectorPos.getY(), connectorPos.getZ(), new ItemStack(ModItems.coilHV));
+        disableConnectedCables(cableConnectionPos);
+        removeConnection();
     }
 
     @Override
-    public IEnergyStorage getEnergyStorage()
+    public boolean isOutput()
     {
-        return CapabilityEnergy.ENERGY.cast(getMaster().energyContainer);
+        return getMaster().isOutPut;
     }
 
     @Override
-    public boolean isStorage()
+    public BlockPos getConnectionPos()
     {
-        return true;
+        return getMaster().cableConnectionPos;
+    }
+
+    @Override
+    public void setConnectionPos(BlockPos endPos)
+    {
+        getMaster().cableConnectionPos = endPos;
+        getMaster().isConnected = true;
+        if (world.getTileEntity(endPos) instanceof IConnectorHV)
+        {
+            getMaster().checkIfNeedsNetworkRefresh();
+        }
+        getMaster().Sync();
     }
 
     @Override
@@ -268,32 +295,38 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     }
 
     @Override
-    public void onConnectionChange()
+    public void setOtherSideTransformer(IConnectorHV transformer)
     {
+        getMaster().otherSideTransformer = transformer;
         getMaster().Sync();
     }
 
     @Override
-    public IConnectorHV getLeftOrCentralConnection()
+    public boolean isConnected()
     {
-        return getMaster().cableConnection;
+        return getMaster().isConnected;
     }
 
     @Override
-    public void setLeftOrCentralConnection(IConnectorHV connector)
+    public int extractEnergy(int quantity, boolean simulate)
     {
-        getMaster().cableConnection = connector;
+        return getMaster().energyContainer.extractEnergy(quantity, simulate);
     }
 
     @Override
-    public IConnectorHV getRightConnection()
+    public int receiveEnergy(int quantity, boolean simulate)
     {
-        return null;
+        return getMaster().energyContainer.receiveEnergy(quantity, simulate);
     }
 
     @Override
-    public void setRightConnection(IConnectorHV connector)
+    public void removeConnection()
     {
-
+        if (isConnected())
+        {
+            getMaster().isConnected = false;
+            getMaster().cableConnectionPos = null;
+            getMaster().Sync();
+        }
     }
 }

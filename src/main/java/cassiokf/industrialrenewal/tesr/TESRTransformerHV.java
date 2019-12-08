@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.tesr;
 
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.tileentity.TileEntityTransformerHV;
-import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -26,9 +25,9 @@ public class TESRTransformerHV extends TileEntitySpecialRenderer<TileEntityTrans
         if (te.isMaster())
         {
             //CABLE RENDER
-            if (((IConnectorHV) te).getLeftOrCentralConnection() != null)
+            if (te.isConnected())
             {
-                TESRWire.renderWire(te, ((IConnectorHV) te).getLeftOrCentralConnection(), x, y + 1.4D, z);
+                TESRWire.renderWire(te.getConnectorPos(), te.getConnectionPos(), x, y + 1.4D, z);
             }
 
             EnumFacing facing = te.getMasterFacing();

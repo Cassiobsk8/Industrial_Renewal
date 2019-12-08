@@ -1,100 +1,264 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.pipes.BlockWireBase;
+import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
-public class TileEntityWireBase extends TileEntitySyncable implements IConnectorHV
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+public class TileEntityWireBase extends TileEntitySyncable
 {
-    public IConnectorHV leftConnection, rightConnection;
-    private BlockPos leftConnectionPos, rightConnectionPos;
-    private boolean initialized = false;
+    public BlockPos leftConnectionPos = null;
+    public BlockPos rightConnectionPos = null;
+    private boolean leftConnected;
+    private boolean rightConnected;
+
+    private TileEntityWireBase master;
+    private boolean isMaster;
 
     @Override
     public void onLoad()
     {
-        super.onLoad();
-        if (leftConnectionPos != null) leftConnection = (IConnectorHV) world.getTileEntity(leftConnectionPos);
-        else leftConnection = null;
-        if (rightConnectionPos != null) rightConnection = (IConnectorHV) world.getTileEntity(rightConnectionPos);
-        else rightConnection = null;
-        initialized = true;
+        initializeNetworkIfNecessary();
+    }
+
+    private void initializeNetworkIfNecessary()
+    {
+        if (master == null || master.isInvalid())
+        {
+            List<TileEntityWireBase> connectedCables = new ArrayList<TileEntityWireBase>();
+            Stack<TileEntityWireBase> traversingCables = new Stack<TileEntityWireBase>();
+            IConnectorHV inTransformerT = null;
+            IConnectorHV outTransformerT = null;
+            TileEntityWireBase master = (TileEntityWireBase) this;
+            traversingCables.add((TileEntityWireBase) this);
+            while (!traversingCables.isEmpty())
+            {
+                TileEntityWireBase storage = traversingCables.pop();
+                if (storage.isMaster())
+                {
+                    master = storage;
+                }
+                connectedCables.add(storage);
+                if (storage.isLeftConnected())
+                {
+                    TileEntity te = world.getTileEntity(storage.leftConnectionPos);
+                    if (te instanceof TileEntityWireBase && !connectedCables.contains(te))
+                    {
+                        traversingCables.add((TileEntityWireBase) te);
+                    }
+                    if (te instanceof IConnectorHV)
+                    {
+                        if (((IConnectorHV) te).isOutput())
+                        {
+                            outTransformerT = (IConnectorHV) te;
+                        } else
+                        {
+                            inTransformerT = (IConnectorHV) te;
+                        }
+                    }
+                }
+                if (storage.isRightConnected())
+                {
+                    TileEntity te = world.getTileEntity(storage.rightConnectionPos);
+                    if (te instanceof TileEntityWireBase && !connectedCables.contains(te))
+                    {
+                        traversingCables.add((TileEntityWireBase) te);
+                    }
+                    if (te instanceof IConnectorHV)
+                    {
+                        ((IConnectorHV) te).setOtherSideTransformer(null);
+                        if (((IConnectorHV) te).isOutput())
+                        {
+                            outTransformerT = (IConnectorHV) te;
+                        } else
+                        {
+                            inTransformerT = (IConnectorHV) te;
+                        }
+                    }
+                }
+            }
+            for (TileEntityWireBase storage : connectedCables)
+            {
+                storage.setMaster(master);
+                storage.markDirty();
+            }
+            if (inTransformerT != null && outTransformerT != null)
+            {
+                inTransformerT.setOtherSideTransformer(outTransformerT);
+                outTransformerT.setOtherSideTransformer(inTransformerT);
+                master.markDirty();
+            }
+            markDirty();
+        }
+    }
+
+    public void forceRecheck()
+    {
+        this.master = null;
+        initializeNetworkIfNecessary();
+    }
+
+    public void onBlockBreak()
+    {
+        if (isLeftConnected())
+        {
+            removeCableAndSpawn(leftConnectionPos);
+        }
+        if (isRightConnected())
+        {
+            removeCableAndSpawn(rightConnectionPos);
+        }
+    }
+
+    public void removeCableAndSpawn(BlockPos connectionPos)
+    {
+        disableConnectedCables(connectionPos);
+        removeConnection(connectionPos);
+        if (!world.isRemote)
+            Utils.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModItems.coilHV));
+    }
+
+    private void disableConnectedCables(BlockPos connectedPos)
+    {
+        TileEntity te = world.getTileEntity(connectedPos);
+        if (te instanceof TileEntityWireBase)
+        {
+            ((TileEntityWireBase) te).removeConnection(this.pos);
+        } else if (te instanceof IConnectorHV)
+        {
+            ((IConnectorHV) te).removeConnection();
+        }
+    }
+
+    public void removeConnection(BlockPos sidePos)
+    {
+        if (sidePos.equals(leftConnectionPos))
+        {
+            leftConnected = false;
+            leftConnectionPos = null;
+            this.Sync();
+        } else if (sidePos.equals(rightConnectionPos))
+        {
+            rightConnected = false;
+            rightConnectionPos = null;
+            this.Sync();
+        }
+    }
+
+    public void removeAllConnections()
+    {
+        if (isRightConnected()) removeConnection(rightConnectionPos);
+        if (isLeftConnected()) removeConnection(leftConnectionPos);
+    }
+
+    public boolean canConnectToSide(EnumFacing side)
+    {
+        EnumFacing blockFacing = getBlockFacing();
+        return (side.equals(blockFacing.rotateYCCW()) && leftConnectionPos == null)
+                || (side.equals(blockFacing.rotateY()) && rightConnectionPos == null);
+    }
+
+    public void setConnectionOnSide(EnumFacing side, BlockPos otherConnectorPos)
+    {
+        EnumFacing blockFacing = getBlockFacing();
+        if (side.equals(blockFacing.rotateYCCW()))
+        {
+            setLeftConnectionPos(otherConnectorPos);
+        } else if (side.equals(blockFacing.rotateY()))
+        {
+            setRightConnectionPos(otherConnectorPos);
+        }
         this.Sync();
     }
 
-    @Override
-    public boolean isStorage()
-    {
-        return false;
-    }
-
-    @Override
-    public BlockPos getConnectorPos()
-    {
-        return this.pos;
-    }
-
-    @Override
-    public void onConnectionChange()
-    {
-        this.Sync();
-    }
-
-    @Override
-    public IConnectorHV getLeftOrCentralConnection()
-    {
-        return leftConnection;
-    }
-
-    @Override
-    public void setLeftOrCentralConnection(IConnectorHV connector)
-    {
-        leftConnection = connector;
-    }
-
-    @Override
-    public IConnectorHV getRightConnection()
-    {
-        return rightConnection;
-    }
-
-    @Override
-    public void setRightConnection(IConnectorHV connector)
-    {
-        rightConnection = connector;
-    }
-
-    @Override
     public EnumFacing getBlockFacing()
     {
         return world.getBlockState(pos).getValue(BlockWireBase.FACING);
     }
 
+    private void setLeftConnectionPos(BlockPos pos)
+    {
+        leftConnectionPos = pos;
+        leftConnected = true;
+    }
+
+    private void setRightConnectionPos(BlockPos pos)
+    {
+        rightConnectionPos = pos;
+        rightConnected = true;
+    }
+
+    public boolean isMaster()
+    {
+        return isMaster;
+    }
+
+    public TileEntityWireBase getMaster()
+    {
+        initializeNetworkIfNecessary();
+        return master;
+    }
+
+    public void setMaster(TileEntityWireBase master)
+    {
+        this.master = master;
+        isMaster = master == this;
+        markDirty();
+    }
+
+    public boolean isLeftConnected()
+    {
+        return leftConnected;
+    }
+
+    public boolean isRightConnected()
+    {
+        return rightConnected;
+    }
+
+    @Override
+    public void invalidate()
+    {
+        super.invalidate();
+        for (EnumFacing d : EnumFacing.VALUES)
+        {
+            TileEntity te = world.getTileEntity(pos.offset(d));
+            if (te instanceof TileEntityWireBase)
+            {
+                ((TileEntityWireBase) te).master = null;
+                ((TileEntityWireBase) te).initializeNetworkIfNecessary();
+            }
+        }
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        long lPos = compound.getLong("leftCon");
-        long rPos = compound.getLong("rightCon");
-        leftConnectionPos = lPos != 0L ? BlockPos.fromLong(lPos) : null;
-        rightConnectionPos = rPos != 0L ? BlockPos.fromLong(rPos) : null;
-        if (initialized)
-            leftConnection = leftConnectionPos == null ? null : (IConnectorHV) world.getTileEntity(leftConnectionPos);
-        if (initialized)
-            rightConnection = rightConnectionPos == null ? null : (IConnectorHV) world.getTileEntity(rightConnectionPos);
-
+        rightConnectionPos = BlockPos.fromLong(compound.getLong("rightP"));
+        leftConnectionPos = BlockPos.fromLong(compound.getLong("leftP"));
+        rightConnected = compound.getBoolean("rightCon");
+        leftConnected = compound.getBoolean("leftCon");
+        isMaster = compound.getBoolean("isMaster");
         super.readFromNBT(compound);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        if (leftConnection != null) compound.setLong("leftCon", leftConnection.getConnectorPos().toLong());
-        else compound.setLong("leftCon", 0L);
-        if (rightConnection != null) compound.setLong("rightCon", rightConnection.getConnectorPos().toLong());
-        else compound.setLong("rightCon", 0L);
-
+        if (rightConnectionPos != null) compound.setLong("rightP", rightConnectionPos.toLong());
+        if (leftConnectionPos != null) compound.setLong("leftP", leftConnectionPos.toLong());
+        compound.setBoolean("rightCon", rightConnected);
+        compound.setBoolean("leftCon", leftConnected);
+        compound.setBoolean("isMaster", isMaster);
         return super.writeToNBT(compound);
     }
 }
