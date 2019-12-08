@@ -316,6 +316,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     @Override
     public int receiveEnergy(int quantity, boolean simulate)
     {
+        if (isInvalid()) return 0;
         return getMaster().energyContainer.receiveEnergy(quantity, simulate);
     }
 

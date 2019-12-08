@@ -64,6 +64,9 @@ public class ItemCoilHV extends ItemBase
                             isSecond = true;
                             Utils.sendChatMessage("Connection Start");
                             return EnumActionResult.SUCCESS;
+                        } else
+                        {
+                            Utils.sendChatMessage("Connection already in use");
                         }
                     } else
                     {
@@ -95,6 +98,9 @@ public class ItemCoilHV extends ItemBase
                             isSecond = true;
                             Utils.sendChatMessage("Connection Start");
                             return EnumActionResult.SUCCESS;
+                        } else
+                        {
+                            Utils.sendChatMessage("Connection already in use");
                         }
                     } else
                     {

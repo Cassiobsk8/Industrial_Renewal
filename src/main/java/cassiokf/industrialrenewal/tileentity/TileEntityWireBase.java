@@ -163,8 +163,8 @@ public class TileEntityWireBase extends TileEntitySyncable
     public boolean canConnectToSide(EnumFacing side)
     {
         EnumFacing blockFacing = getBlockFacing();
-        return (side.equals(blockFacing.rotateYCCW()) && leftConnectionPos == null)
-                || (side.equals(blockFacing.rotateY()) && rightConnectionPos == null);
+        return (side.equals(blockFacing.rotateYCCW()) && !isLeftConnected())
+                || (side.equals(blockFacing.rotateY()) && !isRightConnected());
     }
 
     public void setConnectionOnSide(EnumFacing side, BlockPos otherConnectorPos)
