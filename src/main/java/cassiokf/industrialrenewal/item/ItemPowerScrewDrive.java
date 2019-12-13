@@ -87,6 +87,7 @@ public class ItemPowerScrewDrive extends ItemBase {
             if (world.getBlockState(pos).getBlock().rotateBlock(world, pos, EnumFacing.UP))
             {
                 playDrillSound(world, pos);
+                return EnumActionResult.SUCCESS;
             }
         }
 
