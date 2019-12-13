@@ -4,6 +4,9 @@ import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.BlockSignBase;
 import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.tileentity.TileEntityBatteryBank;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -33,34 +36,50 @@ public class ItemPowerScrewDrive extends ItemBase {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        if (entity.isSneaking()) {
-            if (world.getBlockState(pos).getBlock() == ModBlocks.fluidPipe || world.getBlockState(pos).getBlock() == ModBlocks.energyCable) {
+        if (entity.isSneaking())
+        {
+            IBlockState blockState = world.getBlockState(pos);
+            Block block = blockState.getBlock();
+            if (block == ModBlocks.fluidPipe || block == ModBlocks.energyCable)
+            {
                 ItemStack items = new ItemStack(ItemBlock.getItemFromBlock(world.getBlockState(pos).getBlock()), 1);
                 playDrillSound(world, pos);
-                if (!world.isRemote && !entity.isCreative()) {
+                if (!world.isRemote && !entity.isCreative())
+                {
                     entity.inventory.addItemStackToInventory(items);
                 }
                 world.setBlockToAir(pos);
-            }
-            if (world.getBlockState(pos).getBlock() instanceof BlockSignBase && entity.isSneaking())
+                return EnumActionResult.SUCCESS;
+            } else if (block instanceof BlockSignBase)
             {
                 ((BlockSignBase) world.getBlockState(pos).getBlock()).changeSign(world, pos);
                 playDrillSound(world, pos);
-            }
-            if (world.getBlockState(pos).getBlock() == ModBlocks.floorPipe || world.getBlockState(pos).getBlock() == ModBlocks.floorCable || world.getBlockState(pos).getBlock() == ModBlocks.floorLamp) {
+                return EnumActionResult.SUCCESS;
+            } else if (block == ModBlocks.floorPipe || block == ModBlocks.floorCable || block == ModBlocks.floorLamp)
+            {
                 playDrillSound(world, pos);
-                if (!world.isRemote && !entity.isCreative()) {
-                    if (world.getBlockState(pos).getBlock() == ModBlocks.floorPipe) {
+                if (!world.isRemote && !entity.isCreative())
+                {
+                    if (block == ModBlocks.floorPipe)
+                    {
                         entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.fluidPipe), 1));
-                    }
-                    if (world.getBlockState(pos).getBlock() == ModBlocks.floorCable) {
+                    } else if (block == ModBlocks.floorCable)
+                    {
                         entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCable), 1));
-                    }
-                    if (world.getBlockState(pos).getBlock() == ModBlocks.floorLamp) {
+                    } else if (block == ModBlocks.floorLamp)
+                    {
                         entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.fluorescent), 1));
                     }
                 }
                 world.setBlockState(new BlockPos(x, y, z), ModBlocks.blockIndFloor.getDefaultState(), 3);
+                return EnumActionResult.SUCCESS;
+            } else if (world.getTileEntity(pos) instanceof TileEntityBatteryBank)
+            {
+                TileEntityBatteryBank te = (TileEntityBatteryBank) world.getTileEntity(pos);
+                if (te != null) te.toggleFacing(side.getOpposite());
+                world.notifyBlockUpdate(pos, blockState, blockState, 3);
+                if (!world.isRemote) playDrillSound(world, pos);
+                return EnumActionResult.SUCCESS;
             }
             //TODO adicionar para remover os gates
         } else
