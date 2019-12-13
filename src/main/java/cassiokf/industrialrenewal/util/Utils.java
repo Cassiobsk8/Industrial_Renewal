@@ -17,6 +17,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -207,10 +208,24 @@ public class Utils {
     public static String formatEnergyString(int energy)
     {
         String text = energy + " FE";
+        DecimalFormat form = new DecimalFormat("0.0");
         if (energy >= 1000 && energy < 1000000)
-            text = energy / 1000 + "K FE";
+            text = form.format((float) energy / 1000) + "K FE";
         if (energy >= 1000000)
-            text = energy / 1000000 + "M FE";
+            text = form.format((float) energy / 1000000) + "M FE";
+
+        return text;
+    }
+
+    public static String formatPreciseEnergyString(int energy)
+    {
+        String text = energy + " FE";
+        DecimalFormat form = new DecimalFormat("0.00");
+        if (energy >= 1000 && energy < 1000000)
+            text = form.format((float) energy / 1000) + "K FE";
+        if (energy >= 1000000)
+            text = form.format((float) energy / 1000000) + "M FE";
+
         return text;
     }
 
