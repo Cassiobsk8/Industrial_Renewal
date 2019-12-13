@@ -16,29 +16,31 @@ import java.awt.*;
 @SideOnly(Side.CLIENT)
 public class TESRWire extends TileEntitySpecialRenderer<TileEntityWireBase>
 {
+    static Color c = new Color(56, 56, 56, 255);
+    static Color c2 = new Color(43, 43, 43, 255);
+
     public static void renderWire(BlockPos startPos, BlockPos endTE, double x, double y, double z)
     {
-        y = y - 0.9D;
+        //TODO Rework wire render
+        y -= 0.97D;
+        x += 0.5D;
+        z += 0.5D;
+
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
 
-        Color c = new Color(56, 56, 56, 255);
-        Color c2 = new Color(43, 43, 43, 255);
-
-        double d6 = endTE.getX() + 0.4D;
+        double d6 = endTE.getX();
         double d7 = endTE.getY();
-        double d8 = endTE.getZ() + 0.4D;
-        double d9 = (Math.PI / 2D);
-        double d2 = Math.cos(d9) * 0.4D;
-        double d3 = Math.sin(d9) * 0.4D;
-        double d10 = startPos.getX() + d2;
+        double d8 = endTE.getZ();
+
+        double d10 = startPos.getX();
         double d11 = startPos.getY();
-        double d12 = startPos.getZ() + d3;
-        x = x + 0.5D;
-        z = z + 0.5D;
+        double d12 = startPos.getZ();
+
         double d13 = d6 - d10;
-        double d14 = d7 - (d11 - 1.3D);
+        double d14 = d7 - (d11 - 1.33D);
         double d15 = d8 - d12;
+
         GlStateManager.disableTexture2D();
         GlStateManager.disableLighting();
         GlStateManager.disableCull();
@@ -62,9 +64,9 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWireBase>
                     f2 = Utils.normalize(c2.getBlue(), 0, 255);
                 }
 
-                float f3 = (float) j / (float) i;
-                double v = d14 * (f3 * f3 + f3) * 0.5D;
-                double b = (((float) i - j) / 18.0F + 0.125F);
+                float f3 = (float) j / 24.0F;
+                double v = (d14 * (f3 * f3 + f3)) * 0.5D;
+                double b = ((24.0F - j) / 18.0F + 0.125F);
 
                 bufferbuilder.pos(x + d13 * f3, y + v + b, z + d15 * f3)
                         .color(f, f1, f2, c.getTransparency()).endVertex();
@@ -91,9 +93,9 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWireBase>
                     f6 = Utils.normalize(c2.getBlue(), 0, 255);
                 }
 
-                float f7 = (float) k / (float) i;
+                float f7 = (float) k / 24.0F;
                 double v = d14 * (f7 * f7 + f7) * 0.5D;
-                double b = (((float) i - k) / 18.0F + 0.125F);
+                double b = ((24.0F - k) / 18.0F + 0.125F);
 
                 bufferbuilder.pos(x + d13 * f7, y + v + b + 0.025D, z + d15 * f7)
                         .color(f4, f5, f6, c.getTransparency()).endVertex();

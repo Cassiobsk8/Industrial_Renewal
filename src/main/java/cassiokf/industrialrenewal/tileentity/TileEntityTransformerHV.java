@@ -76,7 +76,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
         if (this.isMaster())
         {
             isOutPut();
-            if (!this.world.isRemote)
+            if (this.hasWorld() && !this.world.isRemote)
             {
                 if (!isOutPut)
                 {
@@ -308,12 +308,6 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     }
 
     @Override
-    public int extractEnergy(int quantity, boolean simulate)
-    {
-        return getMaster().energyContainer.extractEnergy(quantity, simulate);
-    }
-
-    @Override
     public int receiveEnergy(int quantity, boolean simulate)
     {
         if (isInvalid()) return 0;
@@ -327,6 +321,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
         {
             getMaster().isConnected = false;
             getMaster().cableConnectionPos = null;
+            otherSideTransformer = null;
             getMaster().Sync();
         }
     }

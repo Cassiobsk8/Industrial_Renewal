@@ -27,7 +27,7 @@ public class TESRTransformerHV extends TileEntitySpecialRenderer<TileEntityTrans
             //CABLE RENDER
             if (te.isConnected())
             {
-                TESRWire.renderWire(te.getConnectorPos(), te.getConnectionPos(), x, y + 1.4D, z);
+                TESRWire.renderWire(te.getConnectorPos(), te.getConnectionPos(), x, y + 1D, z);
             }
 
             EnumFacing facing = te.getMasterFacing();

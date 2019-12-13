@@ -22,7 +22,6 @@ import java.util.List;
 public class ItemCoilHV extends ItemBase
 {
     private BlockPos firstConnectionPos;
-    private EnumFacing firstConnectionSide;
     private boolean isSecond = false;
 
     public ItemCoilHV(String name, CreativeTabs tab)
@@ -60,7 +59,6 @@ public class ItemCoilHV extends ItemBase
                         if (teT.canConnect(pos))
                         {
                             firstConnectionPos = teT.getConnectorPos();
-                            firstConnectionSide = facing;
                             isSecond = true;
                             Utils.sendChatMessage("Connection Start");
                             return EnumActionResult.SUCCESS;
@@ -91,10 +89,9 @@ public class ItemCoilHV extends ItemBase
                     TileEntityWireBase teT = (TileEntityWireBase) te;
                     if (!isSecond)
                     {
-                        if (teT.canConnectToSide(facing))
+                        if (teT.canConnect())
                         {
                             firstConnectionPos = teT.getPos();
-                            firstConnectionSide = facing;
                             isSecond = true;
                             Utils.sendChatMessage("Connection Start");
                             return EnumActionResult.SUCCESS;
@@ -105,11 +102,11 @@ public class ItemCoilHV extends ItemBase
                     } else
                     {
                         int distance = (int) Utils.getDistancePointToPoint(firstConnectionPos, pos);
-                        if (teT.getPos() != firstConnectionPos && teT.canConnectToSide(facing) && distance > 0 && distance <= 64)
+                        if (teT.getPos() != firstConnectionPos && teT.canConnect() && distance > 0 && distance <= 64)
                         {
                             isSecond = false;
                             connectFirst(worldIn, teT.getPos());
-                            teT.setConnectionOnSide(facing, firstConnectionPos);
+                            teT.setConnection(firstConnectionPos);
                             Utils.sendChatMessage("Connected Distance: " + distance);
                             itemstack.shrink(1);
                             return EnumActionResult.SUCCESS;
@@ -148,7 +145,7 @@ public class ItemCoilHV extends ItemBase
             ((IConnectorHV) te).connect(endPos);
         } else if (te instanceof TileEntityWireBase)
         {
-            ((TileEntityWireBase) te).setConnectionOnSide(firstConnectionSide, endPos);
+            ((TileEntityWireBase) te).setConnection(endPos);
         }
     }
 }

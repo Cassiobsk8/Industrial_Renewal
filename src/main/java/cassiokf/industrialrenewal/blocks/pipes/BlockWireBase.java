@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import cassiokf.industrialrenewal.tileentity.TileEntityWireBase;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -21,7 +20,7 @@ import javax.annotation.Nullable;
 
 public class BlockWireBase extends BlockTileEntity<TileEntityWireBase>
 {
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+    public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
     public BlockWireBase(String name, CreativeTabs tab)
     {
@@ -47,20 +46,20 @@ public class BlockWireBase extends BlockTileEntity<TileEntityWireBase>
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
+        return getDefaultState().withProperty(FACING, facing.getOpposite());
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(final int meta)
     {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
+        return getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
     }
 
     @Override
     public int getMetaFromState(final IBlockState state)
     {
-        return state.getValue(FACING).getHorizontalIndex();
+        return state.getValue(FACING).getIndex();
     }
 
     @SuppressWarnings("deprecation")

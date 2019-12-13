@@ -91,12 +91,9 @@ public class TileEntityWireBase extends TileEntitySyncable
                 storage.setMaster(master);
                 storage.markDirty();
             }
-            if (inTransformerT != null && outTransformerT != null)
-            {
-                inTransformerT.setOtherSideTransformer(outTransformerT);
-                outTransformerT.setOtherSideTransformer(inTransformerT);
-                master.markDirty();
-            }
+            if (inTransformerT != null) inTransformerT.setOtherSideTransformer(outTransformerT);
+            if (outTransformerT != null) outTransformerT.setOtherSideTransformer(inTransformerT);
+            master.markDirty();
             markDirty();
         }
     }
@@ -145,11 +142,15 @@ public class TileEntityWireBase extends TileEntitySyncable
         {
             leftConnected = false;
             leftConnectionPos = null;
+            master = null;
+            initializeNetworkIfNecessary();
             this.Sync();
         } else if (sidePos.equals(rightConnectionPos))
         {
             rightConnected = false;
             rightConnectionPos = null;
+            master = null;
+            initializeNetworkIfNecessary();
             this.Sync();
         }
     }
@@ -160,22 +161,27 @@ public class TileEntityWireBase extends TileEntitySyncable
         if (isLeftConnected()) removeConnection(leftConnectionPos);
     }
 
-    public boolean canConnectToSide(EnumFacing side)
+    public boolean canConnect()
     {
-        EnumFacing blockFacing = getBlockFacing();
-        return (side.equals(blockFacing.rotateYCCW()) && !isLeftConnected())
-                || (side.equals(blockFacing.rotateY()) && !isRightConnected());
+        return !isLeftConnected() || !isRightConnected();
     }
 
-    public void setConnectionOnSide(EnumFacing side, BlockPos otherConnectorPos)
+    public void setConnection(BlockPos otherConnectorPos)
     {
-        EnumFacing blockFacing = getBlockFacing();
-        if (side.equals(blockFacing.rotateYCCW()))
+        boolean madeConnection = false;
+        if (!isLeftConnected())
         {
             setLeftConnectionPos(otherConnectorPos);
-        } else if (side.equals(blockFacing.rotateY()))
+            madeConnection = true;
+        } else if (!isRightConnected())
         {
             setRightConnectionPos(otherConnectorPos);
+            madeConnection = true;
+        }
+        if (madeConnection)
+        {
+            master = null;
+            initializeNetworkIfNecessary();
         }
         this.Sync();
     }

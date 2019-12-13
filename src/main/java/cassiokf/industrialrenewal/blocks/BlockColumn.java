@@ -4,10 +4,7 @@ import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorLamp;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
-import cassiokf.industrialrenewal.blocks.pipes.BlockFluidPipe;
-import cassiokf.industrialrenewal.blocks.pipes.BlockPillarEnergyCable;
-import cassiokf.industrialrenewal.blocks.pipes.BlockPillarFluidPipe;
-import cassiokf.industrialrenewal.blocks.pipes.BlockPipeBase;
+import cassiokf.industrialrenewal.blocks.pipes.*;
 import cassiokf.industrialrenewal.blocks.redstone.BlockAlarm;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -105,6 +102,7 @@ public class BlockColumn extends BlockBase {
                 return Objects.equals(neighbourState.getValue(BlockBrace.FACING).getName(), neighbourDirection.getOpposite().getName()) || Objects.equals(neighbourState.getValue(BlockBrace.FACING).getName(), "down_" + neighbourDirection.getName());
             }
             return nb instanceof BlockColumn || nb instanceof BlockPillar
+                    || (nb instanceof BlockWireBase && neighbourState.getValue(BlockWireBase.FACING) == neighbourDirection.getOpposite())
                     || nb instanceof BlockPillarEnergyCable || nb instanceof BlockPillarFluidPipe
                     || (nb instanceof BlockAlarm && neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection)
                     || (nb instanceof BlockLight && neighbourState.getValue(BlockLight.FACING) == neighbourDirection.getOpposite());

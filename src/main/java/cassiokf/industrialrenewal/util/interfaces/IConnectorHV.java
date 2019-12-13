@@ -16,8 +16,6 @@ public interface IConnectorHV
 
     boolean isConnected();
 
-    int extractEnergy(int quantity, boolean simulate);
-
     int receiveEnergy(int quantity, boolean simulate);
 
     default boolean canConnect(BlockPos pos)
