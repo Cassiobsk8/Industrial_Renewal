@@ -45,6 +45,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
 
     private Set<BlockPos> panelReady = new HashSet<>();
     private int tick;
+    private EnumFacing blockFacing;
 
     public TileEntitySolarPanelFrame()
     {
@@ -198,7 +199,14 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
 
     public EnumFacing getBlockFacing()
     {
-        return this.world.getBlockState(this.pos).getValue(BlockSolarPanelFrame.FACING);
+        if (blockFacing == null)
+        {
+            IBlockState state = this.world.getBlockState(this.pos);
+            if (state.getBlock() instanceof BlockSolarPanelFrame)
+                blockFacing = state.getValue(BlockSolarPanelFrame.FACING);
+            else blockFacing = EnumFacing.NORTH;
+        }
+        return blockFacing;
     }
 
     @Override
