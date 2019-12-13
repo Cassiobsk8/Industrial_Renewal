@@ -46,6 +46,12 @@ public class BlockDamIntake extends BlockTileEntity<TileEntityDamIntake>
     }
 
     @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        return false;
+    }
+
+    @Override
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(FACING).getHorizontalIndex();

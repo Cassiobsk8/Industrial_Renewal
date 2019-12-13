@@ -125,8 +125,8 @@ public class TileEntityDamIntake extends TileEntity implements ITickable
     {
         for (BlockPos wall : connectedWalls)
         {
-            TileEntityConcrete te = (TileEntityConcrete) world.getTileEntity(wall);
-            if (te != null) te.setUsed(false);
+            TileEntity te = world.getTileEntity(wall);
+            if (te instanceof TileEntityConcrete) ((TileEntityConcrete) te).setUsed(false);
         }
         super.invalidate();
     }
