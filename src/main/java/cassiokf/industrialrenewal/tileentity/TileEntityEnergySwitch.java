@@ -61,9 +61,9 @@ public class TileEntityEnergySwitch extends TileEntityToggleableBase
             } else if (facing == faceToFill.getOpposite())
             {
                 TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
-                if (active && teOut != null && teOut.hasCapability(CapabilityEnergy.ENERGY, faceToFill))
+                if (active && teOut != null && teOut.hasCapability(CapabilityEnergy.ENERGY, faceToFill.getOpposite()))
                 {
-                    return CapabilityEnergy.ENERGY.cast(teOut.getCapability(CapabilityEnergy.ENERGY, faceToFill));
+                    return CapabilityEnergy.ENERGY.cast(teOut.getCapability(CapabilityEnergy.ENERGY, faceToFill.getOpposite()));
                 } else
                 {
                     return CapabilityEnergy.ENERGY.cast(dummyEnergy);

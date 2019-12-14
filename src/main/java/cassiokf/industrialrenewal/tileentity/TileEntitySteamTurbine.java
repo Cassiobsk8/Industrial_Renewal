@@ -110,9 +110,9 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
 
                 EnumFacing facing = getMasterFacing();
                 TileEntity eTE = this.world.getTileEntity(pos.offset(facing.getOpposite()).down().offset(facing.rotateYCCW(), 2));
-                if (eTE != null && this.energyContainer.getEnergyStored() > 0 && eTE.hasCapability(CapabilityEnergy.ENERGY, facing))
+                if (eTE != null && this.energyContainer.getEnergyStored() > 0 && eTE.hasCapability(CapabilityEnergy.ENERGY, facing.rotateY()))
                 {
-                    IEnergyStorage upTank = eTE.getCapability(CapabilityEnergy.ENERGY, facing);
+                    IEnergyStorage upTank = eTE.getCapability(CapabilityEnergy.ENERGY, facing.rotateY());
                     this.energyContainer.extractEnergy(upTank.receiveEnergy(this.energyContainer.extractEnergy(10240, true), false), false);
                 }
                 TileEntity wTE = this.world.getTileEntity(pos.offset(facing, 2).down());

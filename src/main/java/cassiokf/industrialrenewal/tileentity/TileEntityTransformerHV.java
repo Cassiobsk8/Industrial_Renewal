@@ -94,9 +94,9 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
                     {
                         BlockPos outPutPos = pos.offset(getMasterFacing().getOpposite(), 2).down();
                         TileEntity outTileEntity = world.getTileEntity(outPutPos);
-                        if (outTileEntity != null && outTileEntity.hasCapability(CapabilityEnergy.ENERGY, getMasterFacing().getOpposite()))
+                        if (outTileEntity != null && outTileEntity.hasCapability(CapabilityEnergy.ENERGY, getMasterFacing()))
                         {
-                            IEnergyStorage outPutStorage = outTileEntity.getCapability(CapabilityEnergy.ENERGY, getMasterFacing().getOpposite());
+                            IEnergyStorage outPutStorage = outTileEntity.getCapability(CapabilityEnergy.ENERGY, getMasterFacing());
                             int energy = energyContainer.extractEnergy(energyContainer.getMaxOutput(), true);
                             int energy1 = outPutStorage.receiveEnergy(energy, false);
 
