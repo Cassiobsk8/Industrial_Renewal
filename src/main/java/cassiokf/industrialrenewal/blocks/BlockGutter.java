@@ -24,12 +24,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
-
-import static cassiokf.industrialrenewal.blocks.BlockValvePipeLarge.getCapability;
 
 public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
 
@@ -219,10 +216,6 @@ public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
         return new TileEntityGutter();
     }
 
-    @Nullable
-    private IFluidHandler getFluidHandler(final IBlockAccess world, final BlockPos pos) {
-        return getCapability(getTileEntity(world, pos), CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-    }
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
     }

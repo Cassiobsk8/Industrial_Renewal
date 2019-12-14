@@ -1,8 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
-import cassiokf.industrialrenewal.util.enumproperty.EnumFaceRotation;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -15,11 +13,9 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
-import java.util.EnumSet;
 import java.util.Random;
-import java.util.Set;
 
-public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements ITickable
+public class TileEntityValvePipeLarge extends TileEntityToggleableBase implements ITickable
 {
 
     public static FluidTank dummyTank = new FluidTank(0)
@@ -30,7 +26,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
             return false;
         }
     };
-    private final Set<EnumFacing> enabledFacings = EnumSet.allOf(EnumFacing.class);
+
     public FluidTank tank = new FluidTank(2000)
     {
         @Override
@@ -39,9 +35,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
             TileEntityValvePipeLarge.this.markDirty();
         }
     };
-    private EnumFacing facing = EnumFacing.SOUTH;
-    private EnumFaceRotation faceRotation = EnumFaceRotation.DOWN;
-    private Boolean active = false;
+
     private int amountPerTick = 1000;
 
     @Override
@@ -78,11 +72,7 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
         }
     }
 
-    public void setActive(boolean value)
-    {
-        active = value;
-    }
-
+    @Override
     public void playSwitchSound()
     {
         Random r = new Random();
@@ -91,143 +81,10 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
                 pitch);
     }
 
-    public EnumFacing getOutPutFace()
-    {
-        EnumFacing vFace = this.getFacing();
-        EnumFaceRotation rFace = getFaceRotation();
-
-        if ((vFace == EnumFacing.NORTH && rFace == EnumFaceRotation.UP)
-                || (vFace == EnumFacing.SOUTH && rFace == EnumFaceRotation.DOWN)
-                || (vFace == EnumFacing.UP && rFace == EnumFaceRotation.UP)
-                || (vFace == EnumFacing.DOWN && rFace == EnumFaceRotation.UP))
-        {
-            return EnumFacing.EAST;
-        }
-        if ((vFace == EnumFacing.NORTH && rFace == EnumFaceRotation.DOWN)
-                || (vFace == EnumFacing.SOUTH && rFace == EnumFaceRotation.UP)
-                || (vFace == EnumFacing.UP && rFace == EnumFaceRotation.DOWN)
-                || (vFace == EnumFacing.DOWN && rFace == EnumFaceRotation.DOWN))
-        {
-            return EnumFacing.WEST;
-        }
-        if ((vFace == EnumFacing.NORTH && rFace == EnumFaceRotation.LEFT)
-                || (vFace == EnumFacing.SOUTH && rFace == EnumFaceRotation.LEFT)
-                || (vFace == EnumFacing.WEST && rFace == EnumFaceRotation.LEFT)
-                || (vFace == EnumFacing.EAST && rFace == EnumFaceRotation.LEFT))
-        {
-            return EnumFacing.DOWN;
-        }
-        if ((vFace == EnumFacing.NORTH && rFace == EnumFaceRotation.RIGHT)
-                || (vFace == EnumFacing.SOUTH && rFace == EnumFaceRotation.RIGHT)
-                || (vFace == EnumFacing.WEST && rFace == EnumFaceRotation.RIGHT)
-                || (vFace == EnumFacing.EAST && rFace == EnumFaceRotation.RIGHT))
-        {
-            return EnumFacing.UP;
-        }
-        if ((vFace == EnumFacing.EAST && rFace == EnumFaceRotation.UP)
-                || (vFace == EnumFacing.WEST && rFace == EnumFaceRotation.DOWN)
-                || (vFace == EnumFacing.UP && rFace == EnumFaceRotation.RIGHT)
-                || (vFace == EnumFacing.DOWN && rFace == EnumFaceRotation.LEFT))
-        {
-            return EnumFacing.SOUTH;
-        }
-        if ((vFace == EnumFacing.WEST && rFace == EnumFaceRotation.UP)
-                || (vFace == EnumFacing.EAST && rFace == EnumFaceRotation.DOWN)
-                || (vFace == EnumFacing.UP && rFace == EnumFaceRotation.LEFT)
-                || (vFace == EnumFacing.DOWN && rFace == EnumFaceRotation.RIGHT))
-        {
-            return EnumFacing.NORTH;
-        }
-        return EnumFacing.NORTH;
-    }
-
-    public EnumFacing getFacing()
-    {
-        return facing;
-    }
-
-    public void setFacing(final EnumFacing facing)
-    {
-        this.facing = facing;
-        markDirty();
-    }
-
-    public boolean toggleFacing(final EnumFacing facing)
-    {
-        if (enabledFacings.contains(facing))
-        {
-            enabledFacings.remove(facing);
-            return false;
-        } else
-        {
-            enabledFacings.add(facing);
-            return true;
-        }
-    }
-
-    public boolean disableFacing(final EnumFacing facing)
-    {
-        if (enabledFacings.contains(facing))
-        {
-            enabledFacings.remove(facing);
-            return false;
-        } else
-        {
-
-            return true;
-        }
-    }
-
-    public boolean activeFacing(final EnumFacing facing)
-    {
-        if (enabledFacings.contains(facing))
-        {
-            return false;
-        } else
-        {
-            enabledFacings.add(facing);
-            return true;
-        }
-    }
-
-    public boolean isFacingEnabled(final @Nullable EnumFacing facing)
-    {
-        return enabledFacings.contains(facing) || facing == null;
-    }
-
-    public Set<EnumFacing> getEnabledFacings()
-    {
-        return enabledFacings;
-    }
-
-    private void notifyBlockUpdate()
-    {
-        final IBlockState state = getWorld().getBlockState(getPos());
-        getWorld().notifyBlockUpdate(getPos(), state, state, 3);
-    }
-
-    @Override
-    public void markDirty()
-    {
-        super.markDirty();
-        notifyBlockUpdate();
-    }
-
     @Override
     public void readFromNBT(final NBTTagCompound tag)
     {
         tank.readFromNBT(tag);
-        facing = EnumFacing.byIndex(tag.getInteger("facing"));
-        faceRotation = EnumFaceRotation.values()[tag.getInteger("faceRotation")];
-        active = tag.getBoolean("active");
-
-        enabledFacings.clear();
-
-        final int[] enabledFacingIndices = tag.getIntArray("EnabledFacings");
-        for (final int index : enabledFacingIndices)
-        {
-            enabledFacings.add(EnumFacing.byIndex(index));
-        }
         super.readFromNBT(tag);
     }
 
@@ -235,12 +92,6 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
     public NBTTagCompound writeToNBT(final NBTTagCompound tag)
     {
         tank.writeToNBT(tag);
-        final int[] enabledFacingIndices = enabledFacings.stream().mapToInt(EnumFacing::getIndex).toArray();
-        tag.setInteger("facing", facing.getIndex());
-        tag.setInteger("faceRotation", faceRotation.ordinal());
-        tag.setIntArray("EnabledFacings", enabledFacingIndices);
-        tag.setBoolean("active", this.active);
-
         return super.writeToNBT(tag);
     }
 
@@ -265,16 +116,5 @@ public class TileEntityValvePipeLarge extends TileFluidHandlerBase implements IT
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && isFacingEnabled(facing))
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
         return super.getCapability(capability, facing);
-    }
-
-    public EnumFaceRotation getFaceRotation()
-    {
-        return faceRotation;
-    }
-
-    public void setFaceRotation(final EnumFaceRotation faceRotation)
-    {
-        this.faceRotation = faceRotation;
-        markDirty();
     }
 }

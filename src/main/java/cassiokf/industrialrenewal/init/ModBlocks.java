@@ -122,6 +122,7 @@ public class ModBlocks {
     public static BlockFluidLoader fluidLoader = new BlockFluidLoader("fluid_loader", References.CREATIVE_IRLOCOMOTIVE_TAB);
 
     public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large", References.CREATIVE_IR_TAB);
+    public static BlockEnergySwitch energySwitch = new BlockEnergySwitch("energy_switch", References.CREAATIVE_IRWIP_TAB);
 
     public static BlockBulkConveyor conveyorV = new BlockBulkConveyor("conveyor_bulk", References.CREATIVE_IR_TAB, EnumBulkConveyorType.NORMAL);
     public static BlockBulkConveyor conveyorVHopper = new BlockBulkConveyor("conveyor_bulk_hopper", References.CREATIVE_IR_TAB, EnumBulkConveyorType.HOPPER);
@@ -225,6 +226,7 @@ public class ModBlocks {
                 energyCableGauge,
                 fluidPipe,
                 fluidPipeGauge,
+                energySwitch,
                 valveLarge,
                 conveyorV,
                 conveyorVHopper,
@@ -267,7 +269,8 @@ public class ModBlocks {
         );
 
         GameRegistry.registerTileEntity(veinHematite.getTileEntityClass(), veinHematite.getRegistryName());
-        GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName().toString());
+        GameRegistry.registerTileEntity(energySwitch.getTileEntityClass(), energySwitch.getRegistryName());
+        GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName());
         GameRegistry.registerTileEntity(energyCable.getTileEntityClass(), energyCable.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityEnergyCableGauge.class, energyCableGauge.getRegistryName());
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
@@ -377,6 +380,7 @@ public class ModBlocks {
                 hvWire.createItemBlock(),
                 energyCable.createItemBlock(),
                 fluidPipe.createItemBlock(),
+                energySwitch.createItemBlock(),
                 valveLarge.createItemBlock(),
                 spanel.createItemBlock(),
                 fpanel.createItemBlock(),
@@ -417,6 +421,7 @@ public class ModBlocks {
         crossingRail.registerItemModel(Item.getItemFromBlock(crossingRail));
         detectorRail.registerItemModel(Item.getItemFromBlock(detectorRail));
         boosterRail.registerItemModel(Item.getItemFromBlock(boosterRail));
+        energySwitch.registerItemModel(Item.getItemFromBlock(energySwitch));
         valveLarge.registerItemModel(Item.getItemFromBlock(valveLarge));
         alarm.registerItemModel(Item.getItemFromBlock(alarm));
         fluidPipe.registerItemModel(Item.getItemFromBlock(fluidPipe));

@@ -1,0 +1,226 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/cauldron_inner"
+    }
+  },
+  "variants": {
+    "active=false,face_rotation=up,facing=up": {
+      "model": "industrialrenewal:energy_switch_off"
+    },
+    "active=false,face_rotation=up,facing=down": {
+      "model": "industrialrenewal:energy_switch_off",
+      "x": 180
+    },
+    "active=false,face_rotation=up,facing=south": {
+      "model": "industrialrenewal:energy_switch_off",
+      "y": 180,
+      "x": 90
+    },
+    "active=false,face_rotation=up,facing=east": {
+      "model": "industrialrenewal:energy_switch_off",
+      "y": 90,
+      "x": 90
+    },
+    "active=false,face_rotation=up,facing=west": {
+      "model": "industrialrenewal:energy_switch_off",
+      "y": -90,
+      "x": 90
+    },
+    "active=false,face_rotation=up,facing=north": {
+      "model": "industrialrenewal:energy_switch_off",
+      "x": 90
+    },
+    "active=true,face_rotation=up,facing=up": {
+      "model": "industrialrenewal:energy_switch_on"
+    },
+    "active=true,face_rotation=up,facing=down": {
+      "model": "industrialrenewal:energy_switch_on",
+      "x": 180
+    },
+    "active=true,face_rotation=up,facing=south": {
+      "model": "industrialrenewal:energy_switch_on",
+      "y": 180,
+      "x": 90
+    },
+    "active=true,face_rotation=up,facing=east": {
+      "model": "industrialrenewal:energy_switch_on",
+      "y": 90,
+      "x": 90
+    },
+    "active=true,face_rotation=up,facing=west": {
+      "model": "industrialrenewal:energy_switch_on",
+      "y": -90,
+      "x": 90
+    },
+    "active=true,face_rotation=up,facing=north": {
+      "model": "industrialrenewal:energy_switch_on",
+      "x": 90
+    },
+    "active=false,face_rotation=right,facing=up": {
+      "model": "industrialrenewal:energy_switch_off",
+      "y": 90
+    },
+    "active=false,face_rotation=right,facing=down": {
+      "model": "industrialrenewal:energy_switch_off",
+      "x": 180,
+      "y": -90
+    },
+    "active=false,face_rotation=right,facing=south": {
+      "model": "industrialrenewal:energy_switch_up_off",
+      "x": 180,
+      "y": 180
+    },
+    "active=false,face_rotation=right,facing=east": {
+      "model": "industrialrenewal:energy_switch_up_off",
+      "y": 90,
+      "x": 180
+    },
+    "active=false,face_rotation=right,facing=west": {
+      "model": "industrialrenewal:energy_switch_up_off",
+      "y": -90,
+      "x": 180
+    },
+    "active=false,face_rotation=right,facing=north": {
+      "model": "industrialrenewal:energy_switch_up_off",
+      "x": 180
+    },
+    "active=true,face_rotation=right,facing=up": {
+      "model": "industrialrenewal:energy_switch_on",
+      "y": 90
+    },
+    "active=true,face_rotation=right,facing=down": {
+      "model": "industrialrenewal:energy_switch_on",
+      "x": 180,
+      "y": -90
+    },
+    "active=true,face_rotation=right,facing=south": {
+      "model": "industrialrenewal:energy_switch_up_on",
+      "x": 180,
+      "y": 180
+    },
+    "active=true,face_rotation=right,facing=east": {
+      "model": "industrialrenewal:energy_switch_up_on",
+      "y": 90,
+      "x": 180
+    },
+    "active=true,face_rotation=right,facing=west": {
+      "model": "industrialrenewal:energy_switch_up_on",
+      "y": -90,
+      "x": 180
+    },
+    "active=true,face_rotation=right,facing=north": {
+      "model": "industrialrenewal:energy_switch_up_on",
+      "x": 180
+    },
+    "active=false,face_rotation=down,facing=up": {
+      "model": "industrialrenewal:energy_switch_off",
+      "y": 180
+    },
+    "active=false,face_rotation=down,facing=down": {
+      "model": "industrialrenewal:energy_switch_off",
+      "x": 180,
+      "y": -180
+    },
+    "active=false,face_rotation=down,facing=south": {
+      "model": "industrialrenewal:energy_switch_off",
+      "x": -90
+    },
+    "active=false,face_rotation=down,facing=east": {
+      "model": "industrialrenewal:energy_switch_off",
+      "y": -90,
+      "x": -90
+    },
+    "active=false,face_rotation=down,facing=west": {
+      "model": "industrialrenewal:energy_switch_off",
+      "y": 90,
+      "x": -90
+    },
+    "active=false,face_rotation=down,facing=north": {
+      "model": "industrialrenewal:energy_switch_off",
+      "x": -90,
+      "y": 180
+    },
+    "active=true,face_rotation=down,facing=up": {
+      "model": "industrialrenewal:energy_switch_on",
+      "y": 180
+    },
+    "active=true,face_rotation=down,facing=down": {
+      "model": "industrialrenewal:energy_switch_on",
+      "x": 180,
+      "y": -180
+    },
+    "active=true,face_rotation=down,facing=south": {
+      "model": "industrialrenewal:energy_switch_on",
+      "x": -90
+    },
+    "active=true,face_rotation=down,facing=east": {
+      "model": "industrialrenewal:energy_switch_on",
+      "y": -90,
+      "x": -90
+    },
+    "active=true,face_rotation=down,facing=west": {
+      "model": "industrialrenewal:energy_switch_on",
+      "y": 90,
+      "x": -90
+    },
+    "active=true,face_rotation=down,facing=north": {
+      "model": "industrialrenewal:energy_switch_on",
+      "x": -90,
+      "y": 180
+    },
+    "active=false,face_rotation=left,facing=up": {
+      "model": "industrialrenewal:energy_switch_off",
+      "y": -90
+    },
+    "active=false,face_rotation=left,facing=down": {
+      "model": "industrialrenewal:energy_switch_off",
+      "x": 180,
+      "y": 90
+    },
+    "active=false,face_rotation=left,facing=south": {
+      "model": "industrialrenewal:energy_switch_up_off"
+    },
+    "active=false,face_rotation=left,facing=east": {
+      "model": "industrialrenewal:energy_switch_up_off",
+      "y": -90
+    },
+    "active=false,face_rotation=left,facing=west": {
+      "model": "industrialrenewal:energy_switch_up_off",
+      "y": 90
+    },
+    "active=false,face_rotation=left,facing=north": {
+      "model": "industrialrenewal:energy_switch_up_off",
+      "y": 180
+    },
+    "active=true,face_rotation=left,facing=up": {
+      "model": "industrialrenewal:energy_switch_on",
+      "y": -90
+    },
+    "active=true,face_rotation=left,facing=down": {
+      "model": "industrialrenewal:energy_switch_on",
+      "x": 180,
+      "y": 90
+    },
+    "active=true,face_rotation=left,facing=south": {
+      "model": "industrialrenewal:energy_switch_up_on"
+    },
+    "active=true,face_rotation=left,facing=east": {
+      "model": "industrialrenewal:energy_switch_up_on",
+      "y": -90
+    },
+    "active=true,face_rotation=left,facing=west": {
+      "model": "industrialrenewal:energy_switch_up_on",
+      "y": 90
+    },
+    "active=true,face_rotation=left,facing=north": {
+      "model": "industrialrenewal:energy_switch_up_on",
+      "y": 180
+    },
+    "inventory": {
+      "model": "industrialrenewal:energy_switch_off",
+      "transform": "forge:default-block"
+    }
+  }
+}
