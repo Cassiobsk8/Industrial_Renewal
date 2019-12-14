@@ -8,8 +8,11 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -20,6 +23,8 @@ import java.util.List;
 public class BlockTransformerHV extends Block3x3Top1Base<TileEntityTransformerHV>
 {
     public static final PropertyInteger OUTPUT = PropertyInteger.create("output", 0, 2);
+
+    protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 0.5D, 0.6875D);
 
     public BlockTransformerHV(String name, CreativeTabs tab)
     {
@@ -49,6 +54,34 @@ public class BlockTransformerHV extends Block3x3Top1Base<TileEntityTransformerHV
                 + " FE/t");
          */
         super.addInformation(stack, player, tooltip, advanced);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    {
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te instanceof TileEntityTransformerHV && pos.equals(((TileEntityTransformerHV) te).getConnectorPos()))
+        {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, DOWN_AABB);
+        } else
+        {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+        }
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        TileEntity te = source.getTileEntity(pos);
+        if (te instanceof TileEntityTransformerHV && pos.equals(((TileEntityTransformerHV) te).getConnectorPos()))
+        {
+            return DOWN_AABB;
+        } else
+        {
+            return FULL_BLOCK_AABB;
+        }
+
     }
 
     @Override
