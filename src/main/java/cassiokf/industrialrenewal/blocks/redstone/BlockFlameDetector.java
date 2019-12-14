@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.blocks.redstone;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityFlameDetector;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -73,12 +72,6 @@ public class BlockFlameDetector extends BlockTileEntity<TileEntityFlameDetector>
             return 0;
         }
         return 15;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighborPos) {
-        worldIn.notifyNeighborsOfStateChange(pos, this, true);
     }
 
     @Nonnull
