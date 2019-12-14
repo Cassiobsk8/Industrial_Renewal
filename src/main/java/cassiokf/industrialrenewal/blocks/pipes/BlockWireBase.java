@@ -25,10 +25,10 @@ public class BlockWireBase extends BlockTileEntity<TileEntityWireBase>
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
-    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.3125D, 0.1875D, 0.0D, 0.6875D, 0.6875D, 0.3125D);
-    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.3125D, 0.1875D, 0.5D, 0.6875D, 0.8125D, 1.0);
+    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.3125D, 0.3125D, 0.0D, 0.6875D, 0.6875D, 0.5D);
+    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.3125D, 0.3125D, 0.5D, 0.6875D, 0.6875D, 1.0);
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.5D, 0.3125D, 0.3125D, 1.0, 0.6875D, 0.6875D);
-    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.3125D, 0.3125D, 0.3125D, 0.6875D, 0.6875D);
+    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.3125D, 0.3125D, 0.5D, 0.6875D, 0.6875D);
     protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.3125D, 0.5D, 0.3125D, 0.6875D, 1.0D, 0.6875D);
     protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 0.5D, 0.6875D);
 
