@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks.industrialfloor;
 
 import cassiokf.industrialrenewal.blocks.BlockBase;
+import cassiokf.industrialrenewal.blocks.BlockCatwalkHatch;
 import cassiokf.industrialrenewal.blocks.BlockCatwalkLadder;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import com.google.common.collect.ImmutableList;
@@ -127,11 +128,14 @@ public class BlockIndustrialFloor extends BlockBase
     private static boolean isValidConnection(final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection)
     {
         Block nb = neighbourState.getBlock();
-        return nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable
-                || (neighbourDirection != EnumFacing.DOWN && neighbourDirection != EnumFacing.UP && nb instanceof BlockDoor)
-                || (neighbourDirection == EnumFacing.DOWN && nb instanceof BlockCatwalkLadder)
+        return nb instanceof BlockIndustrialFloor
+                || nb instanceof BlockFloorPipe
+                || nb instanceof BlockFloorCable
+                || (nb instanceof BlockDoor && neighbourState.getValue(BlockDoor.FACING).equals(neighbourDirection))
+                || (neighbourDirection.equals(EnumFacing.DOWN) && nb instanceof BlockCatwalkLadder)
+                || (neighbourDirection.equals(EnumFacing.UP) && nb instanceof BlockCatwalkHatch)
                 //start check for horizontal Iladder
-                || ((neighbourDirection == EnumFacing.NORTH || neighbourDirection == EnumFacing.SOUTH || neighbourDirection == EnumFacing.EAST || neighbourDirection == EnumFacing.WEST)
+                || ((neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN)
                 && nb instanceof BlockCatwalkLadder && !neighbourState.getValue(BlockCatwalkLadder.ACTIVE))
                 //end
                 ;
