@@ -267,8 +267,8 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
     {
         TileEntitySteamTurbine masterTE = this.getMaster();
-        EnumFacing face = masterTE.getMasterFacing();
         if (masterTE == null) return false;
+        EnumFacing face = masterTE.getMasterFacing();
 
         return (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
                 || (facing == face && this.pos.equals(masterTE.getPos().down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
@@ -280,8 +280,8 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing)
     {
         TileEntitySteamTurbine masterTE = this.getMaster();
-        EnumFacing face = masterTE.getMasterFacing();
         if (masterTE == null) return super.getCapability(capability, facing);
+        EnumFacing face = masterTE.getMasterFacing();
 
         if (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.steamTank);
