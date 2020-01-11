@@ -25,18 +25,6 @@ public class TileEntityGauge extends TileEntity
         return (oldState.getBlock() != newState.getBlock());
     }
 
-    public String GetText()
-    {
-        if (getTankStorage() != null)
-        {
-            FluidStack stack = tankStorage.drain(1, false);
-            return stack != null ? stack.getLocalizedName() : "Empty";
-        } else
-        {
-            return "No Tank";
-        }
-    }
-
     public EnumFacing getBaseFacing()
     {
         return baseFacing;
@@ -60,11 +48,25 @@ public class TileEntityGauge extends TileEntity
         return indicatorHorizontalFacing;
     }
 
+    public String GetText()
+    {
+        if (getTankStorage() != null && getTankStorage().getTankProperties().length > 0)
+        {
+            IFluidTankProperties properties = getTankStorage().getTankProperties()[0];
+            if (properties != null)
+            {
+                FluidStack stack = properties.getContents();
+                return stack != null ? stack.getLocalizedName() : "Empty";
+            }
+        }
+        return "No Tank";
+    }
+
     public float GetTankFill() //0 ~ 180
     {
-        if (getTankStorage() != null)
+        if (getTankStorage() != null && getTankStorage().getTankProperties().length > 0)
         {
-            IFluidTankProperties properties = tankStorage.getTankProperties()[0];
+            IFluidTankProperties properties = getTankStorage().getTankProperties()[0];
             if (properties != null && properties.getContents() != null)
             {
                 float currentAmount = properties.getContents().amount / 1000f;
@@ -84,7 +86,7 @@ public class TileEntityGauge extends TileEntity
 
     public IFluidHandler forceCheck()
     {
-        TileEntity te = this.world.getTileEntity(pos.offset(baseFacing));
+        TileEntity te = world.getTileEntity(pos.offset(baseFacing));
         if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, baseFacing.getOpposite()))
         {
             IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, baseFacing.getOpposite());
@@ -108,8 +110,8 @@ public class TileEntityGauge extends TileEntity
     @Override
     public void readFromNBT(final NBTTagCompound tag)
     {
-        super.readFromNBT(tag);
         baseFacing = EnumFacing.byIndex(tag.getInteger("baseFacing"));
+        super.readFromNBT(tag);
     }
 
     @Override
