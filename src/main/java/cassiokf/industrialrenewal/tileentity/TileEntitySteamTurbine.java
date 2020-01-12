@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -64,7 +65,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     private int rotation;
     private int energyPerTick = IRConfig.MainConfig.Main.steamTurbineEnergyPerTick;
     private int oldRotation;
-    private int steamPtick = IRConfig.MainConfig.Main.steamTurbineSteamPerTick;
+    private int steamPerTick = IRConfig.MainConfig.Main.steamTurbineSteamPerTick;
 
     private int timeSincePlayed;
 
@@ -89,11 +90,11 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
             {
                 if (this.steamTank.getFluidAmount() > 0)
                 {
-                    FluidStack stack = this.steamTank.drainInternal(steamPtick, true);
+                    FluidStack stack = this.steamTank.drainInternal(steamPerTick, true);
                     float amount = stack != null ? stack.amount : 0f;
                     FluidStack waterStack = new FluidStack(FluidRegistry.WATER, Math.round(amount / (float) IRConfig.MainConfig.Main.steamBoilerConversionFactor));
                     this.waterTank.fillInternal(waterStack, true);
-                    float factor = amount / (float) steamPtick;
+                    float factor = amount / (float) steamPerTick;
                     rotation += (10 * factor);
                 } else rotation -= 4;
 
@@ -269,10 +270,11 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         TileEntitySteamTurbine masterTE = this.getMaster();
         if (masterTE == null) return false;
         EnumFacing face = masterTE.getMasterFacing();
+        BlockPos masterPos = masterTE.getPos();
 
-        return (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                || (facing == face && this.pos.equals(masterTE.getPos().down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                || (facing == face.rotateYCCW() && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityEnergy.ENERGY);
+        return (facing == EnumFacing.UP && this.pos.equals(masterPos.up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+                || (facing == face && this.pos.equals(masterPos.down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+                || (facing == face.rotateYCCW() && this.pos.equals(masterPos.down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityEnergy.ENERGY);
     }
 
     @Nullable
@@ -281,13 +283,14 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     {
         TileEntitySteamTurbine masterTE = this.getMaster();
         if (masterTE == null) return super.getCapability(capability, facing);
-        EnumFacing face = masterTE.getMasterFacing();
+        EnumFacing face = getMasterFacing();
+        BlockPos masterPos = masterTE.getPos();
 
-        if (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (facing == EnumFacing.UP && this.pos.equals(masterPos.up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.steamTank);
-        if (facing == face && this.pos.equals(masterTE.getPos().down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (facing == face && this.pos.equals(masterPos.down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(masterTE.waterTank);
-        if (facing == face.rotateYCCW() && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityEnergy.ENERGY)
+        if (facing == face.rotateYCCW() && this.pos.equals(masterPos.down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityEnergy.ENERGY)
             return CapabilityEnergy.ENERGY.cast(masterTE.energyContainer);
 
         return super.getCapability(capability, facing);
