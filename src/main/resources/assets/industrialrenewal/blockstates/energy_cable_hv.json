@@ -1,0 +1,22 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:smartmodel/pipe_energy_hv"
+    },
+    "inventory": [
+      {
+        "model": "industrialrenewal:pipe_energy_hv/cable_center",
+        "submodel": {
+          "pipe_north": {
+            "model": "industrialrenewal:pipe_energy_hv/cable_side"
+          },
+          "pipe_south": {
+            "model": "industrialrenewal:pipe_energy_hv/cable_side",
+            "y": 180
+          }
+        }
+      }
+    ]
+  }
+}

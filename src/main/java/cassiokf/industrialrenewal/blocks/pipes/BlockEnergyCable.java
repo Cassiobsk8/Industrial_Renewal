@@ -3,6 +3,11 @@ package cassiokf.industrialrenewal.blocks.pipes;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableHV;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableLV;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableMV;
+import cassiokf.industrialrenewal.util.EnumEnergyCableType;
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -22,15 +27,32 @@ import java.util.List;
 
 public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> implements ITileEntityProvider
 {
+    public EnumEnergyCableType type;
 
-    public BlockEnergyCable(String name, CreativeTabs tab) {
+    public BlockEnergyCable(EnumEnergyCableType type, String name, CreativeTabs tab)
+    {
         super(name, tab);
+        this.type = type;
     }
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
     {
-        tooltip.add(IRConfig.MainConfig.Main.maxEnergyCableTransferAmount + " FE/t");
+        int amount;
+        switch (type)
+        {
+            default:
+            case LV:
+                amount = IRConfig.MainConfig.Main.maxLVEnergyCableTransferAmount;
+                break;
+            case MV:
+                amount = IRConfig.MainConfig.Main.maxMVEnergyCableTransferAmount;
+                break;
+            case HV:
+                amount = IRConfig.MainConfig.Main.maxHVEnergyCableTransferAmount;
+                break;
+        }
+        tooltip.add(amount + " FE/t");
         super.addInformation(stack, player, tooltip, advanced);
     }
 
@@ -38,7 +60,7 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> imple
     public boolean canConnectToPipe(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
     {
         IBlockState state = worldIn.getBlockState(ownPos.offset(neighbourDirection));
-        return state.getBlock() instanceof BlockEnergyCable;
+        return state.getBlock() instanceof BlockEnergyCable && type.equals(((BlockEnergyCable) state.getBlock()).type);
     }
 
     @Override
@@ -51,19 +73,6 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> imple
     }
 
     @Override
-    public Class<TileEntityEnergyCable> getTileEntityClass()
-    {
-        return TileEntityEnergyCable.class;
-    }
-
-    @Nullable
-    @Override
-    public TileEntityEnergyCable createTileEntity(World world, IBlockState state)
-    {
-        return new TileEntityEnergyCable();
-    }
-
-    @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack playerStack = entity.getHeldItem(EnumHand.MAIN_HAND);
         if (playerStack.getItem() == ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor))
@@ -71,7 +80,21 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> imple
             if (!world.isRemote)
             {
                 world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1.0F, 1.0F);
-                world.setBlockState(pos, ModBlocks.floorCable.getDefaultState(), 3);
+                Block block;
+                switch (type)
+                {
+                    default:
+                    case LV:
+                        block = ModBlocks.floorCableLV;
+                        break;
+                    case MV:
+                        block = ModBlocks.floorCableMV;
+                        break;
+                    case HV:
+                        block = ModBlocks.floorCableHV;
+                        break;
+                }
+                world.setBlockState(pos, block.getDefaultState(), 3);
                 if (!entity.isCreative())
                 {
                     playerStack.shrink(1);
@@ -84,7 +107,21 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> imple
             if (!world.isRemote)
             {
                 world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1.0F, 1.0F);
-                world.setBlockState(pos, ModBlocks.energyCableGauge.getDefaultState().withProperty(BlockEnergyCableGauge.FACING, entity.getHorizontalFacing()), 3);
+                Block block;
+                switch (type)
+                {
+                    default:
+                    case LV:
+                        block = ModBlocks.energyCableGaugeLV;
+                        break;
+                    case MV:
+                        block = ModBlocks.energyCableGaugeMV;
+                        break;
+                    case HV:
+                        block = ModBlocks.energyCableGaugeHV;
+                        break;
+                }
+                world.setBlockState(pos, block.getDefaultState().withProperty(BlockEnergyCableGauge.FACING, entity.getHorizontalFacing()), 3);
                 if (!entity.isCreative())
                 {
                     playerStack.shrink(1);
@@ -95,9 +132,50 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> imple
         return false;
     }
 
+    @Override
+    public Class<? extends TileEntity> getTileEntityClass()
+    {
+        switch (type)
+        {
+            default:
+            case LV:
+                return TileEntityEnergyCableLV.class;
+            case MV:
+                return TileEntityEnergyCableMV.class;
+            case HV:
+                return TileEntityEnergyCableHV.class;
+        }
+    }
+
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityEnergyCable();
+    public TileEntityEnergyCable createTileEntity(World world, IBlockState state)
+    {
+        switch (type)
+        {
+            default:
+            case LV:
+                return new TileEntityEnergyCableLV();
+            case MV:
+                return new TileEntityEnergyCableMV();
+            case HV:
+                return new TileEntityEnergyCableHV();
+        }
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta)
+    {
+        switch (type)
+        {
+            default:
+            case LV:
+                return new TileEntityEnergyCableLV();
+            case MV:
+                return new TileEntityEnergyCableMV();
+            case HV:
+                return new TileEntityEnergyCableHV();
+        }
     }
 }

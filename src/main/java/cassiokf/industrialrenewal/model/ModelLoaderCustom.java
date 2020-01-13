@@ -29,54 +29,56 @@ public class ModelLoaderCustom implements ICustomModelLoader
 
         String modelName = resourcePath.substring(SMART_MODEL_RESOURCE_LOCATION.length());
 
-        if (modelName.equals("roofmodel"))
+        switch (modelName)
         {
-            return new RoofModel();
-        } else if (modelName.equals("pipe_fluid"))
-        {
-            return new PipeBaseModel();
-        } else if (modelName.equals("pipe_energy"))
-        {
-            return new EnergyCableBaseModel();
-        } else if (modelName.equals("pillar_energy"))
-        {
-            return new PillarEnergyCableBaseModel();
-        } else if (modelName.equals("pillar_fluid"))
-        {
-            return new PillarFluidPipeBaseModel();
-        } else if (modelName.equals("pipe_energy_gauge"))
-        {
-            return new GaugeEnergyCableBaseModel();
-        } else if (modelName.equals("pipe_fluid_gauge"))
-        {
-            return new GaugeFluidPipeBaseModel();
-        } else if (modelName.equals("indfloor"))
-        {
-            return new IndFloorModel();
-        } else if (modelName.equals("indfloor_lamp"))
-        {
-            return new IndFloorLampModel();
-        } else if (modelName.equals("floor_cable"))
-        {
-            return new FloorEnergyCableModel();
-        } else if (modelName.equals("floor_pipe"))
-        {
-            return new FloorFluidPipeIModel();
-        } else if (modelName.equals("battery_bank"))
-        {
-            return new BatteryBankIModel();
-        } else if (modelName.equals("turbine_pillar"))
-        {
-            return new TurbinePillarIModel();
-        } else if (modelName.equals("fence_big_column"))
-        {
-            return new BigFenceColumnIModel();
-        } else if (modelName.equals("fence_big_corner"))
-        {
-            return new BigFenceCornerIModel();
-        } else
-        {
-            return ModelLoaderRegistry.getMissingModel();
+            case "roofmodel":
+                return new RoofModel();
+            case "pipe_fluid":
+                return new PipeBaseModel();
+            case "pipe_energy":
+                return new EnergyCableBaseModel();
+            case "pipe_energy_hv":
+                return new EnergyCableHVBaseModel();
+            case "pipe_energy_lv":
+                return new EnergyCableLVBaseModel();
+            case "pillar_energy":
+                return new PillarEnergyCableBaseModel();
+            case "pillar_energy_lv":
+                return new PillarEnergyCableLVBaseModel();
+            case "pillar_energy_hv":
+                return new PillarEnergyCableHVBaseModel();
+            case "pillar_fluid":
+                return new PillarFluidPipeBaseModel();
+            case "pipe_energy_gauge":
+                return new GaugeEnergyCableBaseModel();
+            case "pipe_energy_gauge_lv":
+                return new GaugeEnergyCableLVBaseModel();
+            case "pipe_energy_gauge_hv":
+                return new GaugeEnergyCableHVBaseModel();
+            case "pipe_fluid_gauge":
+                return new GaugeFluidPipeBaseModel();
+            case "indfloor":
+                return new IndFloorModel();
+            case "indfloor_lamp":
+                return new IndFloorLampModel();
+            case "floor_cable":
+                return new FloorEnergyCableModel();
+            case "floor_cable_lv":
+                return new FloorEnergyCableLVModel();
+            case "floor_cable_hv":
+                return new FloorEnergyCableHVModel();
+            case "floor_pipe":
+                return new FloorFluidPipeIModel();
+            case "battery_bank":
+                return new BatteryBankIModel();
+            case "turbine_pillar":
+                return new TurbinePillarIModel();
+            case "fence_big_column":
+                return new BigFenceColumnIModel();
+            case "fence_big_corner":
+                return new BigFenceCornerIModel();
+            default:
+                return ModelLoaderRegistry.getMissingModel();
         }
     }
 

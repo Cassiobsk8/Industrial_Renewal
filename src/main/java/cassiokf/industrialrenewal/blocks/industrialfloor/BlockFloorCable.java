@@ -2,13 +2,15 @@ package cassiokf.industrialrenewal.blocks.industrialfloor;
 
 import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
 import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.util.EnumEnergyCableType;
+import cassiokf.industrialrenewal.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -30,12 +32,14 @@ import java.util.Random;
 public class BlockFloorCable extends BlockEnergyCable
 {
 
-    public BlockFloorCable(String name, CreativeTabs tab) {
-        super(name, tab);
+    public BlockFloorCable(EnumEnergyCableType type, String name, CreativeTabs tab)
+    {
+        super(type, name, tab);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
         return false;
     }
 
@@ -72,17 +76,29 @@ public class BlockFloorCable extends BlockEnergyCable
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        ItemStack itemst = new ItemStack(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.energyCable));
-        EntityItem entity = new EntityItem(world, x, y, z, itemst);
-        if (!world.isRemote) {
-            world.spawnEntity(entity);
+        Block block;
+        switch (type)
+        {
+            default:
+            case LV:
+                block = ModBlocks.energyCableLV;
+                break;
+            case MV:
+                block = ModBlocks.energyCableMV;
+                break;
+            case HV:
+                block = ModBlocks.energyCableHV;
+                break;
         }
-
+        ItemStack itemst = new ItemStack(ItemBlock.getItemFromBlock(block));
+        if (!world.isRemote) Utils.spawnItemStack(world, x, y, z, itemst);
+        super.onPlayerDestroy(world, pos, state);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
+    {
         return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor));
     }
 

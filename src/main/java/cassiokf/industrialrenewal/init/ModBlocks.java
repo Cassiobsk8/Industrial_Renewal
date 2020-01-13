@@ -10,9 +10,12 @@ import cassiokf.industrialrenewal.blocks.pipes.*;
 import cassiokf.industrialrenewal.blocks.railroad.*;
 import cassiokf.industrialrenewal.blocks.redstone.*;
 import cassiokf.industrialrenewal.fluids.BlockFluid;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableGauge;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableHVGauge;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableLVGauge;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableMVGauge;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeGauge;
 import cassiokf.industrialrenewal.util.EnumBulkConveyorType;
+import cassiokf.industrialrenewal.util.EnumEnergyCableType;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -39,12 +42,24 @@ public class ModBlocks {
 
     public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe", References.CREATIVE_IR_TAB);
     public static BlockFluidPipeGauge fluidPipeGauge = new BlockFluidPipeGauge("fluid_pipe_gauge", References.CREATIVE_IR_TAB);
-    public static BlockEnergyCable energyCable = new BlockEnergyCable("energy_cable", References.CREATIVE_IR_TAB);
-    public static BlockEnergyCableGauge energyCableGauge = new BlockEnergyCableGauge("energy_cable_gauge", References.CREATIVE_IR_TAB);
-    public static BlockPillarEnergyCable pillarEnergyCable = new BlockPillarEnergyCable("iron_pillar_energy", References.CREATIVE_IR_TAB);
+
+    public static BlockEnergyCable energyCableLV = new BlockEnergyCable(EnumEnergyCableType.LV, "energy_cable_lv", References.CREATIVE_IR_TAB);
+    public static BlockEnergyCable energyCableMV = new BlockEnergyCable(EnumEnergyCableType.MV, "energy_cable", References.CREATIVE_IR_TAB);
+    public static BlockEnergyCable energyCableHV = new BlockEnergyCable(EnumEnergyCableType.HV, "energy_cable_hv", References.CREATIVE_IR_TAB);
+
+    public static BlockEnergyCableGauge energyCableGaugeLV = new BlockEnergyCableGauge(EnumEnergyCableType.LV, "energy_cable_gauge_lv", References.CREATIVE_IR_TAB);
+    public static BlockEnergyCableGauge energyCableGaugeMV = new BlockEnergyCableGauge(EnumEnergyCableType.MV, "energy_cable_gauge", References.CREATIVE_IR_TAB);
+    public static BlockEnergyCableGauge energyCableGaugeHV = new BlockEnergyCableGauge(EnumEnergyCableType.HV, "energy_cable_gauge_hv", References.CREATIVE_IR_TAB);
+
+    public static BlockPillarEnergyCable pillarEnergyCableLV = new BlockPillarEnergyCable(EnumEnergyCableType.LV, "iron_pillar_energy_lv", References.CREATIVE_IR_TAB);
+    public static BlockPillarEnergyCable pillarEnergyCableMV = new BlockPillarEnergyCable(EnumEnergyCableType.MV, "iron_pillar_energy", References.CREATIVE_IR_TAB);
+    public static BlockPillarEnergyCable pillarEnergyCableHV = new BlockPillarEnergyCable(EnumEnergyCableType.HV, "iron_pillar_energy_hv", References.CREATIVE_IR_TAB);
+
     public static BlockPillarFluidPipe pillarFluidPipe = new BlockPillarFluidPipe("iron_pillar_pipe", References.CREATIVE_IR_TAB);
     public static BlockFloorPipe floorPipe = new BlockFloorPipe("floor_pipe", References.CREATIVE_IR_TAB);
-    public static BlockFloorCable floorCable = new BlockFloorCable("floor_cable", References.CREATIVE_IR_TAB);
+    public static BlockFloorCable floorCableLV = new BlockFloorCable(EnumEnergyCableType.LV, "floor_cable_lv", References.CREATIVE_IR_TAB);
+    public static BlockFloorCable floorCableMV = new BlockFloorCable(EnumEnergyCableType.MV, "floor_cable", References.CREATIVE_IR_TAB);
+    public static BlockFloorCable floorCableHV = new BlockFloorCable(EnumEnergyCableType.HV, "floor_cable_hv", References.CREATIVE_IR_TAB);
     public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp", References.CREATIVE_IR_TAB);
     public static BlockWireBase hvWire = new BlockWireBase("wire_hv", References.CREAATIVE_IRWIP_TAB);
 
@@ -170,7 +185,9 @@ public class ModBlocks {
                 iladder,
                 catwalkGate,
                 pillar,
-                pillarEnergyCable,
+                pillarEnergyCableLV,
+                pillarEnergyCableMV,
+                pillarEnergyCableHV,
                 pillarFluidPipe,
                 column,
                 brace,
@@ -218,12 +235,18 @@ public class ModBlocks {
                 chunkLoader,
                 //Floor
                 blockIndFloor,
-                floorCable,
+                floorCableLV,
+                floorCableMV,
+                floorCableHV,
                 floorLamp,
                 floorPipe,
                 //Pipes
-                energyCable,
-                energyCableGauge,
+                energyCableLV,
+                energyCableMV,
+                energyCableHV,
+                energyCableGaugeLV,
+                energyCableGaugeMV,
+                energyCableGaugeHV,
                 fluidPipe,
                 fluidPipeGauge,
                 energySwitch,
@@ -271,8 +294,12 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(veinHematite.getTileEntityClass(), veinHematite.getRegistryName());
         GameRegistry.registerTileEntity(energySwitch.getTileEntityClass(), energySwitch.getRegistryName());
         GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName());
-        GameRegistry.registerTileEntity(energyCable.getTileEntityClass(), energyCable.getRegistryName());
-        GameRegistry.registerTileEntity(TileEntityEnergyCableGauge.class, energyCableGauge.getRegistryName());
+        GameRegistry.registerTileEntity(energyCableLV.getTileEntityClass(), energyCableLV.getRegistryName());
+        GameRegistry.registerTileEntity(energyCableMV.getTileEntityClass(), energyCableMV.getRegistryName());
+        GameRegistry.registerTileEntity(energyCableHV.getTileEntityClass(), energyCableHV.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityEnergyCableLVGauge.class, energyCableGaugeLV.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityEnergyCableMVGauge.class, energyCableGaugeMV.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityEnergyCableHVGauge.class, energyCableGaugeHV.getRegistryName());
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
         GameRegistry.registerTileEntity(gutter.getTileEntityClass(), gutter.getRegistryName().toString());
         GameRegistry.registerTileEntity(spanel.getTileEntityClass(), spanel.getRegistryName().toString());
@@ -378,7 +405,9 @@ public class ModBlocks {
                 light.createItemBlock(),
                 blockIndFloor.createItemBlock(),
                 hvWire.createItemBlock(),
-                energyCable.createItemBlock(),
+                energyCableLV.createItemBlock(),
+                energyCableMV.createItemBlock(),
+                energyCableHV.createItemBlock(),
                 fluidPipe.createItemBlock(),
                 energySwitch.createItemBlock(),
                 valveLarge.createItemBlock(),
@@ -425,7 +454,9 @@ public class ModBlocks {
         valveLarge.registerItemModel(Item.getItemFromBlock(valveLarge));
         alarm.registerItemModel(Item.getItemFromBlock(alarm));
         fluidPipe.registerItemModel(Item.getItemFromBlock(fluidPipe));
-        energyCable.registerItemModel(Item.getItemFromBlock(energyCable));
+        energyCableLV.registerItemModel(Item.getItemFromBlock(energyCableLV));
+        energyCableMV.registerItemModel(Item.getItemFromBlock(energyCableMV));
+        energyCableHV.registerItemModel(Item.getItemFromBlock(energyCableHV));
         catWalk.registerItemModel(Item.getItemFromBlock(catWalk));
         catwalkStair.registerItemModel(Item.getItemFromBlock(catwalkStair));
         pillar.registerItemModel(Item.getItemFromBlock(pillar));

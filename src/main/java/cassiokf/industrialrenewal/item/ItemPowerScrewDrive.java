@@ -40,7 +40,7 @@ public class ItemPowerScrewDrive extends ItemBase {
         {
             IBlockState blockState = world.getBlockState(pos);
             Block block = blockState.getBlock();
-            if (block == ModBlocks.fluidPipe || block == ModBlocks.energyCable)
+            if (block == ModBlocks.fluidPipe || block == ModBlocks.energyCableMV)
             {
                 ItemStack items = new ItemStack(ItemBlock.getItemFromBlock(world.getBlockState(pos).getBlock()), 1);
                 playDrillSound(world, pos);
@@ -55,7 +55,7 @@ public class ItemPowerScrewDrive extends ItemBase {
                 ((BlockSignBase) world.getBlockState(pos).getBlock()).changeSign(world, pos);
                 playDrillSound(world, pos);
                 return EnumActionResult.SUCCESS;
-            } else if (block == ModBlocks.floorPipe || block == ModBlocks.floorCable || block == ModBlocks.floorLamp)
+            } else if (block == ModBlocks.floorPipe || block == ModBlocks.floorCableMV || block == ModBlocks.floorLamp)
             {
                 playDrillSound(world, pos);
                 if (!world.isRemote && !entity.isCreative())
@@ -63,9 +63,9 @@ public class ItemPowerScrewDrive extends ItemBase {
                     if (block == ModBlocks.floorPipe)
                     {
                         entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.fluidPipe), 1));
-                    } else if (block == ModBlocks.floorCable)
+                    } else if (block == ModBlocks.floorCableMV)
                     {
-                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCable), 1));
+                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCableMV), 1));
                     } else if (block == ModBlocks.floorLamp)
                     {
                         entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.fluorescent), 1));

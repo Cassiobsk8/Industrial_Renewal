@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
-public class TileEntityEnergyCableGauge extends TileEntityEnergyCable
+public abstract class TileEntityEnergyCableGauge extends TileEntityEnergyCable
 {
     private float amount;
     private EnumFacing facing;

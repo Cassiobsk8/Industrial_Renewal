@@ -17,6 +17,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -175,34 +178,51 @@ public class BlockIndustrialFloor extends BlockBase
         return false;
     }
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        int i = pos.getX();
-        int j = pos.getY();
-        int k = pos.getZ();
-        if (entity.inventory.getCurrentItem().getItem() == net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.fluidPipe)) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+
+
+        ItemStack playerStack = entity.getHeldItem(EnumHand.MAIN_HAND);
+        Item playerItem = playerStack.getItem();
+
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.fluidPipe)))
+        {
             world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
-            world.setBlockState(new BlockPos(i, j, k), ModBlocks.floorPipe.getDefaultState(), 3);
-            if (!entity.isCreative()) {
-                entity.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.fluidPipe), 0, 1, null);
+            world.setBlockState(pos, ModBlocks.floorPipe.getDefaultState(), 3);
+            if (!entity.isCreative())
+            {
+                playerStack.shrink(1);
             }
             return true;
         }
-        if (entity.inventory.getCurrentItem().getItem() == net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.energyCable)) {
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableMV))
+                || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableLV))
+                || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableHV)))
+        {
             world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
-            world.setBlockState(new BlockPos(i, j, k), ModBlocks.floorCable.getDefaultState(), 3);
-            if (!entity.isCreative()) {
-                entity.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.energyCable), 0, 1, null);
+            Block block;
+            if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableMV))) block = ModBlocks.floorCableMV;
+            else if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableLV)))
+                block = ModBlocks.floorCableLV;
+            else block = ModBlocks.floorCableHV;
+            world.setBlockState(pos, block.getDefaultState(), 3);
+            if (!entity.isCreative())
+            {
+                playerStack.shrink(1);
             }
             return true;
         }
-        if (entity.inventory.getCurrentItem().getItem() == net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.fluorescent)) {
-            world.playSound(null, (double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, net.minecraft.util.SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.NEUTRAL, 1.0F, 1.0F);
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.fluorescent)))
+        {
+            world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.NEUTRAL, 1.0F, 1.0F);
             world.setBlockState(pos, ModBlocks.floorLamp.getDefaultState(), 3);
-            if (entity.getHorizontalFacing() == EnumFacing.EAST || entity.getHorizontalFacing() == EnumFacing.WEST) {
+            if (entity.getHorizontalFacing() == EnumFacing.EAST || entity.getHorizontalFacing() == EnumFacing.WEST)
+            {
                 world.setBlockState(pos.up(), ModBlocks.dummy.getDefaultState(), 3);
             }
-            if (!entity.isCreative()) {
-                entity.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.fluorescent), 0, 1, null);
+            if (!entity.isCreative())
+            {
+                playerStack.shrink(1);
             }
             return true;
         }

@@ -95,8 +95,14 @@ public class IRConfig {
             @Config.LangKey("gui.config.batterybank_output.name")
             public int batteryBankMaxOutput = 10240;
 
-            @Config.Comment("The Max Output and Input of the Energy cable per connector (Default 1024)")
-            public int maxEnergyCableTransferAmount = 1024;
+            @Config.Comment("The Max Output and Input of the LV Energy cable per connector (Default 256)")
+            public int maxLVEnergyCableTransferAmount = 256;
+
+            @Config.Comment("The Max Output and Input of the MV Energy cable per connector (Default 1024)")
+            public int maxMVEnergyCableTransferAmount = 1024;
+
+            @Config.Comment("The Max Output and Input of the HV Energy cable per connector (Default 10240)")
+            public int maxHVEnergyCableTransferAmount = 10240;
 
             @Config.Comment("The Max Output and Input of the Fluid Pipe per connector (Default 500)")
             public int maxFluidPipeTransferAmount = 500;

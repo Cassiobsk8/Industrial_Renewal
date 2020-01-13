@@ -16,7 +16,7 @@ public abstract class BlockTileEntity<TE extends TileEntity> extends BlockBase {
         super(material, name, tab);
     }
 
-    public abstract Class<TE> getTileEntityClass();
+    public abstract Class<? extends TileEntity> getTileEntityClass();
 
     public TE getTileEntity(IBlockAccess world, BlockPos pos) {
         return (TE) world.getTileEntity(pos);

@@ -132,11 +132,31 @@ public class BlockPillar extends BlockBase {
         ItemStack playerStack = player.getHeldItem(EnumHand.MAIN_HAND);
         Item playerItem = playerStack.getItem();
         Block clickedBlock = state.getBlock();
-        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCable)))
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableMV)))
         {
             if (!world.isRemote)
             {
-                world.setBlockState(pos, ModBlocks.pillarEnergyCable.getDefaultState(), 3);
+                world.setBlockState(pos, ModBlocks.pillarEnergyCableMV.getDefaultState(), 3);
+                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                if (!player.isCreative()) playerStack.shrink(1);
+            }
+            return true;
+        }
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableLV)))
+        {
+            if (!world.isRemote)
+            {
+                world.setBlockState(pos, ModBlocks.pillarEnergyCableLV.getDefaultState(), 3);
+                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                if (!player.isCreative()) playerStack.shrink(1);
+            }
+            return true;
+        }
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableHV)))
+        {
+            if (!world.isRemote)
+            {
+                world.setBlockState(pos, ModBlocks.pillarEnergyCableHV.getDefaultState(), 3);
                 world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
                 if (!player.isCreative()) playerStack.shrink(1);
             }

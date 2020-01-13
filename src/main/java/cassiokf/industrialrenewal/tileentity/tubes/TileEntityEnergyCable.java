@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
-import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -13,14 +12,15 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityEnergyCable> implements ICapabilityProvider
+public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityEnergyCable> implements ICapabilityProvider
 {
 
     public final VoltsEnergyContainer energyContainer;
 
 
-    public TileEntityEnergyCable() {
-        this.energyContainer = new VoltsEnergyContainer(10240, IRConfig.MainConfig.Main.maxEnergyCableTransferAmount, IRConfig.MainConfig.Main.maxEnergyCableTransferAmount)
+    public TileEntityEnergyCable()
+    {
+        this.energyContainer = new VoltsEnergyContainer(10240, getMaxEnergyToTransport(), getMaxEnergyToTransport())
         {
             @Override
             public void onEnergyChange()
@@ -30,8 +30,11 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
         };
     }
 
+    public abstract int getMaxEnergyToTransport();
+
     @Override
-    public void update() {
+    public void update()
+    {
         if (!world.isRemote && isMaster())
         {
             int quantity = getPosSet().size();
@@ -96,12 +99,6 @@ public class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityE
                 getMaster().addMachine(currentPos, face);
             else getMaster().removeMachine(pos, currentPos);
         }
-    }
-
-    @Override
-    public boolean instanceOf(TileEntity te)
-    {
-        return te instanceof TileEntityEnergyCable;
     }
 
     @Override
