@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.model.smartmodel;
 
 import cassiokf.industrialrenewal.model.smartmodel.composite.PipeBaseComposite;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -10,10 +11,13 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.model.IModelState;
 
+import java.util.Collection;
 import java.util.function.Function;
 
 public class GaugeEnergyCableLVBaseModel implements IModel
 {
+    public static final ResourceLocation TEXTURE_SHEET = new ResourceLocation("industrialrenewal:blocks/energy_meter_256");
+
     public static final ModelResourceLocation MODEL_CORE = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/pipe_core_gauge");
 
     public static final ModelResourceLocation MODEL_DOWN = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con_down");
@@ -81,5 +85,18 @@ public class GaugeEnergyCableLVBaseModel implements IModel
             System.err.println("WebModel.bake() failed due to exception:" + exception);
             return ModelLoaderRegistry.getMissingModel().bake(state, format, bakedTextureGetter);
         }
+    }
+
+    @Override
+    public Collection<ResourceLocation> getDependencies()
+    {
+        return ImmutableList.copyOf(new ResourceLocation[]{MODEL_CORE, MODEL_DOWN, MODEL_UP, MODEL_WEST, MODEL_EAST, MODEL_NORTH, MODEL_SOUTH,
+                MODEL2_DOWN, MODEL2_UP, MODEL2_WEST, MODEL2_EAST, MODEL2_NORTH, MODEL2_SOUTH});
+    }
+
+    @Override
+    public Collection<ResourceLocation> getTextures()
+    {
+        return ImmutableList.copyOf(new ResourceLocation[]{TEXTURE_SHEET});
     }
 }

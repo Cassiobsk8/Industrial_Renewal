@@ -59,11 +59,16 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
             state = state.withProperty(ACTIVE, active);
             te.setActive(active);
             world.setBlockState(pos, state, 3);
-            world.spawnParticle(EnumParticleTypes.WATER_DROP, (double) i, (double) j, (double) k, 1.0D, 1.0D, 1.0D);
+            spawnPartivle(world, i, j, k);
             world.notifyNeighborsOfStateChange(pos, this, false);
             return true;
         }
         return false;
+    }
+
+    public void spawnPartivle(World world, double i, double j, double k)
+    {
+        world.spawnParticle(EnumParticleTypes.WATER_DROP, (double) i, (double) j, (double) k, 1.0D, 1.0D, 1.0D);
     }
 
     public void setFace(World world, BlockPos pos)

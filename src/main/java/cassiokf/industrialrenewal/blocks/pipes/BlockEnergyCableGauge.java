@@ -67,7 +67,7 @@ public class BlockEnergyCableGauge extends BlockEnergyCable
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (entity.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemPowerScrewDrive)
+        if (entity.getHeldItemMainhand().getItem() instanceof ItemPowerScrewDrive)
         {
             if (!world.isRemote)
             {
@@ -91,6 +91,12 @@ public class BlockEnergyCableGauge extends BlockEnergyCable
                 ItemPowerScrewDrive.playDrillSound(world, pos);
             }
         }
+        return false;
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
         return false;
     }
 

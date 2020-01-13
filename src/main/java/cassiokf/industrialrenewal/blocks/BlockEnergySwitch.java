@@ -22,6 +22,11 @@ public class BlockEnergySwitch extends BlockToggleableBase<TileEntityEnergySwitc
         return TileEntityEnergySwitch.class;
     }
 
+    @Override
+    public void spawnPartivle(World world, double i, double j, double k)
+    {
+    }
+
     @Nullable
     @Override
     public TileEntityEnergySwitch createTileEntity(World world, IBlockState state)
