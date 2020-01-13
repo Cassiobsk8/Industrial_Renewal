@@ -109,6 +109,7 @@ public class ModBlocks {
 
     public static BlockDamIntake damIntake = new BlockDamIntake("dam_intake", References.CREAATIVE_IRWIP_TAB);
 
+    public static BlockInfinityGenerator infinityGenerator = new BlockInfinityGenerator("infinity_generator", References.CREATIVE_IR_TAB);
     public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREATIVE_IR_TAB);
     public static BlockSolarPanelFrame fpanel = new BlockSolarPanelFrame("solar_panel_frame", References.CREATIVE_IR_TAB);
     public static BlockSmallWindTurbine sWindTurbine = new BlockSmallWindTurbine("small_wind_turbine", References.CREATIVE_IR_TAB);
@@ -256,6 +257,7 @@ public class ModBlocks {
                 conveyorVInserter,
                 hvWire,
                 //Energy
+                infinityGenerator,
                 spanel,
                 fpanel,
                 sWindTurbine,
@@ -302,7 +304,8 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TileEntityEnergyCableHVGauge.class, energyCableGaugeHV.getRegistryName());
         GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
         GameRegistry.registerTileEntity(gutter.getTileEntityClass(), gutter.getRegistryName().toString());
-        GameRegistry.registerTileEntity(spanel.getTileEntityClass(), spanel.getRegistryName().toString());
+        GameRegistry.registerTileEntity(infinityGenerator.getTileEntityClass(), infinityGenerator.getRegistryName());
+        GameRegistry.registerTileEntity(spanel.getTileEntityClass(), spanel.getRegistryName());
         GameRegistry.registerTileEntity(fpanel.getTileEntityClass(), fpanel.getRegistryName());
         GameRegistry.registerTileEntity(sWindTurbine.getTileEntityClass(), sWindTurbine.getRegistryName().toString());
         GameRegistry.registerTileEntity(turbinePillar.getTileEntityClass(), turbinePillar.getRegistryName().toString());
@@ -411,6 +414,7 @@ public class ModBlocks {
                 fluidPipe.createItemBlock(),
                 energySwitch.createItemBlock(),
                 valveLarge.createItemBlock(),
+                infinityGenerator.createItemBlock(),
                 spanel.createItemBlock(),
                 fpanel.createItemBlock(),
                 sWindTurbine.createItemBlock(),
@@ -483,6 +487,7 @@ public class ModBlocks {
         egate.registerItemModel(Item.getItemFromBlock(egate));
         razorWire.registerItemModel(Item.getItemFromBlock(razorWire));
         damIntake.registerItemModel(Item.getItemFromBlock(damIntake));
+        infinityGenerator.registerItemModel(Item.getItemFromBlock(infinityGenerator));
         spanel.registerItemModel(Item.getItemFromBlock(spanel));
         fpanel.registerItemModel(Item.getItemFromBlock(fpanel));
         sWindTurbine.registerItemModel(Item.getItemFromBlock(sWindTurbine));

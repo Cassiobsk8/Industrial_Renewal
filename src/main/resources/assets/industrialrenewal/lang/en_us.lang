@@ -153,6 +153,7 @@ tile.industrialrenewal.razor_wire.name=Razor Wire
 tile.industrialrenewal.energy_switch.name=Energy Breaker
 tile.industrialrenewal.transformer_hv.name=HV Transformer
 tile.industrialrenewal.wire_hv.name=HV Insulator
+tile.industrialrenewal.infinity_generator.name=Infinity §mScam§r §fEnergy Generator
 
 #Fluids
 
