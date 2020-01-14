@@ -55,7 +55,7 @@ public class ModItems {
 
     public static ItemBattery battery = new ItemBattery("battery", References.CREATIVE_IR_TAB);
 
-    public static ItemCoilHV coilHV = new ItemCoilHV("coil_hv", References.CREAATIVE_IRWIP_TAB);
+    public static ItemCoilHV coilHV = new ItemCoilHV("coil_hv", References.CREATIVE_IR_TAB);
 
     public static ItemBarrel barrel = new ItemBarrel("barrel_item", References.CREATIVE_IR_TAB);
 

@@ -42,6 +42,7 @@ item.industrialrenewal.firebox_fluid.name=Firebox for Fluid Fuel
 item.industrialrenewal.small_wind_blade.name=Wind Generator Blades
 item.industrialrenewal.chunk_hematite.name=Hematite Chunk
 item.industrialrenewal.coil_hv.name=HV Wire Coil
+item.industrialrenewal.isolator_hv.name=HV Isolator
 
 #Discs
 

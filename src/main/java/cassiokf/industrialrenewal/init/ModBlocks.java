@@ -61,7 +61,7 @@ public class ModBlocks {
     public static BlockFloorCable floorCableMV = new BlockFloorCable(EnumEnergyCableType.MV, "floor_cable", References.CREATIVE_IR_TAB);
     public static BlockFloorCable floorCableHV = new BlockFloorCable(EnumEnergyCableType.HV, "floor_cable_hv", References.CREATIVE_IR_TAB);
     public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp", References.CREATIVE_IR_TAB);
-    public static BlockWireBase hvWire = new BlockWireBase("wire_hv", References.CREAATIVE_IRWIP_TAB);
+    public static BlockWireBase hvIsolator = new BlockWireBase("isolator_hv", References.CREATIVE_IR_TAB);
 
     public static BlockAlarm alarm = new BlockAlarm("alarm", References.CREATIVE_IR_TAB);
     public static BlockRecordPlayer recordPlayer = new BlockRecordPlayer("record_player", References.CREATIVE_IR_TAB);
@@ -138,7 +138,7 @@ public class ModBlocks {
     public static BlockFluidLoader fluidLoader = new BlockFluidLoader("fluid_loader", References.CREATIVE_IRLOCOMOTIVE_TAB);
 
     public static BlockValvePipeLarge valveLarge = new BlockValvePipeLarge("valve_pipe_large", References.CREATIVE_IR_TAB);
-    public static BlockEnergySwitch energySwitch = new BlockEnergySwitch("energy_switch", References.CREAATIVE_IRWIP_TAB);
+    public static BlockEnergySwitch energySwitch = new BlockEnergySwitch("energy_switch", References.CREATIVE_IR_TAB);
 
     public static BlockBulkConveyor conveyorV = new BlockBulkConveyor("conveyor_bulk", References.CREATIVE_IR_TAB, EnumBulkConveyorType.NORMAL);
     public static BlockBulkConveyor conveyorVHopper = new BlockBulkConveyor("conveyor_bulk_hopper", References.CREATIVE_IR_TAB, EnumBulkConveyorType.HOPPER);
@@ -155,7 +155,7 @@ public class ModBlocks {
     public static BlockSteamBoiler steamBoiler = new BlockSteamBoiler("steam_boiler", References.CREATIVE_IR_TAB);
     public static BlockSteamTurbine steamTurbine = new BlockSteamTurbine("steam_turbine", References.CREATIVE_IR_TAB);
     public static BlockMining mining = new BlockMining("mining", References.CREAATIVE_IRWIP_TAB);
-    public static BlockTransformerHV transformerHV = new BlockTransformerHV("transformer_hv", References.CREAATIVE_IRWIP_TAB);
+    public static BlockTransformerHV transformerHV = new BlockTransformerHV("transformer_hv", References.CREATIVE_IR_TAB);
 
     public static BlockChunkLoader chunkLoader = new BlockChunkLoader("chunk_loader", References.CREATIVE_IR_TAB);
 
@@ -255,7 +255,7 @@ public class ModBlocks {
                 conveyorV,
                 conveyorVHopper,
                 conveyorVInserter,
-                hvWire,
+                hvIsolator,
                 //Energy
                 infinityGenerator,
                 spanel,
@@ -344,7 +344,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(conveyorVInserter.getTileEntityClass(), conveyorVInserter.getRegistryName());
         GameRegistry.registerTileEntity(damIntake.getTileEntityClass(), damIntake.getRegistryName());
         GameRegistry.registerTileEntity(concrete.getTileEntityClass(), concrete.getRegistryName());
-        GameRegistry.registerTileEntity(hvWire.getTileEntityClass(), hvWire.getRegistryName());
+        GameRegistry.registerTileEntity(hvIsolator.getTileEntityClass(), hvIsolator.getRegistryName());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -407,7 +407,7 @@ public class ModBlocks {
                 fluorescent.createItemBlock(),
                 light.createItemBlock(),
                 blockIndFloor.createItemBlock(),
-                hvWire.createItemBlock(),
+                hvIsolator.createItemBlock(),
                 energyCableLV.createItemBlock(),
                 energyCableMV.createItemBlock(),
                 energyCableHV.createItemBlock(),
@@ -539,6 +539,6 @@ public class ModBlocks {
         baseEotM.registerItemModel(Item.getItemFromBlock(baseEotM));
         chunkLoader.registerItemModel(Item.getItemFromBlock(chunkLoader));
         conveyorV.registerItemModel(Item.getItemFromBlock(conveyorV));
-        hvWire.registerItemModel(Item.getItemFromBlock(hvWire));
+        hvIsolator.registerItemModel(Item.getItemFromBlock(hvIsolator));
     }
 }
