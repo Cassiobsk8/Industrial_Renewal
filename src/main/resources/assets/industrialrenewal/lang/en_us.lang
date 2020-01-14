@@ -1,11 +1,9 @@
 #Wed Dec 06 12:33:40 BRST 2017
-
 itemGroup.industrialrenewal=Industrial Renewal
 itemGroup.industrialrenewalrailroad=Industrial Renewal Railroad
 itemGroup.industrialrenewalwip=Industrial Renewal WIP Content
 
 #Items
-
 item.industrialrenewal.ir_manual.name=Industrial Renewal Manual
 item.industrialrenewal.cartridge_plus.name=Redstone Cartridge Plus
 item.industrialrenewal.cartridge_minus.name=Redstone Cartridge Minus
@@ -42,15 +40,12 @@ item.industrialrenewal.firebox_fluid.name=Firebox for Fluid Fuel
 item.industrialrenewal.small_wind_blade.name=Wind Generator Blades
 item.industrialrenewal.chunk_hematite.name=Hematite Chunk
 item.industrialrenewal.coil_hv.name=HV Wire Coil
-item.industrialrenewal.isolator_hv.name=HV Isolator
 
 #Discs
-
 item.industrialrenewal.record_royal_entrance.name=Music Disc
 item.industrialrenewal.record_royal_entrance.des0=Royal Entrance by Visager
 
 #Blocks
-
 tile.industrialrenewal.alarm.name=Industrial Alarm
 tile.industrialrenewal.block_chimney.name=Chimney
 tile.industrialrenewal.block_hazard.name=Physical Hazard
@@ -153,15 +148,13 @@ tile.industrialrenewal.wall_concrete.name=Concrete Wall
 tile.industrialrenewal.razor_wire.name=Razor Wire
 tile.industrialrenewal.energy_switch.name=Energy Breaker
 tile.industrialrenewal.transformer_hv.name=HV Transformer
-tile.industrialrenewal.wire_hv.name=HV Insulator
+tile.industrialrenewal.isolator_hv.name=HV Isolator
 tile.industrialrenewal.infinity_generator.name=Infinity §mScam§r §fEnergy Generator
 
 #Fluids
-
 fluid.steam=Steam
 
 #Entity
-
 entity.industrialrenewal.cargo_container.name=Cargo Cart
 entity.industrialrenewal.fluid_container.name=Fluid Tank Cart
 entity.industrialrenewal.steam_locomotive.name=Steam Locomotive (WIP)
@@ -171,7 +164,6 @@ entity.industrialrenewal.minecart_flat.name=Flat Cart
 entity.industrialrenewal.cart_hopper.name=Bulk Cargo Cart
 
 #Config
-
 gui.config.main_title=Industrial Renewal Configuration
 gui.config.category.recipes=Recipes
 gui.config.category.recipes.tooltip=Recipes settings
@@ -179,7 +171,6 @@ gui.config.recipes.spongeiron_recipe.name=Sponge Iron recipe
 gui.config.recipes.spongeiron_recipe.comment=Turn On/Off the sponge iron recipe (Default true)
 
 #TESR
-
 gui.config.category.options=Options
 gui.config.category.options.tooltip=General settings
 gui.config.recipes.startwithmanual.name=Start with manual
@@ -215,7 +206,6 @@ render.industrialrenewal.k=K
 render.industrialrenewal.f=°F
 
 #Info
-
 tile.industrialrenewal.crossing_rail.info=Make the carts honk when they pass
 tile.industrialrenewal.loader_rail.info=Use in conjunction with
 tile.industrialrenewal.sign_base.info=Shift + Right Click with Powered Screwdrive to change
@@ -228,7 +218,6 @@ info.industrialrenewal.gutter2=when it is raining
 info.industrialrenewal.cartridges=Used in Fuse box
 
 #Book
-
 gui.industrialrenewal.railroad.category=Railroad
 gui.industrialrenewal.redstone.category=Redstone
 gui.industrialrenewal.catwalk.category=Catwalk
@@ -247,7 +236,6 @@ gui.industrialrenewal.first-aid_box.text0=It's a container to hold first-aids, c
 gui.industrialrenewal.rails.text0=- Rail, Powered Rail, Detector Rail: $n Just like vanilla ones but 3D. $n - Buffer Stop: $n Will prevent the carts from passing. $n - Crossing Rail: $n Makes carts Horn when it passes. $n - Tranfer Rail: $n Place on top or under a Cargo Item Tranfer and will stop the carts depending on the Cargo Item Tranfer settings.
 
 #GUI
-
 gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Slots for MedKits
 gui.industrialrenewal.blockrecordplayer.discs.tooltip=Slots for Discs
 gui.industrialrenewal.entity_steamlocomotive.plow.tooltip=Slot for Snow Plow

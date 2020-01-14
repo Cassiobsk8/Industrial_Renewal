@@ -1,10 +1,8 @@
-#Wed Dec 06 12:33:40 BRST 2017
 
 itemGroup.industrialrenewal=Industrial Renewal
 itemGroup.industrialrenewalrailroad=Industrial Renewal: Железная дорога
 itemGroup.industrialrenewalwip=Industrial Renewal: Содержимое WIP
 
-#Items
 
 item.industrialrenewal.ir_manual.name=Руководство по Industrial Renewal
 item.industrialrenewal.cartridge_plus.name=Редстоун картридж плюс
@@ -15,6 +13,7 @@ item.industrialrenewal.cartridge_inverter.name=Редстоун картридж
 item.industrialrenewal.ingot_steel.name=Стальной слиток
 item.industrialrenewal.item_fire_extinguisher.name=Огнетушитель
 item.industrialrenewal.log_cart.name=Тележка для бревен
+item.industrialrenewal.cart_hopper.name=Bulk Cargo Cart
 item.industrialrenewal.passenger_car.name=Пассажирская тележка
 item.industrialrenewal.safety_belt.name=Ремень безопасности
 item.industrialrenewal.safety_helmet.name=Защитный шлем
@@ -40,13 +39,12 @@ item.industrialrenewal.firebox_solid.name=Топка для твердого т�
 item.industrialrenewal.firebox_fluid.name=Топка для жидкого топлива
 item.industrialrenewal.small_wind_blade.name=Лопасти ветрогенератора
 item.industrialrenewal.chunk_hematite.name=Кусок гематита
+item.industrialrenewal.coil_hv.name=HV Wire Coil
 
-#Discs
 
 item.industrialrenewal.record_royal_entrance.name=Музыкальный диск
 item.industrialrenewal.record_royal_entrance.des0=Королевский выход от Visager
 
-#Blocks
 
 tile.industrialrenewal.alarm.name=Промышленная сигнализация
 tile.industrialrenewal.block_chimney.name=Дымовая труба
@@ -83,9 +81,10 @@ tile.industrialrenewal.conduit_connector.name=Соединитель блока 
 tile.industrialrenewal.conduit_extension.name=Расширение блока предохранителей
 tile.industrialrenewal.detector_rail.name=Детекторная рельса
 tile.industrialrenewal.energy_cable.name=Энергетический кабель
+tile.industrialrenewal.energy_cable_lv.name=Energy Cable LV
+tile.industrialrenewal.energy_cable_hv.name=Energy Cable HV
 tile.industrialrenewal.firstaid_kit.name=Коробка первой помощи
 tile.industrialrenewal.flame_detector.name=Детектор пламени
-tile.industrialrenewal.fluid_filter.name=Жидкостный фильтр (WIP)
 tile.industrialrenewal.fluid_pipe.name=Жидкостная труба
 tile.industrialrenewal.fluorescent.name=Флуоресцентный свет
 tile.industrialrenewal.frame.name=Рамка рельсы
@@ -144,11 +143,18 @@ tile.industrialrenewal.conveyor_bulk.name=Насыпной конвейер
 tile.industrialrenewal.orevein_hematite.name=Гематит
 tile.industrialrenewal.solar_panel_frame.name=Рамка солнечной батареи
 tile.industrialrenewal.energy_level.name=Индикатор уровня энергии
+tile.industrialrenewal.rail_gate.name=Rail Gate
+tile.industrialrenewal.wall_concrete.name=Concrete Wall
+tile.industrialrenewal.razor_wire.name=Razor Wire
+tile.industrialrenewal.energy_switch.name=Energy Breaker
+tile.industrialrenewal.transformer_hv.name=HV Transformer
+tile.industrialrenewal.isolator_hv.name=HV Isolator
+tile.industrialrenewal.infinity_generator.name=Infinity §mScam§r §fEnergy Generator
 
-#Fluids
+
+# Fluids
 fluid.steam=Steam
 
-#Entity
 
 entity.industrialrenewal.cargo_container.name=Грузовой контейнер
 entity.industrialrenewal.fluid_container.name=Жидкостный контейнер
@@ -156,14 +162,15 @@ entity.industrialrenewal.steam_locomotive.name=Паровоз (WIP)
 entity.industrialrenewal.log_cart.name=Тележка для бревен
 entity.industrialrenewal.passenger_car.name=Пассажирская тележка
 entity.industrialrenewal.minecart_flat.name=Плоская тележка
+entity.industrialrenewal.cart_hopper.name=Bulk Cargo Cart
 
-#Config
 
 gui.config.main_title=Industrial Renewal Configuration
 gui.config.category.recipes=Recipes
 gui.config.category.recipes.tooltip=Recipes settings
 gui.config.recipes.spongeiron_recipe.name=Sponge Iron recipe
 gui.config.recipes.spongeiron_recipe.comment=Turn On/Off the sponge iron recipe (Default true)
+
 
 gui.config.category.options=Options
 gui.config.category.options.tooltip=General settings
@@ -188,8 +195,10 @@ gui.config.hours_before_deactivation.name=Time Before Deactivate
 gui.config.chunk_loader_width.name=Chunk Load Width
 gui.config.emergency_mode.name=Deactivate Chunk Load
 gui.config.blade_durability.name=Wind Turbine Bade durability
+tesr.ir.mode=Mode
+tesr.ir.inventory=Inventory
 
-#Render
+# Render
 render.industrialrenewal.energy=Энергия
 render.industrialrenewal.fluid=Жидкость
 render.industrialrenewal.drillheat=Нагрев дрели
@@ -197,13 +206,18 @@ render.industrialrenewal.c=°C
 render.industrialrenewal.k=K
 render.industrialrenewal.f=°F
 
-#Info
 
 tile.industrialrenewal.crossing_rail.info=Заставляет вагонетки сигналить, когда они проходят
 tile.industrialrenewal.loader_rail.info=Используется совместно с
 tile.industrialrenewal.sign_base.info=Shift+ПКМ с шуруповертом, чтобы изменить
+info.industrialrenewal.produces=Produces
+info.industrialrenewal.requires=Requires
+info.industrialrenewal.capacity=Capacity
+info.industrialrenewal.firebox=Firebox with apropriate fuel
+info.industrialrenewal.gutter=For each Roof in gutter's direction
+info.industrialrenewal.gutter2=when it is raining
+info.industrialrenewal.cartridges=Used in Fuse box
 
-#Book
 
 gui.industrialrenewal.railroad.category=Железная дорога
 gui.industrialrenewal.redstone.category=Редстоун
@@ -222,7 +236,6 @@ gui.industrialrenewal.entity_detector.text0=Он излучает сигнал �
 gui.industrialrenewal.first-aid_box.text0=Это контейнер для хранения первой помощи, может содержать 8 стаков по 16, чтобы открыть нажмите Shift+ПКМ, при щелчке ПКМ он дает эффект регенерации II, который длится 7 с. Работает только если у вас нет полного здоровья.
 gui.industrialrenewal.rails.text0=- Рельса, энергорельса, детектор рельса: $n Такие же, как ванильные, но в 3D. $n - Буфер стоп: $n Будет препятствовать прохождению вагонеток. $n - Перекрестная рельса: $n Вагонетка подает звуковой сигнал, когда проходит. $n - Трансфер рельса: $n Поместите сверху или под транспортировкой грузовых предметов и остановите тележки в зависимости от настроек трансфера грузовых предметов.
 
-#GUI
 
 gui.industrialrenewal.blockfirstaidkit.bandages.tooltip=Слоты для аптечек
 gui.industrialrenewal.blockrecordplayer.discs.tooltip=Слоты для дисков
@@ -242,8 +255,12 @@ gui.industrialrenewal.button.noactivity=Нет активности
 gui.industrialrenewal.button.never=Никогда
 gui.industrialrenewal.button.play=Играть
 gui.industrialrenewal.button.stop=Стоп
+gui.industrialrenewal.fluid.empty=Empty
 gui.industrialrenewal.fuel.tooltip=Топливо
 gui.industrialrenewal.fusebox.input=Редстоун вход:
 gui.industrialrenewal.fusebox.output=Редстоун выход:
 gui.industrialrenewal.fusebox.slots.tooltip=Слоты для редстоун картриджей
+gui.industrialrenewal.button.loader_mode=Loader
+gui.industrialrenewal.button.unloader_mode=Unloader
 
+tile.industrialrenewal.fluid_filter.name=Жидкостный фильтр (WIP)

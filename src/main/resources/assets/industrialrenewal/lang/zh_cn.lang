@@ -13,6 +13,7 @@ item.industrialrenewal.cartridge_inverter.name=红石配线逆变器
 item.industrialrenewal.ingot_steel.name=钢锭
 item.industrialrenewal.item_fire_extinguisher.name=灭火器
 item.industrialrenewal.log_cart.name=原木运输车厢
+item.industrialrenewal.cart_hopper.name=Bulk Cargo Cart
 item.industrialrenewal.passenger_car.name=客运车厢
 item.industrialrenewal.safety_belt.name=安全带
 item.industrialrenewal.safety_helmet.name=安全帽
@@ -38,6 +39,7 @@ item.industrialrenewal.firebox_solid.name=Firebox for Solid Fuel
 item.industrialrenewal.firebox_fluid.name=Firebox for Fluid Fuel
 item.industrialrenewal.small_wind_blade.name=Wind Generator Blades
 item.industrialrenewal.chunk_hematite.name=Hematite Chunk
+item.industrialrenewal.coil_hv.name=HV Wire Coil
 
 
 item.industrialrenewal.record_royal_entrance.name=唱片
@@ -79,9 +81,10 @@ tile.industrialrenewal.conduit_connector.name=熔断器控制线缆
 tile.industrialrenewal.conduit_extension.name=熔断器连接线缆
 tile.industrialrenewal.detector_rail.name=探测轨道
 tile.industrialrenewal.energy_cable.name=能量线缆
+tile.industrialrenewal.energy_cable_lv.name=Energy Cable LV
+tile.industrialrenewal.energy_cable_hv.name=Energy Cable HV
 tile.industrialrenewal.firstaid_kit.name=急救包
 tile.industrialrenewal.flame_detector.name=火焰探测器
-tile.industrialrenewal.fluid_filter.name=流体过滤器(WIP)
 tile.industrialrenewal.fluid_pipe.name=流体管道(WIP)
 tile.industrialrenewal.fluorescent.name=荧光灯
 tile.industrialrenewal.frame.name=轨道架
@@ -140,6 +143,14 @@ tile.industrialrenewal.conveyor_bulk.name=Bulk Conveyor
 tile.industrialrenewal.orevein_hematite.name=Hematite
 tile.industrialrenewal.solar_panel_frame.name=Solar Panel Frame
 tile.industrialrenewal.energy_level.name=Energy Level Indicator
+tile.industrialrenewal.rail_gate.name=Rail Gate
+tile.industrialrenewal.wall_concrete.name=Concrete Wall
+tile.industrialrenewal.razor_wire.name=Razor Wire
+tile.industrialrenewal.energy_switch.name=Energy Breaker
+tile.industrialrenewal.transformer_hv.name=HV Transformer
+tile.industrialrenewal.isolator_hv.name=HV Isolator
+tile.industrialrenewal.infinity_generator.name=Infinity §mScam§r §fEnergy Generator
+
 
 # Fluids
 fluid.steam=蒸汽
@@ -151,6 +162,7 @@ entity.industrialrenewal.steam_locomotive.name=蒸汽机车(WIP)
 entity.industrialrenewal.log_cart.name=原木运输车厢
 entity.industrialrenewal.passenger_car.name=客运车厢
 entity.industrialrenewal.minecart_flat.name=Flat Cart
+entity.industrialrenewal.cart_hopper.name=Bulk Cargo Cart
 
 
 gui.config.main_title=工业复兴模组配置
@@ -158,6 +170,7 @@ gui.config.category.recipes=合成配方
 gui.config.category.recipes.tooltip=合成配方配置
 gui.config.recipes.spongeiron_recipe.name=海绵铁合成表
 gui.config.recipes.spongeiron_recipe.comment=开启/关闭海绵铁合成表(默认开启)
+
 
 gui.config.category.options=设置
 gui.config.category.options.tooltip=常规设置
@@ -182,6 +195,8 @@ gui.config.hours_before_deactivation.name=Time Before Deactivate
 gui.config.chunk_loader_width.name=Chunk Load Width
 gui.config.emergency_mode.name=Deactivate Chunk Load
 gui.config.blade_durability.name=Wind Turbine Bade durability
+tesr.ir.mode=Mode
+tesr.ir.inventory=Inventory
 
 # Render
 render.industrialrenewal.energy=Energy
@@ -195,6 +210,13 @@ render.industrialrenewal.f=°F
 tile.industrialrenewal.crossing_rail.info=在车厢经过时鸣笛
 tile.industrialrenewal.loader_rail.info=需要搭配使用:
 tile.industrialrenewal.sign_base.info=Shift+右键使用电动螺丝刀来改变状态
+info.industrialrenewal.produces=Produces
+info.industrialrenewal.requires=Requires
+info.industrialrenewal.capacity=Capacity
+info.industrialrenewal.firebox=Firebox with apropriate fuel
+info.industrialrenewal.gutter=For each Roof in gutter's direction
+info.industrialrenewal.gutter2=when it is raining
+info.industrialrenewal.cartridges=Used in Fuse box
 
 
 gui.industrialrenewal.railroad.category=铁路交通运输
@@ -233,8 +255,12 @@ gui.industrialrenewal.button.noactivity=非激活状态
 gui.industrialrenewal.button.never=永不
 gui.industrialrenewal.button.play=播放
 gui.industrialrenewal.button.stop=停止
+gui.industrialrenewal.fluid.empty=Empty
 gui.industrialrenewal.fuel.tooltip=燃料
 gui.industrialrenewal.fusebox.input=红石输入强度:
 gui.industrialrenewal.fusebox.output=红石输出强度:
 gui.industrialrenewal.fusebox.slots.tooltip=放置红石配线盒
+gui.industrialrenewal.button.loader_mode=Loader
+gui.industrialrenewal.button.unloader_mode=Unloader
 
+tile.industrialrenewal.fluid_filter.name=流体过滤器(WIP)
