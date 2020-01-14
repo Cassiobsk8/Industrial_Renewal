@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
@@ -33,7 +34,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
 
     public TileEntityTransformerHV()
     {
-        this.energyContainer = new VoltsEnergyContainer(10240, 10240, 10240)
+        this.energyContainer = new VoltsEnergyContainer(IRConfig.MainConfig.Main.maxHVTransformerTransferAmount, IRConfig.MainConfig.Main.maxHVTransformerTransferAmount, IRConfig.MainConfig.Main.maxHVTransformerTransferAmount)
         {
             @Override
             public void onEnergyChange()

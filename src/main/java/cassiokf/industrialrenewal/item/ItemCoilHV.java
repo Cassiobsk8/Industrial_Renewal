@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.item;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.TileEntityTransformerHV;
 import cassiokf.industrialrenewal.tileentity.TileEntityWireBase;
 import cassiokf.industrialrenewal.util.Utils;
@@ -69,7 +70,7 @@ public class ItemCoilHV extends ItemBase
                     } else
                     {
                         int distance = (int) Utils.getDistancePointToPoint(firstConnectionPos, pos);
-                        if (teT.getConnectorPos() != firstConnectionPos && teT.canConnect(pos) && distance > 0 && distance <= 64)
+                        if (teT.getConnectorPos() != firstConnectionPos && teT.canConnect(pos) && distance > 0 && distance <= IRConfig.MainConfig.Main.maxHVWireLength)
                         {
                             isSecond = false;
                             connectFirst(worldIn, teT.getConnectorPos());
