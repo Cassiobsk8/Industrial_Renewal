@@ -77,6 +77,12 @@ public class BlockFluidPipeGauge extends BlockFluidPipe
     }
 
     @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        return false;
+    }
+
+    @Override
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
         return new ItemStack(Item.getItemFromBlock(ModBlocks.fluidPipe));
