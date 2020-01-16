@@ -62,7 +62,7 @@ public abstract class BlockBasicElectricFence extends BlockBase {
             ((EntityLivingBase) entityIn).knockBack(entityIn, knockback, pos.getX() - entityIn.posX, pos.getZ() - entityIn.posZ);
         Random r = new Random();
         float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
-        world.playSound(null, pos, IRSoundHandler.EFECT_SHOCK, SoundCategory.BLOCKS, 0.6F, pitch);
+        world.playSound(null, pos, IRSoundHandler.EFFECT_SHOCK, SoundCategory.BLOCKS, 0.6F, pitch);
     }
 
     @SuppressWarnings("deprecation")

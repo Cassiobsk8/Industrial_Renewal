@@ -3,12 +3,13 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
+import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
+import cassiokf.industrialrenewal.util.interfaces.IDynamicSound;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
@@ -22,9 +23,10 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntitySteamTurbine> implements ITickable
+public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntitySteamTurbine> implements ITickable, IDynamicSound
 {
     private final VoltsEnergyContainer energyContainer;
+    private float volume = 4f;
 
     public FluidTank waterTank = new FluidTank(32000)
     {
@@ -67,7 +69,8 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     private int oldRotation;
     private int steamPerTick = IRConfig.MainConfig.Main.steamTurbineSteamPerTick;
 
-    private int timeSincePlayed;
+    private int timeSinceStarted = 0;
+    private boolean soundStarted = false;
 
     public TileEntitySteamTurbine()
     {
@@ -128,17 +131,46 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
                     this.Sync();
                     oldRotation = rotation;
                 }
-                if (this.rotation > 0)
+                timeSinceStarted++;
+
+                if (timeSinceStarted > 20)
                 {
-                    if (timeSincePlayed >= 9)
-                    {
-                        timeSincePlayed = 0;
-                        this.world.playSound(null, this.pos, IRSoundHandler.MOTOR_ROTAION, SoundCategory.BLOCKS, 0.8F, Math.min(getRotation(), 0.9F));
-                    }
-                    timeSincePlayed++;
+                    timeSinceStarted = 0;
+                    updateSound(getPitch());
                 }
             }
         }
+    }
+
+    @Override
+    public float getPitch()
+    {
+        return Math.max(getRotation(), 0.1F);
+    }
+
+    @Override
+    public float getVolume()
+    {
+        return volume;
+    }
+
+    private void updateSound(float pitch)
+    {
+        if (!soundStarted && this.rotation > 0)
+        {
+            soundStarted = true;
+            IRSoundHandler.playRepeatableSound(IRSoundHandler.MOTOR_ROTATION_RESOURCEL, volume, pitch, pos);
+        } else if (soundStarted && this.rotation < 1)
+        {
+            soundStarted = false;
+            IRSoundHandler.stopTileSound(pos);
+        }
+    }
+
+    @Override
+    public void onMasterBreak()
+    {
+        IRSoundHandler.stopTileSound(pos);
     }
 
     @Override
@@ -169,23 +201,13 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     public String getGenerationText()
     {
         int energy = (rotation >= 6000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored()) ? getEnergyProduction() : 0;
-        String text = energy + " FE/t";
-        if (energy >= 1000 && energy < 1000000)
-            text = energy / 1000 + "K FE/t";
-        if (energy >= 1000000)
-            text = energy / 1000000 + "M FE/t";
-        return text;
+        return Utils.formatEnergyString(energy) + "/t";
     }
 
     public String getEnergyText()
     {
         int energy = this.energyContainer.getEnergyStored();
-        String text = energy + " FE";
-        if (energy >= 1000 && energy < 1000000)
-            text = energy / 1000 + "K FE";
-        if (energy >= 1000000)
-            text = energy / 1000000 + "M FE";
-        return text;
+        return Utils.formatEnergyString(energy);
     }
 
     public String getRotationText()
@@ -195,18 +217,15 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
 
     public float getEnergyFill() //0 ~ 1
     {
-        float currentAmount = this.energyContainer.getEnergyStored() / 1000;
-        float totalCapacity = this.energyContainer.getMaxEnergyStored() / 1000;
+        float currentAmount = this.energyContainer.getEnergyStored() / 1000F;
+        float totalCapacity = this.energyContainer.getMaxEnergyStored() / 1000F;
         currentAmount = currentAmount / totalCapacity;
         return currentAmount;
     }
 
     private float getRotation()
     {
-        float currentAmount = this.rotation / 100f;
-        float totalCapacity = this.maxRotation / 100f;
-        currentAmount = currentAmount / totalCapacity;
-        return currentAmount;
+        return Utils.normalize(this.rotation, 0, this.maxRotation);
     }
 
     public float getGenerationFill() //0 ~ 180
