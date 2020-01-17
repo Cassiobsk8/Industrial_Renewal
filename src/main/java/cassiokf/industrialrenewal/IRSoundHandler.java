@@ -25,8 +25,12 @@ public class IRSoundHandler
 {
 
     public static final ObjectSet<String> TICKABLE_SOUNDS = new ObjectOpenHashSet<>();
+    public static final ObjectSet<String> REPEATABLE_SOUNDS = new ObjectOpenHashSet<>();
     public static SoundEvent TILEENTITY_TRAINHORN, TILEENTITY_VALVE_CHANGE, TILEENTITY_ALARM, ITEM_DRILL,
-            BLOCK_CATWALKGATE_OPEN, BLOCK_CATWALKGATE_CLOSE, EFFECT_SHOCK, DISC_1, BOOK_FLIP, MOTOR_ROTATION;
+            BLOCK_CATWALKGATE_OPEN, BLOCK_CATWALKGATE_CLOSE, EFFECT_SHOCK, DISC_1, BOOK_FLIP, MOTOR_ROTATION, PUMP_ROTATION,
+            PUMP_START;
+    public static ResourceLocation PUMP_ROTATION_RESOURCEL = new ResourceLocation(References.MODID, "pump_rotation");
+
     public static ResourceLocation TILEENTITY_TRAINHORN_RESOURCEL = new ResourceLocation(References.MODID, "railroad.train_horn");
     public static ResourceLocation TILEENTITY_VALVE_CHANGE_RESOURCEL = new ResourceLocation(References.MODID, "valve");
     public static ResourceLocation TILEENTITY_ALARM_RESOURCEL = new ResourceLocation(References.MODID, "modern_alarm");
@@ -37,28 +41,41 @@ public class IRSoundHandler
     public static ResourceLocation DISC_1_RESOURCEL = new ResourceLocation(References.MODID, "music.visager_royal_entrance");
     public static ResourceLocation BOOK_FLIP_RESOURCEL = new ResourceLocation(References.MODID, "book_flip");
     public static ResourceLocation MOTOR_ROTATION_RESOURCEL = new ResourceLocation(References.MODID, "motor_rotation");
+    public static ResourceLocation PUMP_START_RESOURCEL = new ResourceLocation(References.MODID, "pump_start");
+    private static Minecraft mc = Minecraft.getMinecraft();
+
     private static Map<Long, ISound> soundMap = new HashMap<>();
 
     public static void registerSounds()
     {
-        TILEENTITY_TRAINHORN = registerSound("railroad.train_horn", TILEENTITY_TRAINHORN_RESOURCEL, false);
-        TILEENTITY_VALVE_CHANGE = registerSound("valve", TILEENTITY_VALVE_CHANGE_RESOURCEL, false);
-        TILEENTITY_ALARM = registerSound("modern_alarm", TILEENTITY_ALARM_RESOURCEL, false);
-        ITEM_DRILL = registerSound("drill", ITEM_DRILL_RESOURCEL, false);
-        BLOCK_CATWALKGATE_OPEN = registerSound("gate_opening", BLOCK_CATWALKGATE_OPEN_RESOURCEL, false);
-        BLOCK_CATWALKGATE_CLOSE = registerSound("gate_closing", BLOCK_CATWALKGATE_CLOSE_RESOURCEL, false);
-        EFFECT_SHOCK = registerSound("spark", EFFECT_SHOCK_RESOURCEL, false);
-        DISC_1 = registerSound("music.visager_royal_entrance", DISC_1_RESOURCEL, false);
-        BOOK_FLIP = registerSound("book_flip", BOOK_FLIP_RESOURCEL, false);
-        MOTOR_ROTATION = registerSound("motor_rotation", MOTOR_ROTATION_RESOURCEL, true);
+        TILEENTITY_TRAINHORN = registerSound("railroad.train_horn", TILEENTITY_TRAINHORN_RESOURCEL, EnumSoundType.NORMAL);
+        TILEENTITY_VALVE_CHANGE = registerSound("valve", TILEENTITY_VALVE_CHANGE_RESOURCEL, EnumSoundType.NORMAL);
+        TILEENTITY_ALARM = registerSound("modern_alarm", TILEENTITY_ALARM_RESOURCEL, EnumSoundType.NORMAL);
+        ITEM_DRILL = registerSound("drill", ITEM_DRILL_RESOURCEL, EnumSoundType.NORMAL);
+        BLOCK_CATWALKGATE_OPEN = registerSound("gate_opening", BLOCK_CATWALKGATE_OPEN_RESOURCEL, EnumSoundType.NORMAL);
+        BLOCK_CATWALKGATE_CLOSE = registerSound("gate_closing", BLOCK_CATWALKGATE_CLOSE_RESOURCEL, EnumSoundType.NORMAL);
+        EFFECT_SHOCK = registerSound("spark", EFFECT_SHOCK_RESOURCEL, EnumSoundType.NORMAL);
+        DISC_1 = registerSound("music.visager_royal_entrance", DISC_1_RESOURCEL, EnumSoundType.NORMAL);
+        BOOK_FLIP = registerSound("book_flip", BOOK_FLIP_RESOURCEL, EnumSoundType.NORMAL);
+        MOTOR_ROTATION = registerSound("motor_rotation", MOTOR_ROTATION_RESOURCEL, EnumSoundType.DYNAMIC);
+        PUMP_ROTATION = registerSound("pump_rotation", PUMP_ROTATION_RESOURCEL, EnumSoundType.REPEATABLE_ONLY);
+        PUMP_START = registerSound("pump_start", PUMP_START_RESOURCEL, EnumSoundType.NORMAL);
     }
 
-    private static SoundEvent registerSound(String name, ResourceLocation location, boolean isTickable)
+    private static SoundEvent registerSound(String name, ResourceLocation location, EnumSoundType type)
     {
         SoundEvent event = new SoundEvent(location);
-        if (isTickable)
+        switch (type)
         {
-            TICKABLE_SOUNDS.add(location.toString());
+            default:
+            case NORMAL:
+                break;
+            case REPEATABLE_ONLY:
+                REPEATABLE_SOUNDS.add(location.toString());
+                break;
+            case DYNAMIC:
+                TICKABLE_SOUNDS.add(location.toString());
+                break;
         }
         event.setRegistryName(name);
         ForgeRegistries.SOUND_EVENTS.register(event);
@@ -76,18 +93,18 @@ public class IRSoundHandler
     {
         // First, check to see if there's already a sound playing at the desired location
         ISound s = soundMap.get(pos.toLong());
-        if (s == null || !Minecraft.getMinecraft().getSoundHandler().isSoundPlaying(s))
+        if (s == null || !mc.getSoundHandler().isSoundPlaying(s))
         {
             // No sound playing, start one up - we assume that tile sounds will play until explicitly stopped
-            s = new PositionedSoundRecord(soundLoc, SoundCategory.BLOCKS, (float) volume, pitch,
-                    true, 0, ISound.AttenuationType.LINEAR, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f)
+            s = new PositionedSoundRecord(soundLoc, SoundCategory.BLOCKS, volume, pitch, true, 0,
+                    ISound.AttenuationType.LINEAR, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f)
             {
                 @Override
                 public float getVolume()
                 {
                     if (this.sound == null)
                     {
-                        this.createAccessor(Minecraft.getMinecraft().getSoundHandler());
+                        this.createAccessor(mc.getSoundHandler());
                     }
                     return super.getVolume();
                 }
@@ -110,14 +127,32 @@ public class IRSoundHandler
         ISound s = soundMap.get(posKey);
         if (s != null)
         {
-            Minecraft.getMinecraft().getSoundHandler().stopSound(s);
+            mc.getSoundHandler().stopSound(s);
             soundMap.remove(posKey);
         }
     }
 
+    public static void playSound(ResourceLocation soundLoc, float volume, float pitch, BlockPos pos)
+    {
+        ISound s = new PositionedSoundRecord(soundLoc, SoundCategory.BLOCKS, volume, pitch,
+                false, 0, ISound.AttenuationType.LINEAR, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f)
+        {
+            @Override
+            public float getVolume()
+            {
+                if (this.sound == null)
+                {
+                    this.createAccessor(mc.getSoundHandler());
+                }
+                return super.getVolume();
+            }
+        };
+        playSound(s);
+    }
+
     public static void playSound(ISound sound)
     {
-        Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+        mc.getSoundHandler().playSound(sound);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -132,20 +167,31 @@ public class IRSoundHandler
 
         // Ignore any sound event outside this mod namespace
         ResourceLocation soundLoc = event.getSound().getSoundLocation();
-        if (!TICKABLE_SOUNDS.contains(soundLoc.toString()))
+        if (TICKABLE_SOUNDS.contains(soundLoc.toString()))
+        {
+            resultSound = new TileSound(event.getSound(), resultSound.getVolume(), 1.0F, true);
+            event.setResultSound(resultSound);
+        } else if (REPEATABLE_SOUNDS.contains(soundLoc.toString()))
+        {
+            resultSound = new TileSound(event.getSound(), resultSound.getVolume(), 1.0F, false);
+            event.setResultSound(resultSound);
+        } else
         {
             return;
         }
-
-        // At this point, we've got a known tickable block sound
-        resultSound = new TileSound(event.getSound(), resultSound.getVolume());
-        event.setResultSound(resultSound);
 
         // Finally, update our soundMap so that we can actually have a shot at stopping this sound; note that we also
         // need to "unoffset" the sound position so that we build the correct key for the sound map
         // Aside: I really, really, wish Forge returned the final result sound as part of playSound :/
         BlockPos pos = new BlockPos(resultSound.getXPosF() - 0.5f, resultSound.getYPosF() - 0.5f, resultSound.getZPosF() - 0.5);
         soundMap.put(pos.toLong(), resultSound);
+    }
+
+    public enum EnumSoundType
+    {
+        NORMAL,
+        REPEATABLE_ONLY,
+        DYNAMIC
     }
 
     private static class TileSound implements ITickableSound
@@ -160,18 +206,21 @@ public class IRSoundHandler
         private float volume;
         private float pitch;
         private boolean donePlaying = false;
+        private boolean isDynamic;
 
-        TileSound(ISound sound, float volume)
+        TileSound(ISound sound, float volume, float pitch, boolean isDynamic)
         {
             this.sound = sound;
             this.volume = volume;
+            this.pitch = pitch;
+            this.isDynamic = isDynamic;
         }
 
         @Override
         public void update()
         {
             // Every configured interval, see if we need to adjust Pitch
-            if (mc.world != null && mc.world.getTotalWorldTime() % checkInterval == 0)
+            if (isDynamic && mc.world != null && mc.world.getTotalWorldTime() % checkInterval == 0)
             {
                 TileEntity te = mc.world.getTileEntity(new BlockPos(sound.getXPosF(), sound.getYPosF(), sound.getZPosF()));
                 if (te != null)

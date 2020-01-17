@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntitySteamTurbine> implements ITickable, IDynamicSound
 {
     private final VoltsEnergyContainer energyContainer;
-    private float volume = 4f;
+    private float volume = IRConfig.MainConfig.Sounds.TurbineVolume;
 
     public FluidTank waterTank = new FluidTank(32000)
     {
@@ -70,7 +70,6 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     private int steamPerTick = IRConfig.MainConfig.Main.steamTurbineSteamPerTick;
 
     private int timeSinceStarted = 0;
-    private boolean soundStarted = false;
 
     public TileEntitySteamTurbine()
     {
@@ -156,13 +155,11 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
 
     private void updateSound(float pitch)
     {
-        if (!soundStarted && this.rotation > 0)
+        if (this.rotation > 0)
         {
-            soundStarted = true;
             IRSoundHandler.playRepeatableSound(IRSoundHandler.MOTOR_ROTATION_RESOURCEL, volume, pitch, pos);
-        } else if (soundStarted && this.rotation < 1)
+        } else
         {
-            soundStarted = false;
             IRSoundHandler.stopTileSound(pos);
         }
     }

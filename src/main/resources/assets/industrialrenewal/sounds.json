@@ -98,5 +98,25 @@
         "stream": false
       }
     ]
+  },
+  "pump_rotation": {
+    "category": "block",
+    "subtitle": "pump_rotation",
+    "sounds": [
+      {
+        "name": "industrialrenewal:pump_rotation",
+        "stream": false
+      }
+    ]
+  },
+  "pump_start": {
+    "category": "block",
+    "subtitle": "pump_start",
+    "sounds": [
+      {
+        "name": "industrialrenewal:pump_start",
+        "stream": false
+      }
+    ]
   }
 }

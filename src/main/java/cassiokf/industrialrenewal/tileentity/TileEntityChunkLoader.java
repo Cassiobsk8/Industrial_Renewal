@@ -103,7 +103,7 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
         //If there isn't an expiry time, it's time to set one.
         if (!gadgetIsValid && expireTime == -1)
         {
-            final int timeout = IRConfig.MainConfig.Main.hoursBeforeDeactivation * 60 * 60 * 20;
+            final int timeout = IRConfig.MainConfig.Main.hoursBeforeChunkLoadingDeactivation * 60 * 60 * 20;
             //final int timeout = 10 * 20;
             expireTime = totalWorldTime + timeout;
         }
