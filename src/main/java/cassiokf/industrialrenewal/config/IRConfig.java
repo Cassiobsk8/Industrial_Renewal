@@ -175,6 +175,9 @@ public class IRConfig {
 
             @Config.Comment("Max radius of the fluid pump (Default: 8)")
             public int maxPumpRadius = 8;
+
+            @Config.Comment("Pump replace the lava with cobblestone for lag reasons (default: true)")
+            public boolean repleceLavaWithCobble = true;
         }
 
         public static class SubCategorySound

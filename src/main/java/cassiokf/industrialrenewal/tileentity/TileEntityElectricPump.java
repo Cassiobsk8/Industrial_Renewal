@@ -8,6 +8,7 @@ import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -18,6 +19,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -162,7 +164,10 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
 
                 if (tank.fillInternal(downFluid.drain(Integer.MAX_VALUE, false), false) > 0 && motorEnergyContainer != null && motorEnergyContainer.getEnergyStored() >= (energyPerTick * everyXtick))
                 {
-                    tank.fillInternal(downFluid.drain(Integer.MAX_VALUE, consumeFluid), true);
+                    FluidStack stack = downFluid.drain(Integer.MAX_VALUE, consumeFluid);
+                    if (IRConfig.MainConfig.Main.repleceLavaWithCobble && stack != null && stack.getFluid().equals(FluidRegistry.LAVA))
+                        world.setBlockState(fluidPos, Blocks.COBBLESTONE.getDefaultState());
+                    tank.fillInternal(stack, true);
                     isRunning = true;
                 }
                 getFluidSet().remove(fluidPos);
