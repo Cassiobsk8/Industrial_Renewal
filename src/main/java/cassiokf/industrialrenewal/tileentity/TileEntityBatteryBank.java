@@ -24,7 +24,9 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
     private EnumFacing blockFacing;
 
     public TileEntityBatteryBank() {
-        this.container = new VoltsEnergyContainer(IRConfig.MainConfig.Main.batteryBankCapacity, IRConfig.MainConfig.Main.batteryBankMaxInput, IRConfig.MainConfig.Main.batteryBankMaxOutput)
+        this.container = new VoltsEnergyContainer(IRConfig.MainConfig.Main.batteryBankCapacity,
+                IRConfig.MainConfig.Main.batteryBankMaxInput,
+                IRConfig.MainConfig.Main.batteryBankMaxOutput)
         {
             @Override
             public void onEnergyChange()

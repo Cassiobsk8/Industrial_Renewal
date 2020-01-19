@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.init;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.item.*;
 import cassiokf.industrialrenewal.item.armor.ItemSafetyBelt;
@@ -42,7 +41,7 @@ public class ModItems {
     public static ItemSafetyHelmet safetyHelmet = new ItemSafetyHelmet("safety_helmet", References.CREATIVE_IR_TAB);
     public static ItemSafetyBelt safetyBelt = new ItemSafetyBelt("safety_belt", References.CREATIVE_IR_TAB);
 
-    public static ItemDiscBase disc1 = new ItemDiscBase("record_royal_entrance", References.CREATIVE_IR_TAB, IRSoundHandler.DISC_1);
+    public static ItemDiscBase disc1 = new ItemDiscBase("record_royal_entrance", References.CREATIVE_IR_TAB, IRSoundRegister.DISC_1);
 
     public static ItemBookManual manual = new ItemBookManual("ir_manual", References.CREAATIVE_IRWIP_TAB);
 

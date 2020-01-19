@@ -1,10 +1,7 @@
 package cassiokf.industrialrenewal;
 
 import cassiokf.industrialrenewal.entity.EntityInit;
-import cassiokf.industrialrenewal.init.FluidInit;
-import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.init.ModItems;
-import cassiokf.industrialrenewal.init.NetworkHandler;
+import cassiokf.industrialrenewal.init.*;
 import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
 import cassiokf.industrialrenewal.util.ChunkManagerCallback;
@@ -67,7 +64,7 @@ public class IndustrialRenewal {
     {
         System.out.println(References.NAME + " is loading preInit!");
         FluidInit.registerFluids();
-        IRSoundHandler.registerSounds();
+        IRSoundRegister.registerSounds();
         EntityInit.registerEntities();
         proxy.preInit();
         NetworkHandler.init();

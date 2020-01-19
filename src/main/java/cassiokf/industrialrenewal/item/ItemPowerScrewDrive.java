@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.item;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.BlockSignBase;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityBatteryBank;
 import net.minecraft.block.Block;
@@ -102,6 +102,6 @@ public class ItemPowerScrewDrive extends ItemBase {
 
     public static void playDrillSound(World world, BlockPos pos)
     {
-        world.playSound(null, pos, IRSoundHandler.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound(null, pos, IRSoundRegister.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 }

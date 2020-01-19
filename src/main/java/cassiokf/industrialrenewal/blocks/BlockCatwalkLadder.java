@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.block.*;
@@ -57,7 +57,7 @@ public class BlockCatwalkLadder extends BlockBase {
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         Item playerItem = entity.inventory.getCurrentItem().getItem();
         if (playerItem.equals(ModItems.screwDrive)) {
-            world.playSound(null, pos, IRSoundHandler.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            world.playSound(null, pos, IRSoundRegister.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
             world.setBlockState(pos, state.withProperty(ACTIVE, !state.getValue(ACTIVE)), 3);
             return true;
         }

@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -54,9 +54,9 @@ public class BlockCatwalkGate extends BlockBase {
             Random r = new Random();
             float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
             if (state.getValue(ACTIVE)) {
-                world.playSound(null, pos, IRSoundHandler.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F, pitch);
+                world.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F, pitch);
             } else {
-                world.playSound(null, pos, IRSoundHandler.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F, pitch);
+                world.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F, pitch);
             }
 
             state = state.cycleProperty(ACTIVE);

@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.gui;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.util.buttons.ButtonBookOverIcon;
@@ -388,7 +388,7 @@ public class GUIManual extends GuiScreen {
 
     @Override
     public void onGuiClosed() {
-        this.world.playSound(this.player, this.player.getPosition(), IRSoundHandler.BOOK_FLIP, SoundCategory.BLOCKS, 1f, 0.8f);
+        this.world.playSound(this.player, this.player.getPosition(), IRSoundRegister.BOOK_FLIP, SoundCategory.BLOCKS, 1f, 0.8f);
     }
 }
 

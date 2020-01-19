@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -77,7 +77,7 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
     {
         Random r = new Random();
         float pitch = r.nextFloat() * (1.2f - 0.8f) + 0.8f;
-        this.getWorld().playSound(null, this.getPos(), IRSoundHandler.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1F,
+        this.getWorld().playSound(null, this.getPos(), IRSoundRegister.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1F,
                 pitch);
     }
 

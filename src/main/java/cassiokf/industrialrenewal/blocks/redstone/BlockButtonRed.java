@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.blocks.BlockBase;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -43,7 +43,7 @@ public class BlockButtonRed extends BlockBase
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (world.isRemote) return true;
         world.setBlockState(pos, state.withProperty(PRESS, !state.getValue(PRESS)));
-        world.playSound(null, pos, IRSoundHandler.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1f, 1f);
+        world.playSound(null, pos, IRSoundRegister.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1f, 1f);
         world.notifyNeighborsOfStateChange(pos.offset(state.getValue(FACING)), this, true);
         return true;
     }

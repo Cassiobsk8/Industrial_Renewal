@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -62,7 +62,7 @@ public abstract class BlockBasicElectricFence extends BlockBase {
             ((EntityLivingBase) entityIn).knockBack(entityIn, knockback, pos.getX() - entityIn.posX, pos.getZ() - entityIn.posZ);
         Random r = new Random();
         float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
-        world.playSound(null, pos, IRSoundHandler.EFFECT_SHOCK, SoundCategory.BLOCKS, 0.6F, pitch);
+        world.playSound(null, pos, IRSoundRegister.EFFECT_SHOCK, SoundCategory.BLOCKS, 0.6F, pitch);
     }
 
     @SuppressWarnings("deprecation")

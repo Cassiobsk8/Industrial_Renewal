@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.blocks.BlockElectricPump;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.block.Block;
@@ -110,17 +111,23 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
 
     private void handleSound()
     {
-        if (isRunning && !starting)
+        try
         {
-            IRSoundHandler.playSound(IRSoundHandler.PUMP_START_RESOURCEL, IRConfig.MainConfig.Sounds.pumpVolume + 0.5f, 1.0F, pos);
-            starting = true;
-        } else if (isRunning)
+            if (isRunning && !starting)
+            {
+                IRSoundHandler.playSound(world, IRSoundRegister.PUMP_START, IRConfig.MainConfig.Sounds.pumpVolume + 0.5f, 1.0F, pos);
+                starting = true;
+            } else if (isRunning)
+            {
+                IRSoundHandler.playRepeatableSound(IRSoundRegister.PUMP_ROTATION_RESOURCEL, IRConfig.MainConfig.Sounds.pumpVolume, 1.0F, pos);
+            } else
+            {
+                IRSoundHandler.stopTileSound(pos);
+                starting = false;
+            }
+        } catch (Exception e)
         {
-            IRSoundHandler.playRepeatableSound(IRSoundHandler.PUMP_ROTATION_RESOURCEL, IRConfig.MainConfig.Sounds.pumpVolume, 1.0F, pos);
-        } else
-        {
-            IRSoundHandler.stopTileSound(pos);
-            starting = false;
+            Utils.sendConsoleMessage(e.getMessage());
         }
     }
 

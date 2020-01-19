@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.redstone;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -44,7 +44,7 @@ public class TileEntityAlarm extends TileEntity implements ITickable {
     public void playThis() {
         if (!world.isRemote && this.checkPowered())
         {
-            world.playSound(null, pos, IRSoundHandler.TILEENTITY_ALARM, SoundCategory.BLOCKS, (float) IRConfig.MainConfig.Main.alarmVolume, 1.0F);
+            world.playSound(null, pos, IRSoundRegister.TILEENTITY_ALARM, SoundCategory.BLOCKS, (float) IRConfig.MainConfig.Main.alarmVolume, 1.0F);
         }
     }
 }

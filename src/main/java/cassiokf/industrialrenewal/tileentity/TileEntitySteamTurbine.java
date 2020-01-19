@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import cassiokf.industrialrenewal.util.interfaces.IDynamicSound;
@@ -157,7 +158,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     {
         if (this.rotation > 0)
         {
-            IRSoundHandler.playRepeatableSound(IRSoundHandler.MOTOR_ROTATION_RESOURCEL, volume, pitch, pos);
+            IRSoundHandler.playRepeatableSound(IRSoundRegister.MOTOR_ROTATION_RESOURCEL, volume, pitch, pos);
         } else
         {
             IRSoundHandler.stopTileSound(pos);

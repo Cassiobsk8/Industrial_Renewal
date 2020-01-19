@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.item;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.init.GUIHandler;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,7 +24,7 @@ public class ItemBookManual extends ItemBase {
     }
 
     private void OpenGUI(World world, BlockPos pos, EntityPlayer player) {
-        world.playSound(null, player.getPosition(), IRSoundHandler.BOOK_FLIP, SoundCategory.BLOCKS, 1f, 1f);
+        world.playSound(null, player.getPosition(), IRSoundRegister.BOOK_FLIP, SoundCategory.BLOCKS, 1f, 1f);
         player.openGui(IndustrialRenewal.instance, GUIHandler.MANUAL, world, pos.getX(), pos.getY(), pos.getZ());
     }
 }
