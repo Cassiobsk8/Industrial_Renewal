@@ -36,9 +36,6 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
     private static float DOWNY1 = 0.250f;
     private static float UPY2 = 0.750f;
 
-    //public static final float PIPE_MIN_POS = 0.250f;
-    //public static final float PIPE_MAX_POS = 0.750f;
-
     public static final IUnlistedProperty<Boolean> CSOUTH = new Properties.PropertyAdapter<>(PropertyBool.create("c_south"));
     public static final IUnlistedProperty<Boolean> CNORTH = new Properties.PropertyAdapter<>(PropertyBool.create("c_north"));
     public static final IUnlistedProperty<Boolean> CEAST = new Properties.PropertyAdapter<>(PropertyBool.create("c_east"));
@@ -73,7 +70,6 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
         return getDefaultState();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(final int meta) {
         return getDefaultState();
@@ -125,17 +121,15 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
     {
         if (state instanceof IExtendedBlockState)
         {
-            state = getExtendedState(state, world, pos);
-            IExtendedBlockState eState = (IExtendedBlockState) state;
+            IExtendedBlockState eState = (IExtendedBlockState) getExtendedState(state, world, pos);
             return eState.getValue(property);
         }
         return false;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    {
         if (isConnected(worldIn, pos, state, NORTH) || isConnected(worldIn, pos, state, CNORTH))
         {
             NORTHZ1 = 0.0f;
