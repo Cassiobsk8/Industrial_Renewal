@@ -167,6 +167,12 @@ public class BlockIndustrialFloor extends BlockBase
         return state;
     }
 
+    @Override
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
+        return true;
+    }
+
     public final boolean isConnected(IBlockAccess world, BlockPos pos, IBlockState state, final EnumFacing facing)
     {
         if (state instanceof IExtendedBlockState)
