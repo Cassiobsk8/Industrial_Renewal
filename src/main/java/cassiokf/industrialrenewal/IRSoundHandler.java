@@ -3,18 +3,21 @@ package cassiokf.industrialrenewal;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.util.interfaces.IDynamicSound;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.*;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.ITickableSound;
+import net.minecraft.client.audio.Sound;
+import net.minecraft.client.audio.SoundEventAccessor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,10 +25,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class IRSoundHandler
 {
-    private static Minecraft mc = Minecraft.getMinecraft();
+    private static Minecraft mc = Minecraft.getInstance();
 
     private static Map<Long, ISound> soundMap = new HashMap<>();
 
@@ -35,11 +38,12 @@ public class IRSoundHandler
     }
 
     /* ------------------------------- Sound handling from Mekanism devs ------------------------------- */
+    /*
     public static ISound playRepeatableSound(ResourceLocation soundLoc, float volume, float pitch, BlockPos pos)
     {
         // First, check to see if there's already a sound playing at the desired location
         ISound s = soundMap.get(pos.toLong());
-        if (s == null || !mc.getSoundHandler().isSoundPlaying(s))
+        if (s == null || !mc.getSoundHandler().isPlaying(s))
         {
             // No sound playing, start one up - we assume that tile sounds will play until explicitly stopped
             s = new PositionedSoundRecord(soundLoc, SoundCategory.BLOCKS, volume, pitch, true, 0,
@@ -65,7 +69,7 @@ public class IRSoundHandler
         }
 
         return s;
-    }
+    }*/
 
     public static void stopTileSound(BlockPos pos)
     {
@@ -73,7 +77,7 @@ public class IRSoundHandler
         ISound s = soundMap.get(posKey);
         if (s != null)
         {
-            mc.getSoundHandler().stopSound(s);
+            mc.getSoundHandler().stop(s);
             soundMap.remove(posKey);
         }
     }
@@ -85,7 +89,7 @@ public class IRSoundHandler
 
     public static void playSound(ISound sound)
     {
-        mc.getSoundHandler().playSound(sound);
+        mc.getSoundHandler().play(sound);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -116,7 +120,7 @@ public class IRSoundHandler
         // Finally, update our soundMap so that we can actually have a shot at stopping this sound; note that we also
         // need to "unoffset" the sound position so that we build the correct key for the sound map
         // Aside: I really, really, wish Forge returned the final result sound as part of playSound :/
-        BlockPos pos = new BlockPos(resultSound.getXPosF() - 0.5f, resultSound.getYPosF() - 0.5f, resultSound.getZPosF() - 0.5);
+        BlockPos pos = new BlockPos(resultSound.getX() - 0.5f, resultSound.getY() - 0.5f, resultSound.getZ() - 0.5);
         soundMap.put(pos.toLong(), resultSound);
     }
 
@@ -129,7 +133,7 @@ public class IRSoundHandler
 
     private static class TileSound implements ITickableSound
     {
-        private Minecraft mc = Minecraft.getMinecraft();
+        private Minecraft mc = Minecraft.getInstance();
         // Choose an interval between 60-80 ticks (3-4 seconds) to check for muffling changes. We do this
         // to ensure that not every tile sound tries to run on the same tick and thus create
         // uneven spikes of CPU usage
@@ -150,12 +154,12 @@ public class IRSoundHandler
         }
 
         @Override
-        public void update()
+        public void tick()
         {
             // Every configured interval, see if we need to adjust Pitch
-            if (isDynamic && mc.world != null && mc.world.getTotalWorldTime() % checkInterval == 0)
+            if (isDynamic && mc.world != null && mc.world.getGameTime() % checkInterval == 0)
             {
-                TileEntity te = mc.world.getTileEntity(new BlockPos(sound.getXPosF(), sound.getYPosF(), sound.getZPosF()));
+                TileEntity te = mc.world.getTileEntity(new BlockPos(sound.getX(), sound.getY(), sound.getZ()));
                 if (te != null)
                 {
                     if (te instanceof IDynamicSound)
@@ -223,27 +227,33 @@ public class IRSoundHandler
         }
 
         @Override
+        public boolean isGlobal()
+        {
+            return false;
+        }
+
+        @Override
         public int getRepeatDelay()
         {
             return sound.getRepeatDelay();
         }
 
         @Override
-        public float getXPosF()
+        public float getX()
         {
-            return sound.getXPosF();
+            return sound.getX();
         }
 
         @Override
-        public float getYPosF()
+        public float getY()
         {
-            return sound.getYPosF();
+            return sound.getY();
         }
 
         @Override
-        public float getZPosF()
+        public float getZ()
         {
-            return sound.getZPosF();
+            return sound.getZ();
         }
 
         @Override

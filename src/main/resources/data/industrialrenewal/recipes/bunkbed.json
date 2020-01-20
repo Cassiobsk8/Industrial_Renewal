@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SCS"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:bed",
+      "data": 0
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:bunkbed",
+    "count": 1
+  }
+}

@@ -1,20 +1,21 @@
 package cassiokf.industrialrenewal.util;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class VoltsEnergyContainer implements IEnergyStorage, INBTSerializable<NBTTagCompound> {
+public class VoltsEnergyContainer implements IEnergyStorage
+{
     protected int stored;
     protected int capacity;
     protected int input;
     protected int output;
 
-    public VoltsEnergyContainer() {
+    public VoltsEnergyContainer()
+    {
         this(1000, 1000, 1000);
     }
 
-    public VoltsEnergyContainer(int capacity, int input, int output) {
+    public VoltsEnergyContainer(int capacity, int input, int output)
+    {
         this(0, capacity, input, output);
     }
 
@@ -25,37 +26,38 @@ public class VoltsEnergyContainer implements IEnergyStorage, INBTSerializable<NB
         this.output = output;
     }
 
-    public VoltsEnergyContainer(NBTTagCompound dataTag) {
-        this.deserializeNBT(dataTag);
-    }
+    /*
+        public VoltsEnergyContainer(NBTTagCompound dataTag) {
+            this.deserializeNBT(dataTag);
+        }
 
-    @Override
-    public NBTTagCompound serializeNBT() {
-        final NBTTagCompound dataTag = new NBTTagCompound();
+        @Override
+        public NBTTagCompound serializeNBT() {
+            final NBTTagCompound dataTag = new NBTTagCompound();
 
-        dataTag.setInteger("IRStored", this.stored);
-        dataTag.setInteger("IRCapacity", this.capacity);
-        dataTag.setInteger("IRInput", this.input);
-        dataTag.setInteger("IROutput", this.output);
+            dataTag.setInteger("IRStored", this.stored);
+            dataTag.setInteger("IRCapacity", this.capacity);
+            dataTag.setInteger("IRInput", this.input);
+            dataTag.setInteger("IROutput", this.output);
 
-        return dataTag;
-    }
+            return dataTag;
+        }
 
-    @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
-        if (nbt.hasKey("IRStored"))
-            this.stored = nbt.getInteger("IRStored");
-        if (nbt.hasKey("IRCapacity"))
-            this.capacity = nbt.getInteger("IRCapacity");
-        if (nbt.hasKey("IRInput"))
-            this.input = nbt.getInteger("IRInput");
-        if (nbt.hasKey("IROutput"))
-            this.output = nbt.getInteger("IROutput");
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt) {
+            if (nbt.hasKey("IRStored"))
+                this.stored = nbt.getInteger("IRStored");
+            if (nbt.hasKey("IRCapacity"))
+                this.capacity = nbt.getInteger("IRCapacity");
+            if (nbt.hasKey("IRInput"))
+                this.input = nbt.getInteger("IRInput");
+            if (nbt.hasKey("IROutput"))
+                this.output = nbt.getInteger("IROutput");
 
-        if (this.stored > this.getMaxEnergyStored())
-            this.stored = this.getMaxEnergyStored();
-    }
-
+            if (this.stored > this.getMaxEnergyStored())
+                this.stored = this.getMaxEnergyStored();
+        }
+    */
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         final int acceptedPower = Math.min(this.getMaxEnergyStored() - this.getEnergyStored(), Math.min(this.getMaxInput(), maxReceive));

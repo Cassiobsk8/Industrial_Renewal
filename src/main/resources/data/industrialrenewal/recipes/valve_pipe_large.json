@@ -1,0 +1,29 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " S ",
+    "TBT",
+    " R "
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    },
+    "T": {
+      "type": "forge:ore_dict",
+      "ore": "ingotSteel"
+    },
+    "B": {
+      "item": "minecraft:bucket"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:valve_pipe_large",
+    "count": 1
+  }
+}

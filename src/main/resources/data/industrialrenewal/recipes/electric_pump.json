@@ -1,0 +1,28 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " TI",
+    "MSI",
+    " TI"
+  ],
+  "key": {
+    "M": {
+      "item": "industrialrenewal:motor"
+    },
+    "T": {
+      "item": "industrialrenewal:fluid_pipe"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:electric_pump",
+    "count": 1
+  }
+}

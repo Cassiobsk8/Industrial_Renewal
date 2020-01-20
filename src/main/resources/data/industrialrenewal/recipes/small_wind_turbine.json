@@ -1,0 +1,26 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " I ",
+    "IMS",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotSteel"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickSteel"
+    },
+    "M": {
+      "type": "forge:ore_dict",
+      "ore": "motorSmall"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:small_wind_turbine",
+    "count": 1
+  }
+}

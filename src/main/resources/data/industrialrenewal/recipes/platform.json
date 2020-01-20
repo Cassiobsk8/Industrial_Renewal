@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "S S",
+    "SWS",
+    " P "
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    },
+    "P": {
+      "item": "industrialrenewal:catwalk_pillar"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:platform",
+    "count": 4
+  }
+}

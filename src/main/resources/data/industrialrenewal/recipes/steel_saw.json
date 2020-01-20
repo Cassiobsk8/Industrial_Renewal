@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "RR",
+    "RC",
+    "MM"
+  ],
+  "key": {
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "ingotSteel"
+    },
+    "M": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:steel_saw"
+  }
+}

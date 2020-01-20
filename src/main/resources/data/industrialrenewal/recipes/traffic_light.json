@@ -1,0 +1,38 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "IDR",
+    "ADY",
+    "IDG"
+  ],
+  "key": {
+    "A": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "dustGlowstone"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dyeRed"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "dyeYellow"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "dyeGreen"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:traffic_light",
+    "count": 2
+  }
+}

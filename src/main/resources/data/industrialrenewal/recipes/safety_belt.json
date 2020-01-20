@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "L L",
+    "LCL",
+    "L L"
+  ],
+  "key": {
+    "L": {
+      "type": "forge:ore_dict",
+      "ore": "leather"
+    },
+    "C": {
+      "item": "minecraft:lead"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:safety_belt",
+    "count": 1
+  }
+}

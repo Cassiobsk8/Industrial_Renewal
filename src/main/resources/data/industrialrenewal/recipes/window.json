@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "GSG",
+    "GSG",
+    "GSG"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "paneGlass"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:window",
+    "count": 12
+  }
+}

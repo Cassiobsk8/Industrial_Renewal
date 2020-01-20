@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:detector_rail",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "industrialrenewal:detector_rail"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " SI",
+    "S I",
+    "TTT"
+  ],
+  "key": {
+    "T": {
+      "item": "industrialrenewal:normal_rail"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotSteel"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:buffer_stop_rail",
+    "count": 4
+  }
+}

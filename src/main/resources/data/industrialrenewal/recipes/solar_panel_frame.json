@@ -1,0 +1,24 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SSS",
+    "SBS",
+    "SCS"
+  ],
+  "key": {
+    "C": {
+      "item": "industrialrenewal:energy_cable"
+    },
+    "B": {
+      "item": "industrialrenewal:battery"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:solar_panel_frame",
+    "count": 2
+  }
+}

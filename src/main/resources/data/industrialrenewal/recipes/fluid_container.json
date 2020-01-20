@@ -1,0 +1,23 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SBS",
+    " I "
+  ],
+  "key": {
+    "B": {
+      "item": "industrialrenewal:barrel_item"
+    },
+    "I": {
+      "item": "industrialrenewal:minecart_flat"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:fluid_container",
+    "count": 1
+  }
+}

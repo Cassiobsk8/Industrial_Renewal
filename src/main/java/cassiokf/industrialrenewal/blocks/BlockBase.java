@@ -1,35 +1,33 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemGroup;
 
 
-public class BlockBase extends Block {
+public class BlockBase extends Block
+{
 
     protected String name;
+    protected ItemGroup group;
 
-    public BlockBase(Material material, String name, CreativeTabs tab) {
-        super(material);
-
+    public BlockBase(Material material, String name, ItemGroup group)
+    {
+        super(Block.Properties.create(material).hardnessAndResistance(2f, 5f));
         this.name = name;
-
+        this.group = group;
         setRegistryName(References.MODID, name);
-        setTranslationKey(References.MODID + "." + name);
-        setCreativeTab(tab);
-        setHardness(2f);
-        setResistance(5f);
     }
 
-    public void registerItemModel(Item itemBlock) {
+    /*public void registerItemModel(Item itemBlock) {
         IndustrialRenewal.proxy.registerItemRenderer(itemBlock, 0, name);
     }
-
-    public Item createItemBlock() {
-        return new ItemBlock(this).setRegistryName(getRegistryName());
+*/
+    public Item createItemBlock()
+    {
+        return new BlockItem(this, new Item.Properties().group(group)).setRegistryName(References.MODID, name);
     }
 }

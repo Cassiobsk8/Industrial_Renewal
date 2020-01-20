@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "industrialrenewal:cartridge_inverter"
+    }
+  ],
+  "result": {
+    "item": "industrialrenewal:cartridge_plus",
+    "count": 1
+  }
+}

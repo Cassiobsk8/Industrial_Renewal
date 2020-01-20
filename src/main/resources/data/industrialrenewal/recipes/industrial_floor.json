@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "RRR",
+    "   ",
+    "CCC"
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:iron_bars"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:industrial_floor",
+    "count": 6
+  }
+}

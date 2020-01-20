@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " P ",
+    " S ",
+    "ISI"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "P": {
+      "item": "minecraft:sign"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:sign_hv",
+    "count": 3
+  }
+}

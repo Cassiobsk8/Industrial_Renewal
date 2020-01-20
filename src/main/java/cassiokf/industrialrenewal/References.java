@@ -1,24 +1,22 @@
 package cassiokf.industrialrenewal;
 
-import cassiokf.industrialrenewal.tab.IndustrialRenewalRailroadTab;
-import cassiokf.industrialrenewal.tab.IndustrialRenewalTab;
-import cassiokf.industrialrenewal.tab.IndustrialRenewalWIPTab;
+import cassiokf.industrialrenewal.group.IndustrialRenewalItemGroup;
+import cassiokf.industrialrenewal.group.IndustrialRenewalRailroadItemGroup;
+import cassiokf.industrialrenewal.group.IndustrialRenewalWIPItemGroup;
+import net.minecraft.item.ItemGroup;
 
-public class References {
+public class References
+{
 
     public static final String MODID = "industrialrenewal";
 
     public static final String NAME = "Industrial Renewal";
 
-    public static final String VERSION = "0.14.2";
-
     public static final String NETWORKCHANNEL = MODID;
 
-    public static final IndustrialRenewalTab CREATIVE_IR_TAB = new IndustrialRenewalTab();
-    public static final IndustrialRenewalRailroadTab CREATIVE_IRLOCOMOTIVE_TAB = new IndustrialRenewalRailroadTab();
-    public static final IndustrialRenewalWIPTab CREAATIVE_IRWIP_TAB = new IndustrialRenewalWIPTab();
-
-    public static final String GUI_FACTORY = "cassiokf.industrialrenewal.config.IRConfigGuiFactory";
+    public static final ItemGroup CREATIVE_IR_GROUP = new IndustrialRenewalItemGroup();
+    public static final ItemGroup CREATIVE_IRLOCOMOTIVE_GROUP = new IndustrialRenewalRailroadItemGroup();
+    public static final ItemGroup CREAATIVE_IRWIP_GROUP = new IndustrialRenewalWIPItemGroup();
 
     public static final int ENTITY_CARGOCONTAINER_ID = 120;
     public static final int ENTITY_STEAMLOCOMOTIVE_ID = 121;
@@ -27,6 +25,4 @@ public class References {
     public static final int ENTITY_PASSENGERCAR_ID = 124;
     public static final int ENTITY_FLATCART_ID = 125;
     public static final int ENTITY_HOPPERCART_ID = 126;
-
-    public static final String VERSION_CHECKER_URL = "https://raw.githubusercontent.com/Cassiobsk8/Industrial_Renewal/master/update.json";
 }

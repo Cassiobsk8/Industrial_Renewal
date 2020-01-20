@@ -1,0 +1,24 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SDS",
+    "SCS"
+  ],
+  "key": {
+    "C": {
+      "item": "industrialrenewal:minecart_flat"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "chest"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickSteel"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:cart_hopper",
+    "count": 1
+  }
+}

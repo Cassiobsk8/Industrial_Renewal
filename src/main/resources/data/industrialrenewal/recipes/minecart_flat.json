@@ -1,0 +1,15 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:minecart"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:minecart_flat",
+    "count": 3
+  }
+}

@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.util.slots;
 
-import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -15,7 +14,7 @@ public class LogSlot extends SlotItemHandler {
     public boolean isItemValid(ItemStack itemstack) {
         if (itemstack.isEmpty())
             return false;
-        return Utils.isWood(itemstack);
+        return false;//Utils.isWood(itemstack);
     }
 
 

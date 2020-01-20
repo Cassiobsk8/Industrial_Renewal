@@ -1,0 +1,27 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " R ",
+    "BIF",
+    " R "
+  ],
+  "key": {
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    },
+    "B": {
+      "item": "industrialrenewal:barrel_item"
+    },
+    "I": {
+      "item": "industrialrenewal:fluid_pipe"
+    },
+    "F": {
+      "item": "minecraft:furnace"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:firebox_fluid",
+    "count": 1
+  }
+}

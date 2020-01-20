@@ -1,0 +1,32 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SHS",
+    "FPR",
+    "SSS"
+  ],
+  "key": {
+    "H": {
+      "item": "minecraft:hopper"
+    },
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "enderpearl"
+    },
+    "F": {
+      "item": "industrialrenewal:fluid_pipe"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:trash",
+    "count": 1
+  }
+}

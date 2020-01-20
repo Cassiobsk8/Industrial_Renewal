@@ -1,21 +1,10 @@
 package cassiokf.industrialrenewal.util;
 
-import cassiokf.industrialrenewal.config.IRConfig;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.IFluidBlock;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.wrappers.BlockLiquidWrapper;
-import net.minecraftforge.fluids.capability.wrappers.BlockWrapper;
-import net.minecraftforge.fluids.capability.wrappers.FluidBlockWrapper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -26,32 +15,33 @@ public class Utils {
 
     private static final Random RANDOM = new Random();
 
-    public static void sendChatMessage(String str) {
+    /*public static void sendChatMessage(String str) {
         Minecraft.getMinecraft().player.sendChatMessage(str);
     }
-
+*/
     public static void sendConsoleMessage(String str) {
         System.out.println(str);
     }
 
-    public static boolean isWood(ItemStack stack) {
-        int[] array = OreDictionary.getOreIDs(stack);
-        int size = array.length;
-        List<Integer> oreList = new ArrayList<>();
-        oreList.add(OreDictionary.getOreID("logWood"));
-        oreList.add(OreDictionary.getOreID("logRubber"));
-        boolean isLog = false;
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                if (oreList.contains(array[i])) {
-                    isLog = true;
-                    break;
+    /*
+        public static boolean isWood(ItemStack stack) {
+            int[] array = OreDictionary.getOreIDs(stack);
+            int size = array.length;
+            List<Integer> oreList = new ArrayList<>();
+            oreList.add(OreDictionary.getOreID("logWood"));
+            oreList.add(OreDictionary.getOreID("logRubber"));
+            boolean isLog = false;
+            if (size > 0) {
+                for (int i = 0; i < size; i++) {
+                    if (oreList.contains(array[i])) {
+                        isLog = true;
+                        break;
+                    }
                 }
             }
+            return isLog;
         }
-        return isLog;
-    }
-
+    */
     public static boolean IsInventoryEmpty(IItemHandler handler) {
         for (int i = 0; i < handler.getSlots(); i++) {
             if (!handler.getStackInSlot(i).isEmpty()) {
@@ -96,11 +86,11 @@ public class Utils {
 
         while (!stack.isEmpty())
         {
-            EntityItem entityitem = new EntityItem(worldIn, x + (double) f, y + (double) f1, z + (double) f2, stack.splitStack(RANDOM.nextInt(21) + 10));
-            entityitem.motionX = RANDOM.nextGaussian() * 0.05000000074505806D;
-            entityitem.motionY = RANDOM.nextGaussian() * 0.05000000074505806D + 0.20000000298023224D;
-            entityitem.motionZ = RANDOM.nextGaussian() * 0.05000000074505806D;
-            worldIn.spawnEntity(entityitem);
+            //ItemEntity entityitem = new ItemEntity(worldIn, x + (double) f, y + (double) f1, z + (double) f2, stack.splitStack(RANDOM.nextInt(21) + 10));
+            //entityitem.prevPosX = RANDOM.nextGaussian() * 0.05000000074505806D;
+            //entityitem.prevPosY = RANDOM.nextGaussian() * 0.05000000074505806D + 0.20000000298023224D;
+            //entityitem.prevPosZ= RANDOM.nextGaussian() * 0.05000000074505806D;
+            //worldIn.spawnEntity(entityitem);
         }
     }
 
@@ -119,16 +109,17 @@ public class Utils {
         return (1 - f) * a + f * b;
     }
 
-    public static IFluidHandler wrapFluidBlock(Block block, World world, BlockPos pos) {
-        if (block instanceof IFluidBlock) {
-            return new FluidBlockWrapper((IFluidBlock) block, world, pos);
-        } else if (block instanceof BlockLiquid) {
-            return new BlockLiquidWrapper((BlockLiquid) block, world, pos);
-        } else {
-            return new BlockWrapper(block, world, pos);
+    /*
+        public static IFluidHandler wrapFluidBlock(Block block, World world, BlockPos pos) {
+            if (block instanceof IFluidBlock) {
+                return new FluidBlockWrapper((IFluidBlock) block, world, pos);
+            } else if (block instanceof BlockLiquid) {
+                return new BlockLiquidWrapper((BlockLiquid) block, world, pos);
+            } else {
+                return new BlockWrapper(block, world, pos);
+            }
         }
-    }
-
+    */
     public static float getInvNorm(IItemHandler inventory)
     {
         float items = 0;
@@ -191,20 +182,21 @@ public class Utils {
         return list;
     }
 
-    public static float getConvertedTemperature(float temp)
-    {
-        switch (IRConfig.MainConfig.Main.temperatureScale)
+    /*
+        public static float getConvertedTemperature(float temp)
         {
-            default:
-            case 0:
-                return temp;
-            case 1:
-                return (float) (temp * 1.8 + 32);
-            case 2:
-                return (float) (temp + 273.15);
+            switch (IRConfig.MainConfig.Main.temperatureScale)
+            {
+                default:
+                case 0:
+                    return temp;
+                case 1:
+                    return (float) (temp * 1.8 + 32);
+                case 2:
+                    return (float) (temp + 273.15);
+            }
         }
-    }
-
+    */
     public static String formatEnergyString(int energy)
     {
         String text = energy + " FE";

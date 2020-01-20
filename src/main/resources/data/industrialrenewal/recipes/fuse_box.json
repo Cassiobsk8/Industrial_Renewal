@@ -1,0 +1,26 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SRS",
+    "SCS",
+    "SRS"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "chest"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:fuse_box",
+    "count": 1
+  }
+}
