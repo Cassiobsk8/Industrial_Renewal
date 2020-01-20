@@ -168,7 +168,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     public String getGenerationText()
     {
         int energy = energyTransfer;
-        return Utils.formatEnergyString(energy) + " FE/t";
+        return Utils.formatEnergyString(energy) + "/t";
     }
 
     public float getGenerationFill() //0 ~ 90
