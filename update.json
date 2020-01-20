@@ -1,11 +1,11 @@
 {
   "homepage": "<https://minecraft.curseforge.com/projects/industrial-renewal>",
   "promos": {
-    "1.12.2-latest": "0.14.2",
-    "1.12.2-recommended": "0.14.2"
+    "1.12.2-latest": "0.14.3",
+    "1.12.2-recommended": "0.14.3"
   },
   "1.12.2": {
-    "0.14.1": "New:\n\n- Creative energy generator\n\n- HV wire energy transmission (Transformer - Isolators - transformer) (max 10240FE/t)\n\n- Two new energy cables (LV 256FE/t, MV 1024FE/t, HV 10240FE/t)\n\n- New Energy Breaker\n\nFixes:\n\n- see all on github",
+    "0.14.3": "New:\n\n- Creative energy generator\n\n- HV wire energy transmission (Transformer - Isolators - transformer) (max 10240FE/t)\n\n- Two new energy cables (LV 256FE/t, MV 1024FE/t, HV 10240FE/t)\n\n- New Energy Breaker\n\nFixes:\n\n- see all on github",
     "0.13.1": "Fix:\nGauges wrong state crash\nConfig to change wind turbine base generation\nFix detectors not activate redstone if theres a block between",
     "0.13.0": "Rail Gate\n\nRazor wire\n\nCargo/Fluid cart Transfer\n\nBulk cargo cart\n\nBulk conveyor Inserter (right click bulk conveyor Dispenser)\n\nFixes:\n\nSave content fixes\n\nsee more on github.",
     "0.12.1": "fix Crash with thermal dynamics fluiducts",
