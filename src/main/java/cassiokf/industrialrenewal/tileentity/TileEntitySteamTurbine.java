@@ -70,8 +70,6 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     private int oldRotation;
     private int steamPerTick = IRConfig.MainConfig.Main.steamTurbineSteamPerTick;
 
-    private int timeSinceStarted = 0;
-
     public TileEntitySteamTurbine()
     {
         this.energyContainer = new VoltsEnergyContainer(100000, 0, 10240)
@@ -131,13 +129,9 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
                     this.Sync();
                     oldRotation = rotation;
                 }
-                timeSinceStarted++;
-
-                if (timeSinceStarted > 20)
-                {
-                    timeSinceStarted = 0;
-                    updateSound(getPitch());
-                }
+            } else
+            {
+                updateSound(getPitch());
             }
         }
     }
@@ -156,6 +150,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
 
     private void updateSound(float pitch)
     {
+        if (!world.isRemote) return;
         if (this.rotation > 0)
         {
             IRSoundHandler.playRepeatableSound(IRSoundRegister.MOTOR_ROTATION_RESOURCEL, volume, pitch, pos);
@@ -168,7 +163,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     @Override
     public void onMasterBreak()
     {
-        IRSoundHandler.stopTileSound(pos);
+        if (world.isRemote) IRSoundHandler.stopTileSound(pos);
     }
 
     @Override

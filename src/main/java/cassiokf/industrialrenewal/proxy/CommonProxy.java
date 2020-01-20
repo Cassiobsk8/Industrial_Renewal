@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.proxy;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.util.text.translation.I18n;
 
 public class CommonProxy {
 
@@ -21,14 +20,6 @@ public class CommonProxy {
         registerItemRenderer(Item.getItemFromBlock(block), meta, id);
     }
 
-    public void registerBlockRenderers() {
-
-    }
-
     public void registerRenderers() {
-    }
-
-    public String localize(String unlocalized, Object... args) {
-        return I18n.translateToLocalFormatted(unlocalized, args);
     }
 }

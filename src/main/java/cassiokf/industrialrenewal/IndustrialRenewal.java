@@ -10,7 +10,6 @@ import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
@@ -48,8 +47,6 @@ public class IndustrialRenewal {
         System.out.println(References.NAME + " is loading init!");
         ModRecipes.init();
         proxy.Init();
-        MinecraftForge.EVENT_BUS.register(IRSoundHandler.class);
-        proxy.registerBlockRenderers();
         System.out.println("Done!");
     }
 

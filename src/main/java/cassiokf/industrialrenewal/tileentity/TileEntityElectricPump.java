@@ -24,14 +24,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.TileFluidHandler;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class TileEntityElectricPump extends TileFluidHandler implements ICapabilityProvider, ITickable {
+public class TileEntityElectricPump extends TileEntitySyncable implements ICapabilityProvider, ITickable
+{
     private final VoltsEnergyContainer energyContainer;
 
     public FluidTank tank = new FluidTank(1000)
@@ -60,7 +60,9 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
     private int maxRadius = IRConfig.MainConfig.Main.maxPumpRadius;
 
     private boolean isRunning = false;
+    private boolean oldIsRunning = false;
     private boolean starting = false;
+    private boolean oldStarting = false;
 
     public TileEntityElectricPump()
     {
@@ -75,7 +77,7 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
             @Override
             public void onEnergyChange()
             {
-                TileEntityElectricPump.this.markDirty();
+                TileEntityElectricPump.this.Sync();
             }
         };
     }
@@ -86,18 +88,27 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
     }
 
     @Override
-    public void update() {
-        if (!world.isRemote && getIdex() == 1)
+    public void update()
+    {
+        if (!world.isRemote)
         {
-            consumeEnergy();
-            if (tick >= everyXtick)
+            if (getIdex() == 1)
             {
-                tick = 0;
-                GetFluidDown();
+                consumeEnergy();
+                if (tick >= everyXtick)
+                {
+                    tick = 0;
+                    GetFluidDown();
+                }
+                tick++;
+                passFluidUp();
+            }
+        } else
+        {
+            if (getIdex() == 1)
+            {
                 handleSound();
             }
-            tick++;
-            passFluidUp();
         }
     }
 
@@ -111,37 +122,46 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
 
     private void handleSound()
     {
-        try
+        if (!world.isRemote) return;
+        if (isRunning && !starting)
         {
-            if (isRunning && !starting)
+            IRSoundHandler.playSound(world, IRSoundRegister.PUMP_START, IRConfig.MainConfig.Sounds.pumpVolume + 0.5f, 1.0F, pos);
+            starting = true;
+            oldStarting = true;
+            Sync();
+        } else if (isRunning)
+        {
+            IRSoundHandler.playRepeatableSound(IRSoundRegister.PUMP_ROTATION_RESOURCEL, IRConfig.MainConfig.Sounds.pumpVolume, 1.0F, pos);
+        } else
+        {
+            IRSoundHandler.stopTileSound(pos);
+            starting = false;
+            if (oldStarting)
             {
-                IRSoundHandler.playSound(world, IRSoundRegister.PUMP_START, IRConfig.MainConfig.Sounds.pumpVolume + 0.5f, 1.0F, pos);
-                starting = true;
-            } else if (isRunning)
-            {
-                IRSoundHandler.playRepeatableSound(IRSoundRegister.PUMP_ROTATION_RESOURCEL, IRConfig.MainConfig.Sounds.pumpVolume, 1.0F, pos);
-            } else
-            {
-                IRSoundHandler.stopTileSound(pos);
-                starting = false;
+                oldStarting = false;
+                Sync();
             }
-        } catch (Exception e)
-        {
-            Utils.sendConsoleMessage(e.getMessage());
         }
     }
 
     private void consumeEnergy()
     {
         VoltsEnergyContainer motorEnergyContainer = GetEnergyContainer();
-        if (motorEnergyContainer != null && motorEnergyContainer.getEnergyStored() >= (energyPerTick))
+        if (motorEnergyContainer != null && motorEnergyContainer.getEnergyStored() >= energyPerTick)
         {
-            motorEnergyContainer.setEnergyStored(Math.max(motorEnergyContainer.getEnergyStored() - (energyPerTick), 0));
+            motorEnergyContainer.setEnergyStored(Math.max(motorEnergyContainer.getEnergyStored() - energyPerTick, 0));
             isRunning = true;
         } else
         {
             isRunning = false;
             starting = false;
+            Sync();
+        }
+        if (oldIsRunning != isRunning || oldStarting != starting)
+        {
+            oldIsRunning = isRunning;
+            oldStarting = starting;
+            Sync();
         }
     }
 
@@ -149,6 +169,12 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
     {
         if (tank.getFluidAmount() <= 0 && isRunning)
         {
+            if (IRConfig.MainConfig.Main.pumpInfinityWater
+                    && (world.getBlockState(pos.down()).getBlock().equals(Blocks.WATER)
+                    || world.getBlockState(pos.down()).getBlock().equals(Blocks.FLOWING_WATER)))
+            {
+                tank.fillInternal(new FluidStack(FluidRegistry.WATER, 1000), true);
+            }
             if (getFluidSet() != null && !getFluidSet().isEmpty())
             {
                 BlockPos fluidPos = getFluidSet().get(0);
@@ -238,7 +264,7 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
     @Override
     public void invalidate()
     {
-        IRSoundHandler.stopTileSound(pos);
+        if (world.isRemote) IRSoundHandler.stopTileSound(pos);
         starting = false;
         super.invalidate();
     }
@@ -276,18 +302,24 @@ public class TileEntityElectricPump extends TileFluidHandler implements ICapabil
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
         NBTTagCompound tag = new NBTTagCompound();
         tank.writeToNBT(tag);
         compound.setTag("fluid", tag);
+        compound.setBoolean("isRunning", isRunning);
+        compound.setBoolean("starting", starting);
         compound.setTag("StoredIR", this.energyContainer.serializeNBT());
         return super.writeToNBT(compound);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(NBTTagCompound compound)
+    {
         NBTTagCompound tag = compound.getCompoundTag("fluid");
         tank.readFromNBT(tag);
+        isRunning = compound.getBoolean("isRunning");
+        starting = compound.getBoolean("starting");
         this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
         super.readFromNBT(compound);
     }
