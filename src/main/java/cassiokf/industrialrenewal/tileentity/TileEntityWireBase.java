@@ -121,7 +121,7 @@ public class TileEntityWireBase extends TileEntitySyncable
         disableConnectedCables(connectionPos);
         removeConnection(connectionPos);
         if (!world.isRemote)
-            Utils.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModItems.coilHV));
+            Utils.spawnItemStack(world, pos, new ItemStack(ModItems.coilHV));
     }
 
     private void disableConnectedCables(BlockPos connectedPos)

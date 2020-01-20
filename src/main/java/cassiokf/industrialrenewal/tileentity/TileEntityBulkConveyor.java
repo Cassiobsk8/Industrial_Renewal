@@ -235,17 +235,13 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
 
     public static void dropInventoryItems(World worldIn, BlockPos pos, ItemStackHandler inventory)
     {
-        double x = pos.getX();
-        double y = pos.getY();
-        double z = pos.getZ();
-
         for (int i = 0; i < 3; ++i)
         {
             ItemStack itemstack = inventory.getStackInSlot(i);
 
             if (!itemstack.isEmpty())
             {
-                Utils.spawnItemStack(worldIn, x, y, z, itemstack);
+                Utils.spawnItemStack(worldIn, pos, itemstack);
             }
         }
     }

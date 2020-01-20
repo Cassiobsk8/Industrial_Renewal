@@ -73,9 +73,6 @@ public class BlockFloorCable extends BlockEnergyCable
     @Override
     public void onPlayerDestroy(World world, BlockPos pos, IBlockState state)
     {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
         Block block;
         switch (type)
         {
@@ -91,7 +88,7 @@ public class BlockFloorCable extends BlockEnergyCable
                 break;
         }
         ItemStack itemst = new ItemStack(ItemBlock.getItemFromBlock(block));
-        if (!world.isRemote) Utils.spawnItemStack(world, x, y, z, itemst);
+        if (!world.isRemote) Utils.spawnItemStack(world, pos, itemst);
         super.onPlayerDestroy(world, pos, state);
     }
 

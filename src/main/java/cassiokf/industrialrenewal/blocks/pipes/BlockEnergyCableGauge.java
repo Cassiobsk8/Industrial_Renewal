@@ -7,6 +7,7 @@ import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableHVGauge;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableLVGauge;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableMVGauge;
 import cassiokf.industrialrenewal.util.EnumEnergyCableType;
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.properties.IProperty;
@@ -16,6 +17,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -130,6 +132,14 @@ public class BlockEnergyCableGauge extends BlockEnergyCable
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(FACING).getHorizontalIndex();
+    }
+
+    @Override
+    public void onPlayerDestroy(World world, BlockPos pos, IBlockState state)
+    {
+        ItemStack itemst = new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyLevel));
+        if (!world.isRemote) Utils.spawnItemStack(world, pos, itemst);
+        super.onPlayerDestroy(world, pos, state);
     }
 
     @Override

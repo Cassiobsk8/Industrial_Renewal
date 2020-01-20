@@ -73,23 +73,22 @@ public class Utils {
 
     public static void dropInventoryItems(World worldIn, BlockPos pos, ItemStackHandler inventory)
     {
-        double x = pos.getX();
-        double y = pos.getY();
-        double z = pos.getZ();
-
         for (int i = 0; i < inventory.getSlots(); ++i)
         {
             ItemStack itemstack = inventory.getStackInSlot(i);
 
             if (!itemstack.isEmpty())
             {
-                spawnItemStack(worldIn, x, y, z, itemstack);
+                spawnItemStack(worldIn, pos, itemstack);
             }
         }
     }
 
-    public static void spawnItemStack(World worldIn, double x, double y, double z, ItemStack stack)
+    public static void spawnItemStack(World worldIn, BlockPos pos, ItemStack stack)
     {
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
         float f = RANDOM.nextFloat() * 0.8F + 0.1F;
         float f1 = RANDOM.nextFloat() * 0.8F + 0.1F;
         float f2 = RANDOM.nextFloat() * 0.8F + 0.1F;

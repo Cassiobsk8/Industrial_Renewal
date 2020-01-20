@@ -260,7 +260,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     {
         BlockPos connectorPos = getConnectorPos();
         if (!world.isRemote)
-            Utils.spawnItemStack(world, connectorPos.getX(), connectorPos.getY(), connectorPos.getZ(), new ItemStack(ModItems.coilHV));
+            Utils.spawnItemStack(world, connectorPos, new ItemStack(ModItems.coilHV));
         disableConnectedCables(cableConnectionPos);
         removeConnection();
     }
