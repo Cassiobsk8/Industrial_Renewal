@@ -5,8 +5,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -22,19 +24,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Utils {
+public class Utils
+{
 
     private static final Random RANDOM = new Random();
 
-    public static void sendChatMessage(String str) {
-        Minecraft.getMinecraft().player.sendChatMessage(str);
+    public static void sendChatMessage(EntityPlayer player, String str)
+    {
+        if (player == null) Minecraft.getMinecraft().player.sendChatMessage(str);
+        else player.sendMessage(new TextComponentString(str));
     }
 
-    public static void sendConsoleMessage(String str) {
+    public static void sendConsoleMessage(String str)
+    {
         System.out.println(str);
     }
 
-    public static boolean isWood(ItemStack stack) {
+    public static boolean isWood(ItemStack stack)
+    {
         int[] array = OreDictionary.getOreIDs(stack);
         int size = array.length;
         List<Integer> oreList = new ArrayList<>();

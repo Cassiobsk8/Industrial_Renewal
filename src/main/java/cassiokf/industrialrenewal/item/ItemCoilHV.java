@@ -47,7 +47,7 @@ public class ItemCoilHV extends ItemBase
                 TileEntity te = worldIn.getTileEntity(pos);
                 if (te == null)
                 {
-                    cleanConnection();
+                    cleanConnection(player);
                     return EnumActionResult.PASS;
                 }
                 ItemStack itemstack = player.getHeldItem(hand);
@@ -61,11 +61,11 @@ public class ItemCoilHV extends ItemBase
                         {
                             firstConnectionPos = teT.getConnectorPos();
                             isSecond = true;
-                            Utils.sendChatMessage("Connection Start");
+                            Utils.sendChatMessage(player, "Connection Start");
                             return EnumActionResult.SUCCESS;
                         } else
                         {
-                            Utils.sendChatMessage("Connection already in use");
+                            Utils.sendChatMessage(player, "Connection already in use");
                         }
                     } else
                     {
@@ -75,13 +75,14 @@ public class ItemCoilHV extends ItemBase
                             isSecond = false;
                             connectFirst(worldIn, teT.getConnectorPos());
                             teT.connect(firstConnectionPos);
-                            Utils.sendChatMessage("Connected Distance: " + distance);
+                            Utils.sendChatMessage(player, "Connected Distance: " + distance);
                             itemstack.shrink(1);
                             return EnumActionResult.SUCCESS;
                         } else
                         {
-                            if (distance > 64) Utils.sendChatMessage("Far away from each other, Distence: " + distance);
-                            cleanConnection();
+                            if (distance > 64)
+                                Utils.sendChatMessage(player, "Far away from each other, Distence: " + distance);
+                            cleanConnection(player);
                             return EnumActionResult.FAIL;
                         }
                     }
@@ -94,11 +95,11 @@ public class ItemCoilHV extends ItemBase
                         {
                             firstConnectionPos = teT.getPos();
                             isSecond = true;
-                            Utils.sendChatMessage("Connection Start");
+                            Utils.sendChatMessage(player, "Connection Start");
                             return EnumActionResult.SUCCESS;
                         } else
                         {
-                            Utils.sendChatMessage("Connection already in use");
+                            Utils.sendChatMessage(player, "Connection already in use");
                         }
                     } else
                     {
@@ -108,34 +109,30 @@ public class ItemCoilHV extends ItemBase
                             isSecond = false;
                             connectFirst(worldIn, teT.getPos());
                             teT.setConnection(firstConnectionPos);
-                            Utils.sendChatMessage("Connected Distance: " + distance);
+                            Utils.sendChatMessage(player, "Connected Distance: " + distance);
                             itemstack.shrink(1);
                             return EnumActionResult.SUCCESS;
                         } else
                         {
-                            if (distance > 64) Utils.sendChatMessage("Far away from each other, Distence: " + distance);
-                            cleanConnection();
+                            if (distance > 64)
+                                Utils.sendChatMessage(player, "Far away from each other, Distence: " + distance);
+                            cleanConnection(player);
                             return EnumActionResult.FAIL;
                         }
                     }
                 } else if (isSecond)
                 {
-                    cleanConnection();
+                    cleanConnection(player);
                 }
             }
         }
         return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
 
-    private void itemShrink(ItemStack stack)
-    {
-        stack.shrink(1);
-    }
-
-    private void cleanConnection()
+    private void cleanConnection(EntityPlayer player)
     {
         isSecond = false;
-        Utils.sendChatMessage("Can not connect");
+        Utils.sendChatMessage(player, "Can not connect");
     }
 
     private void connectFirst(World world, BlockPos endPos)
