@@ -19,6 +19,7 @@ public class PipeBaseModel implements IModel
     public static final ResourceLocation TEXTURE_SHEET = new ResourceLocation("industrialrenewal:blocks/anvil_base");
 
     public static final ModelResourceLocation MODEL_CORE = new ModelResourceLocation("industrialrenewal:pipe_fluid/pipe_core");
+    public static final ModelResourceLocation MODEL_MASTER = new ModelResourceLocation("industrialrenewal:pipe_energy/cable_master");
 
     public static final ModelResourceLocation MODEL_DOWN = new ModelResourceLocation("industrialrenewal:pipe_fluid/con_down");
     public static final ModelResourceLocation MODEL_UP = new ModelResourceLocation("industrialrenewal:pipe_fluid/con_up");
@@ -59,6 +60,9 @@ public class PipeBaseModel implements IModel
             IModel subComponent = ModelLoaderRegistry.getModel(MODEL_CORE);
             IBakedModel bakedModelCore = subComponent.bake(state, format, bakedTextureGetter);
 
+            subComponent = ModelLoaderRegistry.getModel(MODEL_MASTER);
+            IBakedModel bakedModelMaster = subComponent.bake(state, format, bakedTextureGetter);
+
             subComponent = ModelLoaderRegistry.getModel(MODEL_DOWN);
             IBakedModel bakedModelDown = subComponent.bake(state, format, bakedTextureGetter);
 
@@ -95,7 +99,7 @@ public class PipeBaseModel implements IModel
             subComponent = ModelLoaderRegistry.getModel(MODEL2_SOUTH);
             IBakedModel bakedModel2South = subComponent.bake(state, format, bakedTextureGetter);
 
-            return new PipeBaseComposite(bakedModelCore, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
+            return new PipeBaseComposite(bakedModelCore, bakedModelMaster, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
                     bakedModel2Down, bakedModel2Up, bakedModel2West, bakedModel2East, bakedModel2North, bakedModel2South);
         } catch (Exception exception)
         {

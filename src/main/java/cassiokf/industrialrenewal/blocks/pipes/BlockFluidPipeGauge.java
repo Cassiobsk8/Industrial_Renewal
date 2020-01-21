@@ -39,7 +39,7 @@ public class BlockFluidPipeGauge extends BlockFluidPipe
     protected BlockStateContainer createBlockState()
     {
         IProperty[] listedProperties = new IProperty[]{FACING}; // listed properties
-        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN};
+        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{MASTER, SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN};
         return new ExtendedBlockState(this, listedProperties, unlistedProperties);
     }
 
@@ -50,7 +50,8 @@ public class BlockFluidPipeGauge extends BlockFluidPipe
         {
             EnumFacing facing = state.getValue(FACING);
             IExtendedBlockState eState = (IExtendedBlockState) state;
-            return eState.withProperty(SOUTH, canConnectToPipe(world, pos, facing.getOpposite())).withProperty(NORTH, canConnectToPipe(world, pos, facing))
+            return eState.withProperty(MASTER, isMaster(world, pos))
+                    .withProperty(SOUTH, canConnectToPipe(world, pos, facing.getOpposite())).withProperty(NORTH, canConnectToPipe(world, pos, facing))
                     .withProperty(EAST, canConnectToPipe(world, pos, facing.rotateY())).withProperty(WEST, canConnectToPipe(world, pos, facing.rotateYCCW()))
                     .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
                     .withProperty(CSOUTH, canConnectToCapability(world, pos, facing.getOpposite())).withProperty(CNORTH, canConnectToCapability(world, pos, facing))

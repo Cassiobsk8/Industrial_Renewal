@@ -14,6 +14,6 @@ public class TileEntityEnergyCableHVGauge extends TileEntityEnergyCableGauge
     @Override
     public boolean instanceOf(TileEntity te)
     {
-        return te instanceof TileEntityEnergyCableHV || te instanceof TileEntityEnergyCableHVGauge;
+        return te instanceof TileEntityEnergyCableHV || te instanceof TileEntityEnergyCableHVGauge || te instanceof TileEntityCableTray;
     }
 }

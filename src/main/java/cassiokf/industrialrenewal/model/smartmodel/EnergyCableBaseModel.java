@@ -17,8 +17,11 @@ import java.util.function.Function;
 public class EnergyCableBaseModel implements IModel
 {
     public static final ResourceLocation TEXTURE_SHEET = new ResourceLocation("industrialrenewal:blocks/energy_meter");
+    public static final ResourceLocation TEXTURE_SHEET2 = new ResourceLocation("industrialrenewal:blocks/master_cable_texture");
 
     public static final ModelResourceLocation MODEL_CORE = new ModelResourceLocation("industrialrenewal:pipe_energy/pipe_core");
+
+    public static final ModelResourceLocation MODEL_MASTER = new ModelResourceLocation("industrialrenewal:pipe_energy/cable_master");
 
     public static final ModelResourceLocation MODEL_DOWN = new ModelResourceLocation("industrialrenewal:pipe_energy/con_down");
     public static final ModelResourceLocation MODEL_UP = new ModelResourceLocation("industrialrenewal:pipe_energy/con_up");
@@ -41,6 +44,9 @@ public class EnergyCableBaseModel implements IModel
         {
             IModel subComponent = ModelLoaderRegistry.getModel(MODEL_CORE);
             IBakedModel bakedModelCore = subComponent.bake(state, format, bakedTextureGetter);
+
+            subComponent = ModelLoaderRegistry.getModel(MODEL_MASTER);
+            IBakedModel bakedModelMaster = subComponent.bake(state, format, bakedTextureGetter);
 
             subComponent = ModelLoaderRegistry.getModel(MODEL_DOWN);
             IBakedModel bakedModelDown = subComponent.bake(state, format, bakedTextureGetter);
@@ -78,7 +84,7 @@ public class EnergyCableBaseModel implements IModel
             subComponent = ModelLoaderRegistry.getModel(MODEL2_SOUTH);
             IBakedModel bakedModel2South = subComponent.bake(state, format, bakedTextureGetter);
 
-            return new PipeBaseComposite(bakedModelCore, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
+            return new PipeBaseComposite(bakedModelCore, bakedModelMaster, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
                     bakedModel2Down, bakedModel2Up, bakedModel2West, bakedModel2East, bakedModel2North, bakedModel2South);
         } catch (Exception exception)
         {
@@ -97,6 +103,6 @@ public class EnergyCableBaseModel implements IModel
     @Override
     public Collection<ResourceLocation> getTextures()
     {
-        return ImmutableList.copyOf(new ResourceLocation[]{TEXTURE_SHEET});
+        return ImmutableList.copyOf(new ResourceLocation[]{TEXTURE_SHEET, TEXTURE_SHEET2});
     }
 }

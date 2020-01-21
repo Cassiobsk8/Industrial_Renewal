@@ -19,6 +19,7 @@ import java.util.List;
 public class PipeBaseComposite implements IBakedModel
 {
     private IBakedModel modelCore;
+    private IBakedModel modelMaster;
     private IBakedModel modelDown;
     private IBakedModel modelUp;
     private IBakedModel modelWest;
@@ -32,12 +33,14 @@ public class PipeBaseComposite implements IBakedModel
     private IBakedModel model2North;
     private IBakedModel model2South;
 
-    public PipeBaseComposite(IBakedModel i_modelCore, IBakedModel i_modelDown, IBakedModel i_modelUp, IBakedModel i_modelWest,
+    public PipeBaseComposite(IBakedModel i_modelCore, IBakedModel i_modelMaster, IBakedModel i_modelDown,
+                             IBakedModel i_modelUp, IBakedModel i_modelWest,
                              IBakedModel i_modelEast, IBakedModel i_modelNorth, IBakedModel i_modelSouth,
                              IBakedModel i_model2Down, IBakedModel i_model2Up, IBakedModel i_model2West,
                              IBakedModel i_model2East, IBakedModel i_model2North, IBakedModel i_model2South)
     {
         modelCore = i_modelCore;
+        modelMaster = i_modelMaster;
         modelDown = i_modelDown;
         modelUp = i_modelUp;
         modelWest = i_modelWest;
@@ -72,6 +75,10 @@ public class PipeBaseComposite implements IBakedModel
             return quadsList;
         }
         IExtendedBlockState extendedBlockState = (IExtendedBlockState) blockState;
+        if (isLinkPresent(extendedBlockState, BlockPipeBase.MASTER))
+        {
+            quadsList.addAll(modelMaster.getQuads(extendedBlockState, side, rand));
+        }
         if (isLinkPresent(extendedBlockState, BlockPipeBase.DOWN))
         {
             quadsList.addAll(modelDown.getQuads(extendedBlockState, side, rand));

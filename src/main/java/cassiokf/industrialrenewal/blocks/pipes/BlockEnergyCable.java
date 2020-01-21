@@ -60,7 +60,9 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> imple
     public boolean canConnectToPipe(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
     {
         IBlockState state = worldIn.getBlockState(ownPos.offset(neighbourDirection));
-        return state.getBlock() instanceof BlockEnergyCable && type.equals(((BlockEnergyCable) state.getBlock()).type);
+        Block block = state.getBlock();
+        return (block instanceof BlockEnergyCable && type.equals(((BlockEnergyCable) state.getBlock()).type))
+                || block instanceof BlockCableTray;
     }
 
     @Override

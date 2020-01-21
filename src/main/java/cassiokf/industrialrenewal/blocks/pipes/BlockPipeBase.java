@@ -36,6 +36,7 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
     private static float DOWNY1 = 0.250f;
     private static float UPY2 = 0.750f;
 
+    public static final IUnlistedProperty<Boolean> MASTER = new Properties.PropertyAdapter<>(PropertyBool.create("master"));
     public static final IUnlistedProperty<Boolean> CSOUTH = new Properties.PropertyAdapter<>(PropertyBool.create("c_south"));
     public static final IUnlistedProperty<Boolean> CNORTH = new Properties.PropertyAdapter<>(PropertyBool.create("c_north"));
     public static final IUnlistedProperty<Boolean> CEAST = new Properties.PropertyAdapter<>(PropertyBool.create("c_east"));
@@ -60,7 +61,7 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
     @Override
     protected BlockStateContainer createBlockState() {
         IProperty[] listedProperties = new IProperty[]{}; // listed properties
-        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN};
+        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{MASTER, SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN};
         return new ExtendedBlockState(this, listedProperties, unlistedProperties);
     }
 
@@ -107,7 +108,8 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
         if (state instanceof IExtendedBlockState)
         {
             IExtendedBlockState eState = (IExtendedBlockState) state;
-            return eState.withProperty(SOUTH, canConnectToPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectToPipe(world, pos, EnumFacing.NORTH))
+            return eState.withProperty(MASTER, isMaster(world, pos))
+                    .withProperty(SOUTH, canConnectToPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectToPipe(world, pos, EnumFacing.NORTH))
                     .withProperty(EAST, canConnectToPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectToPipe(world, pos, EnumFacing.WEST))
                     .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
                     .withProperty(CSOUTH, canConnectToCapability(world, pos, EnumFacing.SOUTH)).withProperty(CNORTH, canConnectToCapability(world, pos, EnumFacing.NORTH))
@@ -115,6 +117,12 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
                     .withProperty(CUP, canConnectToCapability(world, pos, EnumFacing.UP)).withProperty(CDOWN, canConnectToCapability(world, pos, EnumFacing.DOWN));
         }
         return state;
+    }
+
+    public boolean isMaster(IBlockAccess world, BlockPos pos)
+    {
+        TileEntityMultiBlocksTube te = (TileEntityMultiBlocksTube) world.getTileEntity(pos);
+        return te != null && te.isMaster();
     }
 
     public final boolean isConnected(IBlockAccess world, BlockPos pos, IBlockState state, final IUnlistedProperty<Boolean> property)

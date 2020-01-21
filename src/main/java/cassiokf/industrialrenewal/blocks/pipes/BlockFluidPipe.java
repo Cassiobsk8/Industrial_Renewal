@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.blocks.pipes;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipe;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,7 +30,8 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipe>
     public boolean canConnectToPipe(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
     {
         IBlockState state = worldIn.getBlockState(ownPos.offset(neighbourDirection));
-        return state.getBlock() instanceof BlockFluidPipe || state.getBlock() instanceof BlockFluidPipeGauge;
+        Block block = state.getBlock();
+        return block instanceof BlockFluidPipe || block instanceof BlockCableTray;
     }
 
     @Override

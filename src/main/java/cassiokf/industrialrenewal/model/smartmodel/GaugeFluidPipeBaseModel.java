@@ -15,6 +15,7 @@ import java.util.function.Function;
 public class GaugeFluidPipeBaseModel implements IModel
 {
     public static final ModelResourceLocation MODEL_CORE = new ModelResourceLocation("industrialrenewal:pipe_fluid/pipe_core_gauge");
+    public static final ModelResourceLocation MODEL_MASTER = new ModelResourceLocation("industrialrenewal:pipe_energy/cable_master");
 
     public static final ModelResourceLocation MODEL_DOWN = new ModelResourceLocation("industrialrenewal:pipe_fluid/con_down");
     public static final ModelResourceLocation MODEL_UP = new ModelResourceLocation("industrialrenewal:pipe_fluid/con_up");
@@ -37,6 +38,9 @@ public class GaugeFluidPipeBaseModel implements IModel
         {
             IModel subComponent = ModelLoaderRegistry.getModel(MODEL_CORE);
             IBakedModel bakedModelCore = subComponent.bake(state, format, bakedTextureGetter);
+
+            subComponent = ModelLoaderRegistry.getModel(MODEL_MASTER);
+            IBakedModel bakedModelMaster = subComponent.bake(state, format, bakedTextureGetter);
 
             subComponent = ModelLoaderRegistry.getModel(MODEL_DOWN);
             IBakedModel bakedModelDown = subComponent.bake(state, format, bakedTextureGetter);
@@ -74,7 +78,7 @@ public class GaugeFluidPipeBaseModel implements IModel
             subComponent = ModelLoaderRegistry.getModel(MODEL2_SOUTH);
             IBakedModel bakedModel2South = subComponent.bake(state, format, bakedTextureGetter);
 
-            return new PipeBaseComposite(bakedModelCore, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
+            return new PipeBaseComposite(bakedModelCore, bakedModelMaster, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
                     bakedModel2Down, bakedModel2Up, bakedModel2West, bakedModel2East, bakedModel2North, bakedModel2South);
         } catch (Exception exception)
         {

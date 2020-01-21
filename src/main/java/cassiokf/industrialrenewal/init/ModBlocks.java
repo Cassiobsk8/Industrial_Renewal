@@ -10,10 +10,7 @@ import cassiokf.industrialrenewal.blocks.pipes.*;
 import cassiokf.industrialrenewal.blocks.railroad.*;
 import cassiokf.industrialrenewal.blocks.redstone.*;
 import cassiokf.industrialrenewal.fluids.BlockFluid;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableHVGauge;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableLVGauge;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableMVGauge;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeGauge;
+import cassiokf.industrialrenewal.tileentity.tubes.*;
 import cassiokf.industrialrenewal.util.EnumBulkConveyorType;
 import cassiokf.industrialrenewal.util.EnumEnergyCableType;
 import net.minecraft.block.Block;
@@ -40,6 +37,7 @@ public class ModBlocks {
     public static BlockFireExtinguisher fireExtinguisher = new BlockFireExtinguisher("fire_extinguisher", References.CREATIVE_IR_TAB);
     public static BlockLocker locker = new BlockLocker("locker", References.CREATIVE_IR_TAB);
 
+    public static BlockCableTray cableTray = new BlockCableTray("cable_tray", References.CREAATIVE_IRWIP_TAB);
     public static BlockFluidPipe fluidPipe = new BlockFluidPipe("fluid_pipe", References.CREATIVE_IR_TAB);
     public static BlockFluidPipeGauge fluidPipeGauge = new BlockFluidPipeGauge("fluid_pipe_gauge", References.CREATIVE_IR_TAB);
 
@@ -248,6 +246,7 @@ public class ModBlocks {
                 energyCableGaugeLV,
                 energyCableGaugeMV,
                 energyCableGaugeHV,
+                cableTray,
                 fluidPipe,
                 fluidPipeGauge,
                 energySwitch,
@@ -328,6 +327,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(electricPump.getTileEntityClass(), electricPump.getRegistryName().toString());
         GameRegistry.registerTileEntity(transformerHV.getTileEntityClass(), transformerHV.getRegistryName());
         GameRegistry.registerTileEntity(batteryBank.getTileEntityClass(), batteryBank.getRegistryName().toString());
+        GameRegistry.registerTileEntity(TileEntityCableTray.class, cableTray.getRegistryName());
         GameRegistry.registerTileEntity(fluidPipe.getTileEntityClass(), fluidPipe.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityFluidPipeGauge.class, fluidPipeGauge.getRegistryName());
         GameRegistry.registerTileEntity(steamBoiler.getTileEntityClass(), steamBoiler.getRegistryName().toString());
@@ -411,6 +411,7 @@ public class ModBlocks {
                 energyCableLV.createItemBlock(),
                 energyCableMV.createItemBlock(),
                 energyCableHV.createItemBlock(),
+                cableTray.createItemBlock(),
                 fluidPipe.createItemBlock(),
                 energySwitch.createItemBlock(),
                 valveLarge.createItemBlock(),
@@ -457,6 +458,7 @@ public class ModBlocks {
         energySwitch.registerItemModel(Item.getItemFromBlock(energySwitch));
         valveLarge.registerItemModel(Item.getItemFromBlock(valveLarge));
         alarm.registerItemModel(Item.getItemFromBlock(alarm));
+        cableTray.registerItemModel(Item.getItemFromBlock(cableTray));
         fluidPipe.registerItemModel(Item.getItemFromBlock(fluidPipe));
         energyCableLV.registerItemModel(Item.getItemFromBlock(energyCableLV));
         energyCableMV.registerItemModel(Item.getItemFromBlock(energyCableMV));

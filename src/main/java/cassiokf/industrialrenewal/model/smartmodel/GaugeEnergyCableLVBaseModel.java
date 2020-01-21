@@ -19,6 +19,7 @@ public class GaugeEnergyCableLVBaseModel implements IModel
     public static final ResourceLocation TEXTURE_SHEET = new ResourceLocation("industrialrenewal:blocks/energy_meter_256");
 
     public static final ModelResourceLocation MODEL_CORE = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/pipe_core_gauge");
+    public static final ModelResourceLocation MODEL_MASTER = new ModelResourceLocation("industrialrenewal:pipe_energy/cable_master");
 
     public static final ModelResourceLocation MODEL_DOWN = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con_down");
     public static final ModelResourceLocation MODEL_UP = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con_up");
@@ -41,6 +42,9 @@ public class GaugeEnergyCableLVBaseModel implements IModel
         {
             IModel subComponent = ModelLoaderRegistry.getModel(MODEL_CORE);
             IBakedModel bakedModelCore = subComponent.bake(state, format, bakedTextureGetter);
+
+            subComponent = ModelLoaderRegistry.getModel(MODEL_MASTER);
+            IBakedModel bakedModelMaster = subComponent.bake(state, format, bakedTextureGetter);
 
             subComponent = ModelLoaderRegistry.getModel(MODEL_DOWN);
             IBakedModel bakedModelDown = subComponent.bake(state, format, bakedTextureGetter);
@@ -78,7 +82,7 @@ public class GaugeEnergyCableLVBaseModel implements IModel
             subComponent = ModelLoaderRegistry.getModel(MODEL2_SOUTH);
             IBakedModel bakedModel2South = subComponent.bake(state, format, bakedTextureGetter);
 
-            return new PipeBaseComposite(bakedModelCore, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
+            return new PipeBaseComposite(bakedModelCore, bakedModelMaster, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
                     bakedModel2Down, bakedModel2Up, bakedModel2West, bakedModel2East, bakedModel2North, bakedModel2South);
         } catch (Exception exception)
         {

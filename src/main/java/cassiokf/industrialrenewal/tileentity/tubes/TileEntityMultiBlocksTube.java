@@ -47,16 +47,17 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     {
         if (master == null || master.isInvalid())
         {
-            List<TE> connectedCables = new ArrayList<TE>();
-            Stack<TE> traversingCables = new Stack<TE>();
-            TE master = (TE) this;
-            traversingCables.add((TE) this);
+            if (isTray()) return;
+            List<TileEntityMultiBlocksTube> connectedCables = new ArrayList<>();
+            Stack<TileEntityMultiBlocksTube> traversingCables = new Stack<>();
+            TileEntityMultiBlocksTube master = this;
+            traversingCables.add(this);
             while (!traversingCables.isEmpty())
             {
-                TE storage = traversingCables.pop();
+                TileEntityMultiBlocksTube storage = traversingCables.pop();
                 if (storage.isMaster())
                 {
-                    master = storage;
+                    master = (TE) storage;
                 }
                 connectedCables.add(storage);
                 for (EnumFacing d : getFacesToCheck())
@@ -69,14 +70,36 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                 }
             }
             master.getPosSet().clear();
-            for (TE storage : connectedCables)
+            if (canBeMaster(master))
             {
-                storage.setMaster(master);
-                storage.checkForOutPuts(storage.getPos());
-                storage.markDirty();
+                for (TileEntityMultiBlocksTube storage : connectedCables)
+                {
+                    if (!canBeMaster(storage)) continue;
+                    storage.setMaster(master);
+                    storage.checkForOutPuts(storage.getPos());
+                    storage.markDirty();
+                }
+            } else
+            {
+                for (TileEntityMultiBlocksTube storage : connectedCables)
+                {
+                    if (!canBeMaster(storage)) continue;
+                    storage.getPosSet().clear();
+                    storage.setMaster(null);
+                }
             }
             markDirty();
         }
+    }
+
+    public boolean isTray()
+    {
+        return false;
+    }
+
+    private boolean canBeMaster(TileEntity te)
+    {
+        return !(te instanceof TileEntityCableTray);
     }
 
     public EnumFacing[] getFacesToCheck()
@@ -104,7 +127,6 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         this.master = master;
         isMaster = master == this;
         if (!isMaster) posSet.clear();
-        markDirty();
     }
 
     public Map<BlockPos, EnumFacing> getPosSet()
@@ -116,13 +138,25 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     public void invalidate()
     {
         super.invalidate();
+
+        if (master != null)
+        {
+            master.setMaster(null);
+            if (master != null) master.getMaster();
+            else getMaster();
+        }
+
         for (EnumFacing d : EnumFacing.VALUES)
         {
             TileEntity te = world.getTileEntity(pos.offset(d));
             if (instanceOf(te))
             {
                 ((TileEntityMultiBlocksTube) te).master = null;
-                ((TileEntityMultiBlocksTube) te).initializeMultiblockIfNecessary();
+
+                if (te instanceof TileEntityCableTray)
+                    ((TileEntityCableTray) te).refreshConnections();
+                else
+                    ((TileEntityMultiBlocksTube) te).initializeMultiblockIfNecessary();
             }
         }
     }

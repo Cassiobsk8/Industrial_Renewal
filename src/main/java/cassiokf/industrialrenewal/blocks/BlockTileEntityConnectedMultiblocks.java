@@ -37,7 +37,7 @@ public abstract class BlockTileEntityConnectedMultiblocks<TE extends TileEntityM
             for (EnumFacing face : EnumFacing.VALUES)
             {
                 BlockPos posM = pos.offset(face);
-                te.getMaster().removeMachine(pos, posM);
+                if (te.getMaster() != null) te.getMaster().removeMachine(pos, posM);
             }
         }
         super.breakBlock(worldIn, pos, state);

@@ -91,7 +91,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
             BlockPos currentPos = pos.offset(face);
             TileEntity te = world.getTileEntity(currentPos);
             boolean hasMachine = te != null
-                    && !(te instanceof TileEntityEnergyCable)
+                    && !instanceOf(te)
                     && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
             IEnergyStorage eStorage = null;
             if (hasMachine) eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());

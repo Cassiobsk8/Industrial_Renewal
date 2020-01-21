@@ -90,7 +90,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
             BlockPos currentPos = pos.offset(face);
             TileEntity te = world.getTileEntity(currentPos);
             boolean hasMachine = te != null
-                    && !(te instanceof TileEntityFluidPipe)
+                    && !instanceOf(te)
                     && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
             IFluidHandler machineCap = null;
             if (hasMachine)
@@ -110,7 +110,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     @Override
     public boolean instanceOf(TileEntity te)
     {
-        return te instanceof TileEntityFluidPipe;
+        return te instanceof TileEntityFluidPipe || te instanceof TileEntityCableTray;
     }
 
     @Override
