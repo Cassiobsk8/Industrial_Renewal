@@ -2,6 +2,8 @@ package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.BlockSignBase;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityBatteryBank;
@@ -55,7 +57,7 @@ public class ItemPowerScrewDrive extends ItemBase {
                 ((BlockSignBase) world.getBlockState(pos).getBlock()).changeSign(world, pos);
                 playDrillSound(world, pos);
                 return EnumActionResult.SUCCESS;
-            } else if (block == ModBlocks.floorPipe || block == ModBlocks.floorCableMV || block == ModBlocks.floorLamp)
+            } else if (block instanceof BlockFloorPipe || block instanceof BlockFloorCable)
             {
                 playDrillSound(world, pos);
                 if (!world.isRemote && !entity.isCreative())
@@ -66,6 +68,12 @@ public class ItemPowerScrewDrive extends ItemBase {
                     } else if (block == ModBlocks.floorCableMV)
                     {
                         entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCableMV), 1));
+                    } else if (block == ModBlocks.floorCableLV)
+                    {
+                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCableLV), 1));
+                    } else if (block == ModBlocks.floorCableHV)
+                    {
+                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCableHV), 1));
                     } else if (block == ModBlocks.floorLamp)
                     {
                         entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.fluorescent), 1));

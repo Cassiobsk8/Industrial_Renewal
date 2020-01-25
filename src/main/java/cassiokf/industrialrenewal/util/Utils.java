@@ -93,6 +93,7 @@ public class Utils
 
     public static void spawnItemStack(World worldIn, BlockPos pos, ItemStack stack)
     {
+        if (worldIn.isRemote) return;
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();

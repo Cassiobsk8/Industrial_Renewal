@@ -48,7 +48,7 @@ public class BlockFloorCable extends BlockEnergyCable
     protected BlockStateContainer createBlockState()
     {
         IProperty[] listedProperties = new IProperty[]{}; // listed properties
-        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN, WSOUTH, WNORTH, WEAST, WWEST, WUP, WDOWN};
+        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{MASTER, SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN, WSOUTH, WNORTH, WEAST, WWEST, WUP, WDOWN};
         return new ExtendedBlockState(this, listedProperties, unlistedProperties);
     }
 

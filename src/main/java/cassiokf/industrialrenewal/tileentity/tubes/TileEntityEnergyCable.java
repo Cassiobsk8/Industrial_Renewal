@@ -11,6 +11,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 
 public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityEnergyCable> implements ICapabilityProvider
 {
@@ -37,13 +38,17 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
     {
         if (!world.isRemote && isMaster())
         {
-            int quantity = getPosSet().size();
+            final Map<BlockPos, EnumFacing> mapPosSet = getPosSet();
+            int quantity = mapPosSet.size();
             this.energyContainer.setMaxEnergyStored(Math.max(this.energyContainer.getMaxOutput() * quantity, this.energyContainer.getEnergyStored()));
 
-            int canAccept = moveEnergy(true, 1);
-            outPut = canAccept > 0 ? moveEnergy(false, canAccept) : 0;
+            if (quantity > 0)
+            {
+                int canAccept = moveEnergy(true, 1, mapPosSet);
+                outPut = canAccept > 0 ? moveEnergy(false, canAccept, mapPosSet) : 0;
+            } else outPut = 0;
 
-            outPutCount = getPosSet().size();
+            outPutCount = mapPosSet.size();
             if ((oldOutPut != outPut) || (oldOutPutCount != outPutCount))
             {
                 oldOutPut = outPut;
@@ -53,15 +58,15 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
         }
     }
 
-    public int moveEnergy(boolean simulate, int validOutputs)
+    public int moveEnergy(boolean simulate, int validOutputs, Map<BlockPos, EnumFacing> mapPosSet)
     {
         int canAccept = 0;
         int out = 0;
         int realMaxOutput = Math.min(energyContainer.getEnergyStored() / validOutputs, this.energyContainer.getMaxOutput());
-        for (BlockPos posM : getPosSet().keySet())
+        for (BlockPos posM : mapPosSet.keySet())
         {
             TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = getPosSet().get(posM).getOpposite();
+            EnumFacing face = mapPosSet.get(posM).getOpposite();
             if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
             {
                 IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
@@ -96,8 +101,8 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
             IEnergyStorage eStorage = null;
             if (hasMachine) eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
             if (hasMachine && eStorage != null && eStorage.canReceive())
-                getMaster().addMachine(currentPos, face);
-            else getMaster().removeMachine(pos, currentPos);
+                if (!isMasterInvalid()) getMaster().addMachine(currentPos, face);
+                else if (!isMasterInvalid()) getMaster().removeMachine(pos, currentPos);
         }
     }
 

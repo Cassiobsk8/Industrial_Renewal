@@ -15,6 +15,7 @@ import java.util.function.Function;
 public class FloorFluidPipeIModel implements IModel
 {
     public static final ModelResourceLocation MODEL_CORE = new ModelResourceLocation("industrialrenewal:pipe_fluid/pipe_core");
+    public static final ModelResourceLocation MODEL_MASTER = new ModelResourceLocation("industrialrenewal:pipe_energy/cable_master");
 
     public static final ModelResourceLocation MODEL_DOWN = new ModelResourceLocation("industrialrenewal:pipe_fluid/con_down");
     public static final ModelResourceLocation MODEL_UP = new ModelResourceLocation("industrialrenewal:pipe_fluid/con_up");
@@ -44,6 +45,9 @@ public class FloorFluidPipeIModel implements IModel
         {
             IModel subComponent = ModelLoaderRegistry.getModel(MODEL_CORE);
             IBakedModel bakedModelCore = subComponent.bake(state, format, bakedTextureGetter);
+
+            subComponent = ModelLoaderRegistry.getModel(MODEL_MASTER);
+            IBakedModel bakedModelMaster = subComponent.bake(state, format, bakedTextureGetter);
 
             subComponent = ModelLoaderRegistry.getModel(MODEL_DOWN);
             IBakedModel bakedModelDown = subComponent.bake(state, format, bakedTextureGetter);
@@ -99,7 +103,7 @@ public class FloorFluidPipeIModel implements IModel
             subComponent = ModelLoaderRegistry.getModel(MODEL3_SOUTH);
             IBakedModel bakedModel3South = subComponent.bake(state, format, bakedTextureGetter);
 
-            return new PillarBaseComposite(bakedModelCore, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
+            return new PillarBaseComposite(bakedModelCore, bakedModelMaster, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
                     bakedModel2Down, bakedModel2Up, bakedModel2West, bakedModel2East, bakedModel2North, bakedModel2South,
                     bakedModel3Down, bakedModel3Up, bakedModel3West, bakedModel3East, bakedModel3North, bakedModel3South);
         } catch (Exception exception)

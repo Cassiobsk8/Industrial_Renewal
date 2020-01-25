@@ -9,13 +9,17 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TileEntitySyncable implements ITickable
 {
     private TE master;
     private boolean isMaster;
-    private Map<BlockPos, EnumFacing> posSet = new HashMap<>();
+    private Map<BlockPos, EnumFacing> posSet = new ConcurrentHashMap<>();
     public int outPut;
     public int oldOutPut = -1;
     int outPutCount;
@@ -45,7 +49,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 
     private void initializeMultiblockIfNecessary()
     {
-        if (master == null || master.isInvalid())
+        if (isMasterInvalid())
         {
             if (isTray()) return;
             List<TileEntityMultiBlocksTube> connectedCables = new ArrayList<>();
@@ -75,7 +79,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                 for (TileEntityMultiBlocksTube storage : connectedCables)
                 {
                     if (!canBeMaster(storage)) continue;
-                    storage.setMaster(master);
+                    storage.setMaster((TE) master);
                     storage.checkForOutPuts(storage.getPos());
                     storage.markDirty();
                 }
@@ -99,7 +103,12 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 
     private boolean canBeMaster(TileEntity te)
     {
-        return !(te instanceof TileEntityCableTray);
+        return te != null && !(te instanceof TileEntityCableTray);
+    }
+
+    public boolean isMasterInvalid()
+    {
+        return master == null || master.isInvalid();
     }
 
     public EnumFacing[] getFacesToCheck()

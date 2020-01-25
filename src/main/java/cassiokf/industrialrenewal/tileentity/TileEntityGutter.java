@@ -96,8 +96,8 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
         TileEntity te = world.getTileEntity(currentPos);
         boolean hasMachine = !(state.getBlock() instanceof BlockGutter) && te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
         if (hasMachine && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).getTankProperties()[0].canFill())
-            getMaster().addMachine(currentPos, face);
-        else getMaster().removeMachine(pos, currentPos);
+            if (!isMasterInvalid()) getMaster().addMachine(currentPos, face);
+            else if (!isMasterInvalid()) getMaster().removeMachine(pos, currentPos);
     }
 
     public void checkIfIsReady()

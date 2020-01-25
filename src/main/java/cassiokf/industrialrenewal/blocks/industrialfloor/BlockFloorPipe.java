@@ -3,13 +3,13 @@ package cassiokf.industrialrenewal.blocks.industrialfloor;
 
 import cassiokf.industrialrenewal.blocks.pipes.BlockFluidPipe;
 import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -42,22 +42,14 @@ public class BlockFloorPipe extends BlockFluidPipe
     @Override
     public void onPlayerDestroy(World world, BlockPos pos, IBlockState state)
     {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-        ItemStack itemst = new ItemStack(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.fluidPipe));
-        EntityItem entity = new EntityItem(world, x, y, z, itemst);
-        if (!world.isRemote) {
-            world.spawnEntity(entity);
-        }
-
+        Utils.spawnItemStack(world, pos, new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.fluidPipe), 1));
     }
 
     @Override
     protected BlockStateContainer createBlockState()
     {
         IProperty[] listedProperties = new IProperty[]{}; // listed properties
-        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN, WSOUTH, WNORTH, WEAST, WWEST, WUP, WDOWN};
+        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{MASTER, SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN, WSOUTH, WNORTH, WEAST, WWEST, WUP, WDOWN};
         return new ExtendedBlockState(this, listedProperties, unlistedProperties);
     }
 

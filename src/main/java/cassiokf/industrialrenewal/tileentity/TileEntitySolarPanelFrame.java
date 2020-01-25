@@ -146,8 +146,8 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
             TileEntity te = world.getTileEntity(currentPos);
             boolean hasMachine = !(state.getBlock() instanceof BlockSolarPanelFrame) && te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
             if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
-                getMaster().addMachine(currentPos, face);
-            else getMaster().removeMachine(pos, currentPos);
+                if (!isMasterInvalid()) getMaster().addMachine(currentPos, face);
+                else if (!isMasterInvalid()) getMaster().removeMachine(pos, currentPos);
         }
     }
 
