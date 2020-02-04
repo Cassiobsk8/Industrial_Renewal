@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.util.OreQuality;
+import cassiokf.industrialrenewal.enums.OreQuality;
 import net.minecraft.tileentity.TileEntity;
 
 import java.util.concurrent.ThreadLocalRandom;

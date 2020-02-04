@@ -1,0 +1,30 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:smartmodel/cable_tray"
+    },
+    "inventory": [
+      {
+        "model": "industrialrenewal:pipe_tray/tray_center",
+        "submodel": {
+          "pipe_north": {
+            "model": "industrialrenewal:pipe_tray/tray_north"
+          },
+          "pipe_south": {
+            "model": "industrialrenewal:pipe_tray/tray_south"
+          },
+          "pipe_center": {
+            "model": "industrialrenewal:pipe_tray/pipe/pipe_center"
+          },
+          "data_center": {
+            "model": "industrialrenewal:pipe_tray/data_center"
+          },
+          "energy_center": {
+            "model": "industrialrenewal:pipe_tray/energy/hv/pipe_center"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -48,7 +48,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
                 outPut = canAccept > 0 ? moveEnergy(false, canAccept, mapPosSet) : 0;
             } else outPut = 0;
 
-            outPutCount = mapPosSet.size();
+            outPutCount = quantity;
             if ((oldOutPut != outPut) || (oldOutPutCount != outPutCount))
             {
                 oldOutPut = outPut;
@@ -96,7 +96,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
             BlockPos currentPos = pos.offset(face);
             TileEntity te = world.getTileEntity(currentPos);
             boolean hasMachine = te != null
-                    && !instanceOf(te)
+                    && !(te instanceof TileEntityEnergyCable)
                     && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
             IEnergyStorage eStorage = null;
             if (hasMachine) eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());

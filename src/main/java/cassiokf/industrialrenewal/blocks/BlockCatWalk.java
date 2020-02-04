@@ -7,6 +7,7 @@ import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
 import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityCatWalk;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.*;
@@ -68,6 +69,7 @@ public class BlockCatWalk extends BlockTileEntity<TileEntityCatWalk>
                 if (te != null)
                 {
                     te.toggleFacing(side);
+                    if (!world.isRemote) ItemPowerScrewDrive.playDrillSound(world, pos);
                     world.notifyBlockUpdate(pos, state, state, 2);
                 }
             }

@@ -15,7 +15,7 @@ public class FuseBoxSlot extends SlotItemHandler {
     public boolean isItemValid(ItemStack itemstack) {
         if (itemstack.isEmpty())
             return false;
-        return itemstack.getItem() instanceof ItemCartridge;
+        return itemstack.getItem() instanceof ItemCartridge && itemstack.getCount() == 1;
     }
 
 

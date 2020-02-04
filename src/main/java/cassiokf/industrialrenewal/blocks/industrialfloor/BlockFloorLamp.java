@@ -86,7 +86,8 @@ public class BlockFloorLamp extends BlockIndustrialFloor
 
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 
@@ -97,8 +98,16 @@ public class BlockFloorLamp extends BlockIndustrialFloor
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        if (face == EnumFacing.DOWN) {
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        return side.equals(EnumFacing.UP);
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        if (face == EnumFacing.DOWN)
+        {
             return BlockFaceShape.SOLID;
         }
         return BlockFaceShape.UNDEFINED;

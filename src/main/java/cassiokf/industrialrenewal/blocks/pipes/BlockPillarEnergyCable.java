@@ -1,9 +1,9 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.blocks.BlockPillar;
+import cassiokf.industrialrenewal.enums.EnumEnergyCableType;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
-import cassiokf.industrialrenewal.util.EnumEnergyCableType;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;

@@ -1,7 +1,21 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
+import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
+import cassiokf.industrialrenewal.blocks.pipes.BlockFluidPipe;
+import cassiokf.industrialrenewal.enums.EnumCableIn;
+import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
+import cassiokf.industrialrenewal.util.Utils;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
@@ -10,6 +24,10 @@ import java.util.Stack;
 
 public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCableTray>
 {
+    private EnumCableIn energyCable = EnumCableIn.NONE;
+    private boolean fluidPipe = false;
+    private boolean dataCable = false;
+
     @Override
     public void onLoad()
     {
@@ -19,6 +37,110 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
     @Override
     public void update()
     {
+    }
+
+    public boolean onBlockActivated(EntityPlayer player, ItemStack stack)
+    {
+        Block block = Block.getBlockFromItem(stack.getItem());
+        if (block instanceof BlockFluidPipe && !fluidPipe)
+        {
+            fluidPipe = true;
+            if (!world.isRemote && !player.isCreative()) stack.shrink(1);
+            refreshConnections();
+            if (!world.isRemote)
+            {
+                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                Sync();
+            }
+            return true;
+        }
+        if (block instanceof BlockEnergyCable && energyCable.equals(EnumCableIn.NONE))
+        {
+            switch (((BlockEnergyCable) block).type)
+            {
+                default:
+                case LV:
+                    energyCable = EnumCableIn.LV;
+                    break;
+                case MV:
+                    energyCable = EnumCableIn.MV;
+                    break;
+                case HV:
+                    energyCable = EnumCableIn.HV;
+                    break;
+            }
+            if (!world.isRemote && !player.isCreative()) stack.shrink(1);
+            refreshConnections();
+            if (!world.isRemote)
+            {
+                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                Sync();
+            }
+            return true;
+        }
+        if (stack.getItem() instanceof ItemPowerScrewDrive && (fluidPipe || dataCable || energyCable != EnumCableIn.NONE))
+        {
+            if (!player.isCreative()) spawnBlocks(player);
+            fluidPipe = false;
+            dataCable = false;
+            energyCable = EnumCableIn.NONE;
+            refreshConnections();
+            if (!world.isRemote)
+            {
+                ItemPowerScrewDrive.playDrillSound(world, pos);
+                Sync();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void spawnBlocks(EntityPlayer player)
+    {
+        if (world.isRemote) return;
+        if (fluidPipe)
+        {
+            ItemStack stack = new ItemStack(Item.getItemFromBlock(ModBlocks.fluidPipe), 1);
+            if (player != null) player.inventory.addItemStackToInventory(stack);
+            else Utils.spawnItemStack(world, pos, stack);
+        }
+        if (dataCable) ;
+        if (energyCable != EnumCableIn.NONE)
+        {
+            switch (energyCable)
+            {
+                case LV:
+                    ItemStack stack = new ItemStack(Item.getItemFromBlock(ModBlocks.energyCableLV), 1);
+                    if (player != null) player.inventory.addItemStackToInventory(stack);
+                    else Utils.spawnItemStack(world, pos, stack);
+                    break;
+                case MV:
+                    ItemStack stack2 = new ItemStack(Item.getItemFromBlock(ModBlocks.energyCableMV), 1);
+                    if (player != null) player.inventory.addItemStackToInventory(stack2);
+                    else Utils.spawnItemStack(world, pos, stack2);
+                    break;
+                case HV:
+                    ItemStack stack3 = new ItemStack(Item.getItemFromBlock(ModBlocks.energyCableHV), 1);
+                    if (player != null) player.inventory.addItemStackToInventory(stack3);
+                    else Utils.spawnItemStack(world, pos, stack3);
+                    break;
+            }
+        }
+    }
+
+    public boolean hasPipe()
+    {
+        return fluidPipe;
+    }
+
+    public boolean hasData()
+    {
+        return dataCable;
+    }
+
+    public EnumCableIn getCableIn()
+    {
+        return energyCable;
     }
 
     @Override
@@ -81,7 +203,26 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
     @Override
     public void invalidate()
     {
+        spawnBlocks(null);
         super.invalidate();
         refreshConnections();
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound)
+    {
+        fluidPipe = compound.getBoolean("fluidPipe");
+        dataCable = compound.getBoolean("dataCable");
+        energyCable = EnumCableIn.byIndex(compound.getInteger("energyCableIn"));
+        super.readFromNBT(compound);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
+        compound.setBoolean("fluidPipe", fluidPipe);
+        compound.setBoolean("dataCable", dataCable);
+        compound.setInteger("energyCableIn", energyCable.getIndex());
+        return super.writeToNBT(compound);
     }
 }

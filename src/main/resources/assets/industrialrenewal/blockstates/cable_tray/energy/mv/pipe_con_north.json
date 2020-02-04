@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:pipe_tray/energy/mv/pipe_con_north"
+    }
+  }
+}

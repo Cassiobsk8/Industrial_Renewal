@@ -33,6 +33,8 @@ public class ModelLoaderCustom implements ICustomModelLoader
         {
             case "roofmodel":
                 return new RoofModel();
+            case "cable_tray":
+                return new CableTrayIModel();
             case "pipe_fluid":
                 return new PipeBaseModel();
             case "pipe_energy":

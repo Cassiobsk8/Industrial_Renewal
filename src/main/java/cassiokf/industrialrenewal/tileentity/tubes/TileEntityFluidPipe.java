@@ -114,7 +114,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     @Override
     public boolean instanceOf(TileEntity te)
     {
-        return te instanceof TileEntityFluidPipe || te instanceof TileEntityCableTray;
+        return te instanceof TileEntityFluidPipe || (te instanceof TileEntityCableTray && ((TileEntityCableTray) te).hasPipe());
     }
 
     @Override

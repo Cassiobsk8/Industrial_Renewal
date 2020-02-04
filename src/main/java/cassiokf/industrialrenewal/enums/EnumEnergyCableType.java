@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.util;
+package cassiokf.industrialrenewal.enums;
 
 public enum EnumEnergyCableType
 {

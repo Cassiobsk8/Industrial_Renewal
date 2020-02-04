@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.blocks.industrialfloor;
 
 import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
+import cassiokf.industrialrenewal.enums.EnumEnergyCableType;
 import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.util.EnumEnergyCableType;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -106,7 +106,8 @@ public class BlockFloorCable extends BlockEnergyCable
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         return FULL_BLOCK_AABB;
     }
 
@@ -117,8 +118,16 @@ public class BlockFloorCable extends BlockEnergyCable
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        if (face == EnumFacing.UP || face == EnumFacing.DOWN) {
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        return side.equals(EnumFacing.UP);
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        if (face == EnumFacing.UP || face == EnumFacing.DOWN)
+        {
             return BlockFaceShape.SOLID;
         }
         return BlockFaceShape.UNDEFINED;

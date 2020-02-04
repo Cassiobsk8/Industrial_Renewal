@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.util.enumproperty;
+package cassiokf.industrialrenewal.enums.enumproperty;
 
 import net.minecraft.util.IStringSerializable;
 

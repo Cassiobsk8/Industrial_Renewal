@@ -1,12 +1,12 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.enums.EnumBulkConveyorType;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyor;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyorHopper;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyorInserter;
-import cassiokf.industrialrenewal.util.EnumBulkConveyorType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;

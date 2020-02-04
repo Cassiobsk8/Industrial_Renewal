@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityCableTray;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -22,16 +23,29 @@ import java.util.List;
 
 public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipe>
 {
-    public BlockFluidPipe(String name, CreativeTabs tab) {
+    public BlockFluidPipe(String name, CreativeTabs tab)
+    {
         super(name, tab);
     }
 
     @Override
     public boolean canConnectToPipe(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
     {
-        IBlockState state = worldIn.getBlockState(ownPos.offset(neighbourDirection));
+        BlockPos neighbourPos = ownPos.offset(neighbourDirection);
+        IBlockState state = worldIn.getBlockState(neighbourPos);
         Block block = state.getBlock();
-        return block instanceof BlockFluidPipe || block instanceof BlockCableTray;
+
+        return block instanceof BlockFluidPipe || (block instanceof BlockCableTray && trayHasPipe(worldIn, neighbourPos));
+    }
+
+    private boolean trayHasPipe(IBlockAccess world, BlockPos pos)
+    {
+        TileEntityCableTray te = (TileEntityCableTray) world.getTileEntity(pos);
+        if (te != null)
+        {
+            return te.hasPipe();
+        }
+        return false;
     }
 
     @Override

@@ -243,18 +243,28 @@ public class BlockIndustrialFloor extends BlockBase
 
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 
     @Deprecated
-    public boolean isTopSolid(IBlockState state) {
+    public boolean isTopSolid(IBlockState state)
+    {
         return true;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        if (face == EnumFacing.UP || face == EnumFacing.DOWN) {
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        return side.equals(EnumFacing.UP);
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        if (face == EnumFacing.UP || face == EnumFacing.DOWN)
+        {
             return BlockFaceShape.SOLID;
         }
         return BlockFaceShape.UNDEFINED;

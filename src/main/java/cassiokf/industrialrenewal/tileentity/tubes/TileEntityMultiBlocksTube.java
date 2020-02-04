@@ -9,11 +9,11 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TileEntitySyncable implements ITickable
 {
@@ -52,9 +52,9 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         if (isMasterInvalid())
         {
             if (isTray()) return;
-            List<TileEntityMultiBlocksTube> connectedCables = new ArrayList<>();
+            List<TileEntityMultiBlocksTube> connectedCables = new CopyOnWriteArrayList<>();
             Stack<TileEntityMultiBlocksTube> traversingCables = new Stack<>();
-            TileEntityMultiBlocksTube master = this;
+            TE master = (TE) this;
             traversingCables.add(this);
             while (!traversingCables.isEmpty())
             {

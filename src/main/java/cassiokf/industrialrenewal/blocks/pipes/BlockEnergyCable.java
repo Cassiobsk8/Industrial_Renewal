@@ -1,12 +1,13 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.enums.EnumCableIn;
+import cassiokf.industrialrenewal.enums.EnumEnergyCableType;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableHV;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableLV;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableMV;
-import cassiokf.industrialrenewal.util.EnumEnergyCableType;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -56,13 +57,28 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> imple
         super.addInformation(stack, player, tooltip, advanced);
     }
 
+    public static EnumCableIn convertFromType(EnumEnergyCableType type)
+    {
+        switch (type)
+        {
+            default:
+            case LV:
+                return EnumCableIn.LV;
+            case MV:
+                return EnumCableIn.MV;
+            case HV:
+                return EnumCableIn.HV;
+        }
+    }
+
     @Override
     public boolean canConnectToPipe(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
     {
-        IBlockState state = worldIn.getBlockState(ownPos.offset(neighbourDirection));
+        BlockPos otherPos = ownPos.offset(neighbourDirection);
+        IBlockState state = worldIn.getBlockState(otherPos);
         Block block = state.getBlock();
-        return (block instanceof BlockEnergyCable && type.equals(((BlockEnergyCable) state.getBlock()).type))
-                || block instanceof BlockCableTray;
+        return (block instanceof BlockEnergyCable && type.equals(((BlockEnergyCable) block).type))
+                || (block instanceof BlockCableTray && ((BlockCableTray) block).isCablePresent(worldIn, otherPos, convertFromType(type)));
     }
 
     @Override

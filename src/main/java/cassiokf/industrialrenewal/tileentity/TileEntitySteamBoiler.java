@@ -228,6 +228,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
         this.type = type;
         IBlockState state = this.world.getBlockState(this.pos).withProperty(BlockSteamBoiler.TYPE, type);
         this.world.setBlockState(this.pos, state, 3);
+        world.notifyBlockUpdate(pos, state, state, 3);
         this.Sync();
     }
 

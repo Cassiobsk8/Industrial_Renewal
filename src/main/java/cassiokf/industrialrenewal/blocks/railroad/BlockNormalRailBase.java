@@ -3,7 +3,7 @@ package cassiokf.industrialrenewal.blocks.railroad;
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
-import cassiokf.industrialrenewal.util.enumproperty.EnumSnowRail;
+import cassiokf.industrialrenewal.enums.enumproperty.EnumSnowRail;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.BlockSnow;

@@ -42,12 +42,6 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm>
     }
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        super.breakBlock(world, pos, state);
-        world.removeTileEntity(pos);
-    }
-
-    @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         EnumFacing dir = state.getValue(FACING);
         switch (dir) {
@@ -73,16 +67,9 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm>
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-        if (!(world.isSideSolid(pos.offset(world.getBlockState(pos).getValue(FACING).getOpposite()), world.getBlockState(pos).getValue(FACING).getOpposite(), true))) {
-            this.dropBlockAsItem((World) world, pos, world.getBlockState(pos), 0);
-            ((World) world).setBlockToAir(pos);
-        }
-    }
-
-    @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        if (!(world.isSideSolid(pos.offset(world.getBlockState(pos).getValue(FACING).getOpposite()), world.getBlockState(pos).getValue(FACING).getOpposite()))) {
+        if (!(world.isSideSolid(pos.offset(state.getValue(FACING).getOpposite()), state.getValue(FACING))))
+        {
             this.dropBlockAsItem(world, pos, world.getBlockState(pos), 0);
             world.setBlockToAir(pos);
         }
