@@ -62,14 +62,15 @@ public class ModItems {
     public static ItemFireBox fireBoxFluid = new ItemFireBox("firebox_fluid", 2, References.CREATIVE_IR_TAB);
 
     public static ItemWindBlade windBlade = new ItemWindBlade("small_wind_blade", References.CREATIVE_IR_TAB);
-    public static ItemDrill drillSteel = new ItemDrill("drill_steel", References.CREAATIVE_IRWIP_TAB);
-    public static ItemDrill drillDiamond = new ItemDrill("drill_diamond", References.CREAATIVE_IRWIP_TAB);
+    //public static ItemDrill drillSteel = new ItemDrill("drill_steel", References.CREAATIVE_IRWIP_TAB);
+    //public static ItemDrill drillDiamond = new ItemDrill("drill_diamond", References.CREAATIVE_IRWIP_TAB);
 
     public static ItemOre hematiteChunk = new ItemOre("chunk_hematite", "oreIron", References.CREAATIVE_IRWIP_TAB);
 
     //public static ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
 
-    public static void register(IForgeRegistry<Item> registry) {
+    public static void register(IForgeRegistry<Item> registry)
+    {
         registry.registerAll(
                 hematiteChunk,
                 manual,
@@ -112,8 +113,8 @@ public class ModItems {
                 battery,
                 sMotor,
                 windBlade,
-                drillSteel,
-                drillDiamond,
+                //drillSteel,
+                //drillDiamond,
                 fluidLoaderArm,
                 tambor
         );
@@ -161,8 +162,8 @@ public class ModItems {
         battery.registerItemModel();
         sMotor.registerItemModel();
         windBlade.registerItemModel();
-        drillSteel.registerItemModel();
-        drillDiamond.registerItemModel();
+        //drillSteel.registerItemModel();
+        //drillDiamond.registerItemModel();
     }
 
     public static void registerOreDict() {
