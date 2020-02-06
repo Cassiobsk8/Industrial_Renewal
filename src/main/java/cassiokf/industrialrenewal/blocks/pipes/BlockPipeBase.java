@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntityConnectedMultiblocks;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -108,7 +109,7 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
         if (state instanceof IExtendedBlockState)
         {
             IExtendedBlockState eState = (IExtendedBlockState) state;
-            return eState.withProperty(MASTER, isMaster(world, pos))
+            return eState.withProperty(MASTER, IRConfig.MainConfig.Main.showMaster && isMaster(world, pos))
                     .withProperty(SOUTH, canConnectToPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectToPipe(world, pos, EnumFacing.NORTH))
                     .withProperty(EAST, canConnectToPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectToPipe(world, pos, EnumFacing.WEST))
                     .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
