@@ -4,10 +4,12 @@ import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorLamp;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
+import cassiokf.industrialrenewal.blocks.pipes.BlockCableTray;
 import cassiokf.industrialrenewal.blocks.pipes.BlockPillarEnergyCable;
 import cassiokf.industrialrenewal.blocks.pipes.BlockPillarFluidPipe;
 import cassiokf.industrialrenewal.blocks.pipes.BlockWireBase;
 import cassiokf.industrialrenewal.blocks.redstone.BlockAlarm;
+import cassiokf.industrialrenewal.enums.enumproperty.EnumBaseDirection;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.*;
@@ -94,6 +96,7 @@ public class BlockPillar extends BlockBase {
                     || nb instanceof BlockRedstoneTorch
                     || nb instanceof BlockTripWireHook
                     || nb instanceof BlockColumn
+                    || (nb instanceof BlockCableTray && neighbourState.getValue(BlockCableTray.BASE).equals(EnumBaseDirection.byIndex(neighbourDirection.getOpposite().getIndex())))
                     || nb instanceof BlockLadder
                     || (nb instanceof BlockLight && neighbourState.getValue(BlockLight.FACING) == neighbourDirection.getOpposite())
                     || nb instanceof BlockRoof

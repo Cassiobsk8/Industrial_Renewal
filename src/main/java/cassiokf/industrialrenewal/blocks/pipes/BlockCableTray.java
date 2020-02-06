@@ -1,7 +1,9 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.enums.EnumCableIn;
+import cassiokf.industrialrenewal.enums.enumproperty.EnumBaseDirection;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
+import cassiokf.industrialrenewal.properties.PropertyBaseDirection;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityCableTray;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -12,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,6 +35,8 @@ import java.util.List;
 
 public class BlockCableTray extends BlockPipeBase<TileEntityCableTray> implements ITileEntityProvider
 {
+    public static final IProperty<EnumBaseDirection> BASE = PropertyBaseDirection.create("base");
+
     public static final IUnlistedProperty<Boolean> PIPE_CORE = new Properties.PropertyAdapter<>(PropertyBool.create("pipe_core"));
     public static final IUnlistedProperty<Boolean> PIPE_NORTH = new Properties.PropertyAdapter<>(PropertyBool.create("pipe_north"));
     public static final IUnlistedProperty<Boolean> PIPE_SOUTH = new Properties.PropertyAdapter<>(PropertyBool.create("pipe_south"));
@@ -97,12 +102,13 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray> implement
     public BlockCableTray(String name, CreativeTabs tab)
     {
         super(name, tab);
+        this.setDefaultState(this.getDefaultState().withProperty(BASE, EnumBaseDirection.NONE));
     }
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
     {
-        tooltip.add("Is a energy Cable, Fluid Pipe and Data cable in one");
+        tooltip.add("Can place energy Cable and Fluid Pipe in one block");
         super.addInformation(stack, player, tooltip, advanced);
     }
 
@@ -130,7 +136,7 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray> implement
     @Override
     protected BlockStateContainer createBlockState()
     {
-        IProperty[] listedProperties = new IProperty[]{}; // listed properties
+        IProperty[] listedProperties = new IProperty[]{BASE}; // listed properties
         IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{MASTER, SOUTH, NORTH, EAST, WEST, UP, DOWN, PIPE_CORE,
                 PIPE_NORTH, PIPE_SOUTH, PIPE_EAST, PIPE_WEST, PIPE_UP, PIPE_DOWN, PIPE2_NORTH, PIPE2_SOUTH, PIPE2_EAST,
                 PIPE2_WEST, PIPE2_UP, PIPE2_DOWN,
@@ -141,6 +147,19 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray> implement
                 LV_CORE, LV_NORTH, LV_SOUTH, LV_EAST, LV_WEST, LV_UP, LV_DOWN, LV2_NORTH, LV2_SOUTH,
                 LV2_EAST, LV2_WEST, LV2_UP, LV2_DOWN};
         return new ExtendedBlockState(this, listedProperties, unlistedProperties);
+    }
+
+    @Override
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+    {
+        EnumBaseDirection direction = EnumBaseDirection.NONE;
+        Block block = world.getBlockState(pos.offset(facing.getOpposite())).getBlock();
+        if (!(block instanceof BlockCableTray))
+        {
+            direction = EnumBaseDirection.byIndex(facing.getOpposite().getIndex());
+        }
+
+        return this.getDefaultState().withProperty(BASE, direction);
     }
 
     @Override
@@ -155,8 +174,7 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray> implement
     {
         BlockPos pos = ownPos.offset(neighbourDirection);
         IBlockState state = worldIn.getBlockState(pos);
-        Block block = state.getBlock();
-        return block instanceof BlockFluidPipe && isPipePresent(worldIn, ownPos);
+        return state.getBlock() instanceof BlockFluidPipe;
     }
 
     private boolean canConnectToEnergyCapability(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection, EnumCableIn type)
@@ -165,18 +183,16 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray> implement
         IBlockState state = worldIn.getBlockState(pos);
         Block block = state.getBlock();
         return block instanceof BlockEnergyCable
-                && type.equals(BlockEnergyCable.convertFromType(((BlockEnergyCable) block).type))
-                && isCablePresent(worldIn, ownPos, type);
+                && type.equals(BlockEnergyCable.convertFromType(((BlockEnergyCable) block).type));
     }
 
 
     private boolean canConnectFluidPipeTrayToTray(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
     {
-        TileEntity thisTE = worldIn.getTileEntity(ownPos);
         TileEntity otherTE = worldIn.getTileEntity(ownPos.offset(neighbourDirection));
-        if (thisTE instanceof TileEntityCableTray && otherTE instanceof TileEntityCableTray)
+        if (otherTE instanceof TileEntityCableTray)
         {
-            return ((TileEntityCableTray) thisTE).hasPipe() && ((TileEntityCableTray) otherTE).hasPipe();
+            return ((TileEntityCableTray) otherTE).hasPipe();
         }
         return false;
     }
@@ -221,23 +237,24 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray> implement
             boolean isHvPresent = isCablePresent(world, pos, EnumCableIn.HV);
             boolean isMvPresent = isCablePresent(world, pos, EnumCableIn.MV);
             boolean isLvPresent = isCablePresent(world, pos, EnumCableIn.LV);
+            boolean isPipePresent = isPipePresent(world, pos);
             return eState.withProperty(MASTER, isMaster(world, pos))
                     .withProperty(SOUTH, canConnectToPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectToPipe(world, pos, EnumFacing.NORTH))
                     .withProperty(EAST, canConnectToPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectToPipe(world, pos, EnumFacing.WEST))
                     .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
-                    .withProperty(PIPE_CORE, isPipePresent(world, pos))
-                    .withProperty(PIPE_NORTH, canConnectFluidPipeTrayToTray(world, pos, EnumFacing.NORTH))
-                    .withProperty(PIPE_SOUTH, canConnectFluidPipeTrayToTray(world, pos, EnumFacing.SOUTH))
-                    .withProperty(PIPE_EAST, canConnectFluidPipeTrayToTray(world, pos, EnumFacing.EAST))
-                    .withProperty(PIPE_WEST, canConnectFluidPipeTrayToTray(world, pos, EnumFacing.WEST))
-                    .withProperty(PIPE_UP, canConnectFluidPipeTrayToTray(world, pos, EnumFacing.UP))
-                    .withProperty(PIPE_DOWN, canConnectFluidPipeTrayToTray(world, pos, EnumFacing.DOWN))
-                    .withProperty(PIPE2_NORTH, canConnectToCapability(world, pos, EnumFacing.NORTH))
-                    .withProperty(PIPE2_SOUTH, canConnectToCapability(world, pos, EnumFacing.SOUTH))
-                    .withProperty(PIPE2_EAST, canConnectToCapability(world, pos, EnumFacing.EAST))
-                    .withProperty(PIPE2_WEST, canConnectToCapability(world, pos, EnumFacing.WEST))
-                    .withProperty(PIPE2_UP, canConnectToCapability(world, pos, EnumFacing.UP))
-                    .withProperty(PIPE2_DOWN, canConnectToCapability(world, pos, EnumFacing.DOWN))
+                    .withProperty(PIPE_CORE, isPipePresent)
+                    .withProperty(PIPE_NORTH, isPipePresent && canConnectFluidPipeTrayToTray(world, pos, EnumFacing.NORTH))
+                    .withProperty(PIPE_SOUTH, isPipePresent && canConnectFluidPipeTrayToTray(world, pos, EnumFacing.SOUTH))
+                    .withProperty(PIPE_EAST, isPipePresent && canConnectFluidPipeTrayToTray(world, pos, EnumFacing.EAST))
+                    .withProperty(PIPE_WEST, isPipePresent && canConnectFluidPipeTrayToTray(world, pos, EnumFacing.WEST))
+                    .withProperty(PIPE_UP, isPipePresent && canConnectFluidPipeTrayToTray(world, pos, EnumFacing.UP))
+                    .withProperty(PIPE_DOWN, isPipePresent && canConnectFluidPipeTrayToTray(world, pos, EnumFacing.DOWN))
+                    .withProperty(PIPE2_NORTH, isPipePresent && canConnectToCapability(world, pos, EnumFacing.NORTH))
+                    .withProperty(PIPE2_SOUTH, isPipePresent && canConnectToCapability(world, pos, EnumFacing.SOUTH))
+                    .withProperty(PIPE2_EAST, isPipePresent && canConnectToCapability(world, pos, EnumFacing.EAST))
+                    .withProperty(PIPE2_WEST, isPipePresent && canConnectToCapability(world, pos, EnumFacing.WEST))
+                    .withProperty(PIPE2_UP, isPipePresent && canConnectToCapability(world, pos, EnumFacing.UP))
+                    .withProperty(PIPE2_DOWN, isPipePresent && canConnectToCapability(world, pos, EnumFacing.DOWN))
                     .withProperty(HV_CORE, isHvPresent)
                     .withProperty(HV_NORTH, isHvPresent && canConnectCableTrayToTray(world, pos, EnumFacing.NORTH))
                     .withProperty(HV_SOUTH, isHvPresent && canConnectCableTrayToTray(world, pos, EnumFacing.SOUTH))
@@ -291,6 +308,18 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray> implement
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return FULL_BLOCK_AABB;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(BASE, EnumBaseDirection.byIndex(meta));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(BASE).getIndex();
     }
 
     @Override

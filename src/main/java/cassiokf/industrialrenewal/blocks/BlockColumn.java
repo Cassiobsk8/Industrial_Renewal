@@ -6,6 +6,7 @@ import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
 import cassiokf.industrialrenewal.blocks.pipes.*;
 import cassiokf.industrialrenewal.blocks.redstone.BlockAlarm;
+import cassiokf.industrialrenewal.enums.enumproperty.EnumBaseDirection;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -107,14 +108,21 @@ public class BlockColumn extends BlockBase {
                     || (nb instanceof BlockAlarm && neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection)
                     || (nb instanceof BlockLight && neighbourState.getValue(BlockLight.FACING) == neighbourDirection.getOpposite());
         }
-        if (nb instanceof BlockLight) {
+        if (nb instanceof BlockLight)
+        {
             return neighbourState.getValue(BlockLight.FACING) == EnumFacing.UP;
         }
-        if (nb instanceof BlockBrace) {
+        if (nb instanceof BlockBrace)
+        {
             return Arrays.toString(EnumFacing.HORIZONTALS).contains(neighbourState.getValue(BlockBrace.FACING).toString());
         }
-        if (nb instanceof BlockFluidPipe) {
+        if (nb instanceof BlockFluidPipe)
+        {
             return ownState.getValue(PIPE) > 0;
+        }
+        if (nb instanceof BlockCableTray)
+        {
+            return neighbourState.getValue(BlockCableTray.BASE).equals(EnumBaseDirection.UP);
         }
         return !(nb instanceof BlockCatwalkLadder)
                 && !(nb instanceof BlockSignBase)
@@ -136,15 +144,18 @@ public class BlockColumn extends BlockBase {
 
     private int canConnectPipe(IBlockAccess world, BlockPos pos) {
         IBlockState stateOffset = world.getBlockState(pos.down());
-        if (stateOffset.getBlock() instanceof BlockPipeBase)
+        if (stateOffset.getBlock() instanceof BlockPipeBase && !(stateOffset.getBlock() instanceof BlockCableTray))
         {
-            if (pipeConnected(world, pos.down(), stateOffset, EnumFacing.DOWN)) {
+            if (pipeConnected(world, pos.down(), stateOffset, EnumFacing.DOWN))
+            {
                 return 0;
             }
-            if (!pipeConnected(world, pos.down(), stateOffset, EnumFacing.NORTH) && !pipeConnected(world, pos.down(), stateOffset, EnumFacing.SOUTH)) {
+            if (!pipeConnected(world, pos.down(), stateOffset, EnumFacing.NORTH) && !pipeConnected(world, pos.down(), stateOffset, EnumFacing.SOUTH))
+            {
                 return 2;
             }
-            if (!pipeConnected(world, pos.down(), stateOffset, EnumFacing.EAST) && !pipeConnected(world, pos.down(), stateOffset, EnumFacing.WEST)) {
+            if (!pipeConnected(world, pos.down(), stateOffset, EnumFacing.EAST) && !pipeConnected(world, pos.down(), stateOffset, EnumFacing.WEST))
+            {
                 return 1;
             }
         }

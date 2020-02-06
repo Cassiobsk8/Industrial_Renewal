@@ -123,12 +123,9 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWireBase>
         }
     }
 
-    /**
-     * Gets the value between start and end according to pct
-     */
-    private double interpolateValue(double start, double end, double pct)
+    @Override
+    public boolean isGlobalRenderer(TileEntityWireBase te)
     {
-        return start + (end - start) * pct;
+        return true;
     }
-
 }

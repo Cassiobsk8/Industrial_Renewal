@@ -1,8 +1,70 @@
 {
   "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/pipe"
+    },
+    "model": "industrialrenewal:smartmodel/cable_tray"
+  },
   "variants": {
     "normal": {
       "model": "industrialrenewal:smartmodel/cable_tray"
+    },
+    "base": {
+      "up": {
+        "model": "industrialrenewal:smartmodel/cable_tray",
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:pipe_tray/base/base_up"
+          }
+        }
+      },
+      "down": {
+        "model": "industrialrenewal:smartmodel/cable_tray",
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:pipe_tray/base/base_down"
+          }
+        }
+      },
+      "north": {
+        "model": "industrialrenewal:smartmodel/cable_tray",
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:pipe_tray/base/base_side"
+          }
+        }
+      },
+      "south": {
+        "model": "industrialrenewal:smartmodel/cable_tray",
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:pipe_tray/base/base_side",
+            "y": 180
+          }
+        }
+      },
+      "east": {
+        "model": "industrialrenewal:smartmodel/cable_tray",
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:pipe_tray/base/base_side",
+            "y": 90
+          }
+        }
+      },
+      "west": {
+        "model": "industrialrenewal:smartmodel/cable_tray",
+        "submodel": {
+          "base": {
+            "model": "industrialrenewal:pipe_tray/base/base_side",
+            "y": -90
+          }
+        }
+      },
+      "none": {
+        "model": "industrialrenewal:smartmodel/cable_tray"
+      }
     },
     "inventory": [
       {

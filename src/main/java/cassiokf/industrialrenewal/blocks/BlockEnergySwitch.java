@@ -9,8 +9,6 @@ import javax.annotation.Nullable;
 
 public class BlockEnergySwitch extends BlockToggleableBase<TileEntityEnergySwitch>
 {
-
-
     public BlockEnergySwitch(String name, CreativeTabs tab)
     {
         super(name, tab);
