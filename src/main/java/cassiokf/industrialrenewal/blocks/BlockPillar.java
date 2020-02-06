@@ -132,70 +132,73 @@ public class BlockPillar extends BlockBase {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        ItemStack playerStack = player.getHeldItem(EnumHand.MAIN_HAND);
-        Item playerItem = playerStack.getItem();
-        Block clickedBlock = state.getBlock();
-        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableMV)))
+        if (this.name.equals("catwalk_pillar") && hand.equals(EnumHand.MAIN_HAND))
         {
-            if (!world.isRemote)
-            {
-                world.setBlockState(pos, ModBlocks.pillarEnergyCableMV.getDefaultState(), 3);
-                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
-                if (!player.isCreative()) playerStack.shrink(1);
-            }
-            return true;
-        }
-        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableLV)))
-        {
-            if (!world.isRemote)
-            {
-                world.setBlockState(pos, ModBlocks.pillarEnergyCableLV.getDefaultState(), 3);
-                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
-                if (!player.isCreative()) playerStack.shrink(1);
-            }
-            return true;
-        }
-        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableHV)))
-        {
-            if (!world.isRemote)
-            {
-                world.setBlockState(pos, ModBlocks.pillarEnergyCableHV.getDefaultState(), 3);
-                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
-                if (!player.isCreative()) playerStack.shrink(1);
-            }
-            return true;
-        }
-        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.fluidPipe)))
-        {
-            if (!world.isRemote)
-            {
-                world.setBlockState(pos, ModBlocks.pillarFluidPipe.getDefaultState(), 3);
-                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
-                if (!player.isCreative()) playerStack.shrink(1);
-            }
-            return true;
-        }
-        if ((playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.pillar)) && clickedBlock.equals(ModBlocks.pillar))
-                || (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.steel_pillar))) && clickedBlock.equals(ModBlocks.steel_pillar))
-        {
-            int n = 1;
-            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar
-                    || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable
-                    || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarFluidPipe)
-            {
-                n++;
-            }
-            if (world.getBlockState(pos.up(n)).getBlock().isReplaceable(world, pos.up(n)))
+            ItemStack playerStack = player.getHeldItem(EnumHand.MAIN_HAND);
+            Item playerItem = playerStack.getItem();
+            Block clickedBlock = state.getBlock();
+            if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableMV)))
             {
                 if (!world.isRemote)
                 {
-                    world.setBlockState(pos.up(n), getBlockFromItem(playerItem).getDefaultState(), 3);
+                    world.setBlockState(pos, ModBlocks.pillarEnergyCableMV.getDefaultState(), 3);
                     world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
                     if (!player.isCreative()) playerStack.shrink(1);
                 }
                 return true;
             }
-            return false;
+            if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableLV)))
+            {
+                if (!world.isRemote)
+                {
+                    world.setBlockState(pos, ModBlocks.pillarEnergyCableLV.getDefaultState(), 3);
+                    world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                    if (!player.isCreative()) playerStack.shrink(1);
+                }
+                return true;
+            }
+            if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableHV)))
+            {
+                if (!world.isRemote)
+                {
+                    world.setBlockState(pos, ModBlocks.pillarEnergyCableHV.getDefaultState(), 3);
+                    world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                    if (!player.isCreative()) playerStack.shrink(1);
+                }
+                return true;
+            }
+            if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.fluidPipe)))
+            {
+                if (!world.isRemote)
+                {
+                    world.setBlockState(pos, ModBlocks.pillarFluidPipe.getDefaultState(), 3);
+                    world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                    if (!player.isCreative()) playerStack.shrink(1);
+                }
+                return true;
+            }
+            if ((playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.pillar)) && clickedBlock.equals(ModBlocks.pillar))
+                    || (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.steel_pillar))) && clickedBlock.equals(ModBlocks.steel_pillar))
+            {
+                int n = 1;
+                while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar
+                        || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable
+                        || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarFluidPipe)
+                {
+                    n++;
+                }
+                if (world.getBlockState(pos.up(n)).getBlock().isReplaceable(world, pos.up(n)))
+                {
+                    if (!world.isRemote)
+                    {
+                        world.setBlockState(pos.up(n), getBlockFromItem(playerItem).getDefaultState(), 3);
+                        world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                        if (!player.isCreative()) playerStack.shrink(1);
+                    }
+                    return true;
+                }
+                return false;
+            }
         }
         return false;
     }
