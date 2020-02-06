@@ -98,6 +98,9 @@ public class IRConfig {
             @Config.LangKey("gui.config.batterybank_output.name")
             public int batteryBankMaxOutput = 10240;
 
+            @Config.Comment("If renders a indicator to show wat pipe/cable is master 'the one who controls all other connected pipes' (Default: false)")
+            public boolean showMaster = false;
+
             @Config.Comment("The Max Output and Input of the LV Energy cable per connector (Default 256)")
             public int maxLVEnergyCableTransferAmount = 256;
 
