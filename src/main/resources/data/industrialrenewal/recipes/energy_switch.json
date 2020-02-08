@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     " S ",
     "TBT",
@@ -7,19 +7,16 @@
   ],
   "key": {
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "stickIron"
+      "tag": "stickIron"
     },
     "T": {
-      "type": "forge:ore_dict",
-      "ore": "ingotGold"
+      "tag": "ingotGold"
     },
     "B": {
       "item": "industrialrenewal:energy_cable"
     },
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "dustRedstone"
+      "tag": "dustRedstone"
     }
   },
   "result": {

@@ -16,7 +16,7 @@ public class IndustrialRenewalWIPItemGroup extends ItemGroup
     @Override
     public ItemStack createIcon()
     {
-        return new ItemStack(ModItems.tambor);
+        return new ItemStack(ModItems.steamLocomotive);
     }
 
 }

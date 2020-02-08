@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "SLS",
     "ILI",
@@ -7,12 +7,10 @@
   ],
   "key": {
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "stickIron"
+      "tag": "stickIron"
     },
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "ingotIron"
+      "tag": "forge:ingots/iron"
     },
     "L": {
       "item": "minecraft:ladder"

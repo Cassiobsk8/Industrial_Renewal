@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "AAA",
     "III",
@@ -10,16 +10,13 @@
       "item": "industrialrenewal:minecart_flat"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "plankWood"
+      "tag": "plankWood"
     },
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "stickWood"
+      "tag": "stickWood"
     },
     "A": {
-      "type": "forge:ore_dict",
-      "ore": "slabWood"
+      "tag": "slabWood"
     }
   },
   "result": {

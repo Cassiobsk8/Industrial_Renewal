@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     " S ",
     "SRP",
@@ -7,16 +7,13 @@
   ],
   "key": {
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "stickIron"
+      "tag": "stickIron"
     },
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "dustRedstone"
+      "tag": "dustRedstone"
     },
     "P": {
-      "type": "forge:ore_dict",
-      "ore": "enderpearl"
+      "tag": "enderpearl"
     }
   },
   "result": {

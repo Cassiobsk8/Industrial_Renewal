@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "HFS",
     "MFG",
@@ -7,8 +7,7 @@
   ],
   "key": {
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "stickIron"
+      "tag": "stickIron"
     },
     "H": {
       "item": "minecraft:hopper"

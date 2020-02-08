@@ -1,19 +1,22 @@
 package cassiokf.industrialrenewal.model.armor;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.entity.player.PlayerEntity;
 
 /**
  * Safety Helmet - CassioKF
  * Created using Tabula 7.0.0
  */
-public class SafetyHelmetModel extends ModelBiped {
+public class SafetyHelmetModel extends BipedModel<PlayerEntity>
+{
     private ModelRenderer shape1;
     private ModelRenderer shape2;
     private ModelRenderer shape3;
 
-    public SafetyHelmetModel() {
+    public SafetyHelmetModel()
+    {
+        super(1f);
         this.textureWidth = 64;
         this.textureHeight = 64;
 
@@ -30,8 +33,8 @@ public class SafetyHelmetModel extends ModelBiped {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+    public void render(PlayerEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
+    {
+        super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 }

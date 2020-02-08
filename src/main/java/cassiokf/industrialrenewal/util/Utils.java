@@ -1,7 +1,10 @@
 package cassiokf.industrialrenewal.util;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -11,37 +14,42 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Utils {
+public class Utils
+{
 
     private static final Random RANDOM = new Random();
 
-    /*public static void sendChatMessage(String str) {
-        Minecraft.getMinecraft().player.sendChatMessage(str);
+    public static void sendChatMessage(PlayerEntity player, String str)
+    {
+        if (player == null) Minecraft.getInstance().player.sendChatMessage(str);
+        else player.sendMessage(new StringTextComponent(str));
     }
-*/
-    public static void sendConsoleMessage(String str) {
+
+    public static void sendConsoleMessage(String str)
+    {
         System.out.println(str);
     }
 
     /*
-        public static boolean isWood(ItemStack stack) {
-            int[] array = OreDictionary.getOreIDs(stack);
-            int size = array.length;
-            List<Integer> oreList = new ArrayList<>();
-            oreList.add(OreDictionary.getOreID("logWood"));
-            oreList.add(OreDictionary.getOreID("logRubber"));
-            boolean isLog = false;
-            if (size > 0) {
-                for (int i = 0; i < size; i++) {
-                    if (oreList.contains(array[i])) {
-                        isLog = true;
-                        break;
-                    }
+    public static boolean isWood(ItemStack stack)
+    {
+        int[] array = OreDictionary.getOreIDs(stack);
+        int size = array.length;
+        List<Integer> oreList = new ArrayList<>();
+        oreList.add(OreDictionary.getOreID("logWood"));
+        oreList.add(OreDictionary.getOreID("logRubber"));
+        boolean isLog = false;
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                if (oreList.contains(array[i])) {
+                    isLog = true;
+                    break;
                 }
             }
-            return isLog;
         }
-    */
+        return isLog;
+    }
+*/
     public static boolean IsInventoryEmpty(IItemHandler handler) {
         for (int i = 0; i < handler.getSlots(); i++) {
             if (!handler.getStackInSlot(i).isEmpty()) {
@@ -63,36 +71,36 @@ public class Utils {
 
     public static void dropInventoryItems(World worldIn, BlockPos pos, ItemStackHandler inventory)
     {
-        double x = pos.getX();
-        double y = pos.getY();
-        double z = pos.getZ();
-
         for (int i = 0; i < inventory.getSlots(); ++i)
         {
             ItemStack itemstack = inventory.getStackInSlot(i);
 
             if (!itemstack.isEmpty())
             {
-                spawnItemStack(worldIn, x, y, z, itemstack);
+                //spawnItemStack(worldIn, pos, itemstack);
             }
         }
     }
-
-    public static void spawnItemStack(World worldIn, double x, double y, double z, ItemStack stack)
+/*
+    public static void spawnItemStack(World worldIn, BlockPos pos, ItemStack stack)
     {
+        if (worldIn.isRemote) return;
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
         float f = RANDOM.nextFloat() * 0.8F + 0.1F;
         float f1 = RANDOM.nextFloat() * 0.8F + 0.1F;
         float f2 = RANDOM.nextFloat() * 0.8F + 0.1F;
 
         while (!stack.isEmpty())
         {
-            //ItemEntity entityitem = new ItemEntity(worldIn, x + (double) f, y + (double) f1, z + (double) f2, stack.splitStack(RANDOM.nextInt(21) + 10));
-            //entityitem.prevPosX = RANDOM.nextGaussian() * 0.05000000074505806D;
-            //entityitem.prevPosY = RANDOM.nextGaussian() * 0.05000000074505806D + 0.20000000298023224D;
-            //entityitem.prevPosZ= RANDOM.nextGaussian() * 0.05000000074505806D;
-            //worldIn.spawnEntity(entityitem);
+            ItemEntity entityitem = new ItemEntity(worldIn, x + (double) f, y + (double) f1, z + (double) f2, stack.splitStack(RANDOM.nextInt(21) + 10));
+            entityitem.motionX = RANDOM.nextGaussian() * 0.05000000074505806D;
+            entityitem.motionY = RANDOM.nextGaussian() * 0.05000000074505806D + 0.20000000298023224D;
+            entityitem.motionZ = RANDOM.nextGaussian() * 0.05000000074505806D;
+            worldIn.spawnEntity(entityitem);
         }
-    }
+    }*/
 
     public static float lerp(float a, float b, float f)
     {

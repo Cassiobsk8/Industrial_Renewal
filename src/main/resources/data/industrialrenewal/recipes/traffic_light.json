@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "IDR",
     "ADY",
@@ -7,28 +7,22 @@
   ],
   "key": {
     "A": {
-      "type": "forge:ore_dict",
-      "ore": "dustRedstone"
+      "tag": "dustRedstone"
     },
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "stickIron"
+      "tag": "stickIron"
     },
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "dustGlowstone"
+      "tag": "dustGlowstone"
     },
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "dyeRed"
+      "tag": "dyeRed"
     },
     "Y": {
-      "type": "forge:ore_dict",
-      "ore": "dyeYellow"
+      "tag": "dyeYellow"
     },
     "G": {
-      "type": "forge:ore_dict",
-      "ore": "dyeGreen"
+      "tag": "dyeGreen"
     }
   },
   "result": {

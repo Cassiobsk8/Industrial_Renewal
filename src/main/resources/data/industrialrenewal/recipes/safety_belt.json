@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "L L",
     "LCL",
@@ -7,8 +7,7 @@
   ],
   "key": {
     "L": {
-      "type": "forge:ore_dict",
-      "ore": "leather"
+      "tag": "leather"
     },
     "C": {
       "item": "minecraft:lead"

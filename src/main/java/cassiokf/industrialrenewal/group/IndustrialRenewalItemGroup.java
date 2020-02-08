@@ -16,7 +16,7 @@ public class IndustrialRenewalItemGroup extends ItemGroup
     @Override
     public ItemStack createIcon()
     {
-        return new ItemStack(ModItems.pointer);
+        return new ItemStack(ModItems.screwDrive);
     }
 
 }

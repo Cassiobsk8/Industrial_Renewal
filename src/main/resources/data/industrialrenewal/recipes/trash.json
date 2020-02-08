@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "SHS",
     "FPR",
@@ -10,19 +10,16 @@
       "item": "minecraft:hopper"
     },
     "P": {
-      "type": "forge:ore_dict",
-      "ore": "enderpearl"
+      "tag": "enderpearl"
     },
     "F": {
       "item": "industrialrenewal:fluid_pipe"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "ingotIron"
+      "tag": "forge:ingots/iron"
     },
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "dustRedstone"
+      "tag": "dustRedstone"
     }
   },
   "result": {

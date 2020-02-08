@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "LLL",
     "SSM",
@@ -7,20 +7,16 @@
   ],
   "key": {
     "I": {
-      "type": "forge:ore_dict",
-      "ore": "ingotIron"
+      "tag": "forge:ingots/iron"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "stickIron"
+      "tag": "stickIron"
     },
     "M": {
-      "type": "forge:ore_dict",
-      "ore": "motorSmall"
+      "tag": "motorSmall"
     },
     "L": {
-      "type": "forge:ore_dict",
-      "ore": "leather"
+      "tag": "leather"
     }
   },
   "result": {

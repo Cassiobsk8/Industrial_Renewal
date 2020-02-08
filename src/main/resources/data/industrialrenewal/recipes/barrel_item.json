@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "SLS",
     "SCS",
@@ -10,12 +10,10 @@
       "item": "minecraft:cauldron"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "ingotIron"
+      "tag": "forge:ingots/iron"
     },
     "L": {
-      "type": "forge:ore_dict",
-      "ore": "minislabStone"
+      "tag": "minislabStone"
     }
   },
   "result": {

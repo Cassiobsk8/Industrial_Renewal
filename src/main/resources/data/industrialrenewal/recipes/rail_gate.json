@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "DSD",
     "SRS"
@@ -12,8 +12,7 @@
       "item": "industrialrenewal:normal_rail"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "stickIron"
+      "tag": "stickIron"
     }
   },
   "result": {

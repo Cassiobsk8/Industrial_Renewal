@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "SDS",
     "SCS"
@@ -9,12 +9,10 @@
       "item": "industrialrenewal:minecart_flat"
     },
     "D": {
-      "type": "forge:ore_dict",
-      "ore": "chest"
+      "tag": "chest"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "stickSteel"
+      "tag": "stickSteel"
     }
   },
   "result": {

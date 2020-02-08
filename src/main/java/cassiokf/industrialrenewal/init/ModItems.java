@@ -1,173 +1,127 @@
 package cassiokf.industrialrenewal.init;
 
-import cassiokf.industrialrenewal.item.ItemBase;
+import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.item.*;
+import cassiokf.industrialrenewal.item.armor.ItemSafetyBelt;
+import cassiokf.industrialrenewal.item.armor.ItemSafetyHelmet;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModItems
 {
 
-    //public static Item ingotSteel = new ItemOreDict("ingot_steel", "ingotSteel", References.CREATIVE_IR_GROUP);
-    //public static Item stickIron = new ItemOreDict("stick_iron", "stickIron", References.CREATIVE_IR_GROUP);
-    //public static Item stickSteel = new ItemOreDict("stick_steel", "stickSteel", References.CREATIVE_IR_GROUP);
-    //public static Item spongeIron = new ItemOreDict("sponge_iron", "spongeIron", References.CREATIVE_IR_GROUP);
-    //public static Item smallSlab = new ItemOreDict("small_slab", "minislabStone", References.CREATIVE_IR_GROUP);
-    //public static Item sMotor = new ItemOreDict("motor", "motorSmall", References.CREATIVE_IR_GROUP);
+    public static final Item ingotSteel = new ItemBase(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "ingot_steel");
+    public static final Item stickIron = new ItemBase(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "stick_iron");
+    public static final Item stickSteel = new ItemBase(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "stick_steel");
+    public static final Item spongeIron = new ItemBase(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "sponge_iron");
+    public static final Item smallSlab = new ItemBase(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "small_slab");
+    public static final Item sMotor = new ItemBase(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "motor");
+    //
+    public static final Item cartridge_plus = new ItemCartridge(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "cartridge_plus");
+    public static final Item cartridge_minus = new ItemCartridge(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "cartridge_minus");
+    public static final Item cartridge_half = new ItemCartridge(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "cartridge_half");
+    public static final Item cartridge_double = new ItemCartridge(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "cartridge_double");
+    public static final Item cartridge_inverter = new ItemCartridge(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "cartridge_inverter");
+    //
+    public static final Item locomotivePlowIron = new ItemIronPlow(new Item.Properties().group(References.CREAATIVE_IRWIP_GROUP)).setRegistryName(References.MODID, "plow_iron");
+    //
+    public static final Item screwDrive = new ItemPowerScrewDrive(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "screwdrive");
+    //public static final Item steelSaw = new ItemSteelSaw("steel_saw", "sawStone", References.CREATIVE_IR_GROUP);
 //
-    //public static Item cartridge_plus = new ItemCartridge("cartridge_plus", References.CREATIVE_IR_GROUP);
-    //public static Item cartridge_minus = new ItemCartridge("cartridge_minus", References.CREATIVE_IR_GROUP);
-    //public static Item cartridge_half = new ItemCartridge("cartridge_half", References.CREATIVE_IR_GROUP);
-    //public static Item cartridge_double = new ItemCartridge("cartridge_double", References.CREATIVE_IR_GROUP);
-    //public static Item cartridge_inverter = new ItemCartridge("cartridge_inverter", References.CREATIVE_IR_GROUP);
-//
-    //public static Item locomotivePlowIron = new ItemIronPlow("plow_iron", References.CREAATIVE_IRWIP_GROUP);
-//
-    //public static Item screwDrive = new ItemPowerScrewDrive("screwdrive", References.CREATIVE_IR_GROUP);
-    //public static Item steelSaw = new ItemSteelSaw("steel_saw", "sawStone", References.CREATIVE_IR_GROUP);
-//
-    //public static Item cargoContainer = new ItemMineCartCargoContainer("cargo_container", References.CREATIVE_IRLOCOMOTIVE_GROUP);
-    //public static Item hopperCart = new ItemHopperCart("cart_hopper", References.CREATIVE_IRLOCOMOTIVE_GROUP);
-    //public static Item fluidContainer = new ItemMineCartFluidContainer("fluid_container", References.CREATIVE_IRLOCOMOTIVE_GROUP);
-    //public static Item steamLocomotive = new ItemSteamLocomotive("steam_locomotive", References.CREAATIVE_IRWIP_GROUP);
-    //public static Item logCart = new ItemLogCart("log_cart", References.CREATIVE_IRLOCOMOTIVE_GROUP);
-    //public static Item passengerCar = new ItemMineCartPassengerCar("passenger_car", References.CREATIVE_IRLOCOMOTIVE_GROUP);
-    //public static Item mineCartFlat = new ItemMineCartFlat("minecart_flat", References.CREATIVE_IRLOCOMOTIVE_GROUP);
-//
-    //public static Item medkit = new ItemMedKit("medkit", References.CREATIVE_IR_GROUP);
-    //public static Item fireExtinguisher = new ItemFireExtinguisher("item_fire_extinguisher", References.CREATIVE_IR_GROUP);
-//
-    //public static Item safetyHelmet = new ItemSafetyHelmet("safety_helmet", References.CREATIVE_IR_GROUP);
-    //public static Item safetyBelt = new ItemSafetyBelt("safety_belt", References.CREATIVE_IR_GROUP);
-//
-    //public static Item disc1 = new ItemDiscBase("record_royal_entrance", References.CREATIVE_IR_GROUP, IRSoundRegister.DISC_1);
-//
-    //public static Item manual = new ItemBookManual("ir_manual", References.CREAATIVE_IRWIP_GROUP);
+    public static final Item cargoContainer = new ItemMineCartCargoContainer(new Item.Properties().group(References.CREATIVE_IRLOCOMOTIVE_GROUP)).setRegistryName(References.MODID, "cargo_container");
+    public static final Item hopperCart = new ItemHopperCart(new Item.Properties().group(References.CREATIVE_IRLOCOMOTIVE_GROUP)).setRegistryName(References.MODID, "cart_hopper");
+    public static final Item fluidContainer = new ItemMineCartFluidContainer(new Item.Properties().group(References.CREATIVE_IRLOCOMOTIVE_GROUP)).setRegistryName(References.MODID, "fluid_container");
+    public static final Item steamLocomotive = new ItemSteamLocomotive(new Item.Properties().group(References.CREATIVE_IRLOCOMOTIVE_GROUP)).setRegistryName(References.MODID, "steam_locomotive");
+    public static final Item logCart = new ItemLogCart(new Item.Properties().group(References.CREATIVE_IRLOCOMOTIVE_GROUP)).setRegistryName(References.MODID, "log_cart");
+    public static final Item passengerCar = new ItemMineCartPassengerCar(new Item.Properties().group(References.CREATIVE_IRLOCOMOTIVE_GROUP)).setRegistryName(References.MODID, "passenger_car");
+    public static final Item mineCartFlat = new ItemMineCartFlat(new Item.Properties().group(References.CREATIVE_IRLOCOMOTIVE_GROUP)).setRegistryName(References.MODID, "minecart_flat");
+    //
+    public static final Item medkit = new ItemMedKit(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "medkit");
+    public static final Item fireExtinguisher = new ItemFireExtinguisher(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "item_fire_extinguisher");
+    //
+    public static final Item safetyHelmet = new ItemSafetyHelmet(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "safety_helmet");
+    public static final Item safetyBelt = new ItemSafetyBelt(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "safety_belt");
+    //
+    public static final Item disc1 = new ItemDiscBase(new Item.Properties().group(References.CREATIVE_IR_GROUP), IRSoundRegister.DISC_1).setRegistryName(References.MODID, "record_royal_entrance");
+    //
+    public static final Item manual = new ItemBookManual(new Item.Properties().group(References.CREAATIVE_IRWIP_GROUP)).setRegistryName(References.MODID, "ir_manual");
 
-    public static Item pointer = new ItemBase("pointer", null);
-    public static Item pointerLong = new ItemBase("pointer_long", null);
-    public static Item fire = new ItemBase("fire", null);
-    public static Item barLevel = new ItemBase("bar_level", null);
-    public static Item fluidLoaderArm = new ItemBase("fluid_loader_arm", null);
-    public static Item tambor = new ItemBase("rotary_drum", null);
+    public static final Item pointer = new ItemBase(new Item.Properties().group(null)).setRegistryName(References.MODID, "pointer");
+    public static final Item pointerLong = new ItemBase(new Item.Properties().group(null)).setRegistryName(References.MODID, "pointer_long");
+    public static final Item fire = new ItemBase(new Item.Properties().group(null)).setRegistryName(References.MODID, "fire");
+    public static final Item barLevel = new ItemBase(new Item.Properties().group(null)).setRegistryName(References.MODID, "bar_level");
+    public static final Item fluidLoaderArm = new ItemBase(new Item.Properties().group(null)).setRegistryName(References.MODID, "fluid_loader_arm");
+    public static final Item tambor = new ItemBase(new Item.Properties().group(null)).setRegistryName(References.MODID, "rotary_drum");
 
-    //public static Item battery = new ItemBattery("battery", References.CREATIVE_IR_GROUP);
-//
-    //public static Item coilHV = new ItemCoilHV("coil_hv", References.CREATIVE_IR_GROUP);
-//
-    //public static Item barrel = new ItemBarrel("barrel_item", References.CREATIVE_IR_GROUP);
-//
-    //public static Item fireBoxSolid = new ItemFireBox("firebox_solid", 1, References.CREATIVE_IR_GROUP);
-    //public static Item fireBoxFluid = new ItemFireBox("firebox_fluid", 2, References.CREATIVE_IR_GROUP);
-//
-    //public static Item windBlade = new ItemWindBlade("small_wind_blade", References.CREATIVE_IR_GROUP);
-    //public static Item drillSteel = new ItemDrill("drill_steel", References.CREAATIVE_IRWIP_GROUP);
-    //public static Item drillDiamond = new ItemDrill("drill_diamond", References.CREAATIVE_IRWIP_GROUP);
+    public static final Item battery = new ItemBattery(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "battery");
+    //
+    public static final Item coilHV = new ItemCoilHV(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "coil_hv");
+    //
+    public static final Item barrel = new ItemBarrel(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "barrel_item");
+    //
+    public static final Item fireBoxSolid = new ItemFireBox(new Item.Properties().group(References.CREATIVE_IR_GROUP), 1).setRegistryName(References.MODID, "firebox_solid");
+    public static final Item fireBoxFluid = new ItemFireBox(new Item.Properties().group(References.CREATIVE_IR_GROUP), 2).setRegistryName(References.MODID, "firebox_fluid");
+    //
+    public static final Item windBlade = new ItemWindBlade(new Item.Properties().group(References.CREATIVE_IR_GROUP)).setRegistryName(References.MODID, "small_wind_blade");
 
-    //public static Item hematiteChunk = new ItemOre("chunk_hematite", "oreIron", References.CREAATIVE_IRWIP_GROUP);
+    //public static final Item drillSteel = new ItemDrill(new Item.Properties().group(References.CREAATIVE_IRWIP_GROUP)).setRegistryName(References.MODID,"drill_steel");
+    //public static final Item drillDiamond = new ItemDrill(new Item.Properties().group(References.CREAATIVE_IRWIP_GROUP)).setRegistryName(References.MODID,"drill_diamond");
 
-    //public static ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
+    //public static final Item hematiteChunk = new ItemOre("chunk_hematite", "oreIron", References.CREAATIVE_IRWIP_GROUP);
+
+    //public static final ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
 
     public static void register(IForgeRegistry<Item> registry)
     {
         registry.registerAll(
                 //hematiteChunk,
-                //manual,
-                //ingotSteel,
-                //spongeIron,
-                //screwDrive,
+                manual,
+                ingotSteel,
+                spongeIron,
+                screwDrive,
                 //steelSaw,
-                //cargoContainer,
-                //hopperCart,
-                //fluidContainer,
-                //steamLocomotive,
-                //logCart,
-                //passengerCar,
-                //mineCartFlat,
-                //smallSlab,
-                //stickIron,
-                //stickSteel,
-                //medkit,
-                //fireExtinguisher,
-                //safetyHelmet,
-                //safetyBelt,
-                //disc1,
-                //locomotivePlowIron,
+                cargoContainer,
+                hopperCart,
+                fluidContainer,
+                steamLocomotive,
+                logCart,
+                passengerCar,
+                mineCartFlat,
+                smallSlab,
+                stickIron,
+                stickSteel,
+                medkit,
+                fireExtinguisher,
+                safetyHelmet,
+                safetyBelt,
+                disc1,
+                locomotivePlowIron,
                 //instantNoodle
-                //cartridge_plus,
-                //cartridge_minus,
-                //cartridge_half,
-                //cartridge_double,
-                //cartridge_inverter,
+                cartridge_plus,
+                cartridge_minus,
+                cartridge_half,
+                cartridge_double,
+                cartridge_inverter,
 //
-                //coilHV,
+                coilHV,
 
                 pointer,
                 pointerLong,
                 barLevel,
                 fire,
-                //barrel,
-                //fireBoxSolid,
-                //fireBoxFluid,
-                //battery,
-                //sMotor,
-                //windBlade,
+                barrel,
+                fireBoxSolid,
+                fireBoxFluid,
+                battery,
+                sMotor,
+                windBlade,
                 //drillSteel,
                 //drillDiamond,
                 fluidLoaderArm,
                 tambor
         );
     }
-
-    /*public static void registerItemRenderer(Item item, int meta, String id) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(References.MODID + ":" + id, "inventory"));
-    }*/
 /*
-    public static void registerModels() {
-        hematiteChunk.registerItemModel();
-        ingotSteel.registerItemModel();
-        spongeIron.registerItemModel();
-        screwDrive.registerItemModel();
-        steelSaw.registerItemModel();
-        cargoContainer.registerItemModel();
-        hopperCart.registerItemModel();
-        fluidContainer.registerItemModel();
-        steamLocomotive.registerItemModel();
-        logCart.registerItemModel();
-        passengerCar.registerItemModel();
-        mineCartFlat.registerItemModel();
-        smallSlab.registerItemModel();
-        stickIron.registerItemModel();
-        medkit.registerItemModel();
-        fireExtinguisher.registerItemModel();
-        safetyHelmet.registerItemModel();
-        safetyBelt.registerItemModel();
-        disc1.registerItemModel();
-        locomotivePlowIron.registerItemModel();
-        //instantNoodle.registerItemModel();
-        cartridge_plus.registerItemModel();
-        cartridge_minus.registerItemModel();
-        cartridge_half.registerItemModel();
-        cartridge_double.registerItemModel();
-        cartridge_inverter.registerItemModel();
-        manual.registerItemModel();
-        coilHV.registerItemModel();
-        stickSteel.registerItemModel();
-        pointer.registerItemModel();
-        pointerLong.registerItemModel();
-        barLevel.registerItemModel();
-        fluidLoaderArm.registerItemModel();
-        tambor.registerItemModel();
-        fire.registerItemModel();
-        barrel.registerItemModel();
-        fireBoxSolid.registerItemModel();
-        fireBoxFluid.registerItemModel();
-        battery.registerItemModel();
-        sMotor.registerItemModel();
-        windBlade.registerItemModel();
-        drillSteel.registerItemModel();
-        drillDiamond.registerItemModel();
-    }
-
     public static void registerOreDict() {
         //oreCopper.initOreDict();
         hematiteChunk.initOreDict();

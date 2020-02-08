@@ -1,33 +1,28 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.References;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 
 public class BlockBase extends Block
 {
 
-    protected String name;
-    protected ItemGroup group;
-
-    public BlockBase(Material material, String name, ItemGroup group)
+    public BlockBase(Block.Properties properties)
     {
-        super(Block.Properties.create(material).hardnessAndResistance(2f, 5f));
-        this.name = name;
-        this.group = group;
-        setRegistryName(References.MODID, name);
+        super(properties.hardnessAndResistance(2f, 10f));
+    }
+
+    @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player)
+    {
+        super.onBlockHarvested(worldIn, pos, state, player);
     }
 
     /*public void registerItemModel(Item itemBlock) {
         IndustrialRenewal.proxy.registerItemRenderer(itemBlock, 0, name);
     }
 */
-    public Item createItemBlock()
-    {
-        return new BlockItem(this, new Item.Properties().group(group)).setRegistryName(References.MODID, name);
-    }
 }

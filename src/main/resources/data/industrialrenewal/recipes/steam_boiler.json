@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "TBT",
     "GBG",
@@ -16,8 +16,7 @@
       "item": "industrialrenewal:fluid_gauge"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "ingotSteel"
+      "tag": "ingotSteel"
     }
   },
   "result": {

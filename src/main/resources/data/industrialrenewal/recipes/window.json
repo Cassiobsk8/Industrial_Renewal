@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "GSG",
     "GSG",
@@ -7,12 +7,10 @@
   ],
   "key": {
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "stickIron"
+      "tag": "stickIron"
     },
     "G": {
-      "type": "forge:ore_dict",
-      "ore": "paneGlass"
+      "tag": "paneGlass"
     }
   },
   "result": {

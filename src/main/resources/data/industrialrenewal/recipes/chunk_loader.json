@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "ROR",
     "SES",
@@ -10,16 +10,13 @@
       "item": "minecraft:observer"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "ingotSteel"
+      "tag": "ingotSteel"
     },
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "blockRedstone"
+      "tag": "blockRedstone"
     },
     "E": {
-      "type": "forge:ore_dict",
-      "ore": "enderpearl"
+      "tag": "enderpearl"
     }
   },
   "result": {

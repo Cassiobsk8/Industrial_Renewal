@@ -1,20 +1,18 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     " S ",
     "RLR"
   ],
   "key": {
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "dustRedstone"
+      "tag": "dustRedstone"
     },
     "S": {
       "item": "minecraft:stone_button"
     },
     "L": {
-      "type": "forge:ore_dict",
-      "ore": "minislabStone"
+      "tag": "minislabStone"
     }
   },
   "result": {

@@ -1,14 +1,15 @@
 package cassiokf.industrialrenewal.model.armor;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.entity.player.PlayerEntity;
 
 /**
  * ModelPlayer - Either Mojang or a mod author
  * Created using Tabula 7.0.0
  */
-public class SafetyBeltModel extends ModelBiped {
+public class SafetyBeltModel extends BipedModel<PlayerEntity>
+{
     private ModelRenderer shape15;
     private ModelRenderer shape16;
     private ModelRenderer shape17;
@@ -28,6 +29,7 @@ public class SafetyBeltModel extends ModelBiped {
     private ModelRenderer shape31;
 
     public SafetyBeltModel() {
+        super(1f);
         this.textureWidth = 64;
         this.textureHeight = 64;
         this.shape19 = new ModelRenderer(this, 45, 10);
@@ -95,9 +97,9 @@ public class SafetyBeltModel extends ModelBiped {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+    public void render(PlayerEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
+    {
+        super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     /**

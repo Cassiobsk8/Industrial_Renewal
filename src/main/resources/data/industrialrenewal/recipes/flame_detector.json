@@ -1,21 +1,18 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "RIG",
     " S "
   ],
   "key": {
     "G": {
-      "type": "forge:ore_dict",
-      "ore": "blockGlass"
+      "tag": "blockGlass"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "stickIron"
+      "tag": "stickIron"
     },
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "dustRedstone"
+      "tag": "dustRedstone"
     },
     "I": {
       "item": "minecraft:daylight_detector"

@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "industrialrenewal:blocks/hazard/defective_hazard"
+  }
+}

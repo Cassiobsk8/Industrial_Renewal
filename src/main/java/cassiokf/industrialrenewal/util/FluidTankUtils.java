@@ -1,25 +1,13 @@
 package cassiokf.industrialrenewal.util;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class FluidTankUtils extends FluidTank {
+public class FluidTankUtils extends FluidTank
+{
 
-    public FluidTankUtils(final TileEntity tileEntity, final int capacity) {
+    public FluidTankUtils(final TileEntity tileEntity, final int capacity)
+    {
         super(capacity);
-        tile = tileEntity;
     }
-
-    public FluidTankUtils(final TileEntity tileEntity, final FluidStack stack, final int capacity) {
-        super(stack, capacity);
-        tile = tileEntity;
-    }
-
-    public FluidTankUtils(final TileEntity tileEntity, final Fluid fluid, final int amount, final int capacity) {
-        super(fluid, amount, capacity);
-        tile = tileEntity;
-    }
-
 }

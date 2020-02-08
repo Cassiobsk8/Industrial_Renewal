@@ -16,7 +16,7 @@ public class IndustrialRenewalRailroadItemGroup extends ItemGroup
     @Override
     public ItemStack createIcon()
     {
-        return new ItemStack(ModItems.barLevel);
+        return new ItemStack(ModItems.fluidContainer);
     }
 
 }

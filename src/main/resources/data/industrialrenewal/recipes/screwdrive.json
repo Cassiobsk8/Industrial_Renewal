@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "RRR",
     " BR",
@@ -7,15 +7,13 @@
   ],
   "key": {
     "R": {
-      "type": "forge:ore_dict",
-      "ore": "ingotIron"
+      "tag": "forge:ingots/iron"
     },
     "B": {
       "item": "minecraft:stone_button"
     },
     "C": {
-      "type": "forge:ore_dict",
-      "ore": "blockRedstone"
+      "tag": "blockRedstone"
     }
   },
   "result": {
