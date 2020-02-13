@@ -1,13 +1,19 @@
 package cassiokf.industrialrenewal.util;
 
+import cassiokf.industrialrenewal.config.IRConfig;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.wrappers.BlockWrapper;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -30,9 +36,8 @@ public class Utils
         System.out.println(str);
     }
 
-    /*
     public static boolean isWood(ItemStack stack)
-    {
+    {/*
         int[] array = OreDictionary.getOreIDs(stack);
         int size = array.length;
         List<Integer> oreList = new ArrayList<>();
@@ -48,11 +53,16 @@ public class Utils
             }
         }
         return isLog;
+        */
+        return false;
     }
-*/
-    public static boolean IsInventoryEmpty(IItemHandler handler) {
-        for (int i = 0; i < handler.getSlots(); i++) {
-            if (!handler.getStackInSlot(i).isEmpty()) {
+
+    public static boolean IsInventoryEmpty(IItemHandler handler)
+    {
+        for (int i = 0; i < handler.getSlots(); i++)
+        {
+            if (!handler.getStackInSlot(i).isEmpty())
+            {
                 return false;
             }
         }
@@ -69,7 +79,7 @@ public class Utils
         return slotsFull == handler.getSlots();
     }
 
-    public static void dropInventoryItems(World worldIn, BlockPos pos, ItemStackHandler inventory)
+    public static void dropInventoryItems(World worldIn, BlockPos pos, IItemHandler inventory)
     {
         for (int i = 0; i < inventory.getSlots(); ++i)
         {
@@ -77,30 +87,24 @@ public class Utils
 
             if (!itemstack.isEmpty())
             {
-                //spawnItemStack(worldIn, pos, itemstack);
+                spawnItemStack(worldIn, pos, itemstack);
             }
         }
     }
-/*
+
     public static void spawnItemStack(World worldIn, BlockPos pos, ItemStack stack)
     {
-        if (worldIn.isRemote) return;
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-        float f = RANDOM.nextFloat() * 0.8F + 0.1F;
-        float f1 = RANDOM.nextFloat() * 0.8F + 0.1F;
-        float f2 = RANDOM.nextFloat() * 0.8F + 0.1F;
-
-        while (!stack.isEmpty())
-        {
-            ItemEntity entityitem = new ItemEntity(worldIn, x + (double) f, y + (double) f1, z + (double) f2, stack.splitStack(RANDOM.nextInt(21) + 10));
-            entityitem.motionX = RANDOM.nextGaussian() * 0.05000000074505806D;
-            entityitem.motionY = RANDOM.nextGaussian() * 0.05000000074505806D + 0.20000000298023224D;
-            entityitem.motionZ = RANDOM.nextGaussian() * 0.05000000074505806D;
-            worldIn.spawnEntity(entityitem);
+        if (!worldIn.isRemote && !stack.isEmpty() && worldIn.getGameRules().getBoolean(GameRules.DO_TILE_DROPS) && !worldIn.restoringBlockSnapshots)
+        { // do not drop items while restoring blockstates, prevents item dupe
+            float f = 0.5F;
+            double d0 = (double) (worldIn.rand.nextFloat() * 0.5F) + 0.25D;
+            double d1 = (double) (worldIn.rand.nextFloat() * 0.5F) + 0.25D;
+            double d2 = (double) (worldIn.rand.nextFloat() * 0.5F) + 0.25D;
+            ItemEntity itementity = new ItemEntity(worldIn, (double) pos.getX() + d0, (double) pos.getY() + d1, (double) pos.getZ() + d2, stack);
+            itementity.setDefaultPickupDelay();
+            worldIn.addEntity(itementity);
         }
-    }*/
+    }
 
     public static float lerp(float a, float b, float f)
     {
@@ -117,17 +121,12 @@ public class Utils
         return (1 - f) * a + f * b;
     }
 
-    /*
-        public static IFluidHandler wrapFluidBlock(Block block, World world, BlockPos pos) {
-            if (block instanceof IFluidBlock) {
-                return new FluidBlockWrapper((IFluidBlock) block, world, pos);
-            } else if (block instanceof BlockLiquid) {
-                return new BlockLiquidWrapper((BlockLiquid) block, world, pos);
-            } else {
-                return new BlockWrapper(block, world, pos);
-            }
-        }
-    */
+
+    public static IFluidHandler wrapFluidBlock(BlockState state, World world, BlockPos pos)
+    {
+        return new BlockWrapper(state, world, pos);
+    }
+
     public static float getInvNorm(IItemHandler inventory)
     {
         float items = 0;
@@ -190,10 +189,9 @@ public class Utils
         return list;
     }
 
-    /*
         public static float getConvertedTemperature(float temp)
         {
-            switch (IRConfig.MainConfig.Main.temperatureScale)
+            switch (IRConfig.Main.temperatureScale.get())
             {
                 default:
                 case 0:
@@ -204,7 +202,26 @@ public class Utils
                     return (float) (temp + 273.15);
             }
         }
-    */
+
+    public static String getTemperatureUnit()
+    {
+        String st;
+        switch (IRConfig.Main.temperatureScale.get())
+        {
+            default:
+            case 0:
+                st = " " + I18n.format("render.industrialrenewal.c");
+                break;
+            case 1:
+                st = " " + I18n.format("render.industrialrenewal.f");
+                break;
+            case 2:
+                st = " " + I18n.format("render.industrialrenewal.k");
+                break;
+        }
+        return st;
+    }
+
     public static String formatEnergyString(int energy)
     {
         String text = energy + " FE";

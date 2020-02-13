@@ -1,14 +1,20 @@
 package cassiokf.industrialrenewal;
 
+import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.init.TileEntityRegister;
 import net.minecraft.block.Block;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -35,6 +41,7 @@ public class IndustrialRenewal
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientRegistries);
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, IRConfig.COMMON_SPEC, References.MODID + ".toml");
     }
 
 
@@ -88,9 +95,15 @@ public class IndustrialRenewal
         }
 
         @SubscribeEvent
-        public static void onRegisterTileEntites(RegistryEvent.Register<TileEntityType<?>> event)
+        public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event)
         {
-            ModBlocks.registerTileEntity(event.getRegistry());
+            TileEntityRegister.registerTileEntity(event.getRegistry());
+        }
+
+        @SubscribeEvent
+        public static void registerFluids(final RegistryEvent.Register<Fluid> envent)
+        {
+            FluidInit.registerFluids(envent.getRegistry());
         }
     }
 }
