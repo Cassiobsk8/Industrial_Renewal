@@ -15,19 +15,22 @@ import cassiokf.industrialrenewal.fluids.BlockSteam;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.ObjectHolder;
 
+@ObjectHolder(References.MODID)
 public class ModBlocks
 {
-    public static Block blockHazard = new BlockBase(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "block_hazard");
-    public static Block cautionHazard = new BlockBase(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "caution_hazard");
-    public static Block defectiveHazard = new BlockBase(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "defective_hazard");
-    public static Block safetyHazard = new BlockBase(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "safety_hazard");
-    public static Block radiationHazard = new BlockBase(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "radiation_hazard");
-    public static Block aisleHazard = new BlockBase(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "aisle_hazard");
-    public static Block fireHazard = new BlockBase(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "fire_hazard");
+    public static Block blockHazard = new BlockNormalCube().setRegistryName(References.MODID, "block_hazard");
+    public static Block cautionHazard = new BlockNormalCube().setRegistryName(References.MODID, "caution_hazard");
+    public static Block defectiveHazard = new BlockNormalCube().setRegistryName(References.MODID, "defective_hazard");
+    public static Block safetyHazard = new BlockNormalCube().setRegistryName(References.MODID, "safety_hazard");
+    public static Block radiationHazard = new BlockNormalCube().setRegistryName(References.MODID, "radiation_hazard");
+    public static Block aisleHazard = new BlockNormalCube().setRegistryName(References.MODID, "aisle_hazard");
+    public static Block fireHazard = new BlockNormalCube().setRegistryName(References.MODID, "fire_hazard");
 
     public static Block concrete = new BlockConcrete(Block.Properties.create(Material.ROCK)).setRegistryName(References.MODID, "concrete");
 
@@ -83,7 +86,7 @@ public class ModBlocks
     public static Block dummy = new BlockDummy(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "dummy");
     public static Block catwalkGate = new BlockCatwalkGate(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "catwalk_gate");
     public static Block hatch = new BlockCatwalkHatch(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "catwalk_hatch");
-    public static Block window = new BlockWindow(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "window");
+    public static Block window = new BlockWindow(Block.Properties.create(Material.GLASS, DyeColor.GRAY)).setRegistryName(References.MODID, "window");
     public static Block platform = new BlockPlatform(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "platform");
     public static Block brace = new BlockBrace(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "brace");
     public static Block braceSteel = new BlockBrace(Block.Properties.create(Material.IRON)).setRegistryName(References.MODID, "brace_steel");

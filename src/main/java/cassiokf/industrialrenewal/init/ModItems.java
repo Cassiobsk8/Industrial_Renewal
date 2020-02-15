@@ -67,14 +67,14 @@ public class ModItems
     //public static final Item drillSteel = new ItemDrill(new Item.Properties().group(References.CREAATIVE_IRWIP_GROUP)).setRegistryName(References.MODID,"drill_steel");
     //public static final Item drillDiamond = new ItemDrill(new Item.Properties().group(References.CREAATIVE_IRWIP_GROUP)).setRegistryName(References.MODID,"drill_diamond");
 
-    //public static final Item hematiteChunk = new ItemOre("chunk_hematite", "oreIron", References.CREAATIVE_IRWIP_GROUP);
+    public static final Item hematiteChunk = new ItemOre(new Item.Properties().group(References.CREAATIVE_IRWIP_GROUP)).setRegistryName(References.MODID, "chunk_hematite");
 
     //public static final ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
 
     public static void register(IForgeRegistry<Item> registry)
     {
         registry.registerAll(
-                //hematiteChunk,
+                hematiteChunk,
                 manual,
                 ingotSteel,
                 spongeIron,
