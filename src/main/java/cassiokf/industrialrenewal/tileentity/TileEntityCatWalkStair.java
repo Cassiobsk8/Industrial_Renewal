@@ -1,11 +1,12 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 
 import java.util.EnumSet;
 import java.util.Set;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.CATWALKSTAIR_TILE;
 
 public class TileEntityCatWalkStair extends TileEntitySyncable
 {
@@ -13,7 +14,7 @@ public class TileEntityCatWalkStair extends TileEntitySyncable
 
     public TileEntityCatWalkStair()
     {
-        super(TileEntityRegister.CAT_WALK_STAIR);
+        super(CATWALKSTAIR_TILE.get());
     }
 
     public boolean toggleFacing(final Direction facing)

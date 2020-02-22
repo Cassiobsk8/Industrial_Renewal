@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityInfinityGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -15,9 +16,9 @@ import java.util.List;
 
 public class BlockInfinityGenerator extends BlockTileEntity<TileEntityInfinityGenerator>
 {
-    public BlockInfinityGenerator(Block.Properties properties)
+    public BlockInfinityGenerator()
     {
-        super(properties.lightValue(14));
+        super(Block.Properties.create(Material.IRON).lightValue(14));
     }
 
     @Override

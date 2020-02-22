@@ -1,9 +1,10 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.init.IRSoundRegister;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.pathfinding.PathType;
@@ -14,9 +15,11 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -24,9 +27,8 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockElectricGate extends BlockBase
+public class BlockElectricGate extends BlockAbstractNotFullCube
 {
-
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     public static final BooleanProperty INVERTED = BooleanProperty.create("inverted");
@@ -35,25 +37,23 @@ public class BlockElectricGate extends BlockBase
     public static final BooleanProperty LEFT = BooleanProperty.create("left");
     public static final BooleanProperty RIGHT = BooleanProperty.create("right");
 
-    protected static final AxisAlignedBB RNORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D);
-    protected static final AxisAlignedBB RWEST_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D);
+    protected static final VoxelShape RNORTH_AABB = Block.makeCuboidShape(0, 0, 6, 16, 16, 10);
+    protected static final VoxelShape RWEST_AABB = Block.makeCuboidShape(6, 0, 0, 10, 16, 16);
 
-    protected static final AxisAlignedBB CNORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.375D, 1.0D, 1.5D, 0.625D);
-    protected static final AxisAlignedBB CWEST_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.5D, 1.0D);
+    protected static final VoxelShape CNORTH_AABB = Block.makeCuboidShape(0, 0, 6, 16, 24, 10);
+    protected static final VoxelShape CWEST_AABB = Block.makeCuboidShape(6, 0, 0, 10, 24, 16);
+    protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(-14, 0, 6, 2, 24, 10);
+    protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(14, 0, 6, 30, 24, 10);
+    protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(6, 0, 14, 10, 24, 30);
+    protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(6, 0, -14, 10, 24, 2);
+    protected static final VoxelShape INORTH_AABB = Block.makeCuboidShape(14, 0, 6, 30, 24, 10);
+    protected static final VoxelShape ISOUTH_AABB = Block.makeCuboidShape(-14, 0, 6, 2, 24, 10);
+    protected static final VoxelShape IWEST_AABB = Block.makeCuboidShape(6, 0, -14, 10, 24, 2);
+    protected static final VoxelShape IEAST_AABB = Block.makeCuboidShape(6, 0, 14, 10, 24, 30);
 
-    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(-0.875D, 0.0D, 0.375D, 0.125D, 1.5D, 0.625D);
-    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.875, 0.0D, 0.375D, 1.875D, 1.5D, 0.625D);
-    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.875D, 0.625D, 1.5D, 1.875D);
-    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.375D, 0.0D, -0.875, 0.625D, 1.5D, 0.125D);
-
-    protected static final AxisAlignedBB INORTH_AABB = new AxisAlignedBB(0.875D, 0.0D, 0.375D, 1.875D, 1.5D, 0.625D);
-    protected static final AxisAlignedBB ISOUTH_AABB = new AxisAlignedBB(-0.875D, 0.0D, 0.375D, 0.125D, 1.5D, 0.625D);
-    protected static final AxisAlignedBB IWEST_AABB = new AxisAlignedBB(0.375D, 0.0D, -0.875, 0.625D, 1.5D, 0.125D);
-    protected static final AxisAlignedBB IEAST_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.875D, 0.625D, 1.5D, 1.875D);
-
-    public BlockElectricGate(Block.Properties properties)
+    public BlockElectricGate()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -62,38 +62,38 @@ public class BlockElectricGate extends BlockBase
         if (worldIn.isRemote)
         {
             return ActionResultType.SUCCESS;
+        }
+
+        boolean active = !state.get(ACTIVE);
+
+        OpenUpAndDown(worldIn, state, pos, active);
+
+        Direction facing = state.get(FACING);
+        BlockPos rightPos = pos.offset(facing.rotateY());
+        BlockPos leftPos = pos.offset(facing.rotateYCCW());
+        BlockState rightState = worldIn.getBlockState(rightPos);
+        BlockState leftState = worldIn.getBlockState(leftPos);
+        boolean inverted = state.get(INVERTED);
+
+        if (!inverted && rightState.getBlock() instanceof BlockElectricGate && rightState.get(INVERTED))
+        {
+            ((BlockElectricGate) rightState.getBlock()).OpenUpAndDown(worldIn, rightState, rightPos, active);
+        } else if (inverted && leftState.getBlock() instanceof BlockElectricGate && !leftState.get(INVERTED))
+        {
+            ((BlockElectricGate) leftState.getBlock()).OpenUpAndDown(worldIn, leftState, leftPos, active);
+        }
+
+        //Sound
+        Random r = new Random();
+        float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
+        if (active)
+        {
+            worldIn.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_OPEN.get(), SoundCategory.BLOCKS, 1.0F, pitch);
         } else
         {
-            boolean active = !state.get(ACTIVE);
-
-            OpenUpAndDown(worldIn, state, pos, active);
-
-            Direction facing = state.get(FACING);
-            BlockPos rightPos = pos.offset(facing.rotateY());
-            BlockPos leftPos = pos.offset(facing.rotateYCCW());
-            BlockState rightState = worldIn.getBlockState(rightPos);
-            BlockState leftState = worldIn.getBlockState(leftPos);
-            boolean inverted = state.get(INVERTED);
-
-            if (!inverted && rightState.getBlock() instanceof BlockElectricGate && rightState.get(INVERTED))
-            {
-                ((BlockElectricGate) rightState.getBlock()).OpenUpAndDown(worldIn, state, rightPos, active);
-            } else if (inverted && leftState.getBlock() instanceof BlockElectricGate && !leftState.get(INVERTED))
-            {
-                ((BlockElectricGate) leftState.getBlock()).OpenUpAndDown(worldIn, state, leftPos, active);
-            }
-
-            //Sound
-            Random r = new Random();
-            float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
-            if (active)
-            {
-                worldIn.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F, pitch);
-            } else
-            {
-                worldIn.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F, pitch);
-            }
+            worldIn.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_CLOSE.get(), SoundCategory.BLOCKS, 1.0F, pitch);
         }
+
         return ActionResultType.SUCCESS;
     }
 
@@ -106,7 +106,7 @@ public class BlockElectricGate extends BlockBase
         Block dnb = dnstate.getBlock();
 
         state = state.with(ACTIVE, active);
-        world.setBlockState(pos, state, 3);
+        world.setBlockState(pos, state);
         if (upb instanceof BlockElectricGate)
         {
             OpenUp(world, pos, active);
@@ -123,7 +123,7 @@ public class BlockElectricGate extends BlockBase
         while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockElectricGate)
         {
             BlockState thisState = world.getBlockState(pos.up(n)).with(ACTIVE, active);
-            world.setBlockState(pos.up(n), thisState, 3);
+            world.setBlockState(pos.up(n), thisState);
             n++;
         }
     }
@@ -134,31 +134,35 @@ public class BlockElectricGate extends BlockBase
         while (world.getBlockState(pos.down(n)).getBlock() instanceof BlockElectricGate)
         {
             BlockState thisState = world.getBlockState(pos.down(n)).with(ACTIVE, active);
-            world.setBlockState(pos.down(n), thisState, 3);
+            world.setBlockState(pos.down(n), thisState);
             n++;
         }
     }
 
-
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        return getFullState(stateIn, worldIn, currentPos);
+    }
+
+    private BlockState getFullState(BlockState stateIn, IWorld worldIn, BlockPos currentPos)
     {
         Direction face = stateIn.get(FACING);
         BlockState rightState = worldIn.getBlockState(currentPos.offset(face.rotateY()));
         BlockState leftState = worldIn.getBlockState(currentPos.offset(face.rotateYCCW()));
-        Block leftBlock = leftState.getBlock();
-        Block rightBlock = rightState.getBlock();
-        boolean leftIsGate = (leftBlock instanceof BlockElectricGate);
-        boolean rightIsGate = (rightBlock instanceof BlockElectricGate);
+
+        boolean leftIsGate = (leftState.getBlock() instanceof BlockElectricGate);
+        boolean rightIsGate = (rightState.getBlock() instanceof BlockElectricGate);
         boolean inverted = (leftIsGate && !rightIsGate);
-        boolean rightInverted = rightIsGate;
+
         Block dnb = worldIn.getBlockState(currentPos.down()).getBlock();
         Block upb = worldIn.getBlockState(currentPos.up()).getBlock();
+
         boolean isTop = (dnb instanceof BlockElectricGate) && !(upb instanceof BlockElectricGate);
 
         stateIn = stateIn.with(UP, isTop).with(INVERTED, inverted)
                 .with(LEFT, !inverted)
-                .with(RIGHT, !rightInverted);
+                .with(RIGHT, !rightIsGate);
 
         return stateIn;
     }
@@ -169,80 +173,87 @@ public class BlockElectricGate extends BlockBase
         return worldIn.getBlockState(pos).get(ACTIVE);
     }
 
-    /*
-        @Override
-        public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos)
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return getVoxelShape(state, false);
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return getVoxelShape(state, true);
+    }
+
+    private VoxelShape getVoxelShape(BlockState state, boolean collision)
+    {
+        Direction face = state.get(FACING);
+
+        if (!collision)
         {
-            Direction face = state.get(FACING);
             if (face == Direction.NORTH || face == Direction.SOUTH)
             {
                 return RNORTH_AABB;
-            } else
-            {
-                return RWEST_AABB;
             }
+            return RWEST_AABB;
         }
 
+        boolean active = state.get(ACTIVE);
+        boolean inverted = state.get(INVERTED);
+        VoxelShape FINAL_SHAPE = NULL_SHAPE;
 
-        @Override
-        public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
+        if (active)
         {
-            BlockState actualState = getActualState(state, worldIn, pos);
-            boolean active = actualState.get(ACTIVE);
-            Direction face = state.get(FACING);
-            boolean inverted = actualState.get(INVERTED);
-            if (active)
+            if (face == Direction.NORTH)
             {
-                if (face == Direction.NORTH)
+                if (inverted)
                 {
-                    if (inverted)
-                    {
-                        addCollisionBoxToList(pos, entityBox, collidingBoxes, INORTH_AABB);
-                    } else
-                    {
-                        addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-                    }
-                } else if (face == Direction.SOUTH)
+                    FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, INORTH_AABB);
+                } else
                 {
-                    if (inverted)
-                    {
-                        addCollisionBoxToList(pos, entityBox, collidingBoxes, ISOUTH_AABB);
-                    } else
-                    {
-                        addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-                    }
-                } else if (face == Direction.WEST)
-                {
-                    if (inverted)
-                    {
-                        addCollisionBoxToList(pos, entityBox, collidingBoxes, IWEST_AABB);
-                    } else
-                    {
-                        addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
-                    }
-                } else if (face == Direction.EAST)
-                {
-                    if (inverted)
-                    {
-                        addCollisionBoxToList(pos, entityBox, collidingBoxes, IEAST_AABB);
-                    } else
-                    {
-                        addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
-                    }
+                    FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, NORTH_AABB);
                 }
-            } else
+            } else if (face == Direction.SOUTH)
             {
-                if (face == Direction.NORTH || face == Direction.SOUTH)
+                if (inverted)
                 {
-                    addCollisionBoxToList(pos, entityBox, collidingBoxes, CNORTH_AABB);
-                } else if (face == Direction.WEST || face == Direction.EAST)
+                    FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, ISOUTH_AABB);
+                } else
                 {
-                    addCollisionBoxToList(pos, entityBox, collidingBoxes, CWEST_AABB);
+                    FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, SOUTH_AABB);
+                }
+            } else if (face == Direction.WEST)
+            {
+                if (inverted)
+                {
+                    FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, IWEST_AABB);
+                } else
+                {
+                    FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, WEST_AABB);
+                }
+            } else if (face == Direction.EAST)
+            {
+                if (inverted)
+                {
+                    FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, IEAST_AABB);
+                } else
+                {
+                    FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, EAST_AABB);
                 }
             }
-
+        } else
+        {
+            if (face == Direction.NORTH || face == Direction.SOUTH)
+            {
+                FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, CNORTH_AABB);
+            } else if (face == Direction.WEST || face == Direction.EAST)
+            {
+                FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, CWEST_AABB);
+            }
         }
-    */
+        return FINAL_SHAPE;
+    }
+
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
@@ -253,12 +264,7 @@ public class BlockElectricGate extends BlockBase
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing()).with(ACTIVE, false);
-    }
-
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return false;
+        BlockState state = getFullState(getDefaultState(), context.getWorld(), context.getPos());
+        return state.with(FACING, context.getPlayer().getHorizontalFacing()).with(ACTIVE, false);
     }
 }

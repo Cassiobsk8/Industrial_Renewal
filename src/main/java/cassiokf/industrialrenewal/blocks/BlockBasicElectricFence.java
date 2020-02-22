@@ -1,9 +1,8 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.IRSoundRegister;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -11,19 +10,21 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
-public abstract class BlockBasicElectricFence extends BlockBase
+public abstract class BlockBasicElectricFence extends BlockAbstractSixWayConnections
 {
 
-    public BlockBasicElectricFence(Block.Properties property)
+    public BlockBasicElectricFence(Block.Properties property, int nodeWidth)
     {
-        super(property);
+        super(property, nodeWidth, 16);
     }
 
     @Override
@@ -68,18 +69,13 @@ public abstract class BlockBasicElectricFence extends BlockBase
             ((LivingEntity) entityIn).knockBack(entityIn, knockback, pos.getX() - entityIn.getPosX(), pos.getZ() - entityIn.getPosZ());
         Random r = new Random();
         float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
-        world.playSound(null, pos, IRSoundRegister.EFFECT_SHOCK, SoundCategory.BLOCKS, 0.6F, pitch);
+        world.playSound(null, pos, SoundsRegistration.EFFECT_SHOCK.get(), SoundCategory.BLOCKS, 0.6F, pitch);
     }
 
+    @Nullable
     @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
+    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
     {
-        return false;
-    }
-
-    @Override
-    public BlockRenderType getRenderType(BlockState state)
-    {
-        return BlockRenderType.MODEL;
+        return new Direction[0];
     }
 }

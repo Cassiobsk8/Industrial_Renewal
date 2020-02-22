@@ -1,33 +1,34 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/pipe_blue"
-    }
-  },
   "variants": {
-    "index": {
-      "0": {
-        "model": "industrialrenewal:pump_motor"
-      },
-      "1": {
-        "model": "industrialrenewal:pump_head"
-      }
+    "facing=north,index=0": {
+      "model": "industrialrenewal:block/pump_motor"
     },
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
-      }
+    "facing=south,index=0": {
+      "model": "industrialrenewal:block/pump_motor",
+      "y": 180
     },
-    "inventory": {
-      "model": "industrialrenewal:pump_item"
+    "facing=east,index=0": {
+      "model": "industrialrenewal:block/pump_motor",
+      "y": 90
+    },
+    "facing=west,index=0": {
+      "model": "industrialrenewal:block/pump_motor",
+      "y": -90
+    },
+    "facing=north,index=1": {
+      "model": "industrialrenewal:block/pump_head"
+    },
+    "facing=south,index=1": {
+      "model": "industrialrenewal:block/pump_head",
+      "y": 180
+    },
+    "facing=east,index=1": {
+      "model": "industrialrenewal:block/pump_head",
+      "y": 90
+    },
+    "facing=west,index=1": {
+      "model": "industrialrenewal:block/pump_head",
+      "y": -90
     }
   }
 }

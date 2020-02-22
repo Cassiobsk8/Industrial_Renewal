@@ -4,11 +4,13 @@ import cassiokf.industrialrenewal.blocks.BlockTileEntity;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntitySensorRain;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
@@ -18,11 +20,13 @@ public class BlockSensorRain extends BlockTileEntity<TileEntitySensorRain>
 {
 
     public static final IntegerProperty POWER = IntegerProperty.create("power", 0, 15);
-    protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
 
-    public BlockSensorRain(Block.Properties properties)
+    protected static final VoxelShape BLOCK_AABB = Block.makeCuboidShape(0, 0, 0, 16, 2, 16);
+
+    public BlockSensorRain()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
+        setDefaultState(getDefaultState().with(POWER, 0));
     }
 
     @Override
@@ -33,18 +37,18 @@ public class BlockSensorRain extends BlockTileEntity<TileEntitySensorRain>
 
     public void updatePower(World worldIn, BlockPos pos, int currentStrength)
     {
-        if (worldIn.isRainingAt(pos) && worldIn.canSeeSky(pos))
+        if (worldIn.isRainingAt(pos.up()) && worldIn.canSeeSky(pos))
         {
             BlockState state = worldIn.getBlockState(pos);
             int value = (int) (worldIn.rainingStrength * 15);
             if (value != currentStrength)
             {
-                worldIn.setBlockState(pos, state.with(POWER, value), 3);
+                worldIn.setBlockState(pos, state.with(POWER, value));
             }
         } else if (currentStrength != 0)
         {
             BlockState state = worldIn.getBlockState(pos);
-            worldIn.setBlockState(pos, state.with(POWER, 0), 3);
+            worldIn.setBlockState(pos, state.with(POWER, 0));
         }
     }
 
@@ -62,23 +66,23 @@ public class BlockSensorRain extends BlockTileEntity<TileEntitySensorRain>
         //int k = pos.getZ();
         //worldIn.scheduleUpdate(new BlockPos(i, j, k), this, this.tickRate(world));
     }
-/*
+
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos) {
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
         return BLOCK_AABB;
     }
-    */
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return BLOCK_AABB;
+    }
 
     @Override
     public boolean canProvidePower(BlockState state)
     {
         return true;
-    }
-
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return false;
     }
 
     @Nullable

@@ -3,40 +3,28 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.config.IRConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
-public class BlockRazorWire extends BlockBase
+public class BlockRazorWire extends BlockAbstractHorizontalFacing
 {
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty FRAME = BooleanProperty.create("frame");
 
-    public BlockRazorWire(Block.Properties properties)
+    public BlockRazorWire()
     {
-        super(properties);
-    }
-
-
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
-    {
-
-        return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing());
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -49,14 +37,12 @@ public class BlockRazorWire extends BlockBase
         }
     }
 
-    /*
-        @Override
-        @Nullable
-        public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockReader worldIn, BlockPos pos)
-        {
-            return NULL_AABB;
-        }
-    */
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return NULL_SHAPE;
+    }
+
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
@@ -66,18 +52,14 @@ public class BlockRazorWire extends BlockBase
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        return stateIn.with(FRAME, canConnect(worldIn, currentPos, stateIn));
+        Direction face = stateIn.get(FACING);
+        if (facing == face.rotateY()) return stateIn.with(FRAME, canConnect(worldIn, currentPos, stateIn));
+        return stateIn;
     }
 
     private boolean canConnect(IBlockReader world, BlockPos pos, BlockState state)
     {
         Direction facing = state.get(FACING);
         return !(world.getBlockState(pos.offset(facing.rotateY())).getBlock() instanceof BlockRazorWire);
-    }
-
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return false;
     }
 }

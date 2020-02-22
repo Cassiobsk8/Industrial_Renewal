@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.tileentity.railroad;
 
 import cassiokf.industrialrenewal.blocks.BlockChunkLoader;
 import cassiokf.industrialrenewal.blocks.railroad.BlockCargoLoader;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -21,6 +20,8 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.CARGOLOADER_TILE;
+
 public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITickableTileEntity
 {
 
@@ -33,7 +34,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
 
     public TileEntityCargoLoader()
     {
-        super(TileEntityRegister.CARGO_LOADER);
+        super(CARGOLOADER_TILE.get());
     }
 
     private IItemHandler createHandler()
@@ -63,23 +64,23 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                 TileEntity te = world.getTileEntity(pos.down().offset(getBlockFacing().getOpposite()));
                 if (te != null)
                 {
-                    IItemHandler handler = (IItemHandler) te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getBlockFacing());
+                    IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getBlockFacing()).orElse(null);
                     if (handler != null)
                     {
-                        for (int i = 0; i < ((IItemHandler) inventory).getSlots(); i++)
+                        for (int i = 0; i < inventory.orElse(null).getSlots(); i++)
                         {
-                            if (!((IItemHandler) inventory).getStackInSlot(i).isEmpty())
+                            if (!inventory.orElse(null).getStackInSlot(i).isEmpty())
                             {
                                 for (int j = 0; j < handler.getSlots(); j++)
                                 {
-                                    ItemStack stack = ((IItemHandler) inventory).extractItem(i, itemsPerTick, true);
+                                    ItemStack stack = inventory.orElse(null).extractItem(i, itemsPerTick, true);
                                     if (!stack.isEmpty() && handler.isItemValid(j, stack))
                                     {
                                         ItemStack left = handler.insertItem(j, stack, false);
                                         if (!ItemStack.areItemStacksEqual(stack, left))
                                         {
                                             int toExtract = stack.getCount() - left.getCount();
-                                            ((IItemHandler) inventory).extractItem(i, toExtract, false);
+                                            inventory.orElse(null).extractItem(i, toExtract, false);
                                         }
                                     }
                                 }
@@ -97,7 +98,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
         if (hasWorld() && !world.isRemote)
         {
             cartActivity = 10;
-            IItemHandler cartCapability = (IItemHandler) entityMinecart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
+            IItemHandler cartCapability = entityMinecart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP).orElse(null);
             if (cartCapability != null)
             {
                 if (isUnload()) //From cart to inventory
@@ -106,12 +107,12 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                     boolean activity = false;
                     for (int i = 0; i < cartCapability.getSlots(); i++)
                     {
-                        for (int j = 0; j < ((IItemHandler) inventory).getSlots(); j++)
+                        for (int j = 0; j < inventory.orElse(null).getSlots(); j++)
                         {
                             ItemStack stack = cartCapability.extractItem(i, itemsPerTick, true);
                             if (!stack.isEmpty())
                             {
-                                ItemStack left = ((IItemHandler) inventory).insertItem(j, stack, false);
+                                ItemStack left = inventory.orElse(null).insertItem(j, stack, false);
                                 if (left.isEmpty() || left.getCount() < stack.getCount())
                                 {
                                     activity = true;
@@ -151,11 +152,11 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                     boolean needBreak = false;
                     boolean activity = false;
 
-                    for (int i = 0; i < ((IItemHandler) inventory).getSlots(); i++)
+                    for (int i = 0; i < inventory.orElse(null).getSlots(); i++)
                     {
                         for (int j = 0; j < cartCapability.getSlots(); j++)
                         {
-                            ItemStack stack = ((IItemHandler) inventory).extractItem(i, itemsPerTick, true);
+                            ItemStack stack = inventory.orElse(null).extractItem(i, itemsPerTick, true);
                             if (!stack.isEmpty() && cartCapability.isItemValid(j, stack))
                             {
                                 ItemStack left = cartCapability.insertItem(j, stack, false);
@@ -167,7 +168,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                                 if (!ItemStack.areItemStacksEqual(stack, left))
                                 {
                                     int toExtract = stack.getCount() - left.getCount();
-                                    ((IItemHandler) inventory).extractItem(i, toExtract, false);
+                                    inventory.orElse(null).extractItem(i, toExtract, false);
                                     needBreak = true;
                                     break;
                                 }
@@ -215,8 +216,8 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
     public float getCartFluidAngle()
     {
         if (cartActivity <= 0) return 0;
-        float currentAmount = Utils.getInvNorm(((IItemHandler) inventory));
-        float totalCapacity = ((IItemHandler) inventory).getSlots();
+        float currentAmount = Utils.getInvNorm(inventory.orElse(null));
+        float totalCapacity = inventory.orElse(null).getSlots();
         currentAmount = currentAmount / totalCapacity;
         return currentAmount * 180f;
     }

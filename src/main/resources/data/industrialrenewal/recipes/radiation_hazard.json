@@ -10,10 +10,10 @@
       "tag": "forge:ingots/iron"
     },
     "C": {
-      "tag": "dyeMagenta"
+      "tag": "forge:dyes/magenta"
     },
     "M": {
-      "tag": "dyeYellow"
+      "tag": "forge:dyes/yellow"
     }
   },
   "result": {

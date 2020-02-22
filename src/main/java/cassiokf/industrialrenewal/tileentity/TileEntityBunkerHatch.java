@@ -1,8 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockBunkerHatch;
-import cassiokf.industrialrenewal.init.IRSoundRegister;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -12,7 +11,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
-import java.util.Objects;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.BUNKERHATCH_TILE;
 
 public class TileEntityBunkerHatch extends TileEntity
 {
@@ -23,13 +23,7 @@ public class TileEntityBunkerHatch extends TileEntity
 
     public TileEntityBunkerHatch()
     {
-        super(TileEntityRegister.BUNKER_HATCH);
-    }
-
-    @Override
-    public void onLoad()
-    {
-        this.isMaster();
+        super(BUNKERHATCH_TILE.get());
     }
 
     public TileEntityBunkerHatch getMaster()
@@ -66,11 +60,11 @@ public class TileEntityBunkerHatch extends TileEntity
         changeOpenFromMaster(value);
         if (value)
         {
-            world.playSound(null, pos, Objects.requireNonNull(IRSoundRegister.BLOCK_CATWALKGATE_CLOSE), SoundCategory.NEUTRAL, 1.0F, 1.0F);
+            world.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_CLOSE.get(), SoundCategory.NEUTRAL, 1.0F, 1.0F);
 
         } else
         {
-            world.playSound(null, pos, Objects.requireNonNull(IRSoundRegister.BLOCK_CATWALKGATE_OPEN), SoundCategory.NEUTRAL, 1.0F, 1.0F);
+            world.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_OPEN.get(), SoundCategory.NEUTRAL, 1.0F, 1.0F);
         }
     }
 

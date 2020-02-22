@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.tileentity.TileEntityLocker;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
@@ -32,9 +33,9 @@ public class BlockLocker extends BlockTileEntity<TileEntityLocker>
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
 
-    public BlockLocker(Block.Properties property)
+    public BlockLocker()
     {
-        super(property);
+        super(Block.Properties.create(Material.IRON));
     }
 
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
@@ -51,14 +52,23 @@ public class BlockLocker extends BlockTileEntity<TileEntityLocker>
         LockableLootTileEntity ilockablecontainer = getContainer(worldIn, pos);
         if (ilockablecontainer != null)
         {
+            //TODO Open/Close sound like rust one
             player.openContainer(ilockablecontainer);
             player.addStat(Stats.OPEN_CHEST);
         }
         return ActionResultType.SUCCESS;
     }
 
+    @Override
+    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return 1.0F;
+    }
+
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
+
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
         if (tileentity instanceof LockableLootTileEntity)
@@ -115,7 +125,10 @@ public class BlockLocker extends BlockTileEntity<TileEntityLocker>
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing()).with(OPEN, false);
+        return getDefaultState()
+                .with(FACING, context.getPlayer().getHorizontalFacing())
+                .with(OPEN, false)
+                .with(DOWN, connectDown(context.getWorld(), context.getPos()));
     }
 
     @Override

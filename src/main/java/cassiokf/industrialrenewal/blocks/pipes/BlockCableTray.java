@@ -7,6 +7,7 @@ import cassiokf.industrialrenewal.properties.PropertyBaseDirection;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityCableTray;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -94,9 +95,9 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray>
 
     //public static final IUnlistedProperty<Boolean> DATA_CORE = new Properties.PropertyAdapter<>(BooleanProperty.create("data_core"));
 
-    public BlockCableTray(Block.Properties properties)
+    public BlockCableTray()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
         //this.setDefaultState(this.getDefaultState().with(BASE, EnumBaseDirection.NONE));
     }
 
@@ -158,23 +159,23 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray>
     }
 
     @Override
-    public boolean canConnectToPipe(IBlockReader worldIn, BlockPos ownPos, Direction neighbourDirection)
+    public boolean canConnectToPipe(IBlockReader worldIn, BlockPos ownPos, Direction neighborDirection)
     {
-        BlockState state = worldIn.getBlockState(ownPos.offset(neighbourDirection));
+        BlockState state = worldIn.getBlockState(ownPos.offset(neighborDirection));
         return state.getBlock() instanceof BlockCableTray;
     }
 
     @Override
-    public boolean canConnectToCapability(IBlockReader worldIn, BlockPos ownPos, Direction neighbourDirection)
+    public boolean canConnectToCapability(IBlockReader worldIn, BlockPos ownPos, Direction neighborDirection)
     {
-        BlockPos pos = ownPos.offset(neighbourDirection);
+        BlockPos pos = ownPos.offset(neighborDirection);
         BlockState state = worldIn.getBlockState(pos);
         return state.getBlock() instanceof BlockFluidPipe;
     }
 
-    private boolean canConnectToEnergyCapability(IBlockReader worldIn, BlockPos ownPos, Direction neighbourDirection, EnumCableIn type)
+    private boolean canConnectToEnergyCapability(IBlockReader worldIn, BlockPos ownPos, Direction neighborDirection, EnumCableIn type)
     {
-        BlockPos pos = ownPos.offset(neighbourDirection);
+        BlockPos pos = ownPos.offset(neighborDirection);
         BlockState state = worldIn.getBlockState(pos);
         Block block = state.getBlock();
         return block instanceof BlockEnergyCable
@@ -182,9 +183,9 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray>
     }
 
 
-    private boolean canConnectFluidPipeTrayToTray(IBlockReader worldIn, BlockPos ownPos, Direction neighbourDirection)
+    private boolean canConnectFluidPipeTrayToTray(IBlockReader worldIn, BlockPos ownPos, Direction neighborDirection)
     {
-        TileEntity otherTE = worldIn.getTileEntity(ownPos.offset(neighbourDirection));
+        TileEntity otherTE = worldIn.getTileEntity(ownPos.offset(neighborDirection));
         if (otherTE instanceof TileEntityCableTray)
         {
             return ((TileEntityCableTray) otherTE).hasPipe();
@@ -212,10 +213,10 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray>
         return false;
     }
 
-    private boolean canConnectCableTrayToTray(IBlockReader worldIn, BlockPos ownPos, Direction neighbourDirection)
+    private boolean canConnectCableTrayToTray(IBlockReader worldIn, BlockPos ownPos, Direction neighborDirection)
     {
         TileEntity thisTE = worldIn.getTileEntity(ownPos);
-        TileEntity otherTE = worldIn.getTileEntity(ownPos.offset(neighbourDirection));
+        TileEntity otherTE = worldIn.getTileEntity(ownPos.offset(neighborDirection));
         if (thisTE instanceof TileEntityCableTray && otherTE instanceof TileEntityCableTray)
         {
             return ((TileEntityCableTray) thisTE).getCableIn().equals(((TileEntityCableTray) otherTE).getCableIn());

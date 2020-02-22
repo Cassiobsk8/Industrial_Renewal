@@ -1,15 +1,15 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityCableTray;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipe;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -26,19 +26,19 @@ import java.util.List;
 
 public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipeBase>
 {
-    public BlockFluidPipe(Block.Properties properties)
+    public BlockFluidPipe()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
-    public boolean canConnectToPipe(IBlockReader worldIn, BlockPos ownPos, Direction neighbourDirection)
+    public boolean canConnectToPipe(IBlockReader worldIn, BlockPos ownPos, Direction neighborDirection)
     {
-        BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        BlockState state = worldIn.getBlockState(neighbourPos);
+        BlockPos neighborPos = ownPos.offset(neighborDirection);
+        BlockState state = worldIn.getBlockState(neighborPos);
         Block block = state.getBlock();
 
-        return block instanceof BlockFluidPipe || (block instanceof BlockCableTray && trayHasPipe(worldIn, neighbourPos));
+        return block instanceof BlockFluidPipe || (block instanceof BlockCableTray && trayHasPipe(worldIn, neighborPos));
     }
 
     private boolean trayHasPipe(IBlockReader world, BlockPos pos)
@@ -52,24 +52,24 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipeBase>
     }
 
     @Override
-    public boolean canConnectToCapability(IBlockReader worldIn, BlockPos ownPos, Direction neighbourDirection)
+    public boolean canConnectToCapability(IBlockReader worldIn, BlockPos ownPos, Direction neighborDirection)
     {
-        BlockPos pos = ownPos.offset(neighbourDirection);
+        BlockPos pos = ownPos.offset(neighborDirection);
         BlockState state = worldIn.getBlockState(pos);
         TileEntity te = worldIn.getTileEntity(pos);
         return !(state.getBlock() instanceof BlockFluidPipe) && !(state.getBlock() instanceof BlockFluidPipeGauge)
-                && te != null && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, neighbourDirection.getOpposite()).isPresent();
+                && te != null && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, neighborDirection.getOpposite()).isPresent();
     }
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
     {
-        if (player.getHeldItem(Hand.MAIN_HAND).getItem() == BlockItem.getItemFromBlock(ModBlocks.blockIndFloor))
+        if (player.getHeldItem(Hand.MAIN_HAND).getItem() == BlocksRegistration.INDFLOOR_ITEM.get())
         {
             if (!worldIn.isRemote)
             {
                 worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                worldIn.setBlockState(pos, ModBlocks.floorPipe.getDefaultState(), 3);
+                worldIn.setBlockState(pos, BlocksRegistration.FLOORPIPE.get().getDefaultState(), 3);
                 if (!player.isCreative())
                 {
                     player.getHeldItem(Hand.MAIN_HAND).shrink(1);
@@ -77,12 +77,12 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipeBase>
             }
             return ActionResultType.SUCCESS;
         }
-        if (player.getHeldItem(Hand.MAIN_HAND).getItem() == BlockItem.getItemFromBlock(ModBlocks.gauge))
+        if (player.getHeldItem(Hand.MAIN_HAND).getItem() == BlocksRegistration.GAUGE_ITEM.get())
         {
             if (!worldIn.isRemote)
             {
                 worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                worldIn.setBlockState(pos, ModBlocks.fluidPipeGauge.getDefaultState().with(BlockFluidPipeGauge.FACING, player.getHorizontalFacing()), 3);
+                worldIn.setBlockState(pos, BlocksRegistration.FLUIDPIPEGAUGE.get().getDefaultState().with(BlockFluidPipeGauge.FACING, player.getHorizontalFacing()), 3);
                 if (!player.isCreative())
                 {
                     player.getHeldItem(Hand.MAIN_HAND).shrink(1);

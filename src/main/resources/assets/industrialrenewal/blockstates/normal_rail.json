@@ -1,74 +1,107 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:rail_normal",
-    "textures": {
-      "particle": "blocks/rail_normal"
-    }
-  },
-  "variants": {
-    "shape": {
-      "normal": {
-        "model": "industrialrenewal:rail_normal"
+  "multipart": [
+    {
+      "when": {
+        "shape": "north_south"
       },
-      "north_south": {
-        "model": "industrialrenewal:rail_normal"
+      "apply": {
+        "model": "industrialrenewal:block/rail_normal"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west"
       },
-      "east_west": {
-        "model": "industrialrenewal:rail_normal",
-        "y": 90
-      },
-      "ascending_east": {
-        "model": "industrialrenewal:rail_normal_raised",
-        "y": 270
-      },
-      "ascending_west": {
-        "model": "industrialrenewal:rail_normal_raised",
-        "y": 90
-      },
-      "ascending_north": {
-        "model": "industrialrenewal:rail_normal_raised",
-        "y": 180
-      },
-      "ascending_south": {
-        "model": "industrialrenewal:rail_normal_raised"
-      },
-      "south_east": {
-        "model": "industrialrenewal:rail_normal_curved",
-        "y": 180
-      },
-      "south_west": {
-        "model": "industrialrenewal:rail_normal_curved",
-        "y": 270
-      },
-      "north_west": {
-        "model": "industrialrenewal:rail_normal_curved"
-      },
-      "north_east": {
-        "model": "industrialrenewal:rail_normal_curved",
+      "apply": {
+        "model": "industrialrenewal:block/rail_normal",
         "y": 90
       }
     },
-    "snow": {
-      "false": {},
-      "layer1": {
-        "submodel": {
-          "snow": {
-            "model": "industrialrenewal:snow_layer1"
-          }
-        }
+    {
+      "when": {
+        "shape": "ascending_east"
       },
-      "layer2": {
-        "submodel": {
-          "snow": {
-            "model": "industrialrenewal:snow_layer2"
-          }
-        }
+      "apply": {
+        "model": "industrialrenewal:block/rail_normal_raised",
+        "y": 270
       }
     },
-    "inventory": {
-      "model": "industrialrenewal:rail_normal",
-      "transform": "forge:default-block"
+    {
+      "when": {
+        "shape": "ascending_west"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/rail_normal_raised",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/rail_normal_raised",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/rail_normal_raised"
+      }
+    },
+    {
+      "when": {
+        "shape": "south_east"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/rail_normal_curved",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "south_west"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/rail_normal_curved",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "shape": "north_west"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/rail_normal_curved"
+      }
+    },
+    {
+      "when": {
+        "shape": "north_east"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/rail_normal_curved",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "snow": "layer1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/snow_layer1"
+      }
+    },
+    {
+      "when": {
+        "snow": "layer2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/snow_layer2"
+      }
     }
-  }
+  ]
 }

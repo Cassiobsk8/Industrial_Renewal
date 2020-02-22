@@ -1,129 +1,87 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:fluorescent_base",
-    "textures": {
-      "particle": "blocks/quartz_block_top"
+  "multipart": [
+    {
+      "apply": {
+        "model": "industrialrenewal:block/fluorescent_base"
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluorescent_up"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluorescent_side"
+      }
+    },
+    {
+      "when": {
+        "north": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluorescent_false"
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluorescent_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "south": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluorescent_false",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluorescent_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "east": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluorescent_false",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluorescent_side",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "west": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluorescent_false",
+        "y": 270
+      }
     }
-  },
-  "variants": {
-    "down": {
-      "true": {},
-      "false": {}
-    },
-    "up": {
-      "true": {
-        "submodel": {
-          "pipe_up": {
-            "model": "industrialrenewal:fluorescent_up",
-            "uvlock": true
-          }
-        }
-      },
-      "false": {}
-    },
-    "north": {
-      "true": {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:fluorescent_side"
-          }
-        }
-      },
-      "false": {
-        "submodel": {
-          "pipe_falsen": {
-            "model": "industrialrenewal:fluorescent_false",
-            "uvlock": true
-          }
-        }
-      }
-    },
-    "south": {
-      "true": {
-        "submodel": {
-          "pipe_south": {
-            "model": "industrialrenewal:fluorescent_side",
-            "y": 180
-          }
-        }
-      },
-      "false": {
-        "submodel": {
-          "pipe_falses": {
-            "model": "industrialrenewal:fluorescent_false",
-            "y": 180,
-            "uvlock": true
-          }
-        }
-      }
-    },
-    "east": {
-      "true": {
-        "submodel": {
-          "pipe_east": {
-            "model": "industrialrenewal:fluorescent_side",
-            "y": 90
-          }
-        }
-      },
-      "false": {
-        "submodel": {
-          "pipe_falsee": {
-            "model": "industrialrenewal:fluorescent_false",
-            "y": 90,
-            "uvlock": true
-          }
-        }
-      }
-    },
-    "west": {
-      "true": {
-        "submodel": {
-          "pipe_west": {
-            "model": "industrialrenewal:fluorescent_side",
-            "y": -90
-          }
-        }
-      },
-      "false": {
-        "submodel": {
-          "pipe_falsew": {
-            "model": "industrialrenewal:fluorescent_false",
-            "y": -90,
-            "uvlock": true
-          }
-        }
-      }
-    },
-    "inventory": [
-      {
-        "submodel": {
-          "pipe_up": {
-            "model": "industrialrenewal:fluorescent_up",
-            "uvlock": true
-          },
-          "pipe_north": {
-            "model": "industrialrenewal:fluorescent_side",
-            "uvlock": true
-          },
-          "pipe_south": {
-            "model": "industrialrenewal:fluorescent_side",
-            "y": 180,
-            "uvlock": true
-          },
-          "pipe_falsee": {
-            "model": "industrialrenewal:fluorescent_false",
-            "y": 90,
-            "uvlock": true
-          },
-          "pipe_falsew": {
-            "model": "industrialrenewal:fluorescent_false",
-            "y": -90,
-            "uvlock": true
-          }
-        }
-      }
-    ]
-  }
+  ]
 }

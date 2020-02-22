@@ -3,7 +3,6 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.blocks.BlockSolarPanel;
 import cassiokf.industrialrenewal.blocks.BlockSolarPanelFrame;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.CustomItemStackHandler;
@@ -27,6 +26,8 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.FPANEL_TILE;
+
 public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEntitySolarPanelFrame>
 {
     public LazyOptional<IItemHandler> panelInv = LazyOptional.of(this::createHandler);
@@ -37,7 +38,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
 
     public TileEntitySolarPanelFrame()
     {
-        super(TileEntityRegister.SOLAR_PANEL_FRAME);
+        super(FPANEL_TILE.get());
     }
 
     private IItemHandler createHandler()
@@ -72,7 +73,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     }
 
     @Override
-    public void onLoad()
+    public void onFirstLoad()
     {
         super.onLoad();
         if (this.hasWorld() && !world.isRemote)
@@ -82,13 +83,13 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     }
 
     @Override
-    public void tick()
+    public void doTick()
     {
         if (this.hasWorld() && !world.isRemote)
         {
             if (isMaster())
             {
-                IEnergyStorage thisEnergy = (IEnergyStorage) energyStorage;
+                IEnergyStorage thisEnergy = energyStorage.orElse(null);
                 int size = panelReady.size();
                 energyStorage.ifPresent(e -> ((CustomEnergyStorage) e).setMaxCapacity(Math.max(600 * size, thisEnergy.getEnergyStored())));
                 if (size > 0) getEnergyFromSun();
@@ -164,7 +165,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
 
     public void getEnergyFromSun()
     {
-        IEnergyStorage thisEnergy = (IEnergyStorage) getMaster().energyStorage;
+        IEnergyStorage thisEnergy = getMaster().energyStorage.orElse(null);
         if (world.getLightManager().hasLightWork() && world.canBlockSeeSky(pos.offset(Direction.UP))
                 && world.getSkylightSubtracted() == 0 && (thisEnergy.getEnergyStored() != thisEnergy.getMaxEnergyStored()))
         {
@@ -190,24 +191,19 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
         return IRConfig.Main.panelFrameMultiplier.get();
     }
 
-    public void dropAllItems()
-    {
-        Utils.dropInventoryItems(world, pos, ((IItemHandler) panelInv));
-    }
-
     public boolean hasPanel()
     {
-        return !((IItemHandler) panelInv).getStackInSlot(0).isEmpty();
+        return !panelInv.orElse(null).getStackInSlot(0).isEmpty();
     }
 
     public ItemStack getPanel()
     {
-        return ((IItemHandler) panelInv).getStackInSlot(0);
+        return panelInv.orElse(null).getStackInSlot(0);
     }
 
     public IItemHandler getPanelHandler()
     {
-        return ((IItemHandler) panelInv);
+        return panelInv.orElse(null);
     }
 
     public Direction getBlockFacing()
@@ -220,6 +216,13 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
             else blockFacing = Direction.NORTH;
         }
         return blockFacing;
+    }
+
+    @Override
+    public void remove()
+    {
+        Utils.dropInventoryItems(world, pos, panelInv.orElse(null));
+        super.remove();
     }
 
     @Override

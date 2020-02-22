@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
@@ -10,8 +11,8 @@ import net.minecraft.state.IProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -35,9 +36,15 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence
     //public static final IUnlistedProperty<Boolean> ACTIVE_RIGHT_DOWN = new Properties.PropertyAdapter<>(BooleanProperty.create("active_right_down"));
 
 
-    public BlockElectricBigFenceColumn(Block.Properties properties)
+    public BlockElectricBigFenceColumn()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON), 1);
+    }
+
+    @Override
+    public BlockState getDefaultBlockState()
+    {
+        return getDefaultState();
     }
 
     @Override
@@ -53,6 +60,7 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
         switch (state.get(INDEX))
         {
             case 0:
@@ -71,10 +79,11 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence
         super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
+    @Nullable
     @Override
-    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction)
+    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
     {
-        return state;
+        return new Direction[0];
     }
 
     public boolean IsBigFence(World world, BlockPos pos)
@@ -118,6 +127,12 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence
         return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing()).with(INDEX, 0);
     }
 
+    @Override
+    public boolean canConnectTo(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
+    {
+        return false;
+    }
+
     public boolean ActiveSide(IBlockReader world, BlockPos pos, BlockState state, boolean left, boolean top, boolean down)
     {
         int index = state.get(INDEX);
@@ -142,6 +157,12 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence
     {
         int index = state.get(INDEX);
         return index == 1;
+    }
+
+    @Override
+    public VoxelShape getVoxelShape(BlockState state, boolean collision)
+    {
+        return FULL_SHAPE;
     }
 
     @Override

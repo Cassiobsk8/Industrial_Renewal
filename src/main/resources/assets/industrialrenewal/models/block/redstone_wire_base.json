@@ -1,7 +1,7 @@
 {
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "textures": {
-    "0": "blocks/redstone_block"
+    "0": "block/redstone_block"
   },
   "display": {
     "gui": {

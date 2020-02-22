@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -8,11 +7,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.CONVEYORVINSERTER_TILE;
+
 public class TileEntityBulkConveyorInserter extends TileEntityBulkConveyorBase
 {
     public TileEntityBulkConveyorInserter()
     {
-        super(TileEntityRegister.BULK_CONVEYOR_INSERTER);
+        super(CONVEYORVINSERTER_TILE.get());
     }
 
     @Override
@@ -27,7 +28,7 @@ public class TileEntityBulkConveyorInserter extends TileEntityBulkConveyorBase
 
     private void insertItem()
     {
-        if (!((IItemHandler) inventory).getStackInSlot(2).isEmpty())
+        if (!inventory.orElse(null).getStackInSlot(2).isEmpty())
         {
             Direction facing = getBlockFacing();
             TileEntity te = world.getTileEntity(pos.offset(facing));
@@ -38,14 +39,14 @@ public class TileEntityBulkConveyorInserter extends TileEntityBulkConveyorBase
                 {
                     for (int j = 0; j < itemHandler.getSlots(); j++)
                     {
-                        ItemStack stack = ((IItemHandler) inventory).extractItem(2, 64, true);
+                        ItemStack stack = inventory.orElse(null).extractItem(2, 64, true);
                         if (!stack.isEmpty() && itemHandler.isItemValid(j, stack))
                         {
                             ItemStack left = itemHandler.insertItem(j, stack, false);
                             if (!ItemStack.areItemStacksEqual(stack, left))
                             {
                                 int toExtract = stack.getCount() - left.getCount();
-                                ((IItemHandler) inventory).extractItem(2, toExtract, false);
+                                inventory.orElse(null).extractItem(2, toExtract, false);
                             }
                         }
                     }

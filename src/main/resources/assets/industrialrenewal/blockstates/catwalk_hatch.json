@@ -1,58 +1,46 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/pipe"
-    }
-  },
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:catwalk_hatch_0"
-    },
     "active=false,facing=down": {
-      "model": "industrialrenewal:catwalk_hatch_0"
+      "model": "industrialrenewal:block/catwalk_hatch_0"
     },
     "active=false,facing=up": {
-      "model": "industrialrenewal:catwalk_hatch_0"
+      "model": "industrialrenewal:block/catwalk_hatch_0"
     },
     "active=false,facing=north": {
-      "model": "industrialrenewal:catwalk_hatch_0"
+      "model": "industrialrenewal:block/catwalk_hatch_0"
     },
     "active=false,facing=west": {
-      "model": "industrialrenewal:catwalk_hatch_0",
+      "model": "industrialrenewal:block/catwalk_hatch_0",
       "y": -90
     },
     "active=false,facing=south": {
-      "model": "industrialrenewal:catwalk_hatch_0",
+      "model": "industrialrenewal:block/catwalk_hatch_0",
       "y": 180
     },
     "active=false,facing=east": {
-      "model": "industrialrenewal:catwalk_hatch_0",
+      "model": "industrialrenewal:block/catwalk_hatch_0",
       "y": 90
     },
     "active=true,facing=down": {
-      "model": "industrialrenewal:catwalk_hatch_1"
+      "model": "industrialrenewal:block/catwalk_hatch_1"
     },
     "active=true,facing=up": {
-      "model": "industrialrenewal:catwalk_hatch_1"
+      "model": "industrialrenewal:block/catwalk_hatch_1"
     },
     "active=true,facing=north": {
-      "model": "industrialrenewal:catwalk_hatch_1"
+      "model": "industrialrenewal:block/catwalk_hatch_1"
     },
     "active=true,facing=west": {
-      "model": "industrialrenewal:catwalk_hatch_1",
+      "model": "industrialrenewal:block/catwalk_hatch_1",
       "y": -90
     },
     "active=true,facing=south": {
-      "model": "industrialrenewal:catwalk_hatch_1",
+      "model": "industrialrenewal:block/catwalk_hatch_1",
       "y": 180
     },
     "active=true,facing=east": {
-      "model": "industrialrenewal:catwalk_hatch_1",
+      "model": "industrialrenewal:block/catwalk_hatch_1",
       "y": 90
-    },
-    "inventory": {
-      "model": "industrialrenewal:catwalk_hatch_1"
     }
   }
 }

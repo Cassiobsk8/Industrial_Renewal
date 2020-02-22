@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.init.IRSoundRegister;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -16,6 +15,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.VALVELARGE_TILE;
 
 public class TileEntityValvePipeLarge extends TileEntityToggleableBase implements ITickableTileEntity
 {
@@ -42,7 +43,7 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
 
     public TileEntityValvePipeLarge()
     {
-        super(TileEntityRegister.VALVE_PIPE_LARGE);
+        super(VALVELARGE_TILE.get());
     }
 
     @Override
@@ -84,7 +85,7 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
     {
         Random r = new Random();
         float pitch = r.nextFloat() * (1.2f - 0.8f) + 0.8f;
-        this.getWorld().playSound(null, this.getPos(), IRSoundRegister.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1F,
+        this.getWorld().playSound(null, this.getPos(), SoundsRegistration.TILEENTITY_VALVE_CHANGE.get(), SoundCategory.BLOCKS, 1F,
                 pitch);
     }
 

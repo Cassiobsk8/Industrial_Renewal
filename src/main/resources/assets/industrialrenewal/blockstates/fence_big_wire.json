@@ -1,36 +1,49 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/metal"
-    }
-  },
   "variants": {
-    "index": {
-      "0": {
-        "model": "industrialrenewal:fence_big_wire_down"
-      },
-      "1": {
-        "model": "industrialrenewal:fence_big_wire_center"
-      },
-      "2": {
-        "model": "industrialrenewal:fence_big_wire_top"
-      }
+    "facing=north,index=0": {
+      "model": "industrialrenewal:block/fence_big_wire_down"
     },
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
-      }
+    "facing=south,index=0": {
+      "model": "industrialrenewal:block/fence_big_wire_down",
+      "y": 180
     },
-    "inventory": {
-      "model": "industrialrenewal:fence_big_wire_item"
+    "facing=east,index=0": {
+      "model": "industrialrenewal:block/fence_big_wire_down",
+      "y": 90
+    },
+    "facing=west,index=0": {
+      "model": "industrialrenewal:block/fence_big_wire_down",
+      "y": -90
+    },
+    "facing=north,index=1": {
+      "model": "industrialrenewal:block/fence_big_wire_center"
+    },
+    "facing=south,index=1": {
+      "model": "industrialrenewal:block/fence_big_wire_center",
+      "y": 180
+    },
+    "facing=east,index=1": {
+      "model": "industrialrenewal:block/fence_big_wire_center",
+      "y": 90
+    },
+    "facing=west,index=1": {
+      "model": "industrialrenewal:block/fence_big_wire_center",
+      "y": -90
+    },
+    "facing=north,index=2": {
+      "model": "industrialrenewal:block/fence_big_wire_top"
+    },
+    "facing=south,index=2": {
+      "model": "industrialrenewal:block/fence_big_wire_top",
+      "y": 180
+    },
+    "facing=east,index=2": {
+      "model": "industrialrenewal:block/fence_big_wire_top",
+      "y": 90
+    },
+    "facing=west,index=2": {
+      "model": "industrialrenewal:block/fence_big_wire_top",
+      "y": -90
     }
   }
 }

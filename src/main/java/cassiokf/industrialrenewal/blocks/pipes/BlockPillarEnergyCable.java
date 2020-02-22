@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.blocks.BlockPillar;
 import cassiokf.industrialrenewal.enums.EnumEnergyCableType;
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
@@ -29,9 +29,9 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
     private static float DOWNY1 = 0.0f;
     private static float UPY2 = 1.0f;
 
-    public BlockPillarEnergyCable(EnumEnergyCableType type, Block.Properties properties)
+    public BlockPillarEnergyCable(EnumEnergyCableType type)
     {
-        super(type, properties);
+        super(type);
     }
 
     @Override
@@ -45,23 +45,8 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
     @Override
     public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state)
     {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-        Block block;
-        switch (type)
-        {
-            default:
-            case LV:
-                block = ModBlocks.energyCableLV;
-                break;
-            case MV:
-                block = ModBlocks.energyCableMV;
-                break;
-            case HV:
-                block = ModBlocks.energyCableHV;
-                break;
-        }
+        Block block = getBlockFromType();
+
         ItemStack itemst = new ItemStack(BlockItem.getItemFromBlock(block));
         Utils.spawnItemStack(worldIn.getWorld(), pos, itemst);
         super.onPlayerDestroy(worldIn, pos, state);
@@ -82,30 +67,18 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
         {
             if (!worldIn.isRemote)
             {
-                worldIn.setBlockState(pos, ModBlocks.pillar.getDefaultState(), 3);
+                worldIn.setBlockState(pos, BlocksRegistration.PILLAR.get().getDefaultState(), 3);
                 if (!player.isCreative())
                 {
-                    Block block;
-                    switch (type)
-                    {
-                        default:
-                        case LV:
-                            block = ModBlocks.energyCableLV;
-                            break;
-                        case MV:
-                            block = ModBlocks.energyCableMV;
-                            break;
-                        case HV:
-                            block = ModBlocks.energyCableHV;
-                            break;
-                    }
+                    Block block = getBlockFromType();
+
                     player.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(block)));
                 }
                 ItemPowerScrewDrive.playDrillSound(worldIn, pos);
             }
             return ActionResultType.SUCCESS;
         }
-        if (playerItem.equals(ModBlocks.pillar))
+        if (playerItem.equals(BlocksRegistration.PILLAR_ITEM.get()))
         {
             int n = 1;
             while (worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable

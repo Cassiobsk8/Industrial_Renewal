@@ -4,7 +4,7 @@
     "0": "industrialrenewal:blocks/anvil_base",
     "1": "industrialrenewal:blocks/pipe",
     "4": "industrialrenewal:blocks/pipe_water",
-    "21": "blocks/redstone_block",
+    "21": "block/redstone_block",
     "2_0": "industrialrenewal:blocks/signs/sign_hv",
     "3_0": "industrialrenewal:blocks/energy_meter_10240",
     "3_2": "industrialrenewal:blocks/traffic_light"

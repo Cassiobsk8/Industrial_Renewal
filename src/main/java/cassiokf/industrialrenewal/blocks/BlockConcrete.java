@@ -3,15 +3,16 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityConcrete;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
 
 public class BlockConcrete extends BlockTileEntity<TileEntityConcrete>
 {
-    public BlockConcrete(Block.Properties properties)
+    public BlockConcrete()
     {
-        super(properties);
+        super(Block.Properties.create(Material.ROCK));
     }
 
     @Nullable

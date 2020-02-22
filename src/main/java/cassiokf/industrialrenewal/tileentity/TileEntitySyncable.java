@@ -19,11 +19,10 @@ public abstract class TileEntitySyncable extends TileEntity
         if (!world.isRemote)
         {
             final BlockState state = getBlockState();
-            world.notifyBlockUpdate(this.pos, state, state, 2);
+            world.setBlockState(this.pos, state);
             this.markDirty();
         }
     }
-
 
     @Override
     public SUpdateTileEntityPacket getUpdatePacket()

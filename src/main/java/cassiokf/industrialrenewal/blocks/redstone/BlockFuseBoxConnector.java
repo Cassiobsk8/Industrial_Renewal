@@ -1,41 +1,34 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.BlockTileEntity;
-import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.blocks.BlockAbstractHorizontalFacing;
 import cassiokf.industrialrenewal.tileentity.TileEntityBoxConnector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnector>
+public class BlockFuseBoxConnector extends BlockAbstractHorizontalFacing
 {
-
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final IntegerProperty UPCONDUIT = IntegerProperty.create("up", 0, 2);
 
 
-    private static final AxisAlignedBB WEST_EAST_BLOCK_AABB = new AxisAlignedBB(0.375D, 0D, 0D, 0.625D, 0.125D, 1D);
-    private static final AxisAlignedBB NORTH_SOUTH_BLOCK_AABB = new AxisAlignedBB(0D, 0D, 0.375D, 1D, 0.125D, 0.625D);
+    private static final VoxelShape WEST_EAST_BLOCK_AABB = Block.makeCuboidShape(6, 0, 0, 10, 2, 16);
+    private static final VoxelShape NORTH_SOUTH_BLOCK_AABB = Block.makeCuboidShape(0, 0, 6, 16, 2, 10);
 
-    public BlockFuseBoxConnector(Block.Properties property)
+    public BlockFuseBoxConnector()
     {
-        super(property);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -64,16 +57,6 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
         return state.get(FACING).rotateYCCW() == side ? value : 0;
     }
 
-    @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
-    {
-        if (player.inventory.getCurrentItem().getItem() == ModItems.screwDrive)
-        {
-            rotateBlock(worldIn, pos, state);
-            return ActionResultType.SUCCESS;
-        }
-        return ActionResultType.PASS;
-    }
 /*
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighborPos) {
@@ -84,10 +67,11 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
         }
     }*/
 
-    private void rotateBlock(World world, BlockPos pos, BlockState state)
+    @Override
+    public BlockState rotate(BlockState state, Rotation rot)
     {
         Direction newFace = state.get(FACING).getOpposite();
-        world.setBlockState(pos, state.with(FACING, newFace));
+        return state.with(FACING, newFace);
     }
 
     private int canConnectConduit(BlockState state, IBlockReader world, BlockPos pos)
@@ -107,14 +91,12 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
         return 0;
     }
 
-
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         stateIn = stateIn.with(UPCONDUIT, canConnectConduit(stateIn, worldIn, currentPos));
         return stateIn;
     }
-
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
@@ -127,10 +109,12 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
     {
         builder.add(FACING, UPCONDUIT);
     }
-/*
+
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos) {
-        switch (state.getActualState(source, pos).get(FACING)) {
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        switch (state.get(FACING))
+        {
             default:
             case NORTH:
             case SOUTH:
@@ -140,7 +124,12 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
                 return WEST_EAST_BLOCK_AABB;
         }
     }
-*/
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
 
     @Nullable
     @Override

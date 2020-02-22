@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.item.ItemDrill;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
@@ -29,6 +28,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Set;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.MINING_TILE;
 
 public class TileEntityMining extends TileEntity3x3MachineBase<TileEntityMining> implements ITickableTileEntity
 {
@@ -69,7 +70,7 @@ public class TileEntityMining extends TileEntity3x3MachineBase<TileEntityMining>
 
     public TileEntityMining()
     {
-        super(TileEntityRegister.MINING);
+        super(MINING_TILE.get());
     }
 
     private IEnergyStorage createEnergy()
@@ -174,8 +175,8 @@ public class TileEntityMining extends TileEntity3x3MachineBase<TileEntityMining>
         Direction facing = getMasterFacing();
         BlockPos posPort = pos.offset(facing.rotateYCCW()).offset(facing.getOpposite()).down();
         return (world.isBlockPowered(posPort) || world.isBlockPowered(posPort.offset(facing.getOpposite())))
-                && ((IEnergyStorage) energyStorage).getEnergyStored() >= energyPerTick
-                && !((IItemHandler) drillInv).getStackInSlot(0).isEmpty();
+                && energyStorage.orElse(null).getEnergyStored() >= energyPerTick
+                && !drillInv.orElse(null).getStackInSlot(0).isEmpty();
     }
 
     public boolean isRunning()
@@ -185,7 +186,7 @@ public class TileEntityMining extends TileEntity3x3MachineBase<TileEntityMining>
 
     public void dropAllItems()
     {
-        Utils.dropInventoryItems(world, pos, ((IItemHandler) drillInv));
+        Utils.dropInventoryItems(world, pos, drillInv.orElse(null));
     }
 
     public String getWaterText(int line)
@@ -197,7 +198,7 @@ public class TileEntityMining extends TileEntity3x3MachineBase<TileEntityMining>
     public String getEnergyText(int line)
     {
         if (line == 1) return I18n.format("render.industrialrenewal.energy") + ":";
-        return ((IEnergyStorage) energyStorage).getEnergyStored() + " FE";
+        return energyStorage.orElse(null).getEnergyStored() + " FE";
     }
 
 
@@ -218,8 +219,8 @@ public class TileEntityMining extends TileEntity3x3MachineBase<TileEntityMining>
 
     public float getEnergyFill() //0 ~ 180
     {
-        float currentAmount = ((IEnergyStorage) energyStorage).getEnergyStored() / 1000F;
-        float totalCapacity = ((IEnergyStorage) energyStorage).getMaxEnergyStored() / 1000F;
+        float currentAmount = energyStorage.orElse(null).getEnergyStored() / 1000F;
+        float totalCapacity = energyStorage.orElse(null).getMaxEnergyStored() / 1000F;
         currentAmount = currentAmount / totalCapacity;
         return currentAmount * 180f;
     }
@@ -234,12 +235,12 @@ public class TileEntityMining extends TileEntity3x3MachineBase<TileEntityMining>
 
     public boolean hasDrill()
     {
-        return !((IItemHandler) drillInv).getStackInSlot(0).isEmpty();
+        return !drillInv.orElse(null).getStackInSlot(0).isEmpty();
     }
 
     public ItemStack getDrill()
     {
-        return ((IItemHandler) drillInv).getStackInSlot(0);
+        return drillInv.orElse(null).getStackInSlot(0);
     }
 
     public float getRotation()
@@ -301,6 +302,6 @@ public class TileEntityMining extends TileEntity3x3MachineBase<TileEntityMining>
 
     public IItemHandler getDrillHandler()
     {
-        return ((IItemHandler) getMaster().drillInv);
+        return getMaster().drillInv.orElse(null);
     }
 }

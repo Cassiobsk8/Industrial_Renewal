@@ -4,10 +4,13 @@ import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.TileEntitySolarPanelBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -18,11 +21,11 @@ import java.util.List;
 public class BlockSolarPanel extends BlockTileEntity<TileEntitySolarPanelBase>
 {
 
-    protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
+    protected static final VoxelShape BLOCK_AABB = Block.makeCuboidShape(0, 0, 0, 16, 2, 16);
 
-    public BlockSolarPanel(Block.Properties properties)
+    public BlockSolarPanel()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -36,12 +39,12 @@ public class BlockSolarPanel extends BlockTileEntity<TileEntitySolarPanelBase>
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
-    /*
-        @Override
-        public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos) {
-            return BLOCK_AABB;
-        }
-    */
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return BLOCK_AABB;
+    }
+
     @Nullable
     @Override
     public TileEntitySolarPanelBase createTileEntity(BlockState state, IBlockReader world)

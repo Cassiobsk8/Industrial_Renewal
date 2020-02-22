@@ -1,45 +1,36 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.init.ModBlocks;
-import com.google.common.collect.ImmutableList;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-public class BlockScaffold extends BlockBase
+public class BlockScaffold extends BlockAbstractSixWayConnections
 {
-    public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
-            Stream.of(Direction.values())
-                    .map(facing -> BooleanProperty.create(facing.getName()))
-                    .collect(Collectors.toList())
-    );
+    protected static final VoxelShape CBASE_AABB = Block.makeCuboidShape(1, 0, 1, 15, 16, 15);
 
-    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB CBASE_AABB = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 1.0D, 0.9D);
-
-    public BlockScaffold(Block.Properties properties)
+    public BlockScaffold()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON), 16, 16);
+        BlockState state = getDefaultState();
+        for (Direction direction : Direction.values())
+        {
+            state = state.with(getPropertyBasedOnDirection(direction), true);
+        }
+        setDefaultState(state);
     }
-
 
     @Override
     public boolean isLadder(BlockState state, IWorldReader world, BlockPos pos, LivingEntity entity)
@@ -50,7 +41,7 @@ public class BlockScaffold extends BlockBase
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
     {
-        if (player.inventory.getCurrentItem().getItem() == BlockItem.getItemFromBlock(ModBlocks.scaffold))
+        if (player.getHeldItemMainhand().getItem().equals(BlocksRegistration.SCAFFOLD_ITEM.get()))
         {
             int n = 1;
             while (worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockScaffold)
@@ -59,10 +50,12 @@ public class BlockScaffold extends BlockBase
             }
             if (worldIn.getBlockState(pos.up(n)).getBlock().isAir(worldIn.getBlockState(pos.up(n)), worldIn, pos.up(n)))
             {
-                worldIn.setBlockState(pos.up(n), ModBlocks.scaffold.getDefaultState(), 3);
+                worldIn.setBlockState(pos.up(n), BlocksRegistration.SCAFFOLD.get().getDefaultState());
+                worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
+
                 if (!player.isCreative())
                 {
-                    player.inventory.getCurrentItem().shrink(1);
+                    player.getHeldItemMainhand().shrink(1);
                 }
                 return ActionResultType.SUCCESS;
             }
@@ -70,73 +63,69 @@ public class BlockScaffold extends BlockBase
         return ActionResultType.PASS;
     }
 
-    //TODO redo drop on base break maybe extend ScaffoldingBlock
-
-    /*
-        @Override
-        public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos) {
-            return BASE_AABB;
-        }
-
-
-        @Override
-        public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
-            if (!isActualState) {
-                state = state.getActualState(worldIn, pos);
-            }
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, CBASE_AABB);
-        }
-    */
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected boolean isValidConnection(final BlockState neighborState, final IBlockReader world, final BlockPos ownPos, final Direction neighborDirection)
     {
-        builder.add(CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
-    }
-
-    protected boolean isValidConnection(final BlockState ownState, final BlockState neighbourState, final IBlockReader world, final BlockPos ownPos, final Direction neighbourDirection)
-    {
-        Block nb = neighbourState.getBlock();
-        Block nbd = world.getBlockState(ownPos.offset(neighbourDirection).down()).getBlock();
-        if (neighbourDirection == Direction.DOWN)
+        Block nb = neighborState.getBlock();
+        Block nbd = world.getBlockState(ownPos.offset(neighborDirection).down()).getBlock();
+        BlockState upState = world.getBlockState(ownPos.up());
+        if (neighborDirection == Direction.DOWN)
         {
-            return neighbourState.isSolid();
+            return neighborState.isSolidSide(world, ownPos.down(), Direction.UP);
         }
-        if (neighbourDirection != Direction.UP)
+        if (neighborDirection != Direction.UP)
         {
-            return !isConnected(ownState, Direction.UP) && !(nb instanceof BlockScaffold) && !(nbd instanceof BlockScaffold);
+            return !(upState.getBlock() instanceof BlockScaffold)
+                    && !(upState.isSolidSide(world, ownPos.up(), Direction.DOWN))
+                    && !(nb instanceof BlockScaffold)
+                    && !(nbd instanceof BlockScaffold);
         }
-        return neighbourState.isSolid() || nb instanceof BlockScaffold;
+        return !neighborState.isSolidSide(world, ownPos.up(), Direction.DOWN) || nb instanceof BlockScaffold;
     }
-
-    private boolean canConnectTo(final BlockState ownState, final IBlockReader worldIn, final BlockPos ownPos, final Direction neighbourDirection)
-    {
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final BlockState neighbourState = worldIn.getBlockState(neighbourPos);
-
-        final boolean neighbourIsValidForThis = isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
-
-        return neighbourIsValidForThis;
-    }
-
 
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        for (final Direction face : Direction.values())
+        if (facing == Direction.DOWN)
         {
-            stateIn = stateIn.with(CONNECTED_PROPERTIES.get(face.getIndex()), canConnectTo(stateIn, worldIn, currentPos, face));
+            if (!isValidPosition(stateIn, worldIn, currentPos))
+            {
+                return Blocks.AIR.getDefaultState(); //Its automatic drops loot_table drop
+            }
+        }
+        if (facing != Direction.UP)
+            return stateIn.with(getPropertyBasedOnDirection(facing), canConnectTo(worldIn, currentPos, facing));
+        for (Direction direction : Direction.values())
+        {
+            stateIn = stateIn.with(getPropertyBasedOnDirection(direction), canConnectTo(worldIn, currentPos, direction));
         }
         return stateIn;
     }
 
-    public final boolean isConnected(final BlockState state, final Direction facing)
+    @Override
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        return state.get(CONNECTED_PROPERTIES.get(facing.getIndex()));
+        BlockState downState = worldIn.getBlockState(pos.down());
+        return downState.isSolidSide(worldIn, pos.down(), Direction.UP)
+                || downState.getBlock() instanceof BlockScaffold;
     }
 
     @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
+    public boolean canConnectTo(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
     {
-        return false;
+        final BlockPos neighborPos = currentPos.offset(neighborDirection);
+        final BlockState neighborState = worldIn.getBlockState(neighborPos);
+        return isValidConnection(neighborState, worldIn, currentPos, neighborDirection);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return FULL_SHAPE;
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return CBASE_AABB;
     }
 }

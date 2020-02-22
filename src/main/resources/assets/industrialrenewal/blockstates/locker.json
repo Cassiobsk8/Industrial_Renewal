@@ -1,54 +1,98 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/locker"
-    }
-  },
-  "variants": {
-    "open": {
-      "true": {
-        "model": "industrialrenewal:locker_open"
+  "multipart": [
+    {
+      "when": {
+        "facing": "north",
+        "open": "false"
       },
-      "false": {
-        "model": "industrialrenewal:locker"
+      "apply": {
+        "model": "industrialrenewal:block/locker"
       }
     },
-    "facing": {
-      "north": {},
-      "south": {
+    {
+      "when": {
+        "facing": "south",
+        "open": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/locker",
         "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "open": "false"
       },
-      "east": {
+      "apply": {
+        "model": "industrialrenewal:block/locker",
         "y": 90
-      },
-      "west": {
-        "y": -90
       }
     },
-    "down": {
-      "true": {
-        "submodel": {
-          "down": {
-            "model": "industrialrenewal:locker_down"
-          }
-        }
+    {
+      "when": {
+        "facing": "west",
+        "open": "false"
       },
-      "false": {
-        "submodel": {
-          "down": {
-            "model": "industrialrenewal:locker_foot"
-          }
-        }
+      "apply": {
+        "model": "industrialrenewal:block/locker",
+        "y": 270
       }
     },
-    "inventory": {
-      "model": "industrialrenewal:locker",
-      "submodel": {
-        "down": {
-          "model": "industrialrenewal:locker_foot"
-        }
+    {
+      "when": {
+        "facing": "north",
+        "open": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/locker_open"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "open": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/locker_open",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "open": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/locker_open",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "open": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/locker_open",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "down": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/locker_foot"
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/locker_down"
       }
     }
-  }
+  ]
 }

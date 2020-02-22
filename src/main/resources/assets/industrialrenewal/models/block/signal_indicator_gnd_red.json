@@ -1,9 +1,9 @@
 {
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "textures": {
-    "0": "blocks/anvil_base",
-    "1": "blocks/concrete_red",
-    "2": "blocks/glass_red"
+    "0": "industrialrenewal:blocks/anvil_base",
+    "1": "block/red_concrete",
+    "2": "block/red_stained_glass"
   },
   "display": {
     "gui": {

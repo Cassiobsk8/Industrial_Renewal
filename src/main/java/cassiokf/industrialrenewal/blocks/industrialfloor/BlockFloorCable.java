@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.blocks.industrialfloor;
 
 import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
 import cassiokf.industrialrenewal.enums.EnumEnergyCableType;
-import cassiokf.industrialrenewal.init.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,9 +18,9 @@ import net.minecraft.world.World;
 public class BlockFloorCable extends BlockEnergyCable
 {
 
-    public BlockFloorCable(EnumEnergyCableType type, Block.Properties properties)
+    public BlockFloorCable(EnumEnergyCableType type)
     {
-        super(type, properties);
+        super(type);
     }
 
     @Override
@@ -55,23 +54,11 @@ public class BlockFloorCable extends BlockEnergyCable
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        Block block;
-        switch (type)
-        {
-            default:
-            case LV:
-                block = ModBlocks.energyCableLV;
-                break;
-            case MV:
-                block = ModBlocks.energyCableMV;
-                break;
-            case HV:
-                block = ModBlocks.energyCableHV;
-                break;
-        }
+        if (state.getBlock() == newState.getBlock()) return;
+        Block block = getBlockFromType();
         ItemStack itemst = new ItemStack(BlockItem.getItemFromBlock(block));
         if (!worldIn.isRemote) spawnAsEntity(worldIn, pos, itemst);
-        super.onPlayerDestroy(worldIn, pos, state);
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     /*

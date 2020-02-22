@@ -2,101 +2,96 @@ package cassiokf.industrialrenewal.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 
 import javax.annotation.Nullable;
 
-public class BlockHandRail extends BlockBase
+public class BlockHandRail extends BlockAbstractHorizontalFacing
 {
-
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
-    protected static final AxisAlignedBB RNORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0625D);
-    protected static final AxisAlignedBB RSOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.9375D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB RWEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB REAST_AABB = new AxisAlignedBB(0.9375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.5D, 0.03125D);
-    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.96875D, 1.0D, 1.5D, 1.0D);
-    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.03125D, 1.5D, 1.0D);
-    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 1.5D, 1.0D);
 
-    public BlockHandRail(Block.Properties property)
+    protected static final VoxelShape RNORTH_AABB = Block.makeCuboidShape(0, 0, 0, 16, 16, 1);
+    protected static final VoxelShape RSOUTH_AABB = Block.makeCuboidShape(0, 0, 15, 16, 16, 16);
+    protected static final VoxelShape RWEST_AABB = Block.makeCuboidShape(0, 0, 0, 1, 16, 16);
+    protected static final VoxelShape REAST_AABB = Block.makeCuboidShape(15, 0, 0, 16, 16, 16);
+
+    protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0, 0, 0, 16, 24, 1);
+    protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0, 0, 15, 16, 24, 16);
+    protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(0, 0, 0, 1, 24, 16);
+    protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(15, 0, 0, 16, 24, 16);
+
+    //TODO Make HandRail connected like window
+    public BlockHandRail()
     {
-        super(property);
+        super(Block.Properties.create(Material.IRON));
     }
 
-    private boolean downConnection(IBlockReader world, BlockPos pos)
-    {
-        BlockState downState = world.getBlockState(pos.down());
-        return !downState.isSolid();
-    }
-
-
-    @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        return stateIn.with(DOWN, downConnection(worldIn, currentPos));
-    }
-
-    /*
-        @Override
-        public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos) {
-            Direction face = state.get(FACING);
-            if (face == Direction.NORTH) {
-                return RNORTH_AABB;
-            }
-            if (face == Direction.SOUTH) {
-                return RSOUTH_AABB;
-            }
-            if (face == Direction.WEST) {
-                return RWEST_AABB;
-            }
-            if (face == Direction.EAST) {
-                return REAST_AABB;
-            }
-            return RNORTH_AABB;
-        }
-
-
-        @Override
-        public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
-            Direction face = state.get(FACING);
-            if (face == Direction.NORTH) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-            } else if (face == Direction.SOUTH) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-            } else if (face == Direction.WEST) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
-            } else if (face == Direction.EAST) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
-            }
-        }
-    */
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(FACING, DOWN);
     }
 
+    private boolean downConnection(IBlockReader world, BlockPos pos)
+    {
+        BlockState downState = world.getBlockState(pos.down());
+        return !downState.isSolidSide(world, pos.down(), Direction.UP);
+    }
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing().getOpposite());
+        return getDefaultState()
+                .with(FACING, context.getPlayer().getHorizontalFacing().getOpposite())
+                .with(DOWN, downConnection(context.getWorld(), context.getPos()));
     }
 
     @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        return false;
+        if (facing.equals(Direction.DOWN)) return stateIn.with(DOWN, downConnection(worldIn, currentPos));
+        return stateIn;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return getVoxelShape(state, true);
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return getVoxelShape(state, false);
+    }
+
+    private VoxelShape getVoxelShape(BlockState state, boolean isForRender)
+    {
+        Direction face = state.get(FACING);
+        if (face == Direction.NORTH)
+        {
+            return isForRender ? RNORTH_AABB : NORTH_AABB;
+        }
+        if (face == Direction.SOUTH)
+        {
+            return isForRender ? RSOUTH_AABB : SOUTH_AABB;
+        }
+        if (face == Direction.WEST)
+        {
+            return isForRender ? RWEST_AABB : WEST_AABB;
+        } else
+        {
+            return isForRender ? REAST_AABB : EAST_AABB;
+        }
     }
 }

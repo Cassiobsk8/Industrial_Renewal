@@ -1,17 +1,7 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:frame_base"
-    },
-    "inventory": {
-      "model": "industrialrenewal:frame_base",
-      "transform": "forge:default-block"
+    "": {
+      "model": "industrialrenewal:block/frame_base"
     }
   }
 }

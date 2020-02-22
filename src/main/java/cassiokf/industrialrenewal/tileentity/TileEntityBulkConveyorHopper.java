@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.util.CustomItemStackHandler;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.entity.Entity;
@@ -20,6 +19,8 @@ import net.minecraftforge.items.IItemHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.CONVEYORVHOPPER_TILE;
+
 public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyorBase
 {
     private LazyOptional<IItemHandler> hopperInv = LazyOptional.of(this::createHopperHandler);
@@ -27,7 +28,7 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyorBase
 
     public TileEntityBulkConveyorHopper()
     {
-        super(TileEntityRegister.BULK_CONVEYOR_HOPPER);
+        super(CONVEYORVHOPPER_TILE.get());
     }
 
     private IItemHandler createHopperHandler()
@@ -60,7 +61,7 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyorBase
 
     private boolean getInvAbove()
     {
-        if (((IItemHandler) hopperInv).getStackInSlot(0).isEmpty())
+        if (hopperInv.orElse(null).getStackInSlot(0).isEmpty())
         {
             TileEntity te = world.getTileEntity(pos.up());
             if (te != null)
@@ -72,7 +73,7 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyorBase
                     for (int i = 0; i < itemHandler.getSlots(); i++)
                     {
                         ItemStack stack = itemHandler.extractItem(i, itemsPerTick, true);
-                        ItemStack left = ((IItemHandler) hopperInv).insertItem(0, stack, false);
+                        ItemStack left = hopperInv.orElse(null).insertItem(0, stack, false);
                         if (!ItemStack.areItemStacksEqual(stack, left))
                         {
                             int toExtract = stack.getCount() - left.getCount();
@@ -90,24 +91,24 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyorBase
 
     private void hopperToConveyor()
     {
-        if (!((IItemHandler) hopperInv).getStackInSlot(0).isEmpty())
+        if (!hopperInv.orElse(null).getStackInSlot(0).isEmpty())
         {
-            ItemStack stack = ((IItemHandler) hopperInv).getStackInSlot(0).copy();
-            ItemStack stack1 = ((IItemHandler) inventory).insertItem(1, stack, false);
-            ((IItemHandler) hopperInv).getStackInSlot(0).shrink(stack.getCount() - stack1.getCount());
+            ItemStack stack = hopperInv.orElse(null).getStackInSlot(0).copy();
+            ItemStack stack1 = inventory.orElse(null).insertItem(1, stack, false);
+            hopperInv.orElse(null).getStackInSlot(0).shrink(stack.getCount() - stack1.getCount());
         }
     }
 
     private void getEntityItemAbove()
     {
-        if (((IItemHandler) hopperInv).getStackInSlot(0).isEmpty())
+        if (hopperInv.orElse(null).getStackInSlot(0).isEmpty())
         {
             List<Entity> list = world.getEntitiesWithinAABB(ItemEntity.class, new AxisAlignedBB(pos.up().getX(), pos.up().getY(), pos.up().getZ(), pos.up().getX() + 2D, pos.up().getY() + 1D, pos.up().getZ() + 1D), EntityPredicates.IS_ALIVE);
             if (!list.isEmpty() && list.get(0) instanceof ItemEntity)
             {
                 ItemEntity entityItem = (ItemEntity) list.get(0);
                 ItemStack stack = entityItem.getItem().copy();
-                ItemStack stack1 = ((IItemHandler) hopperInv).insertItem(0, stack, false);
+                ItemStack stack1 = hopperInv.orElse(null).insertItem(0, stack, false);
                 if (stack1.isEmpty()) entityItem.remove();
                 else entityItem.setItem(stack1);
             }
@@ -117,7 +118,7 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyorBase
     @Override
     public void dropInventory()
     {
-        Utils.dropInventoryItems(world, pos, ((IItemHandler) hopperInv));
+        Utils.dropInventoryItems(world, pos, hopperInv.orElse(null));
         super.dropInventory();
     }
 

@@ -2,10 +2,10 @@ package cassiokf.industrialrenewal.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -15,16 +15,9 @@ import java.util.Random;
 
 public class BlockChimney extends BlockBase
 {
-
-    public BlockChimney(Block.Properties property)
+    public BlockChimney()
     {
-        super(property);
-    }
-
-    @Override
-    public int tickRate(IWorldReader worldIn)
-    {
-        return 10;
+        super(Block.Properties.create(Material.IRON));
     }
 
     @OnlyIn(Dist.CLIENT)

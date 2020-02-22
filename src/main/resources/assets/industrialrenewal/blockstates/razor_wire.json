@@ -1,41 +1,78 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:razor_wire",
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
-  "variants": {
-    "facing": {
-      "north": {},
-      "south": {
+  "multipart": [
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/razor_wire"
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/razor_wire",
         "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
       }
     },
-    "frame": {
-      "true": {
-        "submodel": {
-          "r": {
-            "model": "industrialrenewal:razor_wire_r"
-          }
-        }
+    {
+      "when": {
+        "facing": "east"
       },
-      "false": {}
+      "apply": {
+        "model": "industrialrenewal:block/razor_wire",
+        "y": 90
+      }
     },
-    "inventory": {
-      "model": "industrialrenewal:razor_wire",
-      "submodel": {
-        "r": {
-          "model": "industrialrenewal:razor_wire_r"
-        }
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/razor_wire",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "frame": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/razor_wire_r"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "frame": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/razor_wire_r",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "frame": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/razor_wire_r",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "frame": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/razor_wire_r",
+        "y": 270
       }
     }
-  }
+  ]
 }

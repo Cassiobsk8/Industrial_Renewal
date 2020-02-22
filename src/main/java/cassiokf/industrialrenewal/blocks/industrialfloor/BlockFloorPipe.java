@@ -2,12 +2,11 @@ package cassiokf.industrialrenewal.blocks.industrialfloor;
 
 
 import cassiokf.industrialrenewal.blocks.pipes.BlockFluidPipe;
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
@@ -19,15 +18,17 @@ import net.minecraft.world.World;
 
 public class BlockFloorPipe extends BlockFluidPipe
 {
-    public BlockFloorPipe(Block.Properties properties)
+    public BlockFloorPipe()
     {
-        super(properties);
+        super();
     }
 
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        Utils.spawnItemStack(worldIn, pos, new ItemStack(BlockItem.getItemFromBlock(ModBlocks.fluidPipe), 1));
+        if (state.getBlock() == newState.getBlock()) return;
+        Utils.spawnItemStack(worldIn, pos, new ItemStack(BlocksRegistration.FLUIDPIPE_ITEM.get()));
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override

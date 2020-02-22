@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockGauge;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -9,16 +8,17 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.GAUGE_TILE;
+
 public class TileEntityGauge extends TileEntity
 {
-
     private Direction baseFacing = Direction.DOWN;
     private Direction indicatorHorizontalFacing;
     private IFluidHandler tankStorage;
 
     public TileEntityGauge()
     {
-        super(TileEntityRegister.GAUGE);
+        super(GAUGE_TILE.get());
     }
 
     public Direction getBaseFacing()

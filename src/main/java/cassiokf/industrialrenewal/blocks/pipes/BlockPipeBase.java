@@ -73,9 +73,9 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
         return BlockRenderType.MODEL;
     }
 
-    public abstract boolean canConnectToPipe(final IBlockReader worldIn, final BlockPos ownPos, final Direction neighbourDirection);
+    public abstract boolean canConnectToPipe(final IBlockReader worldIn, final BlockPos ownPos, final Direction neighborDirection);
 
-    public abstract boolean canConnectToCapability(final IBlockReader worldIn, final BlockPos ownPos, final Direction neighbourDirection);
+    public abstract boolean canConnectToCapability(final IBlockReader worldIn, final BlockPos ownPos, final Direction neighborDirection);
 
     @Override
     public BlockState getExtendedState(BlockState state, IBlockReader world, BlockPos pos)

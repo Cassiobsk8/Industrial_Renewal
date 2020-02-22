@@ -42,13 +42,13 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
     public abstract int getMaxEnergyToTransport();
 
     @Override
-    public void tick()
+    public void doTick()
     {
         if (!world.isRemote && isMaster())
         {
             final Map<BlockPos, Direction> mapPosSet = getPosSet();
             int quantity = mapPosSet.size();
-            IEnergyStorage thisStorage = (IEnergyStorage) energyStorage;
+            IEnergyStorage thisStorage = energyStorage.orElse(null);
             energyStorage.ifPresent(e -> ((CustomEnergyStorage) e).setMaxCapacity(Math.max(getMaxEnergyToTransport() * quantity, thisStorage.getEnergyStored())));
 
             if (quantity > 0)
@@ -71,7 +71,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
     {
         int canAccept = 0;
         int out = 0;
-        IEnergyStorage thisStorage = (IEnergyStorage) energyStorage;
+        IEnergyStorage thisStorage = energyStorage.orElse(null);
         int realMaxOutput = Math.min(thisStorage.getEnergyStored() / validOutputs, getMaxEnergyToTransport());
         for (BlockPos posM : mapPosSet.keySet())
         {

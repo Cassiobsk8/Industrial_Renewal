@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeBaseGauge;
 import net.minecraft.block.Block;
@@ -13,14 +13,13 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -30,9 +29,9 @@ public class BlockFluidPipeGauge extends BlockFluidPipe
 {
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
-    public BlockFluidPipeGauge(Block.Properties properties)
+    public BlockFluidPipeGauge()
     {
-        super(properties);
+        super();
     }
 
     @Override
@@ -68,9 +67,9 @@ public class BlockFluidPipeGauge extends BlockFluidPipe
         {
             if (!worldIn.isRemote)
             {
-                worldIn.setBlockState(pos, ModBlocks.fluidPipe.getDefaultState(), 3);
+                worldIn.setBlockState(pos, BlocksRegistration.FLUIDPIPE.get().getDefaultState(), 3);
                 if (!player.isCreative())
-                    player.addItemStackToInventory(new ItemStack(ModBlocks.gauge.asItem()));
+                    player.addItemStackToInventory(new ItemStack(BlocksRegistration.GAUGE_ITEM.get()));
                 ItemPowerScrewDrive.playDrillSound(worldIn, pos);
             }
             return ActionResultType.SUCCESS;
@@ -78,10 +77,11 @@ public class BlockFluidPipeGauge extends BlockFluidPipe
         return ActionResultType.PASS;
     }
 
+    @Nullable
     @Override
-    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction)
+    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
     {
-        return state;
+        return new Direction[0];
     }
 
     @Override

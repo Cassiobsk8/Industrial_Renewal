@@ -1,18 +1,55 @@
 {
-  "forge_marker": 1,
-  "variants": {
-    "normal": {
-      "model": "industrialrenewal:smartmodel/indfloor"
-    },
-    "inventory": [
-      {
-        "model": "industrialrenewal:ind_floor/floor_side_up",
-        "submodel": {
-          "pipe_down": {
-            "model": "industrialrenewal:ind_floor/floor_side_down"
-          }
-        }
+  "multipart": [
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side"
       }
-    ]
-  }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side_up"
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side_down"
+      }
+    }
+  ]
 }

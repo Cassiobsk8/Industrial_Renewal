@@ -3,15 +3,16 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityEnergySwitch;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
 
 public class BlockEnergySwitch extends BlockToggleableBase<TileEntityEnergySwitch>
 {
-    public BlockEnergySwitch(Block.Properties properties)
+    public BlockEnergySwitch()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Nullable

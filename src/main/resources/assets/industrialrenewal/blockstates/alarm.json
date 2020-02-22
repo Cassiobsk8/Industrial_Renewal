@@ -1,42 +1,30 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "blocks/noteblock"
-    }
-  },
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:alarm"
-    },
     "facing=down": {
-      "model": "industrialrenewal:alarm",
+      "model": "industrialrenewal:block/alarm",
       "x": 180
     },
     "facing=up": {
-      "model": "industrialrenewal:alarm"
+      "model": "industrialrenewal:block/alarm"
     },
     "facing=north": {
-      "model": "industrialrenewal:alarm",
+      "model": "industrialrenewal:block/alarm",
       "x": 90
     },
     "facing=west": {
-      "model": "industrialrenewal:alarm",
+      "model": "industrialrenewal:block/alarm",
       "x": 90,
       "y": -90
     },
     "facing=south": {
-      "model": "industrialrenewal:alarm",
+      "model": "industrialrenewal:block/alarm",
       "x": 90,
       "y": 180
     },
     "facing=east": {
-      "model": "industrialrenewal:alarm",
+      "model": "industrialrenewal:block/alarm",
       "x": 90,
       "y": 90
-    },
-    "inventory": {
-      "model": "industrialrenewal:alarm"
     }
   }
 }

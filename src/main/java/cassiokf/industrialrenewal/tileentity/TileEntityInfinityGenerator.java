@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -13,13 +12,15 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.INFINITYGENERATOR_TILE;
+
 public class TileEntityInfinityGenerator extends TileEntity implements ICapabilityProvider, ITickableTileEntity
 {
     private LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(this::createEnergy);
 
     public TileEntityInfinityGenerator()
     {
-        super(TileEntityRegister.INFINITY_GENERATOR);
+        super(INFINITYGENERATOR_TILE.get());
     }
 
     private IEnergyStorage createEnergy()

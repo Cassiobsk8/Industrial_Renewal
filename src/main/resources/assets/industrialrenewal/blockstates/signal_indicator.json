@@ -1,77 +1,64 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:signal_indicator_gnd_red"
-    },
     "active=false,facing=north,onwall=false": {
-      "model": "industrialrenewal:signal_indicator_gnd_red"
+      "model": "industrialrenewal:block/signal_indicator_gnd_red"
     },
     "active=false,facing=west,onwall=false": {
-      "model": "industrialrenewal:signal_indicator_gnd_red",
+      "model": "industrialrenewal:block/signal_indicator_gnd_red",
       "y": -90
     },
     "active=false,facing=south,onwall=false": {
-      "model": "industrialrenewal:signal_indicator_gnd_red",
+      "model": "industrialrenewal:block/signal_indicator_gnd_red",
       "y": 180
     },
     "active=false,facing=east,onwall=false": {
-      "model": "industrialrenewal:signal_indicator_gnd_red",
+      "model": "industrialrenewal:block/signal_indicator_gnd_red",
       "y": 90
     },
     "active=true,facing=north,onwall=false": {
-      "model": "industrialrenewal:signal_indicator_gnd_green"
+      "model": "industrialrenewal:block/signal_indicator_gnd_green"
     },
     "active=true,facing=west,onwall=false": {
-      "model": "industrialrenewal:signal_indicator_gnd_green",
+      "model": "industrialrenewal:block/signal_indicator_gnd_green",
       "y": -90
     },
     "active=true,facing=south,onwall=false": {
-      "model": "industrialrenewal:signal_indicator_gnd_green",
+      "model": "industrialrenewal:block/signal_indicator_gnd_green",
       "y": 180
     },
     "active=true,facing=east,onwall=false": {
-      "model": "industrialrenewal:signal_indicator_gnd_green",
+      "model": "industrialrenewal:block/signal_indicator_gnd_green",
       "y": 90
     },
     "active=false,facing=north,onwall=true": {
-      "model": "industrialrenewal:signal_indicator_wall_red"
+      "model": "industrialrenewal:block/signal_indicator_wall_red"
     },
     "active=false,facing=west,onwall=true": {
-      "model": "industrialrenewal:signal_indicator_wall_red",
+      "model": "industrialrenewal:block/signal_indicator_wall_red",
       "y": -90
     },
     "active=false,facing=south,onwall=true": {
-      "model": "industrialrenewal:signal_indicator_wall_red",
+      "model": "industrialrenewal:block/signal_indicator_wall_red",
       "y": 180
     },
     "active=false,facing=east,onwall=true": {
-      "model": "industrialrenewal:signal_indicator_wall_red",
+      "model": "industrialrenewal:block/signal_indicator_wall_red",
       "y": 90
     },
     "active=true,facing=north,onwall=true": {
-      "model": "industrialrenewal:signal_indicator_wall_green"
+      "model": "industrialrenewal:block/signal_indicator_wall_green"
     },
     "active=true,facing=west,onwall=true": {
-      "model": "industrialrenewal:signal_indicator_wall_green",
+      "model": "industrialrenewal:block/signal_indicator_wall_green",
       "y": -90
     },
     "active=true,facing=south,onwall=true": {
-      "model": "industrialrenewal:signal_indicator_wall_green",
+      "model": "industrialrenewal:block/signal_indicator_wall_green",
       "y": 180
     },
     "active=true,facing=east,onwall=true": {
-      "model": "industrialrenewal:signal_indicator_wall_green",
+      "model": "industrialrenewal:block/signal_indicator_wall_green",
       "y": 90
-    },
-    "inventory": {
-      "model": "industrialrenewal:signal_indicator_wall_red",
-      "y": 180
     }
   }
 }

@@ -1,9 +1,9 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "1": "blocks/concrete_brown",
+    "1": "block/brown_concrete",
     "5": "industrialrenewal:blocks/rust",
-    "particle": "blocks/concrete_brown"
+    "particle": "block/brown_concrete"
   },
   "elements": [
     {

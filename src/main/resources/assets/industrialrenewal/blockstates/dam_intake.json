@@ -1,26 +1,19 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:dam_intake",
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
   "variants": {
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
-      }
+    "facing=north": {
+      "model": "industrialrenewal:block/dam_intake"
     },
-    "inventory": {
-      "model": "industrialrenewal:dam_intake"
+    "facing=south": {
+      "model": "industrialrenewal:block/dam_intake",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "industrialrenewal:block/dam_intake",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "industrialrenewal:block/dam_intake",
+      "y": -90
     }
   }
 }

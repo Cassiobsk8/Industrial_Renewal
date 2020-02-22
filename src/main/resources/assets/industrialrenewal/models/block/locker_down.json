@@ -1,8 +1,8 @@
 {
-  "credit": "Made with Blockbench",
+  "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "industrialrenewal:blocks/locker",
-    "particle": "industrialrenewal:blocks/locker"
+    "0": "industrialrenewal:blocks/locker_side",
+    "particle": "industrialrenewal:blocks/locker_side"
   },
   "elements": [
     {
@@ -14,51 +14,60 @@
       "to": [
         16,
         2,
-        15
+        16
       ],
       "faces": {
         "north": {
           "uv": [
-            0.25,
-            0.25,
-            2.25,
-            2.25
+            0,
+            13,
+            16,
+            15
           ],
           "texture": "#0"
         },
         "east": {
           "uv": [
-            0.25,
-            0.25,
-            2.25,
-            2.25
+            0,
+            13,
+            16,
+            15
           ],
           "texture": "#0"
         },
         "south": {
           "uv": [
-            0.25,
-            0.25,
-            2.25,
-            2.25
+            0,
+            13,
+            16,
+            15
           ],
           "texture": "#0"
         },
         "west": {
           "uv": [
-            0.25,
-            0.25,
-            2.25,
-            2.25
+            0,
+            13,
+            16,
+            15
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            0.5,
+            0.5,
+            15.5,
+            14.5
           ],
           "texture": "#0"
         },
         "down": {
           "uv": [
-            0.25,
-            0.25,
-            2.25,
-            2.25
+            0,
+            0,
+            16,
+            15
           ],
           "texture": "#0"
         }

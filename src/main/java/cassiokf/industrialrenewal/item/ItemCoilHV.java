@@ -1,10 +1,18 @@
 package cassiokf.industrialrenewal.item;
 
+import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.tileentity.TileEntityTransformerHV;
+import cassiokf.industrialrenewal.tileentity.TileEntityWireIsolator;
 import cassiokf.industrialrenewal.util.Utils;
+import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -28,7 +36,6 @@ public class ItemCoilHV extends ItemBase
         list.add(new StringTextComponent("Long distance energy transport"));
     }
 
-    /*
         @Override
         public ActionResultType onItemUse(ItemUseContext context)
         {
@@ -66,7 +73,7 @@ public class ItemCoilHV extends ItemBase
                         } else
                         {
                             int distance = (int) Utils.getDistancePointToPoint(firstConnectionPos, pos);
-                            if (teT.getConnectorPos() != firstConnectionPos && teT.canConnect(pos) && distance > 0 && distance <= IRConfig.MainConfig.Main.maxHVWireLength)
+                            if (teT.getConnectorPos() != firstConnectionPos && teT.canConnect(pos) && distance > 0 && distance <= IRConfig.Main.maxHVWireLength.get())
                             {
                                 isSecond = false;
                                 connectFirst(worldIn, teT.getConnectorPos());
@@ -82,9 +89,9 @@ public class ItemCoilHV extends ItemBase
                                 return ActionResultType.FAIL;
                             }
                         }
-                    } else if (te instanceof TileEntityWireBase)
+                    } else if (te instanceof TileEntityWireIsolator)
                     {
-                        TileEntityWireBase teT = (TileEntityWireBase) te;
+                        TileEntityWireIsolator teT = (TileEntityWireIsolator) te;
                         if (!isSecond)
                         {
                             if (teT.canConnect())
@@ -124,22 +131,22 @@ public class ItemCoilHV extends ItemBase
             }
             return super.onItemUse(context);
         }
-    */
+
     private void cleanConnection(PlayerEntity player)
     {
         isSecond = false;
         Utils.sendChatMessage(player, "Can not connect");
     }
-/*
+
     private void connectFirst(World world, BlockPos endPos)
     {
         TileEntity te = world.getTileEntity(firstConnectionPos);
         if (te instanceof IConnectorHV)
         {
             ((IConnectorHV) te).connect(endPos);
-        } else if (te instanceof TileEntityWireBase)
+        } else if (te instanceof TileEntityWireIsolator)
         {
-            ((TileEntityWireBase) te).setConnection(endPos);
+            ((TileEntityWireIsolator) te).setConnection(endPos);
         }
-    }*/
+    }
 }

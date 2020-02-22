@@ -4,15 +4,15 @@ import cassiokf.industrialrenewal.tileentity.TileEntityElectricPump;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.Rotation;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
@@ -24,9 +24,9 @@ public class BlockElectricPump extends BlockTileEntity<TileEntityElectricPump>
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final IntegerProperty INDEX = IntegerProperty.create("index", 0, 1);
 
-    public BlockElectricPump(Block.Properties properties)
+    public BlockElectricPump()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -41,6 +41,7 @@ public class BlockElectricPump extends BlockTileEntity<TileEntityElectricPump>
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
         switch (state.get(INDEX))
         {
             case 0:
@@ -56,10 +57,11 @@ public class BlockElectricPump extends BlockTileEntity<TileEntityElectricPump>
 
     }
 
+    @Nullable
     @Override
-    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction)
+    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
     {
-        return state;
+        return new Direction[0];
     }
 
     private boolean IsPump(World world, BlockPos pos)

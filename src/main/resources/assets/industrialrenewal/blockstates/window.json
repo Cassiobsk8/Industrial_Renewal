@@ -1,81 +1,47 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "blocks/glass"
-    }
-  },
-  "variants": {
-    "down": {
-      "true": {},
-      "false": {}
-    },
-    "up": {
-      "true": {
-        "submodel": {
-          "up": {
-            "model": "industrialrenewal:window_base"
-          }
-        }
+  "multipart": [
+    {
+      "when": {
+        "up": "true"
       },
-      "false": {}
-    },
-    "north": {
-      "true": {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:window_side"
-          }
-        }
-      },
-      "false": {}
-    },
-    "south": {
-      "true": {
-        "submodel": {
-          "pipe_south": {
-            "model": "industrialrenewal:window_side",
-            "y": 180
-          }
-        }
-      },
-      "false": {}
-    },
-    "east": {
-      "true": {
-        "submodel": {
-          "pipe_east": {
-            "model": "industrialrenewal:window_side",
-            "y": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "west": {
-      "true": {
-        "submodel": {
-          "pipe_west": {
-            "model": "industrialrenewal:window_side",
-            "y": -90
-          }
-        }
-      },
-      "false": {}
-    },
-    "inventory": [
-      {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:window_side",
-            "y": 90
-          },
-          "pipe_south": {
-            "model": "industrialrenewal:window_side",
-            "y": -90
-          }
-        }
+      "apply": {
+        "model": "industrialrenewal:block/window_base"
       }
-    ]
-  }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/window_side"
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/window_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/window_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/window_side",
+        "y": 270
+      }
+    }
+  ]
 }

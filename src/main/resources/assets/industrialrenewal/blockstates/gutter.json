@@ -1,181 +1,124 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/metal_white"
-    }
-  },
   "variants": {
-    "active_down=false,active_left=false,active_right=false,facing=down": {
-      "model": "industrialrenewal:gutter_000"
-    },
-    "active_down=false,active_left=false,active_right=false,facing=up": {
-      "model": "industrialrenewal:gutter_000"
-    },
     "active_down=false,active_left=false,active_right=false,facing=north": {
-      "model": "industrialrenewal:gutter_000"
+      "model": "industrialrenewal:block/gutter_000"
     },
     "active_down=false,active_left=false,active_right=false,facing=west": {
-      "model": "industrialrenewal:gutter_000",
+      "model": "industrialrenewal:block/gutter_000",
       "y": -90
     },
     "active_down=false,active_left=false,active_right=false,facing=south": {
-      "model": "industrialrenewal:gutter_000",
+      "model": "industrialrenewal:block/gutter_000",
       "y": 180
     },
     "active_down=false,active_left=false,active_right=false,facing=east": {
-      "model": "industrialrenewal:gutter_000",
+      "model": "industrialrenewal:block/gutter_000",
       "y": 90
     },
-    "active_down=false,active_left=true,active_right=true,facing=down": {
-      "model": "industrialrenewal:gutter_101"
-    },
-    "active_down=false,active_left=true,active_right=true,facing=up": {
-      "model": "industrialrenewal:gutter_101"
-    },
     "active_down=false,active_left=true,active_right=true,facing=north": {
-      "model": "industrialrenewal:gutter_101"
+      "model": "industrialrenewal:block/gutter_101"
     },
     "active_down=false,active_left=true,active_right=true,facing=west": {
-      "model": "industrialrenewal:gutter_101",
+      "model": "industrialrenewal:block/gutter_101",
       "y": -90
     },
     "active_down=false,active_left=true,active_right=true,facing=south": {
-      "model": "industrialrenewal:gutter_101",
+      "model": "industrialrenewal:block/gutter_101",
       "y": 180
     },
     "active_down=false,active_left=true,active_right=true,facing=east": {
-      "model": "industrialrenewal:gutter_101",
+      "model": "industrialrenewal:block/gutter_101",
       "y": 90
     },
-    "active_down=false,active_left=true,active_right=false,facing=down": {
-      "model": "industrialrenewal:gutter_100"
-    },
-    "active_down=false,active_left=true,active_right=false,facing=up": {
-      "model": "industrialrenewal:gutter_100"
-    },
     "active_down=false,active_left=true,active_right=false,facing=north": {
-      "model": "industrialrenewal:gutter_100"
+      "model": "industrialrenewal:block/gutter_100"
     },
     "active_down=false,active_left=true,active_right=false,facing=west": {
-      "model": "industrialrenewal:gutter_100",
+      "model": "industrialrenewal:block/gutter_100",
       "y": -90
     },
     "active_down=false,active_left=true,active_right=false,facing=south": {
-      "model": "industrialrenewal:gutter_100",
+      "model": "industrialrenewal:block/gutter_100",
       "y": 180
     },
     "active_down=false,active_left=true,active_right=false,facing=east": {
-      "model": "industrialrenewal:gutter_100",
+      "model": "industrialrenewal:block/gutter_100",
       "y": 90
     },
-    "active_down=false,active_left=false,active_right=true,facing=down": {
-      "model": "industrialrenewal:gutter_001"
-    },
-    "active_down=false,active_left=false,active_right=true,facing=up": {
-      "model": "industrialrenewal:gutter_001"
-    },
     "active_down=false,active_left=false,active_right=true,facing=north": {
-      "model": "industrialrenewal:gutter_001"
+      "model": "industrialrenewal:block/gutter_001"
     },
     "active_down=false,active_left=false,active_right=true,facing=west": {
-      "model": "industrialrenewal:gutter_001",
+      "model": "industrialrenewal:block/gutter_001",
       "y": -90
     },
     "active_down=false,active_left=false,active_right=true,facing=south": {
-      "model": "industrialrenewal:gutter_001",
+      "model": "industrialrenewal:block/gutter_001",
       "y": 180
     },
     "active_down=false,active_left=false,active_right=true,facing=east": {
-      "model": "industrialrenewal:gutter_001",
+      "model": "industrialrenewal:block/gutter_001",
       "y": 90
     },
-    "active_down=true,active_left=false,active_right=false,facing=down": {
-      "model": "industrialrenewal:gutter_010"
-    },
-    "active_down=true,active_left=false,active_right=false,facing=up": {
-      "model": "industrialrenewal:gutter_010"
-    },
     "active_down=true,active_left=false,active_right=false,facing=north": {
-      "model": "industrialrenewal:gutter_010"
+      "model": "industrialrenewal:block/gutter_010"
     },
     "active_down=true,active_left=false,active_right=false,facing=west": {
-      "model": "industrialrenewal:gutter_010",
+      "model": "industrialrenewal:block/gutter_010",
       "y": -90
     },
     "active_down=true,active_left=false,active_right=false,facing=south": {
-      "model": "industrialrenewal:gutter_010",
+      "model": "industrialrenewal:block/gutter_010",
       "y": 180
     },
     "active_down=true,active_left=false,active_right=false,facing=east": {
-      "model": "industrialrenewal:gutter_010",
+      "model": "industrialrenewal:block/gutter_010",
       "y": 90
     },
-    "active_down=true,active_left=true,active_right=true,facing=down": {
-      "model": "industrialrenewal:gutter_111"
-    },
-    "active_down=true,active_left=true,active_right=true,facing=up": {
-      "model": "industrialrenewal:gutter_111"
-    },
     "active_down=true,active_left=true,active_right=true,facing=north": {
-      "model": "industrialrenewal:gutter_111"
+      "model": "industrialrenewal:block/gutter_111"
     },
     "active_down=true,active_left=true,active_right=true,facing=west": {
-      "model": "industrialrenewal:gutter_111",
+      "model": "industrialrenewal:block/gutter_111",
       "y": -90
     },
     "active_down=true,active_left=true,active_right=true,facing=south": {
-      "model": "industrialrenewal:gutter_111",
+      "model": "industrialrenewal:block/gutter_111",
       "y": 180
     },
     "active_down=true,active_left=true,active_right=true,facing=east": {
-      "model": "industrialrenewal:gutter_111",
+      "model": "industrialrenewal:block/gutter_111",
       "y": 90
     },
-    "active_down=true,active_left=true,active_right=false,facing=down": {
-      "model": "industrialrenewal:gutter_110"
-    },
-    "active_down=true,active_left=true,active_right=false,facing=up": {
-      "model": "industrialrenewal:gutter_110"
-    },
     "active_down=true,active_left=true,active_right=false,facing=north": {
-      "model": "industrialrenewal:gutter_110"
+      "model": "industrialrenewal:block/gutter_110"
     },
     "active_down=true,active_left=true,active_right=false,facing=west": {
-      "model": "industrialrenewal:gutter_110",
+      "model": "industrialrenewal:block/gutter_110",
       "y": -90
     },
     "active_down=true,active_left=true,active_right=false,facing=south": {
-      "model": "industrialrenewal:gutter_110",
+      "model": "industrialrenewal:block/gutter_110",
       "y": 180
     },
     "active_down=true,active_left=true,active_right=false,facing=east": {
-      "model": "industrialrenewal:gutter_110",
+      "model": "industrialrenewal:block/gutter_110",
       "y": 90
     },
-    "active_down=true,active_left=false,active_right=true,facing=down": {
-      "model": "industrialrenewal:gutter_011"
-    },
-    "active_down=true,active_left=false,active_right=true,facing=up": {
-      "model": "industrialrenewal:gutter_011"
-    },
     "active_down=true,active_left=false,active_right=true,facing=north": {
-      "model": "industrialrenewal:gutter_011"
+      "model": "industrialrenewal:block/gutter_011"
     },
     "active_down=true,active_left=false,active_right=true,facing=west": {
-      "model": "industrialrenewal:gutter_011",
+      "model": "industrialrenewal:block/gutter_011",
       "y": -90
     },
     "active_down=true,active_left=false,active_right=true,facing=south": {
-      "model": "industrialrenewal:gutter_011",
+      "model": "industrialrenewal:block/gutter_011",
       "y": 180
     },
     "active_down=true,active_left=false,active_right=true,facing=east": {
-      "model": "industrialrenewal:gutter_011",
+      "model": "industrialrenewal:block/gutter_011",
       "y": 90
-    },
-    "inventory": {
-      "model": "industrialrenewal:gutter_101"
     }
   }
 }

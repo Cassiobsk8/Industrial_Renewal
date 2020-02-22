@@ -1,52 +1,37 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:rail_crossing",
-    "textures": {
-      "particle": "blocks/rail_normal"
-    }
-  },
-  "variants": {
-    "shape": {
-      "normal": {
-        "model": "industrialrenewal:rail_crossing"
+  "multipart": [
+    {
+      "when": {
+        "shape": "north_south"
       },
-      "north_south": {
-        "model": "industrialrenewal:rail_crossing"
-      },
-      "east_west": {
-        "model": "industrialrenewal:rail_crossing",
-        "y": 90
-      },
-      "ascending_east": {},
-      "ascending_west": {},
-      "ascending_north": {},
-      "ascending_south": {},
-      "south_east": {},
-      "south_west": {},
-      "north_west": {},
-      "north_east": {}
-    },
-    "snow": {
-      "false": {},
-      "layer1": {
-        "submodel": {
-          "snow1": {
-            "model": "industrialrenewal:snow_layer1"
-          }
-        }
-      },
-      "layer2": {
-        "submodel": {
-          "snow2": {
-            "model": "industrialrenewal:snow_layer2"
-          }
-        }
+      "apply": {
+        "model": "industrialrenewal:block/rail_crossing"
       }
     },
-    "inventory": {
-      "model": "industrialrenewal:rail_crossing",
-      "transform": "forge:default-block"
+    {
+      "when": {
+        "shape": "east_west"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/rail_crossing",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "snow": "layer1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/snow_layer1"
+      }
+    },
+    {
+      "when": {
+        "snow": "layer2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/snow_layer2"
+      }
     }
-  }
+  ]
 }

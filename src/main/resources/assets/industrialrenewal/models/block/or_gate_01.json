@@ -1,10 +1,10 @@
 {
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "textures": {
-    "0": "blocks/stone_slab_side",
-    "1": "blocks/stone_slab_top",
-    "2": "blocks/cobblestone",
-    "3": "blocks/redstone_block"
+    "0": "block/stone_slab_side",
+    "1": "block/stone_slab_top",
+    "2": "block/cobblestone",
+    "3": "block/redstone_block"
   },
   "display": {
     "gui": {

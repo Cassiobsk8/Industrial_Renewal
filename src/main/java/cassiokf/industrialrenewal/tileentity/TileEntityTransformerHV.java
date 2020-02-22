@@ -1,8 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.ModItems;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import cassiokf.industrialrenewal.init.ItemsRegistration;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
@@ -22,6 +21,8 @@ import net.minecraftforge.energy.IEnergyStorage;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.TRANSFORMERHV_TILE;
+
 public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntityTransformerHV> implements ITickableTileEntity, IConnectorHV
 {
     public boolean isOutPut;
@@ -36,7 +37,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
 
     public TileEntityTransformerHV()
     {
-        super(TileEntityRegister.TRANSFORMER_HV);
+        super(TRANSFORMERHV_TILE.get());
     }
 
     private IEnergyStorage createEnergy()
@@ -89,7 +90,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
             isOutPut();
             if (this.hasWorld() && !world.isRemote)
             {
-                IEnergyStorage thisEnergy = (IEnergyStorage) energyStorage;
+                IEnergyStorage thisEnergy = energyStorage.orElse(null);
                 if (!isOutPut)
                 {
                     if (otherSideTransformer != null && thisEnergy.getEnergyStored() > 0)
@@ -265,7 +266,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     {
         BlockPos connectorPos = getConnectorPos();
         if (!world.isRemote)
-            Utils.spawnItemStack(world, connectorPos, new ItemStack(ModItems.coilHV));
+            Utils.spawnItemStack(world, connectorPos, new ItemStack(ItemsRegistration.COILHV.get()));
         disableConnectedCables(cableConnectionPos);
         removeConnection();
     }
@@ -317,7 +318,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     public int receiveEnergy(int quantity, boolean simulate)
     {
         if (isRemoved()) return 0;
-        return ((IEnergyStorage) getMaster().energyStorage).receiveEnergy(quantity, simulate);
+        return getMaster().energyStorage.orElse(null).receiveEnergy(quantity, simulate);
     }
 
     @Override

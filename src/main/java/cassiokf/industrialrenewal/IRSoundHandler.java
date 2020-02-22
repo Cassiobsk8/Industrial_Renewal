@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal;
 
-import cassiokf.industrialrenewal.init.IRSoundRegister;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
+import cassiokf.industrialrenewal.util.TileTickableSound;
 import cassiokf.industrialrenewal.util.interfaces.IDynamicSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
@@ -38,38 +39,26 @@ public class IRSoundHandler
     }
 
     /* ------------------------------- Sound handling from Mekanism devs ------------------------------- */
-    /*
-    public static ISound playRepeatableSound(ResourceLocation soundLoc, float volume, float pitch, BlockPos pos)
+    public static ISound playRepeatableSound(TileEntity tile, SoundEvent soundIn, float volume, float pitch)
     {
         // First, check to see if there's already a sound playing at the desired location
-        ISound s = soundMap.get(pos.toLong());
+        ISound s = soundMap.get(tile.getPos().toLong());
         if (s == null || !mc.getSoundHandler().isPlaying(s))
         {
             // No sound playing, start one up - we assume that tile sounds will play until explicitly stopped
-            s = new PositionedSoundRecord(soundLoc, SoundCategory.BLOCKS, volume, pitch, true, 0,
-                    ISound.AttenuationType.LINEAR, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f)
-            {
-                @Override
-                public float getVolume()
-                {
-                    if (this.sound == null)
-                    {
-                        this.createAccessor(mc.getSoundHandler());
-                    }
-                    return super.getVolume();
-                }
-            };
+            s = new TileTickableSound(tile, soundIn, SoundCategory.BLOCKS, volume, pitch, true, 0,
+                    ISound.AttenuationType.LINEAR);
 
             // Start the sound
             playSound(s);
 
             // N.B. By the time playSound returns, our expectation is that our wrapping-detector handler has fired
             // and dealt with any muting interceptions and, CRITICALLY, updated the soundMap with the final ISound.
-            s = soundMap.get(pos.toLong());
+            s = soundMap.get(tile.getPos().toLong());
         }
 
         return s;
-    }*/
+    }
 
     public static void stopTileSound(BlockPos pos)
     {
@@ -104,11 +93,11 @@ public class IRSoundHandler
 
         // Ignore any sound event outside this mod namespace
         ResourceLocation soundLoc = event.getSound().getSoundLocation();
-        if (IRSoundRegister.TICKABLE_SOUNDS.contains(soundLoc.toString()))
+        if (SoundsRegistration.TICKABLE_SOUNDS.contains(soundLoc.toString()))
         {
             resultSound = new TileSound(event.getSound(), resultSound.getVolume(), 1.0F, true);
             event.setResultSound(resultSound);
-        } else if (IRSoundRegister.REPEATABLE_SOUNDS.contains(soundLoc.toString()))
+        } else if (SoundsRegistration.REPEATABLE_SOUNDS.contains(soundLoc.toString()))
         {
             resultSound = new TileSound(event.getSound(), resultSound.getVolume(), 1.0F, false);
             event.setResultSound(resultSound);

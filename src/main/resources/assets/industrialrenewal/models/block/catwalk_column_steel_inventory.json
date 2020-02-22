@@ -1,0 +1,609 @@
+{
+  "credit": "Made with Blockbench - CassioKF",
+  "textures": {
+    "2": "industrialrenewal:blocks/metal",
+    "particle": "industrialrenewal:blocks/metal"
+  },
+  "elements": [
+    {
+      "name": "Cube",
+      "from": [
+        6,
+        7,
+        6
+      ],
+      "to": [
+        10,
+        14,
+        10
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            7
+          ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            7
+          ],
+          "texture": "#2"
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        4,
+        5,
+        4
+      ],
+      "to": [
+        12,
+        7,
+        12
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            2
+          ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            2
+          ],
+          "texture": "#2"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": "#2"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": "#2"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy",
+      "from": [
+        4,
+        14,
+        4
+      ],
+      "to": [
+        12,
+        16,
+        12
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            2
+          ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            2
+          ],
+          "texture": "#2"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": "#2"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": "#2"
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        4,
+        5,
+        0
+      ],
+      "to": [
+        12,
+        7,
+        4
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            2
+          ],
+          "texture": "#2"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            2
+          ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            2
+          ],
+          "texture": "#2"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            4
+          ],
+          "texture": "#2"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            4
+          ],
+          "texture": "#2"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy",
+      "from": [
+        4,
+        14,
+        0
+      ],
+      "to": [
+        12,
+        16,
+        4
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            2
+          ],
+          "texture": "#2"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            2
+          ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            2
+          ],
+          "texture": "#2"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            4
+          ],
+          "texture": "#2"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            4
+          ],
+          "texture": "#2"
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        6,
+        7,
+        0
+      ],
+      "to": [
+        10,
+        14,
+        6
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            7
+          ],
+          "texture": "#2"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            6,
+            7
+          ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            6,
+            7
+          ],
+          "texture": "#2"
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        4,
+        5,
+        12
+      ],
+      "to": [
+        12,
+        7,
+        16
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            2
+          ],
+          "texture": "#2"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            2
+          ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            2
+          ],
+          "texture": "#2"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            4
+          ],
+          "rotation": 180,
+          "texture": "#2"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            4
+          ],
+          "rotation": 180,
+          "texture": "#2"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy",
+      "from": [
+        4,
+        14,
+        12
+      ],
+      "to": [
+        12,
+        16,
+        16
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            2
+          ],
+          "texture": "#2"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            2
+          ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            2
+          ],
+          "texture": "#2"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            4
+          ],
+          "rotation": 180,
+          "texture": "#2"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            4
+          ],
+          "rotation": 180,
+          "texture": "#2"
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        6,
+        7,
+        10
+      ],
+      "to": [
+        10,
+        14,
+        16
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            0,
+            6,
+            7
+          ],
+          "texture": "#2"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            7
+          ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            6,
+            7
+          ],
+          "texture": "#2"
+        }
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        225,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        -1.25,
+        0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        -1,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  },
+  "groups": [
+    0,
+    1,
+    2,
+    {
+      "name": "catwalk_column_steel_side",
+      "origin": [
+        8,
+        8,
+        8
+      ],
+      "children": [
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "catwalk_column_steel_side",
+      "origin": [
+        8,
+        8,
+        8
+      ],
+      "children": [
+        6,
+        7,
+        8
+      ]
+    }
+  ]
+}

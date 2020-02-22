@@ -1,10 +1,10 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.TileEntitySteamTurbine;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -17,9 +17,9 @@ import java.util.List;
 
 public class BlockSteamTurbine extends Block3x3x3Base<TileEntitySteamTurbine>
 {
-    public BlockSteamTurbine(Block.Properties properties)
+    public BlockSteamTurbine()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -28,7 +28,7 @@ public class BlockSteamTurbine extends Block3x3x3Base<TileEntitySteamTurbine>
         tooltip.add(new StringTextComponent(
                 I18n.format("info.industrialrenewal.requires")
                         + ": "
-                        + ModBlocks.steamBlock.getNameTextComponent().getFormattedText()
+                        + "Steam"
                         + " "
                         + (IRConfig.Main.steamTurbineSteamPerTick.get().toString())
                         + " mB/t"));

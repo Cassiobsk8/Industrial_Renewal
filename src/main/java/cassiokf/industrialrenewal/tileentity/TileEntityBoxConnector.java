@@ -2,8 +2,7 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBox;
 import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBoxConnector;
-import cassiokf.industrialrenewal.init.ModItems;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import cassiokf.industrialrenewal.init.ItemsRegistration;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityFuseBox;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -17,6 +16,8 @@ import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.FUSEBOXCONNECTOR_TILE;
+
 public class TileEntityBoxConnector extends TileEntity
 {
 
@@ -24,13 +25,7 @@ public class TileEntityBoxConnector extends TileEntity
 
     public TileEntityBoxConnector()
     {
-        super(TileEntityRegister.BOX_CONNECTOR);
-    }
-
-    @Override
-    public void onLoad()
-    {
-        passRedstone();
+        super(FUSEBOXCONNECTOR_TILE.get());
     }
 
     public int passRedstone()
@@ -54,23 +49,23 @@ public class TileEntityBoxConnector extends TileEntity
             for (int i = 0; i < inv.getSlots(); i++)
             {
                 Item item = inv.getStackInSlot(i).getItem();
-                if (item == ModItems.cartridge_minus)
+                if (item == ItemsRegistration.CARTRIDGE_MINUS.get())
                 {
                     input--;
                 }
-                if (item == ModItems.cartridge_plus)
+                if (item == ItemsRegistration.CARTRIDGE_PLUS.get())
                 {
                     input++;
                 }
-                if (item == ModItems.cartridge_half)
+                if (item == ItemsRegistration.CARTRIDGE_HALF.get())
                 {
                     input = input / 2;
                 }
-                if (item == ModItems.cartridge_double)
+                if (item == ItemsRegistration.CARTRIDGE_DOUBLE.get())
                 {
                     input = input * 2;
                 }
-                if (item == ModItems.cartridge_inverter)
+                if (item == ItemsRegistration.CARTRIDGE_INVERTER.get())
                 {
                     if (input > 0)
                     {

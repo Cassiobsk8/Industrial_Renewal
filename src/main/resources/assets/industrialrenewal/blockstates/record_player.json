@@ -1,71 +1,110 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:record_player",
-    "textures": {
-      "particle": "industrialrenewal:blocks/record_player"
+  "multipart": [
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/record_player"
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/record_player",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/record_player",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/record_player",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "downnoteblock": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/record_player_connected"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "downnoteblock": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/record_player_connected",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "downnoteblock": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/record_player_connected",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "downnoteblock": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/record_player_connected",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "disc0": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/record_player_0"
+      }
+    },
+    {
+      "when": {
+        "disc1": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/record_player_1"
+      }
+    },
+    {
+      "when": {
+        "disc2": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/record_player_2"
+      }
+    },
+    {
+      "when": {
+        "disc3": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/record_player_3"
+      }
     }
-  },
-  "variants": {
-    "facing": {
-      "north": {},
-      "south": {"y": 180},
-      "east": {"y": 90},
-      "west": {"y": -90}
-    },
-    "downnoteblock": {
-      "true": {
-        "submodel": {
-          "cable": {
-            "model": "industrialrenewal:record_player_connected"
-          }
-        }
-      },
-      "false": {}
-    },
-    "disc0": {
-      "true": {
-        "submodel": {
-          "disc0": {
-            "model": "industrialrenewal:record_player_0"
-          }
-        }
-      },
-      "false": {}
-    },
-    "disc1": {
-      "true": {
-        "submodel": {
-          "disc1": {
-              "model": "industrialrenewal:record_player_1"
-          }
-        }
-      },
-      "false": {}
-    },
-    "disc2": {
-      "true": {
-        "submodel": {
-          "disc2": {
-            "model": "industrialrenewal:record_player_2"
-          }
-        }
-      },
-      "false": {}
-    },
-    "disc3": {
-      "true": {
-        "submodel": {
-          "disc3": {
-            "model": "industrialrenewal:record_player_3"
-          }
-        }
-      },
-      "false": {}
-    },
-    "inventory": {
-      "model": "industrialrenewal:record_player",
-      "y": 180
-    }
-  }
+  ]
 }

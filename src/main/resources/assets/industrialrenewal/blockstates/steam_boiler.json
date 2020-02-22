@@ -1,50 +1,129 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/pipe"
-    }
-  },
-  "variants": {
-    "master": {
-      "true": {
-        "model": "industrialrenewal:steam_boiler"
+  "multipart": [
+    {
+      "when": {
+        "facing": "north",
+        "master": "true"
       },
-      "false": {
-        "model": "industrialrenewal:dummy"
+      "apply": {
+        "model": "industrialrenewal:block/steam_boiler"
       }
     },
-    "type": {
-      "0": {},
-      "1": {
-        "submodel": {
-          "firebox": {
-            "model": "industrialrenewal:steam_boiler_firebox_solid"
-          }
-        }
+    {
+      "when": {
+        "facing": "south",
+        "master": "true"
       },
-      "2": {
-        "submodel": {
-          "firebox": {
-            "model": "industrialrenewal:steam_boiler_firebox_fluid"
-          }
-        }
-      }
-    },
-    "facing": {
-      "north": {},
-      "south": {
+      "apply": {
+        "model": "industrialrenewal:block/steam_boiler",
         "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
       }
     },
-    "inventory": {
-      "model": "industrialrenewal:steam_boiler"
+    {
+      "when": {
+        "facing": "east",
+        "master": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/steam_boiler",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "master": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/steam_boiler",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "master": "true",
+        "type": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/steam_boiler_firebox_solid"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "master": "true",
+        "type": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/steam_boiler_firebox_solid",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "master": "true",
+        "type": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/steam_boiler_firebox_solid",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "master": "true",
+        "type": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/steam_boiler_firebox_solid",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "master": "true",
+        "type": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/steam_boiler_firebox_fluid"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "master": "true",
+        "type": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/steam_boiler_firebox_fluid",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "master": "true",
+        "type": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/steam_boiler_firebox_fluid",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "master": "true",
+        "type": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/steam_boiler_firebox_fluid",
+        "y": 270
+      }
     }
-  }
+  ]
 }

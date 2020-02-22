@@ -1,33 +1,31 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/pipe"
-    }
-  },
   "variants": {
-    "master": {
-      "true": {
-        "model": "industrialrenewal:mining_drill"
-      },
-      "false": {
-        "model": "industrialrenewal:dummy"
-      }
+    "facing=north,master=true": {
+      "model": "industrialrenewal:block/mining_drill"
     },
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
-      }
+    "facing=south,master=true": {
+      "model": "industrialrenewal:block/mining_drill",
+      "y": 180
     },
-    "inventory": {
-      "model": "industrialrenewal:mining_drill"
+    "facing=east,master=true": {
+      "model": "industrialrenewal:block/mining_drill",
+      "y": 90
+    },
+    "facing=west,master=true": {
+      "model": "industrialrenewal:block/mining_drill",
+      "y": -90
+    },
+    "facing=north,master=false": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=south,master=false": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=east,master=false": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=west,master=false": {
+      "model": "industrialrenewal:block/dummy"
     }
   }
 }

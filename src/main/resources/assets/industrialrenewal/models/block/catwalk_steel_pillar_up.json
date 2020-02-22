@@ -3,7 +3,7 @@
   "textures": {
     "0": "industrialrenewal:blocks/metal",
     "2": "industrialrenewal:blocks/rust",
-    "3": "blocks/anvil_base",
+    "3": "industrialrenewal:blocks/anvil_base",
     "particle": "industrialrenewal:blocks/metal"
   },
   "elements": [

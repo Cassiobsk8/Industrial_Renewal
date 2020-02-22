@@ -1,147 +1,103 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:platform_base",
-    "textures": {
-      "particle": "blocks/anvil_base"
+  "multipart": [
+    {
+      "apply": {
+        "model": "industrialrenewal:block/platform_base"
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/platform_up_true"
+      }
+    },
+    {
+      "when": {
+        "up": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/platform_up_false"
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/platform_down_true"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/platform_side_true"
+      }
+    },
+    {
+      "when": {
+        "north": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/platform_side_false"
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/platform_side_true",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "east": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/platform_side_false",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/platform_side_true",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "south": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/platform_side_false",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/platform_side_true",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "west": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/platform_side_false",
+        "y": 270
+      }
     }
-  },
-  "variants": {
-    "down": {
-      "true": {
-        "submodel": {
-          "pipe_down": {
-            "model": "industrialrenewal:platform_down_true",
-            "uvlock": true
-          }
-        }
-      },
-      "false": {}
-    },
-    "up": {
-      "true": {
-        "submodel": {
-          "pipe_up": {
-            "model": "industrialrenewal:platform_up_true",
-            "uvlock": true
-          }
-        }
-      },
-      "false": {
-        "submodel": {
-          "pipe_up": {
-            "model": "industrialrenewal:platform_up_false",
-            "uvlock": true
-          }
-        }
-      }
-    },
-    "north": {
-      "true": {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:platform_side_true",
-            "uvlock": true
-          }
-        }
-      },
-      "false": {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:platform_side_false",
-            "uvlock": true
-          }
-        }
-      }
-    },
-    "south": {
-      "true": {
-        "submodel": {
-          "pipe_south": {
-            "model": "industrialrenewal:platform_side_true",
-            "y": 180,
-            "uvlock": true
-          }
-        }
-      },
-      "false": {
-        "submodel": {
-          "pipe_south": {
-            "model": "industrialrenewal:platform_side_false",
-            "y": 180,
-            "uvlock": true
-          }
-        }
-      }
-    },
-    "east": {
-      "true": {
-        "submodel": {
-          "pipe_east": {
-            "model": "industrialrenewal:platform_side_true",
-            "y": 90,
-            "uvlock": true
-          }
-        }
-      },
-      "false": {
-        "submodel": {
-          "pipe_east": {
-            "model": "industrialrenewal:platform_side_false",
-            "y": 90,
-            "uvlock": true
-          }
-        }
-      }
-    },
-    "west": {
-      "true": {
-        "submodel": {
-          "pipe_west": {
-            "model": "industrialrenewal:platform_side_true",
-            "y": -90,
-            "uvlock": true
-          }
-        }
-      },
-      "false": {
-        "submodel": {
-          "pipe_west": {
-            "model": "industrialrenewal:platform_side_false",
-            "y": -90,
-            "uvlock": true
-          }
-        }
-      }
-    },
-    "inventory": [
-      {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:platform_side_true",
-            "uvlock": true
-          },
-          "pipe_south": {
-            "model": "industrialrenewal:platform_side_true",
-            "y": 180,
-            "uvlock": true
-          },
-          "pipe_west": {
-            "model": "industrialrenewal:platform_side_false",
-            "y": -90,
-            "uvlock": true
-          },
-          "pipe_east": {
-            "model": "industrialrenewal:platform_side_false",
-            "y": 90,
-            "uvlock": true
-          },
-          "pipe_up": {
-            "model": "industrialrenewal:platform_up_false",
-            "uvlock": true
-          }
-        }
-      }
-    ]
-  }
+  ]
 }

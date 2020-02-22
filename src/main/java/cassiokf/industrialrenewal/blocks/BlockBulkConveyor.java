@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.enums.EnumBulkConveyorType;
-import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
+import cassiokf.industrialrenewal.init.ItemsRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyor;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyorBase;
@@ -11,45 +11,45 @@ import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyorInserter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockBulkConveyor extends BlockBase
+public class BlockBulkConveyor extends BlockAbstractHorizontalFacing
 {
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final IntegerProperty MODE = IntegerProperty.create("mode", 0, 2);
     public static final BooleanProperty FRONT = BooleanProperty.create("front");
     public static final BooleanProperty BACK = BooleanProperty.create("back");
-    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
-    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 0.5D);
-    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.5D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 0.5D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.5D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D);
-    private static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 0.625D, 1D);
+
+    protected static final VoxelShape BASE_AABB = Block.makeCuboidShape(0, 0, 0, 16, 8, 16);
+    protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0, 8, 0, 16, 16, 8);
+    protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0, 8, 8, 16, 16, 16);
+    protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(0, 8, 0, 8, 16, 16);
+    protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(8, 8, 0, 16, 16, 16);
+
     public final EnumBulkConveyorType type;
 
-    public BlockBulkConveyor(EnumBulkConveyorType type, Block.Properties properties)
+    public BlockBulkConveyor(EnumBulkConveyorType type)
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
         this.type = type;
     }
 
@@ -89,35 +89,35 @@ public class BlockBulkConveyor extends BlockBase
         {
             if (type.equals(EnumBulkConveyorType.NORMAL))
             {
-                if (heldItem.getItem().equals(Item.getItemFromBlock(Blocks.HOPPER)))
+                if (heldItem.getItem().equals(Blocks.HOPPER.asItem()))
                 {
                     Direction facing1 = state.get(FACING);
-                    worldIn.setBlockState(pos, ModBlocks.conveyorVHopper.getDefaultState().with(FACING, facing1), 3);
+                    worldIn.setBlockState(pos, BlocksRegistration.CONVEYORVHOPPER.get().getDefaultState().with(FACING, facing1));
                     worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
                     if (!player.isCreative()) heldItem.shrink(1);
                     return ActionResultType.SUCCESS;
                 }
-                if (heldItem.getItem().equals(Item.getItemFromBlock(Blocks.DISPENSER)))
+                if (heldItem.getItem().equals(Blocks.DISPENSER.asItem()))
                 {
                     Direction facing1 = state.get(FACING);
-                    worldIn.setBlockState(pos, ModBlocks.conveyorVInserter.getDefaultState().with(FACING, facing1), 3);
+                    worldIn.setBlockState(pos, BlocksRegistration.CONVEYORVINSERTER.get().getDefaultState().with(FACING, facing1));
                     worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
                     if (!player.isCreative()) heldItem.shrink(1);
                     return ActionResultType.SUCCESS;
                 }
-            } else if (heldItem.getItem().equals(ModItems.screwDrive))
+            } else if (heldItem.getItem().equals(ItemsRegistration.SCREWDRIVE.get()))
             {
                 if (type.equals(EnumBulkConveyorType.HOPPER))
                 {
                     Direction facing1 = state.get(FACING);
-                    worldIn.setBlockState(pos, ModBlocks.conveyorV.getDefaultState().with(FACING, facing1), 3);
+                    worldIn.setBlockState(pos, BlocksRegistration.CONVEYORV.get().getDefaultState().with(FACING, facing1), 3);
                     ItemPowerScrewDrive.playDrillSound(worldIn, pos);
                     return ActionResultType.SUCCESS;
                 }
                 if (type.equals(EnumBulkConveyorType.INSERTER))
                 {
                     Direction facing1 = state.get(FACING);
-                    worldIn.setBlockState(pos, ModBlocks.conveyorV.getDefaultState().with(FACING, facing1), 3);
+                    worldIn.setBlockState(pos, BlocksRegistration.CONVEYORV.get().getDefaultState().with(FACING, facing1), 3);
                     ItemPowerScrewDrive.playDrillSound(worldIn, pos);
                     return ActionResultType.SUCCESS;
                 }
@@ -151,6 +151,7 @@ public class BlockBulkConveyor extends BlockBase
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
         if (tileentity instanceof TileEntityBulkConveyorBase)
@@ -169,7 +170,6 @@ public class BlockBulkConveyor extends BlockBase
                 spawnAsEntity(worldIn, pos, itemst);
             }
         }
-
         super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
@@ -244,7 +244,12 @@ public class BlockBulkConveyor extends BlockBase
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing());
+        BlockState stateIn = getDefaultState();
+        int mode = getMode(context.getWorld(), context.getPos(), stateIn);
+        boolean front = getFront(context.getWorld(), context.getPos(), stateIn, mode);
+        boolean back = getBack(context.getWorld(), context.getPos(), stateIn, mode);
+        return stateIn.with(FACING, context.getPlayer().getHorizontalFacing())
+                .with(MODE, mode).with(FRONT, front).with(BACK, back);
     }
 
     @Override
@@ -253,43 +258,47 @@ public class BlockBulkConveyor extends BlockBase
         if (type.equals(EnumBulkConveyorType.NORMAL)) return state.with(FACING, state.get(FACING).rotateY());
         return state;
     }
-/*
+
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos)
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        if (type == EnumBulkConveyorType.NORMAL) return BLOCK_AABB;
-        return FULL_BLOCK_AABB;
+        return getVoxelShape(state);
     }
 
-
     @Override
-    public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        BlockState actualState = getActualState(state, worldIn, pos);
-        Direction face = actualState.get(FACING);
-        int mode = actualState.get(MODE);
+        return getVoxelShape(state);
+    }
+
+    private VoxelShape getVoxelShape(BlockState state)
+    {
+        VoxelShape FINAL_SHAPE = NULL_SHAPE;
+        Direction face = state.get(FACING);
+        int mode = state.get(MODE);
         boolean ramp = mode == 1 || mode == 2;
         if (type == EnumBulkConveyorType.NORMAL)
         {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
+            FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, BASE_AABB);
             if (ramp)
             {
-                if (face == Direction.NORTH) addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-                if (face == Direction.SOUTH) addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-                if (face == Direction.WEST) addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
-                if (face == Direction.EAST) addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
+                switch (face)
+                {
+                    case NORTH:
+                        FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, NORTH_AABB);
+                    case SOUTH:
+                        FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, SOUTH_AABB);
+                    case WEST:
+                        FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, WEST_AABB);
+                    case EAST:
+                        FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, EAST_AABB);
+                }
             }
         } else
         {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+            FINAL_SHAPE = FULL_SHAPE;
         }
-    }
-*/
-
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return false;
+        return FINAL_SHAPE;
     }
 
     @Override

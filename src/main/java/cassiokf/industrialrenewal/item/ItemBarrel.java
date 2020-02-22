@@ -1,5 +1,7 @@
 package cassiokf.industrialrenewal.item;
 
+import cassiokf.industrialrenewal.init.BlocksRegistration;
+import cassiokf.industrialrenewal.tileentity.TileEntityBarrel;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItemUseContext;
@@ -37,10 +39,11 @@ public class ItemBarrel extends ItemBase
         {
             playSound(worldIn, pos, SoundEvents.BLOCK_METAL_PLACE);
 
-            //worldIn.setBlockState(posOffset, ModBlocks.barrel.getStateForPlacement(worldIn, posOffset, facing, 0, 0, 0, 0, player));
-            //TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(posOffset);
-            //if (itemstack.getTagCompound() != null && itemstack.getTagCompound().hasKey("FluidName") && te != null)
-            //    te.tank.readFromNBT(itemstack.getTagCompound());
+            BlockState barrelState = BlocksRegistration.BARREL.get().getStateForPlacement(new BlockItemUseContext(context));
+            worldIn.setBlockState(posOffset, barrelState);
+            TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(posOffset);
+            if (itemstack.getTag() != null && itemstack.getTag().contains("FluidName") && te != null)
+                te.tank.readFromNBT(itemstack.getTag());
             itemstack.shrink(1);
 
             return ActionResultType.SUCCESS;

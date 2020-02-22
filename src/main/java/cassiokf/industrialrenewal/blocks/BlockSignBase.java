@@ -1,21 +1,21 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -27,24 +27,21 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockSignBase extends BlockBase
+public class BlockSignBase extends BlockAbstractHorizontalFacing
 {
-
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty ONWALL = BooleanProperty.create("onwall");
 
     public static final ArrayList<Block> signs = new ArrayList<>();
 
-    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1D, 0.875D);
+    protected static final VoxelShape BASE_AABB = Block.makeCuboidShape(2, 0, 2, 14, 16, 14);
+    private static final VoxelShape WEST_BLOCK_AABB = Block.makeCuboidShape(0, 2, 2, 1, 14, 14);
+    private static final VoxelShape EAST_BLOCK_AABB = Block.makeCuboidShape(15, 2, 2, 16, 14, 14);
+    private static final VoxelShape SOUTH_BLOCK_AABB = Block.makeCuboidShape(2, 2, 15, 14, 14, 16);
+    private static final VoxelShape NORTH_BLOCK_AABB = Block.makeCuboidShape(2, 2, 0, 14, 14, 1);
 
-    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0D, 0.125D, 0.125D, 0.0625D, 0.875D, 0.875D);
-    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1D, 0.125D, 0.125D, 0.9375D, 0.875D, 0.875D);
-    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.125D, 0.125D, 0.9375D, 0.875D, 0.875D, 1D);
-    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.125D, 0.125D, 0.0625D, 0.875D, 0.875D, 0D);
-
-    public BlockSignBase(Block.Properties property)
+    public BlockSignBase()
     {
-        super(property);
+        super(Block.Properties.create(Material.IRON));
         signs.add(this);
         this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(ONWALL, false));
     }
@@ -69,15 +66,14 @@ public class BlockSignBase extends BlockBase
     @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
-        return new ItemStack(ModBlocks.signHV.asItem());
+        return new ItemStack(BlocksRegistration.SIGNHV_ITEM.get());
     }
-
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return this.getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing()).with(ONWALL, context.getFace() != Direction.UP);
+        return super.getStateForPlacement(context).with(ONWALL, context.getFace() != Direction.UP);
     }
 
     @Override
@@ -86,36 +82,43 @@ public class BlockSignBase extends BlockBase
         builder.add(FACING, ONWALL);
     }
 
-    /*
-        @Override
-        public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos) {
-            if (state.getActualState(source, pos).get(ONWALL)) {
-                switch (state.getActualState(source, pos).get(FACING)) {
-                    default:
-                    case NORTH:
-                        return NORTH_BLOCK_AABB;
-                    case SOUTH:
-                        return SOUTH_BLOCK_AABB;
-                    case EAST:
-                        return EAST_BLOCK_AABB;
-                    case WEST:
-                        return WEST_BLOCK_AABB;
-                }
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return getVoxelShape(state);
+    }
 
-            } else {
-                return BASE_AABB;
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return getVoxelShape(state);
+    }
+
+    private VoxelShape getVoxelShape(BlockState state)
+    {
+        if (state.get(ONWALL))
+        {
+            switch (state.get(FACING))
+            {
+                default:
+                case NORTH:
+                    return NORTH_BLOCK_AABB;
+                case SOUTH:
+                    return SOUTH_BLOCK_AABB;
+                case EAST:
+                    return EAST_BLOCK_AABB;
+                case WEST:
+                    return WEST_BLOCK_AABB;
             }
+        } else
+        {
+            return BASE_AABB;
         }
-    */
+    }
+
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add(new StringTextComponent(I18n.format("tile.industrialrenewal.sign_base.info")));
-    }
-
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return false;
     }
 }

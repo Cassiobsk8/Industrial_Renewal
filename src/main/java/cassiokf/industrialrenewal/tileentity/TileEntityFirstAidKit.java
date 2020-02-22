@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockFirstAidKit;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.util.CustomItemStackHandler;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -15,6 +14,8 @@ import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.FIRSTAIDKIT_TILE;
+
 public class TileEntityFirstAidKit extends TileEntitySyncable implements ICapabilityProvider
 {
 
@@ -22,7 +23,7 @@ public class TileEntityFirstAidKit extends TileEntitySyncable implements ICapabi
 
     public TileEntityFirstAidKit()
     {
-        super(TileEntityRegister.FIRST_AID_KIT);
+        super(FIRSTAIDKIT_TILE.get());
     }
 
     private IItemHandler createHandler()
@@ -39,7 +40,6 @@ public class TileEntityFirstAidKit extends TileEntitySyncable implements ICapabi
 
     public Direction getFaceDirection()
     {
-
         return BlockFirstAidKit.getFaceDirection(getBlockState());
     }
 

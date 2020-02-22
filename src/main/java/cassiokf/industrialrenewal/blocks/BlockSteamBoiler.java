@@ -1,13 +1,13 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemFireBox;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntitySteamBoiler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,9 +32,9 @@ public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
 {
     public static final IntegerProperty TYPE = IntegerProperty.create("type", 0, 2);
 
-    public BlockSteamBoiler(Block.Properties properties)
+    public BlockSteamBoiler()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
         tooltip.add(new StringTextComponent(
                 I18n.format("info.industrialrenewal.produces")
                         + " "
-                        + ModBlocks.steamBlock.getNameTextComponent().getFormattedText()
+                        + "Steam"
                         + ": "
                         + mult
                         + " mB/t"));
@@ -73,6 +73,7 @@ public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
         TileEntitySteamBoiler te = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
         if (te != null) te.dropAllItems();
         super.onReplaced(state, worldIn, pos, newState, isMoving);
@@ -81,7 +82,7 @@ public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
     {
-        TileEntitySteamBoiler tile = getTileEntity(worldIn, pos);
+        TileEntitySteamBoiler tile = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
         IItemHandler itemHandler = tile.getFireBoxHandler();
         ItemStack heldItem = player.getHeldItem(handIn);
         if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemFireBox || heldItem.getItem() instanceof ItemPowerScrewDrive))

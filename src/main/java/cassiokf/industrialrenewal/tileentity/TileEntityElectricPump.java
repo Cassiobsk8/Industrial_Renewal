@@ -3,8 +3,7 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.blocks.BlockElectricPump;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.IRSoundRegister;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import cassiokf.industrialrenewal.util.Utils;
@@ -32,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.ELECTRICPUMP_TILE;
+
 public class TileEntityElectricPump extends TileEntitySyncable implements ICapabilityProvider, ITickableTileEntity
 {
     public CustomFluidTank tank = new CustomFluidTank(1000)
@@ -52,6 +53,8 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
     private List<BlockPos> fluidSet = new ArrayList<>();
     private int maxRadius = IRConfig.Main.maxPumpRadius.get();
 
+    IEnergyStorage motorEnergy = null;
+
     private boolean isRunning = false;
     private boolean oldIsRunning = false;
     private boolean starting = false;
@@ -59,7 +62,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
 
     public TileEntityElectricPump()
     {
-        super(TileEntityRegister.ELECTRIC_PUMP);
+        super(ELECTRICPUMP_TILE.get());
     }
 
     private IEnergyStorage createEnergy()
@@ -118,13 +121,13 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
         if (!world.isRemote) return;
         if (isRunning && !starting)
         {
-            IRSoundHandler.playSound(world, IRSoundRegister.PUMP_START, IRConfig.Main.pumpVolume.get().floatValue() + 0.5f, 1.0F, pos);
+            IRSoundHandler.playSound(world, SoundsRegistration.PUMP_START.get(), IRConfig.Main.pumpVolume.get().floatValue() + 0.5f, 1.0F, pos);
             starting = true;
             oldStarting = true;
             Sync();
         } else if (isRunning)
         {
-            //IRSoundHandler.playRepeatableSound(IRSoundRegister.PUMP_ROTATION_RESOURCEL, IRConfig.MAIN.pumpVolume.get().floatValue(), 1.0F, pos);
+            IRSoundHandler.playRepeatableSound(this, SoundsRegistration.PUMP_ROTATION.get(), IRConfig.MAIN.pumpVolume.get().floatValue(), 1.0F);
         } else
         {
             IRSoundHandler.stopTileSound(pos);
@@ -142,7 +145,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
         IEnergyStorage motorEnergyContainer = GetEnergyContainer();
         if (motorEnergyContainer != null && motorEnergyContainer.getEnergyStored() >= energyPerTick)
         {
-            energyStorage.ifPresent(e -> ((CustomEnergyStorage) e).addEnergy(Math.max(motorEnergyContainer.getEnergyStored() - energyPerTick, 0)));
+            motorEnergyContainer.extractEnergy(energyPerTick, false);
             isRunning = true;
         } else
         {
@@ -242,7 +245,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
         IFluidHandler upTank = GetTankUp();
         if (upTank != null)
         {
-            if (upTank.fill(tank.drain(tank.getTankCapacity(0) / everyXtick, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.SIMULATE) > 0)
+            if (upTank.fill(tank.drain(tank.getCapacity() / everyXtick, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.SIMULATE) > 0)
             {
                 upTank.fill(tank.drain(tank.getCapacity() / everyXtick, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
                 isRunning = true;
@@ -260,7 +263,8 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
 
     private IEnergyStorage GetEnergyContainer()
     {
-        if (energyStorage != null) return (IEnergyStorage) energyStorage;
+        if (getIdex() == 0) return energyStorage.orElse(null);
+        if (motorEnergy != null) return motorEnergy;
         BlockState state = getBlockState();
         if (state.getBlock() instanceof BlockElectricPump)
         {
@@ -268,10 +272,10 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
             TileEntityElectricPump te = (TileEntityElectricPump) world.getTileEntity(this.pos.offset(facing.getOpposite()));
             if (te != null)
             {
-                energyStorage = te.energyStorage;
+                motorEnergy = te.energyStorage.orElse(null);
             }
         }
-        return (IEnergyStorage) energyStorage;
+        return motorEnergy;
     }
 
     private IFluidHandler GetTankUp()

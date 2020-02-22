@@ -1,14 +1,13 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.blocks.BlockPillar;
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
@@ -28,9 +27,9 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
     private static float DOWNY1 = 0.0f;
     private static float UPY2 = 1.0f;
 
-    public BlockPillarFluidPipe(Block.Properties properties)
+    public BlockPillarFluidPipe()
     {
-        super(properties);
+        super();
     }
 
     @Override
@@ -44,7 +43,7 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
     @Override
     public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state)
     {
-        ItemStack itemst = new ItemStack(BlockItem.getItemFromBlock(ModBlocks.fluidPipe));
+        ItemStack itemst = new ItemStack(BlocksRegistration.FLUIDPIPE_ITEM.get());
         Utils.spawnItemStack(worldIn.getWorld(), pos, itemst);
     }
 
@@ -63,14 +62,14 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
         {
             if (!worldIn.isRemote)
             {
-                worldIn.setBlockState(pos, ModBlocks.pillar.getDefaultState(), 3);
+                worldIn.setBlockState(pos, BlocksRegistration.PILLAR.get().getDefaultState(), 3);
                 if (!player.isCreative())
-                    player.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(ModBlocks.fluidPipe)));
+                    player.addItemStackToInventory(new ItemStack(BlocksRegistration.FLUIDPIPE_ITEM.get()));
                 ItemPowerScrewDrive.playDrillSound(worldIn, pos);
             }
             return ActionResultType.SUCCESS;
         }
-        if (playerItem.equals(BlockItem.getItemFromBlock(ModBlocks.pillar)))
+        if (playerItem.equals(BlocksRegistration.PILLAR_ITEM.get()))
         {
             int n = 1;
             while (worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable

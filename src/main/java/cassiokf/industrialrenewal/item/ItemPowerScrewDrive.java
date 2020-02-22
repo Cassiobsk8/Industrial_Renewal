@@ -1,14 +1,22 @@
 package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.init.IRSoundRegister;
+import cassiokf.industrialrenewal.blocks.BlockSignBase;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
+import cassiokf.industrialrenewal.tileentity.TileEntityBatteryBank;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +36,7 @@ public class ItemPowerScrewDrive extends ItemBase
 
     public static void playDrillSound(World world, BlockPos pos)
     {
-        world.playSound(null, pos, IRSoundRegister.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound(null, pos, SoundsRegistration.ITEM_DRILL.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
     @Override
@@ -37,26 +45,26 @@ public class ItemPowerScrewDrive extends ItemBase
         World world = context.getWorld();
         BlockPos pos = context.getPos();
         BlockState blockState = world.getBlockState(pos);
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
         if (context.getPlayer().isCrouching())
-        {/*
+        {
             Block block = blockState.getBlock();
             PlayerEntity entity = context.getPlayer();
-            if (block == ModBlocks.fluidPipe || block == ModBlocks.energyCableMV)
+            if (block == BlocksRegistration.FLUIDPIPE.get()
+                    || block == BlocksRegistration.ENERGYCABLELV.get()
+                    || block == BlocksRegistration.ENERGYCABLEMV.get()
+                    || block == BlocksRegistration.ENERGYCABLEHV.get())
             {
-                ItemStack items = new ItemStack(world.getBlockState(pos).getBlock().asItem(), 1);
+                ItemStack items = new ItemStack(block.asItem());
                 playDrillSound(world, pos);
                 if (!world.isRemote && !entity.isCreative())
                 {
-                    entity.inventory.addItemStackToInventory(items);
+                    entity.addItemStackToInventory(items);
                 }
                 world.removeBlock(pos, false);
                 return ActionResultType.SUCCESS;
             } else if (block instanceof BlockSignBase)
             {
-                ((BlockSignBase) world.getBlockState(pos).getBlock()).changeSign(world, pos);
+                ((BlockSignBase) block).changeSign(world, pos);
                 playDrillSound(world, pos);
                 return ActionResultType.SUCCESS;
             } else if (block instanceof BlockFloorPipe || block instanceof BlockFloorCable)
@@ -64,39 +72,39 @@ public class ItemPowerScrewDrive extends ItemBase
                 playDrillSound(world, pos);
                 if (!world.isRemote && !entity.isCreative())
                 {
-                    if (block == ModBlocks.floorPipe)
+                    if (block == BlocksRegistration.FLOORPIPE.get())
                     {
-                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.fluidPipe), 1));
-                    } else if (block == ModBlocks.floorCableMV)
+                        entity.addItemStackToInventory(new ItemStack(BlocksRegistration.FLUIDPIPE_ITEM.get()));
+                    } else if (block == BlocksRegistration.FLOORCABLEMV.get())
                     {
-                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCableMV), 1));
-                    } else if (block == ModBlocks.floorCableLV)
+                        entity.addItemStackToInventory(new ItemStack(BlocksRegistration.ENERGYCABLEMV_ITEM.get()));
+                    } else if (block == BlocksRegistration.FLOORCABLELV.get())
                     {
-                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCableLV), 1));
-                    } else if (block == ModBlocks.floorCableHV)
+                        entity.addItemStackToInventory(new ItemStack(BlocksRegistration.ENERGYCABLELV_ITEM.get()));
+                    } else if (block == BlocksRegistration.FLOORCABLEHV.get())
                     {
-                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCableHV), 1));
-                    } else if (block == ModBlocks.floorLamp)
+                        entity.addItemStackToInventory(new ItemStack(BlocksRegistration.ENERGYCABLEHV_ITEM.get()));
+                    } else if (block == BlocksRegistration.FLOORLAMP.get())
                     {
-                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.fluorescent), 1));
+                        entity.addItemStackToInventory(new ItemStack(BlocksRegistration.FLUORESCENT_ITEM.get()));
                     }
                 }
-                world.setBlockState(new BlockPos(x, y, z), ModBlocks.blockIndFloor.getDefaultState(), 3);
+                world.setBlockState(pos, BlocksRegistration.INDFLOOR.get().getDefaultState());
                 return ActionResultType.SUCCESS;
             } else if (world.getTileEntity(pos) instanceof TileEntityBatteryBank)
             {
                 TileEntityBatteryBank te = (TileEntityBatteryBank) world.getTileEntity(pos);
-                if (te != null) te.toggleFacing(side.getOpposite());
+                if (te != null) te.toggleFacing(context.getFace().getOpposite());
                 world.notifyBlockUpdate(pos, blockState, blockState, 3);
                 if (!world.isRemote) playDrillSound(world, pos);
                 return ActionResultType.SUCCESS;
             }
-            */
         } else
         {
-            if (blockState.getBlock().getValidRotations(blockState, world, pos) != null)
+            Direction[] directions = blockState.getBlock().getValidRotations(blockState, world, pos);
+            if (directions != null && directions.length > 0)
             {
-                blockState.getBlock().rotate(blockState, world, pos, Rotation.CLOCKWISE_90);
+                world.setBlockState(pos, blockState.rotate(Rotation.CLOCKWISE_90));
                 playDrillSound(world, pos);
                 return ActionResultType.SUCCESS;
             }

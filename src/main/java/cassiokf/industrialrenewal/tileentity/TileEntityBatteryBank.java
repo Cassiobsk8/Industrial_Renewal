@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntityConnected;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.nbt.CompoundNBT;
@@ -20,6 +19,8 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.BATTERYBANK_TILE;
+
 public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabilityProvider, ITickableTileEntity
 {
     private final Set<Direction> outPutFacings = new HashSet<>();
@@ -29,7 +30,7 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
 
     public TileEntityBatteryBank()
     {
-        super(TileEntityRegister.BATTERY_BANK);
+        super(BATTERYBANK_TILE.get());
     }
 
     private IEnergyStorage createEnergy()
@@ -71,7 +72,7 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
                 TileEntity te = world.getTileEntity(pos.offset(face));
                 if (te != null)
                 {
-                    IEnergyStorage thisStorage = (IEnergyStorage) energyStorage;
+                    IEnergyStorage thisStorage = energyStorage.orElse(null);
                     IEnergyStorage eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).orElse(null);
                     if (eStorage != null && eStorage.canReceive())
                     {
@@ -104,7 +105,7 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
 
     public String GetText()
     {
-        int energy = ((IEnergyStorage) energyStorage).getEnergyStored();
+        int energy = energyStorage.orElse(null).getEnergyStored();
         return Utils.formatEnergyString(energy);
     }
 
@@ -122,8 +123,8 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
 
     public float GetTankFill() //0 ~ 180
     {
-        float currentAmount = ((IEnergyStorage) energyStorage).getEnergyStored() / 1000F;
-        float totalCapacity = ((IEnergyStorage) energyStorage).getMaxEnergyStored() / 1000F;
+        float currentAmount = energyStorage.orElse(null).getEnergyStored() / 1000F;
+        float totalCapacity = energyStorage.orElse(null).getMaxEnergyStored() / 1000F;
         currentAmount = currentAmount / totalCapacity;
         return currentAmount;
     }

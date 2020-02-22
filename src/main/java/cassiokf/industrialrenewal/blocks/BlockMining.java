@@ -5,6 +5,7 @@ import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityMining;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
@@ -20,14 +21,15 @@ import javax.annotation.Nullable;
 
 public class BlockMining extends Block3x3x3Base<TileEntityMining>
 {
-    public BlockMining(Block.Properties properties)
+    public BlockMining()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
         TileEntityMining te = (TileEntityMining) worldIn.getTileEntity(pos);
         if (te != null) te.dropAllItems();
         super.onReplaced(state, worldIn, pos, newState, isMoving);
@@ -36,7 +38,7 @@ public class BlockMining extends Block3x3x3Base<TileEntityMining>
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
     {
-        TileEntityMining tile = getTileEntity(worldIn, pos);
+        TileEntityMining tile = (TileEntityMining) worldIn.getTileEntity(pos);
         IItemHandler itemHandler = tile.getDrillHandler();
         ItemStack heldItem = player.getHeldItem(handIn);
         if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemDrill || heldItem.getItem() instanceof ItemPowerScrewDrive))

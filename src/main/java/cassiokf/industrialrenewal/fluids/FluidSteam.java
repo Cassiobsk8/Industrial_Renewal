@@ -1,8 +1,7 @@
 package cassiokf.industrialrenewal.fluids;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.init.FluidInit;
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.FluidsRegistration;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
@@ -24,13 +23,13 @@ public abstract class FluidSteam extends FlowingFluid
     @Override
     public Fluid getFlowingFluid()
     {
-        return FluidInit.FLOWING_STEAM;
+        return FluidsRegistration.STEAM_FLOWING.get();
     }
 
     @Override
     public Fluid getStillFluid()
     {
-        return FluidInit.STEAM;
+        return FluidsRegistration.STEAM.get();
     }
 
     @Override
@@ -54,13 +53,13 @@ public abstract class FluidSteam extends FlowingFluid
     @Override
     protected int getLevelDecreasePerBlock(IWorldReader worldIn)
     {
-        return 3;
+        return 2;
     }
 
     @Override
     public Item getFilledBucket()
     {
-        return null;
+        return FluidsRegistration.STEAM_BUCKET.get();
     }
 
     @Override
@@ -84,13 +83,13 @@ public abstract class FluidSteam extends FlowingFluid
     @Override
     protected BlockState getBlockState(IFluidState state)
     {
-        return ModBlocks.steamBlock.getDefaultState().with(BlockSteam.LEVEL, getLevelFromState(state));
+        return FluidsRegistration.STEAM_BLOCK.get().getDefaultState().with(BlockSteam.LEVEL, getLevelFromState(state));
     }
 
     @Override
     public boolean isEquivalentTo(Fluid fluidIn)
     {
-        return fluidIn == FluidInit.STEAM || fluidIn == FluidInit.FLOWING_STEAM;
+        return fluidIn == FluidsRegistration.STEAM.get() || fluidIn == FluidsRegistration.STEAM_FLOWING.get();
     }
 
     @Override
@@ -99,7 +98,7 @@ public abstract class FluidSteam extends FlowingFluid
         return FluidAttributes.builder(
                 new ResourceLocation(References.MODID, "blocks/steam_still"),
                 new ResourceLocation(References.MODID, "blocks/steam_flow"))
-                .translationKey("block.industrialrenewal.steam")
+                .translationKey("block.industrialrenewal.steam").gaseous()
                 .density(-1000).temperature(380).viscosity(500).color(Color.WHITE.getRGB())
                 .build(this);
     }

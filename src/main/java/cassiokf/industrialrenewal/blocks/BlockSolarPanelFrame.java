@@ -1,11 +1,11 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntitySolarPanelFrame;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,6 +13,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -28,12 +29,11 @@ import java.util.List;
 
 public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<TileEntitySolarPanelFrame>
 {
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-
-    public BlockSolarPanelFrame(Block.Properties properties)
+    public BlockSolarPanelFrame()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -42,7 +42,7 @@ public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<Ti
         tooltip.add(new StringTextComponent(
                 I18n.format("info.industrialrenewal.requires")
                         + ": "
-                        + ModBlocks.spanel.getNameTextComponent().getFormattedText()));
+                        + BlocksRegistration.SPANEL.get().getNameTextComponent().getFormattedText()));
         tooltip.add(new StringTextComponent(
                 I18n.format("info.industrialrenewal.produces")
                         + ": "
@@ -85,8 +85,7 @@ public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<Ti
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        TileEntitySolarPanelFrame te = (TileEntitySolarPanelFrame) worldIn.getTileEntity(pos);
-        if (te != null) te.dropAllItems();
+        if (state.getBlock() == newState.getBlock()) return;
         super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 

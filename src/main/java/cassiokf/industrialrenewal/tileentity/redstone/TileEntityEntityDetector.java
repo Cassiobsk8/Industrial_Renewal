@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.blocks.redstone.BlockEntityDetector;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureEntity;
@@ -17,6 +16,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.List;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.ENTITYDETECTOR_TILE;
+
 public class TileEntityEntityDetector extends TileEntitySyncable implements ITickableTileEntity
 {
 
@@ -27,7 +28,7 @@ public class TileEntityEntityDetector extends TileEntitySyncable implements ITic
 
     public TileEntityEntityDetector()
     {
-        super(TileEntityRegister.ENTITY_DETECTOR);
+        super(ENTITYDETECTOR_TILE.get());
     }
 
     private Class<? extends Entity> getEntityToFilter()

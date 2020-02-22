@@ -2,13 +2,11 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockGutter;
 import cassiokf.industrialrenewal.blocks.BlockRoof;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -21,7 +19,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter> implements ICapabilityProvider, ITickableTileEntity
+import static cassiokf.industrialrenewal.init.TileRegistration.GUTTER_TILE;
+
+public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter> implements ICapabilityProvider
 {
 
     public CustomFluidTank tank = new CustomFluidTank(1000)
@@ -40,16 +40,17 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
     };
     private int tick;
     private int fillAmount;
+    private Direction direction = null;
 
     public TileEntityGutter()
     {
-        super(TileEntityRegister.GUTTER);
+        super(GUTTER_TILE.get());
     }
 
     @Override
-    public void tick()
+    public void doTick()
     {
-        if (this.hasWorld() && !world.isRemote)
+        if (!world.isRemote)
         {
             if (isMaster())
             {
@@ -126,7 +127,8 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
 
     public Direction getBlockFacing()
     {
-        return world.getBlockState(pos).get(BlockGutter.FACING);
+        if (direction != null) return direction;
+        return getBlockState().get(BlockGutter.FACING);
     }
 
     @Nullable

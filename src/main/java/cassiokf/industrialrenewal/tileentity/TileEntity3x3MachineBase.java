@@ -30,7 +30,7 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
     @Override
     public void onLoad()
     {
-        this.getMaster();
+        //this.getMaster();
     }
 
     public TE getMaster()
@@ -113,7 +113,6 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
     public CompoundNBT write(CompoundNBT compound)
     {
         compound.putBoolean("master", this.isMaster());
-        compound.putBoolean("checked", this.masterChecked);
         return super.write(compound);
     }
 
@@ -121,7 +120,6 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
     public void read(CompoundNBT compound)
     {
         this.master = compound.getBoolean("master");
-        this.masterChecked = compound.getBoolean("checked");
         super.read(compound);
     }
 }

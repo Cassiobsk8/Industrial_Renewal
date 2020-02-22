@@ -1,8 +1,8 @@
 {
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "textures": {
-    "0": "blocks/rail_normal",
-    "1": "blocks/anvil_base",
+    "0": "block/rail",
+    "1": "industrialrenewal:blocks/anvil_base",
     "2": "industrialrenewal:blocks/pipe"
   },
   "display": {

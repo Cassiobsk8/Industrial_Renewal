@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import cassiokf.industrialrenewal.util.CustomItemStackHandler;
@@ -21,6 +20,8 @@ import net.minecraftforge.items.IItemHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.TRASH_TILE;
+
 public class TileEntityTrash extends TileFluidHandler implements ICapabilityProvider
 {
     public CustomFluidTank tank = new CustomFluidTank(IRConfig.Main.barrelCapacity.get())
@@ -36,7 +37,7 @@ public class TileEntityTrash extends TileFluidHandler implements ICapabilityProv
 
     public TileEntityTrash()
     {
-        super(TileEntityRegister.TRASH);
+        super(TRASH_TILE.get());
     }
 
     private IItemHandler createHandler()

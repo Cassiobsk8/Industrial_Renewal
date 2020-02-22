@@ -155,8 +155,8 @@ public abstract class TileEntityToggleableBase extends TileEntitySyncable
 
     private void notifyBlockUpdate()
     {
-        final BlockState state = getWorld().getBlockState(getPos());
-        getWorld().notifyBlockUpdate(getPos(), state, state, 3);
+        final BlockState state = getBlockState();
+        world.notifyBlockUpdate(getPos(), state, state, 3);
     }
 
     @Override

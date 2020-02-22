@@ -19,21 +19,20 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-public class BlockNormalRailBase extends RailBlock
+public abstract class BlockNormalRailBase extends RailBlock
 {
-
     public static final IProperty<EnumSnowRail> SNOW = EnumProperty.create("snow", EnumSnowRail.class);
-
 
     public BlockNormalRailBase(Block.Properties properties)
     {
-        super(properties);
+        super(properties.notSolid().doesNotBlockMovement().hardnessAndResistance(0.7F));
         this.setDefaultState(getDefaultState().with(SNOW, EnumSnowRail.FALSE));
     }
 
     @Override
     public void onMinecartPass(BlockState state, World world, BlockPos pos, AbstractMinecartEntity cart)
     {
+        super.onMinecartPass(state, world, pos, cart);
         if (world.getBlockState(pos).get(SNOW) == EnumSnowRail.LAYER2 && isCartRunning(cart))
         {
             spawnSnowParticle(world, cart.getPosX(), cart.getPosY(), cart.getPosZ());
@@ -168,7 +167,8 @@ public class BlockNormalRailBase extends RailBlock
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        return stateIn.with(SNOW, checkSnow(worldIn, currentPos, stateIn));
+        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos)
+                .with(SNOW, checkSnow(worldIn, currentPos, stateIn));
     }
 
     @Override
@@ -184,15 +184,9 @@ public class BlockNormalRailBase extends RailBlock
     }
 
     @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return false;
-    }
-
-    @Override
     public float getRailMaxSpeed(BlockState state, World world, BlockPos pos, AbstractMinecartEntity cart)
     {
-        if (world.getBlockState(pos).get(SNOW) == EnumSnowRail.LAYER2)
+        if (state.get(SNOW) == EnumSnowRail.LAYER2)
         {
             return 0.2f;
         }

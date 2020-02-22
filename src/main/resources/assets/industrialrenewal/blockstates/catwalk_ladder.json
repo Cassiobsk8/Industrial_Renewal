@@ -1,54 +1,117 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:catwalk_ladder_base",
-    "textures": {
-      "particle": "industrialrenewal:blocks/block_hazard"
-    }
-  },
-  "variants": {
-    "facing": {
-      "down": {},
-      "up": {},
-      "north": {},
-      "west": {
-        "y": -90
+  "multipart": [
+    {
+      "when": {
+        "facing": "north"
       },
-      "south": {
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_ladder_base"
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_ladder_base",
         "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
       },
-      "east": {
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_ladder_base",
         "y": 90
       }
     },
-    "active": {
-      "true": {
-        "submodel": {
-          "cage": {
-            "model": "industrialrenewal:catwalk_ladder_caged"
-          }
-        }
+    {
+      "when": {
+        "facing": "west"
       },
-      "false": {}
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_ladder_base",
+        "y": 270
+      }
     },
-    "down": {
-      "true": {
-        "submodel": {
-          "down": {
-            "model": "industrialrenewal:catwalk_ladder_down"
-          }
-        }
+    {
+      "when": {
+        "facing": "north",
+        "active": "true"
       },
-      "false": {}
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_ladder_caged"
+      }
     },
-    "inventory": {
-      "model": "industrialrenewal:catwalk_ladder_base",
-      "y": 180,
-      "submodel": {
-        "cage1": {
-          "model": "industrialrenewal:catwalk_ladder_caged"
-        }
+    {
+      "when": {
+        "facing": "south",
+        "active": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_ladder_caged",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "active": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_ladder_caged",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "active": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_ladder_caged",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_ladder_down"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_ladder_down",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_ladder_down",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_ladder_down",
+        "y": 270
       }
     }
-  }
+  ]
 }

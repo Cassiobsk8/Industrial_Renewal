@@ -1,42 +1,56 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/red_button"
-    }
-  },
   "variants": {
-    "press": {
-      "true": {
-        "model": "industrialrenewal:button_red_press"
-      },
-      "false": {
-        "model": "industrialrenewal:button_red_normal"
-      }
+    "facing=up,press=true": {
+      "model": "industrialrenewal:block/button_red_press",
+      "x": 180
     },
-    "facing": {
-      "up": {
-        "x": 180
-      },
-      "down": {},
-      "north": {
-        "x": -90
-      },
-      "south": {
-        "x": -90,
-        "y": 180
-      },
-      "east": {
-        "x": -90,
-        "y": 90
-      },
-      "west": {
-        "x": -90,
-        "y": -90
-      }
+    "facing=down,press=true": {
+      "model": "industrialrenewal:block/button_red_press"
     },
-    "inventory": {
-      "model": "industrialrenewal:button_red_normal"
+    "facing=north,press=true": {
+      "model": "industrialrenewal:block/button_red_press",
+      "x": -90
+    },
+    "facing=south,press=true": {
+      "model": "industrialrenewal:block/button_red_press",
+      "x": -90,
+      "y": 180
+    },
+    "facing=east,press=true": {
+      "model": "industrialrenewal:block/button_red_press",
+      "x": -90,
+      "y": 90
+    },
+    "facing=west,press=true": {
+      "model": "industrialrenewal:block/button_red_press",
+      "x": -90,
+      "y": -90
+    },
+    "facing=up,press=false": {
+      "model": "industrialrenewal:block/button_red_normal",
+      "x": 180
+    },
+    "facing=down,press=false": {
+      "model": "industrialrenewal:block/button_red_normal"
+    },
+    "facing=north,press=false": {
+      "model": "industrialrenewal:block/button_red_normal",
+      "x": -90
+    },
+    "facing=south,press=false": {
+      "model": "industrialrenewal:block/button_red_normal",
+      "x": -90,
+      "y": 180
+    },
+    "facing=east,press=false": {
+      "model": "industrialrenewal:block/button_red_normal",
+      "x": -90,
+      "y": 90
+    },
+    "facing=west,press=false": {
+      "model": "industrialrenewal:block/button_red_normal",
+      "x": -90,
+      "y": -90
     }
   }
 }

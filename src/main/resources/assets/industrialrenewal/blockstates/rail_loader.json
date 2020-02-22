@@ -1,31 +1,34 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:rail_loader",
-    "textures": {
-      "particle": "blocks/rail_normal"
-    }
-  },
   "variants": {
-    "shape": {
-      "north_south": {},
-      "east_west": {}
+    "facing=north,shape=north_south": {
+      "model": "industrialrenewal:block/rail_loader"
     },
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "west": {
-        "y": -90
-      },
-      "east": {
-        "y": 90
-      }
+    "facing=south,shape=north_south": {
+      "model": "industrialrenewal:block/rail_loader",
+      "y": 180
     },
-    "inventory": {
-      "model": "industrialrenewal:rail_loader",
-      "transform": "forge:default-block"
+    "facing=west,shape=north_south": {
+      "model": "industrialrenewal:block/rail_loader",
+      "y": -90
+    },
+    "facing=east,shape=north_south": {
+      "model": "industrialrenewal:block/rail_loader",
+      "y": 90
+    },
+    "facing=north,shape=east_west": {
+      "model": "industrialrenewal:block/rail_loader"
+    },
+    "facing=south,shape=east_west": {
+      "model": "industrialrenewal:block/rail_loader",
+      "y": 180
+    },
+    "facing=west,shape=east_west": {
+      "model": "industrialrenewal:block/rail_loader",
+      "y": -90
+    },
+    "facing=east,shape=east_west": {
+      "model": "industrialrenewal:block/rail_loader",
+      "y": 90
     }
   }
 }

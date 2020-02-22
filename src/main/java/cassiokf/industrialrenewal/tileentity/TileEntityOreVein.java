@@ -1,10 +1,11 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.enums.OreQuality;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import net.minecraft.tileentity.TileEntity;
 
 import java.util.concurrent.ThreadLocalRandom;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.VEINHEMATITE_TILE;
 
 public class TileEntityOreVein extends TileEntity
 {
@@ -12,7 +13,7 @@ public class TileEntityOreVein extends TileEntity
 
     public TileEntityOreVein()
     {
-        super(TileEntityRegister.ORE_VEIN);
+        super(VEINHEMATITE_TILE.get());
         oreQuantity = ThreadLocalRandom.current().nextInt(100, 400 + 1);
     }
 

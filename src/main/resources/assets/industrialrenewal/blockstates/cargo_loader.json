@@ -1,34 +1,34 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:cargo_loader",
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
   "variants": {
-    "master": {
-      "true": {
-        "model": "industrialrenewal:cargo_loader"
-      },
-      "false": {
-        "model": "industrialrenewal:dummy"
-      }
+    "facing=north,master=true": {
+      "model": "industrialrenewal:block/cargo_loader"
     },
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
-      }
+    "facing=south,master=true": {
+      "model": "industrialrenewal:block/cargo_loader",
+      "y": 180
     },
-    "inventory": {
-      "model": "industrialrenewal:cargo_loader"
+    "facing=east,master=true": {
+      "model": "industrialrenewal:block/cargo_loader",
+      "y": 90
+    },
+    "facing=west,master=true": {
+      "model": "industrialrenewal:block/cargo_loader",
+      "y": -90
+    },
+    "facing=north,master=false": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=south,master=false": {
+      "model": "industrialrenewal:block/dummy",
+      "y": 180
+    },
+    "facing=east,master=false": {
+      "model": "industrialrenewal:block/dummy",
+      "y": 90
+    },
+    "facing=west,master=false": {
+      "model": "industrialrenewal:block/dummy",
+      "y": -90
     }
   }
 }

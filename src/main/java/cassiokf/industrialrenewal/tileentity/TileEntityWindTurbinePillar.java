@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockWindTurbinePillar;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.Utils;
@@ -19,6 +18,8 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.TURBINEPILLAR_TILE;
+
 public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileEntityWindTurbinePillar> implements ICapabilityProvider
 {
     private LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(this::createEnergy);
@@ -34,7 +35,7 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
 
     public TileEntityWindTurbinePillar()
     {
-        super(TileEntityRegister.WIND_TURBINE_PILLAR);
+        super(TURBINEPILLAR_TILE.get());
     }
 
     private IEnergyStorage createEnergy()
@@ -62,13 +63,13 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     }
 
     @Override
-    public void tick()
+    public void doTick()
     {
         if (isMaster())
         {
             if (!world.isRemote)
             {
-                IEnergyStorage thisEnergy = (IEnergyStorage) energyStorage;
+                IEnergyStorage thisEnergy = energyStorage.orElse(null);
                 energyStorage.ifPresent(e -> ((CustomEnergyStorage) e).setMaxCapacity(Math.max(1024 * getPosSet().size(), thisEnergy.getEnergyStored())));
                 int energyReceived = 0;
                 for (BlockPos currentPos : getPosSet().keySet())

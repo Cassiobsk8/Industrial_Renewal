@@ -1,39 +1,27 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "blocks/glass"
-    }
-  },
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:light"
-    },
     "facing=down": {
-      "model": "industrialrenewal:light",
+      "model": "industrialrenewal:block/light",
       "x": 90
     },
     "facing=up": {
-      "model": "industrialrenewal:light",
+      "model": "industrialrenewal:block/light",
       "x": -90
     },
     "facing=north": {
-      "model": "industrialrenewal:light"
+      "model": "industrialrenewal:block/light"
     },
     "facing=west": {
-      "model": "industrialrenewal:light",
+      "model": "industrialrenewal:block/light",
       "y": -90
     },
     "facing=south": {
-      "model": "industrialrenewal:light",
+      "model": "industrialrenewal:block/light",
       "y": 180
     },
     "facing=east": {
-      "model": "industrialrenewal:light",
+      "model": "industrialrenewal:block/light",
       "y": 90
-    },
-    "inventory": {
-      "model": "industrialrenewal:light"
     }
   }
 }

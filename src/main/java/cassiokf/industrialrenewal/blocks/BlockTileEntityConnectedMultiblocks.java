@@ -29,6 +29,7 @@ public abstract class BlockTileEntityConnectedMultiblocks<TE extends TileEntityM
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
         TileEntityMultiBlocksTube te = (TileEntityMultiBlocksTube) worldIn.getTileEntity(pos);
         if (te != null)
         {

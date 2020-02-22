@@ -1,47 +1,117 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:fuse_box_conduit_split",
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
-  "variants": {
-    "facing": {
-      "north": {},
-      "south": {
+  "multipart": [
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_conduit_split"
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_conduit_split",
         "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
       },
-      "west": {
-        "y": 270
-      },
-      "east": {
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_conduit_split",
         "y": 90
       }
     },
-    "up": {
-      "0": {},
-      "1": {
-        "submodel": {
-          "up": {
-            "model": "industrialrenewal:fuse_box_conduit_split_connector"
-          }
-        }
+    {
+      "when": {
+        "facing": "west"
       },
-      "2": {
-        "submodel": {
-          "up": {
-            "model": "industrialrenewal:fuse_box_conduit_split_connector",
-            "y": 180
-          }
-        }
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_conduit_split",
+        "y": 270
       }
     },
-    "inventory": [
-      {
-        "model": "industrialrenewal:fuse_box_conduit_split",
+    {
+      "when": {
+        "facing": "north",
+        "up": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_conduit_split_connector"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "up": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_conduit_split_connector",
         "y": 180
       }
-    ]
-  }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "up": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_conduit_split_connector",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "up": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_conduit_split_connector",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "up": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_conduit_split_connector",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "up": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_conduit_split_connector"
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "up": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_conduit_split_connector",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "up": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_conduit_split_connector",
+        "y": 90
+      }
+    }
+  ]
 }

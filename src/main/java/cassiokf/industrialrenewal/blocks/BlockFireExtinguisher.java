@@ -1,9 +1,10 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.init.ItemsRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
@@ -34,9 +35,9 @@ public class BlockFireExtinguisher extends BlockBase
     private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0F, 0.5F, 0.75D, 1F, 1);
     private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0F, 0.5F, 0.75D, 1F, 0);
 
-    public BlockFireExtinguisher(Block.Properties property)
+    public BlockFireExtinguisher()
     {
-        super(property);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -49,7 +50,7 @@ public class BlockFireExtinguisher extends BlockBase
             worldIn.playSound(null, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
         } else if (player.isCrouching())
         {
-            if (player.inventory.addItemStackToInventory(new ItemStack(ModItems.fireExtinguisher, 1)))
+            if (player.inventory.addItemStackToInventory(new ItemStack(ItemsRegistration.FIREEXTINGUISHER.get())))
             {
                 worldIn.removeBlock(pos, false);
                 return ActionResultType.SUCCESS;
@@ -68,7 +69,7 @@ public class BlockFireExtinguisher extends BlockBase
     @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
-        return new ItemStack(ModItems.fireExtinguisher);
+        return new ItemStack(ItemsRegistration.FIREEXTINGUISHER.get());
     }
 /*
     @Override

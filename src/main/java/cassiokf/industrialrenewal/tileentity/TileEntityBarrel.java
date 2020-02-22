@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -10,6 +9,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import javax.annotation.Nullable;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.BARREL_TILE;
 
 public class TileEntityBarrel extends TileEntitySyncable
 {
@@ -24,7 +25,7 @@ public class TileEntityBarrel extends TileEntitySyncable
 
     public TileEntityBarrel()
     {
-        super(TileEntityRegister.BARREL);
+        super(BARREL_TILE.get());
     }
 
     public String GetChatQuantity()

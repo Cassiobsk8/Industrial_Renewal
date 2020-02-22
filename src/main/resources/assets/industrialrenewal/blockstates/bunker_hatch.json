@@ -1,40 +1,58 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
   "variants": {
-    "open": {
-      "true": {
-        "model": "industrialrenewal:bunker_hatch_opened"
-      },
-      "false": {
-        "model": "industrialrenewal:bunker_hatch_closed"
-      }
+    "facing=north,open=true,master=true": {
+      "model": "industrialrenewal:block/bunker_hatch_opened"
     },
-    "master": {
-      "true": {},
-      "false": {
-        "model": "industrialrenewal:dummy"
-      }
-    },
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
-      }
-    },
-    "inventory": {
-      "model": "industrialrenewal:bunker_hatch_closed",
+    "facing=south,open=true,master=true": {
+      "model": "industrialrenewal:block/bunker_hatch_opened",
       "y": 180
+    },
+    "facing=east,open=true,master=true": {
+      "model": "industrialrenewal:block/bunker_hatch_opened",
+      "y": 90
+    },
+    "facing=west,open=true,master=true": {
+      "model": "industrialrenewal:block/bunker_hatch_opened",
+      "y": -90
+    },
+    "facing=north,open=false,master=true": {
+      "model": "industrialrenewal:block/bunker_hatch_closed"
+    },
+    "facing=south,open=false,master=true": {
+      "model": "industrialrenewal:block/bunker_hatch_closed",
+      "y": 180
+    },
+    "facing=east,open=false,master=true": {
+      "model": "industrialrenewal:block/bunker_hatch_closed",
+      "y": 90
+    },
+    "facing=west,open=false,master=true": {
+      "model": "industrialrenewal:block/bunker_hatch_closed",
+      "y": -90
+    },
+    "facing=north,open=true,master=false": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=south,open=true,master=false": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=east,open=true,master=false": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=west,open=true,master=false": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=north,open=false,master=false": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=south,open=false,master=false": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=east,open=false,master=false": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=west,open=false,master=false": {
+      "model": "industrialrenewal:block/dummy"
     }
   }
 }

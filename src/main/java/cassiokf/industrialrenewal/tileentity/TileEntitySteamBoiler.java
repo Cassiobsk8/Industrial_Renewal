@@ -2,9 +2,7 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockSteamBoiler;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.FluidInit;
-import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import cassiokf.industrialrenewal.init.FluidsRegistration;
 import cassiokf.industrialrenewal.item.ItemFireBox;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import cassiokf.industrialrenewal.util.CustomItemStackHandler;
@@ -33,6 +31,8 @@ import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.STEAMBOILER_TILE;
 
 public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySteamBoiler> implements ITickableTileEntity
 {
@@ -102,7 +102,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
 
     public TileEntitySteamBoiler()
     {
-        super(TileEntityRegister.STEAM_BOILER);
+        super(STEAMBOILER_TILE.get());
     }
 
     private IItemHandler createFireboxInv()
@@ -155,9 +155,9 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
                 {
                     default:
                     case 1:
-                        if (fuelTime >= solidPerTick || !((IItemHandler) solidFuelInv).getStackInSlot(0).isEmpty())
+                        if (fuelTime >= solidPerTick || !solidFuelInv.orElse(null).getStackInSlot(0).isEmpty())
                         {
-                            ItemStack fuel = ((IItemHandler) solidFuelInv).getStackInSlot(0);
+                            ItemStack fuel = solidFuelInv.orElse(null).getStackInSlot(0);
                             if (fuelTime <= 0)
                             {
                                 fuelTime = ForgeHooks.getBurnTime(fuel);
@@ -193,7 +193,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
                     float factor = (heat / 100f) / (maxHeat / 100f);
                     amount = Math.round(amount * factor);
                     waterTank.drain(amount, IFluidHandler.FluidAction.EXECUTE);
-                    FluidStack steamStack = new FluidStack(FluidInit.STEAM, amount * IRConfig.Main.steamBoilerConversionFactor.get());
+                    FluidStack steamStack = new FluidStack(FluidsRegistration.STEAM.get(), amount * IRConfig.Main.steamBoilerConversionFactor.get());
                     steamTank.fillInternal(steamStack, IFluidHandler.FluidAction.EXECUTE);
                     heat -= 2;
                 }
@@ -263,7 +263,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
 
     private void dropItemsInGround(LazyOptional<IItemHandler> inventory)
     {
-        ItemStack stack = ((IItemHandler) inventory).getStackInSlot(0);
+        ItemStack stack = inventory.orElse(null).getStackInSlot(0);
         if (!stack.isEmpty())
         {
             ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
@@ -279,7 +279,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
 
     public String getSteamText()
     {
-        return ModBlocks.steamBlock.getNameTextComponent().getFormattedText();
+        return FluidsRegistration.STEAM_BLOCK.get().getNameTextComponent().getFormattedText();
     }
 
     public String getFuelText()
@@ -290,7 +290,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
             case 0:
                 return "No Firebox";
             case 1:
-                int energy = ((IItemHandler) solidFuelInv).getStackInSlot(0).getCount();
+                int energy = solidFuelInv.orElse(null).getStackInSlot(0).getCount();
                 if (energy == 0) return "No Fuel";
                 return energy + " Fuel";
             case 2:
@@ -421,6 +421,6 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
 
     public IItemHandler getFireBoxHandler()
     {
-        return (IItemHandler) getMaster().fireBoxInv;
+        return getMaster().fireBoxInv.orElse(null);
     }
 }

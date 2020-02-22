@@ -1,7 +1,8 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import net.minecraft.tileentity.TileEntity;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.CONCRETE_TILE;
 
 public class TileEntityConcrete extends TileEntity
 {
@@ -9,7 +10,7 @@ public class TileEntityConcrete extends TileEntity
 
     public TileEntityConcrete()
     {
-        super(TileEntityRegister.CONCRETE);
+        super(CONCRETE_TILE.get());
     }
 
     public boolean isUsed()

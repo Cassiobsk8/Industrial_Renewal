@@ -3,45 +3,31 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityDamIntake;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Rotation;
+import net.minecraft.block.material.Material;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 
 import javax.annotation.Nullable;
 
-public class BlockDamIntake extends BlockTileEntity<TileEntityDamIntake>
+public class BlockDamIntake extends BlockAbstractHorizontalFacing
 {
-
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-
-    public BlockDamIntake(Block.Properties properties)
+    public BlockDamIntake()
     {
-        super(properties);
+        super(Block.Properties.create(Material.ROCK));
     }
-
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
     {
-        return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing());
+        return new Direction[0];
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    public boolean hasTileEntity(BlockState state)
     {
-        builder.add(FACING);
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction)
-    {
-        return state;
+        return true;
     }
 
     @Nullable

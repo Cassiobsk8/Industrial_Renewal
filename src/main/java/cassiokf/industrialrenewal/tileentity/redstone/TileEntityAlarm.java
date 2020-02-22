@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.IRSoundRegister;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -10,6 +10,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.ALARM_TILE;
 
 public class TileEntityAlarm extends TileEntity implements ITickableTileEntity
 {
@@ -19,13 +21,14 @@ public class TileEntityAlarm extends TileEntity implements ITickableTileEntity
 
     public TileEntityAlarm()
     {
-        super(TileEntityRegister.ALARM);
+        super(ALARM_TILE.get());
     }
 
 
     private static boolean isPoweredWire(World world, BlockPos pos)
     {
-        return world.getBlockState(pos).getBlock() == Blocks.REDSTONE_WIRE && Blocks.REDSTONE_WIRE.getStrongPower(world.getBlockState(pos), world, pos, Direction.DOWN) > 0;
+        BlockState state = world.getBlockState(pos);
+        return state.getBlock() == Blocks.REDSTONE_WIRE && state.getStrongPower(world, pos, Direction.DOWN) > 0;
     }
 
     @Override
@@ -41,19 +44,18 @@ public class TileEntityAlarm extends TileEntity implements ITickableTileEntity
 
     public boolean checkPowered()
     {
-        boolean powered = world.isBlockPowered(this.getPos())
-                || isPoweredWire(this.getWorld(), this.getPos().add(1, 0, 0))
-                || isPoweredWire(this.getWorld(), this.getPos().add(-1, 0, 0))
-                || isPoweredWire(this.getWorld(), this.getPos().add(0, 0, 1))
-                || isPoweredWire(this.getWorld(), this.getPos().add(0, 0, -1));
-        return powered;
+        return world.isBlockPowered(pos)
+                || isPoweredWire(world, pos.north())
+                || isPoweredWire(world, pos.south())
+                || isPoweredWire(world, pos.east())
+                || isPoweredWire(world, pos.west());
     }
 
     public void playThis()
     {
         if (!world.isRemote && this.checkPowered())
         {
-            world.playSound(null, pos, IRSoundRegister.TILEENTITY_ALARM, SoundCategory.BLOCKS, IRConfig.MAIN.alarmVolume.get().floatValue(), 1.0F);
+            world.playSound(null, pos, SoundsRegistration.TILEENTITY_ALARM.get(), SoundCategory.BLOCKS, IRConfig.MAIN.alarmVolume.get().floatValue(), 1.0F);
         }
     }
 }

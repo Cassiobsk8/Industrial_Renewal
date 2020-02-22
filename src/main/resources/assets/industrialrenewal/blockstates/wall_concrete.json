@@ -1,80 +1,55 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "blocks/glass"
+  "multipart": [
+    {
+      "when": {
+        "core": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/wall_concrete"
+      }
+    },
+    {
+      "when": {
+        "core": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/wall_concrete_connected"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/wall_concrete_side"
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/wall_concrete_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/wall_concrete_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/wall_concrete_side",
+        "y": 270
+      }
     }
-  },
-  "variants": {
-    "core": {
-      "true": {
-        "model": "industrialrenewal:wall_concrete"
-      },
-      "false": {
-        "model": "industrialrenewal:wall_concrete_connected"
-      }
-    },
-    "north": {
-      "true": {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:wall_concrete_side",
-            "uvlock": true
-          }
-        }
-      },
-      "false": {}
-    },
-    "south": {
-      "true": {
-        "submodel": {
-          "pipe_south": {
-            "model": "industrialrenewal:wall_concrete_side",
-            "y": 180,
-            "uvlock": true
-          }
-        }
-      },
-      "false": {}
-    },
-    "east": {
-      "true": {
-        "submodel": {
-          "pipe_east": {
-            "model": "industrialrenewal:wall_concrete_side",
-            "y": 90,
-            "uvlock": true
-          }
-        }
-      },
-      "false": {}
-    },
-    "west": {
-      "true": {
-        "submodel": {
-          "pipe_west": {
-            "model": "industrialrenewal:wall_concrete_side",
-            "y": -90,
-            "uvlock": true
-          }
-        }
-      },
-      "false": {}
-    },
-    "inventory": [
-      {
-        "model": "industrialrenewal:wall_concrete",
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:wall_concrete_side",
-            "y": 90
-          },
-          "pipe_south": {
-            "model": "industrialrenewal:wall_concrete_side",
-            "y": -90
-          }
-        }
-      }
-    ]
-  }
+  ]
 }

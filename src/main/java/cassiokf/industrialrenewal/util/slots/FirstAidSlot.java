@@ -1,13 +1,13 @@
 package cassiokf.industrialrenewal.util.slots;
 
-import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.init.ItemsRegistration;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class FirstAidSlot extends SlotItemHandler {
 
-    private ItemStack allowedOnSlot = new ItemStack(ModItems.barLevel);
+    private ItemStack allowedOnSlot = new ItemStack(ItemsRegistration.BARLEVEL.get());
 
     public FirstAidSlot(IItemHandler inventoryIn, int index, int xPosition, int yPosition) {
         super(inventoryIn, index, xPosition, yPosition);

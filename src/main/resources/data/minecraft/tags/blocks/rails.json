@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:rail",
+    "minecraft:powered_rail",
+    "minecraft:detector_rail",
+    "minecraft:activator_rail",
+    "industrialrenewal:normal_rail",
+    "industrialrenewal:booster_rail",
+    "industrialrenewal:crossing_rail",
+    "industrialrenewal:detector_rail",
+    "industrialrenewal:rail_loader",
+    "industrialrenewal:rail_gate"
+  ]
+}

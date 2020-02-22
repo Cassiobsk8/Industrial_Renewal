@@ -26,7 +26,7 @@ public abstract class BlockRailFacing extends AbstractRailBlock
 
     public BlockRailFacing(Block.Properties properties)
     {
-        super(false, properties);
+        super(false, properties.notSolid());
     }
 
     public static void propelMinecart(BlockState state, AbstractMinecartEntity minecart)
@@ -73,8 +73,12 @@ public abstract class BlockRailFacing extends AbstractRailBlock
         return SHAPE;
     }
 
+    @Nonnull
     @Override
-    protected abstract void fillStateContainer(StateContainer.Builder<Block, BlockState> builder);
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(SHAPE, FACING);
+    }
 
     @Override
     public boolean isFlexibleRail(BlockState state, IBlockReader world, BlockPos pos)

@@ -1,9 +1,9 @@
 {
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "textures": {
-    "0": "blocks/cauldron_side",
-    "1": "blocks/cauldron_top",
-    "2": "blocks/cauldron_inner"
+    "0": "block/cauldron_side",
+    "1": "block/cauldron_top",
+    "2": "block/cauldron_inner"
   },
   "display": {
     "gui": {

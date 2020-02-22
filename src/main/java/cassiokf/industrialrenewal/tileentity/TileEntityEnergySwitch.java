@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.init.IRSoundRegister;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -14,13 +13,15 @@ import net.minecraftforge.energy.IEnergyStorage;
 import javax.annotation.Nullable;
 import java.util.Random;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.ENERGYSWITCH_TILE;
+
 public class TileEntityEnergySwitch extends TileEntityToggleableBase
 {
     private final LazyOptional<IEnergyStorage> dummyEnergy = LazyOptional.of(this::createEnergyDummy);
 
     public TileEntityEnergySwitch()
     {
-        super(TileEntityRegister.ENERGY_SWITCH);
+        super(ENERGYSWITCH_TILE.get());
     }
 
     private IEnergyStorage createEnergyDummy()
@@ -40,7 +41,7 @@ public class TileEntityEnergySwitch extends TileEntityToggleableBase
     {
         Random r = new Random();
         float pitch = r.nextFloat() * (1.2f - 0.8f) + 0.8f;
-        this.getWorld().playSound(null, this.getPos(), IRSoundRegister.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1F,
+        this.getWorld().playSound(null, this.getPos(), SoundsRegistration.TILEENTITY_VALVE_CHANGE.get(), SoundCategory.BLOCKS, 1F,
                 pitch);
     }
 

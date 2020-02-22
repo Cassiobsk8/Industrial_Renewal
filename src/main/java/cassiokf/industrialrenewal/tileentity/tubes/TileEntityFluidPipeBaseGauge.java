@@ -1,12 +1,13 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
 import cassiokf.industrialrenewal.blocks.pipes.BlockFluidPipeGauge;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.FLUIDPIPEGAUGE_TILE;
 
 public class TileEntityFluidPipeBaseGauge extends TileEntityFluidPipeBase
 {
@@ -15,7 +16,7 @@ public class TileEntityFluidPipeBaseGauge extends TileEntityFluidPipeBase
 
     public TileEntityFluidPipeBaseGauge()
     {
-        super(TileEntityRegister.FLUID_PIPE_GAUGE);
+        super(FLUIDPIPEGAUGE_TILE.get());
     }
 
     public Direction getGaugeFacing()

@@ -2,23 +2,22 @@ package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -26,38 +25,37 @@ import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit>
+public class BlockFirstAidKit extends BlockAbstractHorizontalFacing
 {
-
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0F, 0.1875F, 0.1875F, 0.3125F, 0.8125F, 0.8125F);
-    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1F, 0.1875F, 0.1875F, 0.6875F, 0.8125F, 0.8125F);
-    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.1875F, 0.1875F, 0.6875F, 0.8125F, 0.8125F, 1);
-    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.1875F, 0.1875F, 0.3125F, 0.8125F, 0.8125F, 0);
+    private static final VoxelShape WEST_BLOCK_AABB = Block.makeCuboidShape(0, 3, 3, 5, 13, 13);
+    private static final VoxelShape EAST_BLOCK_AABB = Block.makeCuboidShape(11, 3, 3, 16, 13, 13);
+    private static final VoxelShape SOUTH_BLOCK_AABB = Block.makeCuboidShape(3, 3, 11, 13, 13, 16);
+    private static final VoxelShape NORTH_BLOCK_AABB = Block.makeCuboidShape(3, 3, 0, 13, 13, 5);
 
 
-    public BlockFirstAidKit(Block.Properties property)
+    public BlockFirstAidKit()
     {
-        super(property);
+        super(Block.Properties.create(Material.IRON));
     }
 
-    /*
-        @Override
-        public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos) {
-            Direction dir = state.get(FACING);
-            switch (dir) {
-                default:
-                case NORTH:
-                    return NORTH_BLOCK_AABB;
-                case SOUTH:
-                    return SOUTH_BLOCK_AABB;
-                case EAST:
-                    return EAST_BLOCK_AABB;
-                case WEST:
-                    return WEST_BLOCK_AABB;
-            }
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        Direction dir = state.get(FACING);
+        switch (dir)
+        {
+            default:
+            case NORTH:
+                return NORTH_BLOCK_AABB;
+            case SOUTH:
+                return SOUTH_BLOCK_AABB;
+            case EAST:
+                return EAST_BLOCK_AABB;
+            case WEST:
+                return WEST_BLOCK_AABB;
         }
-    */
+    }
+
     public static Direction getFaceDirection(BlockState state)
     {
         if (state.getBlock() instanceof BlockFirstAidKit)
@@ -118,30 +116,15 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit>
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
         TileEntityFirstAidKit te = (TileEntityFirstAidKit) worldIn.getTileEntity(pos);
         if (te != null)
         {
+
             IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).orElse(null);
-            if (inventory != null)
-            {
-                for (int slot = 0; slot < inventory.getSlots(); slot++)
-                {
-                    ItemStack stack = inventory.getStackInSlot(slot);
-                    if (!stack.isEmpty())
-                    {
-                        ItemEntity item = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
-                        worldIn.addEntity(item);
-                    }
-                }
-            }
+            Utils.dropInventoryItems(worldIn, pos, inventory);
         }
         super.onReplaced(state, worldIn, pos, newState, isMoving);
-    }
-
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(FACING);
     }
 
     @Nullable

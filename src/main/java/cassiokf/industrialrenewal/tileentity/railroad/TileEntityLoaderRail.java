@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.railroad;
 
 import cassiokf.industrialrenewal.blocks.railroad.BlockRailFacing;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -14,12 +13,14 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.LOADERRAIL_TILE;
+
 public class TileEntityLoaderRail extends TileEntity
 {
 
     public TileEntityLoaderRail()
     {
-        super(TileEntityRegister.LOADER_RAIL);
+        super(LOADERRAIL_TILE.get());
     }
 
     public void onMinecartPass(AbstractMinecartEntity ecart)

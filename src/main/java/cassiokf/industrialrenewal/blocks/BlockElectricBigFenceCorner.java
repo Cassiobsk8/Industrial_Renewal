@@ -9,9 +9,9 @@ import net.minecraft.world.World;
 
 public class BlockElectricBigFenceCorner extends BlockElectricBigFenceColumn
 {
-    public BlockElectricBigFenceCorner(Block.Properties properties)
+    public BlockElectricBigFenceCorner()
     {
-        super(properties);
+        super();
     }
 
     @Override

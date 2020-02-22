@@ -1,14 +1,14 @@
 package cassiokf.industrialrenewal.blocks.railroad;
 
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityLoaderRail;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -19,15 +19,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockLoaderRail extends BlockRailFacing
 {
-    public BlockLoaderRail(Block.Properties properties)
+    public BlockLoaderRail()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
         setDefaultState(getDefaultState()
                 .with(SHAPE, RailShape.NORTH_SOUTH)
                 .with(FACING, Direction.NORTH));
@@ -40,17 +39,10 @@ public class BlockLoaderRail extends BlockRailFacing
         if (te != null) te.onMinecartPass(cart);
     }
 
-    @Nonnull
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(SHAPE, FACING);
-    }
-
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        String str = I18n.format("tile.industrialrenewal.loader_rail.info") + " " + ModBlocks.cargoLoader.getNameTextComponent().getFormattedText();
+        String str = I18n.format("tile.industrialrenewal.loader_rail.info") + " " + BlocksRegistration.CARGOLOADER.get().getNameTextComponent().getFormattedText();
         tooltip.add(new StringTextComponent(str));
     }
 

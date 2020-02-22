@@ -2,8 +2,7 @@ package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBox;
 import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBoxConnector;
-import cassiokf.industrialrenewal.init.IRSoundRegister;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import cassiokf.industrialrenewal.tileentity.TileEntityBoxConnector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -23,6 +22,8 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.FUSEBOX_TILE;
+
 public class TileEntityFuseBox extends TileEntity implements ICapabilityProvider
 {
 
@@ -30,7 +31,7 @@ public class TileEntityFuseBox extends TileEntity implements ICapabilityProvider
 
     public TileEntityFuseBox()
     {
-        super(TileEntityRegister.FUSE_BOX);
+        super(FUSEBOX_TILE.get());
     }
 
     private IItemHandler createHandler()
@@ -42,7 +43,7 @@ public class TileEntityFuseBox extends TileEntity implements ICapabilityProvider
     {
         BlockState state = getBlockState();
         boolean active = state.get(BlockFuseBox.ACTIVE);
-        world.setBlockState(this.pos, state.with(BlockFuseBox.ACTIVE, !active));
+        world.setBlockState(pos, state.with(BlockFuseBox.ACTIVE, !active));
         TileEntityBoxConnector te = getTE();
         if (te != null)
         {
@@ -52,7 +53,7 @@ public class TileEntityFuseBox extends TileEntity implements ICapabilityProvider
 
     public void shockPlayer(PlayerEntity player)
     {
-        world.playSound(null, pos, IRSoundRegister.EFFECT_SHOCK, SoundCategory.BLOCKS, 1, 1);
+        world.playSound(null, pos, SoundsRegistration.EFFECT_SHOCK.get(), SoundCategory.BLOCKS, 1, 1);
         player.closeScreen();
         player.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 8f);
         player.knockBack(player, 0.4f, this.pos.getX() - player.getPosX(), this.pos.getZ() - player.getPosZ());
@@ -66,7 +67,7 @@ public class TileEntityFuseBox extends TileEntity implements ICapabilityProvider
 
     public IItemHandler getInv()
     {
-        return (IItemHandler) inventory;
+        return inventory.orElse(null);
     }
 
     public int getPowerOut()

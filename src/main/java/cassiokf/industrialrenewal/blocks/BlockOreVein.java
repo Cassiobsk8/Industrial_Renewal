@@ -47,12 +47,6 @@ public class BlockOreVein extends BlockTileEntity<TileEntityOreVein>
     {
         builder.add(QUANTITY);
     }
-/*
-    @Override
-    public IBlockState getActualState(IBlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return state.with(QUANTITY, 2);
-    }*/
 
     @Override
     public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack)

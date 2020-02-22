@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.tileentity.railroad;
 
 import cassiokf.industrialrenewal.blocks.BlockChunkLoader;
 import cassiokf.industrialrenewal.blocks.railroad.BlockFluidLoader;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.client.resources.I18n;
@@ -18,6 +17,8 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.FLUIDLOADER_TILE;
 
 public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITickableTileEntity
 {
@@ -47,7 +48,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
 
     public TileEntityFluidLoader()
     {
-        super(TileEntityRegister.FLUID_LOADER);
+        super(FLUIDLOADER_TILE.get());
     }
 
     @Override

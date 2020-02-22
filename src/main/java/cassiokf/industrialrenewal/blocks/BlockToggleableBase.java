@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.*;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -25,7 +26,7 @@ import javax.annotation.Nullable;
 public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> extends BlockTileEntity<TE>
 {
 
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.values());
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final IProperty<EnumFaceRotation> FACE_ROTATION = EnumProperty.create("face_rotation", EnumFaceRotation.class);
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.125D, 0.125D, 0.125D, 0.875D, 0.875D, 0.875D);
@@ -138,7 +139,7 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing().getOpposite());
+        return getDefaultState().with(FACING, context.getNearestLookingDirection().getOpposite());
     }
 /*
     @Override

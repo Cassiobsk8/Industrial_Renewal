@@ -1,103 +1,96 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/entity_detector"
-    }
-  },
-  "variants": {
-    "facing": {
-      "north": {
-        "submodel": {
-          "master": {
-            "model": "industrialrenewal:fluid_gauge"
-          }
-        }
+  "multipart": [
+    {
+      "when": {
+        "facing": "north"
       },
-      "west": {
-        "submodel": {
-          "master": {
-            "model": "industrialrenewal:fluid_gauge",
-            "y": -90
-          }
-        }
-      },
-      "south": {
-        "submodel": {
-          "master": {
-            "model": "industrialrenewal:fluid_gauge",
-            "y": 180
-          }
-        }
-      },
-      "east": {
-        "submodel": {
-          "master": {
-            "model": "industrialrenewal:fluid_gauge",
-            "y": 90
-          }
-        }
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge"
       }
     },
-    "base": {
-      "up": {
-        "submodel": {
-          "base": {
-            "model": "industrialrenewal:fluid_gauge_base",
-            "x": 180
-          }
-        }
+    {
+      "when": {
+        "facing": "south"
       },
-      "down": {
-        "submodel": {
-          "base": {
-            "model": "industrialrenewal:fluid_gauge_base"
-          }
-        }
-      },
-      "north": {
-        "submodel": {
-          "base": {
-            "model": "industrialrenewal:fluid_gauge_base",
-            "x": 90,
-            "y": 180
-          }
-        }
-      },
-      "south": {
-        "submodel": {
-          "base": {
-            "model": "industrialrenewal:fluid_gauge_base",
-            "x": 90
-          }
-        }
-      },
-      "east": {
-        "submodel": {
-          "base": {
-            "model": "industrialrenewal:fluid_gauge_base",
-            "x": 90,
-            "y": -90
-          }
-        }
-      },
-      "west": {
-        "submodel": {
-          "base": {
-            "model": "industrialrenewal:fluid_gauge_base",
-            "x": 90,
-            "y": 90
-          }
-        }
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge",
+        "y": 180
       }
     },
-    "inventory": {
-      "model": "industrialrenewal:fluid_gauge",
-      "submodel": {
-        "base1": {
-          "model": "industrialrenewal:fluid_gauge_base"
-        }
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "base": "north"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge_base",
+        "x": 90,
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "base": "south"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge_base",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "base": "east"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge_base",
+        "x": 90,
+        "y": -90
+      }
+    },
+    {
+      "when": {
+        "base": "west"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge_base",
+        "x": 90,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "base": "down"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge_base",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "base": "up"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge_base",
+        "x": 180
       }
     }
-  }
+  ]
 }

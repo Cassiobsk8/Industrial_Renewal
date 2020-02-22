@@ -36,7 +36,7 @@ public abstract class TileEntityFluidPipeBase extends TileEntityMultiBlocksTube<
     }
 
     @Override
-    public void tick()
+    public void doTick()
     {
         if (hasWorld() && !world.isRemote && isMaster())
         {

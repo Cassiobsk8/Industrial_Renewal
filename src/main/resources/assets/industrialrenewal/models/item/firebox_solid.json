@@ -2,9 +2,9 @@
   "credit": "Made with Blockbench",
   "textures": {
     "0": "industrialrenewal:blocks/sensor_rain",
-    "1": "blocks/furnace_front_off",
-    "2": "blocks/furnace_side",
-    "5": "blocks/anvil_base",
+    "1": "block/furnace_front",
+    "2": "block/furnace_side",
+    "5": "industrialrenewal:blocks/anvil_base",
     "6": "industrialrenewal:blocks/pipe_blue",
     "10": "industrialrenewal:blocks/fuse_box",
     "particle": "industrialrenewal:blocks/sensor_rain",

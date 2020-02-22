@@ -22,6 +22,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     int oldOutPutCount = -1;
     private TE master;
     private boolean isMaster;
+    private boolean firstTick;
     private Map<BlockPos, Direction> posSet = new ConcurrentHashMap<>();
 
     public TileEntityMultiBlocksTube(TileEntityType<?> tileEntityTypeIn)
@@ -29,12 +30,23 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         super(tileEntityTypeIn);
     }
 
-
     @Override
-    public void onLoad()
+    public void tick()
     {
-        initializeMultiblockIfNecessary();
+        if (!firstTick)
+        {
+            firstTick = true;
+            initializeMultiblockIfNecessary();
+            onFirstLoad();
+        }
+        if (this.hasWorld() && !isRemoved()) doTick();
     }
+
+    public void onFirstLoad()
+    {
+    }
+
+    public abstract void doTick();
 
     public int getOutPut()
     {
@@ -48,7 +60,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 
     private void initializeMultiblockIfNecessary()
     {
-        if (isMasterInvalid())
+        if (isMasterInvalid() && !this.isRemoved())
         {
             if (isTray()) return;
             List<TileEntityMultiBlocksTube> connectedCables = new CopyOnWriteArrayList<>();
@@ -151,7 +163,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         {
             master.setMaster(null);
             if (master != null) master.getMaster();
-            else getMaster();
+            else if (!isMaster) getMaster();
         }
 
         for (Direction d : Direction.values())

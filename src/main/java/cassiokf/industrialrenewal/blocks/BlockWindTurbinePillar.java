@@ -1,12 +1,12 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.tileentity.TileEntityWindTurbinePillar;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -23,9 +23,9 @@ import javax.annotation.Nullable;
 public class BlockWindTurbinePillar extends BlockTileEntityConnectedMultiblocks<TileEntityWindTurbinePillar>
 {
 
-    public BlockWindTurbinePillar(Block.Properties properties)
+    public BlockWindTurbinePillar()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class BlockWindTurbinePillar extends BlockTileEntityConnectedMultiblocks<
     {
         Item playerItem = player.inventory.getCurrentItem().getItem();
         Block clickedBlock = state.getBlock();
-        if (playerItem.equals(BlockItem.getItemFromBlock(ModBlocks.turbinePillar)) && clickedBlock.equals(ModBlocks.turbinePillar))
+        if (playerItem.equals(BlocksRegistration.TURBINEPILLAR_ITEM.get()) && clickedBlock.equals(BlocksRegistration.TURBINEPILLAR.get()))
         {
             int n = 1;
             while (worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockWindTurbinePillar)
@@ -59,17 +59,17 @@ public class BlockWindTurbinePillar extends BlockTileEntityConnectedMultiblocks<
         return ActionResultType.PASS;
     }
 
-    private boolean canConnectTo(final IBlockReader worldIn, final BlockPos ownPos, final Direction neighbourDirection)
+    private boolean canConnectTo(final IBlockReader worldIn, final BlockPos ownPos, final Direction neighborDirection)
     {
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final BlockState neighbourState = worldIn.getBlockState(neighbourPos);
+        final BlockPos neighborPos = ownPos.offset(neighborDirection);
+        final BlockState neighborState = worldIn.getBlockState(neighborPos);
 
-        if (neighbourDirection == Direction.DOWN)
+        if (neighborDirection == Direction.DOWN)
         {
-            return !(neighbourState.getBlock() instanceof BlockWindTurbinePillar);
+            return !(neighborState.getBlock() instanceof BlockWindTurbinePillar);
         }
-        TileEntity te = worldIn.getTileEntity(ownPos.offset(neighbourDirection));
-        return te != null && te.getCapability(CapabilityEnergy.ENERGY, neighbourDirection.getOpposite()).isPresent();
+        TileEntity te = worldIn.getTileEntity(ownPos.offset(neighborDirection));
+        return te != null && te.getCapability(CapabilityEnergy.ENERGY, neighborDirection.getOpposite()).isPresent();
     }
 
     @Override

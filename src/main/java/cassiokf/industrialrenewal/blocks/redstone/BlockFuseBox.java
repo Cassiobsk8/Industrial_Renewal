@@ -1,44 +1,42 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.blocks.BlockAbstractHorizontalFacing;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityFuseBox;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockFuseBox extends BlockTileEntity<TileEntityFuseBox>
+public class BlockFuseBox extends BlockAbstractHorizontalFacing
 {
-
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     public static final BooleanProperty DOWNCONDUIT = BooleanProperty.create("down");
     public static final BooleanProperty UPCONDUIT = BooleanProperty.create("up");
 
 
-    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0F, 0.125F, 0.25F, 0.3125F, 0.875F, 0.75D);
-    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1F, 0.125, 0.25F, 0.6875F, 0.875F, 0.75D);
-    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0.125, 0.6875F, 0.75D, 0.875F, 1);
-    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0.125, 0.3125F, 0.75D, 0.875F, 0);
+    private static final VoxelShape WEST_BLOCK_AABB = Block.makeCuboidShape(0, 2, 4, 5, 14, 12);
+    private static final VoxelShape EAST_BLOCK_AABB = Block.makeCuboidShape(16, 2, 4, 11, 14, 12);
+    private static final VoxelShape SOUTH_BLOCK_AABB = Block.makeCuboidShape(4, 2, 11, 12, 14, 16);
+    private static final VoxelShape NORTH_BLOCK_AABB = Block.makeCuboidShape(4, 2, 5, 12, 14, 0);
 
-    public BlockFuseBox(Block.Properties property)
+    public BlockFuseBox()
     {
-        super(property);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -80,8 +78,9 @@ public class BlockFuseBox extends BlockTileEntity<TileEntityFuseBox>
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        stateIn = stateIn.with(DOWNCONDUIT, canConnectConduit(1, worldIn, currentPos)).with(UPCONDUIT, canConnectConduit(0, worldIn, currentPos));
-        return stateIn;
+        return stateIn
+                .with(DOWNCONDUIT, canConnectConduit(1, worldIn, currentPos))
+                .with(UPCONDUIT, canConnectConduit(0, worldIn, currentPos));
     }
 
 
@@ -89,7 +88,7 @@ public class BlockFuseBox extends BlockTileEntity<TileEntityFuseBox>
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return this.getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing())
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing())
                 .with(ACTIVE, false).with(DOWNCONDUIT, false).with(UPCONDUIT, false);
     }
 
@@ -99,22 +98,29 @@ public class BlockFuseBox extends BlockTileEntity<TileEntityFuseBox>
         builder.add(FACING, ACTIVE, DOWNCONDUIT, UPCONDUIT);
     }
 
-    /*
-        @Override
-        public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos) {
-            switch (state.get(FACING)) {
-                default:
-                case NORTH:
-                    return NORTH_BLOCK_AABB;
-                case SOUTH:
-                    return SOUTH_BLOCK_AABB;
-                case EAST:
-                    return EAST_BLOCK_AABB;
-                case WEST:
-                    return WEST_BLOCK_AABB;
-            }
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        switch (state.get(FACING))
+        {
+            default:
+            case NORTH:
+                return NORTH_BLOCK_AABB;
+            case SOUTH:
+                return SOUTH_BLOCK_AABB;
+            case EAST:
+                return EAST_BLOCK_AABB;
+            case WEST:
+                return WEST_BLOCK_AABB;
         }
-    */
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
     @Nullable
     @Override
     public TileEntityFuseBox createTileEntity(BlockState state, IBlockReader world)

@@ -3,9 +3,8 @@
   "textures": {
     "2": "industrialrenewal:blocks/anvil_base",
     "3": "industrialrenewal:blocks/pipe",
-    "1_1": "industrialrenewal:blocks/battery_pack",
     "particle": "industrialrenewal:blocks/battery_pack",
-    "1_2": "industrialrenewal:blocks/anvil_base"
+    "1_1": "industrialrenewal:blocks/battery_pack"
   },
   "elements": [
     {
@@ -1202,7 +1201,7 @@
             1,
             1
           ],
-          "texture": "#1_2"
+          "texture": "#2"
         },
         "east": {
           "uv": [
@@ -1211,7 +1210,7 @@
             1,
             1
           ],
-          "texture": "#1_2"
+          "texture": "#2"
         },
         "south": {
           "uv": [
@@ -1220,7 +1219,7 @@
             1,
             1
           ],
-          "texture": "#1_2"
+          "texture": "#2"
         },
         "west": {
           "uv": [
@@ -1229,7 +1228,7 @@
             1,
             1
           ],
-          "texture": "#1_2"
+          "texture": "#2"
         },
         "up": {
           "uv": [
@@ -1239,7 +1238,7 @@
             1
           ],
           "rotation": 270,
-          "texture": "#1_2"
+          "texture": "#2"
         }
       }
     },
@@ -1262,7 +1261,7 @@
             1,
             1
           ],
-          "texture": "#1_2"
+          "texture": "#2"
         },
         "east": {
           "uv": [
@@ -1271,7 +1270,7 @@
             1,
             1
           ],
-          "texture": "#1_2"
+          "texture": "#2"
         },
         "south": {
           "uv": [
@@ -1280,7 +1279,7 @@
             1,
             1
           ],
-          "texture": "#1_2"
+          "texture": "#2"
         },
         "west": {
           "uv": [
@@ -1289,7 +1288,7 @@
             1,
             1
           ],
-          "texture": "#1_2"
+          "texture": "#2"
         },
         "up": {
           "uv": [
@@ -1299,7 +1298,7 @@
             1
           ],
           "rotation": 270,
-          "texture": "#1_2"
+          "texture": "#2"
         }
       }
     },
@@ -2238,9 +2237,9 @@
         0
       ],
       "scale": [
-        0.2,
-        0.2,
-        0.2
+        0.375,
+        0.375,
+        0.375
       ]
     },
     "thirdperson_lefthand": {
@@ -2255,33 +2254,33 @@
         0
       ],
       "scale": [
-        0.2,
-        0.2,
-        0.2
+        0.375,
+        0.375,
+        0.375
       ]
     },
     "firstperson_righthand": {
       "rotation": [
         0,
-        14,
+        45,
         0
       ],
       "scale": [
-        0.2,
-        0.2,
-        0.2
+        0.4,
+        0.4,
+        0.4
       ]
     },
     "firstperson_lefthand": {
       "rotation": [
         0,
-        -71,
+        225,
         0
       ],
       "scale": [
-        0.2,
-        0.2,
-        0.2
+        0.4,
+        0.4,
+        0.4
       ]
     },
     "ground": {
@@ -2291,9 +2290,9 @@
         0
       ],
       "scale": [
-        0.2,
-        0.2,
-        0.2
+        0.25,
+        0.25,
+        0.25
       ]
     },
     "gui": {
@@ -2308,9 +2307,9 @@
         0
       ],
       "scale": [
-        0.23,
-        0.23,
-        0.23
+        0.625,
+        0.625,
+        0.625
       ]
     },
     "head": {
@@ -2331,15 +2330,10 @@
       ]
     },
     "fixed": {
-      "rotation": [
-        0,
-        180,
-        0
-      ],
       "scale": [
-        0.3,
-        0.3,
-        0.3
+        0.5,
+        0.5,
+        0.5
       ]
     }
   },

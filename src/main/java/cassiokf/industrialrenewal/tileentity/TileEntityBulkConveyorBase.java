@@ -142,7 +142,7 @@ public abstract class TileEntityBulkConveyorBase extends TileEntitySyncable impl
 
     private void moveItem()
     {
-        ItemStack frontPositionItem = ((IItemHandler) inventory).getStackInSlot(2);
+        ItemStack frontPositionItem = inventory.orElse(null).getStackInSlot(2);
         BlockState ownState = world.getBlockState(pos);
         if (!(ownState.getBlock() instanceof BlockBulkConveyor)) return;
 
@@ -183,13 +183,13 @@ public abstract class TileEntityBulkConveyorBase extends TileEntitySyncable impl
                 }
             }
         }
-        ItemStack MiddlePositionItem = ((IItemHandler) inventory).getStackInSlot(1);
+        ItemStack MiddlePositionItem = inventory.orElse(null).getStackInSlot(1);
         if (frontPositionItem.isEmpty() && !MiddlePositionItem.isEmpty())
         {
             moveItemInternaly(1, 2);
             MiddlePositionItem = ItemStack.EMPTY;
         }
-        ItemStack backPositionItem = ((IItemHandler) inventory).getStackInSlot(0);
+        ItemStack backPositionItem = inventory.orElse(null).getStackInSlot(0);
         if (!backPositionItem.isEmpty() && MiddlePositionItem.isEmpty() && !getInThisTick)
         {
             moveItemInternaly(0, 1);
@@ -221,13 +221,13 @@ public abstract class TileEntityBulkConveyorBase extends TileEntitySyncable impl
 
     private void moveItemInternaly(int from, int to)
     {
-        inventory.ifPresent(e -> ((CustomItemStackHandler) e).setStackInSlot(to, ((IItemHandler) inventory).getStackInSlot(from)));
+        inventory.ifPresent(e -> ((CustomItemStackHandler) e).setStackInSlot(to, inventory.orElse(null).getStackInSlot(from)));
         inventory.ifPresent(e -> ((CustomItemStackHandler) e).setStackInSlot(from, ItemStack.EMPTY));
     }
 
     public IItemHandler getInventory()
     {
-        return ((IItemHandler) inventory);
+        return inventory.orElse(null);
     }
 
     public boolean transferItem(ItemStack stack, boolean simulate)
@@ -237,7 +237,7 @@ public abstract class TileEntityBulkConveyorBase extends TileEntitySyncable impl
 
     public boolean transferItem(ItemStack stack, int slot, boolean simulate)
     {
-        if (((IItemHandler) inventory).getStackInSlot(0).isEmpty() && !stack.isEmpty())
+        if (inventory.orElse(null).getStackInSlot(0).isEmpty() && !stack.isEmpty())
         {
             if (!simulate) inventory.ifPresent(e -> ((CustomItemStackHandler) e).setStackInSlot(slot, stack));
             getInThisTick = true;
@@ -260,7 +260,7 @@ public abstract class TileEntityBulkConveyorBase extends TileEntitySyncable impl
 
     public void dropInventory()
     {
-        dropInventoryItems(world, pos, ((IItemHandler) inventory));
+        dropInventoryItems(world, pos, inventory.orElse(null));
     }
 
     public int getMode()
@@ -271,7 +271,7 @@ public abstract class TileEntityBulkConveyorBase extends TileEntitySyncable impl
 
     public ItemStack getStackInSlot(int slot)
     {
-        return ((IItemHandler) inventory).getStackInSlot(slot).copy();
+        return inventory.orElse(null).getStackInSlot(slot).copy();
     }
 
     @Override

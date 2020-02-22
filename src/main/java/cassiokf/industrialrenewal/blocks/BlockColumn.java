@@ -8,40 +8,25 @@ import cassiokf.industrialrenewal.blocks.pipes.*;
 import cassiokf.industrialrenewal.blocks.redstone.BlockAlarm;
 import cassiokf.industrialrenewal.enums.enumproperty.EnumBaseDirection;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.state.BooleanProperty;
+import net.minecraft.block.material.Material;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 
 import java.util.Objects;
 
-public class BlockColumn extends BlockBase
+public class BlockColumn extends BlockAbstractSixWayConnections
 {
-
-    public static final BooleanProperty UP = BooleanProperty.create("up");
-    public static final BooleanProperty DOWN = BooleanProperty.create("down");
-    public static final BooleanProperty NORTH = BooleanProperty.create("north");
-    public static final BooleanProperty SOUTH = BooleanProperty.create("south");
-    public static final BooleanProperty EAST = BooleanProperty.create("east");
-    public static final BooleanProperty WEST = BooleanProperty.create("west");
     public static final IntegerProperty PIPE = IntegerProperty.create("pipe", 0, 2);
 
-    private static float NORTHZ1 = 0.250f;
-    private static float SOUTHZ2 = 0.750f;
-    private static float WESTX1 = 0.250f;
-    private static float EASTX2 = 0.750f;
-    private static float DOWNY1 = 0.3125f;
-    private static float UPY2 = 1.0f;
-
-
-    public BlockColumn(Block.Properties property)
+    public BlockColumn()
     {
-        super(property);
+        super(Block.Properties.create(Material.IRON), 8, 12);
     }
 
     @Override
@@ -50,48 +35,36 @@ public class BlockColumn extends BlockBase
         builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST, PIPE);
     }
 
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
+    protected boolean isValidConnection(final BlockState neighborState, final BlockState ownState, final IBlockReader world, final BlockPos ownPos, final Direction neighborDirection)
     {
-        return false;
-    }
+        Block nb = neighborState.getBlock();
 
-    @Override
-    public BlockRenderType getRenderType(BlockState state)
-    {
-        return BlockRenderType.MODEL;
-    }
-
-    protected boolean isValidConnection(final BlockState neighbourState, final BlockState ownState, final IBlockReader world, final BlockPos ownPos, final Direction neighbourDirection)
-    {
-        Block nb = neighbourState.getBlock();
-
-        if ((neighbourState.isSolid() || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable)
-                && neighbourDirection != Direction.UP && neighbourDirection != Direction.DOWN)
+        if ((neighborState.isSolid() || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable)
+                && neighborDirection != Direction.UP && neighborDirection != Direction.DOWN)
         {
 
-            Block oppositBlock = world.getBlockState(ownPos.offset(neighbourDirection.getOpposite())).getBlock();
+            Block oppositBlock = world.getBlockState(ownPos.offset(neighborDirection.getOpposite())).getBlock();
             return oppositBlock instanceof BlockColumn || oppositBlock instanceof BlockPillar;
         }
-        if (neighbourDirection != Direction.UP && neighbourDirection != Direction.DOWN)
+        if (neighborDirection != Direction.UP && neighborDirection != Direction.DOWN)
         {
             if (nb instanceof BlockBrace)
             {
-                return Objects.equals(neighbourState.get(BlockBrace.FACING).getName(), neighbourDirection.getOpposite().getName()) || Objects.equals(neighbourState.get(BlockBrace.FACING).getName(), "down_" + neighbourDirection.getName());
+                return Objects.equals(neighborState.get(BlockBrace.FACING).getName(), neighborDirection.getOpposite().getName()) || Objects.equals(neighborState.get(BlockBrace.FACING).getName(), "down_" + neighborDirection.getName());
             }
             return nb instanceof BlockColumn || nb instanceof BlockPillar
-                    || (nb instanceof BlockWireBase && neighbourState.get(BlockWireBase.FACING) == neighbourDirection.getOpposite())
+                    || (nb instanceof BlockHVIsolator && neighborState.get(BlockHVIsolator.FACING) == neighborDirection.getOpposite())
                     || nb instanceof BlockPillarEnergyCable || nb instanceof BlockPillarFluidPipe
-                    || (nb instanceof BlockAlarm && neighbourState.get(BlockAlarm.FACING) == neighbourDirection)
-                    || (nb instanceof BlockLight && neighbourState.get(BlockLight.FACING) == neighbourDirection.getOpposite());
+                    || (nb instanceof BlockAlarm && neighborState.get(BlockAlarm.FACING) == neighborDirection)
+                    || (nb instanceof BlockLight && neighborState.get(BlockLight.FACING) == neighborDirection.getOpposite());
         }
         if (nb instanceof BlockLight)
         {
-            return neighbourState.get(BlockLight.FACING) == Direction.UP;
+            return neighborState.get(BlockLight.FACING) == Direction.UP;
         }
         if (nb instanceof BlockBrace)
         {
-            return Direction.Plane.HORIZONTAL.test(neighbourState.get(BlockBrace.FACING).getFacing());
+            return Direction.Plane.HORIZONTAL.test(neighborState.get(BlockBrace.FACING).getFacing());
         }
         if (nb instanceof BlockFluidPipe)
         {
@@ -99,25 +72,22 @@ public class BlockColumn extends BlockBase
         }
         if (nb instanceof BlockCableTray)
         {
-            return neighbourState.get(BlockCableTray.BASE).equals(EnumBaseDirection.UP);
+            return neighborState.get(BlockCableTray.BASE).equals(EnumBaseDirection.UP);
         }
         return !(nb instanceof BlockCatwalkLadder)
                 && !(nb instanceof BlockSignBase)
                 && !(nb instanceof BlockFireExtinguisher)
-                && !(nb instanceof BlockAlarm && !(neighbourState.get(BlockAlarm.FACING) == neighbourDirection))
-                && !nb.isAir(neighbourState, world, ownPos.offset(neighbourDirection));
+                && !(nb instanceof BlockAlarm && !(neighborState.get(BlockAlarm.FACING) == neighborDirection))
+                && !nb.isAir(neighborState, world, ownPos.offset(neighborDirection));
     }
 
-    private boolean canConnectTo(final BlockState ownState, final IBlockReader worldIn, final BlockPos ownPos, final Direction neighbourDirection)
+    @Override
+    public boolean canConnectTo(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
     {
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final BlockState neighbourState = worldIn.getBlockState(neighbourPos);
-        final Block neighbourBlock = neighbourState.getBlock();
-
-        final boolean neighbourIsValidForThis = isValidConnection(neighbourState, ownState, worldIn, ownPos, neighbourDirection);
-        final boolean thisIsValidForNeighbour = !(neighbourBlock instanceof BlockColumn) || ((BlockColumn) neighbourBlock).isValidConnection(ownState, neighbourState, worldIn, neighbourPos, neighbourDirection.getOpposite());
-
-        return neighbourIsValidForThis && thisIsValidForNeighbour;
+        final BlockPos neighborPos = currentPos.offset(neighborDirection);
+        final BlockState neighborState = worldIn.getBlockState(neighborPos);
+        BlockState ownState = worldIn.getBlockState(currentPos);
+        return isValidConnection(neighborState, ownState, worldIn, currentPos, neighborDirection);
     }
 
     private int canConnectPipe(IBlockReader world, BlockPos pos)
@@ -146,10 +116,7 @@ public class BlockColumn extends BlockBase
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         stateIn = stateIn.with(PIPE, canConnectPipe(worldIn, currentPos));
-        stateIn = stateIn.with(UP, canConnectTo(stateIn, worldIn, currentPos, Direction.UP)).with(DOWN, canConnectTo(stateIn, worldIn, currentPos, Direction.DOWN))
-                .with(NORTH, canConnectTo(stateIn, worldIn, currentPos, Direction.NORTH)).with(SOUTH, canConnectTo(stateIn, worldIn, currentPos, Direction.SOUTH))
-                .with(EAST, canConnectTo(stateIn, worldIn, currentPos, Direction.EAST)).with(WEST, canConnectTo(stateIn, worldIn, currentPos, Direction.WEST));
-
+        stateIn = super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         return stateIn;
     }
 
@@ -161,93 +128,68 @@ public class BlockColumn extends BlockBase
 
     public final boolean isConnected(final BlockState state, final Direction facing)
     {
-        if (facing == Direction.UP)
+        switch (facing)
         {
-            return state.get(UP);
+            case DOWN:
+                return state.get(DOWN);
+            case UP:
+                return state.get(UP);
+            default:
+            case NORTH:
+                return state.get(NORTH);
+            case SOUTH:
+                return state.get(SOUTH);
+            case WEST:
+                return state.get(WEST);
+            case EAST:
+                return state.get(EAST);
         }
-        if (facing == Direction.DOWN)
-        {
-            return state.get(DOWN);
-        }
-        if (facing == Direction.NORTH)
-        {
-            return state.get(NORTH);
-        }
-        if (facing == Direction.SOUTH)
-        {
-            return state.get(SOUTH);
-        }
-        if (facing == Direction.EAST)
-        {
-            return state.get(EAST);
-        }
-        return state.get(WEST);
-        //return state.get(CONNECTED_PROPERTIES.get(facing.getIndex()));
     }
 
-/*
     @Override
-    public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
+    public VoxelShape getVoxelShape(BlockState state, boolean collision)
     {
-        if (isConnected(state, Direction.NORTH)) {
-            NORTHZ1 = 0.0f;
-        } else if (!isConnected(state, Direction.NORTH)) {
-            NORTHZ1 = 0.250f;
-        }
-        if (isConnected(state, Direction.SOUTH)) {
-            SOUTHZ2 = 1.0f;
-        } else if (!isConnected(state, Direction.SOUTH)) {
-            SOUTHZ2 = 0.750f;
-        }
-        if (isConnected(state, Direction.WEST)) {
-            WESTX1 = 0.0f;
-        } else if (!isConnected(state, Direction.WEST)) {
-            WESTX1 = 0.250f;
-        }
-        if (isConnected(state, Direction.EAST)) {
-            EASTX2 = 1.0f;
-        } else if (!isConnected(state, Direction.EAST)) {
-            EASTX2 = 0.750f;
-        }
-        if (isConnected(state, Direction.DOWN)) {
-            DOWNY1 = 0.0f;
-        } else if (!isConnected(state, Direction.DOWN)) {
-            DOWNY1 = 0.3125f;
-        }
-        final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
-    }
+        float NORTHZ1;
+        float SOUTHZ2;
+        float WESTX1;
+        float EASTX2;
+        float DOWNY1;
 
-    @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos) {
-        BlockState actualState = state.getActualState(source, pos);
-
-        if (isConnected(actualState, Direction.NORTH)) {
-            NORTHZ1 = 0.0f;
-        } else if (!isConnected(actualState, Direction.NORTH)) {
-            NORTHZ1 = 0.250f;
+        if (isConnected(state, Direction.NORTH))
+        {
+            NORTHZ1 = 0;
+        } else
+        {
+            NORTHZ1 = 4;
         }
-        if (isConnected(actualState, Direction.SOUTH)) {
-            SOUTHZ2 = 1.0f;
-        } else if (!isConnected(actualState, Direction.SOUTH)) {
-            SOUTHZ2 = 0.750f;
+        if (isConnected(state, Direction.SOUTH))
+        {
+            SOUTHZ2 = 16;
+        } else
+        {
+            SOUTHZ2 = 12;
         }
-        if (isConnected(actualState, Direction.WEST)) {
-            WESTX1 = 0.0f;
-        } else if (!isConnected(actualState, Direction.WEST)) {
-            WESTX1 = 0.250f;
+        if (isConnected(state, Direction.WEST))
+        {
+            WESTX1 = 0;
+        } else
+        {
+            WESTX1 = 4;
         }
-        if (isConnected(actualState, Direction.EAST)) {
-            EASTX2 = 1.0f;
-        } else if (!isConnected(actualState, Direction.EAST)) {
-            EASTX2 = 0.750f;
+        if (isConnected(state, Direction.EAST))
+        {
+            EASTX2 = 16;
+        } else
+        {
+            EASTX2 = 12;
         }
-        if (isConnected(actualState, Direction.DOWN)) {
-            DOWNY1 = 0.0f;
-        } else if (!isConnected(actualState, Direction.DOWN)) {
-            DOWNY1 = 0.3125f;
+        if (isConnected(state, Direction.DOWN))
+        {
+            DOWNY1 = 0;
+        } else
+        {
+            DOWNY1 = 5;
         }
-        return new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
+        return Block.makeCuboidShape(WESTX1, DOWNY1, NORTHZ1, EASTX2, 16, SOUTHZ2);
     }
-*/
 }

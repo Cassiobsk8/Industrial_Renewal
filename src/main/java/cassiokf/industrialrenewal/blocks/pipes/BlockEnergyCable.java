@@ -3,16 +3,16 @@ package cassiokf.industrialrenewal.blocks.pipes;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.enums.EnumCableIn;
 import cassiokf.industrialrenewal.enums.EnumEnergyCableType;
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableHV;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableLV;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableMV;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -31,9 +31,9 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable>
 {
     public EnumEnergyCableType type;
 
-    public BlockEnergyCable(EnumEnergyCableType type, Block.Properties properties)
+    public BlockEnergyCable(EnumEnergyCableType type)
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
         this.type = type;
     }
 
@@ -48,6 +48,20 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable>
                 return EnumCableIn.MV;
             case HV:
                 return EnumCableIn.HV;
+        }
+    }
+
+    public Block getBlockFromType()
+    {
+        switch (type)
+        {
+            default:
+            case LV:
+                return BlocksRegistration.ENERGYCABLELV.get();
+            case MV:
+                return BlocksRegistration.ENERGYCABLEMV.get();
+            case HV:
+                return BlocksRegistration.ENERGYCABLEHV.get();
         }
     }
 
@@ -73,9 +87,9 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable>
     }
 
     @Override
-    public boolean canConnectToPipe(IBlockReader worldIn, BlockPos ownPos, Direction neighbourDirection)
+    public boolean canConnectToPipe(IBlockReader worldIn, BlockPos ownPos, Direction neighborDirection)
     {
-        BlockPos otherPos = ownPos.offset(neighbourDirection);
+        BlockPos otherPos = ownPos.offset(neighborDirection);
         BlockState state = worldIn.getBlockState(otherPos);
         Block block = state.getBlock();
         return (block instanceof BlockEnergyCable && type.equals(((BlockEnergyCable) block).type))
@@ -83,37 +97,24 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable>
     }
 
     @Override
-    public boolean canConnectToCapability(IBlockReader worldIn, BlockPos ownPos, Direction neighbourDirection)
+    public boolean canConnectToCapability(IBlockReader worldIn, BlockPos ownPos, Direction neighborDirection)
     {
-        BlockPos pos = ownPos.offset(neighbourDirection);
+        BlockPos pos = ownPos.offset(neighborDirection);
         BlockState state = worldIn.getBlockState(pos);
         TileEntity te = worldIn.getTileEntity(pos);
-        return !(state.getBlock() instanceof BlockEnergyCable) && te != null && te.getCapability(CapabilityEnergy.ENERGY, neighbourDirection.getOpposite()).isPresent();
+        return !(state.getBlock() instanceof BlockEnergyCable) && te != null && te.getCapability(CapabilityEnergy.ENERGY, neighborDirection.getOpposite()).isPresent();
     }
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
     {
         ItemStack playerStack = player.getHeldItem(Hand.MAIN_HAND);
-        if (playerStack.getItem() == BlockItem.getItemFromBlock(ModBlocks.blockIndFloor))
+        if (playerStack.getItem().equals(BlocksRegistration.INDFLOOR_ITEM.get()))
         {
             if (!worldIn.isRemote)
             {
                 worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                Block block;
-                switch (type)
-                {
-                    default:
-                    case LV:
-                        block = ModBlocks.floorCableLV;
-                        break;
-                    case MV:
-                        block = ModBlocks.floorCableMV;
-                        break;
-                    case HV:
-                        block = ModBlocks.floorCableHV;
-                        break;
-                }
+                Block block = getBlockFromType();
                 worldIn.setBlockState(pos, block.getDefaultState(), 3);
                 if (!player.isCreative())
                 {
@@ -122,25 +123,12 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable>
             }
             return ActionResultType.SUCCESS;
         }
-        if (playerStack.getItem() == BlockItem.getItemFromBlock(ModBlocks.energyLevel))
+        if (playerStack.getItem() == BlocksRegistration.ENERGYLEVEL_ITEM.get())
         {
             if (!worldIn.isRemote)
             {
                 worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                Block block;
-                switch (type)
-                {
-                    default:
-                    case LV:
-                        block = ModBlocks.energyCableGaugeLV;
-                        break;
-                    case MV:
-                        block = ModBlocks.energyCableGaugeMV;
-                        break;
-                    case HV:
-                        block = ModBlocks.energyCableGaugeHV;
-                        break;
-                }
+                Block block = getBlockFromType();
                 worldIn.setBlockState(pos, block.getDefaultState().with(BlockEnergyCableGauge.FACING, player.getHorizontalFacing()), 3);
                 if (!player.isCreative())
                 {

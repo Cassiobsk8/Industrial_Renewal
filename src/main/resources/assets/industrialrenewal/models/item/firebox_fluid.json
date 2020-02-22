@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "1": "blocks/furnace_front_off",
-    "2": "blocks/furnace_side",
+    "1": "block/furnace_front",
+    "2": "block/furnace_side",
     "3": "industrialrenewal:blocks/pipe",
     "4": "industrialrenewal:blocks/barrel_front_fuel",
     "5": "industrialrenewal:blocks/anvil_base",

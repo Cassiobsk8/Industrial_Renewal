@@ -1,17 +1,18 @@
 package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.blocks.redstone.BlockSensorRain;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.SENSORRAIN_TILE;
 
 public class TileEntitySensorRain extends TileEntity implements ITickableTileEntity
 {
 
     public TileEntitySensorRain()
     {
-        super(TileEntityRegister.SENSOR_RAIN);
+        super(SENSORRAIN_TILE.get());
     }
 
     @Override

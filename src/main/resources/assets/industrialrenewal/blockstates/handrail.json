@@ -1,43 +1,78 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:catwalk_side",
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
-  "variants": {
-    "facing": {
-      "north": {},
-      "south": {
+  "multipart": [
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_side"
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_side",
         "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
       },
-      "west": {
-        "y": 270
-      },
-      "east": {
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_side",
         "y": 90
       }
     },
-    "down": {
-      "true": {
-        "submodel": {
-          "down": {
-            "model": "industrialrenewal:handrail_down"
-          }
-        }
+    {
+      "when": {
+        "facing": "west"
       },
-      "false": {}
-    },
-    "inventory": [
-      {
-        "y": 180,
-        "submodel": {
-          "down": {
-            "model": "industrialrenewal:handrail_down"
-          }
-        }
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_side",
+        "y": 270
       }
-    ]
-  }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/handrail_down"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/handrail_down",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/handrail_down",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/handrail_down",
+        "y": 270
+      }
+    }
+  ]
 }

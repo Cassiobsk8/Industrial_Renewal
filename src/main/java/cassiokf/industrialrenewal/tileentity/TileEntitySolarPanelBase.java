@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockSolarPanel;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -21,13 +20,15 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.SPANEL_TILE;
+
 public class TileEntitySolarPanelBase extends TileEntity implements ICapabilityProvider, ITickableTileEntity
 {
     private LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(this::createEnergy);
 
     public TileEntitySolarPanelBase()
     {
-        super(TileEntityRegister.SOLAR_PANEL_BASE);
+        super(SPANEL_TILE.get());
     }
 
     public static int getGeneration(World world, BlockPos pos)
@@ -63,14 +64,14 @@ public class TileEntitySolarPanelBase extends TileEntity implements ICapabilityP
         if (this.hasWorld() && !world.isRemote)
         {
             getEnergyFromSun();
-            int energy = ((IEnergyStorage) energyStorage).getEnergyStored();
+            int energy = energyStorage.orElse(null).getEnergyStored();
             updatePanel(Direction.DOWN, energy);
         }
     }
 
     public void getEnergyFromSun()
     {
-        IEnergyStorage thisEnergy = (IEnergyStorage) energyStorage;
+        IEnergyStorage thisEnergy = energyStorage.orElse(null);
         if (world.getLightManager().hasLightWork() && world.canBlockSeeSky(pos.offset(Direction.UP))
                 && world.getSkylightSubtracted() == 0 && thisEnergy.getEnergyStored() != thisEnergy.getMaxEnergyStored())
         {
@@ -95,7 +96,7 @@ public class TileEntitySolarPanelBase extends TileEntity implements ICapabilityP
                 if (consumer != null)
                 {
 
-                    ((IEnergyStorage) energyStorage).extractEnergy(consumer.receiveEnergy(energy, false), false);
+                    energyStorage.orElse(null).extractEnergy(consumer.receiveEnergy(energy, false), false);
                     //System.out.println("Facing " + facing + " Consumer: " + consumer.receiveEnergy(energy, true));
                 }
             }

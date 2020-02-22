@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.util.CustomItemStackHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +16,8 @@ import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.RECORDPLAYER_TILE;
+
 public class TileEntityRecordPlayer extends TileEntitySyncable implements ICapabilityProvider
 {
     public LazyOptional<IItemHandler> inventory = LazyOptional.of(this::createHandler);
@@ -30,7 +31,7 @@ public class TileEntityRecordPlayer extends TileEntitySyncable implements ICapab
 
     public TileEntityRecordPlayer()
     {
-        super(TileEntityRegister.RECORD_PLAYER);
+        super(RECORDPLAYER_TILE.get());
     }
 
     private IItemHandler createHandler()
@@ -51,7 +52,7 @@ public class TileEntityRecordPlayer extends TileEntitySyncable implements ICapab
     public boolean hasDiskInSlot(int slot)
     {
         world.notifyBlockUpdate(this.pos, getBlockState(), getBlockState(), 3);
-        return !((IItemHandler) inventory).getStackInSlot(slot).isEmpty();
+        return !inventory.orElse(null).getStackInSlot(slot).isEmpty();
     }
 
     /*
@@ -93,7 +94,7 @@ public class TileEntityRecordPlayer extends TileEntitySyncable implements ICapab
 
     private boolean playDisk(int slot, boolean simulate)
     {
-        ItemStack diskStack = ((IItemHandler) inventory).getStackInSlot(slot);
+        ItemStack diskStack = inventory.orElse(null).getStackInSlot(slot);
         if (!diskStack.isEmpty())
         {
             if (!simulate)

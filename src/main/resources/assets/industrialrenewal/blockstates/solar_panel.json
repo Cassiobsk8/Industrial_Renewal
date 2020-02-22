@@ -1,17 +1,7 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/solar_panels"
-    }
-  },
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:solar_panel"
-    },
-    "inventory": {
-      "model": "industrialrenewal:solar_panel",
-      "transform": "forge:default-block"
+    "": {
+      "model": "industrialrenewal:block/solar_panel"
     }
   }
 }

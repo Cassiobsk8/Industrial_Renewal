@@ -1,47 +1,31 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.BlockBase;
+import cassiokf.industrialrenewal.blocks.BlockAbstractHorizontalFacing;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.block.material.Material;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 
-import javax.annotation.Nullable;
-
-public class BlockFuseBoxConduitExtension extends BlockBase
+public class BlockFuseBoxConduitExtension extends BlockAbstractHorizontalFacing
 {
+    private static final VoxelShape WEST_BLOCK_AABB = Block.makeCuboidShape(0, 0, 6, 2, 16, 10);
+    private static final VoxelShape EAST_BLOCK_AABB = Block.makeCuboidShape(14, 0, 6, 16, 16, 10);
+    private static final VoxelShape SOUTH_BLOCK_AABB = Block.makeCuboidShape(6, 0, 14, 10, 16, 16);
+    private static final VoxelShape NORTH_BLOCK_AABB = Block.makeCuboidShape(6, 0, 0, 10, 16, 2);
 
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-
-    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0F, 0F, 0.375F, 0.125F, 1F, 0.625D);
-    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1F, 0F, 0.375F, 0.875F, 1F, 0.625D);
-    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.375F, 0F, 0.875F, 0.625D, 1F, 1);
-    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.375F, 0F, 0.125F, 0.625D, 1F, 0);
-
-    public BlockFuseBoxConduitExtension(Block.Properties property)
+    public BlockFuseBoxConduitExtension()
     {
-        super(property);
-    }
-
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
-    {
-        return this.getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing());
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        builder.add(FACING);
-    }
-/*
-    @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos) {
-        switch (state.get(FACING)) {
+        switch (state.get(FACING))
+        {
             default:
             case NORTH:
                 return NORTH_BLOCK_AABB;
@@ -53,5 +37,4 @@ public class BlockFuseBoxConduitExtension extends BlockBase
                 return WEST_BLOCK_AABB;
         }
     }
-*/
 }

@@ -1,26 +1,19 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:trash",
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
   "variants": {
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
-      }
+    "facing=north": {
+      "model": "industrialrenewal:block/trash"
     },
-    "inventory": {
-      "model": "industrialrenewal:trash"
+    "facing=south": {
+      "model": "industrialrenewal:block/trash",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "industrialrenewal:block/trash",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "industrialrenewal:block/trash",
+      "y": -90
     }
   }
 }

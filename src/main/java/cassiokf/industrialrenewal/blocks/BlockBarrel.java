@@ -1,19 +1,20 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.init.ItemsRegistration;
 import cassiokf.industrialrenewal.tileentity.TileEntityBarrel;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -24,14 +25,13 @@ import net.minecraftforge.fluids.FluidUtil;
 
 import javax.annotation.Nullable;
 
-public class BlockBarrel extends BlockTileEntity<TileEntityBarrel>
+public class BlockBarrel extends BlockAbstractHorizontalFacing
 {
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty FRAME = BooleanProperty.create("frame");
 
-    public BlockBarrel(Block.Properties properties)
+    public BlockBarrel()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -40,8 +40,10 @@ public class BlockBarrel extends BlockTileEntity<TileEntityBarrel>
         if (!worldIn.isRemote)
         {
             TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
+            if (te == null) return ActionResultType.FAIL;
             if (!FluidUtil.interactWithFluidHandler(player, handIn, worldIn, pos, p_225533_6_.getFace()))
                 player.sendMessage(new StringTextComponent(te.GetChatQuantity()));
+            else worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
         }
         return ActionResultType.SUCCESS;
     }
@@ -50,7 +52,6 @@ public class BlockBarrel extends BlockTileEntity<TileEntityBarrel>
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-
         return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing()).with(FRAME, context.getPlayer().isCrouching());
     }
 
@@ -63,8 +64,10 @@ public class BlockBarrel extends BlockTileEntity<TileEntityBarrel>
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
         TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
-        ItemStack itemst = SaveStackContainer(te);
+        if (te == null) return;
+        ItemStack itemst = te.tank.getFluid().isEmpty() ? new ItemStack(ItemsRegistration.BARREL.get()) : SaveStackContainer(te);
         spawnAsEntity(worldIn, pos, itemst);
         super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
@@ -78,18 +81,21 @@ public class BlockBarrel extends BlockTileEntity<TileEntityBarrel>
 
     private ItemStack SaveStackContainer(TileEntityBarrel te)
     {
-        ItemStack stack = new ItemStack(ModItems.barrel);
+        ItemStack stack = new ItemStack(ItemsRegistration.BARREL.get());
         if (te != null)
         {
             CompoundNBT nbt = stack.getTag();
             if (nbt == null) nbt = new CompoundNBT();
-            if (te.tank.getFluid() != null)
-            {
-                te.tank.writeToNBT(nbt);
-                stack.setTag(nbt);
-            }
+            te.tank.writeToNBT(nbt);
+            stack.setTag(nbt);
         }
         return stack;
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Nullable

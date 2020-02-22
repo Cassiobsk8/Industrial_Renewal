@@ -3,13 +3,11 @@ package cassiokf.industrialrenewal.tileentity.tubes;
 import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
 import cassiokf.industrialrenewal.blocks.pipes.BlockFluidPipe;
 import cassiokf.industrialrenewal.enums.EnumCableIn;
-import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -22,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.CABLETRAY_TILE;
+
 public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCableTray>
 {
     private EnumCableIn energyCable = EnumCableIn.NONE;
@@ -30,17 +30,17 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
 
     public TileEntityCableTray()
     {
-        super(TileEntityRegister.CABLE_TRAY);
+        super(CABLETRAY_TILE.get());
     }
 
     @Override
-    public void onLoad()
+    public void onFirstLoad()
     {
         refreshConnections();
     }
 
     @Override
-    public void tick()
+    public void doTick()
     {
     }
 
@@ -106,7 +106,7 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
         if (world.isRemote) return;
         if (fluidPipe)
         {
-            ItemStack stack = new ItemStack(ModBlocks.fluidPipe.asItem(), 1);
+            ItemStack stack = new ItemStack(BlocksRegistration.FLUIDPIPE_ITEM.get());
             if (player != null) player.inventory.addItemStackToInventory(stack);
             else Utils.spawnItemStack(world, pos, stack);
         }
@@ -116,17 +116,17 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
             switch (energyCable)
             {
                 case LV:
-                    ItemStack stack = new ItemStack(Item.getItemFromBlock(ModBlocks.energyCableLV), 1);
+                    ItemStack stack = new ItemStack(BlocksRegistration.ENERGYCABLELV_ITEM.get());
                     if (player != null) player.inventory.addItemStackToInventory(stack);
                     else Utils.spawnItemStack(world, pos, stack);
                     break;
                 case MV:
-                    ItemStack stack2 = new ItemStack(Item.getItemFromBlock(ModBlocks.energyCableMV), 1);
+                    ItemStack stack2 = new ItemStack(BlocksRegistration.ENERGYCABLEMV_ITEM.get());
                     if (player != null) player.inventory.addItemStackToInventory(stack2);
                     else Utils.spawnItemStack(world, pos, stack2);
                     break;
                 case HV:
-                    ItemStack stack3 = new ItemStack(Item.getItemFromBlock(ModBlocks.energyCableHV), 1);
+                    ItemStack stack3 = new ItemStack(BlocksRegistration.ENERGYCABLEHV_ITEM.get());
                     if (player != null) player.inventory.addItemStackToInventory(stack3);
                     else Utils.spawnItemStack(world, pos, stack3);
                     break;

@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockConcrete;
 import cassiokf.industrialrenewal.blocks.BlockDamIntake;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.material.Material;
@@ -22,6 +21,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.DAMINTAKE_TILE;
+
 public class TileEntityDamIntake extends TileEntity implements ITickableTileEntity
 {
     public CustomFluidTank tank = new CustomFluidTank(10000)
@@ -33,25 +34,28 @@ public class TileEntityDamIntake extends TileEntity implements ITickableTileEnti
             TileEntityDamIntake.this.markDirty();
         }
     };
+
     int waterAmount = -1;
+    boolean initialized = false;
     List<BlockPos> connectedWalls = new ArrayList<BlockPos>();
 
     public TileEntityDamIntake()
     {
-        super(TileEntityRegister.DAM_INTAKE);
+        super(DAMINTAKE_TILE.get());
     }
 
-    @Override
-    public void onLoad()
-    {
-        initializeMultiblockIfNecessary();
-    }
+    //@Override
+    //public void onLoad()
+    //{
+    //    initializeMultiblockIfNecessary();
+    //}
 
     @Override
     public void tick()
     {
         if (!world.isRemote)
         {
+            if (!initialized) initializeMultiblockIfNecessary();
             if (tank.getFluidAmount() < tank.getCapacity())
             {
                 FluidStack pressurizedWaterStack = new FluidStack(Fluids.WATER, waterAmount * 5);

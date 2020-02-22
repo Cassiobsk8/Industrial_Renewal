@@ -1,67 +1,42 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:rail_gate",
-    "textures": {
-      "particle": "blocks/rail_normal"
+  "multipart": [
+    {
+      "when": {
+        "shape": "north_south",
+        "open": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/rail_gate_open"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "open": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/rail_gate_open",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "open": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/rail_gate"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "open": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/rail_gate",
+        "y": 90
+      }
     }
-  },
-  "variants": {
-    "open": {
-      "true": {
-        "model": "industrialrenewal:rail_gate_open"
-      },
-      "false": {
-        "model": "industrialrenewal:rail_gate"
-      }
-    },
-    "shape": {
-      "north_south": {},
-      "east_west": {
-        "y": 90
-      },
-      "ascending_east": {
-        "y": 270
-      },
-      "ascending_west": {
-        "y": 90
-      },
-      "ascending_north": {
-        "y": 180
-      },
-      "ascending_south": {
-      },
-      "south_east": {
-        "y": 180
-      },
-      "south_west": {
-        "y": 270
-      },
-      "north_west": {
-      },
-      "north_east": {
-        "y": 90
-      }
-    },
-    "snow": {
-      "false": {},
-      "layer1": {
-        "submodel": {
-          "snow": {
-            "model": "industrialrenewal:snow_layer1"
-          }
-        }
-      },
-      "layer2": {
-        "submodel": {
-          "snow": {
-            "model": "industrialrenewal:snow_layer2"
-          }
-        }
-      }
-    },
-    "inventory": {
-      "model": "industrialrenewal:rail_gate"
-    }
-  }
+  ]
 }

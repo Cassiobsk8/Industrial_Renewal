@@ -2,31 +2,24 @@ package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.tileentity.TileEntity3x3MachineBase;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extends BlockTileEntity<TE>
+public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extends BlockAbstractHorizontalFacing
 {
-
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty MASTER = BooleanProperty.create("master");
-
 
     public Block3x3x3Base(Block.Properties properties)
     {
@@ -37,6 +30,12 @@ public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extend
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
         worldIn.setBlockState(pos.offset(state.get(FACING)).up(), state.with(MASTER, true));
+    }
+
+    @Override
+    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return 1.0F;
     }
 
     @Override
@@ -62,6 +61,7 @@ public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extend
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
         TE te = (TE) worldIn.getTileEntity(pos);
         if (te != null)
         {
@@ -91,10 +91,11 @@ public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extend
         return true;
     }
 
+    @Nullable
     @Override
-    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction)
+    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
     {
-        return state;
+        return new Direction[0];
     }
 
     @Override
@@ -111,8 +112,8 @@ public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extend
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state)
+    public boolean hasTileEntity(BlockState state)
     {
-        return BlockRenderType.MODEL;
+        return true;
     }
 }

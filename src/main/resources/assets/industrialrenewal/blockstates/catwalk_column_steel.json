@@ -1,99 +1,69 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:catwalk_column_steel_base",
-    "textures": {
-      "particle": "blocks/anvil_base"
+  "multipart": [
+    {
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_column_steel_base"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_column_steel_side"
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_column_steel_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_column_steel_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_column_steel_side",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_column_steel_down"
+      }
+    },
+    {
+      "when": {
+        "pipe": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_column_steel_down_pipe"
+      }
+    },
+    {
+      "when": {
+        "pipe": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_column_steel_down_pipe",
+        "y": 90
+      }
     }
-  },
-  "variants": {
-    "down": {
-      "true": {
-        "submodel": {
-          "pipe_down": {
-            "model": "industrialrenewal:catwalk_column_steel_down"
-          }
-        }
-      },
-      "false": {}
-    },
-    "up": {
-      "true": {},
-      "false": {}
-    },
-    "north": {
-      "true": {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:catwalk_column_steel_side"
-          }
-        }
-      },
-      "false": {}
-    },
-    "south": {
-      "true": {
-        "submodel": {
-          "pipe_south": {
-            "model": "industrialrenewal:catwalk_column_steel_side",
-            "y": 180
-          }
-        }
-      },
-      "false": {}
-    },
-    "east": {
-      "true": {
-        "submodel": {
-          "pipe_east": {
-            "model": "industrialrenewal:catwalk_column_steel_side",
-            "y": 90
-          }
-        }
-      },
-      "false": {}
-    },
-    "west": {
-      "true": {
-        "submodel": {
-          "pipe_west": {
-            "model": "industrialrenewal:catwalk_column_steel_side",
-            "y": -90
-          }
-        }
-      },
-      "false": {}
-    },
-    "pipe": {
-      "0": {},
-      "1": {
-        "submodel": {
-          "pipe": {
-            "model": "industrialrenewal:catwalk_column_steel_down_pipe"
-          }
-        }
-      },
-      "2": {
-        "submodel": {
-          "pipe": {
-            "model": "industrialrenewal:catwalk_column_steel_down_pipe",
-            "y": 90
-          }
-        }
-      }
-    },
-    "inventory": [
-      {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:catwalk_column_steel_side"
-          },
-          "pipe_south": {
-            "model": "industrialrenewal:catwalk_column_steel_side",
-            "y": 180
-          }
-        }
-      }
-    ]
-  }
+  ]
 }

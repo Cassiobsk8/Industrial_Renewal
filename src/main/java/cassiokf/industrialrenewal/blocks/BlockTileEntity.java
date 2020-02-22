@@ -32,10 +32,15 @@ public abstract class BlockTileEntity<TE extends TileEntity> extends BlockBase
     @Override
     public abstract TE createTileEntity(BlockState state, IBlockReader world);
 
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
+    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos)
     {
-        return false;
+        return true;
+    }
+
+    @Override
+    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return 1.0F;
     }
 
     @Override

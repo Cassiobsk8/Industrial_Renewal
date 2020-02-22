@@ -1,11 +1,11 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import static cassiokf.industrialrenewal.init.TileRegistration.CONVEYORV_TILE;
 
 public class TileEntityBulkConveyor extends TileEntityBulkConveyorBase
 {
     public TileEntityBulkConveyor()
     {
-        super(TileEntityRegister.BULK_CONVEYOR);
+        super(CONVEYORV_TILE.get());
     }
 }

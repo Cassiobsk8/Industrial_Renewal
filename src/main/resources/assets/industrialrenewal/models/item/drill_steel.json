@@ -2,7 +2,7 @@
   "credit": "Made with Blockbench",
   "textures": {
     "0": "industrialrenewal:blocks/metal",
-    "4": "blocks/anvil_base"
+    "4": "industrialrenewal:blocks/anvil_base"
   },
   "elements": [
     {

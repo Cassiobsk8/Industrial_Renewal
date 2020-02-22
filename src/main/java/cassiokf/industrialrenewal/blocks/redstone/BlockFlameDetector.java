@@ -1,45 +1,30 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.blocks.BlockAbstractFacingWithBase;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityFlameDetector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class BlockFlameDetector extends BlockTileEntity<TileEntityFlameDetector>
+public class BlockFlameDetector extends BlockAbstractFacingWithBase
 {
-
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.values());
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
-    public static final DirectionProperty BASE = DirectionProperty.create("base", Direction.values());
 
-    public BlockFlameDetector(Block.Properties property)
+    public BlockFlameDetector()
     {
-        super(property);
+        super(Block.Properties.create(Material.IRON), 16, 10);
         this.setDefaultState(this.getDefaultState().with(FACING, Direction.UP));
-
-    }
-
-    @Nonnull
-
-    @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        TileEntityFlameDetector te = (TileEntityFlameDetector) worldIn.getTileEntity(currentPos);
-        return stateIn.with(BASE, te.getBlockFacing());
     }
 
     @Override
@@ -47,7 +32,6 @@ public class BlockFlameDetector extends BlockTileEntity<TileEntityFlameDetector>
     {
         return side != state.get(FACING).getOpposite();
     }
-
 
     @Override
     public boolean canProvidePower(BlockState state)
@@ -81,27 +65,18 @@ public class BlockFlameDetector extends BlockTileEntity<TileEntityFlameDetector>
         builder.add(FACING, ACTIVE, BASE);
     }
 
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
-    {
-        Direction theFace;
-        if (context.getPlayer().isCrouching())
-        {
-            theFace = context.getFace();
-        } else
-        {
-            theFace = context.getPlayer().getHorizontalFacing();
-        }
-        return this.getDefaultState().with(FACING, theFace).with(BASE, context.getFace().getOpposite());
-    }
-
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
         TileEntityFlameDetector te = (TileEntityFlameDetector) worldIn.getTileEntity(pos);
         Direction facing = state.get(BASE);
         te.setBlockFacing(facing);
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Nullable

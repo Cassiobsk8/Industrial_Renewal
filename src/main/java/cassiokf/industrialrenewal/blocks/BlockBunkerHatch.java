@@ -2,9 +2,8 @@ package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.tileentity.TileEntityBunkerHatch;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -13,15 +12,15 @@ import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
@@ -30,17 +29,15 @@ import javax.annotation.Nullable;
 public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
 {
 
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty MASTER = BooleanProperty.create("master");
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
 
-    protected static final AxisAlignedBB RENDER_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-
-    public BlockBunkerHatch(Block.Properties properties)
+    public BlockBunkerHatch()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
+        setDefaultState(getDefaultState().with(OPEN, false));
     }
-
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
@@ -51,7 +48,7 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
     }
 
     @Override
-    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
+    public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos)
     {
         if (state.get(OPEN))
         {
@@ -63,12 +60,19 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
     }
 
     @Override
-    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction)
+    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos)
     {
-        return state;
+        return state.get(OPEN);
     }
 
+    @Nullable
+    @Override
+    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
+    {
+        return new Direction[0];
+    }
 
+    @Override
     public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type)
     {
         return worldIn.getBlockState(pos).get(OPEN);
@@ -100,6 +104,8 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
+
         TileEntityBunkerHatch te = (TileEntityBunkerHatch) worldIn.getTileEntity(pos);
         if (te != null)
         {
@@ -119,7 +125,7 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
                 Direction facing = state.get(FACING);
                 BlockPos currentPos = new BlockPos(pos.offset(facing, z).offset(facing.rotateY(), x));
                 BlockState currentState = worldIn.getBlockState(currentPos);
-                if (!currentState.getBlock().canBeReplacedByLogs(state, worldIn, pos)) return false;
+                if (!currentState.getMaterial().isReplaceable()) return false;
             }
         }
         return true;
@@ -140,32 +146,15 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
                 .with(MASTER, false).with(OPEN, false);
     }
 
-    /*
-        @Override
-        public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos)
-        {
-            return RENDER_AABB;
-        }
-
-
-        @Override
-        public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
-        {
-            BlockState actualState = getActualState(state, worldIn, pos);
-            Boolean active = actualState.get(OPEN);
-            if (active)
-            {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
-            } else
-            {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, RENDER_AABB);
-            }
-        }
-    */
     @Override
-    public BlockRenderType getRenderType(BlockState state)
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return BlockRenderType.MODEL;
+        Boolean active = state.get(OPEN);
+        if (active)
+        {
+            return NULL_SHAPE;
+        }
+        return FULL_SHAPE;
     }
 
     @Nullable

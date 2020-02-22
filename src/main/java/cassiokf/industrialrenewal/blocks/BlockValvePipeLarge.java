@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityValvePipeLarge;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
@@ -10,9 +11,9 @@ import javax.annotation.Nullable;
 public class BlockValvePipeLarge extends BlockToggleableBase<TileEntityValvePipeLarge>
 {
 
-    public BlockValvePipeLarge(Block.Properties properties)
+    public BlockValvePipeLarge()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Nullable

@@ -2,32 +2,23 @@ package cassiokf.industrialrenewal.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockBrace extends BlockBase
+public class BlockBrace extends BlockAbstractNotFullCube
 {
 
     public static final EnumProperty<EnumOrientation> FACING = EnumProperty.create("facing", BlockBrace.EnumOrientation.class);
-    protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-
-    public BlockBrace(Block.Properties property)
+    public BlockBrace()
     {
-        super(property);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -36,31 +27,11 @@ public class BlockBrace extends BlockBase
         builder.add(FACING);
     }
 
-    @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
-    {
-        //TODO colocação automatica
-        return ActionResultType.PASS;
-    }
-
-
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         return this.getDefaultState().with(FACING, BlockBrace.EnumOrientation.forFacings(context.getFace(), context.getPlayer().getHorizontalFacing()));
-    }
-/*
-    @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos) {
-        return BLOCK_AABB;
-    }
-*/
-
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return false;
     }
 
     //==================================================================================================================

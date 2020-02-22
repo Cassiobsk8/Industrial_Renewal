@@ -5,6 +5,7 @@ import cassiokf.industrialrenewal.tileentity.railroad.TileEntityFluidLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
@@ -15,7 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
@@ -32,9 +32,9 @@ public class BlockFluidLoader extends BlockTileEntity<TileEntityFluidLoader>
     public static final IntegerProperty UNLOAD = IntegerProperty.create("unload", 0, 2);
     public static final BooleanProperty MASTER = BooleanProperty.create("master");
 
-    public BlockFluidLoader(Block.Properties properties)
+    public BlockFluidLoader()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -78,6 +78,7 @@ public class BlockFluidLoader extends BlockTileEntity<TileEntityFluidLoader>
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
         if (state.get(MASTER))
         {
             if (IsLoader(worldIn, pos.up())) worldIn.removeBlock(pos.up(), false);
@@ -100,10 +101,11 @@ public class BlockFluidLoader extends BlockTileEntity<TileEntityFluidLoader>
                 && worldIn.getBlockState(pos.up()).getMaterial().isReplaceable();
     }
 
+    @Nullable
     @Override
-    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction)
+    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
     {
-        return state;
+        return new Direction[0];
     }
 
 

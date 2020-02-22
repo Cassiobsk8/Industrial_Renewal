@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.blocks.redstone.BlockFlameDetector;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -9,6 +8,8 @@ import net.minecraft.block.FireBlock;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.FLAMEDETECTOR_TILE;
 
 public class TileEntityFlameDetector extends TileEntitySyncable implements ITickableTileEntity
 {
@@ -19,7 +20,7 @@ public class TileEntityFlameDetector extends TileEntitySyncable implements ITick
 
     public TileEntityFlameDetector()
     {
-        super(TileEntityRegister.FLAME_DETECTOR);
+        super(FLAMEDETECTOR_TILE.get());
     }
 
     public boolean passRedstone()

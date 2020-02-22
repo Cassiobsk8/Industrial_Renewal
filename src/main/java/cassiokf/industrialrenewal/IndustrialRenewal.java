@@ -1,17 +1,10 @@
 package cassiokf.industrialrenewal;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.FluidInit;
-import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.init.ModItems;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
-import net.minecraft.block.Block;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntityType;
+import cassiokf.industrialrenewal.init.*;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -29,81 +22,43 @@ public class IndustrialRenewal
     public static IndustrialRenewal instance;
     public static final Logger LOGGER = LogManager.getLogger(MODID);
 
-    static
-    {
-        //FluidRegistry.enableUniversalBucket();
-    }
-
     public IndustrialRenewal()
     {
         instance = this;
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientRegistries);
+
+        SoundsRegistration.init();
+
+        ItemsRegistration.init();
+        BlocksRegistration.init();
+        TileRegistration.init();
+        FluidsRegistration.init();
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, IRConfig.COMMON_SPEC, References.MODID + ".toml");
     }
 
-
     private void setup(final FMLCommonSetupEvent event)
     {
-        LOGGER.info(References.NAME + " is loading preInit!");
-        //FluidInit.registerFluids();
-        //IRSoundRegister.registerSounds();
-        //EntityInit.registerEntities();
-        //proxy.preInit();
-        //NetworkHandler.init();
-        //ForgeChunkManager.setForcedChunkLoadingCallback(instance, new ChunkManagerCallback());
-        //proxy.registerRenderers();
-        //ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, IRConfig.COMMOM, "industrialrenewal.toml");
-        //IRConfig.loadConfig(IRConfig.COMMOM, FMLPaths.CONFIGDIR.get().resolve("industrialrenewal.toml").toString());
-        //MinecraftForge.EVENT_BUS.register(IRSoundHandler.class);
-        LOGGER.info("Done!");
-    }
+        LOGGER.info(References.NAME + " setup Start");
 
-    private void init()
-    {
-        LOGGER.info(References.NAME + " is loading init!");
-        //ModRecipes.init();
-        //proxy.Init();
-
-        //proxy.registerBlockRenderers();
-        LOGGER.info("Done!");
     }
 
     private void clientRegistries(final FMLClientSetupEvent event)
     {
-        //RenderHandler.registerEntitiesRender();
-        //RenderHandler.registerCustomMeshesAndStates();
-        //ModelLoaderRegistry.registerLoader();
-    }
+        MinecraftForge.EVENT_BUS.register(IRSoundHandler.class);
 
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = MODID)
-    public static class RegistrationHandler
-    {
-        @SubscribeEvent
-        public static void registerBlocks(final RegistryEvent.Register<Block> event)
-        {
-            ModBlocks.register(event.getRegistry());
-        }
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.WINDOW.get(), RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.EFENCE.get(), RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.LIGHT.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.ENERGYLEVEL.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.FLAMEDETECTOR.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.SIGNALINDICATOR.get(), RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.STEAMTURBINE.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.FIRSTAIDKIT.get(), RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.RECORDPLAYER.get(), RenderType.getTranslucent());
 
-        @SubscribeEvent
-        public static void registerItems(final RegistryEvent.Register<Item> event)
-        {
-            ModItems.register(event.getRegistry());
-            ModBlocks.registerItemBlocks(event.getRegistry());
-        }
-
-        @SubscribeEvent
-        public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event)
-        {
-            TileEntityRegister.registerTileEntity(event.getRegistry());
-        }
-
-        @SubscribeEvent
-        public static void registerFluids(final RegistryEvent.Register<Fluid> envent)
-        {
-            FluidInit.registerFluids(envent.getRegistry());
-        }
+        //ModelLoaderRegistry.registerLoader(new ResourceLocation(References.MODID, "fancyloader"), new ModelLoaderCustom());
     }
 }

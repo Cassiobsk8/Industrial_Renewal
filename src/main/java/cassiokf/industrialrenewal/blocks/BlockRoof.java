@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IProperty;
@@ -28,9 +29,9 @@ public class BlockRoof extends BlockBase
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.75D, 0.0D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB BOT_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
 
-    public BlockRoof(Block.Properties property)
+    public BlockRoof()
     {
-        super(property);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -65,14 +66,14 @@ public class BlockRoof extends BlockBase
         return (number % 2) == 0;
     }
 
-    private boolean canConnectTo(final IBlockReader world, final BlockPos ownPos, final Direction ownFacing, final Direction neighbourDirection)
+    private boolean canConnectTo(final IBlockReader world, final BlockPos ownPos, final Direction ownFacing, final Direction neighborDirection)
     {
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final BlockState neighbourState = world.getBlockState(neighbourPos);
-        if (neighbourDirection == Direction.DOWN) return neighbourState.isSolid();
+        final BlockPos neighborPos = ownPos.offset(neighborDirection);
+        final BlockState neighborState = world.getBlockState(neighborPos);
+        if (neighborDirection == Direction.DOWN) return neighborState.isSolid();
 
-        if (((neighbourDirection == Direction.EAST || neighbourDirection == Direction.WEST) && (ownFacing == Direction.SOUTH || ownFacing == Direction.NORTH))
-                || ((neighbourDirection == Direction.SOUTH || neighbourDirection == Direction.NORTH) && (ownFacing == Direction.WEST || ownFacing == Direction.EAST)))
+        if (((neighborDirection == Direction.EAST || neighborDirection == Direction.WEST) && (ownFacing == Direction.SOUTH || ownFacing == Direction.NORTH))
+                || ((neighborDirection == Direction.SOUTH || neighborDirection == Direction.NORTH) && (ownFacing == Direction.WEST || ownFacing == Direction.EAST)))
         {
             BlockState sState = world.getBlockState(ownPos.offset(Direction.SOUTH));
             BlockState nState = world.getBlockState(ownPos.offset(Direction.NORTH));
@@ -80,11 +81,11 @@ public class BlockRoof extends BlockBase
             Block nBlock = nState.getBlock();
             if ((sBlock instanceof BlockRoof || sBlock instanceof BlockCatwalkLadder || sState.isSolid()) && (nBlock instanceof BlockRoof || nBlock instanceof BlockCatwalkLadder || nState.isSolid()))
             {
-                // (block pos is Even) && (neighbour SW)
+                // (block pos is Even) && (neighbor SW)
                 boolean invert = ownFacing == Direction.WEST || ownFacing == Direction.EAST;
-                Block nb = neighbourState.getBlock();
+                Block nb = neighborState.getBlock();
                 return isEven(ownPos, invert)
-                        && (nb instanceof BlockRoof || neighbourState.isSolid() || nb instanceof BlockPillar || nb instanceof BlockColumn);
+                        && (nb instanceof BlockRoof || neighborState.isSolid() || nb instanceof BlockPillar || nb instanceof BlockColumn);
             }
         }
         return false;

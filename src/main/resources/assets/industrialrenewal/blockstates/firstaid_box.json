@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "industrialrenewal:block/firstaid_kit"
+    },
+    "facing=west": {
+      "model": "industrialrenewal:block/firstaid_kit",
+      "y": -90
+    },
+    "facing=south": {
+      "model": "industrialrenewal:block/firstaid_kit",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "industrialrenewal:block/firstaid_kit",
+      "y": 90
+    }
+  }
+}

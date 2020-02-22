@@ -3,7 +3,7 @@
   "textures": {
     "0": "industrialrenewal:blocks/pipe",
     "1": "entity/bed/red",
-    "particle": "industrialrenewal:blocks/pipe"
+    "particle": "entity/bed/red"
   },
   "elements": [
     {

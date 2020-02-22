@@ -1,11 +1,9 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityTransformerHV;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
@@ -14,7 +12,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 
@@ -27,9 +24,9 @@ public class BlockTransformerHV extends Block3x3Top1Base<TileEntityTransformerHV
 
     protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 0.5D, 0.6875D);
 
-    public BlockTransformerHV(Block.Properties properties)
+    public BlockTransformerHV()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -41,20 +38,6 @@ public class BlockTransformerHV extends Block3x3Top1Base<TileEntityTransformerHV
     @Override
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-
-        tooltip.add(new StringTextComponent(
-                I18n.format("info.industrialrenewal.requires")
-                        + ": "
-                        + ModBlocks.steamBlock.getNameTextComponent().getFormattedText()
-                        + " "
-                        + (IRConfig.Main.steamTurbineSteamPerTick.get().toString())
-                        + " mB/t"));
-        tooltip.add(new StringTextComponent(
-                I18n.format("info.industrialrenewal.produces")
-                        + ": "
-                        + (IRConfig.Main.steamTurbineEnergyPerTick.get().toString())
-                        + " FE/t"));
-
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 

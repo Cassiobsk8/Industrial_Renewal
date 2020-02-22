@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.tileentity.TileEntityChunkLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -14,7 +15,6 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
@@ -31,9 +31,9 @@ public class BlockChunkLoader extends BlockTileEntity<TileEntityChunkLoader>
     public static final BooleanProperty MASTER = BooleanProperty.create("master");
     public static final BooleanProperty WORKING = BooleanProperty.create("working");
 
-    public BlockChunkLoader(Block.Properties properties)
+    public BlockChunkLoader()
     {
-        super(properties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     private static void activateChunkLoader(World worldIn, BlockPos pos, PlayerEntity placer)
@@ -108,6 +108,7 @@ public class BlockChunkLoader extends BlockTileEntity<TileEntityChunkLoader>
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
         if (state.get(MASTER))
         {
             if (IsLoader(worldIn, pos.up())) worldIn.removeBlock(pos.up(), false);
@@ -142,10 +143,11 @@ public class BlockChunkLoader extends BlockTileEntity<TileEntityChunkLoader>
         return stateIn.with(WORKING, stateIn.get(MASTER) && te != null && te.isActive());
     }
 
+    @Nullable
     @Override
-    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction)
+    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
     {
-        return state;
+        return new Direction[0];
     }
 
     @Override

@@ -1,58 +1,164 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/fuse_box"
-    }
-  },
-  "variants": {
-    "facing": {
-      "north": {},
-      "south": {
+  "multipart": [
+    {
+      "when": {
+        "facing": "north",
+        "active": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_on"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "active": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_on",
         "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "active": "true"
       },
-      "west": {
-        "y": 270
-      },
-      "east": {
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_on",
         "y": 90
       }
     },
-    "active": {
-      "true": {
-        "model": "industrialrenewal:fuse_box_on"
+    {
+      "when": {
+        "facing": "west",
+        "active": "true"
       },
-      "false": {
-        "model": "industrialrenewal:fuse_box_off"
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_on",
+        "y": 270
       }
     },
-    "down": {
-      "true": {
-        "submodel": {
-          "down": {
-            "model": "industrialrenewal:fuse_box_cable"
-          }
-        }
+    {
+      "when": {
+        "facing": "north",
+        "active": "false"
       },
-      "false": {}
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_off"
+      }
     },
-    "up": {
-      "true": {
-        "submodel": {
-          "up": {
-            "model": "industrialrenewal:fuse_box_cable",
-            "x": 180,
-            "y": 180
-          }
-        }
+    {
+      "when": {
+        "facing": "south",
+        "active": "false"
       },
-      "false": {}
-    },
-    "inventory": [
-      {
-        "model": "industrialrenewal:fuse_box_off",
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_off",
         "y": 180
       }
-    ]
-  }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "active": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_off",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "active": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_off",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_cable"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_cable",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_cable",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_cable",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_cable",
+        "x": 180,
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_cable",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_cable",
+        "x": 180,
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fuse_box_cable",
+        "x": 180,
+        "y": 90
+      }
+    }
+  ]
 }

@@ -1,26 +1,19 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:patreon/eotm",
-    "textures": {
-      "particle": "industrialrenewal:blocks/patreon/eotm"
-    }
-  },
   "variants": {
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
-      }
+    "facing=north": {
+      "model": "industrialrenewal:block/patreon/eotm"
     },
-    "inventory": {
-      "model": "industrialrenewal:patreon/eotm"
+    "facing=south": {
+      "model": "industrialrenewal:block/patreon/eotm",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "industrialrenewal:block/patreon/eotm",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "industrialrenewal:block/patreon/eotm",
+      "y": -90
     }
   }
 }

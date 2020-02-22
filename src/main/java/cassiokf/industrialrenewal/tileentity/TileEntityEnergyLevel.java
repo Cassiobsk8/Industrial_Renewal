@@ -1,13 +1,14 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockEnergyLevel;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.ENERGYLEVEL_TILE;
 
 public class TileEntityEnergyLevel extends TileEntity
 {
@@ -17,7 +18,7 @@ public class TileEntityEnergyLevel extends TileEntity
 
     public TileEntityEnergyLevel()
     {
-        super(TileEntityRegister.ENERGY_LEVEL);
+        super(ENERGYLEVEL_TILE.get());
     }
 
     public String GetText()
@@ -99,11 +100,5 @@ public class TileEntityEnergyLevel extends TileEntity
     {
         baseFacing = Direction.byIndex(tag.getInt("baseFacing"));
         super.read(tag);
-    }
-
-    @Override
-    public CompoundNBT getUpdateTag()
-    {
-        return write(new CompoundNBT());
     }
 }

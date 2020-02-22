@@ -1,25 +1,25 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.init.ItemsRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityBatteryBank;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -27,9 +27,9 @@ import java.util.List;
 
 public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBatteryBank>
 {
-    public BlockBatteryBank(Block.Properties property)
+    public BlockBatteryBank()
     {
-        super(property);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBattery
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
     {
-        if (handIn.equals(Hand.MAIN_HAND) && player.getHeldItem(Hand.MAIN_HAND).getItem().equals(ModItems.screwDrive) && worldIn.getTileEntity(pos) instanceof TileEntityBatteryBank)
+        if (handIn.equals(Hand.MAIN_HAND) && player.getHeldItem(Hand.MAIN_HAND).getItem().equals(ItemsRegistration.SCREWDRIVE.get()) && worldIn.getTileEntity(pos) instanceof TileEntityBatteryBank)
         {
             TileEntityBatteryBank te = (TileEntityBatteryBank) worldIn.getTileEntity(pos);
             if (te != null) te.toggleFacing(p_225533_6_.getFace());
@@ -64,10 +64,11 @@ public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBattery
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
+    @Nullable
     @Override
-    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction)
+    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
     {
-        return state;
+        return new Direction[0];
     }
 
     @Override

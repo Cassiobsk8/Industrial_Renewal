@@ -1,11 +1,11 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import static cassiokf.industrialrenewal.init.TileRegistration.FLUIDPIPE_TILE;
 
 public class TileEntityFluidPipe extends TileEntityFluidPipeBase
 {
     public TileEntityFluidPipe()
     {
-        super(TileEntityRegister.FLUID_PIPE);
+        super(FLUIDPIPE_TILE.get());
     }
 }

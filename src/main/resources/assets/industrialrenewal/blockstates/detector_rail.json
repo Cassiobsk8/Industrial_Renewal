@@ -1,77 +1,42 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:rail_detector",
-    "textures": {
-      "particle": "blocks/rail_detector"
-    }
-  },
   "variants": {
     "powered=false,shape=north_south": {
-      "model": "industrialrenewal:rail_detector"
+      "model": "industrialrenewal:block/rail_detector"
     },
     "powered=false,shape=east_west": {
-      "model": "industrialrenewal:rail_detector",
+      "model": "industrialrenewal:block/rail_detector",
       "y": 90
     },
     "powered=true,shape=north_south": {
-      "model": "industrialrenewal:rail_detector_active"
+      "model": "industrialrenewal:block/rail_detector_active"
     },
     "powered=true,shape=east_west": {
-      "model": "industrialrenewal:rail_detector_active",
+      "model": "industrialrenewal:block/rail_detector_active",
       "y": 90
     },
     "powered=false,shape=ascending_east": {
-      "model": "industrialrenewal:rail_detector"
+      "model": "industrialrenewal:block/rail_detector"
     },
     "powered=false,shape=ascending_west": {
-      "model": "industrialrenewal:rail_detector"
+      "model": "industrialrenewal:block/rail_detector"
     },
     "powered=false,shape=ascending_north": {
-      "model": "industrialrenewal:rail_detector"
+      "model": "industrialrenewal:block/rail_detector"
     },
     "powered=false,shape=ascending_south": {
-      "model": "industrialrenewal:rail_detector"
-    },
-    "powered=false,shape=south_east": {
-      "model": "industrialrenewal:rail_detector"
-    },
-    "powered=false,shape=south_west": {
-      "model": "industrialrenewal:rail_detector"
-    },
-    "powered=false,shape=north_west": {
-      "model": "industrialrenewal:rail_detector"
-    },
-    "powered=false,shape=north_east": {
-      "model": "industrialrenewal:rail_detector"
+      "model": "industrialrenewal:block/rail_detector"
     },
     "powered=true,shape=ascending_east": {
-      "model": "industrialrenewal:rail_detector"
+      "model": "industrialrenewal:block/rail_detector"
     },
     "powered=true,shape=ascending_west": {
-      "model": "industrialrenewal:rail_detector"
+      "model": "industrialrenewal:block/rail_detector"
     },
     "powered=true,shape=ascending_north": {
-      "model": "industrialrenewal:rail_detector"
+      "model": "industrialrenewal:block/rail_detector"
     },
     "powered=true,shape=ascending_south": {
-      "model": "industrialrenewal:rail_detector"
-    },
-    "powered=true,shape=south_east": {
-      "model": "industrialrenewal:rail_detector"
-    },
-    "powered=true,shape=south_west": {
-      "model": "industrialrenewal:rail_detector"
-    },
-    "powered=true,shape=north_west": {
-      "model": "industrialrenewal:rail_detector"
-    },
-    "powered=true,shape=north_east": {
-      "model": "industrialrenewal:rail_detector"
-    },
-    "inventory": {
-      "model": "industrialrenewal:rail_detector",
-      "transform": "forge:default-block"
+      "model": "industrialrenewal:block/rail_detector"
     }
   }
 }

@@ -4,13 +4,11 @@ import cassiokf.industrialrenewal.tileentity.TileEntityGutter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -25,26 +23,28 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockGutter extends BlockTileEntity<TileEntityGutter>
+public class BlockGutter extends BlockAbstractHorizontalFacing
 {
-
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty ACTIVE_LEFT = BooleanProperty.create("active_left");
     public static final BooleanProperty ACTIVE_RIGHT = BooleanProperty.create("active_right");
     public static final BooleanProperty ACTIVE_DOWN = BooleanProperty.create("active_down");
+
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.4375D, 0.0D, 1.0D, 0.75D, 1.0D);
+
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.4375D, 0.0D, 1.0D, 0.75D, 0.3125D);
     protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.4375D, 0.6875D, 1.0D, 0.75D, 1.0D);
     protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.4375D, 0.0D, 0.3125D, 0.75D, 1.0D);
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.6875D, 0.4375D, 0.0D, 1.0D, 0.75D, 1.0D);
+
     protected static final AxisAlignedBB NC_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 0.8125D);
     protected static final AxisAlignedBB SC_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.1875D, 1.0D, 0.75D, 1.0D);
     protected static final AxisAlignedBB WC_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.8125D, 0.75D, 1.0D);
     protected static final AxisAlignedBB EC_AABB = new AxisAlignedBB(0.1875D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D);
 
-    public BlockGutter(Block.Properties property)
+    public BlockGutter()
     {
-        super(property);
+        super(Block.Properties.create(Material.IRON));
+        setDefaultState(getDefaultState().with(ACTIVE_DOWN, false));
     }
 
     @Override
@@ -94,22 +94,16 @@ public class BlockGutter extends BlockTileEntity<TileEntityGutter>
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        stateIn = stateIn.with(ACTIVE_DOWN, downConnected(worldIn, currentPos)).with(ACTIVE_LEFT, leftConnected(stateIn, worldIn, currentPos)).with(ACTIVE_RIGHT, rightConnected(stateIn, worldIn, currentPos));
-        return stateIn;
+        return stateIn
+                .with(ACTIVE_DOWN, downConnected(worldIn, currentPos))
+                .with(ACTIVE_LEFT, leftConnected(stateIn, worldIn, currentPos))
+                .with(ACTIVE_RIGHT, rightConnected(stateIn, worldIn, currentPos));
     }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(FACING, ACTIVE_LEFT, ACTIVE_RIGHT, ACTIVE_DOWN);
-    }
-
-
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
-    {
-        return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing());
     }
 
     /*
@@ -186,6 +180,13 @@ public class BlockGutter extends BlockTileEntity<TileEntityGutter>
             return null;
         }
     */
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
     @Nullable
     @Override
     public TileEntityGutter createTileEntity(BlockState state, IBlockReader world)

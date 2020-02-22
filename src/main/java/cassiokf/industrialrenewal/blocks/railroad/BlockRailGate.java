@@ -1,55 +1,70 @@
 package cassiokf.industrialrenewal.blocks.railroad;
 
-import cassiokf.industrialrenewal.init.IRSoundRegister;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
+import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.IProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.RailShape;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockRailGate extends BlockNormalRailBase
+public class BlockRailGate extends AbstractRailBlock
 {
-
+    public static final EnumProperty<RailShape> SHAPE = EnumProperty.create("shape", RailShape.class, dir ->
+            dir == RailShape.NORTH_SOUTH || dir == RailShape.EAST_WEST
+    );
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
-    protected static final AxisAlignedBB CNORTH_AABB = new AxisAlignedBB(-0.25D, 0.0D, 0.375D, 1.25D, 2D, 0.625D);
-    protected static final AxisAlignedBB CWEST_AABB = new AxisAlignedBB(0.375D, 0.0D, -0.25D, 0.625D, 2D, 1.25D);
+    protected static final VoxelShape CNORTH_AABB = Block.makeCuboidShape(-4, 0, 6, 20, 32, 10);
+    protected static final VoxelShape CWEST_AABB = Block.makeCuboidShape(6, 0, -4, 10, 32, 20);
     protected String name;
 
-    public BlockRailGate(Block.Properties properties)
+    public BlockRailGate()
     {
-        super(properties);
+        super(true, Block.Properties.create(Material.IRON));
         setDefaultState(getDefaultState().with(OPEN, false));
     }
-/*
-    @Override
-    public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
+
+    public IProperty<RailShape> getShapeProperty()
     {
-        EnumRailDirection direction = state.get(SHAPE);
+        return SHAPE;
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        RailShape direction = state.get(SHAPE);
+        VoxelShape FINAL_SHAPE = FLAT_AABB;
         if (!state.get(OPEN))
         {
             switch (direction)
             {
                 case NORTH_SOUTH:
-                    addCollisionBoxToList(pos, entityBox, collidingBoxes, CNORTH_AABB);
+                    FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, CNORTH_AABB);
                     break;
                 case EAST_WEST:
-                    addCollisionBoxToList(pos, entityBox, collidingBoxes, CWEST_AABB);
+                    FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, CWEST_AABB);
                     break;
             }
         }
-        super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
+        return FINAL_SHAPE;
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        EnumRailDirection direction = state.get(SHAPE);
+        RailShape direction = state.get(SHAPE);
         switch (direction)
         {
             default:
@@ -59,7 +74,6 @@ public class BlockRailGate extends BlockNormalRailBase
                 return CWEST_AABB;
         }
     }
-*/
 
     @Override
     protected void updateState(BlockState state, World worldIn, BlockPos pos, Block blockIn)
@@ -74,10 +88,10 @@ public class BlockRailGate extends BlockNormalRailBase
             float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
             if (flag2)
             {
-                worldIn.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F, pitch);
+                worldIn.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_OPEN.get(), SoundCategory.NEUTRAL, 1.0F, pitch);
             } else
             {
-                worldIn.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F, pitch);
+                worldIn.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_CLOSE.get(), SoundCategory.NEUTRAL, 1.0F, pitch);
             }
         }
     }
@@ -85,7 +99,7 @@ public class BlockRailGate extends BlockNormalRailBase
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(OPEN, SHAPE, SNOW);
+        builder.add(OPEN, SHAPE);
     }
 
     @Override

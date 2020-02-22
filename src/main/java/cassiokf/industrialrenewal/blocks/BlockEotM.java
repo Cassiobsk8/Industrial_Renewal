@@ -2,59 +2,47 @@ package cassiokf.industrialrenewal.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
 
-public class BlockEotM extends BlockBase
+public class BlockEotM extends BlockAbstractHorizontalFacing
 {
+    private static final VoxelShape WEST_BLOCK_AABB = Block.makeCuboidShape(0, 1, 3, 1, 15, 13);
+    private static final VoxelShape EAST_BLOCK_AABB = Block.makeCuboidShape(15, 1, 3, 16, 15, 13);
+    private static final VoxelShape SOUTH_BLOCK_AABB = Block.makeCuboidShape(3, 1, 15, 13, 15, 16);
+    private static final VoxelShape NORTH_BLOCK_AABB = Block.makeCuboidShape(3, 1, 1, 13, 15, 0);
 
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-
-    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0D, 0.0625D, 0.1875D, 0.0625D, 0.9375D, 0.8125D);
-    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1D, 0.0625D, 0.1875D, 0.9375D, 0.9375D, 0.8125D);
-    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.1875D, 0.0625D, 0.9375D, 0.8125D, 0.9375D, 1D);
-    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.1875D, 0.0625D, 0.0625D, 0.8125D, 0.9375D, 0D);
-
-    public BlockEotM(Block.Properties properties)
+    public BlockEotM()
     {
-        super(properties);
-    }
-
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(FACING);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        Direction face = null;
-        for (Direction face1 : Direction.Plane.HORIZONTAL)
+        Direction face;
+        if (Direction.Plane.HORIZONTAL.test(context.getFace()))
         {
-            if (context.getFace().equals(face1))
-            {
-                face = context.getFace().getOpposite();
-            }
+            face = context.getFace().getOpposite();
+        } else
+        {
+            face = context.getPlacementHorizontalFacing();
         }
-        if (face == null) face = context.getPlayer().getHorizontalFacing();
-
         return getDefaultState().with(FACING, face);
     }
-/*
+
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        switch (state.getActualState(source, pos).get(FACING))
+        switch (state.get(FACING))
         {
             default:
             case NORTH:
@@ -66,12 +54,5 @@ public class BlockEotM extends BlockBase
             case WEST:
                 return WEST_BLOCK_AABB;
         }
-    }
-*/
-
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return false;
     }
 }

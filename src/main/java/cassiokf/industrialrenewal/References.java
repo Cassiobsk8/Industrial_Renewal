@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal;
 
-import cassiokf.industrialrenewal.group.IndustrialRenewalItemGroup;
-import cassiokf.industrialrenewal.group.IndustrialRenewalRailroadItemGroup;
-import cassiokf.industrialrenewal.group.IndustrialRenewalWIPItemGroup;
+import cassiokf.industrialrenewal.group.IndRItemGroup;
+import cassiokf.industrialrenewal.group.IndRRailroadItemGroup;
+import cassiokf.industrialrenewal.group.IndRWIPItemGroup;
 import net.minecraft.item.ItemGroup;
 
 public class References
@@ -14,9 +14,9 @@ public class References
 
     public static final String NETWORKCHANNEL = MODID;
 
-    public static final ItemGroup CREATIVE_IR_GROUP = new IndustrialRenewalItemGroup();
-    public static final ItemGroup CREATIVE_IRLOCOMOTIVE_GROUP = new IndustrialRenewalRailroadItemGroup();
-    public static final ItemGroup CREAATIVE_IRWIP_GROUP = new IndustrialRenewalWIPItemGroup();
+    public static final ItemGroup GROUP_INDR = new IndRItemGroup();
+    public static final ItemGroup GROUP_INDR_RAILROAD = new IndRRailroadItemGroup();
+    public static final ItemGroup GROUP_INDR_WIP = new IndRWIPItemGroup();
 
     public static final int ENTITY_CARGOCONTAINER_ID = 120;
     public static final int ENTITY_STEAMLOCOMOTIVE_ID = 121;

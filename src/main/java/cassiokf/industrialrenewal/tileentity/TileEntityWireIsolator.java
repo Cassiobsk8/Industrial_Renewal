@@ -1,8 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.pipes.BlockWireBase;
-import cassiokf.industrialrenewal.init.ModItems;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import cassiokf.industrialrenewal.blocks.pipes.BlockHVIsolator;
+import cassiokf.industrialrenewal.init.ItemsRegistration;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
 import net.minecraft.item.ItemStack;
@@ -16,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.HVISOLATOR_TILE;
+
 public class TileEntityWireIsolator extends TileEntitySyncable
 {
     public BlockPos leftConnectionPos = null;
@@ -28,13 +29,13 @@ public class TileEntityWireIsolator extends TileEntitySyncable
 
     public TileEntityWireIsolator()
     {
-        super(TileEntityRegister.WIRE_BASE);
+        super(HVISOLATOR_TILE.get());
     }
 
     @Override
     public void onLoad()
     {
-        initializeNetworkIfNecessary();
+        //initializeNetworkIfNecessary();
     }
 
     private void initializeNetworkIfNecessary()
@@ -111,24 +112,12 @@ public class TileEntityWireIsolator extends TileEntitySyncable
         initializeNetworkIfNecessary();
     }
 
-    public void onBlockBreak()
-    {
-        if (isLeftConnected())
-        {
-            removeCableAndSpawn(leftConnectionPos);
-        }
-        if (isRightConnected())
-        {
-            removeCableAndSpawn(rightConnectionPos);
-        }
-    }
-
     public void removeCableAndSpawn(BlockPos connectionPos)
     {
         disableConnectedCables(connectionPos);
         removeConnection(connectionPos);
         if (!world.isRemote)
-            Utils.spawnItemStack(world, pos, new ItemStack(ModItems.coilHV));
+            Utils.spawnItemStack(world, pos, new ItemStack(ItemsRegistration.COILHV.get()));
     }
 
     private void disableConnectedCables(BlockPos connectedPos)
@@ -164,8 +153,8 @@ public class TileEntityWireIsolator extends TileEntitySyncable
 
     public void removeAllConnections()
     {
-        if (isRightConnected()) removeConnection(rightConnectionPos);
-        if (isLeftConnected()) removeConnection(leftConnectionPos);
+        if (isRightConnected()) removeCableAndSpawn(rightConnectionPos);
+        if (isLeftConnected()) removeCableAndSpawn(leftConnectionPos);
     }
 
     public boolean canConnect()
@@ -195,7 +184,7 @@ public class TileEntityWireIsolator extends TileEntitySyncable
 
     public Direction getBlockFacing()
     {
-        return world.getBlockState(pos).get(BlockWireBase.FACING);
+        return world.getBlockState(pos).get(BlockHVIsolator.FACING);
     }
 
     private void setLeftConnectionPos(BlockPos pos)
@@ -241,16 +230,7 @@ public class TileEntityWireIsolator extends TileEntitySyncable
     @Override
     public void remove()
     {
-        super.remove();
-        for (Direction d : Direction.values())
-        {
-            TileEntity te = world.getTileEntity(pos.offset(d));
-            if (te instanceof TileEntityWireIsolator)
-            {
-                ((TileEntityWireIsolator) te).master = null;
-                ((TileEntityWireIsolator) te).initializeNetworkIfNecessary();
-            }
-        }
+        removeAllConnections();
     }
 
     @Override

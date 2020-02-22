@@ -1,79 +1,246 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
-  "variants": {
-    "facing": {
-      "north": {},
-      "south": {
+  "multipart": [
+    {
+      "when": {
+        "facing": "north",
+        "active": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_base"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "active": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_base",
         "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "active": "false"
       },
-      "west": {
-        "y": 270
-      },
-      "east": {
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_base",
         "y": 90
       }
     },
-    "active": {
-      "true": {},
-      "false": {
-        "model": "industrialrenewal:electric_gate_base"
+    {
+      "when": {
+        "facing": "west",
+        "active": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_base",
+        "y": 270
       }
     },
-    "inverted": {
-      "true": {
-        "model": "industrialrenewal:electric_gate_base_open_right"
+    {
+      "when": {
+        "facing": "north",
+        "active": "true",
+        "inverted": "false"
       },
-      "false": {
-        "model": "industrialrenewal:electric_gate_base_open"
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_base_open"
       }
     },
-    "up": {
-      "true": {
-        "submodel": {
-          "pipe_front": {
-            "model": "industrialrenewal:electric_gate_front"
-          }
-        }
+    {
+      "when": {
+        "facing": "south",
+        "active": "true",
+        "inverted": "false"
       },
-      "false": {}
-    },
-    "left": {
-      "true": {
-        "submodel": {
-          "left": {
-            "model": "industrialrenewal:electric_gate_left"
-          }
-        }
-      },
-      "false": {}
-    },
-    "right": {
-      "true": {
-        "submodel": {
-          "right": {
-            "model": "industrialrenewal:electric_gate_right"
-          }
-        }
-      },
-      "false": {}
-    },
-    "inventory": [
-      {
-        "model": "industrialrenewal:electric_gate_base",
-        "submodel": {
-          "right": {
-            "model": "industrialrenewal:electric_gate_right"
-          },
-          "left": {
-            "model": "industrialrenewal:electric_gate_left"
-          }
-        }
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_base_open",
+        "y": 180
       }
-    ]
-  }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "active": "true",
+        "inverted": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_base_open",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "active": "true",
+        "inverted": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_base_open",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "active": "true",
+        "inverted": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_base_open_right"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "active": "true",
+        "inverted": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_base_open_right",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "active": "true",
+        "inverted": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_base_open_right",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "active": "true",
+        "inverted": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_base_open_right",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_front"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_front",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_front",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_front",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "left": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_left"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "left": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_left",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "left": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_left",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "left": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_left",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "right": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_right"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "right": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_right",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "right": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_right",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "right": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/electric_gate_right",
+        "y": 270
+      }
+    }
+  ]
 }

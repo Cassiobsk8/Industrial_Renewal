@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockBatteryBank;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import cassiokf.industrialrenewal.item.ItemWindBlade;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.CustomItemStackHandler;
@@ -25,6 +24,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.SWINDTURBINE_TILE;
+
 public class TileEntitySmallWindTurbine extends TileEntitySyncable implements ICapabilityProvider, ITickableTileEntity
 {
     public LazyOptional<IItemHandler> bladeInv = LazyOptional.of(this::createHandler);
@@ -35,7 +36,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
 
     public TileEntitySmallWindTurbine()
     {
-        super(TileEntityRegister.SMALL_WIND_TURBINE);
+        super(SWINDTURBINE_TILE.get());
     }
 
     public static int getMaxGeneration()
@@ -74,9 +75,11 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
         };
     }
 
-    public void dropAllItems()
+    @Override
+    public void remove()
     {
-        Utils.dropInventoryItems(world, pos, ((IItemHandler) bladeInv));
+        Utils.dropInventoryItems(world, pos, bladeInv.orElse(null));
+        super.remove();
     }
 
     @Override
@@ -85,7 +88,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
         if (!world.isRemote)
         {
             //Generate Energy
-            IEnergyStorage thisEnergy = (IEnergyStorage) energyStorage;
+            IEnergyStorage thisEnergy = energyStorage.orElse(null);
             if (hasBlade())
             {
                 int energyGen = Math.round(getMaxGeneration() * getEfficiency());
@@ -93,8 +96,8 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
                 if (tickToDamage >= 1200 && energyGen > 0)
                 {
                     tickToDamage = 0;
-                    ((IItemHandler) bladeInv).getStackInSlot(0).attemptDamageItem(1, new Random(), null);
-                    if (((IItemHandler) bladeInv).getStackInSlot(0).getDamage() < 0)
+                    bladeInv.orElse(null).getStackInSlot(0).attemptDamageItem(1, new Random(), null);
+                    if (bladeInv.orElse(null).getStackInSlot(0).getDamage() < 0)
                         bladeInv.ifPresent(e -> ((CustomItemStackHandler) e).setStackInSlot(0, ItemStack.EMPTY));
                 }
                 if (tickToDamage < 1201) tickToDamage++;
@@ -123,14 +126,9 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
         }
     }
 
-    public int getEnergyGenerated()
-    {
-        return energyGenerated;
-    }
-
     public IItemHandler getBladeHandler()
     {
-        return ((IItemHandler) bladeInv);
+        return bladeInv.orElse(null);
     }
 
     public float getRotation()
@@ -140,7 +138,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
 
     public boolean hasBlade()
     {
-        return !((IItemHandler) bladeInv).getStackInSlot(0).isEmpty();
+        return !bladeInv.orElse(null).getStackInSlot(0).isEmpty();
     }
 
     private float getEfficiency()

@@ -1,47 +1,124 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/pipe_blue"
-    }
-  },
   "variants": {
-    "part": {
-      "foot": {
-        "model": "industrialrenewal:bunkbed_bot"
-      },
-      "head": {
-        "model": "industrialrenewal:dummy"
-      }
+    "facing=north,occupied=false,top=false,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_bot"
     },
-    "occupied": {
-      "true": {},
-      "false": {}
+    "facing=south,occupied=false,top=false,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_bot",
+      "y": 180
     },
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
-      }
+    "facing=east,occupied=false,top=false,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_bot",
+      "y": 90
     },
-    "top": {
-      "true": {
-        "submodel": {
-          "top": {
-            "model": "industrialrenewal:bunkbed_top"
-          }
-        }
-      },
-      "false": {}
+    "facing=west,occupied=false,top=false,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_bot",
+      "y": -90
     },
-    "inventory": {
-      "model": "industrialrenewal:bunkbed_bot"
+    "facing=north,occupied=true,top=false,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_bot"
+    },
+    "facing=south,occupied=true,top=false,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_bot",
+      "y": 180
+    },
+    "facing=east,occupied=true,top=false,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_bot",
+      "y": 90
+    },
+    "facing=west,occupied=true,top=false,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_bot",
+      "y": -90
+    },
+    "facing=north,occupied=false,top=true,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_top"
+    },
+    "facing=south,occupied=false,top=true,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_top",
+      "y": 180
+    },
+    "facing=east,occupied=false,top=true,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_top",
+      "y": 90
+    },
+    "facing=west,occupied=false,top=true,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_top",
+      "y": -90
+    },
+    "facing=north,occupied=true,top=true,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_top"
+    },
+    "facing=south,occupied=true,top=true,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_top",
+      "y": 180
+    },
+    "facing=east,occupied=true,top=true,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_top",
+      "y": 90
+    },
+    "facing=west,occupied=true,top=true,part=foot": {
+      "model": "industrialrenewal:block/bunkbed_top",
+      "y": -90
+    },
+    "facing=north,occupied=false,top=false,part=head": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=south,occupied=false,top=false,part=head": {
+      "model": "industrialrenewal:block/dummy",
+      "y": 180
+    },
+    "facing=east,occupied=false,top=false,part=head": {
+      "model": "industrialrenewal:block/dummy",
+      "y": 90
+    },
+    "facing=west,occupied=false,top=false,part=head": {
+      "model": "industrialrenewal:block/dummy",
+      "y": -90
+    },
+    "facing=north,occupied=true,top=false,part=head": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=south,occupied=true,top=false,part=head": {
+      "model": "industrialrenewal:block/dummy",
+      "y": 180
+    },
+    "facing=east,occupied=true,top=false,part=head": {
+      "model": "industrialrenewal:block/dummy",
+      "y": 90
+    },
+    "facing=west,occupied=true,top=false,part=head": {
+      "model": "industrialrenewal:block/dummy",
+      "y": -90
+    },
+    "facing=north,occupied=false,top=true,part=head": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=south,occupied=false,top=true,part=head": {
+      "model": "industrialrenewal:block/dummy",
+      "y": 180
+    },
+    "facing=east,occupied=false,top=true,part=head": {
+      "model": "industrialrenewal:block/dummy",
+      "y": 90
+    },
+    "facing=west,occupied=false,top=true,part=head": {
+      "model": "industrialrenewal:block/dummy",
+      "y": -90
+    },
+    "facing=north,occupied=true,top=true,part=head": {
+      "model": "industrialrenewal:block/dummy"
+    },
+    "facing=south,occupied=true,top=true,part=head": {
+      "model": "industrialrenewal:block/dummy",
+      "y": 180
+    },
+    "facing=east,occupied=true,top=true,part=head": {
+      "model": "industrialrenewal:block/dummy",
+      "y": 90
+    },
+    "facing=west,occupied=true,top=true,part=head": {
+      "model": "industrialrenewal:block/dummy",
+      "y": -90
     }
   }
 }

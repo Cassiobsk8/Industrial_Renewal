@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.init.TileEntityRegister;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.ChestContainer;
@@ -12,6 +11,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
+import static cassiokf.industrialrenewal.init.TileRegistration.LOCKER_TILE;
+
 public class TileEntityLocker extends LockableLootTileEntity
 {
 
@@ -19,7 +20,7 @@ public class TileEntityLocker extends LockableLootTileEntity
 
     public TileEntityLocker()
     {
-        super(TileEntityRegister.LOCKER);
+        super(LOCKER_TILE.get());
     }
 
     public void read(CompoundNBT compound)

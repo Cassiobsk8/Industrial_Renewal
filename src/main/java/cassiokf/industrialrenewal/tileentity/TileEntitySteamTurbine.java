@@ -2,8 +2,8 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.init.TileEntityRegister;
+import cassiokf.industrialrenewal.init.FluidsRegistration;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import cassiokf.industrialrenewal.util.Utils;
@@ -26,6 +26,8 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
+
+import static cassiokf.industrialrenewal.init.TileRegistration.STEAMTURBINE_TILE;
 
 public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntitySteamTurbine> implements ITickableTileEntity, IDynamicSound
 {
@@ -65,6 +67,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         }
     };
     private LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(this::createEnergy);
+
     private float volume = IRConfig.MAIN.TurbineVolume.get().floatValue();
     private int maxRotation = 16000;
     private int rotation;
@@ -74,7 +77,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
 
     public TileEntitySteamTurbine()
     {
-        super(TileEntityRegister.STEAM_TURBINE);
+        super(STEAMTURBINE_TILE.get());
     }
 
     private IEnergyStorage createEnergy()
@@ -106,7 +109,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
                     rotation += (10 * factor);
                 } else rotation -= 4;
 
-                IEnergyStorage thisEnergy = (IEnergyStorage) energyStorage;
+                IEnergyStorage thisEnergy = energyStorage.orElse(null);
                 if (rotation >= 6000 && thisEnergy.getEnergyStored() < thisEnergy.getMaxEnergyStored())
                 {
                     int energy = Math.min(thisEnergy.getMaxEnergyStored(), thisEnergy.getEnergyStored() + getEnergyProduction());
@@ -161,8 +164,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         if (!world.isRemote) return;
         if (this.rotation > 0)
         {
-            //TODO Sound sistem
-            //IRSoundHandler.playRepeatableSound(IRSoundRegister.MOTOR_ROTATION_RESOURCEL, volume, pitch, pos);
+            IRSoundHandler.playRepeatableSound(this, SoundsRegistration.MOTOR_ROTATION.get(), volume, pitch);
         } else
         {
             IRSoundHandler.stopTileSound(pos);
@@ -197,19 +199,19 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
 
     public String getSteamText()
     {
-        return ModBlocks.steamBlock.getNameTextComponent().getFormattedText();
+        return FluidsRegistration.STEAM_BLOCK.get().getNameTextComponent().getFormattedText();
     }
 
 
     public String getGenerationText()
     {
-        int energy = (rotation >= 6000 && ((IEnergyStorage) energyStorage).getEnergyStored() < ((IEnergyStorage) energyStorage).getMaxEnergyStored()) ? getEnergyProduction() : 0;
+        int energy = (rotation >= 6000 && energyStorage.orElse(null).getEnergyStored() < energyStorage.orElse(null).getMaxEnergyStored()) ? getEnergyProduction() : 0;
         return Utils.formatEnergyString(energy) + "/t";
     }
 
     public String getEnergyText()
     {
-        int energy = ((IEnergyStorage) energyStorage).getEnergyStored();
+        int energy = energyStorage.orElse(null).getEnergyStored();
         return Utils.formatEnergyString(energy);
     }
 
@@ -220,8 +222,8 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
 
     public float getEnergyFill() //0 ~ 1
     {
-        float currentAmount = ((IEnergyStorage) energyStorage).getEnergyStored() / 1000F;
-        float totalCapacity = ((IEnergyStorage) energyStorage).getMaxEnergyStored() / 1000F;
+        float currentAmount = energyStorage.orElse(null).getEnergyStored() / 1000F;
+        float totalCapacity = energyStorage.orElse(null).getMaxEnergyStored() / 1000F;
         currentAmount = currentAmount / totalCapacity;
         return currentAmount;
     }
@@ -233,7 +235,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
 
     public float getGenerationFill() //0 ~ 180
     {
-        float currentAmount = ((rotation >= 6000 && ((IEnergyStorage) energyStorage).getEnergyStored() < ((IEnergyStorage) energyStorage).getMaxEnergyStored()) ? getEnergyProduction() : 0) / 100f;
+        float currentAmount = ((rotation >= 6000 && energyStorage.orElse(null).getEnergyStored() < energyStorage.orElse(null).getMaxEnergyStored()) ? getEnergyProduction() : 0) / 100f;
         float totalCapacity = energyPerTick / 100f;
         currentAmount = currentAmount / totalCapacity;
         return currentAmount * 90f;
