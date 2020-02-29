@@ -5,12 +5,9 @@ import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeBaseGauge;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.IProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -27,8 +24,6 @@ import java.util.List;
 
 public class BlockFluidPipeGauge extends BlockFluidPipe
 {
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-
     public BlockFluidPipeGauge()
     {
         super();
@@ -37,27 +32,7 @@ public class BlockFluidPipeGauge extends BlockFluidPipe
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        IProperty[] listedProperties = new IProperty[]{FACING}; // listed properties
-        //IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{MASTER, SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN};
-        //return new ExtendedBlockState(this, listedProperties, unlistedProperties);
-    }
-
-    @Override
-    public BlockState getExtendedState(BlockState state, IBlockReader world, BlockPos pos)
-    {
-        //if (state instanceof IExtendedBlockState)
-        //{
-        //    Direction facing = state.get(FACING);
-        //    IExtendedBlockState eState = (IExtendedBlockState) state;
-        //    return eState.with(MASTER, isMaster(world, pos))
-        //            .with(SOUTH, canConnectToPipe(world, pos, facing.getOpposite())).with(NORTH, canConnectToPipe(world, pos, facing))
-        //            .with(EAST, canConnectToPipe(world, pos, facing.rotateY())).with(WEST, canConnectToPipe(world, pos, facing.rotateYCCW()))
-        //            .with(UP, canConnectToPipe(world, pos, Direction.UP)).with(DOWN, canConnectToPipe(world, pos, Direction.DOWN))
-        //            .with(CSOUTH, canConnectToCapability(world, pos, facing.getOpposite())).with(CNORTH, canConnectToCapability(world, pos, facing))
-        //            .with(CEAST, canConnectToCapability(world, pos, facing.rotateY())).with(CWEST, canConnectToCapability(world, pos, facing.rotateYCCW()))
-        //            .with(CUP, canConnectToCapability(world, pos, Direction.UP)).with(CDOWN, canConnectToCapability(world, pos, Direction.DOWN));
-        //}
-        return state;
+        builder.add(FACING);
     }
 
     @Override

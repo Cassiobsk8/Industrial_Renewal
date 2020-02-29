@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.BlockAbstractHorizontalFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalFacing;
 import cassiokf.industrialrenewal.tileentity.TileEntityBoxConnector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

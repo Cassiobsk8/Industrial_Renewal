@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:pipe_energy_lv/cable_side_east"
+    "": {
+      "model": "industrialrenewal:block/pipe_energy_lv/cable_side_east"
     }
   }
 }

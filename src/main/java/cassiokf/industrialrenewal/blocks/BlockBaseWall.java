@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractFourConnections;
 import cassiokf.industrialrenewal.blocks.redstone.BlockSignalIndicator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import cassiokf.industrialrenewal.util.CustomItemStackHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.Block3x3Top1Base;
 import cassiokf.industrialrenewal.tileentity.TileEntityTransformerHV;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

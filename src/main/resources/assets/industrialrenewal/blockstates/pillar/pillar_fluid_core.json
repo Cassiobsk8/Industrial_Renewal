@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:pillar/iron_pillar_pipe_base"
+    "": {
+      "model": "industrialrenewal:block/pillar/iron_pillar_pipe_base"
     }
   }
 }

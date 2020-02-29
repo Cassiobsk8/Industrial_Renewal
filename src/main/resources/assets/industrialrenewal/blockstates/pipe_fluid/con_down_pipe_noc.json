@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:pipe_fluid/pipe_down_noc"
+    "": {
+      "model": "industrialrenewal:block/pipe_fluid/pipe_down_noc"
     }
   }
 }

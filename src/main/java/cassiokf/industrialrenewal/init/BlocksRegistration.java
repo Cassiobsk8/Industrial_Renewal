@@ -24,6 +24,7 @@ import static cassiokf.industrialrenewal.References.MODID;
 public class BlocksRegistration
 {
     private static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, MODID);
+
     public static final RegistryObject<Block> HAZARD_BLOCK = BLOCKS.register("block_hazard", BlockNormalCube::new);
     public static final RegistryObject<Block> HAZARD_CAUTION = BLOCKS.register("caution_hazard", BlockNormalCube::new);
     public static final RegistryObject<Block> HAZARD_DEFECTIVE = BLOCKS.register("defective_hazard", BlockNormalCube::new);
@@ -136,6 +137,8 @@ public class BlocksRegistration
     public static final RegistryObject<Block> MINING = BLOCKS.register("mining", BlockMining::new);
     public static final RegistryObject<Block> TRANSFORMERHV = BLOCKS.register("transformer_hv", BlockTransformerHV::new);
     public static final RegistryObject<Block> VEINHEMATITE = BLOCKS.register("orevein_hematite", BlockOreVein::new);
+
+
     private static final DeferredRegister<Item> BLOCK_ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, MODID);
 
     //public static final RegistryObject<Block> BLOCK = BLOCKS.register("chunk_loader", BlockChunkLoader::new);

@@ -1,8 +1,8 @@
 {
   "forge_marker": 1,
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:smartmodel/indfloor_lamp"
+    "": {
+      "model": "industrialrenewal:block/smartmodel/indfloor_lamp"
     }
   }
 }

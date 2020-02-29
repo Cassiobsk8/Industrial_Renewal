@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalFacingWhitBase;
 import cassiokf.industrialrenewal.tileentity.TileEntityEnergyLevel;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

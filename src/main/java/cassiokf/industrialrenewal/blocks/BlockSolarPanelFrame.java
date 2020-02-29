@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockConnectedMultiblocks;
 import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntitySolarPanelFrame;
@@ -27,7 +28,7 @@ import net.minecraftforge.items.IItemHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<TileEntitySolarPanelFrame>
+public class BlockSolarPanelFrame extends BlockConnectedMultiblocks<TileEntitySolarPanelFrame>
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
@@ -55,7 +56,7 @@ public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<Ti
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
     {
-        TileEntitySolarPanelFrame tile = getTileEntity(worldIn, pos);
+        TileEntitySolarPanelFrame tile = (TileEntitySolarPanelFrame) worldIn.getTileEntity(pos);
         IItemHandler itemHandler = tile.getPanelHandler();
         ItemStack heldItem = player.getHeldItem(handIn);
         if (!heldItem.isEmpty() && (Block.getBlockFromItem(heldItem.getItem()) instanceof BlockSolarPanel || heldItem.getItem() instanceof ItemPowerScrewDrive))

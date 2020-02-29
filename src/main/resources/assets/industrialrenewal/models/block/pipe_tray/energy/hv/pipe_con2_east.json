@@ -1,0 +1,2219 @@
+{
+  "credit": "Made with Blockbench - CassioKF",
+  "textures": {
+    "particle": "industrialrenewal:blocks/cable_hv"
+  },
+  "elements": [
+    {
+      "name": "Cube",
+      "from": [
+        7.2,
+        10.25,
+        5.9
+      ],
+      "to": [
+        13.45,
+        12.25,
+        7.75
+      ],
+      "rotation": {
+        "angle": -22.5,
+        "axis": "y",
+        "origin": [
+          9.75,
+          11.25,
+          6.25
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            14,
+            0,
+            16,
+            6
+          ],
+          "rotation": 270,
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            14,
+            14,
+            16,
+            16
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            14,
+            0,
+            16,
+            6
+          ],
+          "rotation": 270,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            14,
+            0,
+            16,
+            6
+          ],
+          "rotation": 270,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            14,
+            0,
+            16,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy",
+      "from": [
+        8.15,
+        12.25,
+        7.7
+      ],
+      "to": [
+        13.65,
+        13,
+        8.45
+      ],
+      "rotation": {
+        "angle": -22.5,
+        "axis": "y",
+        "origin": [
+          9.75,
+          11.25,
+          6.25
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "rotation": 270,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy",
+      "from": [
+        7.15,
+        12.25,
+        5.15
+      ],
+      "to": [
+        12.65,
+        13,
+        5.9
+      ],
+      "rotation": {
+        "angle": -22.5,
+        "axis": "y",
+        "origin": [
+          9.75,
+          11.25,
+          6.25
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "rotation": 270,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy Copy",
+      "from": [
+        7.15,
+        9.5,
+        5.15
+      ],
+      "to": [
+        12.75,
+        10.25,
+        5.9
+      ],
+      "rotation": {
+        "angle": -22.5,
+        "axis": "y",
+        "origin": [
+          9.75,
+          11.25,
+          6.25
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "rotation": 270,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy Copy Copy",
+      "from": [
+        8.15,
+        9.5,
+        7.7
+      ],
+      "to": [
+        13.65,
+        10.25,
+        8.45
+      ],
+      "rotation": {
+        "angle": -22.5,
+        "axis": "y",
+        "origin": [
+          9.75,
+          11.25,
+          6.25
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "rotation": 270,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        13.25,
+        7,
+        7
+      ],
+      "to": [
+        15.25,
+        9,
+        9
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "rotation": 270,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        15.25,
+        6.25,
+        6.25
+      ],
+      "to": [
+        16,
+        9.75,
+        7
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            1,
+            1,
+            2
+          ],
+          "rotation": 270,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy",
+      "from": [
+        12.5,
+        6.25,
+        6.25
+      ],
+      "to": [
+        13.25,
+        9.75,
+        7
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            1,
+            1,
+            2
+          ],
+          "rotation": 270,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy",
+      "from": [
+        12.5,
+        6.25,
+        9
+      ],
+      "to": [
+        13.25,
+        9.75,
+        9.75
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            1,
+            1,
+            2
+          ],
+          "rotation": 270,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy",
+      "from": [
+        15.25,
+        6.25,
+        9
+      ],
+      "to": [
+        16,
+        9.75,
+        9.75
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            1,
+            1,
+            2
+          ],
+          "rotation": 270,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        15.25,
+        6.25,
+        7
+      ],
+      "to": [
+        16,
+        7,
+        9
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy",
+      "from": [
+        12.5,
+        6.25,
+        7
+      ],
+      "to": [
+        13.25,
+        7,
+        9
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy",
+      "from": [
+        13.25,
+        6.25,
+        9
+      ],
+      "to": [
+        15.25,
+        7,
+        9.75
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            2,
+            1,
+            5
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy Copy",
+      "from": [
+        13.25,
+        9,
+        9
+      ],
+      "to": [
+        15.25,
+        9.75,
+        9.75
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            2,
+            1,
+            5
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy Copy Copy",
+      "from": [
+        13.25,
+        9,
+        6.25
+      ],
+      "to": [
+        15.25,
+        9.75,
+        7
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            2,
+            1,
+            5
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy Copy Copy",
+      "from": [
+        13.25,
+        6.25,
+        6.25
+      ],
+      "to": [
+        15.25,
+        7,
+        7
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            2,
+            1,
+            5
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy",
+      "from": [
+        15.25,
+        9,
+        7
+      ],
+      "to": [
+        16,
+        9.75,
+        9
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy",
+      "from": [
+        12.5,
+        9,
+        7
+      ],
+      "to": [
+        13.25,
+        9.75,
+        9
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        13.25,
+        10.25,
+        7
+      ],
+      "to": [
+        15.25,
+        12.25,
+        9
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          11.25,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "rotation": 270,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        15.25,
+        9.5,
+        6.25
+      ],
+      "to": [
+        16,
+        13,
+        7
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          11.25,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy",
+      "from": [
+        12.5,
+        9.5,
+        6.25
+      ],
+      "to": [
+        13.25,
+        13,
+        7
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          11.25,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy",
+      "from": [
+        12.5,
+        9.5,
+        9
+      ],
+      "to": [
+        13.25,
+        13,
+        9.75
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          11.25,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy",
+      "from": [
+        15.25,
+        9.5,
+        9
+      ],
+      "to": [
+        16,
+        13,
+        9.75
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          11.25,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            1,
+            1,
+            7
+          ],
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        15.25,
+        9.5,
+        7
+      ],
+      "to": [
+        16,
+        10.25,
+        9
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          11.25,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy",
+      "from": [
+        12.5,
+        9.5,
+        7
+      ],
+      "to": [
+        13.25,
+        10.25,
+        9
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          11.25,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy",
+      "from": [
+        13.25,
+        9.5,
+        9
+      ],
+      "to": [
+        15.25,
+        10.25,
+        9.75
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          11.25,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            2,
+            1,
+            5
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy Copy",
+      "from": [
+        13.25,
+        12.25,
+        9
+      ],
+      "to": [
+        15.25,
+        13,
+        9.75
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          11.25,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            2,
+            1,
+            5
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy Copy Copy",
+      "from": [
+        13.25,
+        12.25,
+        6.25
+      ],
+      "to": [
+        15.25,
+        13,
+        7
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          11.25,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            2,
+            1,
+            5
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy Copy Copy Copy",
+      "from": [
+        13.25,
+        9.5,
+        6.25
+      ],
+      "to": [
+        15.25,
+        10.25,
+        7
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          11.25,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "south": {
+          "uv": [
+            0,
+            2,
+            1,
+            5
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy",
+      "from": [
+        15.25,
+        12.25,
+        7
+      ],
+      "to": [
+        16,
+        13,
+        9
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          11.25,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "texture": "#particle"
+        }
+      }
+    },
+    {
+      "name": "Cube Copy Copy",
+      "from": [
+        12.5,
+        12.25,
+        7
+      ],
+      "to": [
+        13.25,
+        13,
+        9
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          11.25,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "west": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "rotation": 90,
+          "texture": "#particle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "rotation": 180,
+          "texture": "#particle"
+        },
+        "down": {
+          "uv": [
+            0,
+            2,
+            1,
+            6
+          ],
+          "texture": "#particle"
+        }
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        1,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        1,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        225,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ]
+    },
+    "fixed": {
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  },
+  "groups": [
+    {
+      "name": "cable_side_west",
+      "origin": [
+        8,
+        8,
+        8
+      ],
+      "children": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "name": "energy_hv_center",
+      "origin": [
+        8,
+        8,
+        8
+      ],
+      "children": [
+        {
+          "name": "energy_hv_center",
+          "origin": [
+            8,
+            8,
+            8
+          ],
+          "children": [
+            {
+              "name": "cable_center",
+              "origin": [
+                8,
+                8,
+                8
+              ],
+              "children": [
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "energy_hv_center",
+      "origin": [
+        8,
+        8,
+        8
+      ],
+      "children": [
+        {
+          "name": "energy_hv_center",
+          "origin": [
+            8,
+            8,
+            8
+          ],
+          "children": [
+            {
+              "name": "cable_center",
+              "origin": [
+                8,
+                8,
+                8
+              ],
+              "children": [
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "industrialrenewal:block/smartmodel/pipe_energy"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockConnectedMultiblocks;
 import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.tileentity.TileEntityWindTurbinePillar;
 import net.minecraft.block.Block;
@@ -8,19 +9,19 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nullable;
 
-public class BlockWindTurbinePillar extends BlockTileEntityConnectedMultiblocks<TileEntityWindTurbinePillar>
+public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<TileEntityWindTurbinePillar>
 {
 
     public BlockWindTurbinePillar()
@@ -59,41 +60,16 @@ public class BlockWindTurbinePillar extends BlockTileEntityConnectedMultiblocks<
         return ActionResultType.PASS;
     }
 
-    private boolean canConnectTo(final IBlockReader worldIn, final BlockPos ownPos, final Direction neighborDirection)
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        final BlockPos neighborPos = ownPos.offset(neighborDirection);
-        final BlockState neighborState = worldIn.getBlockState(neighborPos);
-
-        if (neighborDirection == Direction.DOWN)
-        {
-            return !(neighborState.getBlock() instanceof BlockWindTurbinePillar);
-        }
-        TileEntity te = worldIn.getTileEntity(ownPos.offset(neighborDirection));
-        return te != null && te.getCapability(CapabilityEnergy.ENERGY, neighborDirection.getOpposite()).isPresent();
+        builder.add(FACING);
     }
 
     @Override
-    public BlockState getExtendedState(BlockState state, IBlockReader world, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
     {
-        //if (state instanceof IExtendedBlockState)
-        //{
-        //    Direction facing = state.get(FACING);
-        //    IExtendedBlockState eState = (IExtendedBlockState) state;
-        //    boolean down = canConnectTo(world, pos, Direction.DOWN);
-        //    eState = eState.with(DOWN, down).with(UP, false);
-        //    if (down)
-        //        eState = eState.with(SOUTH, canConnectTo(world, pos, facing.getOpposite()))
-        //                .with(NORTH, canConnectTo(world, pos, facing))
-        //                .with(EAST, canConnectTo(world, pos, facing.rotateY()))
-        //                .with(WEST, canConnectTo(world, pos, facing.rotateYCCW()));
-        //    else
-        //        eState = eState.with(SOUTH, false)
-        //                .with(NORTH, false)
-        //                .with(EAST, false)
-        //                .with(WEST, false);
-        //    return eState;
-        //}
-        return state;
+        return Block.makeCuboidShape(1, 1, 1, 15, 15, 15);
     }
 
     @Nullable

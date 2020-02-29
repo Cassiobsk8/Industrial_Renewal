@@ -1,11 +1,16 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
+import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -13,6 +18,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Map;
 
@@ -65,6 +71,44 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
                 this.Sync();
             }
         }
+    }
+
+    @Nonnull
+    @Override
+    public IModelData getModelData()
+    {
+        return new ModelDataMap.Builder()
+                .withInitial(MASTER, IRConfig.Main.showMaster.get() && isMaster())
+                .withInitial(SOUTH, canConnectToPipe(Direction.SOUTH))
+                .withInitial(NORTH, canConnectToPipe(Direction.NORTH))
+                .withInitial(EAST, canConnectToPipe(Direction.EAST))
+                .withInitial(WEST, canConnectToPipe(Direction.WEST))
+                .withInitial(UP, canConnectToPipe(Direction.UP))
+                .withInitial(DOWN, canConnectToPipe(Direction.DOWN))
+                .withInitial(CSOUTH, canConnectToCapability(Direction.SOUTH))
+                .withInitial(CNORTH, canConnectToCapability(Direction.NORTH))
+                .withInitial(CEAST, canConnectToCapability(Direction.EAST))
+                .withInitial(CWEST, canConnectToCapability(Direction.WEST))
+                .withInitial(CUP, canConnectToCapability(Direction.UP))
+                .withInitial(CDOWN, canConnectToCapability(Direction.DOWN))
+                .build();
+    }
+
+    public boolean canConnectToPipe(Direction neighborDirection)
+    {
+        BlockPos otherPos = pos.offset(neighborDirection);
+        TileEntity te = world.getTileEntity(otherPos);
+        return instanceOf(te);
+    }
+
+    public boolean canConnectToCapability(Direction neighborDirection)
+    {
+        BlockPos otherPos = pos.offset(neighborDirection);
+        BlockState state = world.getBlockState(otherPos);
+        TileEntity te = world.getTileEntity(otherPos);
+        return !(state.getBlock() instanceof BlockEnergyCable)
+                && te != null
+                && te.getCapability(CapabilityEnergy.ENERGY, neighborDirection.getOpposite()).isPresent();
     }
 
     public int moveEnergy(boolean simulate, int validOutputs, Map<BlockPos, Direction> mapPosSet)

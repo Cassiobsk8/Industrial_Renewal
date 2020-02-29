@@ -14,15 +14,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -33,7 +34,7 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable>
 
     public BlockEnergyCable(EnumEnergyCableType type)
     {
-        super(Block.Properties.create(Material.IRON));
+        super(Block.Properties.create(Material.IRON), 4, 4);
         this.type = type;
     }
 
@@ -87,25 +88,6 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable>
     }
 
     @Override
-    public boolean canConnectToPipe(IBlockReader worldIn, BlockPos ownPos, Direction neighborDirection)
-    {
-        BlockPos otherPos = ownPos.offset(neighborDirection);
-        BlockState state = worldIn.getBlockState(otherPos);
-        Block block = state.getBlock();
-        return (block instanceof BlockEnergyCable && type.equals(((BlockEnergyCable) block).type))
-                || (block instanceof BlockCableTray && ((BlockCableTray) block).isCablePresent(worldIn, otherPos, convertFromType(type)));
-    }
-
-    @Override
-    public boolean canConnectToCapability(IBlockReader worldIn, BlockPos ownPos, Direction neighborDirection)
-    {
-        BlockPos pos = ownPos.offset(neighborDirection);
-        BlockState state = worldIn.getBlockState(pos);
-        TileEntity te = worldIn.getTileEntity(pos);
-        return !(state.getBlock() instanceof BlockEnergyCable) && te != null && te.getCapability(CapabilityEnergy.ENERGY, neighborDirection.getOpposite()).isPresent();
-    }
-
-    @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
     {
         ItemStack playerStack = player.getHeldItem(Hand.MAIN_HAND);
@@ -128,7 +110,20 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable>
             if (!worldIn.isRemote)
             {
                 worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                Block block = getBlockFromType();
+                Block block;
+                switch (type)
+                {
+                    default:
+                    case LV:
+                        block = BlocksRegistration.ENERGYCABLEGAUGELV.get();
+                        break;
+                    case MV:
+                        block = BlocksRegistration.ENERGYCABLEGAUGEMV.get();
+                        break;
+                    case HV:
+                        block = BlocksRegistration.ENERGYCABLEGAUGEHV.get();
+                        break;
+                }
                 worldIn.setBlockState(pos, block.getDefaultState().with(BlockEnergyCableGauge.FACING, player.getHorizontalFacing()), 3);
                 if (!player.isCreative())
                 {

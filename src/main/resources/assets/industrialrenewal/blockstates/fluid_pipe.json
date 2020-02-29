@@ -1,22 +1,7 @@
 {
-  "forge_marker": 1,
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:smartmodel/pipe_fluid"
-    },
-    "inventory": [
-      {
-        "model": "industrialrenewal:pipe_fluid/pipe_center",
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:pipe_fluid/pipe_side"
-          },
-          "pipe_south": {
-            "model": "industrialrenewal:pipe_fluid/pipe_side",
-            "y": 180
-          }
-        }
-      }
-    ]
+    "": {
+      "model": "industrialrenewal:block/smartmodel/pipe_fluid"
+    }
   }
 }

@@ -2,16 +2,16 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "particle": "industrialrenewal:blocks/pipe"
+      "particle": "industrialrenewal:block/blocks/pipe"
     }
   },
   "variants": {
     "master": {
       "true": {
-        "model": "industrialrenewal:chunk_loader"
+        "model": "industrialrenewal:block/chunk_loader"
       },
       "false": {
-        "model": "industrialrenewal:dummy"
+        "model": "industrialrenewal:block/dummy"
       }
     },
     "facing": {
@@ -30,14 +30,14 @@
       "true": {
         "submodel": {
           "slave": {
-            "model": "industrialrenewal:chunk_loader_slave"
+            "model": "industrialrenewal:block/chunk_loader_slave"
           }
         }
       },
       "false": {}
     },
     "inventory": {
-      "model": "industrialrenewal:chunk_loader"
+      "model": "industrialrenewal:block/chunk_loader"
     }
   }
 }

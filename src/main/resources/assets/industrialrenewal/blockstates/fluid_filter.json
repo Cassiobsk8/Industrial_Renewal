@@ -2,21 +2,21 @@
   "forge_marker": 1,
   "variants": {
     "facing=south": {
-      "model": "industrialrenewal:fluid_filter",
+      "model": "industrialrenewal:block/fluid_filter",
       "y": 90
     },
     "facing=east": {
-      "model": "industrialrenewal:fluid_filter"
+      "model": "industrialrenewal:block/fluid_filter"
     },
     "facing=north": {
-      "model": "industrialrenewal:fluid_filter",
+      "model": "industrialrenewal:block/fluid_filter",
       "y": 90
     },
     "facing=west": {
-      "model": "industrialrenewal:fluid_filter"
+      "model": "industrialrenewal:block/fluid_filter"
     },
     "inventory": {
-      "model": "industrialrenewal:fluid_filter",
+      "model": "industrialrenewal:block/fluid_filter",
       "transform": "forge:default-block"
     }
   }

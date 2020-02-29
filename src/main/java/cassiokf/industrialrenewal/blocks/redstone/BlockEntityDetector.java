@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.BlockAbstractFacingWithBase;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractFacingWithBase;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityEntityDetector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

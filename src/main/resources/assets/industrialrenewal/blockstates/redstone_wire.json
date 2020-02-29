@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "industrialrenewal:redstone_wire_base",
+    "model": "industrialrenewal:block/redstone_wire_base",
     "textures": {
       "particle": "blocks/redstone_block"
     }

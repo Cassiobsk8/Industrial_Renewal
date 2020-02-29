@@ -1,8 +1,8 @@
 {
   "forge_marker": 1,
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:smartmodel/floor_cable_hv"
+    "": {
+      "model": "industrialrenewal:block/smartmodel/floor_cable_hv"
     },
     "inventory": [
       {}

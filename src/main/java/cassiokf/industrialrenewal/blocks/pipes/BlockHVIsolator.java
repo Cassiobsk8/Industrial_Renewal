@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
-import cassiokf.industrialrenewal.blocks.BlockAbstractFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractFacing;
 import cassiokf.industrialrenewal.tileentity.TileEntityWireIsolator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

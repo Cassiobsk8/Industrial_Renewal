@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "industrialrenewal:block/pipe_tray/energy/hv/pipe_con_south"
+    }
+  }
+}

@@ -9,6 +9,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -16,6 +18,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import static cassiokf.industrialrenewal.init.TileRegistration.TURBINEPILLAR_TILE;
@@ -238,5 +241,44 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
         compound.putBoolean("base", this.isBase);
         if (getMaster() != null) compound.putLong("masterPos", getMaster().getPos().toLong());
         return super.write(compound);
+    }
+
+    @Nonnull
+    @Override
+    public IModelData getModelData()
+    {
+        BlockState eState = getBlockState();
+        Direction facing = eState.get(BlockWindTurbinePillar.FACING);
+        ModelDataMap.Builder builder = new ModelDataMap.Builder();
+        boolean down = canConnectTo(Direction.DOWN);
+        builder.withInitial(DOWN, down).withInitial(UP, false);
+        if (down)
+            return builder
+                    .withInitial(SOUTH, canConnectTo(facing.getOpposite()))
+                    .withInitial(NORTH, canConnectTo(facing))
+                    .withInitial(EAST, canConnectTo(facing.rotateY()))
+                    .withInitial(WEST, canConnectTo(facing.rotateYCCW()))
+                    .build();
+        else
+            return builder
+                    .withInitial(SOUTH, false)
+                    .withInitial(NORTH, false)
+                    .withInitial(EAST, false)
+                    .withInitial(WEST, false)
+                    .build();
+    }
+
+    private boolean canConnectTo(final Direction neighborDirection)
+    {
+        final BlockPos neighborPos = pos.offset(neighborDirection);
+        final BlockState neighborState = world.getBlockState(neighborPos);
+
+        if (neighborDirection == Direction.DOWN)
+        {
+            return !(neighborState.getBlock() instanceof BlockWindTurbinePillar);
+        }
+        TileEntity te = world.getTileEntity(neighborPos);
+        return te != null
+                && te.getCapability(CapabilityEnergy.ENERGY, neighborDirection.getOpposite()).isPresent();
     }
 }

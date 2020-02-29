@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
 import cassiokf.industrialrenewal.tileentity.TileEntityConcrete;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalFacing;
 import cassiokf.industrialrenewal.tileentity.TileEntityRecordPlayer;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;

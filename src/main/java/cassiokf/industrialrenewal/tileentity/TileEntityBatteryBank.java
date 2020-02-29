@@ -1,13 +1,16 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.BlockTileEntityConnected;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.tileentity.abstracts.TE6WayConnection;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -15,13 +18,14 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
 import static cassiokf.industrialrenewal.init.TileRegistration.BATTERYBANK_TILE;
 
-public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabilityProvider, ITickableTileEntity
+public class TileEntityBatteryBank extends TE6WayConnection implements ICapabilityProvider, ITickableTileEntity
 {
     private final Set<Direction> outPutFacings = new HashSet<>();
     private LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(this::createEnergy);
@@ -62,6 +66,25 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
         };
     }
 
+    @Nonnull
+    @Override
+    public IModelData getModelData()
+    {
+        return new ModelDataMap.Builder()
+                .withInitial(UP, canFaceBeOutPut(Direction.UP))
+                .withInitial(DOWN, canFaceBeOutPut(Direction.DOWN))
+                .withInitial(NORTH, canFaceBeOutPut(Direction.NORTH))
+                .withInitial(SOUTH, canFaceBeOutPut(Direction.SOUTH))
+                .withInitial(EAST, canFaceBeOutPut(Direction.EAST))
+                .withInitial(WEST, canFaceBeOutPut(Direction.WEST))
+                .build();
+    }
+
+    private boolean canFaceBeOutPut(Direction face)
+    {
+        return isFacingOutput(face) && face != getBlockFacing();
+    }
+
     @Override
     public void tick()
     {
@@ -89,11 +112,13 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
         {
             outPutFacings.remove(facing);
             this.Sync();
+            this.requestModelDataUpdate();
             return false;
         } else
         {
             outPutFacings.add(facing);
             this.Sync();
+            this.requestModelDataUpdate();
             return true;
         }
     }
@@ -117,7 +142,7 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabi
 
     public Direction forceFaceCheck()
     {
-        blockFacing = world.getBlockState(pos).get(BlockTileEntityConnected.FACING);
+        blockFacing = getBlockState().get(BlockAbstractHorizontalFacing.FACING);
         return blockFacing;
     }
 

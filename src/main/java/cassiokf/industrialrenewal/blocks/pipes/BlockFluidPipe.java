@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.BlocksRegistration;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityCableTray;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipe;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeBase;
 import net.minecraft.block.Block;
@@ -11,15 +10,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -28,43 +28,14 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipeBase>
 {
     public BlockFluidPipe()
     {
-        super(Block.Properties.create(Material.IRON));
-    }
-
-    @Override
-    public boolean canConnectToPipe(IBlockReader worldIn, BlockPos ownPos, Direction neighborDirection)
-    {
-        BlockPos neighborPos = ownPos.offset(neighborDirection);
-        BlockState state = worldIn.getBlockState(neighborPos);
-        Block block = state.getBlock();
-
-        return block instanceof BlockFluidPipe || (block instanceof BlockCableTray && trayHasPipe(worldIn, neighborPos));
-    }
-
-    private boolean trayHasPipe(IBlockReader world, BlockPos pos)
-    {
-        TileEntityCableTray te = (TileEntityCableTray) world.getTileEntity(pos);
-        if (te != null)
-        {
-            return te.hasPipe();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean canConnectToCapability(IBlockReader worldIn, BlockPos ownPos, Direction neighborDirection)
-    {
-        BlockPos pos = ownPos.offset(neighborDirection);
-        BlockState state = worldIn.getBlockState(pos);
-        TileEntity te = worldIn.getTileEntity(pos);
-        return !(state.getBlock() instanceof BlockFluidPipe) && !(state.getBlock() instanceof BlockFluidPipeGauge)
-                && te != null && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, neighborDirection.getOpposite()).isPresent();
+        super(Block.Properties.create(Material.IRON), 4, 4);
     }
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
     {
-        if (player.getHeldItem(Hand.MAIN_HAND).getItem() == BlocksRegistration.INDFLOOR_ITEM.get())
+        ItemStack heldStack = player.getHeldItemMainhand();
+        if (heldStack.getItem() == BlocksRegistration.INDFLOOR_ITEM.get())
         {
             if (!worldIn.isRemote)
             {
@@ -72,20 +43,20 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipeBase>
                 worldIn.setBlockState(pos, BlocksRegistration.FLOORPIPE.get().getDefaultState(), 3);
                 if (!player.isCreative())
                 {
-                    player.getHeldItem(Hand.MAIN_HAND).shrink(1);
+                    heldStack.shrink(1);
                 }
             }
             return ActionResultType.SUCCESS;
         }
-        if (player.getHeldItem(Hand.MAIN_HAND).getItem() == BlocksRegistration.GAUGE_ITEM.get())
+        if (heldStack.getItem() == BlocksRegistration.GAUGE_ITEM.get())
         {
             if (!worldIn.isRemote)
             {
                 worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                worldIn.setBlockState(pos, BlocksRegistration.FLUIDPIPEGAUGE.get().getDefaultState().with(BlockFluidPipeGauge.FACING, player.getHorizontalFacing()), 3);
+                worldIn.setBlockState(pos, BlocksRegistration.FLUIDPIPEGAUGE.get().getDefaultState().with(BlockFluidPipeGauge.FACING, player.getHorizontalFacing()));
                 if (!player.isCreative())
                 {
-                    player.getHeldItem(Hand.MAIN_HAND).shrink(1);
+                    heldStack.shrink(1);
                 }
             }
             return ActionResultType.SUCCESS;

@@ -1,8 +1,8 @@
 {
   "forge_marker": 1,
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:dummy"
+    "": {
+      "model": "industrialrenewal:block/dummy"
     }
   }
 }

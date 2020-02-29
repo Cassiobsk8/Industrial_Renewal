@@ -1,39 +1,19 @@
 {
-  "forge_marker": 1,
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:smartmodel/roofmodel"
+    "facing=north": {
+      "model": "industrialrenewal:block/smartmodel/roofmodel"
     },
-    "facing": {
-      "north": {
-        "model": "industrialrenewal:smartmodel/roofmodel"
-      },
-      "south": {
-        "model": "industrialrenewal:smartmodel/roofmodel",
-        "y": 180
-      },
-      "east": {
-        "model": "industrialrenewal:smartmodel/roofmodel",
-        "y": 90
-      },
-      "west": {
-        "model": "industrialrenewal:smartmodel/roofmodel",
-        "y": -90
-      }
+    "facing=south": {
+      "model": "industrialrenewal:block/smartmodel/roofmodel",
+      "y": 180
     },
-    "inventory": [
-      {
-        "model": "industrialrenewal:roof/roof_base",
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:roof/roof_side"
-          },
-          "pipe_south": {
-            "model": "industrialrenewal:roof/roof_side",
-            "y": 180
-          }
-        }
-      }
-    ]
+    "facing=east": {
+      "model": "industrialrenewal:block/smartmodel/roofmodel",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "industrialrenewal:block/smartmodel/roofmodel",
+      "y": -90
+    }
   }
 }

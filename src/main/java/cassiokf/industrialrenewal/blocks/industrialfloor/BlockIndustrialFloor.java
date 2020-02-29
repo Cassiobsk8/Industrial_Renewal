@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.blocks.industrialfloor;
 
-import cassiokf.industrialrenewal.blocks.BlockAbstractSixWayConnections;
 import cassiokf.industrialrenewal.blocks.BlockCatwalkHatch;
 import cassiokf.industrialrenewal.blocks.BlockCatwalkLadder;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractSixWayConnections;
 import cassiokf.industrialrenewal.init.BlocksRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

@@ -1,38 +1,19 @@
 {
-  "forge_marker": 1,
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:smartmodel/pipe_fluid_gauge"
+    "facing=north": {
+      "model": "industrialrenewal:block/smartmodel/pipe_fluid_gauge"
     },
-    "facing": {
-      "north": {
-        "model": "industrialrenewal:smartmodel/pipe_fluid_gauge"
-      },
-      "south": {
-        "model": "industrialrenewal:smartmodel/pipe_fluid_gauge",
-        "y": 180
-      },
-      "east": {
-        "model": "industrialrenewal:smartmodel/pipe_fluid_gauge",
-        "y": 90
-      },
-      "west": {
-        "model": "industrialrenewal:smartmodel/pipe_fluid_gauge",
-        "y": -90
-      }
+    "facing=south": {
+      "model": "industrialrenewal:block/smartmodel/pipe_fluid_gauge",
+      "y": 180
     },
-    "inventory": [
-      {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:pipe_side"
-          },
-          "pipe_south": {
-            "model": "industrialrenewal:pipe_side",
-            "y": 180
-          }
-        }
-      }
-    ]
+    "facing=east": {
+      "model": "industrialrenewal:block/smartmodel/pipe_fluid_gauge",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "industrialrenewal:block/smartmodel/pipe_fluid_gauge",
+      "y": -90
+    }
   }
 }

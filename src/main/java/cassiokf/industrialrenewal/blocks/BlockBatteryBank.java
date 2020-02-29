@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ItemsRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
@@ -9,7 +10,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBatteryBank>
+public class BlockBatteryBank extends BlockAbstractHorizontalFacing
 {
     public BlockBatteryBank()
     {
@@ -43,25 +43,17 @@ public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBattery
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        if (handIn.equals(Hand.MAIN_HAND) && player.getHeldItem(Hand.MAIN_HAND).getItem().equals(ItemsRegistration.SCREWDRIVE.get()) && worldIn.getTileEntity(pos) instanceof TileEntityBatteryBank)
+        if (handIn.equals(Hand.MAIN_HAND) && player.getHeldItem(Hand.MAIN_HAND).getItem().equals(ItemsRegistration.SCREWDRIVE.get()))
         {
             TileEntityBatteryBank te = (TileEntityBatteryBank) worldIn.getTileEntity(pos);
-            if (te != null) te.toggleFacing(p_225533_6_.getFace());
+            if (te != null) te.toggleFacing(hit.getFace());
             worldIn.notifyBlockUpdate(pos, state, state, 3);
             if (!worldIn.isRemote) ItemPowerScrewDrive.playDrillSound(worldIn, pos);
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;
-    }
-
-    @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-    {
-        TileEntityBatteryBank te = (TileEntityBatteryBank) worldIn.getTileEntity(pos);
-        if (te != null) te.forceFaceCheck();
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Nullable
@@ -72,21 +64,9 @@ public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBattery
     }
 
     @Override
-    public BlockState getExtendedState(BlockState state, IBlockReader world, BlockPos pos)
+    public boolean hasTileEntity(BlockState state)
     {
-        //if (state instanceof IExtendedBlockState)
-        //{
-        //    Direction facing = state.get(FACING);
-        //    IExtendedBlockState eState = (IExtendedBlockState) state;
-        //    TileEntityBatteryBank te = (TileEntityBatteryBank) world.getTileEntity(pos);
-        //    if (te != null) return eState.with(SOUTH, te.isFacingOutput(facing.getOpposite()))
-        //            .with(NORTH, te.isFacingOutput(facing))
-        //            .with(EAST, te.isFacingOutput(facing.rotateY()))
-        //            .with(WEST, te.isFacingOutput(facing.rotateYCCW()))
-        //            .with(UP, te.isFacingOutput(Direction.UP))
-        //            .with(DOWN, te.isFacingOutput(Direction.DOWN));
-        //}
-        return state;
+        return true;
     }
 
     @Nullable

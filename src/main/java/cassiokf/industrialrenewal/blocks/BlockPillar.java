@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractSixWayConnections;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorLamp;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
@@ -29,41 +30,6 @@ public class BlockPillar extends BlockAbstractSixWayConnections
     public BlockPillar()
     {
         super(Block.Properties.create(Material.IRON), 8, 16);
-    }
-
-    private static boolean isValidConnection(final BlockState neighborState, final Direction neighborDirection)
-    {
-        Block nb = neighborState.getBlock();
-        if (neighborDirection != Direction.UP && neighborDirection != Direction.DOWN)
-        {
-            return nb instanceof LeverBlock
-                    || (nb instanceof BlockHVIsolator && neighborState.get(BlockHVIsolator.FACING) == neighborDirection.getOpposite())
-                    || nb instanceof RedstoneTorchBlock
-                    || nb instanceof TripWireHookBlock
-                    || nb instanceof BlockColumn
-                    || (nb instanceof BlockCableTray && neighborState.get(BlockCableTray.BASE).equals(EnumBaseDirection.byIndex(neighborDirection.getOpposite().getIndex())))
-                    || nb instanceof LadderBlock
-                    || (nb instanceof BlockLight && neighborState.get(BlockLight.FACING) == neighborDirection.getOpposite())
-                    || nb instanceof BlockRoof
-                    || (nb instanceof BlockBrace && Objects.equals(neighborState.get(BlockBrace.FACING).getName(), neighborDirection.getOpposite().getName()))
-                    || (nb instanceof BlockBrace && Objects.equals(neighborState.get(BlockBrace.FACING).getName(), "down_" + neighborDirection.getName()))
-                    || (nb instanceof BlockAlarm && neighborState.get(BlockAlarm.FACING) == neighborDirection)
-                    || (nb instanceof BlockSignBase && neighborState.get(BlockSignBase.ONWALL) && Objects.equals(neighborState.get(BlockSignBase.FACING).getName(), neighborDirection.getOpposite().getName()))
-                    || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:connector")
-                    || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:metal_decoration2")
-                    || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:wooden_device1")
-                    || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:metal_device1")
-                    //start Industrial floor side connection
-                    || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
-                    || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable;
-            //end
-        }
-        if (neighborDirection == Direction.DOWN)
-        {
-            return neighborState.isSolid();
-        }
-        return neighborState.isSolid() || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
-                || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable || nb instanceof BlockCatWalk;
     }
 
     @Override
@@ -148,6 +114,36 @@ public class BlockPillar extends BlockAbstractSixWayConnections
     {
         final BlockPos neighborPos = currentPos.offset(neighborDirection);
         final BlockState neighborState = worldIn.getBlockState(neighborPos);
-        return isValidConnection(neighborState, neighborDirection);
+        Block nb = neighborState.getBlock();
+        if (neighborDirection != Direction.UP && neighborDirection != Direction.DOWN)
+        {
+            return nb instanceof LeverBlock
+                    || (nb instanceof BlockHVIsolator && neighborState.get(BlockHVIsolator.FACING) == neighborDirection.getOpposite())
+                    || nb instanceof RedstoneTorchBlock
+                    || nb instanceof TripWireHookBlock
+                    || nb instanceof BlockColumn
+                    || (nb instanceof BlockCableTray && neighborState.get(BlockCableTray.BASE).equals(EnumBaseDirection.byIndex(neighborDirection.getOpposite().getIndex())))
+                    || nb instanceof LadderBlock
+                    || (nb instanceof BlockLight && neighborState.get(BlockLight.FACING) == neighborDirection.getOpposite())
+                    || nb instanceof BlockRoof
+                    || (nb instanceof BlockBrace && Objects.equals(neighborState.get(BlockBrace.FACING).getName(), neighborDirection.getOpposite().getName()))
+                    || (nb instanceof BlockBrace && Objects.equals(neighborState.get(BlockBrace.FACING).getName(), "down_" + neighborDirection.getName()))
+                    || (nb instanceof BlockAlarm && neighborState.get(BlockAlarm.FACING) == neighborDirection)
+                    || (nb instanceof BlockSignBase && neighborState.get(BlockSignBase.ONWALL) && Objects.equals(neighborState.get(BlockSignBase.FACING).getName(), neighborDirection.getOpposite().getName()))
+                    || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:connector")
+                    || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:metal_decoration2")
+                    || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:wooden_device1")
+                    || Objects.requireNonNull(nb.getRegistryName()).toString().matches("immersiveengineering:metal_device1")
+                    //start Industrial floor side connection
+                    || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
+                    || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable;
+            //end
+        }
+        if (neighborDirection == Direction.DOWN)
+        {
+            return neighborState.isSolid();
+        }
+        return neighborState.isSolid() || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
+                || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable || nb instanceof BlockCatWalk;
     }
 }

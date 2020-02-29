@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:ind_floor/floor_side_down"
+    "": {
+      "model": "industrialrenewal:block/ind_floor/floor_side_down"
     }
   }
 }

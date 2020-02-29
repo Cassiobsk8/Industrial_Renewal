@@ -1,17 +1,17 @@
 {
   "forge_marker": 1,
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:smartmodel/pillar_fluid"
+    "": {
+      "model": "industrialrenewal:block/smartmodel/pillar_fluid"
     },
     "inventory": {
-      "model": "industrialrenewal:iron_pillar_pipe_base",
+      "model": "industrialrenewal:block/iron_pillar_pipe_base",
       "submodel": {
         "pipe_up": {
-          "model": "industrialrenewal:pipe_side_noc"
+          "model": "industrialrenewal:block/pipe_side_noc"
         },
         "pipe_down": {
-          "model": "industrialrenewal:pipe_side_noc"
+          "model": "industrialrenewal:block/pipe_side_noc"
         }
       },
       "transform": "forge:default-block"

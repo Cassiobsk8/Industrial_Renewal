@@ -1,0 +1,68 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "industrialrenewal:block/smartmodel/cable_tray"
+      }
+    },
+    {
+      "when": {
+        "base": "up"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_tray/base/base_up"
+      }
+    },
+    {
+      "when": {
+        "base": "down"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_tray/base/base_down"
+      }
+    },
+    {
+      "when": {
+        "base": "north"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_tray/base/base_side"
+      }
+    },
+    {
+      "when": {
+        "base": "south"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_tray/base/base_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "base": "east"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_tray/base/base_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "base": "west"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_tray/base/base_side",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "base": "none"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/smartmodel/cable_tray"
+      }
+    }
+  ]
+}

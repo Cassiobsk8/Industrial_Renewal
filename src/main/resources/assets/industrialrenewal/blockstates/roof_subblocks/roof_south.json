@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:roof/roof_side_south"
+    "": {
+      "model": "industrialrenewal:block/roof/roof_side_south"
     }
   }
 }

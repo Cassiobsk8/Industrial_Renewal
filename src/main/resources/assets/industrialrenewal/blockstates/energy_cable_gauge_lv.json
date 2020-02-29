@@ -1,30 +1,19 @@
 {
-  "forge_marker": 1,
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:smartmodel/pipe_energy_gauge_lv"
+    "facing=north": {
+      "model": "industrialrenewal:block/smartmodel/pipe_energy_gauge_lv"
     },
-    "facing": {
-      "north": {
-        "model": "industrialrenewal:smartmodel/pipe_energy_gauge_lv"
-      },
-      "south": {
-        "model": "industrialrenewal:smartmodel/pipe_energy_gauge_lv",
-        "y": 180
-      },
-      "east": {
-        "model": "industrialrenewal:smartmodel/pipe_energy_gauge_lv",
-        "y": 90
-      },
-      "west": {
-        "model": "industrialrenewal:smartmodel/pipe_energy_gauge_lv",
-        "y": -90
-      }
+    "facing=south": {
+      "model": "industrialrenewal:block/smartmodel/pipe_energy_gauge_lv",
+      "y": 180
     },
-    "inventory": [
-      {
-        "model": "industrialrenewal:pipe_energy_lv/cable_center"
-      }
-    ]
+    "facing=east": {
+      "model": "industrialrenewal:block/smartmodel/pipe_energy_gauge_lv",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "industrialrenewal:block/smartmodel/pipe_energy_gauge_lv",
+      "y": -90
+    }
   }
 }

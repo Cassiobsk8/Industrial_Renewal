@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.blocks.BlockSteamBoiler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidsRegistration;
 import cassiokf.industrialrenewal.item.ItemFireBox;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import cassiokf.industrialrenewal.util.CustomItemStackHandler;
 import cassiokf.industrialrenewal.util.Utils;

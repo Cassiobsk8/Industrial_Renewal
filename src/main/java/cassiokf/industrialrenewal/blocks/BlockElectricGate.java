@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractNotFullCube;
 import cassiokf.industrialrenewal.init.SoundsRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

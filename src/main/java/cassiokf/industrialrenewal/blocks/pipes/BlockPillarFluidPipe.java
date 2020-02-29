@@ -5,7 +5,6 @@ import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -45,12 +44,6 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
     {
         ItemStack itemst = new ItemStack(BlocksRegistration.FLUIDPIPE_ITEM.get());
         Utils.spawnItemStack(worldIn.getWorld(), pos, itemst);
-    }
-
-    @Override
-    public BlockRenderType getRenderType(BlockState state)
-    {
-        return BlockRenderType.MODEL;
     }
 
     @Override

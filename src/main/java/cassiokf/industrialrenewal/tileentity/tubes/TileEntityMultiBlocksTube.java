@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
-import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEPipesBase;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -14,7 +14,7 @@ import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TileEntitySyncable implements ITickableTileEntity
+public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TEPipesBase implements ITickableTileEntity
 {
     public int outPut;
     public int oldOutPut = -1;
@@ -46,7 +46,9 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     {
     }
 
-    public abstract void doTick();
+    public void doTick()
+    {
+    }
 
     public int getOutPut()
     {
@@ -107,6 +109,11 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         }
     }
 
+    public void requestRefresh()
+    {
+        this.requestModelDataUpdate();
+    }
+
     public boolean isTray()
     {
         return false;
@@ -147,6 +154,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         this.master = master;
         isMaster = master == this;
         if (!isMaster) posSet.clear();
+        requestRefresh();
     }
 
     public Map<BlockPos, Direction> getPosSet()

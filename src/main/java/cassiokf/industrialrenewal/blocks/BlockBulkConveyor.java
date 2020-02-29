@@ -1,13 +1,14 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalFacing;
 import cassiokf.industrialrenewal.enums.EnumBulkConveyorType;
 import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.init.ItemsRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyor;
-import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyorBase;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyorHopper;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyorInserter;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityBulkConveyorBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

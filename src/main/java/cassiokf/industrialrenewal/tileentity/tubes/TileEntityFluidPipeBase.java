@@ -1,12 +1,16 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
+import cassiokf.industrialrenewal.blocks.pipes.BlockFluidPipe;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -14,6 +18,7 @@ import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Map;
 
@@ -96,17 +101,20 @@ public abstract class TileEntityFluidPipeBase extends TileEntityMultiBlocksTube<
     @Override
     public void checkForOutPuts(BlockPos bPos)
     {
-        if (world.isRemote) return;
-        for (Direction face : Direction.values())
+        if (!world.isRemote)
         {
-            BlockPos currentPos = pos.offset(face);
-            TileEntity te = world.getTileEntity(currentPos);
-            boolean hasMachine = te != null && !(te instanceof TileEntityFluidPipeBase);
-            IFluidHandler machineCap = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).orElse(null);
-            if (hasMachine && machineCap != null)
+            for (Direction face : Direction.values())
             {
-                if (!isMasterInvalid()) getMaster().addMachine(currentPos, face);
-            } else if (!isMasterInvalid()) getMaster().removeMachine(pos, currentPos);
+                BlockPos currentPos = pos.offset(face);
+                TileEntity te = world.getTileEntity(currentPos);
+                boolean hasMachine = te != null
+                        && !(te instanceof TileEntityFluidPipeBase)
+                        && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).isPresent();
+                if (hasMachine)
+                {
+                    if (!isMasterInvalid()) getMaster().addMachine(currentPos, face);
+                } else if (!isMasterInvalid()) getMaster().removeMachine(pos, currentPos);
+            }
         }
     }
 
@@ -140,5 +148,43 @@ public abstract class TileEntityFluidPipeBase extends TileEntityMultiBlocksTube<
         CompoundNBT tag = tagCompound.getCompound("fluid");
         tank.readFromNBT(tag);
         super.read(tagCompound);
+    }
+
+    @Nonnull
+    @Override
+    public IModelData getModelData()
+    {
+        return new ModelDataMap.Builder()
+                .withInitial(MASTER, IRConfig.Main.showMaster.get() && isMaster())
+                .withInitial(SOUTH, canConnectToPipe(Direction.SOUTH))
+                .withInitial(NORTH, canConnectToPipe(Direction.NORTH))
+                .withInitial(EAST, canConnectToPipe(Direction.EAST))
+                .withInitial(WEST, canConnectToPipe(Direction.WEST))
+                .withInitial(UP, canConnectToPipe(Direction.UP))
+                .withInitial(DOWN, canConnectToPipe(Direction.DOWN))
+                .withInitial(CSOUTH, canConnectToCapability(Direction.SOUTH))
+                .withInitial(CNORTH, canConnectToCapability(Direction.NORTH))
+                .withInitial(CEAST, canConnectToCapability(Direction.EAST))
+                .withInitial(CWEST, canConnectToCapability(Direction.WEST))
+                .withInitial(CUP, canConnectToCapability(Direction.UP))
+                .withInitial(CDOWN, canConnectToCapability(Direction.DOWN))
+                .build();
+    }
+
+    public boolean canConnectToPipe(Direction neighborDirection)
+    {
+        BlockPos neighborPos = pos.offset(neighborDirection);
+        TileEntity te = world.getTileEntity(neighborPos);
+        return instanceOf(te);
+    }
+
+    public boolean canConnectToCapability(Direction neighborDirection)
+    {
+        BlockPos offset = pos.offset(neighborDirection);
+        BlockState state = world.getBlockState(offset);
+        TileEntity te = world.getTileEntity(offset);
+        return !(state.getBlock() instanceof BlockFluidPipe)
+                && te != null
+                && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, neighborDirection.getOpposite()).isPresent();
     }
 }

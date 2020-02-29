@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:fence_big/fence_big_core"
+    "": {
+      "model": "industrialrenewal:block/fence_big/fence_big_core"
     }
   }
 }

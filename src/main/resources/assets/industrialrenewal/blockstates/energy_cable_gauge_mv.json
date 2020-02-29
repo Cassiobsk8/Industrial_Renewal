@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "industrialrenewal:block/smartmodel/pipe_energy_gauge"
+    },
+    "facing=south": {
+      "model": "industrialrenewal:block/smartmodel/pipe_energy_gauge",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "industrialrenewal:block/smartmodel/pipe_energy_gauge",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "industrialrenewal:block/smartmodel/pipe_energy_gauge",
+      "y": -90
+    }
+  }
+}

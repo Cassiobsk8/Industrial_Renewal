@@ -2,8 +2,11 @@ package cassiokf.industrialrenewal;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.*;
+import cassiokf.industrialrenewal.model.ModelLoaderCustom;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -29,7 +32,6 @@ public class IndustrialRenewal
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientRegistries);
 
         SoundsRegistration.init();
-
         ItemsRegistration.init();
         BlocksRegistration.init();
         TileRegistration.init();
@@ -47,6 +49,8 @@ public class IndustrialRenewal
 
     private void clientRegistries(final FMLClientSetupEvent event)
     {
+        ModelLoaderRegistry.registerLoader(new ResourceLocation(References.MODID, "smartmodel"), new ModelLoaderCustom());
+
         MinecraftForge.EVENT_BUS.register(IRSoundHandler.class);
 
         RenderTypeLookup.setRenderLayer(BlocksRegistration.WINDOW.get(), RenderType.getTranslucent());
@@ -58,6 +62,7 @@ public class IndustrialRenewal
         RenderTypeLookup.setRenderLayer(BlocksRegistration.STEAMTURBINE.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlocksRegistration.FIRSTAIDKIT.get(), RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(BlocksRegistration.RECORDPLAYER.get(), RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.BATTERYBANK.get(), RenderType.getTranslucent());
 
         //ModelLoaderRegistry.registerLoader(new ResourceLocation(References.MODID, "fancyloader"), new ModelLoaderCustom());
     }

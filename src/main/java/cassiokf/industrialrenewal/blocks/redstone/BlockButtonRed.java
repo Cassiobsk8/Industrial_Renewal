@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.BlockAbstractFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractFacing;
 import cassiokf.industrialrenewal.init.SoundsRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
