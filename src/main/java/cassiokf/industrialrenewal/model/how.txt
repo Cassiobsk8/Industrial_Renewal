@@ -1,6 +1,0 @@
-Cassi: it was replaced with model data
-you can override getModelData in either your IBakedModel, or your TileEntity
-and receive it in getQuads(..., IModelData)
-the getModelData methods are called on the world thread, not the render thread
-and you can request an update from the TE by using this.requestModelDataRefresh()
-when the TE contents change

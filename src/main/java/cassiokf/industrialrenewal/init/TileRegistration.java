@@ -67,6 +67,10 @@ public class TileRegistration
     public static final RegistryObject<TileEntityType<TileEntityConcrete>> CONCRETE_TILE = TILES.register("concrete", () -> TileEntityType.Builder.create(TileEntityConcrete::new, BlocksRegistration.CONCRETE.get()).build(null));
     public static final RegistryObject<TileEntityType<TileEntityWireIsolator>> HVISOLATOR_TILE = TILES.register("isolator_hv", () -> TileEntityType.Builder.create(TileEntityWireIsolator::new, BlocksRegistration.HVISOLATOR.get()).build(null));
     public static final RegistryObject<TileEntityType<TileEntityCableTray>> CABLETRAY_TILE = TILES.register("cable_tray", () -> TileEntityType.Builder.create(TileEntityCableTray::new, BlocksRegistration.CABLETRAY.get()).build(null));
+    public static final RegistryObject<TileEntityType<TEBigFenceColumn>> BIGFENCE_COLUMN = TILES.register("fence_big_column", () -> TileEntityType.Builder.create(TEBigFenceColumn::new, BlocksRegistration.BIGFENCECOLUMN.get()).build(null));
+    public static final RegistryObject<TileEntityType<TEBigFenceCorner>> BIGFENCE_CORNER = TILES.register("fence_big_corner", () -> TileEntityType.Builder.create(TEBigFenceCorner::new, BlocksRegistration.BIGFENCECORNER.get()).build(null));
+    public static final RegistryObject<TileEntityType<TEFloorPipe>> FLOOR_PIPE = TILES.register("floor_pipe", () -> TileEntityType.Builder.create(TEFloorPipe::new, BlocksRegistration.FLOORPIPE.get()).build(null));
+    public static final RegistryObject<TileEntityType<TEPillarPipe>> PILLAR_PIPE = TILES.register("iron_pillar_pipe", () -> TileEntityType.Builder.create(TEPillarPipe::new, BlocksRegistration.FLOORPIPE.get()).build(null));
 
     public static void init()
     {

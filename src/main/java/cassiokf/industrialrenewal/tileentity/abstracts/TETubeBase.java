@@ -3,7 +3,7 @@ package cassiokf.industrialrenewal.tileentity.abstracts;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.client.model.data.ModelProperty;
 
-public abstract class TEPipesBase extends TE6WayConnection
+public abstract class TETubeBase extends TE6WayConnection
 {
     public static final ModelProperty<Boolean> MASTER = new ModelProperty<>();
     public static final ModelProperty<Boolean> CUP = new ModelProperty<>();
@@ -20,7 +20,7 @@ public abstract class TEPipesBase extends TE6WayConnection
     public static final ModelProperty<Boolean> WEAST = new ModelProperty<>();
     public static final ModelProperty<Boolean> WWEST = new ModelProperty<>();
 
-    public TEPipesBase(TileEntityType<?> tileEntityTypeIn)
+    public TETubeBase(TileEntityType<?> tileEntityTypeIn)
     {
         super(tileEntityTypeIn);
     }

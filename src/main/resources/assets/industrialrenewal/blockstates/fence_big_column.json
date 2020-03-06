@@ -1,44 +1,49 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:block/blocks/metal"
-    }
-  },
   "variants": {
-    "": {
+    "facing=north,index=0": {
       "model": "industrialrenewal:block/smartmodel/fence_big_column"
     },
-    "index": {
-      "0": {
-        "model": "industrialrenewal:block/smartmodel/fence_big_column"
-      },
-      "1": {
-        "model": "industrialrenewal:block/smartmodel/fence_big_column"
-      },
-      "2": {
-        "model": "industrialrenewal:block/smartmodel/fence_big_column"
-      }
+    "facing=south,index=0": {
+      "model": "industrialrenewal:block/smartmodel/fence_big_column",
+      "y": 180
     },
-    "facing": {
-      "north": {
-        "model": "industrialrenewal:block/smartmodel/fence_big_column"
-      },
-      "south": {
-        "model": "industrialrenewal:block/smartmodel/fence_big_column",
-        "y": 180
-      },
-      "east": {
-        "model": "industrialrenewal:block/smartmodel/fence_big_column",
-        "y": 90
-      },
-      "west": {
-        "model": "industrialrenewal:block/smartmodel/fence_big_column",
-        "y": -90
-      }
+    "facing=east,index=0": {
+      "model": "industrialrenewal:block/smartmodel/fence_big_column",
+      "y": 90
     },
-    "inventory": {
-      "model": "industrialrenewal:block/fence_big/fence_big_core"
+    "facing=west,index=0": {
+      "model": "industrialrenewal:block/smartmodel/fence_big_column",
+      "y": -90
+    },
+    "facing=north,index=1": {
+      "model": "industrialrenewal:block/smartmodel/fence_big_column"
+    },
+    "facing=south,index=1": {
+      "model": "industrialrenewal:block/smartmodel/fence_big_column",
+      "y": 180
+    },
+    "facing=east,index=1": {
+      "model": "industrialrenewal:block/smartmodel/fence_big_column",
+      "y": 90
+    },
+    "facing=west,index=1": {
+      "model": "industrialrenewal:block/smartmodel/fence_big_column",
+      "y": -90
+    },
+    "facing=north,index=2": {
+      "model": "industrialrenewal:block/smartmodel/fence_big_column"
+    },
+    "facing=south,index=2": {
+      "model": "industrialrenewal:block/smartmodel/fence_big_column",
+      "y": 180
+    },
+    "facing=east,index=2": {
+      "model": "industrialrenewal:block/smartmodel/fence_big_column",
+      "y": 90
+    },
+    "facing=west,index=2": {
+      "model": "industrialrenewal:block/smartmodel/fence_big_column",
+      "y": -90
     }
   }
 }

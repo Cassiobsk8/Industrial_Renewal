@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockConnectedMultiblocks;
-import cassiokf.industrialrenewal.tileentity.abstracts.TEPipesBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TETubeBase;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -52,42 +52,42 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        if (isConnected(worldIn, pos, TEPipesBase.NORTH) || isConnected(worldIn, pos, TEPipesBase.CNORTH))
+        if (isConnected(worldIn, pos, TETubeBase.NORTH) || isConnected(worldIn, pos, TETubeBase.CNORTH))
         {
             NORTHZ1 = 0;
         } else
         {
             NORTHZ1 = 8 - (nodeWidth / 2);
         }
-        if (isConnected(worldIn, pos, TEPipesBase.SOUTH) || isConnected(worldIn, pos, TEPipesBase.CSOUTH))
+        if (isConnected(worldIn, pos, TETubeBase.SOUTH) || isConnected(worldIn, pos, TETubeBase.CSOUTH))
         {
             SOUTHZ2 = 16;
         } else
         {
             SOUTHZ2 = 8 + (nodeWidth / 2);
         }
-        if (isConnected(worldIn, pos, TEPipesBase.WEST) || isConnected(worldIn, pos, TEPipesBase.CWEST))
+        if (isConnected(worldIn, pos, TETubeBase.WEST) || isConnected(worldIn, pos, TETubeBase.CWEST))
         {
             WESTX1 = 0;
         } else
         {
             WESTX1 = 8 - (nodeWidth / 2);
         }
-        if (isConnected(worldIn, pos, TEPipesBase.EAST) || isConnected(worldIn, pos, TEPipesBase.CEAST))
+        if (isConnected(worldIn, pos, TETubeBase.EAST) || isConnected(worldIn, pos, TETubeBase.CEAST))
         {
             EASTX2 = 16;
         } else
         {
             EASTX2 = 8 + (nodeWidth / 2);
         }
-        if (isConnected(worldIn, pos, TEPipesBase.DOWN) || isConnected(worldIn, pos, TEPipesBase.CDOWN))
+        if (isConnected(worldIn, pos, TETubeBase.DOWN) || isConnected(worldIn, pos, TETubeBase.CDOWN))
         {
             DOWN1 = 0;
         } else
         {
             DOWN1 = 8 - (nodeWidth / 2);
         }
-        if (isConnected(worldIn, pos, TEPipesBase.UP) || isConnected(worldIn, pos, TEPipesBase.CUP))
+        if (isConnected(worldIn, pos, TETubeBase.UP) || isConnected(worldIn, pos, TETubeBase.CUP))
         {
             UP2 = 16;
         } else
@@ -99,7 +99,7 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
 
     public final boolean isConnected(IBlockReader worldIn, BlockPos pos, final ModelProperty<Boolean> property)
     {
-        TEPipesBase te = (TEPipesBase) worldIn.getTileEntity(pos);
+        TETubeBase te = (TETubeBase) worldIn.getTileEntity(pos);
         if (te != null)
         {
             IModelData data = te.getModelData();

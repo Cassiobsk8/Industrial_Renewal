@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
-import cassiokf.industrialrenewal.tileentity.abstracts.TEPipesBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TETubeBase;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -14,7 +14,7 @@ import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TEPipesBase implements ITickableTileEntity
+public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TETubeBase implements ITickableTileEntity
 {
     public int outPut;
     public int oldOutPut = -1;
@@ -22,7 +22,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     int oldOutPutCount = -1;
     private TE master;
     private boolean isMaster;
-    private boolean firstTick;
+    public boolean firstTick;
     private Map<BlockPos, Direction> posSet = new ConcurrentHashMap<>();
 
     public TileEntityMultiBlocksTube(TileEntityType<?> tileEntityTypeIn)
@@ -109,7 +109,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         }
     }
 
-    public void requestRefresh()
+    public void requestModelRefresh()
     {
         this.requestModelDataUpdate();
     }
@@ -154,7 +154,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         this.master = master;
         isMaster = master == this;
         if (!isMaster) posSet.clear();
-        requestRefresh();
+        requestModelRefresh();
     }
 
     public Map<BlockPos, Direction> getPosSet()

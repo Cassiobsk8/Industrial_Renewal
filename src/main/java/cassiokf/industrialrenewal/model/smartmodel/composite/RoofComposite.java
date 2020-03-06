@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.tileentity.abstracts.TE6WayConnection;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
 import net.minecraftforge.client.model.data.IModelData;
 
@@ -21,8 +22,10 @@ public class RoofComposite extends BaseIBakedModel
     private IBakedModel modelEast;
     private IBakedModel modelNorth;
     private IBakedModel modelSouth;
+    private TextureAtlasSprite sprite;
 
-    public RoofComposite(IBakedModel i_modelCore, IBakedModel i_modelDown, IBakedModel i_modelWest, IBakedModel i_modelEast,
+    public RoofComposite(TextureAtlasSprite sprite,
+                         IBakedModel i_modelCore, IBakedModel i_modelDown, IBakedModel i_modelWest, IBakedModel i_modelEast,
                          IBakedModel i_modelNorth, IBakedModel i_modelSouth)
     {
         modelCore = i_modelCore;
@@ -31,6 +34,7 @@ public class RoofComposite extends BaseIBakedModel
         modelEast = i_modelEast;
         modelNorth = i_modelNorth;
         modelSouth = i_modelSouth;
+        this.sprite = sprite;
     }
 
     @Nonnull
@@ -60,5 +64,11 @@ public class RoofComposite extends BaseIBakedModel
             quadsList.addAll(modelSouth.getQuads(state, side, rand, extraData));
         }
         return quadsList;
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture()
+    {
+        return sprite;
     }
 }

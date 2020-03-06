@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.model.smartmodel;
 
 import cassiokf.industrialrenewal.model.smartmodel.composite.BigFenceComposite;
 import net.minecraft.client.renderer.model.*;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelConfiguration;
@@ -45,7 +46,8 @@ public class BigFenceColumnIModel extends BaseModelGeometry
         subComponent = ModelLoader.instance().getUnbakedModel(ACTIVE_RIGHT_TOP);
         IBakedModel bakedModelSouth = subComponent.bakeModel(bakery, spriteGetter, modelTransform, modelLocation);
 
-        return new BigFenceComposite(bakedModelCore, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast,
+        return new BigFenceComposite(spriteGetter.apply(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, TEXTURE)),
+                bakedModelCore, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast,
                 bakedModelNorth, bakedModelSouth);
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -46,6 +47,7 @@ public abstract class BlockAbstractBigFence extends BlockBasicElectricFence
             worldIn.setBlockState(pos.up(), state.with(INDEX, 1));
             worldIn.setBlockState(pos.up(2), state.with(INDEX, 2));
         }
+        super.onBlockAdded(state, worldIn, pos, oldState, isMoving);
     }
 
     @Override
@@ -88,9 +90,16 @@ public abstract class BlockAbstractBigFence extends BlockBasicElectricFence
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
+        if (state.get(INDEX) == 2) return worldIn.getBlockState(pos).getMaterial().isReplaceable();
         return worldIn.getBlockState(pos).getMaterial().isReplaceable()
                 && worldIn.getBlockState(pos.up()).getMaterial().isReplaceable()
                 && worldIn.getBlockState(pos.up(2)).getMaterial().isReplaceable();
     }
 
+    @Nullable
+    @Override
+    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
+    {
+        return new Direction[0];
+    }
 }

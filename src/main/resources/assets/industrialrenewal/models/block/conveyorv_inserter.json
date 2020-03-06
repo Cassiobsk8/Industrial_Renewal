@@ -3,7 +3,7 @@
   "textures": {
     "0": "industrialrenewal:blocks/conveyor_belt",
     "1": "industrialrenewal:blocks/anvil_base",
-    "2": "industrialrenewal:blocks/hopper_inside",
+    "2": "block/hopper_inside",
     "particle": "industrialrenewal:blocks/conveyor_belt"
   },
   "elements": [
@@ -3292,15 +3292,6 @@
             16
           ],
           "texture": "#2"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            6,
-            5
-          ],
-          "texture": "#missing"
         }
       }
     },
@@ -3767,15 +3758,6 @@
         7
       ],
       "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            12,
-            5
-          ],
-          "texture": "#missing"
-        },
         "south": {
           "uv": [
             0,

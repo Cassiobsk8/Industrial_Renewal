@@ -1,14 +1,5 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:block/blocks/fire_extinguisher"
-    }
-  },
   "variants": {
-    "": {
-      "model": "industrialrenewal:block/fire_extinguisher"
-    },
     "facing=north,onwall=false": {
       "model": "industrialrenewal:block/fire_extinguisher"
     },
@@ -38,9 +29,6 @@
     "facing=east,onwall=true": {
       "model": "industrialrenewal:block/fire_extinguisher_wall",
       "y": 90
-    },
-    "inventory": {
-      "model": "industrialrenewal:block/fire_extinguisher"
     }
   }
 }

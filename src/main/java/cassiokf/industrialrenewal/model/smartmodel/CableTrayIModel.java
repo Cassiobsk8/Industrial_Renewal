@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.model.smartmodel;
 
 import cassiokf.industrialrenewal.model.smartmodel.composite.CableTrayComposite;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -9,9 +8,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelConfiguration;
 import net.minecraftforge.client.model.ModelLoader;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
 import java.util.function.Function;
 
 public class CableTrayIModel extends BaseModelGeometry
@@ -19,7 +15,6 @@ public class CableTrayIModel extends BaseModelGeometry
     public static final ResourceLocation TEXTURE_SHEET = new ResourceLocation("industrialrenewal:blocks/data_cable");
 
     public static final ModelResourceLocation MODEL_CORE = new ModelResourceLocation("industrialrenewal:cable_tray/tray_core");
-    public static final ModelResourceLocation MODEL_MASTER = new ModelResourceLocation("industrialrenewal:cable_tray/cable_master");
 
     //plug to close tray side
     public static final ModelResourceLocation MODEL_NORTH = new ModelResourceLocation("industrialrenewal:cable_tray/con_north");
@@ -104,9 +99,6 @@ public class CableTrayIModel extends BaseModelGeometry
     {
         IUnbakedModel subComponent = ModelLoader.instance().getUnbakedModel(MODEL_CORE);
         IBakedModel bakedModelCore = subComponent.bakeModel(bakery, spriteGetter, modelTransform, modelLocation);
-
-        subComponent = ModelLoader.instance().getUnbakedModel(MODEL_MASTER);
-        IBakedModel bakedModelMaster = subComponent.bakeModel(bakery, spriteGetter, modelTransform, modelLocation);
 
         subComponent = ModelLoader.instance().getUnbakedModel(MODEL_WEST);
         IBakedModel bakedModelWest = subComponent.bakeModel(bakery, spriteGetter, modelTransform, modelLocation);
@@ -300,7 +292,8 @@ public class CableTrayIModel extends BaseModelGeometry
         subComponent = ModelLoader.instance().getUnbakedModel(MODEL2_LV_DOWN);
         IBakedModel bakedModel2LvDown = subComponent.bakeModel(bakery, spriteGetter, modelTransform, modelLocation);
 
-        return new CableTrayComposite(bakedModelCore, bakedModelMaster, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
+        return new CableTrayComposite(spriteGetter.apply(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, TEXTURE_SHEET)),
+                bakedModelCore, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
                 bakedModelUp, bakedModelDown, bakedModel2West, bakedModel2East, bakedModel2North, bakedModel2South,
                 bakedModelPipeCore, bakedModelPipeNorth, bakedModelPipeSouth, bakedModelPipeEast, bakedModelPipeWest,
                 bakedModelPipeUp, bakedModelPipeDown, bakedModel2PipeNorth, bakedModel2PipeSouth, bakedModel2PipeEast,
@@ -314,12 +307,5 @@ public class CableTrayIModel extends BaseModelGeometry
                 bakedModelLvCore, bakedModelLvNorth, bakedModelLvSouth, bakedModelLvEast, bakedModelLvWest,
                 bakedModelLvUp, bakedModelLvDown, bakedModel2LvNorth, bakedModel2LvSouth, bakedModel2LvEast,
                 bakedModel2LvWest, bakedModel2LvUp, bakedModel2LvDown);
-
-    }
-
-    @Override
-    public Collection<Material> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors)
-    {
-        return Collections.singletonList(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, TEXTURE_SHEET));
     }
 }

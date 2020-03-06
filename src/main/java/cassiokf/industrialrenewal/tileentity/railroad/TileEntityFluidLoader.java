@@ -54,7 +54,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
     @Override
     public void tick()
     {
-        if (isMaster())
+        if (isMaster() && !isRemoved())
         {
             if (!world.isRemote)
             {
@@ -90,7 +90,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
     {
         if (!checked)
         {
-            master = world.getBlockState(pos).get(BlockChunkLoader.MASTER);
+            master = getBlockState().get(BlockChunkLoader.MASTER);
             checked = true;
         }
         return master;

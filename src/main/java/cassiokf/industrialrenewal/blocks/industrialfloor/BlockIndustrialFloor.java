@@ -54,13 +54,18 @@ public class BlockIndustrialFloor extends BlockAbstractSixWayConnections
                 ;
     }
 
-    @Override
-    public boolean canConnectTo(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
+    public static boolean canConnect(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
     {
         final BlockPos neighborPos = currentPos.offset(neighborDirection);
         final BlockState neighborState = worldIn.getBlockState(neighborPos);
 
         return !isValidConnection(neighborState, worldIn, currentPos, neighborDirection);
+    }
+
+    @Override
+    public boolean canConnectTo(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
+    {
+        return canConnect(worldIn, currentPos, neighborDirection);
     }
 
     @Override
@@ -120,7 +125,7 @@ public class BlockIndustrialFloor extends BlockAbstractSixWayConnections
         if (playerItem.equals(BlocksRegistration.FLUIDPIPE_ITEM.get()))
         {
             worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-            worldIn.setBlockState(pos, BlocksRegistration.FLOORPIPE.get().getDefaultState(), 3);
+            worldIn.setBlockState(pos, BlocksRegistration.FLOORPIPE.get().getDefaultState());
             if (!player.isCreative())
             {
                 playerStack.shrink(1);
@@ -138,7 +143,7 @@ public class BlockIndustrialFloor extends BlockAbstractSixWayConnections
             else if (playerItem.equals(BlocksRegistration.ENERGYCABLELV_ITEM.get()))
                 block = BlocksRegistration.FLOORCABLELV.get();
             else block = BlocksRegistration.FLOORCABLEHV.get();
-            worldIn.setBlockState(pos, block.getDefaultState(), 3);
+            worldIn.setBlockState(pos, block.getDefaultState());
             if (!player.isCreative())
             {
                 playerStack.shrink(1);
@@ -148,7 +153,7 @@ public class BlockIndustrialFloor extends BlockAbstractSixWayConnections
         if (playerItem.equals(BlocksRegistration.FLUORESCENT_ITEM.get()))
         {
             worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-            worldIn.setBlockState(pos, BlocksRegistration.FLOORLAMP.get().getDefaultState(), 3);
+            worldIn.setBlockState(pos, BlocksRegistration.FLOORLAMP.get().getDefaultState());
             if (!player.isCreative())
             {
                 playerStack.shrink(1);

@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.tileentity.abstracts.TEBigFenceBase;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
 import net.minecraftforge.client.model.data.IModelData;
 
@@ -23,7 +24,10 @@ public class BigFenceComposite extends BaseIBakedModel
     private IBakedModel modelNorth;
     private IBakedModel modelSouth;
 
-    public BigFenceComposite(IBakedModel i_modelCore, IBakedModel i_modelDown, IBakedModel i_modelUp, IBakedModel i_modelWest,
+    private TextureAtlasSprite sprite;
+
+    public BigFenceComposite(TextureAtlasSprite sprite,
+                             IBakedModel i_modelCore, IBakedModel i_modelDown, IBakedModel i_modelUp, IBakedModel i_modelWest,
                              IBakedModel i_modelEast, IBakedModel i_modelNorth, IBakedModel i_modelSouth)
     {
         modelCore = i_modelCore;
@@ -33,13 +37,14 @@ public class BigFenceComposite extends BaseIBakedModel
         modelEast = i_modelEast;
         modelNorth = i_modelNorth;
         modelSouth = i_modelSouth;
+        this.sprite = sprite;
     }
 
     @Nonnull
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData)
     {
-        List<BakedQuad> quadsList = new LinkedList<BakedQuad>();
+        List<BakedQuad> quadsList = new LinkedList<>();
 
         if (isLinkPresent(extraData, TEBigFenceBase.CORE))
         {
@@ -70,5 +75,11 @@ public class BigFenceComposite extends BaseIBakedModel
             quadsList.addAll(modelSouth.getQuads(state, side, rand, extraData));
         }
         return quadsList;
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture()
+    {
+        return sprite;
     }
 }

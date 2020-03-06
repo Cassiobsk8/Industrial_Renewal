@@ -1,17 +1,23 @@
 package cassiokf.industrialrenewal.model.smartmodel;
 
 import cassiokf.industrialrenewal.model.smartmodel.composite.PipeBaseComposite;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.model.*;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelConfiguration;
 import net.minecraftforge.client.model.ModelLoader;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.function.Function;
 
 public class PipeBaseModel extends BaseModelGeometry
 {
     public static final ResourceLocation TEXTURE_SHEET = new ResourceLocation("industrialrenewal:blocks/anvil_base");
+    public static final ResourceLocation TEXTURE2_SHEET = new ResourceLocation("industrialrenewal:blocks/master_cable_texture");
 
     public static final ModelResourceLocation MODEL_CORE = new ModelResourceLocation("industrialrenewal:pipe_fluid/pipe_core");
     public static final ModelResourceLocation MODEL_MASTER = new ModelResourceLocation("industrialrenewal:pipe_energy/cable_master");
@@ -75,7 +81,15 @@ public class PipeBaseModel extends BaseModelGeometry
         subComponent = ModelLoader.instance().getUnbakedModel(MODEL2_SOUTH);
         IBakedModel bakedModel2South = subComponent.bakeModel(bakery, spriteGetter, modelTransform, modelLocation);
 
-        return new PipeBaseComposite(bakedModelCore, bakedModelMaster, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
+        return new PipeBaseComposite(spriteGetter.apply(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, TEXTURE_SHEET)),
+                bakedModelCore, bakedModelMaster, bakedModelDown, bakedModelUp, bakedModelWest,
+                bakedModelEast, bakedModelNorth, bakedModelSouth,
                 bakedModel2Down, bakedModel2Up, bakedModel2West, bakedModel2East, bakedModel2North, bakedModel2South);
+    }
+
+    @Override
+    public Collection<Material> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors)
+    {
+        return Collections.singletonList(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, TEXTURE2_SHEET));
     }
 }

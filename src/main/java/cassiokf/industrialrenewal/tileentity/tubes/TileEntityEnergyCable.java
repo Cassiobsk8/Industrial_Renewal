@@ -1,8 +1,13 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
+import cassiokf.industrialrenewal.blocks.BlockPillar;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
 import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
+import cassiokf.industrialrenewal.blocks.pipes.BlockPillarEnergyCable;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -77,7 +82,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
     @Override
     public IModelData getModelData()
     {
-        return new ModelDataMap.Builder()
+        ModelDataMap.Builder builder = new ModelDataMap.Builder()
                 .withInitial(MASTER, IRConfig.Main.showMaster.get() && isMaster())
                 .withInitial(SOUTH, canConnectToPipe(Direction.SOUTH))
                 .withInitial(NORTH, canConnectToPipe(Direction.NORTH))
@@ -90,8 +95,30 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
                 .withInitial(CEAST, canConnectToCapability(Direction.EAST))
                 .withInitial(CWEST, canConnectToCapability(Direction.WEST))
                 .withInitial(CUP, canConnectToCapability(Direction.UP))
-                .withInitial(CDOWN, canConnectToCapability(Direction.DOWN))
-                .build();
+                .withInitial(CDOWN, canConnectToCapability(Direction.DOWN));
+
+        Block block = getBlockState().getBlock();
+        if (block instanceof BlockFloorCable)
+        {
+            builder = builder
+                    .withInitial(WSOUTH, BlockIndustrialFloor.canConnect(world, pos, Direction.SOUTH))
+                    .withInitial(WNORTH, BlockIndustrialFloor.canConnect(world, pos, Direction.NORTH))
+                    .withInitial(WEAST, BlockIndustrialFloor.canConnect(world, pos, Direction.EAST))
+                    .withInitial(WWEST, BlockIndustrialFloor.canConnect(world, pos, Direction.WEST))
+                    .withInitial(WUP, BlockIndustrialFloor.canConnect(world, pos, Direction.UP))
+                    .withInitial(WDOWN, BlockIndustrialFloor.canConnect(world, pos, Direction.DOWN));
+        } else if (block instanceof BlockPillarEnergyCable)
+        {
+            builder = builder
+                    .withInitial(WSOUTH, BlockPillar.canConnect(world, pos, Direction.SOUTH))
+                    .withInitial(WNORTH, BlockPillar.canConnect(world, pos, Direction.NORTH))
+                    .withInitial(WEAST, BlockPillar.canConnect(world, pos, Direction.EAST))
+                    .withInitial(WWEST, BlockPillar.canConnect(world, pos, Direction.WEST))
+                    .withInitial(WUP, BlockPillar.canConnect(world, pos, Direction.UP))
+                    .withInitial(WDOWN, BlockPillar.canConnect(world, pos, Direction.DOWN));
+        }
+
+        return builder.build();
     }
 
     public boolean canConnectToPipe(Direction neighborDirection)

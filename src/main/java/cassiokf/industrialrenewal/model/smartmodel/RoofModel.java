@@ -54,6 +54,7 @@ public class RoofModel extends BaseModelGeometry
         subComponent = ModelLoader.instance().getUnbakedModel(MODEL_SOUTH);
         IBakedModel bakedModelSouth = subComponent.bakeModel(bakery, spriteGetter, modelTransform, modelLocation);
 
-        return new RoofComposite(bakedModelCore, bakedModelDown, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth);
+        return new RoofComposite(spriteGetter.apply(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, TEXTURE_SHEET)),
+                bakedModelCore, bakedModelDown, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth);
     }
 }

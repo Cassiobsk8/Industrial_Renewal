@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.model.smartmodel;
 
 import cassiokf.industrialrenewal.model.smartmodel.composite.PillarBaseComposite;
 import net.minecraft.client.renderer.model.*;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelConfiguration;
@@ -98,7 +99,9 @@ public class FloorEnergyCableHVModel extends BaseModelGeometry
         subComponent = ModelLoader.instance().getUnbakedModel(MODEL3_SOUTH);
         IBakedModel bakedModel3South = subComponent.bakeModel(bakery, spriteGetter, modelTransform, modelLocation);
 
-        return new PillarBaseComposite(bakedModelCore, bakedModelMaster, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth,
+        return new PillarBaseComposite(spriteGetter.apply(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, TEXTURE)),
+                bakedModelCore, bakedModelMaster, bakedModelDown, bakedModelUp, bakedModelWest, bakedModelEast,
+                bakedModelNorth, bakedModelSouth,
                 bakedModel2Down, bakedModel2Up, bakedModel2West, bakedModel2East, bakedModel2North, bakedModel2South,
                 bakedModel3Down, bakedModel3Up, bakedModel3West, bakedModel3East, bakedModel3North, bakedModel3South);
     }

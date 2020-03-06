@@ -1,10 +1,7 @@
 package cassiokf.industrialrenewal.model.smartmodel.composite;
 
 import cassiokf.industrialrenewal.References;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.data.IDynamicBakedModel;
 import net.minecraftforge.client.model.data.IModelData;
@@ -32,19 +29,10 @@ public abstract class BaseIBakedModel implements IDynamicBakedModel
         return false;
     }
 
-
     @Override
     public boolean isBuiltInRenderer()
     {
         return false;
-    }
-
-    // used for block breaking shards
-
-    @Override
-    public TextureAtlasSprite getParticleTexture()
-    {
-        return Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(TEXTURE);
     }
 
     @Override
@@ -53,7 +41,7 @@ public abstract class BaseIBakedModel implements IDynamicBakedModel
         return ItemOverrideList.EMPTY;
     }
 
-    public boolean isLinkPresent(IModelData data, ModelProperty<Boolean> whichLink)
+    public static boolean isLinkPresent(IModelData data, ModelProperty<Boolean> whichLink)
     {
         return data.hasProperty(whichLink) && data.getData(whichLink);
     }

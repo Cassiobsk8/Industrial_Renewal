@@ -1,40 +1,36 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockBase;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalFacing;
 import cassiokf.industrialrenewal.init.ItemsRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockFireExtinguisher extends BlockBase
+public class BlockFireExtinguisher extends BlockAbstractHorizontalFacing
 {
-
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty ONWALL = BooleanProperty.create("onwall");
 
-    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1D, 0.75D);
-
-    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0F, 0F, 0.25F, 0.5F, 1F, 0.75D);
-    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1F, 0F, 0.25F, 0.5F, 1F, 0.75D);
-    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0F, 0.5F, 0.75D, 1F, 1);
-    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0F, 0.5F, 0.75D, 1F, 0);
+    protected static final VoxelShape BASE_AABB = Block.makeCuboidShape(4, 0, 4, 12, 16, 12);
+    private static final VoxelShape WEST_BLOCK_AABB = Block.makeCuboidShape(0, 0, 4, 8, 16, 12);
+    private static final VoxelShape EAST_BLOCK_AABB = Block.makeCuboidShape(16, 0, 4, 8, 16, 12);
+    private static final VoxelShape SOUTH_BLOCK_AABB = Block.makeCuboidShape(4, 0, 8, 12, 16, 16);
+    private static final VoxelShape NORTH_BLOCK_AABB = Block.makeCuboidShape(4, 0, 0, 12, 16, 8);
 
     public BlockFireExtinguisher()
     {
@@ -72,11 +68,14 @@ public class BlockFireExtinguisher extends BlockBase
     {
         return new ItemStack(ItemsRegistration.FIREEXTINGUISHER.get());
     }
-/*
+
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos) {
-        if (state.getActualState(source, pos).get(ONWALL)) {
-            switch (state.getActualState(source, pos).get(FACING)) {
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        if (state.get(ONWALL))
+        {
+            switch (state.get(FACING))
+            {
                 default:
                 case NORTH:
                     return NORTH_BLOCK_AABB;
@@ -91,12 +90,5 @@ public class BlockFireExtinguisher extends BlockBase
         } else {
             return BASE_AABB;
         }
-    }
-*/
-
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return false;
     }
 }

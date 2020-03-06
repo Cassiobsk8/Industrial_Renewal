@@ -1,10 +1,11 @@
 package cassiokf.industrialrenewal.model.smartmodel.composite;
 
 
-import cassiokf.industrialrenewal.tileentity.abstracts.TEPipesBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TETubeBase;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
 import net.minecraftforge.client.model.data.IModelData;
 
@@ -36,8 +37,10 @@ public class PillarBaseComposite extends BaseIBakedModel
     private IBakedModel model3East;
     private IBakedModel model3North;
     private IBakedModel model3South;
+    private TextureAtlasSprite sprite;
 
-    public PillarBaseComposite(IBakedModel i_modelCore, IBakedModel i_modelMaster, IBakedModel i_modelDown,
+    public PillarBaseComposite(TextureAtlasSprite sprite,
+                               IBakedModel i_modelCore, IBakedModel i_modelMaster, IBakedModel i_modelDown,
                                IBakedModel i_modelUp, IBakedModel i_modelWest,
                                IBakedModel i_modelEast, IBakedModel i_modelNorth, IBakedModel i_modelSouth,
                                IBakedModel i_model2Down, IBakedModel i_model2Up, IBakedModel i_model2West,
@@ -65,6 +68,7 @@ public class PillarBaseComposite extends BaseIBakedModel
         model3East = i_model3East;
         model3North = i_model3North;
         model3South = i_model3South;
+        this.sprite = sprite;
     }
 
     @Nonnull
@@ -73,83 +77,89 @@ public class PillarBaseComposite extends BaseIBakedModel
     {
         List<BakedQuad> quadsList = new LinkedList<BakedQuad>(modelCore.getQuads(state, side, rand, extraData));
 
-        if (isLinkPresent(extraData, TEPipesBase.MASTER))
+        if (isLinkPresent(extraData, TETubeBase.MASTER))
         {
             quadsList.addAll(modelMaster.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.DOWN))
+        if (isLinkPresent(extraData, TETubeBase.DOWN))
         {
             quadsList.addAll(modelDown.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.UP))
+        if (isLinkPresent(extraData, TETubeBase.UP))
         {
             quadsList.addAll(modelUp.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.WEST))
+        if (isLinkPresent(extraData, TETubeBase.WEST))
         {
             quadsList.addAll(modelWest.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.EAST))
+        if (isLinkPresent(extraData, TETubeBase.EAST))
         {
             quadsList.addAll(modelEast.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.NORTH))
+        if (isLinkPresent(extraData, TETubeBase.NORTH))
         {
             quadsList.addAll(modelNorth.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.SOUTH))
+        if (isLinkPresent(extraData, TETubeBase.SOUTH))
         {
             quadsList.addAll(modelSouth.getQuads(state, side, rand, extraData));
         }
 
-        if (isLinkPresent(extraData, TEPipesBase.CDOWN))
+        if (isLinkPresent(extraData, TETubeBase.CDOWN))
         {
             quadsList.addAll(model2Down.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.CUP))
+        if (isLinkPresent(extraData, TETubeBase.CUP))
         {
             quadsList.addAll(model2Up.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.CWEST))
+        if (isLinkPresent(extraData, TETubeBase.CWEST))
         {
             quadsList.addAll(model2West.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.CEAST))
+        if (isLinkPresent(extraData, TETubeBase.CEAST))
         {
             quadsList.addAll(model2East.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.CNORTH))
+        if (isLinkPresent(extraData, TETubeBase.CNORTH))
         {
             quadsList.addAll(model2North.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.CSOUTH))
+        if (isLinkPresent(extraData, TETubeBase.CSOUTH))
         {
             quadsList.addAll(model2South.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.WDOWN))
+        if (isLinkPresent(extraData, TETubeBase.WDOWN))
         {
             quadsList.addAll(model3Down.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.WUP))
+        if (isLinkPresent(extraData, TETubeBase.WUP))
         {
             quadsList.addAll(model3Up.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.WWEST))
+        if (isLinkPresent(extraData, TETubeBase.WWEST))
         {
             quadsList.addAll(model3West.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.WEAST))
+        if (isLinkPresent(extraData, TETubeBase.WEAST))
         {
             quadsList.addAll(model3East.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.WNORTH))
+        if (isLinkPresent(extraData, TETubeBase.WNORTH))
         {
             quadsList.addAll(model3North.getQuads(state, side, rand, extraData));
         }
-        if (isLinkPresent(extraData, TEPipesBase.WSOUTH))
+        if (isLinkPresent(extraData, TETubeBase.WSOUTH))
         {
             quadsList.addAll(model3South.getQuads(state, side, rand, extraData));
         }
         return quadsList;
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture()
+    {
+        return sprite;
     }
 }

@@ -32,7 +32,7 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray>
 
     public BlockCableTray()
     {
-        super(Block.Properties.create(Material.IRON), 12, 12);
+        super(Block.Properties.create(Material.IRON), 10, 12);
         this.setDefaultState(this.getDefaultState().with(BASE, EnumBaseDirection.NONE));
     }
 
@@ -80,7 +80,7 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray>
             direction = EnumBaseDirection.byIndex(context.getFace().getOpposite().getIndex());
         }
 
-        return this.getDefaultState().with(BASE, direction);
+        return super.getStateForPlacement(context).with(BASE, direction);
     }
 
     @Nullable

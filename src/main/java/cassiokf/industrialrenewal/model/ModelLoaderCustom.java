@@ -8,7 +8,6 @@ import net.minecraftforge.client.model.IModelLoader;
 
 public class ModelLoaderCustom implements IModelLoader<BaseModelGeometry>
 {
-
     @Override
     public BaseModelGeometry read(JsonDeserializationContext deserializationContext, JsonObject modelContents)
     {
@@ -28,7 +27,7 @@ public class ModelLoaderCustom implements IModelLoader<BaseModelGeometry>
                 return new EnergyCableHVBaseModel();
             case "pipe_energy_lv":
                 return new EnergyCableLVBaseModel();
-            case "pillar_energy":
+            case "pillar_energy_mv":
                 return new PillarEnergyCableBaseModel();
             case "pillar_energy_lv":
                 return new PillarEnergyCableLVBaseModel();
@@ -44,11 +43,7 @@ public class ModelLoaderCustom implements IModelLoader<BaseModelGeometry>
                 return new GaugeEnergyCableHVBaseModel();
             case "pipe_fluid_gauge":
                 return new GaugeFluidPipeBaseModel();
-            //case "indfloor":
-            //    return new IndFloorModel();
-            //case "indfloor_lamp":
-            //    return new IndFloorLampModel();
-            case "floor_cable":
+            case "floor_cable_mv":
                 return new FloorEnergyCableModel();
             case "floor_cable_lv":
                 return new FloorEnergyCableLVModel();

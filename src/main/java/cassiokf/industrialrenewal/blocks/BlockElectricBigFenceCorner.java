@@ -1,12 +1,13 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockBasicElectricFence;
-import net.minecraft.block.Block;
+import cassiokf.industrialrenewal.tileentity.TEBigFenceCorner;
 import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class BlockElectricBigFenceCorner extends BlockElectricBigFenceColumn
 {
@@ -16,29 +17,15 @@ public class BlockElectricBigFenceCorner extends BlockElectricBigFenceColumn
     }
 
     @Override
-    public boolean IsBigFence(World world, BlockPos pos)
+    public boolean isBigFence(World world, BlockPos pos)
     {
         return world.getBlockState(pos).getBlock() instanceof BlockElectricBigFenceCorner;
     }
 
+    @Nullable
     @Override
-    public boolean ActiveSide(IBlockReader world, BlockPos pos, BlockState state, boolean left, boolean top, boolean down)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
-        int index = state.get(INDEX);
-        if (!top && index == 2) return false;
-        if (top && index != 2) return false;
-        if (!down && index == 0) return false;
-        if (down && index != 0) return false;
-        Direction facing = state.get(FACING);
-        for (final Direction face : Direction.Plane.HORIZONTAL)
-        {
-            if ((left && face == facing) || (!left && face == facing.rotateY()))
-            {
-                BlockState sideState = world.getBlockState(pos.offset(face));
-                Block block = sideState.getBlock();
-                return sideState.isSolid() || block instanceof BlockElectricGate || block instanceof BlockBasicElectricFence;
-            }
-        }
-        return false;
+        return new TEBigFenceCorner();
     }
 }

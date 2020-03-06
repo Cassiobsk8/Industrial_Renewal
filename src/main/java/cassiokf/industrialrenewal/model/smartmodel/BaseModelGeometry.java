@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.model.smartmodel;
 
-import cassiokf.industrialrenewal.model.smartmodel.composite.BaseCoreSidesComposite;
+import cassiokf.industrialrenewal.References;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.model.IUnbakedModel;
 import net.minecraft.client.renderer.model.Material;
@@ -16,9 +16,11 @@ import java.util.function.Function;
 
 public abstract class BaseModelGeometry implements IModelGeometry<BaseModelGeometry>
 {
+    public static final ResourceLocation TEXTURE = new ResourceLocation(References.MODID, "blocks/pipe");
+
     @Override
     public Collection<Material> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors)
     {
-        return Collections.singletonList(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, BaseCoreSidesComposite.TEXTURE));
+        return Collections.singletonList(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, TEXTURE));
     }
 }

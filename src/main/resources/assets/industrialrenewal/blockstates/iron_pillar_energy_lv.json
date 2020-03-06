@@ -1,12 +1,7 @@
 {
-  "forge_marker": 1,
   "variants": {
     "": {
       "model": "industrialrenewal:block/smartmodel/pillar_energy_lv"
-    },
-    "inventory": {
-      "model": "industrialrenewal:block/pillar/iron_pillar_energy_base_lv",
-      "transform": "forge:default-block"
     }
   }
 }

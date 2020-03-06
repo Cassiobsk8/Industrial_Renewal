@@ -3,40 +3,41 @@ package cassiokf.industrialrenewal.blocks.pipes;
 import cassiokf.industrialrenewal.blocks.BlockPillar;
 import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
+import cassiokf.industrialrenewal.tileentity.abstracts.TETubeBase;
+import cassiokf.industrialrenewal.tileentity.tubes.TEPillarPipe;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeBase;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.data.IModelData;
+
+import javax.annotation.Nullable;
 
 public class BlockPillarFluidPipe extends BlockFluidPipe
 {
-    private static float NORTHZ1 = 0.250f;
-    private static float SOUTHZ2 = 0.750f;
-    private static float WESTX1 = 0.250f;
-    private static float EASTX2 = 0.750f;
-    private static float DOWNY1 = 0.0f;
-    private static float UPY2 = 1.0f;
+    private static float NORTHZ1 = 4;
+    private static float SOUTHZ2 = 12;
+    private static float WESTX1 = 4;
+    private static float EASTX2 = 12;
+    private static float DOWNY1 = 0;
+    private static float UPY2 = 16;
 
     public BlockPillarFluidPipe()
     {
         super();
-    }
-
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        //IProperty[] listedProperties = new IProperty[]{}; // listed properties
-        //IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{MASTER, SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN, WSOUTH, WNORTH, WEAST, WWEST, WUP, WDOWN};
-        //return new ExtendedBlockState(this, listedProperties, unlistedProperties);
     }
 
     @Override
@@ -86,119 +87,80 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
         return ActionResultType.PASS;
     }
 
-    @Override
-    public BlockState getExtendedState(BlockState state, IBlockReader world, BlockPos pos)
+    public final boolean isConnected(IBlockReader world, BlockPos pos, final Direction facing)
     {
-        //if (state instanceof IExtendedBlockState)
-        //{
-        //    IExtendedBlockState eState = (IExtendedBlockState) state;
-        //    return eState.with(MASTER, isMaster(world, pos))
-        //            .with(SOUTH, canConnectToPipe(world, pos, Direction.SOUTH)).with(NORTH, canConnectToPipe(world, pos, Direction.NORTH))
-        //            .with(EAST, canConnectToPipe(world, pos, Direction.EAST)).with(WEST, canConnectToPipe(world, pos, Direction.WEST))
-        //            .with(UP, canConnectToPipe(world, pos, Direction.UP)).with(DOWN, canConnectToPipe(world, pos, Direction.DOWN))
-        //            .with(CSOUTH, canConnectToCapability(world, pos, Direction.SOUTH)).with(CNORTH, canConnectToCapability(world, pos, Direction.NORTH))
-        //            .with(CEAST, canConnectToCapability(world, pos, Direction.EAST)).with(CWEST, canConnectToCapability(world, pos, Direction.WEST))
-        //            .with(CUP, canConnectToCapability(world, pos, Direction.UP)).with(CDOWN, canConnectToCapability(world, pos, Direction.DOWN))
-        //            .with(WSOUTH, BlockPillar.canConnectTo(world, pos, Direction.SOUTH)).with(WNORTH, BlockPillar.canConnectTo(world, pos, Direction.NORTH))
-        //            .with(WEAST, BlockPillar.canConnectTo(world, pos, Direction.EAST)).with(WWEST, BlockPillar.canConnectTo(world, pos, Direction.WEST))
-        //            .with(WUP, BlockPillar.canConnectTo(world, pos, Direction.UP)).with(WDOWN, BlockPillar.canConnectTo(world, pos, Direction.DOWN));
-        //}
-        return state;
-    }
-
-    public final boolean isConnected(IBlockReader world, BlockPos pos, BlockState state, final Direction facing)
-    {
-        //if (state instanceof IExtendedBlockState)
-        //{
-        //    state = getExtendedState(state, world, pos);
-        //    IExtendedBlockState eState = (IExtendedBlockState) state;
-        //    switch (facing)
-        //    {
-        //        case DOWN:
-        //            return eState.get(WDOWN);
-        //        case UP:
-        //            return eState.get(WUP);
-        //        case NORTH:
-        //            return eState.get(WNORTH);
-        //        case SOUTH:
-        //            return eState.get(WSOUTH);
-        //        case WEST:
-        //            return eState.get(WWEST);
-        //        case EAST:
-        //            return eState.get(WEAST);
-        //    }
-        //}
+        TileEntity te = world.getTileEntity(pos);
+        if (te != null)
+        {
+            IModelData data = te.getModelData();
+            switch (facing)
+            {
+                case DOWN:
+                    return data.hasProperty(TETubeBase.WDOWN) && data.getData(TETubeBase.WDOWN);
+                case UP:
+                    return data.hasProperty(TETubeBase.WUP) && data.getData(TETubeBase.WUP);
+                case NORTH:
+                    return data.hasProperty(TETubeBase.WNORTH) && data.getData(TETubeBase.WNORTH);
+                case SOUTH:
+                    return data.hasProperty(TETubeBase.WSOUTH) && data.getData(TETubeBase.WSOUTH);
+                case WEST:
+                    return data.hasProperty(TETubeBase.WWEST) && data.getData(TETubeBase.WWEST);
+                case EAST:
+                    return data.hasProperty(TETubeBase.WEAST) && data.getData(TETubeBase.WEAST);
+            }
+        }
         return false;
     }
 
-/*
     @Override
-    public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
-        if (isConnected(worldIn, pos, state, Direction.NORTH))
-        {
-            NORTHZ1 = 0.0f;
-        } else
-        {
-            NORTHZ1 = 0.250f;
-        }
-        if (isConnected(worldIn, pos, state, Direction.SOUTH))
-        {
-            SOUTHZ2 = 1.0f;
-        } else
-        {
-            SOUTHZ2 = 0.750f;
-        }
-        if (isConnected(worldIn, pos, state, Direction.WEST))
-        {
-            WESTX1 = 0.0f;
-        } else
-        {
-            WESTX1 = 0.250f;
-        }
-        if (isConnected(worldIn, pos, state, Direction.EAST))
-        {
-            EASTX2 = 1.0f;
-        } else
-        {
-            EASTX2 = 0.750f;
-        }
-        final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
+        return new ItemStack(BlocksRegistration.PILLAR_ITEM.get());
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader worldIn, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        if (isConnected(worldIn, pos, state, Direction.NORTH))
-        {
-            NORTHZ1 = 0.0f;
-        } else
-        {
-            NORTHZ1 = 0.250f;
-        }
-        if (isConnected(worldIn, pos, state, Direction.SOUTH))
-        {
-            SOUTHZ2 = 1.0f;
-        } else
-        {
-            SOUTHZ2 = 0.750f;
-        }
-        if (isConnected(worldIn, pos, state, Direction.WEST))
-        {
-            WESTX1 = 0.0f;
-        } else
-        {
-            WESTX1 = 0.250f;
-        }
-        if (isConnected(worldIn, pos, state, Direction.EAST))
-        {
-            EASTX2 = 1.0f;
-        } else
-        {
-            EASTX2 = 0.750f;
-        }
-        return new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
+        return getVoxelShape(worldIn, pos);
     }
-*/
+
+    private VoxelShape getVoxelShape(IBlockReader worldIn, BlockPos pos)
+    {
+        if (isConnected(worldIn, pos, Direction.NORTH))
+        {
+            NORTHZ1 = 0;
+        } else
+        {
+            NORTHZ1 = 4;
+        }
+        if (isConnected(worldIn, pos, Direction.SOUTH))
+        {
+            SOUTHZ2 = 16;
+        } else
+        {
+            SOUTHZ2 = 12;
+        }
+        if (isConnected(worldIn, pos, Direction.WEST))
+        {
+            WESTX1 = 0;
+        } else
+        {
+            WESTX1 = 4;
+        }
+        if (isConnected(worldIn, pos, Direction.EAST))
+        {
+            EASTX2 = 16;
+        } else
+        {
+            EASTX2 = 12;
+        }
+        return Block.makeCuboidShape(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
+    }
+
+    @Nullable
+    @Override
+    public TileEntityFluidPipeBase createTileEntity(BlockState state, IBlockReader world)
+    {
+        return new TEPillarPipe();
+    }
 }

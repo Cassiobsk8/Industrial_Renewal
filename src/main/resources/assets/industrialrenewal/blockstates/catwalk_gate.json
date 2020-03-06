@@ -1,11 +1,5 @@
 {
   "variants": {
-    "active=false,facing=down": {
-      "model": "industrialrenewal:block/catwalk_gate_0"
-    },
-    "active=false,facing=up": {
-      "model": "industrialrenewal:block/catwalk_gate_0"
-    },
     "active=false,facing=north": {
       "model": "industrialrenewal:block/catwalk_gate_0"
     },
@@ -20,12 +14,6 @@
     "active=false,facing=east": {
       "model": "industrialrenewal:block/catwalk_gate_0",
       "y": 90
-    },
-    "active=true,facing=down": {
-      "model": "industrialrenewal:block/catwalk_gate_1"
-    },
-    "active=true,facing=up": {
-      "model": "industrialrenewal:block/catwalk_gate_1"
     },
     "active=true,facing=north": {
       "model": "industrialrenewal:block/catwalk_gate_1"

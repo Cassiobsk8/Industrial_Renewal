@@ -30,7 +30,7 @@ public abstract class BlockConnectedMultiblocks<TE extends TileEntityMultiBlocks
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         TileEntityMultiBlocksTube te = (TileEntityMultiBlocksTube) worldIn.getTileEntity(currentPos);
-        if (te != null) te.requestRefresh();
+        if (te != null) te.requestModelRefresh();
         return stateIn;
     }
 

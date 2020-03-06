@@ -1,12 +1,11 @@
 package cassiokf.industrialrenewal.model.smartmodel.composite;
 
-import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.tileentity.abstracts.TE6WayConnection;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.data.IModelData;
 
 import javax.annotation.Nonnull;
@@ -17,8 +16,6 @@ import java.util.Random;
 
 public class BaseCoreSidesComposite extends BaseIBakedModel
 {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(References.MODID, "block/pipe");
-
     private IBakedModel modelCore;
     private IBakedModel modelDown;
     private IBakedModel modelUp;
@@ -27,7 +24,10 @@ public class BaseCoreSidesComposite extends BaseIBakedModel
     private IBakedModel modelNorth;
     private IBakedModel modelSouth;
 
-    public BaseCoreSidesComposite(IBakedModel i_modelCore, IBakedModel i_modelDown, IBakedModel i_modelUp, IBakedModel i_modelWest,
+    private TextureAtlasSprite sprite;
+
+    public BaseCoreSidesComposite(TextureAtlasSprite sprite,
+                                  IBakedModel i_modelCore, IBakedModel i_modelDown, IBakedModel i_modelUp, IBakedModel i_modelWest,
                                   IBakedModel i_modelEast, IBakedModel i_modelNorth, IBakedModel i_modelSouth)
     {
         modelCore = i_modelCore;
@@ -37,22 +37,14 @@ public class BaseCoreSidesComposite extends BaseIBakedModel
         modelEast = i_modelEast;
         modelNorth = i_modelNorth;
         modelSouth = i_modelSouth;
+        this.sprite = sprite;
     }
 
-    /**
-     * Compile a list of quads for rendering.  This is done by making a list of all the quads from the component
-     * models, depending on which links are present.
-     * For example
-     *
-     * @param state
-     * @param side  which side of the block is being rendered; null =
-     * @param rand
-     * @return
-     */
     @Nonnull
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData)
     {
+        if (side != null) return new ArrayList<>();
         List<BakedQuad> quadsList = new ArrayList<>(modelCore.getQuads(state, side, rand, extraData));
 
         if (isLinkPresent(extraData, TE6WayConnection.DOWN))
@@ -80,5 +72,11 @@ public class BaseCoreSidesComposite extends BaseIBakedModel
             quadsList.addAll(modelSouth.getQuads(state, side, rand, extraData));
         }
         return quadsList;
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture()
+    {
+        return sprite;
     }
 }

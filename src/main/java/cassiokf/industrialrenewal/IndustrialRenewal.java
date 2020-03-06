@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal;
 
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.entity.EntitiesRegistration;
 import cassiokf.industrialrenewal.init.*;
 import cassiokf.industrialrenewal.model.ModelLoaderCustom;
 import net.minecraft.client.renderer.RenderType;
@@ -36,6 +37,8 @@ public class IndustrialRenewal
         BlocksRegistration.init();
         TileRegistration.init();
         FluidsRegistration.init();
+        EntitiesRegistration.init();
+
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, IRConfig.COMMON_SPEC, References.MODID + ".toml");
@@ -53,17 +56,20 @@ public class IndustrialRenewal
 
         MinecraftForge.EVENT_BUS.register(IRSoundHandler.class);
 
+        EntitiesRegistration.registerModels(event);
+
         RenderTypeLookup.setRenderLayer(BlocksRegistration.WINDOW.get(), RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(BlocksRegistration.EFENCE.get(), RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(BlocksRegistration.LIGHT.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlocksRegistration.ENERGYLEVEL.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(BlocksRegistration.FLAMEDETECTOR.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.FLAMEDETECTOR.get(), RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(BlocksRegistration.SIGNALINDICATOR.get(), RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(BlocksRegistration.STEAMTURBINE.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlocksRegistration.FIRSTAIDKIT.get(), RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(BlocksRegistration.RECORDPLAYER.get(), RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(BlocksRegistration.BATTERYBANK.get(), RenderType.getTranslucent());
-
-        //ModelLoaderRegistry.registerLoader(new ResourceLocation(References.MODID, "fancyloader"), new ModelLoaderCustom());
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.BIGFENCECOLUMN.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.BIGFENCECORNER.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(BlocksRegistration.FLOORLAMP.get(), RenderType.getCutout());
     }
 }

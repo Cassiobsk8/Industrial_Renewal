@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.tileentity.tubes.TileEntityCableTray;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
 import net.minecraftforge.client.model.data.IModelData;
 
@@ -16,7 +17,6 @@ import java.util.Random;
 public class CableTrayComposite extends BaseIBakedModel
 {
     private IBakedModel modelCore;
-    private IBakedModel modelMaster;
 
     //Tray connections
     private IBakedModel modelWest;
@@ -94,7 +94,10 @@ public class CableTrayComposite extends BaseIBakedModel
     private IBakedModel model2LvUp;
     private IBakedModel model2LvDown;
 
-    public CableTrayComposite(IBakedModel i_modelCore, IBakedModel i_modelMaster, IBakedModel i_modelWest,
+    private TextureAtlasSprite sprite;
+
+    public CableTrayComposite(TextureAtlasSprite sprite,
+                              IBakedModel i_modelCore, IBakedModel i_modelWest,
                               IBakedModel i_modelEast, IBakedModel i_modelNorth, IBakedModel i_modelSouth,
                               IBakedModel i_modelUp, IBakedModel i_modelDown, IBakedModel i_model2West,
                               IBakedModel i_model2East, IBakedModel i_model2North, IBakedModel i_model2South,
@@ -120,7 +123,6 @@ public class CableTrayComposite extends BaseIBakedModel
                               IBakedModel i_model2LvUp, IBakedModel i_model2LvDown)
     {
         modelCore = i_modelCore;
-        modelMaster = i_modelMaster;
         modelWest = i_modelWest;
         modelEast = i_modelEast;
         modelNorth = i_modelNorth;
@@ -192,18 +194,17 @@ public class CableTrayComposite extends BaseIBakedModel
         model2LvWest = i_model2LvWest;
         model2LvUp = i_model2LvUp;
         model2LvDown = i_model2LvDown;
+
+        this.sprite = sprite;
     }
 
     @Nonnull
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData)
     {
-        List<BakedQuad> quadsList = new LinkedList<BakedQuad>(modelCore.getQuads(state, side, rand, extraData));
+        if (side != null) return new LinkedList<>();
+        List<BakedQuad> quadsList = new LinkedList<>(modelCore.getQuads(state, side, rand, extraData));
 
-        if (isLinkPresent(extraData, TileEntityCableTray.MASTER))
-        {
-            quadsList.addAll(modelMaster.getQuads(state, side, rand, extraData));
-        }
         if (isLinkPresent(extraData, TileEntityCableTray.WEST))
         {
             quadsList.addAll(modelWest.getQuads(state, side, rand, extraData));
@@ -461,5 +462,11 @@ public class CableTrayComposite extends BaseIBakedModel
         }
 
         return quadsList;
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture()
+    {
+        return sprite;
     }
 }

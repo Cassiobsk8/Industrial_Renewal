@@ -32,85 +32,7 @@ public class BlockPillar extends BlockAbstractSixWayConnections
         super(Block.Properties.create(Material.IRON), 8, 16);
     }
 
-    @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
-    {
-        if (handIn.equals(Hand.MAIN_HAND))
-        {
-            ItemStack playerStack = player.getHeldItemMainhand();
-            Item playerItem = playerStack.getItem();
-            Block clickedBlock = state.getBlock();
-            if (this.getRegistryName().toString().equals("catwalk_pillar"))
-            {
-                if (playerItem.equals(BlocksRegistration.ENERGYCABLEMV_ITEM.get()))
-                {
-                    if (!worldIn.isRemote)
-                    {
-                        worldIn.setBlockState(pos, BlocksRegistration.PILLARENERGYCABLEMV.get().getDefaultState(), 3);
-                        worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-                        if (!player.isCreative()) playerStack.shrink(1);
-                    }
-                    return ActionResultType.SUCCESS;
-                }
-                if (playerItem.equals(BlocksRegistration.ENERGYCABLELV_ITEM.get()))
-                {
-                    if (!worldIn.isRemote)
-                    {
-                        worldIn.setBlockState(pos, BlocksRegistration.PILLARENERGYCABLELV.get().getDefaultState(), 3);
-                        worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-                        if (!player.isCreative()) playerStack.shrink(1);
-                    }
-                    return ActionResultType.SUCCESS;
-                }
-                if (playerItem.equals(BlocksRegistration.ENERGYCABLEHV_ITEM.get()))
-                {
-                    if (!worldIn.isRemote)
-                    {
-                        worldIn.setBlockState(pos, BlocksRegistration.PILLARENERGYCABLEHV.get().getDefaultState(), 3);
-                        worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-                        if (!player.isCreative()) playerStack.shrink(1);
-                    }
-                    return ActionResultType.SUCCESS;
-                }
-                if (playerItem.equals(BlocksRegistration.FLUIDPIPE_ITEM.get()))
-                {
-                    if (!worldIn.isRemote)
-                    {
-                        worldIn.setBlockState(pos, BlocksRegistration.PILLARFLUIDPIPE.get().getDefaultState(), 3);
-                        worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-                        if (!player.isCreative()) playerStack.shrink(1);
-                    }
-                    return ActionResultType.SUCCESS;
-                }
-            }
-            if ((playerItem.equals(BlocksRegistration.PILLAR_ITEM.get()) && clickedBlock.equals(BlocksRegistration.PILLAR.get()))
-                    || (playerItem.equals(BlocksRegistration.STEEL_PILLAR_ITEM.get())) && clickedBlock.equals(BlocksRegistration.STEEL_PILLAR.get()))
-            {
-                int n = 1;
-                while (worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar
-                        || worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable
-                        || worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarFluidPipe)
-                {
-                    n++;
-                }
-                if (worldIn.getBlockState(pos.up(n)).getMaterial().isReplaceable())
-                {
-                    if (!worldIn.isRemote)
-                    {
-                        worldIn.setBlockState(pos.up(n), getBlockFromItem(playerItem).getDefaultState(), 3);
-                        worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-                        if (!player.isCreative()) playerStack.shrink(1);
-                    }
-                    return ActionResultType.SUCCESS;
-                }
-                return ActionResultType.PASS;
-            }
-        }
-        return ActionResultType.PASS;
-    }
-
-    @Override
-    public boolean canConnectTo(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
+    public static boolean canConnect(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
     {
         final BlockPos neighborPos = currentPos.offset(neighborDirection);
         final BlockState neighborState = worldIn.getBlockState(neighborPos);
@@ -145,5 +67,88 @@ public class BlockPillar extends BlockAbstractSixWayConnections
         }
         return neighborState.isSolid() || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp
                 || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable || nb instanceof BlockCatWalk;
+    }
+
+    @Override
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
+    {
+        if (handIn.equals(Hand.MAIN_HAND))
+        {
+            ItemStack playerStack = player.getHeldItemMainhand();
+            Item playerItem = playerStack.getItem();
+            Block clickedBlock = state.getBlock();
+            if (this.getRegistryName().toString().equals("industrialrenewal:catwalk_pillar"))
+            {
+                if (playerItem.equals(BlocksRegistration.ENERGYCABLEMV_ITEM.get()))
+                {
+                    if (!worldIn.isRemote)
+                    {
+                        worldIn.setBlockState(pos, BlocksRegistration.PILLARENERGYCABLEMV.get().getDefaultState());
+                        worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
+                        if (!player.isCreative()) playerStack.shrink(1);
+                    }
+                    return ActionResultType.SUCCESS;
+                }
+                if (playerItem.equals(BlocksRegistration.ENERGYCABLELV_ITEM.get()))
+                {
+                    if (!worldIn.isRemote)
+                    {
+                        worldIn.setBlockState(pos, BlocksRegistration.PILLARENERGYCABLELV.get().getDefaultState());
+                        worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
+                        if (!player.isCreative()) playerStack.shrink(1);
+                    }
+                    return ActionResultType.SUCCESS;
+                }
+                if (playerItem.equals(BlocksRegistration.ENERGYCABLEHV_ITEM.get()))
+                {
+                    if (!worldIn.isRemote)
+                    {
+                        worldIn.setBlockState(pos, BlocksRegistration.PILLARENERGYCABLEHV.get().getDefaultState());
+                        worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
+                        if (!player.isCreative()) playerStack.shrink(1);
+                    }
+                    return ActionResultType.SUCCESS;
+                }
+                if (playerItem.equals(BlocksRegistration.FLUIDPIPE_ITEM.get()))
+                {
+                    if (!worldIn.isRemote)
+                    {
+                        worldIn.setBlockState(pos, BlocksRegistration.PILLARFLUIDPIPE.get().getDefaultState());
+                        worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
+                        if (!player.isCreative()) playerStack.shrink(1);
+                    }
+                    return ActionResultType.SUCCESS;
+                }
+            }
+            if ((playerItem.equals(BlocksRegistration.PILLAR_ITEM.get()) && clickedBlock.equals(BlocksRegistration.PILLAR.get()))
+                    || (playerItem.equals(BlocksRegistration.STEEL_PILLAR_ITEM.get())) && clickedBlock.equals(BlocksRegistration.STEEL_PILLAR.get()))
+            {
+                int n = 1;
+                while (worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar
+                        || worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable
+                        || worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarFluidPipe)
+                {
+                    n++;
+                }
+                if (worldIn.getBlockState(pos.up(n)).getMaterial().isReplaceable())
+                {
+                    if (!worldIn.isRemote)
+                    {
+                        worldIn.setBlockState(pos.up(n), getBlockFromItem(playerItem).getDefaultState());
+                        worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
+                        if (!player.isCreative()) playerStack.shrink(1);
+                    }
+                    return ActionResultType.SUCCESS;
+                }
+                return ActionResultType.PASS;
+            }
+        }
+        return ActionResultType.PASS;
+    }
+
+    @Override
+    public boolean canConnectTo(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
+    {
+        return canConnect(worldIn, currentPos, neighborDirection);
     }
 }

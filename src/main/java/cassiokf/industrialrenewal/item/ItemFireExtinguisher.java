@@ -1,5 +1,8 @@
 package cassiokf.industrialrenewal.item;
 
+import cassiokf.industrialrenewal.blocks.BlockFireExtinguisher;
+import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
@@ -39,11 +42,11 @@ public class ItemFireExtinguisher extends ItemBase
             if (worldIn.isAirBlock(posOffset) || worldIn.getBlockState(posOffset).getBlock().isReplaceable(worldIn.getBlockState(posOffset), new BlockItemUseContext(context)))
             {
                 playSound(worldIn, pos, SoundEvents.BLOCK_METAL_PLACE);
-                //worldIn.setBlockState(posOffset, ModBlocks.fireExtinguisher.getDefaultState().withProperty(BlockFireExtinguisher.FACING, player.getHorizontalFacing()).withProperty(BlockFireExtinguisher.ONWALL, facing != EnumFacing.UP));
+                worldIn.setBlockState(posOffset, BlocksRegistration.FIREEXTINGUISHER.get().getDefaultState().with(BlockFireExtinguisher.FACING, player.getHorizontalFacing()).with(BlockFireExtinguisher.ONWALL, context.getFace() != Direction.UP));
                 itemstack.shrink(1);
                 return ActionResultType.SUCCESS;
             }
-        } else if (true/*IRConfig.MainConfig.Main.fireExtinguisherOnNether*/ || player.dimension != DimensionType.THE_NETHER)
+        } else if (IRConfig.Main.fireExtinguisherOnNether.get() || player.dimension != DimensionType.THE_NETHER)
         {
             ArrayList<BlockPos> list = new ArrayList<>();
             add9x9pos(list, pos);

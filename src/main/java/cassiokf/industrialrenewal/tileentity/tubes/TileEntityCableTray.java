@@ -100,14 +100,19 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
     }
 
     @Override
-    public void onFirstLoad()
+    public void tick()
     {
-        refreshConnections();
+        if (!firstTick)
+        {
+            firstTick = true;
+            onFirstLoad();
+        }
     }
 
     @Override
-    public void doTick()
+    public void onFirstLoad()
     {
+        refreshConnections();
     }
 
     @Nonnull
@@ -118,66 +123,76 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
         boolean isMvPresent = getCableIn().equals(EnumCableIn.MV);
         boolean isLvPresent = getCableIn().equals(EnumCableIn.LV);
         boolean isPipePresent = hasPipe();
-        return new ModelDataMap.Builder()
+        ModelDataMap.Builder builder = new ModelDataMap.Builder()
                 .withInitial(SOUTH, canConnectToPipe(Direction.SOUTH))
                 .withInitial(NORTH, canConnectToPipe(Direction.NORTH))
                 .withInitial(EAST, canConnectToPipe(Direction.EAST))
                 .withInitial(WEST, canConnectToPipe(Direction.WEST))
                 .withInitial(UP, canConnectToPipe(Direction.UP))
-                .withInitial(DOWN, canConnectToPipe(Direction.DOWN))
-                .withInitial(PIPE_CORE, isPipePresent)
-                .withInitial(PIPE_NORTH, isPipePresent && canConnectFluidPipeTrayToTray(Direction.NORTH))
-                .withInitial(PIPE_SOUTH, isPipePresent && canConnectFluidPipeTrayToTray(Direction.SOUTH))
-                .withInitial(PIPE_EAST, isPipePresent && canConnectFluidPipeTrayToTray(Direction.EAST))
-                .withInitial(PIPE_WEST, isPipePresent && canConnectFluidPipeTrayToTray(Direction.WEST))
-                .withInitial(PIPE_UP, isPipePresent && canConnectFluidPipeTrayToTray(Direction.UP))
-                .withInitial(PIPE_DOWN, isPipePresent && canConnectFluidPipeTrayToTray(Direction.DOWN))
-                .withInitial(PIPE2_NORTH, isPipePresent && canConnectToCapability(Direction.NORTH))
-                .withInitial(PIPE2_SOUTH, isPipePresent && canConnectToCapability(Direction.SOUTH))
-                .withInitial(PIPE2_EAST, isPipePresent && canConnectToCapability(Direction.EAST))
-                .withInitial(PIPE2_WEST, isPipePresent && canConnectToCapability(Direction.WEST))
-                .withInitial(PIPE2_UP, isPipePresent && canConnectToCapability(Direction.UP))
-                .withInitial(PIPE2_DOWN, isPipePresent && canConnectToCapability(Direction.DOWN))
-                .withInitial(HV_CORE, isHvPresent)
-                .withInitial(HV_NORTH, isHvPresent && canConnectCableTrayToTray(Direction.NORTH))
-                .withInitial(HV_SOUTH, isHvPresent && canConnectCableTrayToTray(Direction.SOUTH))
-                .withInitial(HV_EAST, isHvPresent && canConnectCableTrayToTray(Direction.EAST))
-                .withInitial(HV_WEST, isHvPresent && canConnectCableTrayToTray(Direction.WEST))
-                .withInitial(HV_UP, isHvPresent && canConnectCableTrayToTray(Direction.UP))
-                .withInitial(HV_DOWN, isHvPresent && canConnectCableTrayToTray(Direction.DOWN))
-                .withInitial(HV2_NORTH, isHvPresent && canConnectToEnergyCapability(Direction.NORTH, EnumCableIn.HV))
-                .withInitial(HV2_SOUTH, isHvPresent && canConnectToEnergyCapability(Direction.SOUTH, EnumCableIn.HV))
-                .withInitial(HV2_EAST, isHvPresent && canConnectToEnergyCapability(Direction.EAST, EnumCableIn.HV))
-                .withInitial(HV2_WEST, isHvPresent && canConnectToEnergyCapability(Direction.WEST, EnumCableIn.HV))
-                .withInitial(HV2_UP, isHvPresent && canConnectToEnergyCapability(Direction.UP, EnumCableIn.HV))
-                .withInitial(HV2_DOWN, isHvPresent && canConnectToEnergyCapability(Direction.DOWN, EnumCableIn.HV))
-                .withInitial(MV_CORE, isMvPresent)
-                .withInitial(MV_NORTH, isMvPresent && canConnectCableTrayToTray(Direction.NORTH))
-                .withInitial(MV_SOUTH, isMvPresent && canConnectCableTrayToTray(Direction.SOUTH))
-                .withInitial(MV_EAST, isMvPresent && canConnectCableTrayToTray(Direction.EAST))
-                .withInitial(MV_WEST, isMvPresent && canConnectCableTrayToTray(Direction.WEST))
-                .withInitial(MV_UP, isMvPresent && canConnectCableTrayToTray(Direction.UP))
-                .withInitial(MV_DOWN, isMvPresent && canConnectCableTrayToTray(Direction.DOWN))
-                .withInitial(MV2_NORTH, isMvPresent && canConnectToEnergyCapability(Direction.NORTH, EnumCableIn.MV))
-                .withInitial(MV2_SOUTH, isMvPresent && canConnectToEnergyCapability(Direction.SOUTH, EnumCableIn.MV))
-                .withInitial(MV2_EAST, isMvPresent && canConnectToEnergyCapability(Direction.EAST, EnumCableIn.MV))
-                .withInitial(MV2_WEST, isMvPresent && canConnectToEnergyCapability(Direction.WEST, EnumCableIn.MV))
-                .withInitial(MV2_UP, isMvPresent && canConnectToEnergyCapability(Direction.UP, EnumCableIn.MV))
-                .withInitial(MV2_DOWN, isMvPresent && canConnectToEnergyCapability(Direction.DOWN, EnumCableIn.MV))
-                .withInitial(LV_CORE, isLvPresent)
-                .withInitial(LV_NORTH, isLvPresent && canConnectCableTrayToTray(Direction.NORTH))
-                .withInitial(LV_SOUTH, isLvPresent && canConnectCableTrayToTray(Direction.SOUTH))
-                .withInitial(LV_EAST, isLvPresent && canConnectCableTrayToTray(Direction.EAST))
-                .withInitial(LV_WEST, isLvPresent && canConnectCableTrayToTray(Direction.WEST))
-                .withInitial(LV_UP, isLvPresent && canConnectCableTrayToTray(Direction.UP))
-                .withInitial(LV_DOWN, isLvPresent && canConnectCableTrayToTray(Direction.DOWN))
-                .withInitial(LV2_NORTH, isLvPresent && canConnectToEnergyCapability(Direction.NORTH, EnumCableIn.LV))
-                .withInitial(LV2_SOUTH, isLvPresent && canConnectToEnergyCapability(Direction.SOUTH, EnumCableIn.LV))
-                .withInitial(LV2_EAST, isLvPresent && canConnectToEnergyCapability(Direction.EAST, EnumCableIn.LV))
-                .withInitial(LV2_WEST, isLvPresent && canConnectToEnergyCapability(Direction.WEST, EnumCableIn.LV))
-                .withInitial(LV2_UP, isLvPresent && canConnectToEnergyCapability(Direction.UP, EnumCableIn.LV))
-                .withInitial(LV2_DOWN, isLvPresent && canConnectToEnergyCapability(Direction.DOWN, EnumCableIn.LV))
-                .build();
+                .withInitial(DOWN, canConnectToPipe(Direction.DOWN));
+        if (isPipePresent)
+        {
+            builder.withInitial(PIPE_CORE, true)
+                    .withInitial(PIPE_NORTH, canConnectFluidPipeTrayToTray(Direction.NORTH))
+                    .withInitial(PIPE_SOUTH, canConnectFluidPipeTrayToTray(Direction.SOUTH))
+                    .withInitial(PIPE_EAST, canConnectFluidPipeTrayToTray(Direction.EAST))
+                    .withInitial(PIPE_WEST, canConnectFluidPipeTrayToTray(Direction.WEST))
+                    .withInitial(PIPE_UP, canConnectFluidPipeTrayToTray(Direction.UP))
+                    .withInitial(PIPE_DOWN, canConnectFluidPipeTrayToTray(Direction.DOWN))
+                    .withInitial(PIPE2_NORTH, canConnectToCapability(Direction.NORTH))
+                    .withInitial(PIPE2_SOUTH, canConnectToCapability(Direction.SOUTH))
+                    .withInitial(PIPE2_EAST, canConnectToCapability(Direction.EAST))
+                    .withInitial(PIPE2_WEST, canConnectToCapability(Direction.WEST))
+                    .withInitial(PIPE2_UP, canConnectToCapability(Direction.UP))
+                    .withInitial(PIPE2_DOWN, canConnectToCapability(Direction.DOWN));
+        }
+        if (isHvPresent)
+        {
+            builder.withInitial(HV_CORE, true)
+                    .withInitial(HV_NORTH, canConnectCableTrayToTray(Direction.NORTH))
+                    .withInitial(HV_SOUTH, canConnectCableTrayToTray(Direction.SOUTH))
+                    .withInitial(HV_EAST, canConnectCableTrayToTray(Direction.EAST))
+                    .withInitial(HV_WEST, canConnectCableTrayToTray(Direction.WEST))
+                    .withInitial(HV_UP, canConnectCableTrayToTray(Direction.UP))
+                    .withInitial(HV_DOWN, canConnectCableTrayToTray(Direction.DOWN))
+                    .withInitial(HV2_NORTH, canConnectToEnergyCapability(Direction.NORTH, EnumCableIn.HV))
+                    .withInitial(HV2_SOUTH, canConnectToEnergyCapability(Direction.SOUTH, EnumCableIn.HV))
+                    .withInitial(HV2_EAST, canConnectToEnergyCapability(Direction.EAST, EnumCableIn.HV))
+                    .withInitial(HV2_WEST, canConnectToEnergyCapability(Direction.WEST, EnumCableIn.HV))
+                    .withInitial(HV2_UP, canConnectToEnergyCapability(Direction.UP, EnumCableIn.HV))
+                    .withInitial(HV2_DOWN, canConnectToEnergyCapability(Direction.DOWN, EnumCableIn.HV));
+        } else if (isMvPresent)
+        {
+            builder.withInitial(MV_CORE, true)
+                    .withInitial(MV_NORTH, canConnectCableTrayToTray(Direction.NORTH))
+                    .withInitial(MV_SOUTH, canConnectCableTrayToTray(Direction.SOUTH))
+                    .withInitial(MV_EAST, canConnectCableTrayToTray(Direction.EAST))
+                    .withInitial(MV_WEST, canConnectCableTrayToTray(Direction.WEST))
+                    .withInitial(MV_UP, canConnectCableTrayToTray(Direction.UP))
+                    .withInitial(MV_DOWN, canConnectCableTrayToTray(Direction.DOWN))
+                    .withInitial(MV2_NORTH, canConnectToEnergyCapability(Direction.NORTH, EnumCableIn.MV))
+                    .withInitial(MV2_SOUTH, canConnectToEnergyCapability(Direction.SOUTH, EnumCableIn.MV))
+                    .withInitial(MV2_EAST, canConnectToEnergyCapability(Direction.EAST, EnumCableIn.MV))
+                    .withInitial(MV2_WEST, canConnectToEnergyCapability(Direction.WEST, EnumCableIn.MV))
+                    .withInitial(MV2_UP, canConnectToEnergyCapability(Direction.UP, EnumCableIn.MV))
+                    .withInitial(MV2_DOWN, canConnectToEnergyCapability(Direction.DOWN, EnumCableIn.MV));
+        } else if (isLvPresent)
+        {
+            builder.withInitial(LV_CORE, true)
+                    .withInitial(LV_NORTH, canConnectCableTrayToTray(Direction.NORTH))
+                    .withInitial(LV_SOUTH, canConnectCableTrayToTray(Direction.SOUTH))
+                    .withInitial(LV_EAST, canConnectCableTrayToTray(Direction.EAST))
+                    .withInitial(LV_WEST, canConnectCableTrayToTray(Direction.WEST))
+                    .withInitial(LV_UP, canConnectCableTrayToTray(Direction.UP))
+                    .withInitial(LV_DOWN, canConnectCableTrayToTray(Direction.DOWN))
+                    .withInitial(LV2_NORTH, canConnectToEnergyCapability(Direction.NORTH, EnumCableIn.LV))
+                    .withInitial(LV2_SOUTH, canConnectToEnergyCapability(Direction.SOUTH, EnumCableIn.LV))
+                    .withInitial(LV2_EAST, canConnectToEnergyCapability(Direction.EAST, EnumCableIn.LV))
+                    .withInitial(LV2_WEST, canConnectToEnergyCapability(Direction.WEST, EnumCableIn.LV))
+                    .withInitial(LV2_UP, canConnectToEnergyCapability(Direction.UP, EnumCableIn.LV))
+                    .withInitial(LV2_DOWN, canConnectToEnergyCapability(Direction.DOWN, EnumCableIn.LV));
+        }
+        return builder.build();
     }
 
     public boolean canConnectToPipe(Direction neighborDirection)
@@ -205,21 +220,15 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
     private boolean canConnectFluidPipeTrayToTray(Direction neighborDirection)
     {
         TileEntity otherTE = world.getTileEntity(pos.offset(neighborDirection));
-        if (otherTE instanceof TileEntityCableTray)
-        {
-            return ((TileEntityCableTray) otherTE).hasPipe();
-        }
-        return false;
+
+        return otherTE instanceof TileEntityCableTray && ((TileEntityCableTray) otherTE).hasPipe();
     }
 
     private boolean canConnectCableTrayToTray(Direction neighborDirection)
     {
         TileEntity otherTE = world.getTileEntity(pos.offset(neighborDirection));
-        if (otherTE instanceof TileEntityCableTray)
-        {
-            return getCableIn().equals(((TileEntityCableTray) otherTE).getCableIn());
-        }
-        return false;
+
+        return otherTE instanceof TileEntityCableTray && getCableIn().equals(((TileEntityCableTray) otherTE).getCableIn());
     }
 
     public boolean onBlockActivated(PlayerEntity player, ItemStack stack)
@@ -234,8 +243,8 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
             if (!world.isRemote)
             {
                 world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-                Sync();
             }
+            Sync();
             return true;
         }
         if (block instanceof BlockEnergyCable && energyCable.equals(EnumCableIn.NONE))
@@ -258,8 +267,8 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
             if (!world.isRemote)
             {
                 world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-                Sync();
             }
+            Sync();
             return true;
         }
         if (stack.getItem() instanceof ItemPowerScrewDrive && (fluidPipe || dataCable || energyCable != EnumCableIn.NONE))
@@ -272,8 +281,8 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
             if (!world.isRemote)
             {
                 ItemPowerScrewDrive.playDrillSound(world, pos);
-                Sync();
             }
+            Sync();
             return true;
         }
         return false;
@@ -383,8 +392,9 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
         {
             cables.setMaster(null);
             cables.getMaster();
-            cables.requestRefresh();
+            cables.requestModelRefresh();
         }
+        requestModelRefresh();
     }
 
     @Override

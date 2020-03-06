@@ -1,8 +1,5 @@
 {
   "variants": {
-    "": {
-      "model": "industrialrenewal:block/sign/sign_ra_gnd"
-    },
     "facing=north,onwall=false": {
       "model": "industrialrenewal:block/sign/sign_ra_gnd"
     },
