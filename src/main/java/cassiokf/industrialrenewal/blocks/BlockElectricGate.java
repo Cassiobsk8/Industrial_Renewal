@@ -80,10 +80,10 @@ public class BlockElectricGate extends BlockBase
 
             if (!inverted && rightState.getBlock() instanceof BlockElectricGate && rightState.getActualState(world, rightPos).getValue(INVERTED))
             {
-                ((BlockElectricGate) rightState.getBlock()).OpenUpAndDown(world, actualState, rightPos, active);
+                ((BlockElectricGate) rightState.getBlock()).OpenUpAndDown(world, rightState, rightPos, active);
             } else if (inverted && leftState.getBlock() instanceof BlockElectricGate && !leftState.getActualState(world, leftPos).getValue(INVERTED))
             {
-                ((BlockElectricGate) leftState.getBlock()).OpenUpAndDown(world, actualState, leftPos, active);
+                ((BlockElectricGate) leftState.getBlock()).OpenUpAndDown(world, leftState, leftPos, active);
             }
 
             //Sound
