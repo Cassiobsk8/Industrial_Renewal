@@ -196,6 +196,9 @@ public class IRConfig {
         {
             @Config.LangKey("gui.config.recipes.spongeiron_recipe.name")
             public boolean spongeIronRecipeActive = true;
+
+            @Config.Comment("Sponge iron smelt into IndR Steel indot? (default false)")
+            public boolean spongeDefaultIngotSteel = false;
         }
     }
 }

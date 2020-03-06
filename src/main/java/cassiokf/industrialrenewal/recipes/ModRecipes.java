@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +19,8 @@ public class ModRecipes {
 
         if (IRConfig.MainConfig.Recipes.spongeIronRecipeActive)
         {
-            GameRegistry.addSmelting(ModItems.spongeIron, new ItemStack(OreDictionary.getOres("ingotSteel").get(0).getItem()), 0.7f);
+            Item item = IRConfig.MainConfig.Recipes.spongeDefaultIngotSteel ? ModItems.ingotSteel : OreDictionary.getOres("ingotSteel").get(0).getItem();
+            GameRegistry.addSmelting(ModItems.spongeIron, new ItemStack(item), 0.7f);
         }
         GameRegistry.addShapelessRecipe(new ResourceLocation("industrialrenewal:small_slabs"), new ResourceLocation("small_slabs"), new ItemStack(OreDictionary.getOres("minislabStone").get(0).getItem(), 4),
                 Ingredient.fromStacks(new ItemStack(ModItems.steelSaw, 1, OreDictionary.WILDCARD_VALUE)), Ingredient.fromStacks(new ItemStack(Blocks.STONE_SLAB, 1)));
