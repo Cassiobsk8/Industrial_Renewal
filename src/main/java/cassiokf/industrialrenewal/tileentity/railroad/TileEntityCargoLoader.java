@@ -214,7 +214,10 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
 
     private BlockPos getMasterPos()
     {
-        if (world.getBlockState(pos).getValue(BlockCargoLoader.MASTER)) return pos;
+        if (!isInvalid()
+                && world.getBlockState(pos).getBlock() instanceof BlockCargoLoader
+                && world.getBlockState(pos).getValue(BlockCargoLoader.MASTER))
+            return pos;
         return BlockCargoLoader.getMasterPos(world, pos, getBlockFacing());
     }
 
