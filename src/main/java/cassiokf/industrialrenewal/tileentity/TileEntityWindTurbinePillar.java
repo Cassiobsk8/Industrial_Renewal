@@ -10,23 +10,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileEntityWindTurbinePillar> implements ICapabilityProvider
+public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileEntityWindTurbinePillar>
 {
     private final VoltsEnergyContainer energyContainer;
     private final VoltsEnergyContainer dummyEnergyContainer;
 
     private float amount;//For Lerp
+    private int oldOutPut = -1;
 
-    private int tick;
+    private EnumFacing facing;
 
     private EnumFacing[] faces = new EnumFacing[]{EnumFacing.UP, EnumFacing.DOWN};
-    private BlockPos turbinePos;
     private boolean isBase;
 
     public TileEntityWindTurbinePillar()
@@ -38,55 +37,81 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
             {
                 TileEntityWindTurbinePillar.this.markDirty();
             }
+
+            @Override
+            public int receiveEnergy(int maxReceive, boolean simulate)
+            {
+                return TileEntityWindTurbinePillar.this.passEnergy(maxReceive, simulate);
+            }
         };
-        this.dummyEnergyContainer = new VoltsEnergyContainer(0, 0, 0);
+        this.dummyEnergyContainer = new VoltsEnergyContainer(0, 0, 0)
+        {
+            @Override
+            public boolean canReceive()
+            {
+                return false;
+            }
+        };
     }
 
-    @Override
-    public void update()
+    public int passEnergy(int amount, boolean simulate)
     {
-        if (isMaster())
+        if (!isMaster() && !isMasterInvalid()) return getMaster().passEnergy(amount, simulate);
+
+        int out = 0;
+        int validOutputs = getMaxOutput();
+        if (validOutputs == 0) return 0;
+        int realMaxOutput = Math.min(amount / validOutputs, this.energyContainer.getMaxOutput());
+        for (BlockPos posM : getPosSet().keySet())
         {
-            if (!world.isRemote)
+            TileEntity te = world.getTileEntity(posM);
+            EnumFacing face = getPosSet().get(posM).getOpposite();
+            if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
             {
-                energyContainer.setMaxEnergyStored(Math.max(1024 * getPosSet().size(), energyContainer.getEnergyStored()));
-                int energyReceived = 0;
-                for (BlockPos currentPos : getPosSet().keySet())
+                IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
+                if (energyStorage != null && energyStorage.canReceive())
                 {
-                    TileEntity te = world.getTileEntity(currentPos);
-                    EnumFacing face = getPosSet().get(currentPos);
-                    if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite()))
-                    {
-                        IEnergyStorage eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
-                        if (eStorage != null && eStorage.canReceive())
-                        {
-                            energyReceived += eStorage.receiveEnergy(this.energyContainer.extractEnergy(this.energyContainer.getMaxOutput(), true), false);
-                            this.energyContainer.extractEnergy(energyReceived, false);
-                        }
-                    }
-                }
+                    int energy = energyStorage.receiveEnergy(realMaxOutput, simulate);
 
-                outPut = energyReceived;
-
-                if (oldOutPut != outPut)
-                {
-                    oldOutPut = outPut;
-                    this.Sync();
+                    out += energy;
                 }
-            } else if (getTurbinePos() != null && isBase)
-            {
-                if (tick % 10 == 0)
-                {
-                    tick = 0;
-                    this.Sync();
-                    if (!(world.getTileEntity(turbinePos) instanceof TileEntitySmallWindTurbine))
-                    {
-                        forceNewTurbinePos();
-                    }
-                }
-                tick++;
             }
         }
+        if (!simulate)
+        {
+            outPut = out;
+        } else if (out == 0)
+        {
+            outPut = out;
+        }
+
+        if (oldOutPut != outPut)
+        {
+            oldOutPut = outPut;
+            this.Sync();
+        }
+        return out;
+    }
+
+    public int getMaxOutput()
+    {
+        int canAccept = 0;
+        int realMaxOutput = this.energyContainer.getMaxOutput();
+        for (BlockPos posM : getPosSet().keySet())
+        {
+            TileEntity te = world.getTileEntity(posM);
+            EnumFacing face = getPosSet().get(posM).getOpposite();
+            if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
+            {
+                IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
+                if (energyStorage != null && energyStorage.canReceive())
+                {
+                    int energy = energyStorage.receiveEnergy(realMaxOutput, true);
+                    if (energy > 0) canAccept++;
+                }
+            }
+        }
+        return canAccept;
     }
 
     @Override
@@ -105,7 +130,6 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     public void checkForOutPuts(BlockPos bPos)
     {
         isBase = getIsBase();
-        if (isBase) forceNewTurbinePos();
         if (world.isRemote) return;
         for (EnumFacing face : EnumFacing.HORIZONTALS)
         {
@@ -128,28 +152,13 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
         this.Sync();
     }
 
-    private BlockPos getTurbinePos()
-    {
-        if (turbinePos != null) return turbinePos;
-        return forceNewTurbinePos();
-    }
-
-
-    private BlockPos forceNewTurbinePos()
-    {
-        int n = 1;
-        while (world.getTileEntity(pos.up(n)) instanceof TileEntityWindTurbinePillar)
-        {
-            n++;
-        }
-        if (world.getTileEntity(pos.up(n)) instanceof TileEntitySmallWindTurbine) turbinePos = pos.up(n);
-        else turbinePos = null;
-        return turbinePos;
-    }
-
     public EnumFacing getBlockFacing()
     {
-        return this.world.getBlockState(this.pos).getValue(BlockWindTurbinePillar.FACING);
+        if (facing != null) return facing;
+        IBlockState state = world.getBlockState(pos);
+        facing = state.getBlock() instanceof BlockWindTurbinePillar
+                ? state.getValue(BlockWindTurbinePillar.FACING) : EnumFacing.NORTH;
+        return facing;
     }
 
     public float getGenerationforGauge()
@@ -168,7 +177,6 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
 
     public String getText()
     {
-        if (getMaster() == null || getMaster().getTurbinePos() == null) return "No Turbine";
         return getEnergyGenerated() + " FE/t";
     }
 
@@ -205,10 +213,11 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     {
         this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
         this.isBase = compound.getBoolean("base");
-        TileEntityWindTurbinePillar te = null;
-        if (compound.hasKey("masterPos") && hasWorld())
-            te = (TileEntityWindTurbinePillar) world.getTileEntity(BlockPos.fromLong(compound.getLong("masterPos")));
-        if (te != null) this.setMaster(te);
+        this.outPut = compound.getInteger("outPut");
+        //TileEntityWindTurbinePillar te = null;
+        //if (compound.hasKey("masterPos") && hasWorld())
+        //    te = (TileEntityWindTurbinePillar) world.getTileEntity(BlockPos.fromLong(compound.getLong("masterPos")));
+        //if (te != null) this.setMaster(te);
         super.readFromNBT(compound);
     }
 
@@ -217,7 +226,8 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     {
         compound.setTag("StoredIR", this.energyContainer.serializeNBT());
         compound.setBoolean("base", this.isBase);
-        if (getMaster() != null) compound.setLong("masterPos", getMaster().getPos().toLong());
+        compound.setInteger("outPut", outPut);
+        //if (getMaster() != null) compound.setLong("masterPos", getMaster().getPos().toLong());
         return super.writeToNBT(compound);
     }
 }

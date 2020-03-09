@@ -23,13 +23,13 @@ public class TileEntityFluidPipeGauge extends TileEntityFluidPipe
 
     public String GetText()
     {
-        return getMaster().getOutPut() + " mB/t";
+        return getMaster().averageFluid + " mB/t";
     }
 
     public float getOutPutAngle()
     {
-        int outputs = getMaster().getOutPutCount();
-        float currentAmount = (float) getMaster().getOutPut() / (outputs > 0 ? (float) outputs : 1f);
+        int outputs = getMaster().outPutCount;
+        float currentAmount = (float) getMaster().averageFluid / (outputs > 0 ? (float) outputs : 1f);
         float totalCapacity = (float) maxOutput;
         currentAmount = currentAmount / totalCapacity;
         amount = Utils.lerp(amount, currentAmount, 0.1f);
@@ -39,10 +39,13 @@ public class TileEntityFluidPipeGauge extends TileEntityFluidPipe
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        TileEntityFluidPipe te = null;
-        if (compound.hasKey("masterPos") && hasWorld())
-            te = (TileEntityFluidPipe) world.getTileEntity(BlockPos.fromLong(compound.getLong("masterPos")));
-        if (te != null) this.setMaster(te);
+        if (hasWorld() && world.isRemote)
+        {
+            TileEntityFluidPipe te = null;
+            if (compound.hasKey("masterPos") && hasWorld())
+                te = (TileEntityFluidPipe) world.getTileEntity(BlockPos.fromLong(compound.getLong("masterPos")));
+            if (te != null) this.setMaster(te);
+        }
         super.readFromNBT(compound);
     }
 

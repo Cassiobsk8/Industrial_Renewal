@@ -26,10 +26,11 @@ public class TESRSmallWindTurbine extends TileEntitySpecialRenderer<TileEntitySm
     @Override
     public void render(TileEntitySmallWindTurbine te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
+        super.render(te, x, y, z, partialTicks, destroyStage, alpha);
         if (te.hasBlade())
         {
             doTheMath(te.getBlockFacing(), x, z);
-            RenderBlade(te, xPos, y + 0.5f, zPos);
+            RenderBlade(te, xPos, y + 0.5f, zPos, partialTicks);
         }
     }
 
@@ -39,18 +40,18 @@ public class TESRSmallWindTurbine extends TileEntitySpecialRenderer<TileEntitySm
         {
             case SOUTH:
                 xPos = x + 0.5;
-                zPos = z + 0.7;
+                zPos = z + 1;
                 return;
             case NORTH:
                 xPos = x + 0.5;
-                zPos = z + 0.3;
+                zPos = z;
                 return;
             case EAST:
-                xPos = x + 0.7;
+                xPos = x + 1;
                 zPos = z + 0.5;
                 return;
             case WEST:
-                xPos = x + 0.3;
+                xPos = x;
                 zPos = z + 0.5;
                 return;
         }
@@ -59,7 +60,7 @@ public class TESRSmallWindTurbine extends TileEntitySpecialRenderer<TileEntitySm
     /*
      * x = side / y = up / z = front
      */
-    private void RenderBlade(TileEntitySmallWindTurbine te, double x, double y, double z)
+    private void RenderBlade(TileEntitySmallWindTurbine te, double x, double y, double z, float partialTicks)
     {
         GlStateManager.enableRescaleNormal();
         GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
@@ -87,9 +88,9 @@ public class TESRSmallWindTurbine extends TileEntitySpecialRenderer<TileEntitySm
                 break;
         }
         GlStateManager.rotate(90, 1, 0, 0);
-        GlStateManager.scale(6.0f, 6.0f, 6.0f);
+        GlStateManager.scale(12.0f, 12.0f, 12.0f);
 
-        GlStateManager.rotate(te.getRotation(), 0, 1, 0);
+        GlStateManager.rotate(te.getRotation(partialTicks), 0, 1, 0);
 
         IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(blade, te.getWorld(), null);
         model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);

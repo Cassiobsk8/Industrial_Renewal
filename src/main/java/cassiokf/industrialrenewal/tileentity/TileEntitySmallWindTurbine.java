@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.BlockBatteryBank;
+import cassiokf.industrialrenewal.blocks.BlockSmallWindTurbine;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.item.ItemWindBlade;
 import cassiokf.industrialrenewal.util.Utils;
@@ -41,8 +41,11 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
         }
     };
     private float rotation;
+    private int oldEnergyGen;
     private int energyGenerated;
     private int tickToDamage;
+
+    private Random random = new Random();
 
     public TileEntitySmallWindTurbine()
     {
@@ -51,7 +54,13 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
             @Override
             public void onEnergyChange()
             {
-                TileEntitySmallWindTurbine.this.Sync();
+                TileEntitySmallWindTurbine.this.markDirty();
+            }
+
+            @Override
+            public boolean canReceive()
+            {
+                return false;
             }
         };
     }
@@ -75,11 +84,12 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
             if (hasBlade())
             {
                 int energyGen = Math.round(getMaxGeneration() * getEfficiency());
-                energyGenerated = this.energyContainer.receiveEnergy(energyGen, false);
+                energyGenerated = this.energyContainer.receiveInternally(energyGen, false);
+                //damage blade
                 if (tickToDamage >= 1200 && energyGen > 0)
                 {
                     tickToDamage = 0;
-                    bladeInv.getStackInSlot(0).attemptDamageItem(1, new Random(), null);
+                    bladeInv.getStackInSlot(0).attemptDamageItem(1, random, null);
                     if (bladeInv.getStackInSlot(0).getItemDamage() < 0) bladeInv.setStackInSlot(0, ItemStack.EMPTY);
                 }
                 if (tickToDamage < 1201) tickToDamage++;
@@ -97,20 +107,16 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
                     if (downE != null && downE.canReceive())
                     {
                         this.energyContainer.extractEnergy(downE.receiveEnergy(this.energyContainer.extractEnergy(this.energyContainer.getMaxOutput(), true), false), false);
-                        this.markDirty();
                     }
                 }
             }
-        } else
-        {
-            rotation += 4.5f * getEfficiency();
-            if (rotation > 360) rotation = 0;
-        }
-    }
 
-    public int getEnergyGenerated()
-    {
-        return energyGenerated;
+            if (energyGenerated != oldEnergyGen)
+            {
+                oldEnergyGen = energyGenerated;
+                this.Sync();
+            }
+        }
     }
 
     public IItemHandler getBladeHandler()
@@ -118,9 +124,12 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
         return this.bladeInv;
     }
 
-    public float getRotation()
+    public float getRotation(float partialTicks)
     {
-        return -rotation;
+        float inverted = Utils.normalize(partialTicks, 1, 0);
+        rotation = rotation + (4f * inverted) * getEfficiency();
+        if (rotation >= 360) rotation -= 360;
+        return -(rotation);
     }
 
     public boolean hasBlade()
@@ -147,13 +156,13 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
         if (pos.getY() - 62 <= 0) heightModifier = 0;
         else heightModifier = (pos.getY() - posMin) / (255 - posMin);
         heightModifier = MathHelper.clamp(heightModifier, 0, 1);
-        //System.out.println(weatherModifier + " H " + heightModifier + " " + (pos.getY()- posMin)/(255-posMin));
+
         return weatherModifier * heightModifier;
     }
 
     public EnumFacing getBlockFacing()
     {
-        return this.world.getBlockState(this.pos).getValue(BlockBatteryBank.FACING);
+        return world.getBlockState(pos).getValue(BlockSmallWindTurbine.FACING);
     }
 
     @Override

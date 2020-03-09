@@ -18,21 +18,19 @@ public abstract class TileEntityEnergyCableGauge extends TileEntityEnergyCable
         IBlockState state = world.getBlockState(pos);
         facing = state.getBlock() instanceof BlockEnergyCableGauge
                 ? state.getValue(BlockEnergyCableGauge.FACING) : EnumFacing.NORTH;
-        Sync();
         return facing;
     }
 
     public String GetText()
     {
-        int energy = getMaster().getOutPut();
-        return Utils.formatPreciseEnergyString(energy) + "/t";
+        return Utils.formatPreciseEnergyString(getMaster().averageEnergy) + "/t";
     }
 
     public float getOutPutAngle()
     {
-        int outputs = getMaster().getOutPutCount();
-        float currentAmount = (float) getMaster().getOutPut() / (outputs > 0 ? (float) outputs : 1f);
-        float totalCapacity = (float) getMaster().energyContainer.getMaxOutput();
+        int outputs = getMaster().outPutCount;
+        float currentAmount = (float) getMaster().averageEnergy / (outputs > 0 ? (float) outputs : 1f);
+        float totalCapacity = (float) energyContainer.getMaxOutput();
         currentAmount = Utils.normalize(currentAmount, 0, totalCapacity);
         amount = Utils.lerp(amount, currentAmount, 0.1f);
         return amount * 90f;
@@ -41,10 +39,13 @@ public abstract class TileEntityEnergyCableGauge extends TileEntityEnergyCable
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        TileEntityEnergyCable te = null;
-        if (compound.hasKey("masterPos") && hasWorld())
-            te = (TileEntityEnergyCable) world.getTileEntity(BlockPos.fromLong(compound.getLong("masterPos")));
-        if (te != null) this.setMaster(te);
+        if (hasWorld() && world.isRemote)
+        {
+            TileEntityEnergyCable te = null;
+            if (compound.hasKey("masterPos") && hasWorld())
+                te = (TileEntityEnergyCable) world.getTileEntity(BlockPos.fromLong(compound.getLong("masterPos")));
+            if (te != null) this.setMaster(te);
+        }
         super.readFromNBT(compound);
     }
 

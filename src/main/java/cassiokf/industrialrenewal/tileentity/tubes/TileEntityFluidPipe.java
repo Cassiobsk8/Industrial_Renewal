@@ -4,10 +4,12 @@ import cassiokf.industrialrenewal.config.IRConfig;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -15,8 +17,14 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import javax.annotation.Nullable;
 import java.util.Map;
 
-public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFluidPipe> implements ICapabilityProvider
+public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFluidPipe> implements ICapabilityProvider, ITickable
 {
+    public int averageFluid;
+
+    public int maxOutput = IRConfig.MainConfig.Main.maxFluidPipeTransferAmount;
+    private int oldFluid;
+    private int tick;
+    private boolean inUse = false;
     public FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME)
     {
         @Override
@@ -24,40 +32,64 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
         {
             TileEntityFluidPipe.this.markDirty();
         }
-    };
 
-    public int maxOutput = IRConfig.MainConfig.Main.maxFluidPipeTransferAmount;
+        @Override
+        public int fill(FluidStack resource, boolean doFill)
+        {
+            return TileEntityFluidPipe.this.onFluidReceived(resource, doFill);
+        }
+    };
 
     @Override
     public void update()
     {
         if (!world.isRemote && isMaster())
         {
-            final Map<BlockPos, EnumFacing> mapPosSet = getPosSet();
-            int quantity = mapPosSet.size();
-            this.tank.setCapacity(Math.max(maxOutput * quantity, this.tank.getFluidAmount()));
-
-            if (quantity > 0)
+            if (tick >= 10)
             {
-                int canAccept = moveFluid(true, 1, mapPosSet);
-                outPut = canAccept > 0 ? moveFluid(false, canAccept, mapPosSet) : 0;
-            } else outPut = 0;
-
-            outPutCount = mapPosSet.size();
-            if ((oldOutPut != outPut) || (oldOutPutCount != outPutCount))
-            {
-                oldOutPut = outPut;
-                oldOutPutCount = outPutCount;
-                this.Sync();
+                tick = 0;
+                averageFluid = outPut / 10;
+                outPut = 0;
+                if (averageFluid != oldFluid)
+                {
+                    oldFluid = averageFluid;
+                    Sync();
+                }
             }
+            tick++;
+            limitedOutPutMap.clear();
         }
     }
 
-    public int moveFluid(boolean simulate, int validOutputs, Map<BlockPos, EnumFacing> mapPosSet)
+    public int onFluidReceived(FluidStack resource, boolean doFill)
     {
-        int canAccept = 0;
+        if (!isMaster() && !isMasterInvalid()) return getMaster().onFluidReceived(resource, doFill);
+
+        if (inUse) return 0; //to prevent stack overflow (IE)
+        inUse = true;
+
+        if (resource == null || resource.amount <= 0) return 0;
         int out = 0;
-        int realMaxOutput = Math.min(tank.getFluidAmount() / validOutputs, maxOutput);
+        final Map<BlockPos, EnumFacing> mapPosSet = getPosSet();
+        int quantity = mapPosSet.size();
+
+        if (quantity > 0)
+        {
+            out = moveFluid(resource, doFill, mapPosSet);
+            if (doFill) outPut += out;
+        }
+        outPutCount = quantity;
+
+        inUse = false;
+        return out;
+    }
+
+    public int moveFluid(FluidStack resource, boolean doFill, Map<BlockPos, EnumFacing> mapPosSet)
+    {
+        int out = 0;
+        int validOutputs = getMaxOutput(mapPosSet, resource);
+        if (validOutputs == 0) return 0;
+        FluidStack realMaxOutput = new FluidStack(resource.getFluid(), Math.min(resource.amount / validOutputs, maxOutput));
         for (BlockPos posM : mapPosSet.keySet())
         {
             TileEntity te = world.getTileEntity(posM);
@@ -68,22 +100,46 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
                 if (tankStorage != null
                         && tankStorage.getTankProperties() != null
                         && tankStorage.getTankProperties().length > 0
-                        && tankStorage.getTankProperties()[0].canFill()
-                        && this.tank.drain(maxOutput, false) != null)
+                        && tankStorage.getTankProperties()[0].canFill())
                 {
-                    int fluid = tankStorage.fill(this.tank.drain(realMaxOutput, false), !simulate);
-                    if (simulate)
+                    realMaxOutput.amount = getLimitedValueForOutPut(realMaxOutput.amount, maxOutput, te.getPos(), !doFill);
+                    if (realMaxOutput.amount > 0)
                     {
-                        if (fluid > 0) canAccept++;
-                    } else
-                    {
+                        int fluid = tankStorage.fill(realMaxOutput, doFill);
                         out += fluid;
-                        this.tank.drain(fluid, true);
                     }
                 }
             }
         }
-        return simulate ? canAccept : out;
+        return out;
+    }
+
+    public int getMaxOutput(Map<BlockPos, EnumFacing> mapPosSet, FluidStack resource)
+    {
+        int canAccept = 0;
+        for (BlockPos posM : mapPosSet.keySet())
+        {
+            TileEntity te = world.getTileEntity(posM);
+            EnumFacing face = mapPosSet.get(posM).getOpposite();
+            if (te != null && te != this && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face))
+            {
+                IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
+                if (tankStorage != null
+                        && tankStorage.getTankProperties() != null
+                        && tankStorage.getTankProperties().length > 0
+                        && tankStorage.getTankProperties()[0].canFill())
+                {
+                    FluidStack realMaxOutput = resource;
+                    realMaxOutput.amount = getLimitedValueForOutPut(realMaxOutput.amount, maxOutput, te.getPos(), true);
+                    if (realMaxOutput.amount > 0)
+                    {
+                        int fluid = tankStorage.fill(realMaxOutput, false);
+                        if (fluid > 0) canAccept++;
+                    }
+                }
+            }
+        }
+        return canAccept;
     }
 
     @Override
@@ -127,7 +183,6 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
 
     @Nullable
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && getMaster() != null)
@@ -138,6 +193,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
+        tagCompound.setInteger("fluid_average", averageFluid);
         NBTTagCompound tag = new NBTTagCompound();
         tank.writeToNBT(tag);
         tagCompound.setTag("fluid", tag);
@@ -147,6 +203,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     @Override
     public void readFromNBT(NBTTagCompound tagCompound)
     {
+        averageFluid = tagCompound.getInteger("fluid_average");
         NBTTagCompound tag = tagCompound.getCompoundTag("fluid");
         tank.readFromNBT(tag);
         super.readFromNBT(tagCompound);

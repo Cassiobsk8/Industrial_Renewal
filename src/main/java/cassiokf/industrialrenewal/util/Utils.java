@@ -121,17 +121,26 @@ public class Utils
         return a + f * (b - a);
     }
 
-    public static double preciseLerp(double a, double b, float f)
+    public static float preciseLerp(float start, float end, float a)
     {
-        return (1 - f) * a + f * b;
+        return start + (end - start) * a;
     }
 
-    public static IFluidHandler wrapFluidBlock(Block block, World world, BlockPos pos) {
-        if (block instanceof IFluidBlock) {
+    private static float apply(float a)
+    {
+        return a * a * (3 - 2 * a);
+    }
+
+    public static IFluidHandler wrapFluidBlock(Block block, World world, BlockPos pos)
+    {
+        if (block instanceof IFluidBlock)
+        {
             return new FluidBlockWrapper((IFluidBlock) block, world, pos);
-        } else if (block instanceof BlockLiquid) {
+        } else if (block instanceof BlockLiquid)
+        {
             return new BlockLiquidWrapper((BlockLiquid) block, world, pos);
-        } else {
+        } else
+        {
             return new BlockWrapper(block, world, pos);
         }
     }

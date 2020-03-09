@@ -34,11 +34,6 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
         refreshConnections();
     }
 
-    @Override
-    public void update()
-    {
-    }
-
     public boolean onBlockActivated(EntityPlayer player, ItemStack stack)
     {
         Block block = Block.getBlockFromItem(stack.getItem());

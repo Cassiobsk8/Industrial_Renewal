@@ -5,9 +5,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import java.util.List;
 import java.util.Map;
@@ -15,15 +15,14 @@ import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TileEntitySyncable implements ITickable
+public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TileEntitySyncable implements ICapabilityProvider
 {
     private TE master;
     private boolean isMaster;
     private Map<BlockPos, EnumFacing> posSet = new ConcurrentHashMap<>();
+    public Map<BlockPos, Integer> limitedOutPutMap = new ConcurrentHashMap<>();
     public int outPut;
-    public int oldOutPut = -1;
     int outPutCount;
-    int oldOutPutCount = -1;
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
@@ -35,6 +34,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     public void onLoad()
     {
         initializeMultiblockIfNecessary();
+        Sync();
     }
 
     public int getOutPut()
@@ -94,6 +94,20 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
             }
             markDirty();
         }
+    }
+
+    public int getLimitedValueForOutPut(int value, int maxOutPut, BlockPos storagePos, boolean simulate)
+    {
+        if (!limitedOutPutMap.containsKey(storagePos))
+        {
+            if (!simulate) limitedOutPutMap.put(storagePos, value);
+            return value;
+        }
+        int currentValue = limitedOutPutMap.get(storagePos);
+        int maxValue = maxOutPut - currentValue;
+        maxValue = Math.min(value, maxValue);
+        if (!simulate) limitedOutPutMap.put(storagePos, currentValue + maxValue);
+        return maxValue;
     }
 
     public boolean isTray()
@@ -184,8 +198,6 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     public void readFromNBT(NBTTagCompound compound)
     {
         isMaster = compound.getBoolean("isMaster");
-        outPut = compound.getInteger("out");
-        outPutCount = compound.getInteger("count");
         super.readFromNBT(compound);
     }
 
@@ -193,8 +205,6 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         compound.setBoolean("isMaster", isMaster);
-        compound.setInteger("out", outPut);
-        compound.setInteger("count", outPutCount);
         return super.writeToNBT(compound);
     }
 }

@@ -56,8 +56,22 @@ public class VoltsEnergyContainer implements IEnergyStorage, INBTSerializable<NB
             this.stored = this.getMaxEnergyStored();
     }
 
+    public int receiveInternally(int maxReceive, boolean simulate)
+    {
+        final int acceptedPower = Math.min(this.getMaxEnergyStored() - this.getEnergyStored(), Math.min(this.getMaxInput(), maxReceive));
+
+        if (!simulate)
+        {
+            this.stored += acceptedPower;
+            onEnergyChange();
+        }
+
+        return acceptedPower;
+    }
+
     @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
+    public int receiveEnergy(int maxReceive, boolean simulate)
+    {
         final int acceptedPower = Math.min(this.getMaxEnergyStored() - this.getEnergyStored(), Math.min(this.getMaxInput(), maxReceive));
 
         if (!simulate)

@@ -38,10 +38,9 @@ public class TileEntityInfinityGenerator extends TileEntity implements ICapabili
     {
         if (this.hasWorld() && !this.world.isRemote)
         {
-            int energy = 102400;
             for (EnumFacing facing : EnumFacing.HORIZONTALS)
             {
-                updatePanel(facing, energy);
+                updatePanel(facing, 1024000);
             }
         }
     }
@@ -49,12 +48,12 @@ public class TileEntityInfinityGenerator extends TileEntity implements ICapabili
     public void updatePanel(EnumFacing facing, int energy)
     {
         final TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
-        if (facing != EnumFacing.UP && tileEntity != null && !tileEntity.isInvalid())
+        if (tileEntity != null && !tileEntity.isInvalid())
         {
             if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
             {
                 final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
-                if (consumer != null)
+                if (consumer != null && consumer.canReceive())
                 {
                     consumer.receiveEnergy(energy, false);
                 }

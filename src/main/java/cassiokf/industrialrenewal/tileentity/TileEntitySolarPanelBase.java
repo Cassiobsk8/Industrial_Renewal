@@ -31,6 +31,12 @@ public class TileEntitySolarPanelBase extends TileEntity implements ICapabilityP
             {
                 TileEntitySolarPanelBase.this.markDirty();
             }
+
+            @Override
+            public boolean canReceive()
+            {
+                return false;
+            }
         };
     }
 
@@ -77,16 +83,14 @@ public class TileEntitySolarPanelBase extends TileEntity implements ICapabilityP
     public void updatePanel(EnumFacing facing, int energy)
     {
         final TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
-        if (facing != EnumFacing.UP && tileEntity != null && !tileEntity.isInvalid())
+        if (tileEntity != null && !tileEntity.isInvalid())
         {
             if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()) && !(world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockSolarPanel))
             {
                 final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
-                if (consumer != null)
+                if (consumer != null && consumer.canReceive())
                 {
-
                     this.energyContainer.extractEnergy(consumer.receiveEnergy(energy, false), false);
-                    //System.out.println("Facing " + facing + " Consumer: " + consumer.receiveEnergy(energy, true));
                 }
             }
         }

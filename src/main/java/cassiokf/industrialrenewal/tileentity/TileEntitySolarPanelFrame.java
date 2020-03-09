@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -24,7 +25,7 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEntitySolarPanelFrame>
+public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEntitySolarPanelFrame> implements ITickable
 {
     public final VoltsEnergyContainer energyContainer;
     public ItemStackHandler panelInv = new ItemStackHandler(1)
@@ -55,6 +56,12 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
             public void onEnergyChange()
             {
                 TileEntitySolarPanelFrame.this.markDirty();
+            }
+
+            @Override
+            public boolean canReceive()
+            {
+                return false;
             }
         };
     }
@@ -88,7 +95,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
                         if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
                         {
                             final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
-                            if (consumer != null)
+                            if (consumer != null && consumer.canReceive())
                             {
                                 this.energyContainer.extractEnergy(consumer.receiveEnergy(energyContainer.extractEnergy(energyContainer.getMaxOutput(), true), false), false);
                             }

@@ -12,7 +12,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import java.util.List;
 
-public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBase> extends TileFluidHandlerBase implements ICapabilityProvider
+public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBase> extends TileEntitySyncable implements ICapabilityProvider
 {
     private boolean master;
     private boolean breaking;

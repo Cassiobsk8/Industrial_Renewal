@@ -81,12 +81,8 @@ public class BlockElectricBigFenceWire extends BlockBasicElectricFence {
         return BASE_AABB;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        if (!isActualState) {
-            state = state.getActualState(worldIn, pos);
-        }
         addCollisionBoxToList(pos, entityBox, collidingBoxes, CBASE_AABB);
     }
 
@@ -95,13 +91,12 @@ public class BlockElectricBigFenceWire extends BlockBasicElectricFence {
         return new BlockStateContainer(this, FACING, INDEX);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(INDEX, 0);
+        boolean crouching = placer.isSneaking();
+        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(INDEX, crouching ? 2 : 0);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(final int meta) {
         int directionIndex = meta;

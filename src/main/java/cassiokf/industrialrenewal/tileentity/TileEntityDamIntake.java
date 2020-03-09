@@ -97,11 +97,12 @@ public class TileEntityDamIntake extends TileEntity implements ITickable
                             (new BlockPos(pos.getX() + i, pos.getY() + y, pos.getZ())) :
                             (new BlockPos(pos.getX(), pos.getY() + y, pos.getZ() + i));
                     TileEntity te = world.getTileEntity(cPos);
-                    if (te instanceof TileEntityConcrete && !((TileEntityConcrete) te).isUsed())
-                    {
-                        connectedWalls.add(cPos);
-                        ((TileEntityConcrete) te).setUsed(true);
-                    }
+                    //TODO Fix Dam intake
+                    //if (te instanceof TileEntityConcrete && !((TileEntityConcrete) te).isUsed())
+                    //{
+                    //    connectedWalls.add(cPos);
+                    //    ((TileEntityConcrete) te).setUsed(true);
+                    //}
                 }
             }
             waterAmount = 0;
@@ -126,7 +127,7 @@ public class TileEntityDamIntake extends TileEntity implements ITickable
         for (BlockPos wall : connectedWalls)
         {
             TileEntity te = world.getTileEntity(wall);
-            if (te instanceof TileEntityConcrete) ((TileEntityConcrete) te).setUsed(false);
+            //if (te instanceof TileEntityConcrete) ((TileEntityConcrete) te).setUsed(false);
         }
         super.invalidate();
     }

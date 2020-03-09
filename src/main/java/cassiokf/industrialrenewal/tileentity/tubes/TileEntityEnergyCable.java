@@ -4,65 +4,99 @@ import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 
-public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityEnergyCable> implements ICapabilityProvider
+public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityEnergyCable> implements ITickable
 {
 
     public final VoltsEnergyContainer energyContainer;
 
+    public int averageEnergy;
+    private int oldEnergy;
+    private int tick;
+
+    private boolean inUse = false;
 
     public TileEntityEnergyCable()
     {
-        this.energyContainer = new VoltsEnergyContainer(10240, getMaxEnergyToTransport(), getMaxEnergyToTransport())
+        this.energyContainer = new VoltsEnergyContainer(getMaxEnergyToTransport(), getMaxEnergyToTransport(), getMaxEnergyToTransport())
         {
             @Override
             public void onEnergyChange()
             {
                 TileEntityEnergyCable.this.markDirty();
             }
+
+            @Override
+            public int receiveEnergy(int maxReceive, boolean simulate)
+            {
+                return TileEntityEnergyCable.this.onEnergyReceived(maxReceive, simulate);
+            }
         };
     }
-
-    public abstract int getMaxEnergyToTransport();
 
     @Override
     public void update()
     {
         if (!world.isRemote && isMaster())
         {
-            final Map<BlockPos, EnumFacing> mapPosSet = getPosSet();
-            int quantity = mapPosSet.size();
-            this.energyContainer.setMaxEnergyStored(Math.max(this.energyContainer.getMaxOutput() * quantity, this.energyContainer.getEnergyStored()));
-
-            if (quantity > 0)
+            if (tick >= 10)
             {
-                int canAccept = moveEnergy(true, 1, mapPosSet);
-                outPut = canAccept > 0 ? moveEnergy(false, canAccept, mapPosSet) : 0;
-            } else outPut = 0;
-
-            outPutCount = quantity;
-            if ((oldOutPut != outPut) || (oldOutPutCount != outPutCount))
-            {
-                oldOutPut = outPut;
-                oldOutPutCount = outPutCount;
-                this.Sync();
+                tick = 0;
+                averageEnergy = outPut / 10;
+                outPut = 0;
+                if (averageEnergy != oldEnergy)
+                {
+                    oldEnergy = averageEnergy;
+                    Sync();
+                }
             }
+            tick++;
+            limitedOutPutMap.clear();
         }
     }
 
-    public int moveEnergy(boolean simulate, int validOutputs, Map<BlockPos, EnumFacing> mapPosSet)
+    public abstract int getMaxEnergyToTransport();
+
+    public int onEnergyReceived(int maxReceive, boolean simulate)
     {
-        int canAccept = 0;
+        if (!isMaster()) return getMaster().onEnergyReceived(maxReceive, simulate);
+
+        if (inUse) return 0; //to prevent stack overflow (IE)
+        inUse = true;
+
+        if (maxReceive <= 0) return 0;
         int out = 0;
-        int realMaxOutput = Math.min(energyContainer.getEnergyStored() / validOutputs, this.energyContainer.getMaxOutput());
+
+
+        final Map<BlockPos, EnumFacing> mapPosSet = getPosSet();
+        int quantity = mapPosSet.size();
+
+        if (quantity > 0)
+        {
+            out = moveEnergy(maxReceive, simulate, mapPosSet);
+            if (!simulate) outPut += out;
+        }
+        outPutCount = quantity;
+
+        inUse = false;
+        return out;
+    }
+
+    public int moveEnergy(int amount, boolean simulate, Map<BlockPos, EnumFacing> mapPosSet)
+    {
+        int out = 0;
+        int validOutputs = getRealOutPutCount(mapPosSet);
+        if (validOutputs == 0) return 0;
+        int realMaxOutput = Math.min(amount / validOutputs, getMaxEnergyToTransport());
+
         for (BlockPos posM : mapPosSet.keySet())
         {
             TileEntity te = world.getTileEntity(posM);
@@ -72,19 +106,41 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
                 IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
                 if (energyStorage != null && energyStorage.canReceive())
                 {
-                    int energy = energyStorage.receiveEnergy(this.energyContainer.extractEnergy(realMaxOutput, true), simulate);
-                    if (simulate)
+                    realMaxOutput = getLimitedValueForOutPut(realMaxOutput, energyContainer.getMaxOutput(), te.getPos(), simulate);
+                    if (realMaxOutput > 0)
                     {
-                        if (energy > 0) canAccept++;
-                    } else
-                    {
+                        int energy = energyStorage.receiveEnergy(realMaxOutput, simulate);
                         out += energy;
-                        this.energyContainer.extractEnergy(energy, false);
                     }
                 }
             }
         }
-        return simulate ? canAccept : out;
+        return out;
+    }
+
+    public int getRealOutPutCount(Map<BlockPos, EnumFacing> mapPosSet)
+    {
+        int canAccept = 0;
+        int realMaxOutput = this.energyContainer.getMaxOutput();
+        for (BlockPos posM : mapPosSet.keySet())
+        {
+            TileEntity te = world.getTileEntity(posM);
+            EnumFacing face = mapPosSet.get(posM).getOpposite();
+            if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
+            {
+                IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
+                if (energyStorage != null && energyStorage.canReceive())
+                {
+                    realMaxOutput = getLimitedValueForOutPut(realMaxOutput, energyContainer.getMaxOutput(), te.getPos(), true);
+                    if (realMaxOutput > 0)
+                    {
+                        int energy = energyStorage.receiveEnergy(realMaxOutput, true);
+                        if (energy > 0) canAccept++;
+                    }
+                }
+            }
+        }
+        return canAccept;
     }
 
     @Override
@@ -121,12 +177,14 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
+        averageEnergy = compound.getInteger("energy_average");
         this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
         super.readFromNBT(compound);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        compound.setInteger("energy_average", averageEnergy);
         compound.setTag("StoredIR", this.energyContainer.serializeNBT());
         return super.writeToNBT(compound);
     }

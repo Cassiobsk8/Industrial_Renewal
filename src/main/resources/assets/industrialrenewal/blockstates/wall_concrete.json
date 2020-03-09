@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "particle": "blocks/glass"
+      "particle": "industrialrenewal:blocks/concrete"
     }
   },
   "variants": {

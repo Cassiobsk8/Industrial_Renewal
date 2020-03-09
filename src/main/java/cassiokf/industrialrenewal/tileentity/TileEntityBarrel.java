@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityBarrel extends TileFluidHandlerBase
+public class TileEntityBarrel extends TileEntitySyncable
 {
     public FluidTank tank = new FluidTank(IRConfig.MainConfig.Main.barrelCapacity)
     {

@@ -342,7 +342,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(conveyorVHopper.getTileEntityClass(), conveyorVHopper.getRegistryName());
         GameRegistry.registerTileEntity(conveyorVInserter.getTileEntityClass(), conveyorVInserter.getRegistryName());
         //GameRegistry.registerTileEntity(damIntake.getTileEntityClass(), damIntake.getRegistryName());
-        GameRegistry.registerTileEntity(concrete.getTileEntityClass(), concrete.getRegistryName());
+        //GameRegistry.registerTileEntity(concrete.getTileEntityClass(), concrete.getRegistryName());
         GameRegistry.registerTileEntity(hvIsolator.getTileEntityClass(), hvIsolator.getRegistryName());
     }
 
