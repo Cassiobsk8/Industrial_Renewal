@@ -35,7 +35,7 @@ public class ChunkManagerCallback implements PlayerOrderedLoadingCallback
         }
         BlockPos pos = NBTUtil.getPosFromTag(modData.getCompoundTag("blockPosition"));
         TileEntity te = blockAccess.getTileEntity(pos);
-        return te instanceof TileEntityChunkLoader;
+        return te instanceof TileEntityChunkLoader && ((TileEntityChunkLoader) te).isMaster();
     }
 
     public static void activateTicket(World world, Ticket ticket)
@@ -46,7 +46,7 @@ public class ChunkManagerCallback implements PlayerOrderedLoadingCallback
         BlockPos pos = NBTUtil.getPosFromTag(modData.getCompoundTag("blockPosition"));
         TileEntity te = world.getTileEntity(pos);
 
-        if (!(te instanceof TileEntityChunkLoader))
+        if (!(te instanceof TileEntityChunkLoader) || !((TileEntityChunkLoader) te).isMaster())
         {
             return;
         }
@@ -103,8 +103,7 @@ public class ChunkManagerCallback implements PlayerOrderedLoadingCallback
         return locatedPlayer;
     }
 
-    @SuppressWarnings("NumericCastThatLosesPrecision")
-    public static List<TileEntityChunkLoader> findNearbyWeirdingGadgets(World world, BlockPos pos)
+    public static List<TileEntityChunkLoader> findNearbyChunkLoaders(World world, BlockPos pos)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
         final Set<Long> visitedChunks = Sets.newHashSet();
@@ -131,7 +130,7 @@ public class ChunkManagerCallback implements PlayerOrderedLoadingCallback
             int chunkLoaderRadius = 0;
             for (final TileEntity tileEntity : Lists.newArrayList(tileEntityMap.values()))
             {
-                if (tileEntity instanceof TileEntityChunkLoader)
+                if (tileEntity instanceof TileEntityChunkLoader && ((TileEntityChunkLoader) tileEntity).isMaster())
                 {
                     final TileEntityChunkLoader te = (TileEntityChunkLoader) tileEntity;
                     final int size = te.getLoaderRadius();
@@ -160,7 +159,7 @@ public class ChunkManagerCallback implements PlayerOrderedLoadingCallback
                     int otherLoaderRadius = 0;
                     for (final TileEntity tileEntity : Lists.newArrayList(tileEntityMap.values()))
                     {
-                        if (tileEntity instanceof TileEntityChunkLoader)
+                        if (tileEntity instanceof TileEntityChunkLoader && ((TileEntityChunkLoader) tileEntity).isMaster())
                         {
                             final TileEntityChunkLoader te = (TileEntityChunkLoader) tileEntity;
                             final int size = te.getLoaderRadius();
@@ -183,38 +182,38 @@ public class ChunkManagerCallback implements PlayerOrderedLoadingCallback
         return locatedChunkLoaders;
     }
 
-    public static Iterable<TileEntityChunkLoader> getChainedGadgets(TileEntityChunkLoader weirdingGadget)
+    public static Iterable<TileEntityChunkLoader> getChainedGadgets(TileEntityChunkLoader chunkLoader)
     {
         final Set<Long> gadgetPos = Sets.newHashSet();
-        final List<TileEntityChunkLoader> foundGadgets = Lists.newArrayList();
+        final List<TileEntityChunkLoader> foundLoader = Lists.newArrayList();
 
-        final Stack<TileEntityChunkLoader> gadgetsToSearch = new Stack<>();
-        gadgetsToSearch.push(weirdingGadget);
+        final Stack<TileEntityChunkLoader> LoadersToSearch = new Stack<>();
+        LoadersToSearch.push(chunkLoader);
 
-        final World world = weirdingGadget.getWorld();
-        while (!gadgetsToSearch.empty())
+        final World world = chunkLoader.getWorld();
+        while (!LoadersToSearch.empty())
         {
-            final TileEntityChunkLoader gadget = gadgetsToSearch.pop();
+            final TileEntityChunkLoader gadget = LoadersToSearch.pop();
             final Long pos = gadget.getPos().toLong();
             if (gadgetPos.contains(pos)) continue;
 
-            foundGadgets.add(gadget);
+            foundLoader.add(gadget);
             gadgetPos.add(pos);
             for (final BlockPos blockPos : gadget.getNearbyGadgets())
             {
                 if (gadgetPos.contains(blockPos.toLong())) continue;
 
                 final TileEntity tileEntity = world.getTileEntity(blockPos);
-                if (tileEntity instanceof TileEntityChunkLoader)
+                if (tileEntity instanceof TileEntityChunkLoader && ((TileEntityChunkLoader) tileEntity).isMaster())
                 {
-                    gadgetsToSearch.push((TileEntityChunkLoader) tileEntity);
+                    LoadersToSearch.push((TileEntityChunkLoader) tileEntity);
                 } else
                 {
                     gadget.removeNearbyGadget(blockPos);
                 }
             }
         }
-        return foundGadgets;
+        return foundLoader;
     }
 
     @Override

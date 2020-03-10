@@ -5,9 +5,9 @@ import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorLamp;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
 import cassiokf.industrialrenewal.blocks.pipes.BlockCableTray;
+import cassiokf.industrialrenewal.blocks.pipes.BlockHVConnectorBase;
 import cassiokf.industrialrenewal.blocks.pipes.BlockPillarEnergyCable;
 import cassiokf.industrialrenewal.blocks.pipes.BlockPillarFluidPipe;
-import cassiokf.industrialrenewal.blocks.pipes.BlockWireBase;
 import cassiokf.industrialrenewal.blocks.redstone.BlockAlarm;
 import cassiokf.industrialrenewal.enums.enumproperty.EnumBaseDirection;
 import cassiokf.industrialrenewal.init.ModBlocks;
@@ -92,7 +92,7 @@ public class BlockPillar extends BlockBase {
         Block nb = neighbourState.getBlock();
         if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
             return nb instanceof BlockLever
-                    || (nb instanceof BlockWireBase && neighbourState.getValue(BlockWireBase.FACING) == neighbourDirection.getOpposite())
+                    || (nb instanceof BlockHVConnectorBase && neighbourState.getValue(BlockHVConnectorBase.FACING) == neighbourDirection.getOpposite())
                     || nb instanceof BlockRedstoneTorch
                     || nb instanceof BlockTripWireHook
                     || nb instanceof BlockColumn

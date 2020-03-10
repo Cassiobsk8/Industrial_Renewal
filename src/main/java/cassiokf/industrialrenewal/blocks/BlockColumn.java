@@ -103,7 +103,7 @@ public class BlockColumn extends BlockBase {
                 return Objects.equals(neighbourState.getValue(BlockBrace.FACING).getName(), neighbourDirection.getOpposite().getName()) || Objects.equals(neighbourState.getValue(BlockBrace.FACING).getName(), "down_" + neighbourDirection.getName());
             }
             return nb instanceof BlockColumn || nb instanceof BlockPillar
-                    || (nb instanceof BlockWireBase && neighbourState.getValue(BlockWireBase.FACING) == neighbourDirection.getOpposite())
+                    || (nb instanceof BlockHVConnectorBase && neighbourState.getValue(BlockHVConnectorBase.FACING) == neighbourDirection.getOpposite())
                     || nb instanceof BlockPillarEnergyCable || nb instanceof BlockPillarFluidPipe
                     || (nb instanceof BlockAlarm && neighbourState.getValue(BlockAlarm.FACING) == neighbourDirection)
                     || (nb instanceof BlockLight && neighbourState.getValue(BlockLight.FACING) == neighbourDirection.getOpposite());

@@ -86,7 +86,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
     {
         if (!world.isRemote)
         {
-            if (getIdex() == 1)
+            if (getIndex() == 1)
             {
                 consumeEnergy();
                 if (tick >= everyXtick)
@@ -99,14 +99,14 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
             }
         } else
         {
-            if (getIdex() == 1)
+            if (getIndex() == 1)
             {
                 handleSound();
             }
         }
     }
 
-    private int getIdex()
+    private int getIndex()
     {
         if (index != -1) return index;
         IBlockState state = world.getBlockState(pos);
@@ -309,7 +309,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
         IBlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof BlockElectricPump)
         {
-            int index = getIdex();
+            int index = getIndex();
             EnumFacing face = getBlockFacing();
             return (index == 1 && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == EnumFacing.UP)
                     || (index == 0 && capability == CapabilityEnergy.ENERGY && facing == face.getOpposite());
@@ -320,7 +320,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
     @Nullable
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing) {
-        int index = getIdex();
+        int index = getIndex();
         if (index == 1 && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == EnumFacing.UP)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
         EnumFacing face = getBlockFacing();

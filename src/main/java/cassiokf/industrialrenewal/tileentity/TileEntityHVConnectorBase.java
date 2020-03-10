@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.pipes.BlockWireBase;
+import cassiokf.industrialrenewal.blocks.pipes.BlockHVConnectorBase;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
@@ -14,14 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class TileEntityWireBase extends TileEntitySyncable
+public class TileEntityHVConnectorBase extends TileEntitySyncable
 {
     public BlockPos leftConnectionPos = null;
     public BlockPos rightConnectionPos = null;
     private boolean leftConnected;
     private boolean rightConnected;
 
-    private TileEntityWireBase master;
+    private TileEntityHVConnectorBase master;
     private boolean isMaster;
 
     @Override
@@ -34,15 +34,15 @@ public class TileEntityWireBase extends TileEntitySyncable
     {
         if (master == null || master.isInvalid())
         {
-            List<TileEntityWireBase> connectedCables = new ArrayList<TileEntityWireBase>();
-            Stack<TileEntityWireBase> traversingCables = new Stack<TileEntityWireBase>();
+            List<TileEntityHVConnectorBase> connectedCables = new ArrayList<TileEntityHVConnectorBase>();
+            Stack<TileEntityHVConnectorBase> traversingCables = new Stack<TileEntityHVConnectorBase>();
             IConnectorHV inTransformerT = null;
             IConnectorHV outTransformerT = null;
-            TileEntityWireBase master = (TileEntityWireBase) this;
-            traversingCables.add((TileEntityWireBase) this);
+            TileEntityHVConnectorBase master = (TileEntityHVConnectorBase) this;
+            traversingCables.add((TileEntityHVConnectorBase) this);
             while (!traversingCables.isEmpty())
             {
-                TileEntityWireBase storage = traversingCables.pop();
+                TileEntityHVConnectorBase storage = traversingCables.pop();
                 if (storage.isMaster())
                 {
                     master = storage;
@@ -51,9 +51,9 @@ public class TileEntityWireBase extends TileEntitySyncable
                 if (storage.isLeftConnected())
                 {
                     TileEntity te = world.getTileEntity(storage.leftConnectionPos);
-                    if (te instanceof TileEntityWireBase && !connectedCables.contains(te))
+                    if (te instanceof TileEntityHVConnectorBase && !connectedCables.contains(te))
                     {
-                        traversingCables.add((TileEntityWireBase) te);
+                        traversingCables.add((TileEntityHVConnectorBase) te);
                     }
                     if (te instanceof IConnectorHV)
                     {
@@ -69,9 +69,9 @@ public class TileEntityWireBase extends TileEntitySyncable
                 if (storage.isRightConnected())
                 {
                     TileEntity te = world.getTileEntity(storage.rightConnectionPos);
-                    if (te instanceof TileEntityWireBase && !connectedCables.contains(te))
+                    if (te instanceof TileEntityHVConnectorBase && !connectedCables.contains(te))
                     {
-                        traversingCables.add((TileEntityWireBase) te);
+                        traversingCables.add((TileEntityHVConnectorBase) te);
                     }
                     if (te instanceof IConnectorHV)
                     {
@@ -86,7 +86,7 @@ public class TileEntityWireBase extends TileEntitySyncable
                     }
                 }
             }
-            for (TileEntityWireBase storage : connectedCables)
+            for (TileEntityHVConnectorBase storage : connectedCables)
             {
                 storage.setMaster(master);
                 storage.markDirty();
@@ -104,18 +104,6 @@ public class TileEntityWireBase extends TileEntitySyncable
         initializeNetworkIfNecessary();
     }
 
-    public void onBlockBreak()
-    {
-        if (isLeftConnected())
-        {
-            removeCableAndSpawn(leftConnectionPos);
-        }
-        if (isRightConnected())
-        {
-            removeCableAndSpawn(rightConnectionPos);
-        }
-    }
-
     public void removeCableAndSpawn(BlockPos connectionPos)
     {
         disableConnectedCables(connectionPos);
@@ -127,9 +115,9 @@ public class TileEntityWireBase extends TileEntitySyncable
     private void disableConnectedCables(BlockPos connectedPos)
     {
         TileEntity te = world.getTileEntity(connectedPos);
-        if (te instanceof TileEntityWireBase)
+        if (te instanceof TileEntityHVConnectorBase)
         {
-            ((TileEntityWireBase) te).removeConnection(this.pos);
+            ((TileEntityHVConnectorBase) te).removeConnection(this.pos);
         } else if (te instanceof IConnectorHV)
         {
             ((IConnectorHV) te).removeConnection();
@@ -188,7 +176,7 @@ public class TileEntityWireBase extends TileEntitySyncable
 
     public EnumFacing getBlockFacing()
     {
-        return world.getBlockState(pos).getValue(BlockWireBase.FACING);
+        return world.getBlockState(pos).getValue(BlockHVConnectorBase.FACING);
     }
 
     private void setLeftConnectionPos(BlockPos pos)
@@ -208,13 +196,13 @@ public class TileEntityWireBase extends TileEntitySyncable
         return isMaster;
     }
 
-    public TileEntityWireBase getMaster()
+    public TileEntityHVConnectorBase getMaster()
     {
         initializeNetworkIfNecessary();
         return master;
     }
 
-    public void setMaster(TileEntityWireBase master)
+    public void setMaster(TileEntityHVConnectorBase master)
     {
         this.master = master;
         isMaster = master == this;
@@ -235,14 +223,13 @@ public class TileEntityWireBase extends TileEntitySyncable
     public void invalidate()
     {
         super.invalidate();
-        for (EnumFacing d : EnumFacing.VALUES)
+        if (isLeftConnected())
         {
-            TileEntity te = world.getTileEntity(pos.offset(d));
-            if (te instanceof TileEntityWireBase)
-            {
-                ((TileEntityWireBase) te).master = null;
-                ((TileEntityWireBase) te).initializeNetworkIfNecessary();
-            }
+            removeCableAndSpawn(leftConnectionPos);
+        }
+        if (isRightConnected())
+        {
+            removeCableAndSpawn(rightConnectionPos);
         }
     }
 

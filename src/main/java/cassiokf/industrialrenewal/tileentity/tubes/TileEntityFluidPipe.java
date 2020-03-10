@@ -28,12 +28,6 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     public FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME)
     {
         @Override
-        protected void onContentsChanged()
-        {
-            TileEntityFluidPipe.this.markDirty();
-        }
-
-        @Override
         public int fill(FluidStack resource, boolean doFill)
         {
             return TileEntityFluidPipe.this.onFluidReceived(resource, doFill);
@@ -194,9 +188,6 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
         tagCompound.setInteger("fluid_average", averageFluid);
-        NBTTagCompound tag = new NBTTagCompound();
-        tank.writeToNBT(tag);
-        tagCompound.setTag("fluid", tag);
         return super.writeToNBT(tagCompound);
     }
 
@@ -204,8 +195,6 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     public void readFromNBT(NBTTagCompound tagCompound)
     {
         averageFluid = tagCompound.getInteger("fluid_average");
-        NBTTagCompound tag = tagCompound.getCompoundTag("fluid");
-        tank.readFromNBT(tag);
         super.readFromNBT(tagCompound);
     }
 }

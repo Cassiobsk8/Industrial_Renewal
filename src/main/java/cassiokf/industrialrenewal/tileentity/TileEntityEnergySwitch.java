@@ -14,6 +14,7 @@ import java.util.Random;
 public class TileEntityEnergySwitch extends TileEntityToggleableBase
 {
     private final VoltsEnergyContainer dummyEnergy;
+    private Random r = new Random();
 
     public TileEntityEnergySwitch()
     {
@@ -30,7 +31,6 @@ public class TileEntityEnergySwitch extends TileEntityToggleableBase
     @Override
     public void playSwitchSound()
     {
-        Random r = new Random();
         float pitch = r.nextFloat() * (1.2f - 0.8f) + 0.8f;
         this.getWorld().playSound(null, this.getPos(), IRSoundRegister.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1F,
                 pitch);

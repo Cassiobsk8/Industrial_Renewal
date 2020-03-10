@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tesr;
 
-import cassiokf.industrialrenewal.tileentity.TileEntityWireBase;
+import cassiokf.industrialrenewal.tileentity.TileEntityHVConnectorBase;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.awt.*;
 
 @SideOnly(Side.CLIENT)
-public class TESRWire extends TileEntitySpecialRenderer<TileEntityWireBase>
+public class TESRWire extends TileEntitySpecialRenderer<TileEntityHVConnectorBase>
 {
     static Color c = new Color(56, 56, 56, 255);
     static Color c2 = new Color(43, 43, 43, 255);
@@ -111,7 +111,7 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWireBase>
     }
 
     @Override
-    public void render(TileEntityWireBase te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+    public void render(TileEntityHVConnectorBase te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         if (te.isRightConnected())
         {
@@ -124,7 +124,7 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWireBase>
     }
 
     @Override
-    public boolean isGlobalRenderer(TileEntityWireBase te)
+    public boolean isGlobalRenderer(TileEntityHVConnectorBase te)
     {
         return true;
     }

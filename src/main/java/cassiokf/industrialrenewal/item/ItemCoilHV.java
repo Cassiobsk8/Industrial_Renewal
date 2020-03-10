@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.tileentity.TileEntityHVConnectorBase;
 import cassiokf.industrialrenewal.tileentity.TileEntityTransformerHV;
-import cassiokf.industrialrenewal.tileentity.TileEntityWireBase;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
 import net.minecraft.client.util.ITooltipFlag;
@@ -86,9 +86,9 @@ public class ItemCoilHV extends ItemBase
                             return EnumActionResult.FAIL;
                         }
                     }
-                } else if (te instanceof TileEntityWireBase)
+                } else if (te instanceof TileEntityHVConnectorBase)
                 {
-                    TileEntityWireBase teT = (TileEntityWireBase) te;
+                    TileEntityHVConnectorBase teT = (TileEntityHVConnectorBase) te;
                     if (!isSecond)
                     {
                         if (teT.canConnect())
@@ -141,9 +141,9 @@ public class ItemCoilHV extends ItemBase
         if (te instanceof IConnectorHV)
         {
             ((IConnectorHV) te).connect(endPos);
-        } else if (te instanceof TileEntityWireBase)
+        } else if (te instanceof TileEntityHVConnectorBase)
         {
-            ((TileEntityWireBase) te).setConnection(endPos);
+            ((TileEntityHVConnectorBase) te).setConnection(endPos);
         }
     }
 }

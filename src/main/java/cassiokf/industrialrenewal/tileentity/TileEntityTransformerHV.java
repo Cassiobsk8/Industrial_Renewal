@@ -28,30 +28,22 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     public boolean isOutPut;
     private BlockPos cableConnectionPos;
     private int energyTransfer;
-    private int oldEnergyTransfer;
     private boolean oldOutPut;
     private boolean isConnected;
+
+    public int averageEnergy;
+    private int oldEnergy;
+    private int tick;
+    private boolean inUse = false;
 
     public TileEntityTransformerHV()
     {
         this.energyContainer = new VoltsEnergyContainer(IRConfig.MainConfig.Main.maxHVTransformerTransferAmount, IRConfig.MainConfig.Main.maxHVTransformerTransferAmount, IRConfig.MainConfig.Main.maxHVTransformerTransferAmount)
         {
             @Override
-            public void onEnergyChange()
+            public int receiveEnergy(int maxReceive, boolean simulate)
             {
-                TileEntityTransformerHV.this.Sync();
-            }
-
-            @Override
-            public boolean canExtract()
-            {
-                return true;
-            }
-
-            @Override
-            public boolean canReceive()
-            {
-                return true;
+                return TileEntityTransformerHV.this.onEnergyReceived(maxReceive, simulate);
             }
         };
 
@@ -71,47 +63,56 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
         };
     }
 
+    public int onEnergyReceived(int maxReceive, boolean simulate)
+    {
+        if (maxReceive <= 0) return 0;
+        if (inUse) return 0; //to prevent stack overflow (IE)
+        inUse = true;
+        int out = 0;
+        if (!isOutPut)
+        {
+            if (otherSideTransformer != null)
+            {
+                out = otherSideTransformer.receiveEnergy(Math.min(maxReceive, energyContainer.getMaxOutput()), simulate);
+            }
+
+        } else
+        {
+            //OUTPUT ENERGY
+            BlockPos outPutPos = pos.offset(getMasterFacing().getOpposite(), 2).down();
+            TileEntity outTileEntity = world.getTileEntity(outPutPos);
+            if (outTileEntity != null && outTileEntity.hasCapability(CapabilityEnergy.ENERGY, getMasterFacing()))
+            {
+                IEnergyStorage outPutStorage = outTileEntity.getCapability(CapabilityEnergy.ENERGY, getMasterFacing());
+                if (outPutStorage != null && outPutStorage.canReceive())
+                {
+                    out = outPutStorage.receiveEnergy(maxReceive, simulate);
+                }
+            }
+        }
+        if (!simulate) energyTransfer += out;
+        inUse = false;
+        return out;
+    }
+
     @Override
     public void update()
     {
-        if (this.isMaster())
+        if (!world.isRemote && isMaster())
         {
-            isOutPut();
-            if (this.hasWorld() && !this.world.isRemote)
+            if (tick >= 10)
             {
-                if (!isOutPut)
+                tick = 0;
+                isOutPut();
+                averageEnergy = energyTransfer / 10;
+                energyTransfer = 0;
+                if (averageEnergy != oldEnergy)
                 {
-                    if (otherSideTransformer != null && energyContainer.getEnergyStored() > 0)
-                    {
-                        int energy = energyContainer.extractEnergy(energyContainer.getMaxInput(), true);
-                        int energy1 = otherSideTransformer.receiveEnergy(energy, false);
-                        energyTransfer = energyContainer.extractEnergy(energy1, false);
-                    } else energyTransfer = 0;
-
-                } else
-                {
-                    //OUTPUT ENERGY
-                    if (energyContainer.getEnergyStored() > 0)
-                    {
-                        BlockPos outPutPos = pos.offset(getMasterFacing().getOpposite(), 2).down();
-                        TileEntity outTileEntity = world.getTileEntity(outPutPos);
-                        if (outTileEntity != null && outTileEntity.hasCapability(CapabilityEnergy.ENERGY, getMasterFacing()))
-                        {
-                            IEnergyStorage outPutStorage = outTileEntity.getCapability(CapabilityEnergy.ENERGY, getMasterFacing());
-                            int energy = energyContainer.extractEnergy(energyContainer.getMaxOutput(), true);
-                            int energy1 = outPutStorage.receiveEnergy(energy, false);
-
-                            energyTransfer = energyContainer.extractEnergy(energy1, false);
-                        } else energyTransfer = 0;
-                    } else energyTransfer = 0;
-                }
-
-                if (energyTransfer != oldEnergyTransfer)
-                {
-                    oldEnergyTransfer = energyTransfer;
-                    this.Sync();
+                    oldEnergy = averageEnergy;
+                    Sync();
                 }
             }
+            tick++;
         }
     }
 
@@ -146,9 +147,9 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
                     setOtherSideTransformer(null);
                     ((IConnectorHV) te).setOtherSideTransformer(null);
                 }
-            } else if (te instanceof TileEntityWireBase)
+            } else if (te instanceof TileEntityHVConnectorBase)
             {
-                ((TileEntityWireBase) te).forceRecheck();
+                ((TileEntityHVConnectorBase) te).forceRecheck();
             }
         }
     }
@@ -167,13 +168,13 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
 
     public String getGenerationText()
     {
-        int energy = energyTransfer;
+        int energy = averageEnergy;
         return Utils.formatEnergyString(energy) + "/t";
     }
 
     public float getGenerationFill() //0 ~ 90
     {
-        float currentAmount = energyTransfer;
+        float currentAmount = averageEnergy;
         float totalCapacity = energyContainer.getMaxOutput();
         currentAmount = currentAmount / totalCapacity;
         return currentAmount * 90f;
@@ -187,8 +188,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
 
         compound.setBoolean("connected", isConnected);
         compound.setBoolean("isOutPut", isOutPut);
-        compound.setInteger("transfer", energyTransfer);
-        compound.setTag("StoredIR", this.energyContainer.serializeNBT());
+        compound.setInteger("energy_average", averageEnergy);
         return super.writeToNBT(compound);
     }
 
@@ -201,8 +201,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
 
         isConnected = compound.getBoolean("connected");
         isOutPut = compound.getBoolean("isOutPut");
-        energyTransfer = compound.getInteger("transfer");
-        this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
+        averageEnergy = compound.getInteger("energy_average");
         super.readFromNBT(compound);
     }
 
@@ -223,9 +222,8 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing)
     {
         TileEntityTransformerHV masterTE = this.getMaster();
-        EnumFacing face = masterTE.getMasterFacing();
         if (masterTE == null) return super.getCapability(capability, facing);
-
+        EnumFacing face = masterTE.getMasterFacing();
         if (facing == face.getOpposite()
                 && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()))
                 && capability == CapabilityEnergy.ENERGY)
@@ -247,9 +245,9 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     private void disableConnectedCables(BlockPos connectedPos)
     {
         TileEntity te = world.getTileEntity(connectedPos);
-        if (te instanceof TileEntityWireBase)
+        if (te instanceof TileEntityHVConnectorBase)
         {
-            ((TileEntityWireBase) te).removeConnection(getConnectorPos());
+            ((TileEntityHVConnectorBase) te).removeConnection(getConnectorPos());
         } else if (te instanceof IConnectorHV)
         {
             ((IConnectorHV) te).removeConnection();

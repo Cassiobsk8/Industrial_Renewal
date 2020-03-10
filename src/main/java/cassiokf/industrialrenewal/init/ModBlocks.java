@@ -59,7 +59,7 @@ public class ModBlocks {
     public static BlockFloorCable floorCableMV = new BlockFloorCable(EnumEnergyCableType.MV, "floor_cable", References.CREATIVE_IR_TAB);
     public static BlockFloorCable floorCableHV = new BlockFloorCable(EnumEnergyCableType.HV, "floor_cable_hv", References.CREATIVE_IR_TAB);
     public static BlockFloorLamp floorLamp = new BlockFloorLamp("floor_lamp", References.CREATIVE_IR_TAB);
-    public static BlockWireBase hvIsolator = new BlockWireBase("isolator_hv", References.CREATIVE_IR_TAB);
+    public static BlockHVConnectorBase hvIsolator = new BlockHVConnectorBase("isolator_hv", References.CREATIVE_IR_TAB);
 
     public static BlockAlarm alarm = new BlockAlarm("alarm", References.CREATIVE_IR_TAB);
     public static BlockRecordPlayer recordPlayer = new BlockRecordPlayer("record_player", References.CREATIVE_IR_TAB);

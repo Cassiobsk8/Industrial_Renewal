@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.blocks.BlockTileEntity;
-import cassiokf.industrialrenewal.tileentity.TileEntityWireBase;
+import cassiokf.industrialrenewal.tileentity.TileEntityHVConnectorBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockWireBase extends BlockTileEntity<TileEntityWireBase>
+public class BlockHVConnectorBase extends BlockTileEntity<TileEntityHVConnectorBase>
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
@@ -32,19 +32,11 @@ public class BlockWireBase extends BlockTileEntity<TileEntityWireBase>
     protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.3125D, 0.5D, 0.3125D, 0.6875D, 1.0D, 0.6875D);
     protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 0.5D, 0.6875D);
 
-    public BlockWireBase(String name, CreativeTabs tab)
+    public BlockHVConnectorBase(String name, CreativeTabs tab)
     {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
-    }
-
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TileEntityWireBase connector = (TileEntityWireBase) worldIn.getTileEntity(pos);
-        if (connector != null) connector.onBlockBreak();
-        super.breakBlock(worldIn, pos, state);
     }
 
     @SuppressWarnings("deprecation")
@@ -153,15 +145,15 @@ public class BlockWireBase extends BlockTileEntity<TileEntityWireBase>
     }
 
     @Override
-    public Class<TileEntityWireBase> getTileEntityClass()
+    public Class<TileEntityHVConnectorBase> getTileEntityClass()
     {
-        return TileEntityWireBase.class;
+        return TileEntityHVConnectorBase.class;
     }
 
     @Nullable
     @Override
-    public TileEntityWireBase createTileEntity(World world, IBlockState state)
+    public TileEntityHVConnectorBase createTileEntity(World world, IBlockState state)
     {
-        return new TileEntityWireBase();
+        return new TileEntityHVConnectorBase();
     }
 }

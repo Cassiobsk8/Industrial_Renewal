@@ -33,12 +33,6 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
         this.energyContainer = new VoltsEnergyContainer(1024, 1024, 1024)
         {
             @Override
-            public void onEnergyChange()
-            {
-                TileEntityWindTurbinePillar.this.markDirty();
-            }
-
-            @Override
             public int receiveEnergy(int maxReceive, boolean simulate)
             {
                 return TileEntityWindTurbinePillar.this.passEnergy(maxReceive, simulate);
@@ -48,6 +42,12 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
         {
             @Override
             public boolean canReceive()
+            {
+                return false;
+            }
+
+            @Override
+            public boolean canExtract()
             {
                 return false;
             }
@@ -211,7 +211,6 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
         this.isBase = compound.getBoolean("base");
         this.outPut = compound.getInteger("outPut");
         //TileEntityWindTurbinePillar te = null;
@@ -224,7 +223,6 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        compound.setTag("StoredIR", this.energyContainer.serializeNBT());
         compound.setBoolean("base", this.isBase);
         compound.setInteger("outPut", outPut);
         //if (getMaster() != null) compound.setLong("masterPos", getMaster().getPos().toLong());

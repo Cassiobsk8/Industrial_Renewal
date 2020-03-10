@@ -29,12 +29,6 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
         this.energyContainer = new VoltsEnergyContainer(getMaxEnergyToTransport(), getMaxEnergyToTransport(), getMaxEnergyToTransport())
         {
             @Override
-            public void onEnergyChange()
-            {
-                TileEntityEnergyCable.this.markDirty();
-            }
-
-            @Override
             public int receiveEnergy(int maxReceive, boolean simulate)
             {
                 return TileEntityEnergyCable.this.onEnergyReceived(maxReceive, simulate);
@@ -178,14 +172,12 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         averageEnergy = compound.getInteger("energy_average");
-        this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
         super.readFromNBT(compound);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setInteger("energy_average", averageEnergy);
-        compound.setTag("StoredIR", this.energyContainer.serializeNBT());
         return super.writeToNBT(compound);
     }
 }

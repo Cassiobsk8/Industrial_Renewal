@@ -76,7 +76,7 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        if (IRConfig.MainConfig.Main.emergencyMode || !isMaster()) return;
+        if (IRConfig.MainConfig.Main.emergencyMode || !master) return;
         //Only process on the server
         if (world.isRemote) return;
         //If there isn't any tickets, the device is already disabled and no work to be done
@@ -116,53 +116,44 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
         }
     }
 
-    private boolean isMaster()
-    {
-        if (!checked)
-        {
-            master = world.getBlockState(pos).getValue(BlockChunkLoader.MASTER);
-            checked = true;
-        }
-        return master;
-    }
-
     private void checkNeighbours()
     {
-        final List<TileEntityChunkLoader> nearbyGadgets = ChunkManagerCallback.findNearbyWeirdingGadgets(world, pos);
+        scheduleNeighbourCheck = false;
+        final List<TileEntityChunkLoader> nearbyLoaders = ChunkManagerCallback.findNearbyChunkLoaders(world, pos);
 
-        final List<BlockPos> gadgetsToRemove = Lists.newArrayList();
+        final List<BlockPos> loadersToRemove = Lists.newArrayList();
 
-        final List<BlockPos> nearbyGadgetLocations = Lists.newArrayList(this.nearbyGadgets);
+        final List<BlockPos> nearbyLoadersLocations = Lists.newArrayList(this.nearbyGadgets);
 
-        for (final BlockPos nearbyGadget : nearbyGadgetLocations)
+        for (final BlockPos nearbyLoader : nearbyLoadersLocations)
         {
-            if (nearbyGadgets.stream().noneMatch(te -> te.pos.equals(nearbyGadget)))
+            if (nearbyLoaders.stream().noneMatch(te -> te.pos.equals(nearbyLoader)))
             {
-                gadgetsToRemove.add(nearbyGadget);
+                loadersToRemove.add(nearbyLoader);
             }
         }
 
         boolean isDirty = false;
-        for (final TileEntityChunkLoader nearbyGadget : nearbyGadgets)
+        for (final TileEntityChunkLoader nearbyGadget : nearbyLoaders)
         {
             nearbyGadget.notifyNeighbourAdded(pos);
-            if (!nearbyGadgetLocations.contains(nearbyGadget.pos))
+            if (!nearbyLoadersLocations.contains(nearbyGadget.pos))
             {
-                nearbyGadgetLocations.add(nearbyGadget.pos);
+                nearbyLoadersLocations.add(nearbyGadget.pos);
                 isDirty = true;
             }
         }
 
-        if (!gadgetsToRemove.isEmpty())
+        if (!loadersToRemove.isEmpty())
         {
             isDirty = true;
-            nearbyGadgetLocations.removeAll(gadgetsToRemove);
+            nearbyLoadersLocations.removeAll(loadersToRemove);
         }
 
         if (isDirty)
         {
             markDirty();
-            this.nearbyGadgets = nearbyGadgetLocations;
+            this.nearbyGadgets = nearbyLoadersLocations;
         }
     }
 
@@ -269,6 +260,7 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
                 nearbyGadgets.add(NBTUtil.getPosFromTag(tagList.getCompoundTagAt(i)));
             }
         }
+        this.master = compound.getBoolean("master");
         this.nearbyGadgets = nearbyGadgets;
         scheduleNeighbourCheck = true;
     }
@@ -277,6 +269,7 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
+        compound.setBoolean("master", world.getBlockState(pos).getValue(BlockChunkLoader.MASTER));
         compound.setLong("expireTime", expireTime);
         final List<BlockPos> gadgetsToSave = this.getNearbyGadgets();
         if (gadgetsToSave != null && !gadgetsToSave.isEmpty())
@@ -323,6 +316,11 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
     public boolean isExpired()
     {
         return tickets.isEmpty();
+    }
+
+    public boolean isMaster()
+    {
+        return master;
     }
 
     public boolean isActive()
