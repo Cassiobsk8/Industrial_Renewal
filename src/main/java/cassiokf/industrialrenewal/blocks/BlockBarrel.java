@@ -14,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -135,13 +134,6 @@ public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
     @Nullable
     @Override
     public TileEntityBarrel createTileEntity(World world, IBlockState state)
-    {
-        return new TileEntityBarrel();
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
     {
         return new TileEntityBarrel();
     }

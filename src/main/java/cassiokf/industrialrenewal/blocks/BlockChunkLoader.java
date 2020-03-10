@@ -16,7 +16,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -72,10 +71,12 @@ public class BlockChunkLoader extends BlockBasicContainer<TileEntityChunkLoader>
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        if (!(placer instanceof EntityPlayer) || !state.getValue(MASTER))
+        if (!(placer instanceof EntityPlayer) || !state.getValue(MASTER) || worldIn.isRemote)
         {
             return;
         }
+        TileEntityChunkLoader te = (TileEntityChunkLoader) worldIn.getTileEntity(pos);
+        if (te != null) te.setMaster(true);
         activateChunkLoader(worldIn, pos, (EntityPlayer) placer);
     }
 
@@ -93,15 +94,10 @@ public class BlockChunkLoader extends BlockBasicContainer<TileEntityChunkLoader>
         if (tileEntity == null) return false;
 
         boolean success = false;
-        final Iterable<TileEntityChunkLoader> chainedGadgets = ChunkManagerCallback.getChainedGadgets(tileEntity);
 
         if ((tileEntity.isExpired() || !tileEntity.hasTicket(playerIn)))
         {
-            for (final TileEntityChunkLoader chainedGadget : chainedGadgets)
-            {
-                activateChunkLoader(worldIn, chainedGadget.getPos(), playerIn);
-            }
-
+            activateChunkLoader(worldIn, tileEntity.getPos(), playerIn);
             success = true;
         }
 
@@ -157,14 +153,12 @@ public class BlockChunkLoader extends BlockBasicContainer<TileEntityChunkLoader>
         return new BlockStateContainer(this, FACING, MASTER, WORKING);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(MASTER, true);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(final int meta)
     {
@@ -203,13 +197,6 @@ public class BlockChunkLoader extends BlockBasicContainer<TileEntityChunkLoader>
     @Nullable
     @Override
     public TileEntityChunkLoader createTileEntity(World world, IBlockState state)
-    {
-        return new TileEntityChunkLoader();
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
     {
         return new TileEntityChunkLoader();
     }

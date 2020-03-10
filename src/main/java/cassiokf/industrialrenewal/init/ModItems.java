@@ -46,6 +46,7 @@ public class ModItems {
     public static ItemBookManual manual = new ItemBookManual("ir_manual", References.CREAATIVE_IRWIP_TAB);
 
     public static ItemBase pointer = new ItemBase("pointer", null);
+    public static ItemBase limiter = new ItemBase("limiter", null);
     public static ItemBase pointerLong = new ItemBase("pointer_long", null);
     public static ItemBase fire = new ItemBase("fire", null);
     public static ItemBase barLevel = new ItemBase("bar_level", null);
@@ -104,6 +105,7 @@ public class ModItems {
                 coilHV,
 
                 pointer,
+                limiter,
                 pointerLong,
                 barLevel,
                 fire,
@@ -151,6 +153,7 @@ public class ModItems {
         coilHV.registerItemModel();
         stickSteel.registerItemModel();
         pointer.registerItemModel();
+        limiter.registerItemModel();
         pointerLong.registerItemModel();
         barLevel.registerItemModel();
         fluidLoaderArm.registerItemModel();

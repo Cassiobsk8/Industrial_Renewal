@@ -222,10 +222,4 @@ public class BlockCargoLoader extends BlockBasicContainer<TileEntityCargoLoader>
     public TileEntityCargoLoader createTileEntity(World world, IBlockState state) {
         return new TileEntityCargoLoader();
     }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityCargoLoader();
-    }
 }

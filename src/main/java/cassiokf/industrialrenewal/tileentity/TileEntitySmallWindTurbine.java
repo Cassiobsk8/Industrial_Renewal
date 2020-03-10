@@ -41,8 +41,6 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
         }
     };
     private float rotation;
-    private int oldEnergyGen;
-    private int energyGenerated;
     private int tickToDamage;
 
     private Random random = new Random();
@@ -51,12 +49,6 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
     {
         this.energyContainer = new VoltsEnergyContainer(32000, 1024, 1024)
         {
-            @Override
-            public void onEnergyChange()
-            {
-                TileEntitySmallWindTurbine.this.markDirty();
-            }
-
             @Override
             public boolean canReceive()
             {
@@ -80,11 +72,11 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
     {
         if (!world.isRemote)
         {
+            int energyGen = 0;
             //Generate Energy
             if (hasBlade())
             {
-                int energyGen = Math.round(getMaxGeneration() * getEfficiency());
-                energyGenerated = this.energyContainer.receiveInternally(energyGen, false);
+                energyGen = Math.round(getMaxGeneration() * getEfficiency());
                 //damage blade
                 if (tickToDamage >= 1200 && energyGen > 0)
                 {
@@ -93,12 +85,9 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
                     if (bladeInv.getStackInSlot(0).getItemDamage() < 0) bladeInv.setStackInSlot(0, ItemStack.EMPTY);
                 }
                 if (tickToDamage < 1201) tickToDamage++;
-            } else
-            {
-                energyGenerated = 0;
             }
             //OutPut Energy
-            if (this.energyContainer.getEnergyStored() > 0)
+            if (energyGen > 0)
             {
                 TileEntity te = world.getTileEntity(pos.down());
                 if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP))
@@ -106,15 +95,9 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
                     IEnergyStorage downE = te.getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP);
                     if (downE != null && downE.canReceive())
                     {
-                        this.energyContainer.extractEnergy(downE.receiveEnergy(this.energyContainer.extractEnergy(this.energyContainer.getMaxOutput(), true), false), false);
+                        downE.receiveEnergy(energyGen, false);
                     }
                 }
-            }
-
-            if (energyGenerated != oldEnergyGen)
-            {
-                oldEnergyGen = energyGenerated;
-                this.Sync();
             }
         }
     }
@@ -183,22 +166,16 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
         this.bladeInv.deserializeNBT(compound.getCompoundTag("bladeInv"));
-        this.energyGenerated = compound.getInteger("generation");
         this.tickToDamage = compound.getInteger("damageTick");
-        //this.rotation = compound.getFloat("rotation");
         super.readFromNBT(compound);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        compound.setTag("StoredIR", this.energyContainer.serializeNBT());
         compound.setTag("bladeInv", this.bladeInv.serializeNBT());
-        compound.setInteger("generation", this.energyGenerated);
         compound.setInteger("damageTick", tickToDamage);
-        //compound.setFloat("rotation", this.rotation);
         return super.writeToNBT(compound);
     }
 }

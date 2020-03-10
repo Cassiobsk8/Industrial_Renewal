@@ -161,10 +161,4 @@ public class BlockFluidLoader extends BlockBasicContainer<TileEntityFluidLoader>
     public TileEntityFluidLoader createTileEntity(World world, IBlockState state) {
         return new TileEntityFluidLoader();
     }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityFluidLoader();
-    }
 }

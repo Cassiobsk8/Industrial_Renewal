@@ -34,7 +34,6 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     public void onLoad()
     {
         initializeMultiblockIfNecessary();
-        Sync();
     }
 
     public int getOutPut()
@@ -49,7 +48,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 
     private void initializeMultiblockIfNecessary()
     {
-        if (isMasterInvalid())
+        if (isMasterInvalid() && !world.isRemote)
         {
             if (isTray()) return;
             List<TileEntityMultiBlocksTube> connectedCables = new CopyOnWriteArrayList<>();
@@ -92,7 +91,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                     storage.setMaster(null);
                 }
             }
-            markDirty();
+            Sync();
         }
     }
 
@@ -142,7 +141,8 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     public TE getMaster()
     {
         initializeMultiblockIfNecessary();
-        return master;
+        if (master != null && !master.isMaster()) Sync();
+        return master != null ? master : (TE) this;
     }
 
     public void setMaster(TE master)
@@ -198,6 +198,11 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     public void readFromNBT(NBTTagCompound compound)
     {
         isMaster = compound.getBoolean("isMaster");
+        if (hasWorld() && world.isRemote)
+        {
+            TE te = (TE) world.getTileEntity(BlockPos.fromLong(compound.getLong("masterPos")));
+            if (te != null) master = te;
+        }
         super.readFromNBT(compound);
     }
 
@@ -205,6 +210,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         compound.setBoolean("isMaster", isMaster);
+        if (master != null && !master.isInvalid()) compound.setLong("masterPos", master.getPos().toLong());
         return super.writeToNBT(compound);
     }
 }

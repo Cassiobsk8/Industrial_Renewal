@@ -17,6 +17,7 @@ public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityW
 {
 
     private static ItemStack pointer = new ItemStack(ModItems.pointerLong);
+    private static ItemStack limiter = new ItemStack(ModItems.limiter);
     private double xPos = 0D;
     private double zPos = 0D;
 
@@ -28,7 +29,8 @@ public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityW
             doTheMath(te.getBlockFacing(), x, z, 0f);
             RenderString(te, xPos, y + 0.72, zPos);
             doTheMath(te.getBlockFacing(), x, z, 0.1f);
-            RenderPointer(te, xPos, y + 0.845, zPos);
+            RenderPointer(te, xPos, y + 0.845, zPos, pointer, te.getGenerationforGauge());
+            RenderLimiter(te, xPos, y + 0.845, zPos, limiter, te.getPotentialValue());
         }
     }
 
@@ -90,7 +92,7 @@ public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityW
         GlStateManager.popMatrix();
     }
 
-    private void RenderPointer(TileEntityWindTurbinePillar te, double x, double y, double z)
+    private void RenderPointer(TileEntityWindTurbinePillar te, double x, double y, double z, ItemStack item, float angle)
     {
 
         GlStateManager.pushMatrix();
@@ -98,8 +100,6 @@ public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityW
         switch (te.getBlockFacing())
         {
             default:
-                System.out.println("DEU BOSTA AKI TIO: " + te.getBlockFacing());
-                break;
             case SOUTH:
                 GlStateManager.rotate(180F, 0, 1, 0);
                 break;
@@ -114,9 +114,35 @@ public class TESRWindTurbinePillar extends TileEntitySpecialRenderer<TileEntityW
         }
         GlStateManager.scale(0.38F, 0.38F, 0.38F);
         GlStateManager.rotate(90, 0, 0, 1);
-        float angle = te.getGenerationforGauge();
         GlStateManager.rotate(-angle, 0, 0, 1);
-        Minecraft.getMinecraft().getRenderItem().renderItem(pointer, ItemCameraTransforms.TransformType.GUI);
+        Minecraft.getMinecraft().getRenderItem().renderItem(item, ItemCameraTransforms.TransformType.GUI);
+        GlStateManager.popMatrix();
+    }
+
+    private void RenderLimiter(TileEntityWindTurbinePillar te, double x, double y, double z, ItemStack item, float angle)
+    {
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, z);
+        switch (te.getBlockFacing())
+        {
+            default:
+            case SOUTH:
+                GlStateManager.rotate(180F, 0, 1, 0);
+                break;
+            case NORTH:
+                break;
+            case WEST:
+                GlStateManager.rotate(90F, 0, 1, 0);
+                break;
+            case EAST:
+                GlStateManager.rotate(-90F, 0, 1, 0);
+                break;
+        }
+        GlStateManager.scale(0.57F, 0.57F, 0.57F);
+        GlStateManager.rotate(90, 0, 0, 1);
+        GlStateManager.rotate(-angle, 0, 0, 1);
+        Minecraft.getMinecraft().getRenderItem().renderItem(item, ItemCameraTransforms.TransformType.GUI);
         GlStateManager.popMatrix();
     }
 }

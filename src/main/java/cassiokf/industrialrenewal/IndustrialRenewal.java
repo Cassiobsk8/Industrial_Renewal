@@ -6,14 +6,12 @@ import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
 import cassiokf.industrialrenewal.util.ChunkManagerCallback;
 import net.minecraft.block.Block;
-import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,9 +20,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-
-import java.util.Random;
 
 import static cassiokf.industrialrenewal.References.MODID;
 
@@ -95,38 +90,6 @@ public class IndustrialRenewal {
             if (event.getModID().equals(MODID))
             {
                 ConfigManager.sync(MODID, Config.Type.INSTANCE);
-            }
-        }
-
-        //private static final String NBT_KEY = "industrialrenewal.firstjoin";
-        @SubscribeEvent
-        public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-            /*
-            if (IRConfig.startWithManual) {
-                EntityPlayer p = event.player;
-                NBTTagCompound data = p.getEntityData();
-                NBTTagCompound persistent;
-                if (!data.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
-                    data.setTag(EntityPlayer.PERSISTED_NBT_TAG, (persistent = new NBTTagCompound()));
-                } else {
-                    persistent = data.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
-                }
-
-                if (!persistent.hasKey(NBT_KEY)) {
-                    Utils.sendConsoleMessage("spawning");
-                    persistent.setBoolean(NBT_KEY, true);
-                    p.inventory.addItemStackToInventory(new ItemStack(ModItems.manual, 1));
-                }
-            }*/
-        }
-
-        @SubscribeEvent
-        public static void onEntityDrop(LivingDropsEvent event) {
-            if (event.getEntity() instanceof EntityZombieVillager) {
-                Random r = new Random();
-                if (r.nextInt(100) < 25) {
-                    //event.getEntity().dropItem(ModItems.instantNoodle, r.nextInt(2) + event.getLootingLevel());
-                }
             }
         }
     }

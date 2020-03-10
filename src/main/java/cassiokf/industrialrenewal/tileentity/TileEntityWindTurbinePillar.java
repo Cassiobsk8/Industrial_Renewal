@@ -22,6 +22,8 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
 
     private float amount;//For Lerp
     private int oldOutPut = -1;
+    private int potentialEnergy;
+    private int oldPotential = -1;
 
     private EnumFacing facing;
 
@@ -30,7 +32,7 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
 
     public TileEntityWindTurbinePillar()
     {
-        this.energyContainer = new VoltsEnergyContainer(1024, 1024, 1024)
+        this.energyContainer = new VoltsEnergyContainer(1024, 128, 128)
         {
             @Override
             public int receiveEnergy(int maxReceive, boolean simulate)
@@ -54,13 +56,32 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
         };
     }
 
+    @Override
+    public void onLoad()
+    {
+        super.onLoad();
+        isBase = getIsBase();
+    }
+
     public int passEnergy(int amount, boolean simulate)
     {
         if (!isMaster() && !isMasterInvalid()) return getMaster().passEnergy(amount, simulate);
 
         int out = 0;
-        int validOutputs = getMaxOutput();
-        if (validOutputs == 0) return 0;
+        int validOutputs = getOutputCount();
+        potentialEnergy = Math.min(amount, this.energyContainer.getMaxOutput());
+        if (validOutputs == 0)
+        {
+            outPut = 0;
+            if (outPut != oldOutPut || potentialEnergy != oldPotential)
+            {
+                oldPotential = potentialEnergy;
+                oldOutPut = outPut;
+                this.Sync();
+            }
+            return 0;
+        }
+
         int realMaxOutput = Math.min(amount / validOutputs, this.energyContainer.getMaxOutput());
         for (BlockPos posM : getPosSet().keySet())
         {
@@ -85,15 +106,16 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
             outPut = out;
         }
 
-        if (oldOutPut != outPut)
+        if (outPut != oldOutPut || potentialEnergy != oldPotential)
         {
+            oldPotential = potentialEnergy;
             oldOutPut = outPut;
             this.Sync();
         }
         return out;
     }
 
-    public int getMaxOutput()
+    public int getOutputCount()
     {
         int canAccept = 0;
         int realMaxOutput = this.energyContainer.getMaxOutput();
@@ -130,6 +152,8 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     public void checkForOutPuts(BlockPos bPos)
     {
         isBase = getIsBase();
+        outPut = 0;
+        potentialEnergy = 0;
         if (world.isRemote) return;
         for (EnumFacing face : EnumFacing.HORIZONTALS)
         {
@@ -164,10 +188,18 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     public float getGenerationforGauge()
     {
         float currentAmount = getEnergyGenerated();
-        float totalCapacity = TileEntitySmallWindTurbine.getMaxGeneration();
+        float totalCapacity = this.energyContainer.getMaxOutput();
         currentAmount = currentAmount / totalCapacity;
         amount = Utils.lerp(amount, currentAmount, 0.1f);
         return Math.min(amount, 1) * 90f;
+    }
+
+    public float getPotentialValue()
+    {
+        float currentAmount = potentialEnergy;
+        float totalCapacity = this.energyContainer.getMaxOutput();
+        currentAmount = currentAmount / totalCapacity;
+        return Math.min(currentAmount, 1) * 90f;
     }
 
     public int getEnergyGenerated()
@@ -212,11 +244,8 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     public void readFromNBT(NBTTagCompound compound)
     {
         this.isBase = compound.getBoolean("base");
-        this.outPut = compound.getInteger("outPut");
-        //TileEntityWindTurbinePillar te = null;
-        //if (compound.hasKey("masterPos") && hasWorld())
-        //    te = (TileEntityWindTurbinePillar) world.getTileEntity(BlockPos.fromLong(compound.getLong("masterPos")));
-        //if (te != null) this.setMaster(te);
+        if (hasWorld() && world.isRemote) this.potentialEnergy = compound.getInteger("potential");
+        if (hasWorld() && world.isRemote) this.outPut = compound.getInteger("outPut");
         super.readFromNBT(compound);
     }
 
@@ -224,8 +253,8 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         compound.setBoolean("base", this.isBase);
+        compound.setInteger("potential", potentialEnergy);
         compound.setInteger("outPut", outPut);
-        //if (getMaster() != null) compound.setLong("masterPos", getMaster().getPos().toLong());
         return super.writeToNBT(compound);
     }
 }

@@ -8,7 +8,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -69,13 +68,6 @@ public class BlockTrash extends BlockBasicContainer<TileEntityTrash>
     @Nullable
     @Override
     public TileEntityTrash createTileEntity(World world, IBlockState state)
-    {
-        return new TileEntityTrash();
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
     {
         return new TileEntityTrash();
     }

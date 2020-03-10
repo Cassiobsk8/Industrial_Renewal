@@ -10,7 +10,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -103,12 +102,6 @@ public class BlockElectricPump extends BlockBasicContainer<TileEntityElectricPum
     @Nullable
     @Override
     public TileEntityElectricPump createTileEntity(World world, IBlockState state) {
-        return new TileEntityElectricPump();
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityElectricPump();
     }
 }

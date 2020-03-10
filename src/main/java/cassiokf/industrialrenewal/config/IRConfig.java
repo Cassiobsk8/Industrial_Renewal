@@ -151,6 +151,9 @@ public class IRConfig {
             @Config.LangKey("gui.config.fluidFuel.name")
             public Map<String, Integer> fluidFuel = getFuelHash();
 
+            @Config.Comment("true if Chunk Load Needs the player to get online or it will be deactivate (Default true)")
+            public boolean needPlayerToActivateChunkLoading = true;
+
             @Config.LangKey("gui.config.hours_before_deactivation.name")
             @Config.Comment("The number of hours the player will be offline before Chunk Loading deactivating (default 2 days)")
             public int hoursBeforeChunkLoadingDeactivation = 2 * 24; // 2 days by default.
