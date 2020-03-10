@@ -109,13 +109,20 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
         if (state instanceof IExtendedBlockState)
         {
             IExtendedBlockState eState = (IExtendedBlockState) state;
-            return eState.withProperty(MASTER, IRConfig.MainConfig.Main.showMaster && isMaster(world, pos))
-                    .withProperty(SOUTH, canConnectToPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectToPipe(world, pos, EnumFacing.NORTH))
-                    .withProperty(EAST, canConnectToPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectToPipe(world, pos, EnumFacing.WEST))
-                    .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
-                    .withProperty(CSOUTH, canConnectToCapability(world, pos, EnumFacing.SOUTH)).withProperty(CNORTH, canConnectToCapability(world, pos, EnumFacing.NORTH))
-                    .withProperty(CEAST, canConnectToCapability(world, pos, EnumFacing.EAST)).withProperty(CWEST, canConnectToCapability(world, pos, EnumFacing.WEST))
-                    .withProperty(CUP, canConnectToCapability(world, pos, EnumFacing.UP)).withProperty(CDOWN, canConnectToCapability(world, pos, EnumFacing.DOWN));
+            return eState
+                    .withProperty(MASTER, IRConfig.MainConfig.Main.showMaster && isMaster(world, pos))
+                    .withProperty(SOUTH, canConnectToPipe(world, pos, EnumFacing.SOUTH))
+                    .withProperty(NORTH, canConnectToPipe(world, pos, EnumFacing.NORTH))
+                    .withProperty(EAST, canConnectToPipe(world, pos, EnumFacing.EAST))
+                    .withProperty(WEST, canConnectToPipe(world, pos, EnumFacing.WEST))
+                    .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP))
+                    .withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
+                    .withProperty(CSOUTH, canConnectToCapability(world, pos, EnumFacing.SOUTH))
+                    .withProperty(CNORTH, canConnectToCapability(world, pos, EnumFacing.NORTH))
+                    .withProperty(CEAST, canConnectToCapability(world, pos, EnumFacing.EAST))
+                    .withProperty(CWEST, canConnectToCapability(world, pos, EnumFacing.WEST))
+                    .withProperty(CUP, canConnectToCapability(world, pos, EnumFacing.UP))
+                    .withProperty(CDOWN, canConnectToCapability(world, pos, EnumFacing.DOWN));
         }
         return state;
     }
@@ -126,104 +133,61 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
         return te != null && te.isMaster();
     }
 
-    public final boolean isConnected(IBlockAccess world, BlockPos pos, IBlockState state, final IUnlistedProperty<Boolean> property)
+    public final boolean isConnected(IBlockAccess world, BlockPos pos, EnumFacing facing)
     {
-        if (state instanceof IExtendedBlockState)
-        {
-            IExtendedBlockState eState = (IExtendedBlockState) getExtendedState(state, world, pos);
-            return eState.getValue(property);
-        }
-        return false;
+        return canConnectToPipe(world, pos, facing) || canConnectToCapability(world, pos, facing);
     }
 
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
     {
-        if (isConnected(worldIn, pos, state, NORTH) || isConnected(worldIn, pos, state, CNORTH))
-        {
-            NORTHZ1 = 0.0f;
-        } else
-        {
-            NORTHZ1 = 0.250f;
-        }
-        if (isConnected(worldIn, pos, state, SOUTH) || isConnected(worldIn, pos, state, CSOUTH))
-        {
-            SOUTHZ2 = 1.0f;
-        } else
-        {
-            SOUTHZ2 = 0.750f;
-        }
-        if (isConnected(worldIn, pos, state, WEST) || isConnected(worldIn, pos, state, CWEST))
-        {
-            WESTX1 = 0.0f;
-        } else
-        {
-            WESTX1 = 0.250f;
-        }
-        if (isConnected(worldIn, pos, state, EAST) || isConnected(worldIn, pos, state, CEAST))
-        {
-            EASTX2 = 1.0f;
-        } else
-        {
-            EASTX2 = 0.750f;
-        }
-        if (isConnected(worldIn, pos, state, DOWN) || isConnected(worldIn, pos, state, CDOWN))
-        {
-            DOWNY1 = 0.0f;
-        } else
-        {
-            DOWNY1 = 0.250f;
-        }
-        if (isConnected(worldIn, pos, state, UP) || isConnected(worldIn, pos, state, CUP))
-        {
-            UPY2 = 1.0f;
-        } else
-        {
-            UPY2 = 0.750f;
-        }
-        final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, worldIn, pos));
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        if (isConnected(worldIn, pos, state, NORTH) || isConnected(worldIn, pos, state, CNORTH))
+        return getBB(state, worldIn, pos);
+    }
+
+    public AxisAlignedBB getBB(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        if (isConnected(worldIn, pos, EnumFacing.NORTH))
         {
             NORTHZ1 = 0.0f;
         } else
         {
             NORTHZ1 = 0.250f;
         }
-        if (isConnected(worldIn, pos, state, SOUTH) || isConnected(worldIn, pos, state, CSOUTH))
+        if (isConnected(worldIn, pos, EnumFacing.SOUTH))
         {
             SOUTHZ2 = 1.0f;
         } else
         {
             SOUTHZ2 = 0.750f;
         }
-        if (isConnected(worldIn, pos, state, WEST) || isConnected(worldIn, pos, state, CWEST))
+        if (isConnected(worldIn, pos, EnumFacing.WEST))
         {
             WESTX1 = 0.0f;
         } else
         {
             WESTX1 = 0.250f;
         }
-        if (isConnected(worldIn, pos, state, EAST) || isConnected(worldIn, pos, state, CEAST))
+        if (isConnected(worldIn, pos, EnumFacing.EAST))
         {
             EASTX2 = 1.0f;
         } else
         {
             EASTX2 = 0.750f;
         }
-        if (isConnected(worldIn, pos, state, DOWN) || isConnected(worldIn, pos, state, CDOWN))
+        if (isConnected(worldIn, pos, EnumFacing.DOWN))
         {
             DOWNY1 = 0.0f;
         } else
         {
             DOWNY1 = 0.250f;
         }
-        if (isConnected(worldIn, pos, state, UP) || isConnected(worldIn, pos, state, CUP))
+        if (isConnected(worldIn, pos, EnumFacing.UP))
         {
             UPY2 = 1.0f;
         } else
@@ -234,7 +198,8 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 
