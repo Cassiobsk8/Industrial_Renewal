@@ -39,7 +39,7 @@ item.industrialrenewal.firebox_solid.name=Firebox for Solid Fuel
 item.industrialrenewal.firebox_fluid.name=Firebox for Fluid Fuel
 item.industrialrenewal.small_wind_blade.name=Wind Generator Blades
 item.industrialrenewal.chunk_hematite.name=Hematite Chunk
-item.industrialrenewal.coil_hv.name=HV Wire Coil
+item.industrialrenewal.coil_hv.name=Ultra-HV Wire Coil
 
 #Discs
 item.industrialrenewal.record_royal_entrance.name=Music Disc
@@ -147,10 +147,16 @@ tile.industrialrenewal.rail_gate.name=Rail Gate
 tile.industrialrenewal.wall_concrete.name=Concrete Wall
 tile.industrialrenewal.razor_wire.name=Razor Wire
 tile.industrialrenewal.energy_switch.name=Energy Breaker
-tile.industrialrenewal.transformer_hv.name=HV Transformer
-tile.industrialrenewal.isolator_hv.name=HV Isolator
+tile.industrialrenewal.transformer_hv.name=Ultra-HV Transformer
+tile.industrialrenewal.isolator_hv.name=Ultra-HV Isolator
 tile.industrialrenewal.infinity_generator.name=Creative Infinity §mScam§r §fEnergy Generator
 tile.industrialrenewal.cable_tray.name=Cable Tray
+tile.industrialrenewal.high_pressure_pipe.name=High Pressure Pipe
+tile.industrialrenewal.dam_generator.name=Dam Generator
+tile.industrialrenewal.dam_turbine.name=Dam Turbine
+tile.industrialrenewal.dam_axis.name=Turbine Shaft
+tile.industrialrenewal.dam_intake.name=Dam Intake
+tile.industrialrenewal.dam_outflow.name=Dam OutFlow
 
 #Fluids
 fluid.steam=Steam

@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:smartmodel/high_pressure_pipe"
+    },
+    "inventory": [
+      {
+        "model": "industrialrenewal:press_pipe/pressurized_tube_item"
+      }
+    ]
+  }
+}

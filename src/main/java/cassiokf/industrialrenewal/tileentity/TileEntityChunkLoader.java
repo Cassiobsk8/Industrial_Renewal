@@ -35,7 +35,6 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
 
     public void setTicket(@Nonnull Ticket ticket)
     {
-        //Release any existing tickets for this player.
         final String playerName = ticket.getPlayerName();
         final Iterator<Ticket> iterator = tickets.iterator();
         while (iterator.hasNext())
@@ -70,18 +69,14 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
     public void update()
     {
         if (IRConfig.MainConfig.Main.emergencyMode || !master) return;
-        //Only process on the server
         if (world.isRemote) return;
-        //If there isn't any tickets, the device is already disabled and no work to be done
-        //until it is reactivated next.
         if (tickets.isEmpty()) return;
 
         if (!IRConfig.MainConfig.Main.needPlayerToActivateChunkLoading)
         {
             return;
         }
-        //Only process this chunk loader every 32 ticks
-        // Should probably increase this to every minute or so.
+
         final long totalWorldTime = world.getTotalWorldTime();
         if ((totalWorldTime & 31) != 31)
         {
@@ -92,16 +87,12 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
 
         final boolean gadgetIsValid = checkPlayersLoggedOn(trackedPlayersOnline);
 
-        //At this point, no players have been found,
-        //If there isn't an expiry time, it's time to set one.
         if (!gadgetIsValid && expireTime == -1)
         {
             final int timeout = IRConfig.MainConfig.Main.hoursBeforeChunkLoadingDeactivation * 60 * 60 * 20;
             expireTime = totalWorldTime + timeout;
         }
 
-        //If the expire time has expired and we've reached this far
-        //It's time to kill the ticket.
         if (expireTime != -1 && totalWorldTime >= expireTime)
         {
             disable();
@@ -119,24 +110,17 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
 
         for (final Ticket ticket : tickets)
         {
-            //If we're no longer tracking the ticket owner, but there is a ticket,
-            //Check to see if the player has come online.
-
             final EntityPlayer playerEntityByName = ChunkManagerCallback.getOnlinePlayerByName(world.getMinecraftServer(), ticket.getPlayerName());
-            //If they're found
+
             if (playerEntityByName != null)
             {
-                //reset the expiry
+
                 expireTime = -1;
-                //start tracking the player
+
                 trackedPlayers.add(new WeakReference<>(playerEntityByName));
-                if (!world.isRemote)
-                {
-                    //Logger.info("Chunk Loader at %s is revived because %s returned", pos, playerEntityByName.getName());
-                }
-                //Start the animation again
+
                 world.addBlockEvent(pos, getBlockType(), ACTIVE_STATE_CHANGED, 1);
-                //Block any further processing
+
                 gadgetIsValid = true;
             }
         }
@@ -151,7 +135,6 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
         final Iterator<WeakReference<EntityPlayer>> trackedPlayerIterator = trackedPlayers.iterator();
         while (trackedPlayerIterator.hasNext())
         {
-            //If we're tracking the ticket owner, check to see if they're still online
             final WeakReference<EntityPlayer> playerWeakReference = trackedPlayerIterator.next();
             EntityPlayer player = playerWeakReference.get();
 
@@ -159,7 +142,6 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
             {
                 player = ChunkManagerCallback.getOnlinePlayerByName(world.getMinecraftServer(), player.getName());
 
-                //If we couldn't find them, clear the reference, we're not tracking them any more.
                 if (player == null)
                 {
                     playerWeakReference.clear();
@@ -182,7 +164,6 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
         }
         tickets.clear();
 
-        //Disable the animation
         world.addBlockEvent(pos, getBlockType(), ACTIVE_STATE_CHANGED, 0);
     }
 
@@ -209,7 +190,6 @@ public class TileEntityChunkLoader extends TileEntity implements ITickable
         if (id == ACTIVE_STATE_CHANGED)
         {
             isActive = type == 1;
-            //Logger.info("Active state of chunk loader at %s is now %b", pos, isActive);
             world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
             return true;
         }

@@ -83,10 +83,10 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
         }
 
         int realMaxOutput = Math.min(amount / validOutputs, this.energyContainer.getMaxOutput());
-        for (BlockPos posM : getPosSet().keySet())
+        for (BlockPos posM : getMachinesPosSet().keySet())
         {
             TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = getPosSet().get(posM).getOpposite();
+            EnumFacing face = getMachinesPosSet().get(posM).getOpposite();
             if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
             {
                 IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
@@ -119,10 +119,10 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     {
         int canAccept = 0;
         int realMaxOutput = this.energyContainer.getMaxOutput();
-        for (BlockPos posM : getPosSet().keySet())
+        for (BlockPos posM : getMachinesPosSet().keySet())
         {
             TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = getPosSet().get(posM).getOpposite();
+            EnumFacing face = getMachinesPosSet().get(posM).getOpposite();
             if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
             {
                 IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
@@ -166,11 +166,7 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
                         && te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
 
                 if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
-                    if (!isMasterInvalid()) getMaster().addMachine(currentPos, face);
-                    else if (!isMasterInvalid()) getMaster().removeMachine(pos, currentPos);
-            } else
-            {
-                if (!isMasterInvalid()) getMaster().removeMachine(pos, currentPos);
+                    addMachine(currentPos, face);
             }
         }
         this.Sync();

@@ -70,7 +70,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
         int out = 0;
 
 
-        final Map<BlockPos, EnumFacing> mapPosSet = getPosSet();
+        final Map<BlockPos, EnumFacing> mapPosSet = getMachinesPosSet();
         int quantity = mapPosSet.size();
 
         if (quantity > 0)
@@ -151,8 +151,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
             IEnergyStorage eStorage = null;
             if (hasMachine) eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
             if (hasMachine && eStorage != null && eStorage.canReceive())
-                if (!isMasterInvalid()) getMaster().addMachine(currentPos, face);
-                else if (!isMasterInvalid()) getMaster().removeMachine(pos, currentPos);
+                addMachine(currentPos, face);
         }
     }
 

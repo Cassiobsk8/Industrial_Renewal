@@ -72,7 +72,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                     }
                 }
             }
-            master.getPosSet().clear();
+            master.getMachinesPosSet().clear();
             if (canBeMaster(master))
             {
                 for (TileEntityMultiBlocksTube storage : connectedCables)
@@ -87,7 +87,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                 for (TileEntityMultiBlocksTube storage : connectedCables)
                 {
                     if (!canBeMaster(storage)) continue;
-                    storage.getPosSet().clear();
+                    storage.getMachinesPosSet().clear();
                     storage.setMaster(null);
                 }
             }
@@ -152,7 +152,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         if (!isMaster) posSet.clear();
     }
 
-    public Map<BlockPos, EnumFacing> getPosSet()
+    public Map<BlockPos, EnumFacing> getMachinesPosSet()
     {
         return posSet;
     }
@@ -186,11 +186,13 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 
     public void addMachine(BlockPos pos, EnumFacing face)
     {
+        if (!isMaster()) getMaster().addMachine(pos, face);
         posSet.put(pos, face);
     }
 
     public void removeMachine(BlockPos ownPos, BlockPos machinePos)
     {
+        if (!isMaster()) getMaster().removeMachine(ownPos, machinePos);
         posSet.remove(machinePos);
     }
 

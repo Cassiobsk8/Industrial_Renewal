@@ -79,6 +79,8 @@ public class ModelLoaderCustom implements ICustomModelLoader
                 return new BigFenceColumnIModel();
             case "fence_big_corner":
                 return new BigFenceCornerIModel();
+            case "high_pressure_pipe":
+                return new PipePressurizedModel();
             default:
                 return ModelLoaderRegistry.getMissingModel();
         }

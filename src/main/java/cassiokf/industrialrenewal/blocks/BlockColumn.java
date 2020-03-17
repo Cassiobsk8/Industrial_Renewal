@@ -57,7 +57,6 @@ public class BlockColumn extends BlockBase {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        //return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
         return new BlockStateContainer(this, UP, DOWN, NORTH, SOUTH, EAST, WEST, PIPE);
     }
 

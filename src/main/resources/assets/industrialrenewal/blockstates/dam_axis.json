@@ -1,0 +1,16 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/pipe"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:dam_axis"
+    },
+    "inventory": {
+      "model": "industrialrenewal:dam_axis"
+    }
+  }
+}

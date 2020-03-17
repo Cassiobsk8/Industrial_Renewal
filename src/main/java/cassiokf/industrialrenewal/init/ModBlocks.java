@@ -12,6 +12,7 @@ import cassiokf.industrialrenewal.blocks.redstone.*;
 import cassiokf.industrialrenewal.enums.EnumBulkConveyorType;
 import cassiokf.industrialrenewal.enums.EnumEnergyCableType;
 import cassiokf.industrialrenewal.fluids.BlockFluid;
+import cassiokf.industrialrenewal.tileentity.TileEntityConcrete;
 import cassiokf.industrialrenewal.tileentity.tubes.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -105,7 +106,8 @@ public class ModBlocks {
     public static BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
     public static BlockRazorWire razorWire = new BlockRazorWire("razor_wire", References.CREATIVE_IR_TAB);
 
-    //public static BlockDamIntake damIntake = new BlockDamIntake("dam_intake", References.CREAATIVE_IRWIP_TAB);
+    public static BlockDamIntake damIntake = new BlockDamIntake("dam_intake", References.CREATIVE_IR_TAB);
+    public static BlockDamOutFlow damOutFlow = new BlockDamOutFlow("dam_outflow", References.CREATIVE_IR_TAB);
 
     public static BlockInfinityGenerator infinityGenerator = new BlockInfinityGenerator("infinity_generator", References.CREATIVE_IR_TAB);
     public static BlockSolarPanel spanel = new BlockSolarPanel("solar_panel", References.CREATIVE_IR_TAB);
@@ -153,12 +155,17 @@ public class ModBlocks {
     public static BlockSteamTurbine steamTurbine = new BlockSteamTurbine("steam_turbine", References.CREATIVE_IR_TAB);
     //public static BlockMining mining = new BlockMining("mining", References.CREAATIVE_IRWIP_TAB);
     public static BlockTransformerHV transformerHV = new BlockTransformerHV("transformer_hv", References.CREATIVE_IR_TAB);
+    public static BlockDamTurbine damTurbine = new BlockDamTurbine("dam_turbine", References.CREATIVE_IR_TAB);
+    public static BlockDamGenerator damGenerator = new BlockDamGenerator("dam_generator", References.CREATIVE_IR_TAB);
+    public static BlockDamAxis damAxis = new BlockDamAxis("dam_axis", References.CREATIVE_IR_TAB);
+    public static BlockHighPressurePipe highPressurePipe = new BlockHighPressurePipe("high_pressure_pipe", References.CREATIVE_IR_TAB);
 
     public static BlockChunkLoader chunkLoader = new BlockChunkLoader("chunk_loader", References.CREATIVE_IR_TAB);
 
     public static BlockOreVein veinHematite = new BlockOreVein("orevein_hematite", References.CREAATIVE_IRWIP_TAB);
 
-    public static void register(IForgeRegistry<Block> registry) {
+    public static void register(IForgeRegistry<Block> registry)
+    {
         registry.registerAll(
                 veinHematite,
                 blockHazard,
@@ -224,7 +231,8 @@ public class ModBlocks {
                 bigFenceWire,
                 egate,
                 razorWire,
-                //damIntake,
+                damIntake,
+                damOutFlow,
                 signC,
                 signHV,
                 signRA,
@@ -263,6 +271,10 @@ public class ModBlocks {
                 batteryBank,
                 electricPump,
                 transformerHV,
+                damTurbine,
+                damGenerator,
+                damAxis,
+                highPressurePipe,
                 //Machines
                 steamBoiler,
                 steamTurbine,
@@ -325,6 +337,10 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(energyLevel.getTileEntityClass(), energyLevel.getRegistryName());
         GameRegistry.registerTileEntity(electricPump.getTileEntityClass(), electricPump.getRegistryName().toString());
         GameRegistry.registerTileEntity(transformerHV.getTileEntityClass(), transformerHV.getRegistryName());
+        GameRegistry.registerTileEntity(damTurbine.getTileEntityClass(), damTurbine.getRegistryName());
+        GameRegistry.registerTileEntity(damGenerator.getTileEntityClass(), damGenerator.getRegistryName());
+        GameRegistry.registerTileEntity(damAxis.getTileEntityClass(), damAxis.getRegistryName());
+        GameRegistry.registerTileEntity(highPressurePipe.getTileEntityClass(), highPressurePipe.getRegistryName());
         GameRegistry.registerTileEntity(batteryBank.getTileEntityClass(), batteryBank.getRegistryName().toString());
         GameRegistry.registerTileEntity(TileEntityCableTray.class, cableTray.getRegistryName());
         GameRegistry.registerTileEntity(fluidPipe.getTileEntityClass(), fluidPipe.getRegistryName().toString());
@@ -341,8 +357,9 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(conveyorV.getTileEntityClass(), conveyorV.getRegistryName());
         GameRegistry.registerTileEntity(conveyorVHopper.getTileEntityClass(), conveyorVHopper.getRegistryName());
         GameRegistry.registerTileEntity(conveyorVInserter.getTileEntityClass(), conveyorVInserter.getRegistryName());
-        //GameRegistry.registerTileEntity(damIntake.getTileEntityClass(), damIntake.getRegistryName());
-        //GameRegistry.registerTileEntity(concrete.getTileEntityClass(), concrete.getRegistryName());
+        GameRegistry.registerTileEntity(damIntake.getTileEntityClass(), damIntake.getRegistryName());
+        GameRegistry.registerTileEntity(damOutFlow.getTileEntityClass(), damOutFlow.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityConcrete.class, concrete.getRegistryName());
         GameRegistry.registerTileEntity(hvIsolator.getTileEntityClass(), hvIsolator.getRegistryName());
     }
 
@@ -401,7 +418,8 @@ public class ModBlocks {
                 bigFenceWire.createItemBlock(),
                 egate.createItemBlock(),
                 razorWire.createItemBlock(),
-                //damIntake.createItemBlock(),
+                damIntake.createItemBlock(),
+                damOutFlow.createItemBlock(),
                 signHV.createItemBlock(),
                 fluorescent.createItemBlock(),
                 light.createItemBlock(),
@@ -435,6 +453,10 @@ public class ModBlocks {
                 electricPump.createItemBlock(),
                 trash.createItemBlock(),
                 transformerHV.createItemBlock(),
+                damTurbine.createItemBlock(),
+                damGenerator.createItemBlock(),
+                damAxis.createItemBlock(),
+                highPressurePipe.createItemBlock(),
                 steamBoiler.createItemBlock(),
                 steamTurbine.createItemBlock(),
                 //mining.createItemBlock(),
@@ -487,7 +509,8 @@ public class ModBlocks {
         concreteWall.registerItemModel(Item.getItemFromBlock(concreteWall));
         egate.registerItemModel(Item.getItemFromBlock(egate));
         razorWire.registerItemModel(Item.getItemFromBlock(razorWire));
-        //damIntake.registerItemModel(Item.getItemFromBlock(damIntake));
+        damIntake.registerItemModel(Item.getItemFromBlock(damIntake));
+        damOutFlow.registerItemModel(Item.getItemFromBlock(damOutFlow));
         infinityGenerator.registerItemModel(Item.getItemFromBlock(infinityGenerator));
         spanel.registerItemModel(Item.getItemFromBlock(spanel));
         fpanel.registerItemModel(Item.getItemFromBlock(fpanel));
@@ -533,6 +556,10 @@ public class ModBlocks {
         batteryBank.registerItemModel(Item.getItemFromBlock(batteryBank));
         electricPump.registerItemModel(Item.getItemFromBlock(electricPump));
         transformerHV.registerItemModel(Item.getItemFromBlock(transformerHV));
+        damTurbine.registerItemModel(Item.getItemFromBlock(damTurbine));
+        damGenerator.registerItemModel(Item.getItemFromBlock(damGenerator));
+        damAxis.registerItemModel(Item.getItemFromBlock(damAxis));
+        highPressurePipe.registerItemModel(Item.getItemFromBlock(highPressurePipe));
         steamBoiler.registerItemModel(Item.getItemFromBlock(steamBoiler));
         steamTurbine.registerItemModel(Item.getItemFromBlock(steamTurbine));
         //mining.registerItemModel(Item.getItemFromBlock(mining));

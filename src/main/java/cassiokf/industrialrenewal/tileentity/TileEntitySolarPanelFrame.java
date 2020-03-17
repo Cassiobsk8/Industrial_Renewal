@@ -86,12 +86,12 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
                 int size = panelReady.size();
                 energyContainer.setMaxEnergyStored(Math.max(600 * size, energyContainer.getEnergyStored()));
                 if (size > 0) getEnergyFromSun();
-                for (BlockPos posT : getPosSet().keySet())
+                for (BlockPos posT : getMachinesPosSet().keySet())
                 {
                     final TileEntity tileEntity = world.getTileEntity(posT);
                     if (tileEntity != null && !tileEntity.isInvalid())
                     {
-                        EnumFacing facing = getPosSet().get(posT);
+                        EnumFacing facing = getMachinesPosSet().get(posT);
                         if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
                         {
                             final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());

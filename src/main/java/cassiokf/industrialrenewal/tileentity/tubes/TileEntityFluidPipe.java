@@ -64,7 +64,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
 
         if (resource == null || resource.amount <= 0) return 0;
         int out = 0;
-        final Map<BlockPos, EnumFacing> mapPosSet = getPosSet();
+        final Map<BlockPos, EnumFacing> mapPosSet = getMachinesPosSet();
         int quantity = mapPosSet.size();
 
         if (quantity > 0)

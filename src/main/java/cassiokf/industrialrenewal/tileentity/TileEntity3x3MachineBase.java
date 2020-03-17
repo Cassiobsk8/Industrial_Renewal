@@ -14,7 +14,7 @@ import java.util.List;
 
 public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBase> extends TileEntitySyncable implements ICapabilityProvider
 {
-    private boolean master;
+    private boolean isMaster;
     private boolean breaking;
     private TE masterTE;
     private boolean masterChecked = false;
@@ -24,7 +24,8 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
     @Override
     public void onLoad()
     {
-        this.getMaster();
+        isMaster();
+        if (isMaster()) this.setMaster();
     }
 
     public TE getMaster()
@@ -40,6 +41,7 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
                         && instanceOf(te))
                 {
                     masterTE = (TE) te;
+                    ((TE) te).setMaster();
                     return masterTE;
                 }
             }
@@ -48,12 +50,19 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
         return masterTE;
     }
 
-    public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
+    public void setMaster()
     {
-        return Utils.getBlocksIn3x3x3Centered(centerPosition);
+        if (!isMaster()) return;
+        List<BlockPos> list = getListOfBlockPositions(pos);
+        for (BlockPos currentPos : list)
+        {
+            TileEntity te = world.getTileEntity(currentPos);
+            if (te instanceof TileEntity3x3MachineBase && instanceOf(te))
+            {
+                ((TileEntity3x3MachineBase) te).setMaster(this);
+            }
+        }
     }
-
-    public abstract boolean instanceOf(TileEntity tileEntity);
 
     public void breakMultiBlocks()
     {
@@ -69,7 +78,7 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
         {
             breaking = true;
             onMasterBreak();
-            List<BlockPos> list = getListOfBlockPositions(this.pos);
+            List<BlockPos> list = getListOfBlockPositions(pos);
             for (BlockPos currentPos : list)
             {
                 Block block = world.getBlockState(currentPos).getBlock();
@@ -78,29 +87,41 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
         }
     }
 
-    public void onMasterBreak()
+    public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
     {
+        return Utils.getBlocksIn3x3x3Centered(centerPosition);
     }
+
+    public abstract boolean instanceOf(TileEntity tileEntity);
 
     public EnumFacing getMasterFacing()
     {
         if (faceChecked) return EnumFacing.byIndex(faceIndex);
-
+        if (getMaster() == null) return EnumFacing.NORTH;
         EnumFacing facing = world.getBlockState(getMaster().getPos()).getValue(Block3x3x3Base.FACING);
         faceChecked = true;
         faceIndex = facing.getIndex();
         return facing;
     }
 
+    public void onMasterBreak()
+    {
+    }
+
     public boolean isMaster()
     {
-        if (masterChecked) return this.master;
+        if (masterChecked) return this.isMaster;
 
         IBlockState state = this.world.getBlockState(this.pos);
         if (!(state.getBlock() instanceof Block3x3x3Base)) return false;
-        master = state.getValue(Block3x3x3Base.MASTER);
+        isMaster = state.getValue(Block3x3x3Base.MASTER);
         masterChecked = true;
-        return master;
+        return isMaster;
+    }
+
+    public void setMaster(TE master)
+    {
+        this.masterTE = master;
     }
 
     @Override
@@ -114,7 +135,7 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        this.master = compound.getBoolean("master");
+        this.isMaster = compound.getBoolean("master");
         this.masterChecked = compound.getBoolean("checked");
         super.readFromNBT(compound);
     }
