@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter> implements ICapabilityProvider, ITickable
 {
+    EnumFacing blockFacing = null;
 
     public FluidTank tank = new FluidTank(1000)
     {
@@ -52,13 +53,13 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
                 }
                 if (this.tank.getFluidAmount() > 0)
                 {
-                    int quantity = getPosSet().size() > 0 ? (this.tank.getFluidAmount() / getPosSet().size()) : 0;
-                    for (BlockPos outPutPos : getPosSet().keySet())
+                    int quantity = getMachinesPosSet().size() > 0 ? (this.tank.getFluidAmount() / getMachinesPosSet().size()) : 0;
+                    for (BlockPos outPutPos : getMachinesPosSet().keySet())
                     {
                         final TileEntity tileEntity = world.getTileEntity(outPutPos);
                         if (tileEntity != null && !tileEntity.isInvalid())
                         {
-                            EnumFacing facing = getPosSet().get(outPutPos);
+                            EnumFacing facing = getMachinesPosSet().get(outPutPos);
                             if (tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite()))
                             {
                                 final IFluidHandler consumer = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
@@ -96,8 +97,7 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
         TileEntity te = world.getTileEntity(currentPos);
         boolean hasMachine = !(state.getBlock() instanceof BlockGutter) && te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
         if (hasMachine && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).getTankProperties()[0].canFill())
-            if (!isMasterInvalid()) getMaster().addMachine(currentPos, face);
-            else if (!isMasterInvalid()) getMaster().removeMachine(pos, currentPos);
+            addMachine(currentPos, face);
     }
 
     public void checkIfIsReady()
@@ -122,7 +122,9 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
 
     public EnumFacing getBlockFacing()
     {
-        return world.getBlockState(pos).getValue(BlockGutter.FACING);
+        if (blockFacing != null) return blockFacing;
+        IBlockState state = world.getBlockState(pos);
+        return blockFacing = state.getBlock() instanceof BlockGutter ? state.getValue(BlockGutter.FACING) : EnumFacing.NORTH;
     }
 
     @Override
