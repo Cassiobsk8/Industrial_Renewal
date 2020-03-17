@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockBasicElectricFence;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyDirection;
@@ -18,7 +19,8 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockElectricBigFenceWire extends BlockBasicElectricFence {
+public class BlockElectricBigFenceWire extends BlockBasicElectricFence
+{
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyInteger INDEX = PropertyInteger.create("index", 0, 2);
@@ -26,7 +28,8 @@ public class BlockElectricBigFenceWire extends BlockBasicElectricFence {
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB CBASE_AABB = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 1.0D, 0.9D);
 
-    public BlockElectricBigFenceWire(String name, CreativeTabs tab) {
+    public BlockElectricBigFenceWire(String name, CreativeTabs tab)
+    {
         super(name, tab);
         setSoundType(SoundType.METAL);
     }

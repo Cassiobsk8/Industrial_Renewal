@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnected;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
@@ -10,7 +11,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -28,7 +28,6 @@ public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBattery
 {
     public BlockBatteryBank(String name, CreativeTabs tab) {
         super(Material.IRON, name, tab);
-        setDefaultState(getDefaultState());
     }
 
     @Override
@@ -53,14 +52,6 @@ public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBattery
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-    {
-        TileEntityBatteryBank te = (TileEntityBatteryBank) worldIn.getTileEntity(pos);
-        if (te != null) te.forceFaceCheck();
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override
@@ -96,11 +87,6 @@ public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBattery
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
-    }
-
-    @Override
-    public Class<TileEntityBatteryBank> getTileEntityClass() {
-        return TileEntityBatteryBank.class;
     }
 
     @Nullable

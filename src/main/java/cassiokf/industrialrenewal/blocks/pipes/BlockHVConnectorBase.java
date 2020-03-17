@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
-import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
 import cassiokf.industrialrenewal.tileentity.TileEntityHVConnectorBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnectedMultiblocks;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityDamAxis;
 import net.minecraft.block.SoundType;
@@ -24,7 +25,6 @@ import javax.annotation.Nullable;
 
 public class BlockDamAxis extends BlockTileEntityConnectedMultiblocks<TileEntityDamAxis>
 {
-
     public BlockDamAxis(String name, CreativeTabs tab)
     {
         super(Material.IRON, name, tab);
@@ -93,9 +93,9 @@ public class BlockDamAxis extends BlockTileEntityConnectedMultiblocks<TileEntity
     }
 
     @Override
-    public Class<TileEntityDamAxis> getTileEntityClass()
+    public boolean hasTileEntity(IBlockState state)
     {
-        return TileEntityDamAxis.class;
+        return true;
     }
 
     @Nullable

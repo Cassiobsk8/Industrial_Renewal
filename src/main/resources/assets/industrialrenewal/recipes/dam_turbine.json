@@ -1,0 +1,29 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "BRB",
+    "BRB",
+    "TIT"
+  ],
+  "key": {
+    "T": {
+      "item": "industrialrenewal:high_pressure_pipe"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "stickSteel"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotSteel"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "blockSteel"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:dam_turbine",
+    "count": 1
+  }
+}

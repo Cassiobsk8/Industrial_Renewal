@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.tileentity.TileEntityGauge;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -20,23 +20,19 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class BlockGauge extends BlockTileEntity<TileEntityGauge>
+public class BlockGauge extends BlockHorizontalFacing
 {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final IProperty<EnumFacing> BASE = PropertyDirection.create("base");
 
     public BlockGauge(String name, CreativeTabs tab)
     {
-        super(Material.IRON, name, tab);
+        super(name, tab, Material.IRON);
         setHardness(0.8f);
-        //setSoundType(SoundType.METAL);
         this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.NORTH));
 
     }
 
     @Nonnull
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
     {
@@ -69,21 +65,6 @@ public class BlockGauge extends BlockTileEntity<TileEntityGauge>
     }
 
     @Nonnull
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(FACING).getHorizontalIndex();
-    }
-
-    @Nonnull
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
     {
@@ -98,32 +79,17 @@ public class BlockGauge extends BlockTileEntity<TileEntityGauge>
         te.setBaseFacing(facing);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
-
     @Nonnull
     @Override
-    @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
     }
 
     @Override
-    public Class<TileEntityGauge> getTileEntityClass()
+    public boolean hasTileEntity(IBlockState state)
     {
-        return TileEntityGauge.class;
+        return true;
     }
 
     @Nullable

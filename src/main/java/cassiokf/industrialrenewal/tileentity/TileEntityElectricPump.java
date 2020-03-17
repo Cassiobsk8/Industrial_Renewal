@@ -16,7 +16,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -30,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class TileEntityElectricPump extends TileEntitySyncable implements ICapabilityProvider, ITickable
+public class TileEntityElectricPump extends TileEntitySyncable implements ITickable
 {
     private final VoltsEnergyContainer energyContainer;
 

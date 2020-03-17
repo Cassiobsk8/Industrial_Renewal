@@ -12,7 +12,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
@@ -22,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class TileEntitySmallWindTurbine extends TileEntitySyncable implements ICapabilityProvider, ITickable
+public class TileEntitySmallWindTurbine extends TileEntitySyncable implements ITickable
 {
     private final VoltsEnergyContainer energyContainer;
     public ItemStackHandler bladeInv = new ItemStackHandler(1)

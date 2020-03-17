@@ -1,13 +1,11 @@
 package cassiokf.industrialrenewal.blocks.railroad;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.blocks.BlockBasicContainer;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityCargoLoader;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -26,13 +24,12 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BlockCargoLoader extends BlockBasicContainer<TileEntityCargoLoader>
+public class BlockCargoLoader extends BlockHorizontalFacing
 {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool MASTER = PropertyBool.create("master");
 
-    public BlockCargoLoader(String name, CreativeTabs tab) {
+    public BlockCargoLoader(String name, CreativeTabs tab)
+    {
         super(name, tab, Material.IRON);
     }
 
@@ -132,7 +129,6 @@ public class BlockCargoLoader extends BlockBasicContainer<TileEntityCargoLoader>
         return new BlockStateContainer(this, FACING, MASTER);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(MASTER, false);
@@ -169,7 +165,6 @@ public class BlockCargoLoader extends BlockBasicContainer<TileEntityCargoLoader>
         return isReplaceable(worldIn, pos.offset(player.getHorizontalFacing()));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(final int meta)
     {
@@ -213,13 +208,16 @@ public class BlockCargoLoader extends BlockBasicContainer<TileEntityCargoLoader>
         return false;
     }
 
-    public Class<TileEntityCargoLoader> getTileEntityClass() {
-        return TileEntityCargoLoader.class;
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
     }
 
     @Nullable
     @Override
-    public TileEntityCargoLoader createTileEntity(World world, IBlockState state) {
+    public TileEntityCargoLoader createTileEntity(World world, IBlockState state)
+    {
         return new TileEntityCargoLoader();
     }
 }

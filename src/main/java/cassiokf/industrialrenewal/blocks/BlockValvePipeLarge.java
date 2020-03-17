@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockToggleableBase;
 import cassiokf.industrialrenewal.tileentity.TileEntityValvePipeLarge;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,12 +14,6 @@ public class BlockValvePipeLarge extends BlockToggleableBase<TileEntityValvePipe
     public BlockValvePipeLarge(String name, CreativeTabs tab)
     {
         super(name, tab);
-    }
-
-    @Override
-    public Class<TileEntityValvePipeLarge> getTileEntityClass()
-    {
-        return TileEntityValvePipeLarge.class;
     }
 
     @Nullable

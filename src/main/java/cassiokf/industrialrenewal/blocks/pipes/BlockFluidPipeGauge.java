@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipe;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeGauge;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.properties.IProperty;
@@ -106,12 +105,6 @@ public class BlockFluidPipeGauge extends BlockFluidPipe
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(FACING).getHorizontalIndex();
-    }
-
-    @Override
-    public Class<TileEntityFluidPipe> getTileEntityClass()
-    {
-        return TileEntityFluidPipe.class;
     }
 
     @Nullable

@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import net.minecraft.tileentity.TileEntity;
+import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
 
-public class TileEntityConcrete extends TileEntity
+public class TileEntityConcrete extends TEBase
 {
     private boolean used = false;
 

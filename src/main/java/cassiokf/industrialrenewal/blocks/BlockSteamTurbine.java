@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.Block3x3x3Base;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.tileentity.TileEntitySteamTurbine;
@@ -44,12 +45,6 @@ public class BlockSteamTurbine extends Block3x3x3Base<TileEntitySteamTurbine>
     public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    public Class<TileEntitySteamTurbine> getTileEntityClass()
-    {
-        return TileEntitySteamTurbine.class;
     }
 
     @Nullable

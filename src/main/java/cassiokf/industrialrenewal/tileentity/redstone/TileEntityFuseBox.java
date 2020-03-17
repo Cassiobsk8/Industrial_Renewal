@@ -4,34 +4,37 @@ import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBox;
 import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBoxConnector;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.tileentity.TileEntityBoxConnector;
+import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityFuseBox extends TileEntity implements ICapabilityProvider {
+public class TileEntityFuseBox extends TEBase
+{
 
     public ItemStackHandler inventory;
 
-    public TileEntityFuseBox() {
+    public TileEntityFuseBox()
+    {
         this.inventory = new ItemStackHandler(16);
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-        if ((oldState.getBlock() != newState.getBlock())) {
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+    {
+        if ((oldState.getBlock() != newState.getBlock()))
+        {
             TileEntityBoxConnector te = getTE();
             if (te != null) {
                 te.setActive(false);

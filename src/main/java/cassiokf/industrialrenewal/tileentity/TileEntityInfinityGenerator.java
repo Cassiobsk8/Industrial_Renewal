@@ -1,17 +1,17 @@
 package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public class TileEntityInfinityGenerator extends TileEntity implements ICapabilityProvider, ITickable
+public class TileEntityInfinityGenerator extends TEBase implements ITickable
 {
     public final VoltsEnergyContainer energyContainer;
 

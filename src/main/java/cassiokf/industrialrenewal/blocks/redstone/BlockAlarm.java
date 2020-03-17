@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityAlarm;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -23,7 +23,6 @@ import javax.annotation.Nullable;
 
 public class BlockAlarm extends BlockTileEntity<TileEntityAlarm>
 {
-
     public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
     private static final AxisAlignedBB UP_BLOCK_AABB = new AxisAlignedBB(0.125F, 0, 0.125F, 0.875F, 0.4375F, 0.875F);
     private static final AxisAlignedBB DOWN_BLOCK_AABB = new AxisAlignedBB(0.125F, 1, 0.125F, 0.875F, 0.5625F, 0.875F);
@@ -31,7 +30,6 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm>
     private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(1F, 0.125F, 0.125F, 0.5625F, 0.875F, 0.875F);
     private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.5625F, 0.875F, 0.875F, 1);
     private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.4375F, 0.875F, 0.875F, 0);
-
 
     public BlockAlarm(String name, CreativeTabs tab) {
         super(Material.IRON, name, tab);
@@ -80,7 +78,6 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm>
         return new BlockStateContainer(this, FACING);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
@@ -91,7 +88,6 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm>
         return state.getValue(FACING).getIndex();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
         return this.getDefaultState().withProperty(FACING, facing);

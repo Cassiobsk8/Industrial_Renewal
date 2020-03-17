@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockEnergyLevel;
+import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -10,7 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class TileEntityEnergyLevel extends TileEntity
+public class TileEntityEnergyLevel extends TEBase
 {
     private EnumFacing baseFacing = EnumFacing.DOWN;
     private EnumFacing indicatorHorizontalFacing;

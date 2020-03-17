@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.recipes;
 
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -16,6 +17,7 @@ public class ModRecipes {
 
     public static void init() {
         ModItems.registerOreDict();
+        ModBlocks.registerOreDict();
 
         if (IRConfig.MainConfig.Recipes.spongeIronRecipeActive)
         {

@@ -39,7 +39,6 @@ public class BlockLight extends BlockBase {
         setHardness(0.8f);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
         IBlockState actualState = getActualState(state, worldIn, pos);

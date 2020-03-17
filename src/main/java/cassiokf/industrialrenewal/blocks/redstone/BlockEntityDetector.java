@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityEntityDetector;
 import net.minecraft.block.material.Material;

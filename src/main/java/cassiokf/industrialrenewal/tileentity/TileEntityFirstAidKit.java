@@ -5,21 +5,23 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityFirstAidKit extends TileEntitySyncable implements ICapabilityProvider
+public class TileEntityFirstAidKit extends TileEntitySyncable
 {
 
     public ItemStackHandler inventory;
 
-    public TileEntityFirstAidKit() {
-        this.inventory = new ItemStackHandler(8) {
+    public TileEntityFirstAidKit()
+    {
+        this.inventory = new ItemStackHandler(8)
+        {
             @Override
-            protected void onContentsChanged(int slot) {
+            protected void onContentsChanged(int slot)
+            {
                 TileEntityFirstAidKit.this.Sync();
             }
         };

@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnectedMultiblocks;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityWindTurbinePillar;
 import net.minecraft.block.Block;
@@ -105,12 +106,6 @@ public class BlockWindTurbinePillar extends BlockTileEntityConnectedMultiblocks<
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
-    }
-
-    @Override
-    public Class<TileEntityWindTurbinePillar> getTileEntityClass()
-    {
-        return TileEntityWindTurbinePillar.class;
     }
 
     @Nullable

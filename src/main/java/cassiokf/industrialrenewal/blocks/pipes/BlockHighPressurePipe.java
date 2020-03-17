@@ -55,14 +55,8 @@ public class BlockHighPressurePipe extends BlockPipeBase<TileEntityHighPressureP
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
     {
-        //tooltip.add(IRConfig.MainConfig.Main.maxFluidPipeTransferAmount + " mB/t");
+        tooltip.add("Cannot Transfer Normal Fluid");
         super.addInformation(stack, player, tooltip, advanced);
-    }
-
-    @Override
-    public Class<TileEntityHighPressurePipe> getTileEntityClass()
-    {
-        return TileEntityHighPressurePipe.class;
     }
 
     @Nullable

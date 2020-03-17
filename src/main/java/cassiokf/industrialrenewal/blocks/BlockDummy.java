@@ -31,7 +31,6 @@ public class BlockDummy extends BlockBase {
         return NONE_AABB;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, NONE_AABB);

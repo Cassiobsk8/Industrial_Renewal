@@ -1,32 +1,29 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.abstracts;
 
 import cassiokf.industrialrenewal.tileentity.TileEntity3x3MachineBase;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extends BlockTileEntity<TE>
+import javax.annotation.Nullable;
+
+public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extends BlockHorizontalFacing
 {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool MASTER = PropertyBool.create("master");
-
 
     public Block3x3x3Base(Material material, String name, CreativeTabs tab)
     {
-        super(material, name, tab);
+        super(name, tab, material);
         setSoundType(SoundType.METAL);
     }
 
@@ -99,14 +96,12 @@ public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extend
         return new BlockStateContainer(this, FACING, MASTER);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(MASTER, false);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
@@ -126,23 +121,18 @@ public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extend
         return i;
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(final IBlockState state)
+    public TE getTileEntity(IBlockAccess world, BlockPos pos)
     {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isFullCube(final IBlockState state)
-    {
-        return false;
+        return (TE) world.getTileEntity(pos);
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
+    public boolean hasTileEntity(IBlockState state)
     {
-        return EnumBlockRenderType.MODEL;
+        return true;
     }
+
+    @Nullable
+    @Override
+    public abstract TE createTileEntity(World world, IBlockState state);
 }

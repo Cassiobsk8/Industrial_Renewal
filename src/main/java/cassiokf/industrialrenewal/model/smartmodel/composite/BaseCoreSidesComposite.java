@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.model.smartmodel.composite;
 
-import cassiokf.industrialrenewal.blocks.BlockTileEntityConnected;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnected;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;

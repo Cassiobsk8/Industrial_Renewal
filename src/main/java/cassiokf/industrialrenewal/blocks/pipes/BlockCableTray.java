@@ -6,7 +6,6 @@ import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.properties.PropertyBaseDirection;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityCableTray;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -33,7 +32,7 @@ import net.minecraftforge.common.property.Properties;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockCableTray extends BlockPipeBase<TileEntityCableTray> implements ITileEntityProvider
+public class BlockCableTray extends BlockPipeBase<TileEntityCableTray>
 {
     public static final IProperty<EnumBaseDirection> BASE = PropertyBaseDirection.create("base");
 
@@ -322,22 +321,10 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray> implement
         return state.getValue(BASE).getIndex();
     }
 
-    @Override
-    public Class<? extends TileEntity> getTileEntityClass()
-    {
-        return TileEntityCableTray.class;
-    }
 
     @Nullable
     @Override
     public TileEntityCableTray createTileEntity(World world, IBlockState state)
-    {
-        return new TileEntityCableTray();
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
     {
         return new TileEntityCableTray();
     }

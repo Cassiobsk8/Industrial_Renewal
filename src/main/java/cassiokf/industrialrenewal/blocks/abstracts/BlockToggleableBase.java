@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.abstracts;
 
 import cassiokf.industrialrenewal.enums.enumproperty.EnumFaceRotation;
 import cassiokf.industrialrenewal.tileentity.TileEntityToggleableBase;
@@ -22,9 +22,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> extends BlockTileEntity<TE>
-{
+import javax.annotation.Nullable;
 
+public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> extends BlockHorizontalFacing
+{
     public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
     public static final IProperty<EnumFaceRotation> FACE_ROTATION = PropertyEnum.create("face_rotation", EnumFaceRotation.class);
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
@@ -32,7 +33,7 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
 
     public BlockToggleableBase(String name, CreativeTabs tab)
     {
-        super(Material.IRON, name, tab);
+        super(name, tab, Material.IRON);
         setHardness(3f);
         setResistance(5f);
         this.setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
@@ -53,27 +54,29 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
             int j = pos.getY();
             int k = pos.getZ();
 
-            TileEntityToggleableBase te = getTileEntity(world, pos);
+            TileEntityToggleableBase te = (TileEntityToggleableBase) world.getTileEntity(pos);
+            if (te == null) return false;
             te.playSwitchSound();
             boolean active = !state.getValue(ACTIVE);
             state = state.withProperty(ACTIVE, active);
             te.setActive(active);
             world.setBlockState(pos, state, 3);
-            spawnPartivle(world, i, j, k);
+            spawnParticle(world, i, j, k);
             world.notifyNeighborsOfStateChange(pos, this, false);
             return true;
         }
         return false;
     }
 
-    public void spawnPartivle(World world, double i, double j, double k)
+    public void spawnParticle(World world, double i, double j, double k)
     {
-        world.spawnParticle(EnumParticleTypes.WATER_DROP, (double) i, (double) j, (double) k, 1.0D, 1.0D, 1.0D);
+        world.spawnParticle(EnumParticleTypes.WATER_DROP, i, j, k, 1.0D, 1.0D, 1.0D);
     }
 
     public void setFace(World world, BlockPos pos)
     {
-        TileEntityToggleableBase tileEntity = getTileEntity(world, pos);
+        TileEntityToggleableBase tileEntity = (TileEntityToggleableBase) world.getTileEntity(pos);
+        if (tileEntity == null) return;
         EnumFacing vFace = getFacing(world, pos);
         EnumFaceRotation rFace = getFaceRotation(world, pos);
         if (vFace == EnumFacing.UP || vFace == EnumFacing.DOWN)
@@ -148,7 +151,6 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
@@ -169,7 +171,6 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
         return i;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
@@ -182,29 +183,11 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
         return BLOCK_AABB;
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
     @Override
     public boolean isNormalCube(IBlockState state)
     {
         return false;
     }
-
 
     @Override
     public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack)
@@ -218,7 +201,6 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
         tileEntity.markDirty();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean isTopSolid(final IBlockState state)
     {
@@ -255,7 +237,11 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
         }
     }
 
-    @SuppressWarnings("deprecation")
+    private TileEntityToggleableBase getTileEntity(IBlockAccess world, BlockPos pos)
+    {
+        return (TileEntityToggleableBase) world.getTileEntity(pos);
+    }
+
     @Override
     public IBlockState getActualState(final IBlockState state, final IBlockAccess worldIn, final BlockPos pos)
     {
@@ -273,4 +259,14 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
     {
         return BlockFaceShape.UNDEFINED;
     }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public abstract TE createTileEntity(World world, IBlockState state);
 }

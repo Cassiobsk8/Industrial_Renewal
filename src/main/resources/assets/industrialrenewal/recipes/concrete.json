@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "ISI",
+    "S S",
+    "ISI"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "gravel"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "sand"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:concrete",
+    "count": 4
+  }
+}

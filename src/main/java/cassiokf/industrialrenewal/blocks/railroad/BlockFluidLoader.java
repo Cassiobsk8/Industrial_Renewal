@@ -1,13 +1,11 @@
 package cassiokf.industrialrenewal.blocks.railroad;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.blocks.BlockBasicContainer;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityFluidLoader;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -24,19 +22,19 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockFluidLoader extends BlockBasicContainer<TileEntityFluidLoader>
+public class BlockFluidLoader extends BlockHorizontalFacing
 {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyInteger UNLOAD = PropertyInteger.create("unload", 0, 2);
     public static final PropertyBool MASTER = PropertyBool.create("master");
 
-    public BlockFluidLoader(String name, CreativeTabs tab) {
+    public BlockFluidLoader(String name, CreativeTabs tab)
+    {
         super(name, tab, Material.IRON);
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
         if (!worldIn.isRemote)
         {
             if (state.getValue(MASTER))
@@ -117,7 +115,6 @@ public class BlockFluidLoader extends BlockBasicContainer<TileEntityFluidLoader>
         return 1;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(MASTER, true);
@@ -128,7 +125,6 @@ public class BlockFluidLoader extends BlockBasicContainer<TileEntityFluidLoader>
         return new BlockStateContainer(this, FACING, UNLOAD, MASTER);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(final int meta)
     {
@@ -148,17 +144,21 @@ public class BlockFluidLoader extends BlockBasicContainer<TileEntityFluidLoader>
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 
-    public Class<TileEntityFluidLoader> getTileEntityClass() {
-        return TileEntityFluidLoader.class;
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
     }
 
     @Nullable
     @Override
-    public TileEntityFluidLoader createTileEntity(World world, IBlockState state) {
+    public TileEntityFluidLoader createTileEntity(World world, IBlockState state)
+    {
         return new TileEntityFluidLoader();
     }
 }

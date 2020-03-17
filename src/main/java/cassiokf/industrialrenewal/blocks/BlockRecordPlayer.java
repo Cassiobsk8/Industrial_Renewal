@@ -1,14 +1,13 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.tileentity.TileEntityRecordPlayer;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.BlockNote;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -31,9 +30,8 @@ import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockRecordPlayer extends BlockTileEntity<TileEntityRecordPlayer> {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+public class BlockRecordPlayer extends BlockHorizontalFacing
+{
     public static final PropertyBool DOWNNOTEBLOCK = PropertyBool.create("downnoteblock");
     public static final PropertyBool DISK0 = PropertyBool.create("disc0");
     public static final PropertyBool DISK1 = PropertyBool.create("disc1");
@@ -42,8 +40,9 @@ public class BlockRecordPlayer extends BlockTileEntity<TileEntityRecordPlayer> {
 
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1D, 0.875D, 1.0D);
 
-    public BlockRecordPlayer(String name, CreativeTabs tab) {
-        super(Material.CIRCUITS, name, tab);
+    public BlockRecordPlayer(String name, CreativeTabs tab)
+    {
+        super(name, tab, Material.WOOD);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(DISK0, false).withProperty(DISK1, false)
@@ -81,7 +80,6 @@ public class BlockRecordPlayer extends BlockTileEntity<TileEntityRecordPlayer> {
         return world.getBlockState(pos.down()).getBlock() instanceof BlockNote;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
         TileEntityRecordPlayer te = (TileEntityRecordPlayer) world.getTileEntity(pos);
@@ -93,7 +91,6 @@ public class BlockRecordPlayer extends BlockTileEntity<TileEntityRecordPlayer> {
         return state;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(DOWNNOTEBLOCK, isDownBlockaNoteBlock(worldIn, pos));
@@ -102,19 +99,6 @@ public class BlockRecordPlayer extends BlockTileEntity<TileEntityRecordPlayer> {
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING, DOWNNOTEBLOCK, DISK0, DISK1, DISK2, DISK3);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        int i = 0;
-        i = i | state.getValue(FACING).getHorizontalIndex();
-        return i;
     }
 
     @Override
@@ -129,26 +113,15 @@ public class BlockRecordPlayer extends BlockTileEntity<TileEntityRecordPlayer> {
         return BlockRenderLayer.CUTOUT;
     }
 
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
-
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         if (face == EnumFacing.DOWN) return BlockFaceShape.SOLID;
         return BlockFaceShape.UNDEFINED;
     }
 
     @Override
-    public Class<TileEntityRecordPlayer> getTileEntityClass() {
-        return TileEntityRecordPlayer.class;
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
     }
 
     @Nullable

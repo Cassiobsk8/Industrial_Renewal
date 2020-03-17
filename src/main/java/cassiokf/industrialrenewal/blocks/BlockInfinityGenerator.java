@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockInfinityGenerator extends BlockTileEntity<TileEntityInfinityGenerator>
+public class BlockInfinityGenerator extends BlockBase
 {
     public BlockInfinityGenerator(String name, CreativeTabs tab)
     {
@@ -37,9 +37,9 @@ public class BlockInfinityGenerator extends BlockTileEntity<TileEntityInfinityGe
     }
 
     @Override
-    public Class<TileEntityInfinityGenerator> getTileEntityClass()
+    public boolean hasTileEntity(IBlockState state)
     {
-        return TileEntityInfinityGenerator.class;
+        return true;
     }
 
     @Nullable
@@ -47,20 +47,6 @@ public class BlockInfinityGenerator extends BlockTileEntity<TileEntityInfinityGe
     public TileEntityInfinityGenerator createTileEntity(World world, IBlockState state)
     {
         return new TileEntityInfinityGenerator();
-    }
-
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
     }
 
     @SideOnly(Side.CLIENT)

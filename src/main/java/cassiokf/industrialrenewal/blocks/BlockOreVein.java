@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockOreVein extends BlockTileEntity<TileEntityOreVein>
+public class BlockOreVein extends BlockBase
 {
 
     public static final PropertyInteger QUANTITY = PropertyInteger.create("quantity", 0, 4);
@@ -52,12 +52,6 @@ public class BlockOreVein extends BlockTileEntity<TileEntityOreVein>
     {
         return new BlockStateContainer(this, QUANTITY);
     }
-/*
-    @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
-    {
-        return state.withProperty(QUANTITY, 2);
-    }*/
 
     @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
@@ -67,7 +61,6 @@ public class BlockOreVein extends BlockTileEntity<TileEntityOreVein>
         if (stage < 4)
         {
             worldIn.setBlockState(pos, state.withProperty(QUANTITY, stage + 1));
-            //return;
         }
     }
 
@@ -121,9 +114,9 @@ public class BlockOreVein extends BlockTileEntity<TileEntityOreVein>
     }
 
     @Override
-    public Class<TileEntityOreVein> getTileEntityClass()
+    public boolean hasTileEntity(IBlockState state)
     {
-        return TileEntityOreVein.class;
+        return true;
     }
 
     @Nullable

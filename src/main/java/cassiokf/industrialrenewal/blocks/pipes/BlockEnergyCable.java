@@ -9,7 +9,6 @@ import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableHV;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableLV;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableMV;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,7 +25,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> implements ITileEntityProvider
+public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable>
 {
     public EnumEnergyCableType type;
 
@@ -150,7 +149,6 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> imple
         return false;
     }
 
-    @Override
     public Class<? extends TileEntity> getTileEntityClass()
     {
         switch (type)
@@ -168,22 +166,6 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable> imple
     @Nullable
     @Override
     public TileEntityEnergyCable createTileEntity(World world, IBlockState state)
-    {
-        switch (type)
-        {
-            default:
-            case LV:
-                return new TileEntityEnergyCableLV();
-            case MV:
-                return new TileEntityEnergyCableMV();
-            case HV:
-                return new TileEntityEnergyCableHV();
-        }
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
     {
         switch (type)
         {

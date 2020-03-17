@@ -12,7 +12,9 @@ import cassiokf.industrialrenewal.blocks.redstone.*;
 import cassiokf.industrialrenewal.enums.EnumBulkConveyorType;
 import cassiokf.industrialrenewal.enums.EnumEnergyCableType;
 import cassiokf.industrialrenewal.fluids.BlockFluid;
-import cassiokf.industrialrenewal.tileentity.TileEntityConcrete;
+import cassiokf.industrialrenewal.tileentity.*;
+import cassiokf.industrialrenewal.tileentity.railroad.TileEntityCargoLoader;
+import cassiokf.industrialrenewal.tileentity.railroad.TileEntityFluidLoader;
 import cassiokf.industrialrenewal.tileentity.tubes.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -20,7 +22,8 @@ import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-public class ModBlocks {
+public class ModBlocks
+{
 
     public static BlockBase blockHazard = new BlockBase(Material.IRON, "block_hazard", References.CREATIVE_IR_TAB);
     public static BlockBase cautionHazard = new BlockBase(Material.IRON, "caution_hazard", References.CREATIVE_IR_TAB);
@@ -29,6 +32,8 @@ public class ModBlocks {
     public static BlockBase radiationHazard = new BlockBase(Material.IRON, "radiation_hazard", References.CREATIVE_IR_TAB);
     public static BlockBase aisleHazard = new BlockBase(Material.IRON, "aisle_hazard", References.CREATIVE_IR_TAB);
     public static BlockBase fireHazard = new BlockBase(Material.IRON, "fire_hazard", References.CREATIVE_IR_TAB);
+
+    public static BlockOredict steelBlock = new BlockOredict(Material.IRON, "block_steel", "blockSteel", References.CREATIVE_IR_TAB);
 
     public static BlockConcrete concrete = new BlockConcrete(Material.ROCK, "concrete", References.CREAATIVE_IRWIP_TAB);
 
@@ -176,6 +181,7 @@ public class ModBlocks {
                 radiationHazard,
                 safetyHazard,
                 concrete,
+                steelBlock,
                 //Frames
                 //Iron
                 platform,
@@ -303,62 +309,62 @@ public class ModBlocks {
                 steamBlock
         );
 
-        GameRegistry.registerTileEntity(veinHematite.getTileEntityClass(), veinHematite.getRegistryName());
-        GameRegistry.registerTileEntity(energySwitch.getTileEntityClass(), energySwitch.getRegistryName());
-        GameRegistry.registerTileEntity(valveLarge.getTileEntityClass(), valveLarge.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityOreVein.class, veinHematite.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityEnergySwitch.class, energySwitch.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityValvePipeLarge.class, valveLarge.getRegistryName());
         GameRegistry.registerTileEntity(energyCableLV.getTileEntityClass(), energyCableLV.getRegistryName());
         GameRegistry.registerTileEntity(energyCableMV.getTileEntityClass(), energyCableMV.getRegistryName());
         GameRegistry.registerTileEntity(energyCableHV.getTileEntityClass(), energyCableHV.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityEnergyCableLVGauge.class, energyCableGaugeLV.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityEnergyCableMVGauge.class, energyCableGaugeMV.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityEnergyCableHVGauge.class, energyCableGaugeHV.getRegistryName());
-        GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName().toString());
-        GameRegistry.registerTileEntity(gutter.getTileEntityClass(), gutter.getRegistryName().toString());
-        GameRegistry.registerTileEntity(infinityGenerator.getTileEntityClass(), infinityGenerator.getRegistryName());
+        GameRegistry.registerTileEntity(alarm.getTileEntityClass(), alarm.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityGutter.class, gutter.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityInfinityGenerator.class, infinityGenerator.getRegistryName());
         GameRegistry.registerTileEntity(spanel.getTileEntityClass(), spanel.getRegistryName());
-        GameRegistry.registerTileEntity(fpanel.getTileEntityClass(), fpanel.getRegistryName());
-        GameRegistry.registerTileEntity(sWindTurbine.getTileEntityClass(), sWindTurbine.getRegistryName().toString());
-        GameRegistry.registerTileEntity(turbinePillar.getTileEntityClass(), turbinePillar.getRegistryName().toString());
-        GameRegistry.registerTileEntity(firstAidKit.getTileEntityClass(), firstAidKit.getRegistryName().toString());
-        GameRegistry.registerTileEntity(recordPlayer.getTileEntityClass(), recordPlayer.getRegistryName().toString());
-        GameRegistry.registerTileEntity(sensorRain.getTileEntityClass(), sensorRain.getRegistryName().toString());
-        GameRegistry.registerTileEntity(cargoLoader.getTileEntityClass(), cargoLoader.getRegistryName().toString());
-        GameRegistry.registerTileEntity(fluidLoader.getTileEntityClass(), fluidLoader.getRegistryName().toString());
-        GameRegistry.registerTileEntity(loaderRail.getTileEntityClass(), loaderRail.getRegistryName().toString());
-        GameRegistry.registerTileEntity(signalIndicator.getTileEntityClass(), signalIndicator.getRegistryName().toString());
-        GameRegistry.registerTileEntity(trafficLight.getTileEntityClass(), trafficLight.getRegistryName().toString());
-        GameRegistry.registerTileEntity(fuseBox.getTileEntityClass(), fuseBox.getRegistryName().toString());
-        GameRegistry.registerTileEntity(fuseBoxConnector.getTileEntityClass(), fuseBoxConnector.getRegistryName().toString());
-        GameRegistry.registerTileEntity(flameDetector.getTileEntityClass(), flameDetector.getRegistryName().toString());
-        GameRegistry.registerTileEntity(locker.getTileEntityClass(), locker.getRegistryName().toString());
-        GameRegistry.registerTileEntity(entityDetector.getTileEntityClass(), entityDetector.getRegistryName().toString());
-        GameRegistry.registerTileEntity(barrel.getTileEntityClass(), barrel.getRegistryName().toString());
-        GameRegistry.registerTileEntity(gauge.getTileEntityClass(), gauge.getRegistryName().toString());
-        GameRegistry.registerTileEntity(energyLevel.getTileEntityClass(), energyLevel.getRegistryName());
-        GameRegistry.registerTileEntity(electricPump.getTileEntityClass(), electricPump.getRegistryName().toString());
-        GameRegistry.registerTileEntity(transformerHV.getTileEntityClass(), transformerHV.getRegistryName());
-        GameRegistry.registerTileEntity(damTurbine.getTileEntityClass(), damTurbine.getRegistryName());
-        GameRegistry.registerTileEntity(damGenerator.getTileEntityClass(), damGenerator.getRegistryName());
-        GameRegistry.registerTileEntity(damAxis.getTileEntityClass(), damAxis.getRegistryName());
-        GameRegistry.registerTileEntity(highPressurePipe.getTileEntityClass(), highPressurePipe.getRegistryName());
-        GameRegistry.registerTileEntity(batteryBank.getTileEntityClass(), batteryBank.getRegistryName().toString());
+        GameRegistry.registerTileEntity(TileEntitySolarPanelFrame.class, fpanel.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntitySmallWindTurbine.class, sWindTurbine.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityWindTurbinePillar.class, turbinePillar.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityFirstAidKit.class, firstAidKit.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityRecordPlayer.class, recordPlayer.getRegistryName());
+        GameRegistry.registerTileEntity(sensorRain.getTileEntityClass(), sensorRain.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityCargoLoader.class, cargoLoader.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityFluidLoader.class, fluidLoader.getRegistryName());
+        GameRegistry.registerTileEntity(loaderRail.getTileEntityClass(), loaderRail.getRegistryName());
+        GameRegistry.registerTileEntity(signalIndicator.getTileEntityClass(), signalIndicator.getRegistryName());
+        GameRegistry.registerTileEntity(trafficLight.getTileEntityClass(), trafficLight.getRegistryName());
+        GameRegistry.registerTileEntity(fuseBox.getTileEntityClass(), fuseBox.getRegistryName());
+        GameRegistry.registerTileEntity(fuseBoxConnector.getTileEntityClass(), fuseBoxConnector.getRegistryName());
+        GameRegistry.registerTileEntity(flameDetector.getTileEntityClass(), flameDetector.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityLocker.class, locker.getRegistryName());
+        GameRegistry.registerTileEntity(entityDetector.getTileEntityClass(), entityDetector.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityBarrel.class, barrel.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityGauge.class, gauge.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityEnergyLevel.class, energyLevel.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityElectricPump.class, electricPump.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityTransformerHV.class, transformerHV.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityDamTurbine.class, damTurbine.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityDamGenerator.class, damGenerator.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityDamAxis.class, damAxis.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityHighPressurePipe.class, highPressurePipe.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityBatteryBank.class, batteryBank.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityCableTray.class, cableTray.getRegistryName());
-        GameRegistry.registerTileEntity(fluidPipe.getTileEntityClass(), fluidPipe.getRegistryName().toString());
+        GameRegistry.registerTileEntity(TileEntityFluidPipe.class, fluidPipe.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityFluidPipeGauge.class, fluidPipeGauge.getRegistryName());
-        GameRegistry.registerTileEntity(steamBoiler.getTileEntityClass(), steamBoiler.getRegistryName().toString());
-        GameRegistry.registerTileEntity(steamTurbine.getTileEntityClass(), steamTurbine.getRegistryName().toString());
-        //GameRegistry.registerTileEntity(mining.getTileEntityClass(), mining.getRegistryName());
-        GameRegistry.registerTileEntity(trash.getTileEntityClass(), trash.getRegistryName().toString());
-        GameRegistry.registerTileEntity(bunkBed.getTileEntityClass(), bunkBed.getRegistryName().toString());
-        GameRegistry.registerTileEntity(bunkerHatch.getTileEntityClass(), bunkerHatch.getRegistryName().toString());
-        GameRegistry.registerTileEntity(chunkLoader.getTileEntityClass(), chunkLoader.getRegistryName().toString());
+        GameRegistry.registerTileEntity(TileEntitySteamBoiler.class, steamBoiler.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntitySteamTurbine.class, steamTurbine.getRegistryName());
+        //GameRegistry.registerTileEntity(TileEntityMining.class, mining.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityTrash.class, trash.getRegistryName());
+        GameRegistry.registerTileEntity(bunkBed.getTileEntityClass(), bunkBed.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityBunkerHatch.class, bunkerHatch.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityChunkLoader.class, chunkLoader.getRegistryName());
         GameRegistry.registerTileEntity(catWalk.getTileEntityClass(), catWalk.getRegistryName());
-        GameRegistry.registerTileEntity(catwalkStair.getTileEntityClass(), catwalkStair.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityCatWalkStair.class, catwalkStair.getRegistryName());
         GameRegistry.registerTileEntity(conveyorV.getTileEntityClass(), conveyorV.getRegistryName());
         GameRegistry.registerTileEntity(conveyorVHopper.getTileEntityClass(), conveyorVHopper.getRegistryName());
         GameRegistry.registerTileEntity(conveyorVInserter.getTileEntityClass(), conveyorVInserter.getRegistryName());
-        GameRegistry.registerTileEntity(damIntake.getTileEntityClass(), damIntake.getRegistryName());
-        GameRegistry.registerTileEntity(damOutFlow.getTileEntityClass(), damOutFlow.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityDamIntake.class, damIntake.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityDamOutFlow.class, damOutFlow.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityConcrete.class, concrete.getRegistryName());
         GameRegistry.registerTileEntity(hvIsolator.getTileEntityClass(), hvIsolator.getRegistryName());
     }
@@ -374,6 +380,7 @@ public class ModBlocks {
                 radiationHazard.createItemBlock(),
                 safetyHazard.createItemBlock(),
                 concrete.createItemBlock(),
+                steelBlock.createItemBlock(),
                 platform.createItemBlock(),
                 roof.createItemBlock(),
                 frame.createItemBlock(),
@@ -544,6 +551,7 @@ public class ModBlocks {
         braceSteel.registerItemModel(Item.getItemFromBlock(braceSteel));
         columSteel.registerItemModel(Item.getItemFromBlock(columSteel));
         concrete.registerItemModel(Item.getItemFromBlock(concrete));
+        steelBlock.registerItemModel(Item.getItemFromBlock(steelBlock));
         catWalkSteel.registerItemModel(Item.getItemFromBlock(catWalkSteel));
         handRailSteel.registerItemModel(Item.getItemFromBlock(handRailSteel));
         sladder.registerItemModel(Item.getItemFromBlock(sladder));
@@ -568,5 +576,10 @@ public class ModBlocks {
         conveyorV.registerItemModel(Item.getItemFromBlock(conveyorV));
         hvIsolator.registerItemModel(Item.getItemFromBlock(hvIsolator));
         steamBlock.registerItemModel(Item.getItemFromBlock(steamBlock));
+    }
+
+    public static void registerOreDict()
+    {
+        steelBlock.initOreDict();
     }
 }

@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockToggleableBase;
 import cassiokf.industrialrenewal.tileentity.TileEntityEnergySwitch;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,13 +16,7 @@ public class BlockEnergySwitch extends BlockToggleableBase<TileEntityEnergySwitc
     }
 
     @Override
-    public Class<TileEntityEnergySwitch> getTileEntityClass()
-    {
-        return TileEntityEnergySwitch.class;
-    }
-
-    @Override
-    public void spawnPartivle(World world, double i, double j, double k)
+    public void spawnParticle(World world, double i, double j, double k)
     {
     }
 

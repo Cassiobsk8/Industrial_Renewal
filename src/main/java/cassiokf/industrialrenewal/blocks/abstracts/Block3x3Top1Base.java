@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.abstracts;
 
 import cassiokf.industrialrenewal.tileentity.TileEntity3x3MachineBase;
 import net.minecraft.block.material.Material;

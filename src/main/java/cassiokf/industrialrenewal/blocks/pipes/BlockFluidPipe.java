@@ -96,12 +96,6 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipe>
         super.addInformation(stack, player, tooltip, advanced);
     }
 
-    @Override
-    public Class<TileEntityFluidPipe> getTileEntityClass()
-    {
-        return TileEntityFluidPipe.class;
-    }
-
     @Nullable
     @Override
     public TileEntityFluidPipe createTileEntity(World world, IBlockState state) {

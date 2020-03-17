@@ -1,13 +1,12 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.TileEntityChunkLoader;
 import cassiokf.industrialrenewal.util.ChunkManagerCallback;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,10 +25,8 @@ import net.minecraftforge.common.ForgeChunkManager;
 
 import javax.annotation.Nullable;
 
-public class BlockChunkLoader extends BlockBasicContainer<TileEntityChunkLoader>
+public class BlockChunkLoader extends BlockHorizontalFacing
 {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool MASTER = PropertyBool.create("master");
     public static final PropertyBool WORKING = PropertyBool.create("working");
 
@@ -45,12 +42,8 @@ public class BlockChunkLoader extends BlockBasicContainer<TileEntityChunkLoader>
         if (ticket == null)
         {
             placer.sendStatusMessage(new TextComponentString("Could not request any more chunk loading tickets"), true);
-            //Player has requested too many tickets. Forge will log an issue here.
             return;
         }
-
-        //final IBlockState blockState = worldIn.getBlockState(pos);
-        //if (blockState.getBlock() != BlockLibrary.weirding_gadget) return;
 
         final NBTTagCompound modData = ticket.getModData();
         modData.setTag("blockPosition", NBTUtil.createPosTag(pos));
@@ -189,9 +182,9 @@ public class BlockChunkLoader extends BlockBasicContainer<TileEntityChunkLoader>
     }
 
     @Override
-    public Class<TileEntityChunkLoader> getTileEntityClass()
+    public boolean hasTileEntity(IBlockState state)
     {
-        return TileEntityChunkLoader.class;
+        return true;
     }
 
     @Nullable

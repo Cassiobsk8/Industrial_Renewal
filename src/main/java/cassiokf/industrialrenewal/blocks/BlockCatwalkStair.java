@@ -1,20 +1,18 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityCatWalkStair;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -28,10 +26,8 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockCatwalkStair extends BlockTileEntity<TileEntityCatWalkStair>
+public class BlockCatwalkStair extends BlockHorizontalFacing
 {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool ACTIVE_LEFT = PropertyBool.create("active_left");
     public static final PropertyBool ACTIVE_RIGHT = PropertyBool.create("active_right");
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
@@ -45,7 +41,7 @@ public class BlockCatwalkStair extends BlockTileEntity<TileEntityCatWalkStair>
     protected static final AxisAlignedBB EC_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 2.0D, 1.0D);
 
     public BlockCatwalkStair(String name, CreativeTabs tab) {
-        super(Material.IRON, name, tab);
+        super(name, tab, Material.IRON);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }
@@ -131,7 +127,6 @@ public class BlockCatwalkStair extends BlockTileEntity<TileEntityCatWalkStair>
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
         state = state.withProperty(ACTIVE_LEFT, leftConnected(state, world, pos)).withProperty(ACTIVE_RIGHT, rightConnected(state, world, pos));
@@ -148,26 +143,6 @@ public class BlockCatwalkStair extends BlockTileEntity<TileEntityCatWalkStair>
         return false;
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        int i = 0;
-        i = i | state.getValue(FACING).getHorizontalIndex();
-        return i;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
-    }
-
-    @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
         IBlockState actualState = getActualState(state, worldIn, pos);
@@ -177,55 +152,52 @@ public class BlockCatwalkStair extends BlockTileEntity<TileEntityCatWalkStair>
         EnumFacing face = actualState.getValue(FACING);
         Boolean left = actualState.getValue(ACTIVE_LEFT);
         Boolean right = actualState.getValue(ACTIVE_RIGHT);
-        if (face == EnumFacing.NORTH) {
+        if (face == EnumFacing.NORTH)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-            if (left) {
+            if (left)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, WC_AABB);
             }
-            if (right) {
+            if (right)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, EC_AABB);
             }
 
-        }
-        if (face == EnumFacing.SOUTH) {
+        } else if (face == EnumFacing.SOUTH)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-            if (left) {
+            if (left)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, EC_AABB);
             }
-            if (right) {
+            if (right)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, WC_AABB);
             }
-        }
-        if (face == EnumFacing.WEST) {
+        } else if (face == EnumFacing.WEST)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
-            if (left) {
+            if (left)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, SC_AABB);
             }
-            if (right) {
+            if (right)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, NC_AABB);
             }
-        }
-        if (face == EnumFacing.EAST) {
+        } else if (face == EnumFacing.EAST)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
-            if (left) {
+            if (left)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, NC_AABB);
             }
-            if (right) {
+            if (right)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, SC_AABB);
             }
         }
-    }
-
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state) {
-        return false;
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
@@ -233,9 +205,9 @@ public class BlockCatwalkStair extends BlockTileEntity<TileEntityCatWalkStair>
     }
 
     @Override
-    public Class<TileEntityCatWalkStair> getTileEntityClass()
+    public boolean hasTileEntity(IBlockState state)
     {
-        return TileEntityCatWalkStair.class;
+        return true;
     }
 
     @Nullable

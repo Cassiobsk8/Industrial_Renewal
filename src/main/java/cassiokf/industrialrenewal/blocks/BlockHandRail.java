@@ -1,9 +1,8 @@
 package cassiokf.industrialrenewal.blocks;
 
-import net.minecraft.block.BlockHorizontal;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -19,9 +18,8 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockHandRail extends BlockBase {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+public class BlockHandRail extends BlockHorizontalFacing
+{
     public static final PropertyBool DOWN = PropertyBool.create("down");
     protected static final AxisAlignedBB RNORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0625D);
     protected static final AxisAlignedBB RSOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.9375D, 1.0D, 1.0D, 1.0D);
@@ -33,7 +31,7 @@ public class BlockHandRail extends BlockBase {
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 1.5D, 1.0D);
 
     public BlockHandRail(String name, CreativeTabs tab) {
-        super(Material.IRON, name, tab);
+        super(name, tab, Material.IRON);
         setHardness(0.8f);
     }
 
@@ -42,7 +40,6 @@ public class BlockHandRail extends BlockBase {
         return !downState.getBlock().isFullBlock(downState);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
         return state.withProperty(DOWN, downConnection(world, pos));
@@ -66,7 +63,6 @@ public class BlockHandRail extends BlockBase {
         return RNORTH_AABB;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
         EnumFacing face = state.getValue(FACING);
@@ -86,33 +82,9 @@ public class BlockHandRail extends BlockBase {
         return new BlockStateContainer(this, FACING, DOWN);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).getHorizontalIndex();
-    }
-
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-    }
-
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state) {
-        return false;
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {

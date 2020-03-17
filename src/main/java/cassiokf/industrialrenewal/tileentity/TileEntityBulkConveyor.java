@@ -11,13 +11,12 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapabilityProvider, ITickable
+public class TileEntityBulkConveyor extends TileEntitySyncable implements ITickable
 {
     public double stack3Pos;
     public double stack2Pos;
@@ -52,18 +51,16 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
         if (world.isRemote)
         {
             doAnimation();
-        }
-
-        if (tick == 1) getInThisTick = false;
-        if (tick % 4 == 0)
+        } else
         {
-            tick = 0;
-            if (!world.isRemote)
+            if (tick == 1) getInThisTick = false;
+            if (tick % 4 == 0)
             {
+                tick = 0;
                 moveItem();
             }
+            tick++;
         }
-        tick++;
     }
 
     private void doAnimation()
@@ -112,8 +109,17 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
         }
     }
 
+    private boolean isAllEmpry()
+    {
+        boolean flag1 = inventory.getStackInSlot(2).isEmpty();
+        boolean flag2 = inventory.getStackInSlot(1).isEmpty();
+        boolean flag3 = inventory.getStackInSlot(0).isEmpty();
+        return flag1 && flag2 && flag3;
+    }
+
     private void moveItem()
     {
+        if (isAllEmpry()) return;
         ItemStack frontPositionItem = inventory.getStackInSlot(2);
         IBlockState ownState = world.getBlockState(pos);
         if (!(ownState.getBlock() instanceof BlockBulkConveyor)) return;
@@ -126,14 +132,9 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ICapab
             BlockPos targetConveyorPos = frontConveyor(facing, mode);
             if (targetConveyorPos != null)
             {
-                TileEntityBulkConveyor te = null;
                 if (world.getTileEntity(targetConveyorPos) instanceof TileEntityBulkConveyor)
                 {
-                    te = (TileEntityBulkConveyor) world.getTileEntity(targetConveyorPos);
-                }
-
-                if (te != null)
-                {
+                    TileEntityBulkConveyor te = (TileEntityBulkConveyor) world.getTileEntity(targetConveyorPos);
                     if (te.getBlockFacing() == getBlockFacing() && te.transferItem(frontPositionItem, false))
                     { // IF IS STRAIGHT
                         inventory.setStackInSlot(2, ItemStack.EMPTY);

@@ -1,14 +1,12 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.item.ItemWindBlade;
 import cassiokf.industrialrenewal.tileentity.TileEntitySmallWindTurbine;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -26,20 +24,17 @@ import net.minecraftforge.items.IItemHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockSmallWindTurbine extends BlockTileEntity<TileEntitySmallWindTurbine>
+public class BlockSmallWindTurbine extends BlockHorizontalFacing
 {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
-
     public BlockSmallWindTurbine(String name, CreativeTabs tab)
     {
-        super(Material.IRON, name, tab);
+        super(name, tab, Material.IRON);
     }
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntitySmallWindTurbine tile = getTileEntity(world, pos);
+        TileEntitySmallWindTurbine tile = (TileEntitySmallWindTurbine) world.getTileEntity(pos);
         IItemHandler itemHandler = tile.getBladeHandler();
         ItemStack heldItem = player.getHeldItem(hand);
         if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemWindBlade || heldItem.getItem() instanceof ItemPowerScrewDrive))
@@ -89,44 +84,10 @@ public class BlockSmallWindTurbine extends BlockTileEntity<TileEntitySmallWindTu
         super.breakBlock(worldIn, pos, state);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(FACING).getIndex();
-    }
-
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return getDefaultState().withProperty(FACING, placer.isSneaking() ? placer.getHorizontalFacing().getOpposite() : placer.getHorizontalFacing());
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING);
-    }
-
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
@@ -135,9 +96,9 @@ public class BlockSmallWindTurbine extends BlockTileEntity<TileEntitySmallWindTu
     }
 
     @Override
-    public Class<TileEntitySmallWindTurbine> getTileEntityClass()
+    public boolean hasTileEntity(IBlockState state)
     {
-        return TileEntitySmallWindTurbine.class;
+        return true;
     }
 
     @Nullable

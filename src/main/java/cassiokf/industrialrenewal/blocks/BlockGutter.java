@@ -1,12 +1,11 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.tileentity.TileEntityGutter;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -14,7 +13,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -28,9 +26,8 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+public class BlockGutter extends BlockHorizontalFacing
+{
     public static final PropertyBool ACTIVE_LEFT = PropertyBool.create("active_left");
     public static final PropertyBool ACTIVE_RIGHT = PropertyBool.create("active_right");
     public static final PropertyBool ACTIVE_DOWN = PropertyBool.create("active_down");
@@ -45,7 +42,7 @@ public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
     protected static final AxisAlignedBB EC_AABB = new AxisAlignedBB(0.1875D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D);
 
     public BlockGutter(String name, CreativeTabs tab) {
-        super(Material.IRON, name, tab);
+        super(name, tab, Material.IRON);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }
@@ -100,26 +97,6 @@ public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
         return new BlockStateContainer(this, FACING, ACTIVE_LEFT, ACTIVE_RIGHT, ACTIVE_DOWN);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        int i = 0;
-        i = i | state.getValue(FACING).getHorizontalIndex();
-        return i;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
-    }
-
-    @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
         IBlockState actualState = state.getActualState(worldIn, pos);
@@ -194,20 +171,9 @@ public class BlockGutter extends BlockTileEntity<TileEntityGutter> {
     }
 
     @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public Class<TileEntityGutter> getTileEntityClass() {
-        return TileEntityGutter.class;
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
     }
 
     @Nullable

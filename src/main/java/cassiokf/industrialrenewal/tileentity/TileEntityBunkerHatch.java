@@ -1,11 +1,11 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockBunkerHatch;
+import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import java.util.List;
 import java.util.Objects;
 
-public class TileEntityBunkerHatch extends TileEntity
+public class TileEntityBunkerHatch extends TEBase
 {
     private boolean master;
     private boolean breaking;

@@ -1,18 +1,15 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
-import net.minecraft.block.BlockHorizontal;
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -31,17 +28,16 @@ import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
-
-    public static final IProperty<EnumFacing> FACING = BlockHorizontal.FACING;
+public class BlockFirstAidKit extends BlockHorizontalFacing
+{
     private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0F, 0.1875F, 0.1875F, 0.3125F, 0.8125F, 0.8125F);
     private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1F, 0.1875F, 0.1875F, 0.6875F, 0.8125F, 0.8125F);
     private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.1875F, 0.1875F, 0.6875F, 0.8125F, 0.8125F, 1);
     private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.1875F, 0.1875F, 0.3125F, 0.8125F, 0.8125F, 0);
 
-
-    public BlockFirstAidKit(String name, CreativeTabs tab) {
-        super(Material.IRON, name, tab);
+    public BlockFirstAidKit(String name, CreativeTabs tab)
+    {
+        super(name, tab, Material.IRON);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
     }
@@ -103,52 +99,16 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
     }
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+    public void breakBlock(World world, BlockPos pos, IBlockState state)
+    {
         TileEntityFirstAidKit te = (TileEntityFirstAidKit) world.getTileEntity(pos);
         IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
-        for (int slot = 0; slot < inventory.getSlots(); slot++) {
-            ItemStack stack = inventory.getStackInSlot(slot);
-            if (!stack.isEmpty()) {
-                EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
-                world.spawnEntity(item);
-            }
+        if (inventory != null)
+        {
+            Utils.dropInventoryItems(world, pos, inventory);
         }
         super.breakBlock(world, pos, state);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).getHorizontalIndex();
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
-    }
-
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state) {
-        return false;
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
@@ -163,8 +123,9 @@ public class BlockFirstAidKit extends BlockTileEntity<TileEntityFirstAidKit> {
     }
 
     @Override
-    public Class<TileEntityFirstAidKit> getTileEntityClass() {
-        return TileEntityFirstAidKit.class;
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
     }
 
     @Nullable

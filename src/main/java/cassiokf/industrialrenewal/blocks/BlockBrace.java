@@ -7,9 +7,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -31,12 +29,6 @@ public class BlockBrace extends BlockBase {
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING);
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        //TODO colocação automatica
-        return false;
     }
 
     public IBlockState getStateFromMeta(int meta) {
@@ -73,12 +65,6 @@ public class BlockBrace extends BlockBase {
     @Deprecated
     public boolean isFullCube(IBlockState state) {
         return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getActualState(final IBlockState state, final IBlockAccess worldIn, final BlockPos pos) {
-        return state;
     }
 
     @Override

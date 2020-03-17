@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
-import cassiokf.industrialrenewal.blocks.BlockTileEntityConnectedMultiblocks;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnectedMultiblocks;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import net.minecraft.block.SoundType;

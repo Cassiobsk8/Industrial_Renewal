@@ -1,9 +1,8 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.tileentity.TileEntityElectricPump;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -16,18 +15,20 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockElectricPump extends BlockBasicContainer<TileEntityElectricPump> {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+public class BlockElectricPump extends BlockHorizontalFacing
+{
     public static final PropertyInteger INDEX = PropertyInteger.create("index", 0, 1);
 
-    public BlockElectricPump(String name, CreativeTabs tab) {
+    public BlockElectricPump(String name, CreativeTabs tab)
+    {
         super(name, tab, Material.IRON);
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-        if (state.getValue(INDEX) == 0) {
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if (state.getValue(INDEX) == 0)
+        {
             worldIn.setBlockState(pos.offset(state.getValue(FACING)), state.withProperty(INDEX, 1));
         }
     }
@@ -71,13 +72,11 @@ public class BlockElectricPump extends BlockBasicContainer<TileEntityElectricPum
         return new BlockStateContainer(this, FACING, INDEX);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(INDEX, 0);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(final int meta) {
         int directionIndex = meta;
@@ -95,8 +94,9 @@ public class BlockElectricPump extends BlockBasicContainer<TileEntityElectricPum
     }
 
     @Override
-    public Class<TileEntityElectricPump> getTileEntityClass() {
-        return TileEntityElectricPump.class;
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
     }
 
     @Nullable

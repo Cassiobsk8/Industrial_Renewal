@@ -1,11 +1,11 @@
 package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TileEntityBunkBed extends TileEntity
+public class TileEntityBunkBed extends TEBase
 {
 
     public TileEntityBunkBed()

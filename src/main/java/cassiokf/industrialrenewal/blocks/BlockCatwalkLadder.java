@@ -1,12 +1,12 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -27,8 +27,8 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockCatwalkLadder extends BlockBase {
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+public class BlockCatwalkLadder extends BlockHorizontalFacing
+{
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
     public static final PropertyBool DOWN = PropertyBool.create("down");
 
@@ -43,7 +43,7 @@ public class BlockCatwalkLadder extends BlockBase {
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
     public BlockCatwalkLadder(String name, CreativeTabs tab) {
-        super(Material.IRON, name, tab);
+        super(name, tab, Material.IRON);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }
@@ -82,11 +82,9 @@ public class BlockCatwalkLadder extends BlockBase {
                 || downB instanceof BlockCatwalkStair || downB instanceof BlockStairs || downB instanceof BlockTrapDoor);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
         state = state.withProperty(DOWN, downConnection(pos, world));
-
         return state;
     }
 
@@ -95,7 +93,6 @@ public class BlockCatwalkLadder extends BlockBase {
         return new BlockStateContainer(this, FACING, ACTIVE, DOWN);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(ACTIVE, (meta & 4) > 0);
@@ -120,7 +117,6 @@ public class BlockCatwalkLadder extends BlockBase {
         return downState.isFullBlock() || (downState.getBlock() instanceof BlockCatwalkLadder && !downState.getValue(ACTIVE) && twoDownState.isFullBlock());
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(ACTIVE, !OpenIf(worldIn, pos));
@@ -141,7 +137,6 @@ public class BlockCatwalkLadder extends BlockBase {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
         IBlockState actualState = state.getActualState(worldIn, pos);
@@ -184,18 +179,6 @@ public class BlockCatwalkLadder extends BlockBase {
         if (down) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, DOWN_AABB);
         }
-    }
-
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state) {
-        return false;
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {

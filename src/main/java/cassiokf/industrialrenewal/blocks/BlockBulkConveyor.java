@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.enums.EnumBulkConveyorType;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
@@ -8,11 +9,9 @@ import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyor;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyorHopper;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyorInserter;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -37,13 +36,13 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockBulkConveyor extends BlockBase
+public class BlockBulkConveyor extends BlockHorizontalFacing
 {
     public final EnumBulkConveyorType type;
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyInteger MODE = PropertyInteger.create("mode", 0, 2);
     public static final PropertyBool FRONT = PropertyBool.create("front");
     public static final PropertyBool BACK = PropertyBool.create("back");
+
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 0.5D);
     protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.5D, 1.0D, 1.0D, 1.0D);
@@ -53,7 +52,7 @@ public class BlockBulkConveyor extends BlockBase
 
     public BlockBulkConveyor(String name, CreativeTabs tab, EnumBulkConveyorType type)
     {
-        super(Material.IRON, name, tab);
+        super(name, tab, Material.IRON);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
         this.type = type;
@@ -77,8 +76,6 @@ public class BlockBulkConveyor extends BlockBase
             EnumFacing facing = worldIn.getBlockState(pos).getValue(FACING);
             if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) entityIn.motionZ += getMotionZ(facing);
             else entityIn.motionX += getMotionX(facing);
-            //entityIn.onGround = false;
-            //entityIn.fallDistance = 0;
         }
     }
 
@@ -252,32 +249,9 @@ public class BlockBulkConveyor extends BlockBase
         return state.withProperty(MODE, mode).withProperty(FRONT, front).withProperty(BACK, back);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        int i = 0;
-        i = i | state.getValue(FACING).getHorizontalIndex();
-        return i;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
-    }
-
     @Override
     public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
-        if (type.equals(EnumBulkConveyorType.NORMAL)) return super.rotateBlock(world, pos, axis);
         return false;
     }
 
@@ -288,7 +262,6 @@ public class BlockBulkConveyor extends BlockBase
         return FULL_BLOCK_AABB;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
     {
@@ -310,20 +283,6 @@ public class BlockBulkConveyor extends BlockBase
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
         }
-    }
-
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
     }
 
     @Override

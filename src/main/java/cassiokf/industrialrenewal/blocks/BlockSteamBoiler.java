@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.Block3x3x3Base;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.item.ItemFireBox;
@@ -118,12 +119,6 @@ public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
         TileEntitySteamBoiler te = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
         if (te == null || !state.getValue(MASTER)) return state.withProperty(TYPE, 0);
         return state.withProperty(TYPE, te.getType());
-    }
-
-    @Override
-    public Class<TileEntitySteamBoiler> getTileEntityClass()
-    {
-        return TileEntitySteamBoiler.class;
     }
 
     @Nullable

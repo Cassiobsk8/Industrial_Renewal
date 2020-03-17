@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.BlockTileEntityConnected;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnected;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,7 +8,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
@@ -16,14 +15,15 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityBatteryBank extends TileEntitySyncable implements ICapabilityProvider, ITickable
+public class TileEntityBatteryBank extends TileEntitySyncable implements ITickable
 {
     private final VoltsEnergyContainer container;
     private final VoltsEnergyContainer dummyEnergy;
     private final Set<EnumFacing> outPutFacings = new HashSet<>();
     private EnumFacing blockFacing;
 
-    public TileEntityBatteryBank() {
+    public TileEntityBatteryBank()
+    {
         this.container = new VoltsEnergyContainer(IRConfig.MainConfig.Main.batteryBankCapacity,
                 IRConfig.MainConfig.Main.batteryBankMaxInput,
                 IRConfig.MainConfig.Main.batteryBankMaxOutput)

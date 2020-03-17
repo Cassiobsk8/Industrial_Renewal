@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.TileEntitySolarPanelBase;
 import net.minecraft.block.SoundType;
@@ -21,7 +22,6 @@ import java.util.List;
 
 public class BlockSolarPanel extends BlockTileEntity<TileEntitySolarPanelBase>
 {
-
     protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
 
     public BlockSolarPanel(String name, CreativeTabs tab) {

@@ -1,5 +1,6 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.abstracts;
 
+import cassiokf.industrialrenewal.blocks.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -10,15 +11,18 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public abstract class BlockTileEntity<TE extends TileEntity> extends BlockBase {
+public abstract class BlockTileEntity<TE extends TileEntity> extends BlockBase
+{
 
-    public BlockTileEntity(Material material, String name, CreativeTabs tab) {
+    public BlockTileEntity(Material material, String name, CreativeTabs tab)
+    {
         super(material, name, tab);
     }
 
     public abstract Class<? extends TileEntity> getTileEntityClass();
 
-    public TE getTileEntity(IBlockAccess world, BlockPos pos) {
+    public TE getTileEntity(IBlockAccess world, BlockPos pos)
+    {
         return (TE) world.getTileEntity(pos);
     }
 
@@ -30,5 +34,4 @@ public abstract class BlockTileEntity<TE extends TileEntity> extends BlockBase {
     @Nullable
     @Override
     public abstract TE createTileEntity(World world, IBlockState state);
-
 }

@@ -1,11 +1,10 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.tileentity.TileEntityBunkerHatch;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,7 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -24,10 +23,8 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
+public class BlockBunkerHatch extends BlockHorizontalFacing
 {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool MASTER = PropertyBool.create("master");
     public static final PropertyBool OPEN = PropertyBool.create("open");
 
@@ -35,15 +32,18 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
 
     public BlockBunkerHatch(String name, CreativeTabs tab)
     {
-        super(Material.IRON, name, tab);
+        super(name, tab, Material.IRON);
         setSoundType(SoundType.METAL);
     }
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntityBunkerHatch tile = getTileEntity(world, pos);
-        tile.changeOpen();
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile != null && tile instanceof TileEntityBunkerHatch)
+        {
+            ((TileEntityBunkerHatch) tile).changeOpen();
+        }
         return true;
     }
 
@@ -130,14 +130,12 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
         return new BlockStateContainer(this, FACING, MASTER, OPEN);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(MASTER, false).withProperty(OPEN, false);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
@@ -168,7 +166,6 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
         return RENDER_AABB;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
     {
@@ -183,30 +180,10 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public boolean isOpaqueCube(final IBlockState state)
+    public boolean hasTileEntity(IBlockState state)
     {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isFullCube(final IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-        return EnumBlockRenderType.MODEL;
-    }
-
-    @Override
-    public Class<TileEntityBunkerHatch> getTileEntityClass()
-    {
-        return TileEntityBunkerHatch.class;
+        return true;
     }
 
     @Nullable

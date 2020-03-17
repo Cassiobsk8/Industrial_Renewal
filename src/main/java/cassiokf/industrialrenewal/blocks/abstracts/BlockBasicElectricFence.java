@@ -1,5 +1,6 @@
-package cassiokf.industrialrenewal.blocks;
+package cassiokf.industrialrenewal.blocks.abstracts;
 
+import cassiokf.industrialrenewal.blocks.BlockBase;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import net.minecraft.block.SoundType;
@@ -20,15 +21,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public abstract class BlockBasicElectricFence extends BlockBase {
+public abstract class BlockBasicElectricFence extends BlockBase
+{
 
-    public BlockBasicElectricFence(String name, CreativeTabs tab) {
+    public BlockBasicElectricFence(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
     }
 
     @Override
-    public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
+    public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+    {
         return false;
     }
 

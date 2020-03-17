@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.Block3x3Top1Base;
 import cassiokf.industrialrenewal.tileentity.TileEntityTransformerHV;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -98,12 +99,6 @@ public class BlockTransformerHV extends Block3x3Top1Base<TileEntityTransformerHV
     public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    public Class<TileEntityTransformerHV> getTileEntityClass()
-    {
-        return TileEntityTransformerHV.class;
     }
 
     @Nullable

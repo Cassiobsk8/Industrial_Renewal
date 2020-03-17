@@ -1,11 +1,10 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.init.ModItems;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -23,9 +22,8 @@ import net.minecraft.world.World;
 import java.util.Objects;
 import java.util.Random;
 
-public class BlockFireExtinguisher extends BlockBase {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+public class BlockFireExtinguisher extends BlockHorizontalFacing
+{
     public static final PropertyBool ONWALL = PropertyBool.create("onwall");
 
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1D, 0.75D);
@@ -35,8 +33,9 @@ public class BlockFireExtinguisher extends BlockBase {
     private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0F, 0.5F, 0.75D, 1F, 1);
     private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0F, 0.5F, 0.75D, 1F, 0);
 
-    public BlockFireExtinguisher(String name, CreativeTabs tab) {
-        super(Material.IRON, name, tab);
+    public BlockFireExtinguisher(String name, CreativeTabs tab)
+    {
+        super(name, tab, Material.IRON);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }
@@ -63,7 +62,6 @@ public class BlockFireExtinguisher extends BlockBase {
         return new BlockStateContainer(this, FACING, ONWALL);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(ONWALL, Boolean.valueOf((meta & 4) > 0));
@@ -108,18 +106,6 @@ public class BlockFireExtinguisher extends BlockBase {
         } else {
             return BASE_AABB;
         }
-    }
-
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state) {
-        return false;
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {

@@ -1,10 +1,11 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnectedMultiblocks;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntitySolarPanelFrame;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -29,8 +30,7 @@ import java.util.List;
 
 public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<TileEntitySolarPanelFrame>
 {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+    public static final PropertyDirection FACING = BlockHorizontalFacing.FACING;
 
     public BlockSolarPanelFrame(String name, CreativeTabs tab)
     {
@@ -56,7 +56,7 @@ public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<Ti
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntitySolarPanelFrame tile = getTileEntity(world, pos);
+        TileEntitySolarPanelFrame tile = (TileEntitySolarPanelFrame) world.getTileEntity(pos);
         IItemHandler itemHandler = tile.getPanelHandler();
         ItemStack heldItem = player.getHeldItem(hand);
         if (!heldItem.isEmpty() && (Block.getBlockFromItem(heldItem.getItem()) instanceof BlockSolarPanel || heldItem.getItem() instanceof ItemPowerScrewDrive))
@@ -115,12 +115,6 @@ public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<Ti
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACING);
-    }
-
-    @Override
-    public Class<TileEntitySolarPanelFrame> getTileEntityClass()
-    {
-        return TileEntitySolarPanelFrame.class;
     }
 
     @Nullable

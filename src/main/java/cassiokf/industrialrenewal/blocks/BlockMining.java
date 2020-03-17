@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.Block3x3x3Base;
 import cassiokf.industrialrenewal.item.ItemDrill;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityMining;
@@ -37,7 +38,7 @@ public class BlockMining extends Block3x3x3Base<TileEntityMining>
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntityMining tile = getTileEntity(world, pos);
+        TileEntityMining tile = (TileEntityMining) world.getTileEntity(pos);
         IItemHandler itemHandler = tile.getDrillHandler();
         ItemStack heldItem = player.getHeldItem(hand);
         if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemDrill || heldItem.getItem() instanceof ItemPowerScrewDrive))
@@ -67,12 +68,6 @@ public class BlockMining extends Block3x3x3Base<TileEntityMining>
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACING, MASTER);
-    }
-
-    @Override
-    public Class<TileEntityMining> getTileEntityClass()
-    {
-        return TileEntityMining.class;
     }
 
     @Nullable

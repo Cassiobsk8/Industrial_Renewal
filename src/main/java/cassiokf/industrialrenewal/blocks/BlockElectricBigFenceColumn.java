@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockBasicElectricFence;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
@@ -21,7 +22,8 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 
-public class BlockElectricBigFenceColumn extends BlockBasicElectricFence {
+public class BlockElectricBigFenceColumn extends BlockBasicElectricFence
+{
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
 

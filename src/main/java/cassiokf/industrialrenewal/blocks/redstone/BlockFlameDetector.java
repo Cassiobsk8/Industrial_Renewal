@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.BlockTileEntity;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityFlameDetector;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;

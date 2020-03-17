@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.tileentity.TileEntityEnergyLevel;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -21,22 +21,19 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class BlockEnergyLevel extends BlockTileEntity<TileEntityEnergyLevel>
+public class BlockEnergyLevel extends BlockHorizontalFacing
 {
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final IProperty<EnumFacing> BASE = PropertyDirection.create("base");
 
     public BlockEnergyLevel(String name, CreativeTabs tab)
     {
-        super(Material.IRON, name, tab);
+        super(name, tab, Material.IRON);
         setHardness(0.8f);
-        //setSoundType(SoundType.METAL);
         this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.NORTH));
 
     }
 
     @Nonnull
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
     {
@@ -53,21 +50,6 @@ public class BlockEnergyLevel extends BlockTileEntity<TileEntityEnergyLevel>
     }
 
     @Nonnull
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(FACING).getHorizontalIndex();
-    }
-
-    @Nonnull
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
     {
@@ -106,32 +88,17 @@ public class BlockEnergyLevel extends BlockTileEntity<TileEntityEnergyLevel>
         return BlockRenderLayer.CUTOUT;
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
-
     @Nonnull
     @Override
-    @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
     }
 
     @Override
-    public Class<TileEntityEnergyLevel> getTileEntityClass()
+    public boolean hasTileEntity(IBlockState state)
     {
-        return TileEntityEnergyLevel.class;
+        return true;
     }
 
     @Nullable

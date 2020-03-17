@@ -91,6 +91,19 @@ public class Utils
         }
     }
 
+    public static void dropInventoryItems(World worldIn, BlockPos pos, IItemHandler inventory)
+    {
+        for (int i = 0; i < inventory.getSlots(); ++i)
+        {
+            ItemStack itemstack = inventory.getStackInSlot(i);
+
+            if (!itemstack.isEmpty())
+            {
+                spawnItemStack(worldIn, pos, itemstack);
+            }
+        }
+    }
+
     public static void spawnItemStack(World worldIn, BlockPos pos, ItemStack stack)
     {
         if (worldIn.isRemote) return;

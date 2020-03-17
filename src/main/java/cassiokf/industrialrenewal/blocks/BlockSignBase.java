@@ -1,12 +1,11 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -32,9 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockSignBase extends BlockBase {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+public class BlockSignBase extends BlockHorizontalFacing
+{
     public static final PropertyBool ONWALL = PropertyBool.create("onwall");
 
     public static final ArrayList<Block> signs = new ArrayList<>();
@@ -47,7 +45,7 @@ public class BlockSignBase extends BlockBase {
     private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.125D, 0.125D, 0.0625D, 0.875D, 0.875D, 0D);
 
     public BlockSignBase(String name, CreativeTabs tab) {
-        super(Material.IRON, name, tab);
+        super(name, tab, Material.IRON);
 
         signs.add(this);
 
@@ -71,12 +69,6 @@ public class BlockSignBase extends BlockBase {
         world.setBlockState(pos, nextBlock.getDefaultState().withProperty(FACING, oldFacing).withProperty(ONWALL, oldOnWall));
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getActualState(final IBlockState state, final IBlockAccess worldIn, final BlockPos pos) {
-        return state.withProperty(FACING, state.getValue(FACING)).withProperty(ONWALL, state.getValue(ONWALL));
-    }
-
     @Override
     public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
         return new ItemStack(Item.getItemFromBlock(ModBlocks.signHV)).getItem();
@@ -87,7 +79,6 @@ public class BlockSignBase extends BlockBase {
         return new ItemStack(Item.getItemFromBlock(ModBlocks.signHV));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(ONWALL, facing != EnumFacing.UP);
@@ -98,7 +89,6 @@ public class BlockSignBase extends BlockBase {
         return new BlockStateContainer(this, FACING, ONWALL);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(ONWALL, (meta & 4) > 0);
@@ -138,18 +128,6 @@ public class BlockSignBase extends BlockBase {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
         tooltip.add(I18n.format("tile.industrialrenewal.sign_base.info"));
-    }
-
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state) {
-        return false;
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {

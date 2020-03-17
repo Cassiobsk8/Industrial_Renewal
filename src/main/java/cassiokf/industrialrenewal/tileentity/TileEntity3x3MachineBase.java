@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.Block3x3x3Base;
+import cassiokf.industrialrenewal.blocks.abstracts.Block3x3x3Base;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -8,11 +8,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import java.util.List;
 
-public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBase> extends TileEntitySyncable implements ICapabilityProvider
+public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBase> extends TileEntitySyncable
 {
     private boolean isMaster;
     private boolean breaking;

@@ -174,8 +174,6 @@ public class BlockEnergyCableGauge extends BlockEnergyCable
         }
     }
 
-    @Nullable
-    @Override
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
         switch (type)

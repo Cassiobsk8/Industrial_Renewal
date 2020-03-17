@@ -1,11 +1,10 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.tileentity.TileEntityBarrel;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,21 +15,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidUtil;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
+public class BlockBarrel extends BlockHorizontalFacing
 {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool FRAME = PropertyBool.create("frame");
 
     public BlockBarrel(String name, CreativeTabs tab)
@@ -49,7 +44,6 @@ public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
@@ -101,7 +95,6 @@ public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
         return stack;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
@@ -121,14 +114,9 @@ public class BlockBarrel extends BlockBasicContainer<TileEntityBarrel>
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public boolean hasTileEntity(IBlockState state)
     {
-        return FULL_BLOCK_AABB;
-    }
-
-    public Class<TileEntityBarrel> getTileEntityClass()
-    {
-        return TileEntityBarrel.class;
+        return true;
     }
 
     @Nullable

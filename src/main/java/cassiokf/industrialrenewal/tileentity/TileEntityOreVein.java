@@ -1,11 +1,11 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.enums.OreQuality;
-import net.minecraft.tileentity.TileEntity;
+import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class TileEntityOreVein extends TileEntity
+public class TileEntityOreVein extends TEBase
 {
     private int oreQuantity;
 

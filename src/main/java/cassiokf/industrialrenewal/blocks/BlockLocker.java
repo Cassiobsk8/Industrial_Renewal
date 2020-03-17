@@ -1,10 +1,9 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.tileentity.TileEntityLocker;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -25,18 +24,20 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockLocker extends BlockTileEntity<TileEntityLocker> {
-
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+public class BlockLocker extends BlockHorizontalFacing
+{
     public static final PropertyBool OPEN = PropertyBool.create("open");
     public static final PropertyBool DOWN = PropertyBool.create("down");
 
-    public BlockLocker(String name, CreativeTabs tab) {
-        super(Material.IRON, name, tab);
+    public BlockLocker(String name, CreativeTabs tab)
+    {
+        super(name, tab, Material.IRON);
     }
 
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (worldIn.isRemote) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if (worldIn.isRemote)
+        {
             return true;
         }
         if (playerIn.isSneaking()) {
@@ -90,13 +91,11 @@ public class BlockLocker extends BlockTileEntity<TileEntityLocker> {
         return downState.getBlock() instanceof BlockLocker;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
         return state.withProperty(DOWN, connectDown(world, pos));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(OPEN, (meta & 4) > 0);
@@ -112,7 +111,6 @@ public class BlockLocker extends BlockTileEntity<TileEntityLocker> {
         return i;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(OPEN, false);
@@ -123,25 +121,14 @@ public class BlockLocker extends BlockTileEntity<TileEntityLocker> {
         return new BlockStateContainer(this, FACING, OPEN, DOWN);
     }
 
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
-
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
     }
 
     @Override
-    public Class<TileEntityLocker> getTileEntityClass() {
-        return TileEntityLocker.class;
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
     }
 
     @Nullable
