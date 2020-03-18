@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.tileentity;
+package cassiokf.industrialrenewal.tileentity.abstracts;
 
 import cassiokf.industrialrenewal.blocks.abstracts.Block3x3x3Base;
 import cassiokf.industrialrenewal.util.Utils;
@@ -7,11 +7,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
-public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBase> extends TileEntitySyncable
+public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBase> extends TileEntitySyncable implements ITickable
 {
     private boolean isMaster;
     private boolean breaking;
@@ -19,12 +20,27 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
     private boolean masterChecked = false;
     private boolean faceChecked = false;
     private int faceIndex;
+    boolean firstTick = false;
 
     @Override
-    public void onLoad()
+    public void update()
     {
-        isMaster();
-        if (isMaster()) this.setMaster();
+        if (!firstTick)
+        {
+            firstTick = true;
+            isMaster();
+            if (isMaster()) this.setMaster();
+            onFirstTick();
+        }
+        tick();
+    }
+
+    public void tick()
+    {
+    }
+
+    public void onFirstTick()
+    {
     }
 
     public TE getMaster()

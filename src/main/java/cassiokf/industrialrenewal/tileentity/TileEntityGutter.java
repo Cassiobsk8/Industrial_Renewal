@@ -7,7 +7,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -18,7 +17,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter> implements ITickable
+public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter>
 {
     EnumFacing blockFacing = null;
 
@@ -40,7 +39,7 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
     private int fillAmount;
 
     @Override
-    public void update()
+    public void tick()
     {
         if (this.hasWorld() && !world.isRemote)
         {

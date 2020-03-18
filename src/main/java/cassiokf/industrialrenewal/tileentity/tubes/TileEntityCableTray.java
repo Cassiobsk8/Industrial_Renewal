@@ -31,7 +31,11 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
     @Override
     public void onLoad()
     {
-        refreshConnections();
+        if (!firstTick)
+        {
+            firstTick = true;
+            refreshConnections();
+        }
     }
 
     public boolean onBlockActivated(EntityPlayer player, ItemStack stack)

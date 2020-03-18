@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.item.ItemDrill;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.block.Block;
@@ -12,7 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldServer;
@@ -30,7 +30,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Set;
 
-public class TileEntityMining extends TileEntity3x3MachineBase<TileEntityMining> implements ITickable
+public class TileEntityMining extends TileEntity3x3MachineBase<TileEntityMining>
 {
     private final VoltsEnergyContainer energyContainer;
     public FluidTank waterTank = new FluidTank(32000)
@@ -94,7 +94,7 @@ public class TileEntityMining extends TileEntity3x3MachineBase<TileEntityMining>
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (this.isMaster())
         {

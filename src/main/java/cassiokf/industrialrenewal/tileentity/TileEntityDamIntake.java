@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.tileentity.abstractclass.TEHorizontalDirection;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEHorizontalDirection;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.ICompressedFluidCapability;
 import net.minecraft.block.material.Material;
@@ -11,25 +11,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TileEntityDamIntake extends TEHorizontalDirection implements ITickable, ICompressedFluidCapability
 {
     int waterAmount = -1;
-    List<BlockPos> connectedWalls = new ArrayList<BlockPos>();
+    List<BlockPos> connectedWalls = new CopyOnWriteArrayList<>();
     BlockPos neighborPos = null;
-
-    @Override
-    public void onLoad()
-    {
-        initializeMultiblockIfNecessary();
-    }
 
     @Override
     public void update()
     {
-        if (!world.isRemote && waterAmount > 0)
+        if (!world.isRemote && getWaterAmount() > 0)
         {
             TileEntity te = world.getTileEntity(getOutPutPos());
             if (te instanceof ICompressedFluidCapability

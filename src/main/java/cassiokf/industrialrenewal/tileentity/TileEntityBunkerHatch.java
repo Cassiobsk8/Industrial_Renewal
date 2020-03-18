@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockBunkerHatch;
-import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.blocks.redstone.BlockFlameDetector;
-import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.state.IBlockState;

@@ -10,7 +10,7 @@ public class References {
 
     public static final String NAME = "Industrial Renewal";
 
-    public static final String VERSION = "0.16.0A2";
+    public static final String VERSION = "0.16.0";
 
     public static final String NETWORKCHANNEL = MODID;
 

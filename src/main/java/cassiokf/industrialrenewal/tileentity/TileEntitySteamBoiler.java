@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.blocks.BlockSteamBoiler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.item.ItemFireBox;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -13,7 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
@@ -29,7 +29,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySteamBoiler> implements ITickable
+public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySteamBoiler>
 {
     public FluidTank waterTank = new FluidTank(32000)
     {
@@ -122,7 +122,7 @@ public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySt
     private int fluidPerTick = 1;
 
     @Override
-    public void update()
+    public void tick()
     {
         if (this.isMaster() && !this.world.isRemote)
         {

@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
-import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;

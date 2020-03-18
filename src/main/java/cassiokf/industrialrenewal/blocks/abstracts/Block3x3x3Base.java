@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.abstracts;
 
-import cassiokf.industrialrenewal.tileentity.TileEntity3x3MachineBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;

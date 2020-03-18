@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.init.IRSoundRegister;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityToggleableBase;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;

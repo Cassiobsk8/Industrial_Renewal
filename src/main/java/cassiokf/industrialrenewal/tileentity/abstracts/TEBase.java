@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.tileentity.abstractclass;
+package cassiokf.industrialrenewal.tileentity.abstracts;
 
 import net.minecraft.tileentity.TileEntity;
 

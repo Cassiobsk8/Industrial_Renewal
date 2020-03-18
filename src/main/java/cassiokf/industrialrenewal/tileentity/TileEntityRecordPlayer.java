@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemRecord;

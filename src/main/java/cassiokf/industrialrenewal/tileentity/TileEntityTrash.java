@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;

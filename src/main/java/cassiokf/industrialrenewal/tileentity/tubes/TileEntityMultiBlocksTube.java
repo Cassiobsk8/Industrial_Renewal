@@ -1,10 +1,11 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
-import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -14,7 +15,7 @@ import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TileEntitySyncable
+public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TileEntitySyncable implements ITickable
 {
     private TE master;
     private boolean isMaster;
@@ -22,6 +23,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     public Map<BlockPos, Integer> limitedOutPutMap = new ConcurrentHashMap<>();
     public int outPut;
     int outPutCount;
+    boolean firstTick = false;
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
@@ -30,19 +32,23 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     }
 
     @Override
-    public void onLoad()
+    public void update()
     {
-        initializeMultiblockIfNecessary();
+        if (!firstTick)
+        {
+            firstTick = true;
+            initializeMultiblockIfNecessary();
+            onFirstTick();
+        }
+        tick();
     }
 
-    public int getOutPut()
+    public void tick()
     {
-        return outPut;
     }
 
-    public int getOutPutCount()
+    public void onFirstTick()
     {
-        return outPutCount;
     }
 
     private void initializeMultiblockIfNecessary()

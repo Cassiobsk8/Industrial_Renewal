@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockEnergyLevel;
-import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

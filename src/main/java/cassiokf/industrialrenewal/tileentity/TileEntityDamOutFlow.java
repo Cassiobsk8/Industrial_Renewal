@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.tileentity.abstractclass.TEHorizontalDirection;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEHorizontalDirection;
 import cassiokf.industrialrenewal.util.interfaces.ICompressedFluidCapability;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

@@ -4,7 +4,7 @@ import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBox;
 import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBoxConnector;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.tileentity.TileEntityBoxConnector;
-import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

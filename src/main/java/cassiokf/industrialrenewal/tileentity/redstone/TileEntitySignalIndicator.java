@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.blocks.redstone.BlockSignalIndicator;
-import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 

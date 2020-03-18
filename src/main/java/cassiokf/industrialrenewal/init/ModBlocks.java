@@ -35,7 +35,7 @@ public class ModBlocks
 
     public static BlockOredict steelBlock = new BlockOredict(Material.IRON, "block_steel", "blockSteel", References.CREATIVE_IR_TAB);
 
-    public static BlockConcrete concrete = new BlockConcrete(Material.ROCK, "concrete", References.CREAATIVE_IRWIP_TAB);
+    public static BlockConcrete concrete = new BlockConcrete(Material.ROCK, "concrete", References.CREATIVE_IR_TAB);
 
     public static BlockIndustrialFloor blockIndFloor = new BlockIndustrialFloor("industrial_floor", References.CREATIVE_IR_TAB);
     public static BlockChimney blockChimney = new BlockChimney("block_chimney", References.CREATIVE_IR_TAB);

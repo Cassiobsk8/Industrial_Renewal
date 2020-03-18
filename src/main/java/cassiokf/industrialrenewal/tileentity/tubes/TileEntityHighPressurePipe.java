@@ -3,19 +3,18 @@ package cassiokf.industrialrenewal.tileentity.tubes;
 import cassiokf.industrialrenewal.util.interfaces.ICompressedFluidCapability;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 
 import java.util.Map;
 
-public class TileEntityHighPressurePipe extends TileEntityMultiBlocksTube<TileEntityHighPressurePipe> implements ICompressedFluidCapability, ITickable
+public class TileEntityHighPressurePipe extends TileEntityMultiBlocksTube<TileEntityHighPressurePipe> implements ICompressedFluidCapability
 {
     public int maxOutput = Fluid.BUCKET_VOLUME;
     private boolean inUse = false;
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!world.isRemote && isMaster())
         {
@@ -39,7 +38,6 @@ public class TileEntityHighPressurePipe extends TileEntityMultiBlocksTube<TileEn
     public int passCompressedFluid(int amount, int y, boolean simulate)
     {
         if (!isMaster() && !isMasterInvalid()) return getMaster().passCompressedFluid(amount, y, simulate);
-
         if (inUse) return 0; //to prevent stack overflow (IE)
         inUse = true;
 

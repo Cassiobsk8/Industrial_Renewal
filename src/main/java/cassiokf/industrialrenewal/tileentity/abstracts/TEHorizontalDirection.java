@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.tileentity.abstractclass;
+package cassiokf.industrialrenewal.tileentity.abstracts;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import net.minecraft.block.state.IBlockState;

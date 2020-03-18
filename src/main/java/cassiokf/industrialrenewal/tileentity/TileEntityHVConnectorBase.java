@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.pipes.BlockHVConnectorBase;
 import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
 import net.minecraft.item.ItemStack;

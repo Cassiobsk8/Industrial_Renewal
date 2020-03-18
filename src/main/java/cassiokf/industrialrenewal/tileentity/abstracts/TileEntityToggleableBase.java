@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.tileentity;
+package cassiokf.industrialrenewal.tileentity.abstracts;
 
 import cassiokf.industrialrenewal.enums.enumproperty.EnumFaceRotation;
 import net.minecraft.block.state.IBlockState;

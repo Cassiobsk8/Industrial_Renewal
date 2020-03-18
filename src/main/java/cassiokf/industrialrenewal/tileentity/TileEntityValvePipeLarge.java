@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.init.IRSoundRegister;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityToggleableBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;

@@ -1,6 +1,5 @@
-package cassiokf.industrialrenewal.tileentity;
+package cassiokf.industrialrenewal.tileentity.abstracts;
 
-import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;

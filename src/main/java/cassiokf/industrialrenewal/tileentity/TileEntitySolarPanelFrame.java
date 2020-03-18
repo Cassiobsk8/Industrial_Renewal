@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -25,7 +24,7 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEntitySolarPanelFrame> implements ITickable
+public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEntitySolarPanelFrame>
 {
     public final VoltsEnergyContainer energyContainer;
     public ItemStackHandler panelInv = new ItemStackHandler(1)
@@ -67,7 +66,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     }
 
     @Override
-    public void onLoad()
+    public void onFirstTick()
     {
         super.onLoad();
         if (this.hasWorld() && !this.world.isRemote)
@@ -77,7 +76,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (this.hasWorld() && !this.world.isRemote)
         {

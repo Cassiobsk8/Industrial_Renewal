@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
@@ -10,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -19,7 +19,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntityTransformerHV> implements ITickable, IConnectorHV
+public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntityTransformerHV> implements IConnectorHV
 {
     private final VoltsEnergyContainer energyContainer;
 
@@ -96,7 +96,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!world.isRemote && isMaster())
         {

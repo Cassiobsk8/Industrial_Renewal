@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.blocks.BlockElectricPump;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.block.Block;

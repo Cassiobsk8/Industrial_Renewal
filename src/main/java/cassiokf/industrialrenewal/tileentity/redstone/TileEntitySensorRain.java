@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.blocks.redstone.BlockSensorRain;
-import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import net.minecraft.util.ITickable;
 
 public class TileEntitySensorRain extends TEBase implements ITickable

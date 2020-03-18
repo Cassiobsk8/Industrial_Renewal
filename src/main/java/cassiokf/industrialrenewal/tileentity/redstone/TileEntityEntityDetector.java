@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.blocks.redstone.BlockEntityDetector;
-import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;

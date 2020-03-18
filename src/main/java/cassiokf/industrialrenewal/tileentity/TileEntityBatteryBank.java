@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnected;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

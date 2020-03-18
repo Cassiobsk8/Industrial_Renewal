@@ -3,7 +3,7 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBox;
 import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBoxConnector;
 import cassiokf.industrialrenewal.init.ModItems;
-import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityFuseBox;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;

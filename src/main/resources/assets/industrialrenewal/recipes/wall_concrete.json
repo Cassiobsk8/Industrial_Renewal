@@ -6,8 +6,7 @@
   ],
   "key": {
     "S": {
-      "item": "minecraft:concrete",
-      "data": 8
+      "item": "industrialrenewal:concrete"
     }
   },
   "result": {

@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.railroad;
 
-import cassiokf.industrialrenewal.tileentity.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;

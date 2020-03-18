@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.ICompressedFluidCapability;
 import cassiokf.industrialrenewal.util.interfaces.IDynamicSound;
@@ -10,14 +11,13 @@ import cassiokf.industrialrenewal.util.interfaces.IMecanicalEnergy;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.Fluid;
 
 import java.util.List;
 
-public class TileEntityDamTurbine extends TileEntity3x3MachineBase<TileEntityDamTurbine> implements ITickable, ICompressedFluidCapability, IDynamicSound
+public class TileEntityDamTurbine extends TileEntity3x3MachineBase<TileEntityDamTurbine> implements ICompressedFluidCapability, IDynamicSound
 {
     private float volume = IRConfig.MainConfig.Sounds.TurbineVolume;
     private BlockPos outPos = null;
@@ -31,7 +31,7 @@ public class TileEntityDamTurbine extends TileEntity3x3MachineBase<TileEntityDam
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (isMaster())
         {

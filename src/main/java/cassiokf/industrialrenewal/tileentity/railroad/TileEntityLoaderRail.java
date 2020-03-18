@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.railroad;
 
 import cassiokf.industrialrenewal.blocks.railroad.BlockRailFacing;
-import cassiokf.industrialrenewal.tileentity.abstractclass.TEBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.tileentity.TileEntity;

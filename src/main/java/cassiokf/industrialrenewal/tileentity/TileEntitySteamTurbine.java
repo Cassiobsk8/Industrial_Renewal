@@ -4,13 +4,13 @@ import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import cassiokf.industrialrenewal.util.interfaces.IDynamicSound;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
@@ -24,7 +24,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntitySteamTurbine> implements ITickable, IDynamicSound
+public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntitySteamTurbine> implements IDynamicSound
 {
     private final VoltsEnergyContainer energyContainer;
     private float volume = IRConfig.MainConfig.Sounds.TurbineVolume;
@@ -83,7 +83,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (this.isMaster())
         {

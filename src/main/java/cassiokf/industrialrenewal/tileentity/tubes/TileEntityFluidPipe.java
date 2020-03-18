@@ -4,7 +4,6 @@ import cassiokf.industrialrenewal.config.IRConfig;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
@@ -16,7 +15,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import javax.annotation.Nullable;
 import java.util.Map;
 
-public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFluidPipe> implements ITickable
+public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFluidPipe>
 {
     public int averageFluid;
 
@@ -34,7 +33,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     };
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!world.isRemote && isMaster())
         {

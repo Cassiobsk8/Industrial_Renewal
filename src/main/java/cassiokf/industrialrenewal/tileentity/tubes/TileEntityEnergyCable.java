@@ -4,7 +4,6 @@ import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -13,7 +12,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import javax.annotation.Nullable;
 import java.util.Map;
 
-public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityEnergyCable> implements ITickable
+public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityEnergyCable>
 {
 
     public final VoltsEnergyContainer energyContainer;
@@ -37,7 +36,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!world.isRemote && isMaster())
         {

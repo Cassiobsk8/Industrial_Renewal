@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.blocks.BlockSmallWindTurbine;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.item.ItemWindBlade;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.item.ItemStack;

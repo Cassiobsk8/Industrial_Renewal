@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.blocks.abstracts;
 
 import cassiokf.industrialrenewal.enums.enumproperty.EnumFaceRotation;
-import cassiokf.industrialrenewal.tileentity.TileEntityToggleableBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityToggleableBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;

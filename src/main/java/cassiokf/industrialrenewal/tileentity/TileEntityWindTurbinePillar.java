@@ -57,9 +57,8 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     }
 
     @Override
-    public void onLoad()
+    public void onFirstTick()
     {
-        super.onLoad();
         isBase = getIsBase();
     }
 
