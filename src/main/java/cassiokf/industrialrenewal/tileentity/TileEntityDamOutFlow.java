@@ -56,7 +56,7 @@ public class TileEntityDamOutFlow extends TEHorizontalDirection implements IComp
     public int passCompressedFluid(int amount, int y, boolean simulate)
     {
         int height = y - pos.getY();
-        if (!simulate && amount > 0) hasFlow = true;
+        if (!simulate && amount >= 0) hasFlow = true;
         return height >= 0 ? amount : 0;
     }
 }
