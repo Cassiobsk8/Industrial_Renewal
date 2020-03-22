@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,13 +32,13 @@ public abstract class BlockTileEntityConnectedMultiblocks<TE extends TileEntityM
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        TileEntityMultiBlocksTube te = (TileEntityMultiBlocksTube) worldIn.getTileEntity(pos);
-        if (te != null)
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te instanceof TileEntityMultiBlocksTube)
         {
             for (EnumFacing face : EnumFacing.VALUES)
             {
                 BlockPos posM = pos.offset(face);
-                if (te.getMaster() != null) te.getMaster().removeMachine(pos, posM);
+                ((TileEntityMultiBlocksTube) te).getMaster().removeMachine(pos, posM);
             }
         }
         super.breakBlock(worldIn, pos, state);
