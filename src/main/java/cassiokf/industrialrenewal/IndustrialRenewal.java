@@ -1,14 +1,16 @@
 package cassiokf.industrialrenewal;
 
 import cassiokf.industrialrenewal.entity.EntityInit;
+import cassiokf.industrialrenewal.handlers.ChunkManagerCallback;
+import cassiokf.industrialrenewal.handlers.EventHandler;
 import cassiokf.industrialrenewal.init.*;
 import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
-import cassiokf.industrialrenewal.util.ChunkManagerCallback;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
@@ -62,6 +64,7 @@ public class IndustrialRenewal {
         NetworkHandler.init();
         ForgeChunkManager.setForcedChunkLoadingCallback(instance, new ChunkManagerCallback());
         proxy.registerRenderers();
+        MinecraftForge.EVENT_BUS.register(EventHandler.class);
         System.out.println("Done!");
     }
 

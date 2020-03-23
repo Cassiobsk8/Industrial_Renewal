@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal;
+package cassiokf.industrialrenewal.handlers;
 
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.util.interfaces.IDynamicSound;

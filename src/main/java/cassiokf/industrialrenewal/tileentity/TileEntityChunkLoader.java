@@ -2,8 +2,8 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockChunkLoader;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.handlers.ChunkManagerCallback;
 import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
-import cassiokf.industrialrenewal.util.ChunkManagerCallback;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;

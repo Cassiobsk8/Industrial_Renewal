@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.proxy;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.handlers.IRSoundHandler;
 import cassiokf.industrialrenewal.init.RenderHandler;
 import cassiokf.industrialrenewal.model.ModelLoaderCustom;
 import cassiokf.industrialrenewal.tesr.*;

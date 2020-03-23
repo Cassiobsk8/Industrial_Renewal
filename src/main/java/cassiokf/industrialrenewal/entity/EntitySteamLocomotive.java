@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.entity;
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.util.interfaces.IConnectibleCart;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -20,18 +21,34 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class EntitySteamLocomotive extends EntityMinecart {
+public class EntitySteamLocomotive extends EntityMinecart implements IConnectibleCart
+{
 
     private static final DataParameter<Boolean> PLOW = EntityDataManager.createKey(EntitySteamLocomotive.class, DataSerializers.BOOLEAN);
     public boolean hasPlowItem;
-    public ItemStackHandler inventory = new ItemStackHandler(7) {
+    public ItemStackHandler inventory = new ItemStackHandler(7)
+    {
         @Override
-        protected void onContentsChanged(int slot) {
+        protected void onContentsChanged(int slot)
+        {
             EntitySteamLocomotive.this.Sync();
         }
     };
 
-    public EntitySteamLocomotive(World worldIn) {
+    @Override
+    public float getMaxCouplingDistance(EntityMinecart cart)
+    {
+        return 1.1f;
+    }
+
+    @Override
+    public float getFixedDistance(EntityMinecart cart)
+    {
+        return 1f;
+    }
+
+    public EntitySteamLocomotive(World worldIn)
+    {
         super(worldIn);
         this.setSize(1.0F, 1.0F);
     }

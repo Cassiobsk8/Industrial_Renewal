@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.handlers.IRSoundHandler;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
 import cassiokf.industrialrenewal.util.Utils;

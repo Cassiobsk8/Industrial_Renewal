@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.handlers.IRSoundHandler;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
 import cassiokf.industrialrenewal.util.Utils;
@@ -134,7 +134,7 @@ public class TileEntityDamGenerator extends TileEntity3x3MachineBase<TileEntityD
     public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
     {
         return facing == EnumFacing.UP
-                && this.pos.equals(getMaster().getPos().up())
+                && pos.equals(getMaster().getPos().up())
                 && capability == CapabilityEnergy.ENERGY;
     }
 
@@ -143,7 +143,7 @@ public class TileEntityDamGenerator extends TileEntity3x3MachineBase<TileEntityD
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing)
     {
         if (facing == EnumFacing.UP
-                && this.pos.equals(getMaster().getPos().up())
+                && pos.equals(getMaster().getPos().up())
                 && capability == CapabilityEnergy.ENERGY)
             return CapabilityEnergy.ENERGY.cast(energyContainer);
         return super.getCapability(capability, facing);

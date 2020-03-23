@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.init;
 
-import cassiokf.industrialrenewal.IRSoundHandler.EnumSoundType;
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.handlers.IRSoundHandler.EnumSoundType;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.util.ResourceLocation;

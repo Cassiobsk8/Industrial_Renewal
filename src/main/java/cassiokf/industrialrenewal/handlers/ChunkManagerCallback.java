@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.util;
+package cassiokf.industrialrenewal.handlers;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.TileEntityChunkLoader;

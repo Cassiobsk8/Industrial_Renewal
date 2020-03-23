@@ -23,6 +23,7 @@ public class ModItems {
     public static ItemCartridge cartridge_inverter = new ItemCartridge("cartridge_inverter", References.CREATIVE_IR_TAB);
 
     public static ItemIronPlow locomotivePlowIron = new ItemIronPlow("plow_iron", References.CREAATIVE_IRWIP_TAB);
+    public static ItemCartLinkable cartLinkable = new ItemCartLinkable("cart_linkable", References.CREATIVE_IRLOCOMOTIVE_TAB);
 
     public static ItemPowerScrewDrive screwDrive = new ItemPowerScrewDrive("screwdrive", References.CREATIVE_IR_TAB);
     public static ItemSteelSaw steelSaw = new ItemSteelSaw("steel_saw", "sawStone", References.CREATIVE_IR_TAB);
@@ -78,6 +79,7 @@ public class ModItems {
                 ingotSteel,
                 spongeIron,
                 screwDrive,
+                cartLinkable,
                 steelSaw,
                 cargoContainer,
                 hopperCart,
@@ -127,6 +129,7 @@ public class ModItems {
         ingotSteel.registerItemModel();
         spongeIron.registerItemModel();
         screwDrive.registerItemModel();
+        cartLinkable.registerItemModel();
         steelSaw.registerItemModel();
         cargoContainer.registerItemModel();
         hopperCart.registerItemModel();
