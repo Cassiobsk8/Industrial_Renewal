@@ -37,6 +37,20 @@ public class BlockInfinityGenerator extends BlockBase
     }
 
     @Override
+    @Deprecated
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @Deprecated
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
     public boolean hasTileEntity(IBlockState state)
     {
         return true;
