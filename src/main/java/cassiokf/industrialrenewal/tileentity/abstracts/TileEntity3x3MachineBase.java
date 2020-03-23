@@ -55,12 +55,18 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
                         && ((TileEntity3x3MachineBase) te).isMaster()
                         && instanceOf(te))
                 {
-                    masterTE = (TE) te;
+                    setMaster((TE) te);
                     ((TE) te).setMaster();
                     return masterTE;
                 }
             }
-            return null;
+            if (!world.isRemote)
+            {
+                Utils.sendConsoleMessage("MultiBlock Machine: " + this.getClass().toString() + " has no Master at " + pos);
+                Utils.sendConsoleMessage(" Break this machine and try replace it, If this does not work, report the problem:");
+                Utils.sendConsoleMessage("https://github.com/Cassiobsk8/Industrial_Renewal/issues/new?template=bug_report.md");
+            }
+            return (TE) this;
         }
         return masterTE;
     }

@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -83,7 +84,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                 for (TileEntityMultiBlocksTube storage : connectedCables)
                 {
                     if (!canBeMaster(storage)) continue;
-                    storage.setMaster((TE) master);
+                    storage.setMaster(master);
                     storage.checkForOutPuts(storage.getPos());
                     storage.markDirty();
                 }
@@ -147,7 +148,17 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     {
         initializeMultiblockIfNecessary();
         if (master != null && !master.isMaster()) Sync();
-        return master != null ? master : (TE) this;
+        if (master == null)
+        {
+            if (!world.isRemote)
+            {
+                Utils.sendConsoleMessage("MultiBlock Pipe: " + this.getClass().toString() + " has no Master at " + pos);
+                Utils.sendConsoleMessage(" Break this pipe and try replace it, If this does not work, report the problem:");
+                Utils.sendConsoleMessage("https://github.com/Cassiobsk8/Industrial_Renewal/issues/new?template=bug_report.md");
+            }
+            return (TE) this;
+        }
+        return master;
     }
 
     public void setMaster(TE master)
