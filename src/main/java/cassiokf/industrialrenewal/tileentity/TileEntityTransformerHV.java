@@ -2,7 +2,8 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModItems;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
+import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
@@ -19,7 +20,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntityTransformerHV> implements IConnectorHV
+public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntityTransformerHV> implements IConnectorHV
 {
     private final VoltsEnergyContainer energyContainer;
 
@@ -157,7 +158,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     @Override
     public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
     {
-        return Utils.getBlocksIn3x2x3CenteredPlus1OnTop(centerPosition);
+        return MachinesUtils.getBlocksIn3x2x3CenteredPlus1OnTop(centerPosition);
     }
 
     @Override

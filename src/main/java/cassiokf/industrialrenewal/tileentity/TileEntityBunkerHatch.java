@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockBunkerHatch;
 import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
-import cassiokf.industrialrenewal.util.Utils;
+import cassiokf.industrialrenewal.util.MachinesUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,7 +29,7 @@ public class TileEntityBunkerHatch extends TEBase
 
     public TileEntityBunkerHatch getMaster()
     {
-        List<BlockPos> list = Utils.getBlocksIn3x1x3Centered(this.pos);
+        List<BlockPos> list = MachinesUtils.getBlocksIn3x1x3Centered(this.pos);
         for (BlockPos currentPos : list)
         {
             if (world.getTileEntity(currentPos) instanceof TileEntityBunkerHatch)
@@ -82,7 +82,7 @@ public class TileEntityBunkerHatch extends TEBase
         if (!breaking)
         {
             breaking = true;
-            List<BlockPos> list = Utils.getBlocksIn3x1x3Centered(this.pos);
+            List<BlockPos> list = MachinesUtils.getBlocksIn3x1x3Centered(this.pos);
             for (BlockPos currentPos : list)
             {
                 Block block = world.getBlockState(currentPos).getBlock();
@@ -93,7 +93,7 @@ public class TileEntityBunkerHatch extends TEBase
 
     public void changeOpenFromMaster(boolean value)
     {
-        List<BlockPos> list = Utils.getBlocksIn3x1x3Centered(this.pos);
+        List<BlockPos> list = MachinesUtils.getBlocksIn3x1x3Centered(this.pos);
         for (BlockPos currentPos : list)
         {
             IBlockState state = world.getBlockState(currentPos);

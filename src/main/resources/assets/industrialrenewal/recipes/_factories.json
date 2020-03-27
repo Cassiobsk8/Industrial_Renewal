@@ -1,5 +1,8 @@
 {
   "conditions": {
     "sponge_iron_enabled": "cassiokf.industrialrenewal.recipes.ConditionFactoryRecipeSpongeIron"
+  },
+  "recipes": {
+    "lathe": "cassiokf.industrialrenewal.recipes.LatheRecipe$Factory"
   }
 }

@@ -1,7 +1,8 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.Block3x3Top1Base;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
 import cassiokf.industrialrenewal.tileentity.TileEntityTransformerHV;
+import cassiokf.industrialrenewal.util.MachinesUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
@@ -13,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -21,7 +23,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockTransformerHV extends Block3x3Top1Base<TileEntityTransformerHV>
+public class BlockTransformerHV extends BlockMultiBlockBase<TileEntityTransformerHV>
 {
     public static final PropertyInteger OUTPUT = PropertyInteger.create("output", 0, 2);
 
@@ -31,6 +33,12 @@ public class BlockTransformerHV extends Block3x3Top1Base<TileEntityTransformerHV
     {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
+    }
+
+    @Override
+    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing)
+    {
+        return MachinesUtils.getBlocksIn3x2x3CenteredPlus1OnTop(masterPos);
     }
 
     @Override

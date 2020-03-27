@@ -1,18 +1,13 @@
 {
-  "type": "forge:ore_shaped",
-  "pattern": [
-    "   ",
-    " I ",
-    " I "
-  ],
-  "key": {
-    "I": {
-      "type": "forge:ore_dict",
-      "ore": "ingotIron"
-    }
+  "type": "industrialrenewal:lathe",
+  "process_time": 40,
+  "input": {
+    "type": "forge:ore_dict",
+    "ore": "ingotIron"
   },
   "result": {
-    "item": "industrialrenewal:stick_iron",
+    "type": "forge:ore_dict",
+    "ore": "stickIron",
     "count": 4
   }
 }

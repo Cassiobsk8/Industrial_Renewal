@@ -7,6 +7,7 @@ import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import cassiokf.industrialrenewal.gui.*;
 import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.TileEntityRecordPlayer;
+import cassiokf.industrialrenewal.tileentity.machines.TELathe;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityFluidLoader;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityEntityDetector;
@@ -29,6 +30,7 @@ public class GUIHandler implements IGuiHandler {
     public static final int FUSEBOX = 5;
     public static final int MANUAL = 6;
     public static final int LOGCART = 7;
+    public static final int LATHE = 8;
     public static final int FLUIDLOADER = 9;
     public static final int HOPPERCART = 10;
 
@@ -53,15 +55,21 @@ public class GUIHandler implements IGuiHandler {
         if (ID == FUSEBOX) {
             return new ContainerFuseBox(player.inventory, (TileEntityFuseBox) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
         }
-        if (ID == LOGCART) {
+        if (ID == LOGCART)
+        {
             return new ContainerLogCart(player.inventory, (EntityLogCart) world.getEntityByID(x));
         }
-        if (ID == FLUIDLOADER) {
+        if (ID == FLUIDLOADER)
+        {
             return new ContainerFluidLoader(player.inventory, (TileEntityFluidLoader) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
         }
         if (ID == HOPPERCART)
         {
             return new ContainerHopperCart(player.inventory, (EntityHopperCart) world.getEntityByID(x));
+        }
+        if (ID == LATHE)
+        {
+            return new ContainerLatheMachine(player.inventory, (TELathe) world.getTileEntity(new BlockPos(x, y, z)));
         }
         return null;
     }
@@ -90,15 +98,21 @@ public class GUIHandler implements IGuiHandler {
         if (ID == MANUAL) {
             return new GUIManual(world, player);
         }
-        if (ID == LOGCART) {
+        if (ID == LOGCART)
+        {
             return new GUILogCart(player.inventory, (EntityLogCart) world.getEntityByID(x));
         }
-        if (ID == FLUIDLOADER) {
+        if (ID == FLUIDLOADER)
+        {
             return new GUIFluidLoader(player.inventory, (TileEntityFluidLoader) world.getTileEntity(new BlockPos(x, y, z)));
         }
         if (ID == HOPPERCART)
         {
             return new GUIHopperCart(player.inventory, (EntityHopperCart) world.getEntityByID(x));
+        }
+        if (ID == LATHE)
+        {
+            return new GUILatheMachine(player.inventory, (TELathe) world.getTileEntity(new BlockPos(x, y, z)));
         }
         return null;
     }

@@ -3,7 +3,8 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.handlers.IRSoundHandler;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
+import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.ICompressedFluidCapability;
 import cassiokf.industrialrenewal.util.interfaces.IDynamicSound;
@@ -17,7 +18,7 @@ import net.minecraftforge.fluids.Fluid;
 
 import java.util.List;
 
-public class TileEntityDamTurbine extends TileEntity3x3MachineBase<TileEntityDamTurbine> implements ICompressedFluidCapability, IDynamicSound
+public class TileEntityDamTurbine extends TileEntityMultiBlockBase<TileEntityDamTurbine> implements ICompressedFluidCapability, IDynamicSound
 {
     private float volume = IRConfig.MainConfig.Sounds.TurbineVolume;
     private BlockPos outPos = null;
@@ -103,7 +104,7 @@ public class TileEntityDamTurbine extends TileEntity3x3MachineBase<TileEntityDam
     @Override
     public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
     {
-        return Utils.getBlocksIn3x2x3CenteredPlus1OnTop(centerPosition);
+        return MachinesUtils.getBlocksIn3x2x3CenteredPlus1OnTop(centerPosition);
     }
 
     @Override

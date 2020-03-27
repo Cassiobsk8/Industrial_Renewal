@@ -1,8 +1,13 @@
 package cassiokf.industrialrenewal;
 
+import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import cassiokf.industrialrenewal.tab.IndustrialRenewalRailroadTab;
 import cassiokf.industrialrenewal.tab.IndustrialRenewalTab;
 import cassiokf.industrialrenewal.tab.IndustrialRenewalWIPTab;
+import net.minecraft.item.Item;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class References {
 
@@ -27,6 +32,8 @@ public class References {
     public static final int ENTITY_PASSENGERCAR_ID = 124;
     public static final int ENTITY_FLATCART_ID = 125;
     public static final int ENTITY_HOPPERCART_ID = 126;
+
+    public static final Map<Item, LatheRecipe> LATHE_RECIPES = new HashMap<>();
 
     public static final String VERSION_CHECKER_URL = "https://raw.githubusercontent.com/Cassiobsk8/Industrial_Renewal/master/update.json";
 }

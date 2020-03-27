@@ -1,6 +1,8 @@
 package cassiokf.industrialrenewal.tileentity.abstracts;
 
-import cassiokf.industrialrenewal.blocks.abstracts.Block3x3x3Base;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
+import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -12,10 +14,11 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
-public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBase> extends TileEntitySyncable implements ITickable
+public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBase> extends TileEntitySyncable implements ITickable
 {
     private boolean isMaster;
     private boolean breaking;
+    private boolean startBreaking;
     private TE masterTE;
     private boolean masterChecked = false;
     private boolean faceChecked = false;
@@ -47,12 +50,12 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
     {
         if (masterTE == null || masterTE.isInvalid())
         {
-            List<BlockPos> list = Utils.getBlocksIn3x3x3Centered(this.pos);
+            List<BlockPos> list = MachinesUtils.getBlocksIn3x3x3Centered(this.pos);
             for (BlockPos currentPos : list)
             {
                 TileEntity te = world.getTileEntity(currentPos);
-                if (te instanceof TileEntity3x3MachineBase
-                        && ((TileEntity3x3MachineBase) te).isMaster()
+                if (te instanceof TileEntityMultiBlockBase
+                        && ((TileEntityMultiBlockBase) te).isMaster()
                         && instanceOf(te))
                 {
                     setMaster((TE) te);
@@ -60,9 +63,9 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
                     return masterTE;
                 }
             }
-            if (!world.isRemote)
+            if (!world.isRemote && !startBreaking)
             {
-                Utils.sendConsoleMessage("MultiBlock Machine: " + this.getClass().toString() + " has no Master at " + pos);
+                Utils.sendConsoleMessage("MultiBlock Machine: " + this.getBlockType().toString() + " has no Master at " + pos);
                 Utils.sendConsoleMessage(" Break this machine and try replace it, If this does not work, report the problem:");
                 Utils.sendConsoleMessage("https://github.com/Cassiobsk8/Industrial_Renewal/issues/new?template=bug_report.md");
             }
@@ -78,18 +81,19 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
         for (BlockPos currentPos : list)
         {
             TileEntity te = world.getTileEntity(currentPos);
-            if (te instanceof TileEntity3x3MachineBase && instanceOf(te))
+            if (te instanceof TileEntityMultiBlockBase && instanceOf(te))
             {
-                ((TileEntity3x3MachineBase) te).setMaster(this);
+                ((TileEntityMultiBlockBase) te).setMaster(this);
             }
         }
     }
 
     public void breakMultiBlocks()
     {
+        startBreaking = true;
         if (!this.isMaster())
         {
-            if (getMaster() != null)
+            if (getMaster() != null && getMaster() != this)
             {
                 getMaster().breakMultiBlocks();
             }
@@ -103,14 +107,14 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
             for (BlockPos currentPos : list)
             {
                 Block block = world.getBlockState(currentPos).getBlock();
-                if (block instanceof Block3x3x3Base) world.setBlockToAir(currentPos);
+                if (block instanceof BlockMultiBlockBase) world.setBlockToAir(currentPos);
             }
         }
     }
 
     public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
     {
-        return Utils.getBlocksIn3x3x3Centered(centerPosition);
+        return MachinesUtils.getBlocksIn3x3x3Centered(centerPosition);
     }
 
     public abstract boolean instanceOf(TileEntity tileEntity);
@@ -118,8 +122,14 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
     public EnumFacing getMasterFacing()
     {
         if (faceChecked) return EnumFacing.byIndex(faceIndex);
-        if (getMaster() == null) return EnumFacing.NORTH;
-        EnumFacing facing = world.getBlockState(getMaster().getPos()).getValue(Block3x3x3Base.FACING);
+        if (getMaster() == null)
+        {
+            IBlockState state = world.getBlockState(pos);
+            if (state.getProperties().containsKey(BlockHorizontalFacing.FACING))
+                return state.getValue(BlockHorizontalFacing.FACING);
+            return EnumFacing.NORTH;
+        }
+        EnumFacing facing = world.getBlockState(getMaster().getPos()).getValue(BlockMultiBlockBase.FACING);
         faceChecked = true;
         faceIndex = facing.getIndex();
         return facing;
@@ -134,8 +144,8 @@ public abstract class TileEntity3x3MachineBase<TE extends TileEntity3x3MachineBa
         if (masterChecked) return this.isMaster;
 
         IBlockState state = this.world.getBlockState(this.pos);
-        if (!(state.getBlock() instanceof Block3x3x3Base)) return false;
-        isMaster = state.getValue(Block3x3x3Base.MASTER);
+        if (!(state.getBlock() instanceof BlockMultiBlockBase)) return false;
+        isMaster = state.getValue(BlockMultiBlockBase.MASTER);
         masterChecked = true;
         return isMaster;
     }

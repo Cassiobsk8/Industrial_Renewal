@@ -1,9 +1,10 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.Block3x3x3Base;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
 import cassiokf.industrialrenewal.item.ItemDrill;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityMining;
+import cassiokf.industrialrenewal.util.MachinesUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -18,8 +19,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
-public class BlockMining extends Block3x3x3Base<TileEntityMining>
+public class BlockMining extends BlockMultiBlockBase<TileEntityMining>
 {
     public BlockMining(String name, CreativeTabs tab)
     {
@@ -33,6 +35,12 @@ public class BlockMining extends Block3x3x3Base<TileEntityMining>
         TileEntityMining te = (TileEntityMining) worldIn.getTileEntity(pos);
         if (te != null) te.dropAllItems();
         super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing)
+    {
+        return MachinesUtils.getBlocksIn3x3x3Centered(masterPos);
     }
 
     @Override

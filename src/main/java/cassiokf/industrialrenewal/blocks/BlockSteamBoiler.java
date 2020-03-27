@@ -1,11 +1,12 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.Block3x3x3Base;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.item.ItemFireBox;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntitySteamBoiler;
+import cassiokf.industrialrenewal.util.MachinesUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
@@ -32,7 +33,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
+public class BlockSteamBoiler extends BlockMultiBlockBase<TileEntitySteamBoiler>
 {
     public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 2);
 
@@ -78,6 +79,12 @@ public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
         TileEntitySteamBoiler te = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
         if (te != null) te.dropAllItems();
         super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing)
+    {
+        return MachinesUtils.getBlocksIn3x3x3Centered(masterPos);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.recipes;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -13,12 +12,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 
-public class ModRecipes {
+public class ModRecipes
+{
 
-    public static void init() {
-        ModItems.registerOreDict();
-        ModBlocks.registerOreDict();
-
+    public static void init()
+    {
         if (IRConfig.MainConfig.Recipes.spongeIronRecipeActive)
         {
             Item item = IRConfig.MainConfig.Recipes.spongeDefaultIngotSteel ? ModItems.ingotSteel : OreDictionary.getOres("ingotSteel").get(0).getItem();
@@ -28,7 +26,7 @@ public class ModRecipes {
                 Ingredient.fromStacks(new ItemStack(ModItems.steelSaw, 1, OreDictionary.WILDCARD_VALUE)), Ingredient.fromStacks(new ItemStack(Blocks.STONE_SLAB, 1)));
         GameRegistry.addShapelessRecipe(new ResourceLocation("industrialrenewal:record_royal_entrance"), new ResourceLocation("record_royal_entrance"), new ItemStack(OreDictionary.getOres("record").get(0).getItem(), 1),
                 Ingredient.fromStacks(new ItemStack(ModItems.steelSaw, 1, OreDictionary.WILDCARD_VALUE)), OreIngredient.fromItems(Items.RECORD_13,
-                        Items.RECORD_11, Items.RECORD_CAT,Items.RECORD_BLOCKS, Items.RECORD_MALL, Items.RECORD_CHIRP, Items.RECORD_FAR,Items.RECORD_MELLOHI,Items.RECORD_STAL,Items.RECORD_STRAD,
+                        Items.RECORD_11, Items.RECORD_CAT, Items.RECORD_BLOCKS, Items.RECORD_MALL, Items.RECORD_CHIRP, Items.RECORD_FAR, Items.RECORD_MELLOHI, Items.RECORD_STAL, Items.RECORD_STRAD,
                         Items.RECORD_WAIT, Items.RECORD_WARD));
     }
 

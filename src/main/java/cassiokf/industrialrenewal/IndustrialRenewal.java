@@ -6,6 +6,7 @@ import cassiokf.industrialrenewal.handlers.EventHandler;
 import cassiokf.industrialrenewal.init.*;
 import cassiokf.industrialrenewal.proxy.CommonProxy;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -50,6 +51,7 @@ public class IndustrialRenewal {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         System.out.println(References.NAME + " is loading posInit!");
+        Utils.populateLatheRecipes();
         System.out.println("Done!");
     }
 
@@ -61,6 +63,8 @@ public class IndustrialRenewal {
         IRSoundRegister.registerSounds();
         EntityInit.registerEntities();
         proxy.preInit();
+        ModItems.registerOreDict();
+        ModBlocks.registerOreDict();
         NetworkHandler.init();
         ForgeChunkManager.setForcedChunkLoadingCallback(instance, new ChunkManagerCallback());
         proxy.registerRenderers();

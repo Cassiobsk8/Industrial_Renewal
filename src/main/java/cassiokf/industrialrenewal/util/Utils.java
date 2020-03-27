@@ -1,12 +1,15 @@
 package cassiokf.industrialrenewal.util;
 
+import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
@@ -15,6 +18,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.wrappers.BlockLiquidWrapper;
 import net.minecraftforge.fluids.capability.wrappers.BlockWrapper;
 import net.minecraftforge.fluids.capability.wrappers.FluidBlockWrapper;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -40,6 +44,20 @@ public class Utils
         System.out.println(str);
     }
 
+    public static void populateLatheRecipes()
+    {
+        int recipesAmount = 0;
+        for (IRecipe recipe : ForgeRegistries.RECIPES)
+        {
+            if (recipe instanceof LatheRecipe)
+            {
+                References.LATHE_RECIPES.put(((LatheRecipe) recipe).getInput(), (LatheRecipe) recipe);
+                recipesAmount++;
+            }
+        }
+        System.out.println(References.NAME + " Registered " + recipesAmount + " Recipes for Lathe Machine");
+    }
+
     public static boolean isWood(ItemStack stack)
     {
         int[] array = OreDictionary.getOreIDs(stack);
@@ -48,7 +66,8 @@ public class Utils
         oreList.add(OreDictionary.getOreID("logWood"));
         oreList.add(OreDictionary.getOreID("logRubber"));
         boolean isLog = false;
-        if (size > 0) {
+        if (size > 0)
+        {
             for (int i = 0; i < size; i++) {
                 if (oreList.contains(array[i])) {
                     isLog = true;
@@ -170,54 +189,6 @@ public class Utils
             }
         }
         return items / (float) inventory.getSlots();
-    }
-
-    public static List<BlockPos> getBlocksIn3x3x3Centered(BlockPos pos)
-    {
-        List<BlockPos> list = new ArrayList<BlockPos>();
-        for (int y = -1; y < 2; y++)
-        {
-            for (int z = -1; z < 2; z++)
-            {
-                for (int x = -1; x < 2; x++)
-                {
-                    list.add(new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z));
-                }
-            }
-        }
-        return list;
-    }
-
-    public static List<BlockPos> getBlocksIn3x2x3CenteredPlus1OnTop(BlockPos pos)
-    {
-        List<BlockPos> list = new ArrayList<BlockPos>();
-        for (int y = -1; y < 2; y++)
-        {
-            for (int z = -1; z < 2; z++)
-            {
-                for (int x = -1; x < 2; x++)
-                {
-                    if (y != 1 || (z == 0 && x == 0))
-                    {
-                        list.add(new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z));
-                    }
-                }
-            }
-        }
-        return list;
-    }
-
-    public static List<BlockPos> getBlocksIn3x1x3Centered(BlockPos pos)
-    {
-        List<BlockPos> list = new ArrayList<BlockPos>();
-        for (int z = -1; z < 2; z++)
-        {
-            for (int x = -1; x < 2; x++)
-            {
-                list.add(new BlockPos(pos.getX() + x, pos.getY(), pos.getZ() + z));
-            }
-        }
-        return list;
     }
 
     public static float getConvertedTemperature(float temp)

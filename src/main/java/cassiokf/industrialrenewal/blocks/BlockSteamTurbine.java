@@ -1,9 +1,10 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.Block3x3x3Base;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.tileentity.TileEntitySteamTurbine;
+import cassiokf.industrialrenewal.util.MachinesUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -12,12 +13,14 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockSteamTurbine extends Block3x3x3Base<TileEntitySteamTurbine>
+public class BlockSteamTurbine extends BlockMultiBlockBase<TileEntitySteamTurbine>
 {
     public BlockSteamTurbine(String name, CreativeTabs tab)
     {
@@ -45,6 +48,12 @@ public class BlockSteamTurbine extends Block3x3x3Base<TileEntitySteamTurbine>
     public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing)
+    {
+        return MachinesUtils.getBlocksIn3x3x3Centered(masterPos);
     }
 
     @Nullable

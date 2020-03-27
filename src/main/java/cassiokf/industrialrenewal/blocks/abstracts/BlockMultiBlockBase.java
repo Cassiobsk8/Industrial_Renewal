@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.blocks.abstracts;
 
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -16,12 +16,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
-public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extends BlockHorizontalFacing
+public abstract class BlockMultiBlockBase<TE extends TileEntityMultiBlockBase> extends BlockHorizontalFacing
 {
     public static final PropertyBool MASTER = PropertyBool.create("master");
 
-    public Block3x3x3Base(Material material, String name, CreativeTabs tab)
+    public BlockMultiBlockBase(Material material, String name, CreativeTabs tab)
     {
         super(name, tab, material);
         setSoundType(SoundType.METAL);
@@ -38,17 +39,12 @@ public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extend
     {
         if (state.getValue(MASTER))
         {
-            for (int y = -1; y < 2; y++)
+            EnumFacing facing = state.getValue(FACING);
+            List<BlockPos> posList = getMachineBlockPosList(pos, facing);
+            for (BlockPos currentPos : posList)
             {
-                for (int z = -1; z < 2; z++)
-                {
-                    for (int x = -1; x < 2; x++)
-                    {
-                        BlockPos currentPos = new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
-                        if (y != 0 || z != 0 || x != 0)
-                            worldIn.setBlockState(currentPos, state.withProperty(MASTER, false));
-                    }
-                }
+                if (!currentPos.equals(pos))
+                    worldIn.setBlockState(currentPos, state.withProperty(MASTER, false));
             }
         }
     }
@@ -69,20 +65,16 @@ public abstract class Block3x3x3Base<TE extends TileEntity3x3MachineBase> extend
     {
         EntityPlayer player = worldIn.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 10D, false);
         if (player == null) return false;
-        for (int y = 0; y < 3; y++)
+        EnumFacing facing = player.getHorizontalFacing();
+        List<BlockPos> posList = getMachineBlockPosList(pos.offset(facing).up(), facing);
+        for (BlockPos currentPos : posList)
         {
-            for (int z = 0; z < 3; z++)
-            {
-                for (int x = -1; x < 2; x++)
-                {
-                    EnumFacing facing = player.getHorizontalFacing();
-                    BlockPos currentPos = new BlockPos(pos.offset(facing, z).offset(facing.rotateY(), x).offset(EnumFacing.UP, y));
-                    if (!isReplaceable(worldIn, currentPos)) return false;
-                }
-            }
+            if (!isReplaceable(worldIn, currentPos)) return false;
         }
         return true;
     }
+
+    public abstract List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing);
 
     @Override
     public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)

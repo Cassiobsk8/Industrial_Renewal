@@ -4,7 +4,7 @@ import cassiokf.industrialrenewal.blocks.BlockSteamBoiler;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.item.ItemFireBox;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -29,7 +29,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntitySteamBoiler extends TileEntity3x3MachineBase<TileEntitySteamBoiler>
+public class TileEntitySteamBoiler extends TileEntityMultiBlockBase<TileEntitySteamBoiler>
 {
     public FluidTank waterTank = new FluidTank(32000)
     {

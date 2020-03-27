@@ -158,6 +158,7 @@ tile.industrialrenewal.dam_axis.name=Turbine Shaft
 tile.industrialrenewal.dam_intake.name=Dam Intake
 tile.industrialrenewal.dam_outflow.name=Dam OutFlow
 tile.industrialrenewal.block_steel.name=Block of Steel
+tile.industrialrenewal.lathe.name=Lathe Machine
 
 #Fluids
 fluid.steam=Steam
