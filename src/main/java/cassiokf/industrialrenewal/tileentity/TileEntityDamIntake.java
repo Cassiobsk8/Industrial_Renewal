@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.tileentity.abstracts.TEHorizontalDirection;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.ICompressedFluidCapability;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -40,6 +41,14 @@ public class TileEntityDamIntake extends TEHorizontalDirection implements ITicka
         return neighborPos = pos.offset(getBlockFacing().getOpposite());
     }
 
+    public void onBlockActivated(EntityPlayer player)
+    {
+        cleanWallCached();
+        initializeMultiblockIfNecessary(true);
+        int percentage = (int) waterAmount / 10;
+        Utils.sendChatMessage(player, "Efficiency: " + percentage + "%");
+    }
+
     @Override
     public boolean canAccept(EnumFacing face, BlockPos pos)
     {
@@ -60,14 +69,14 @@ public class TileEntityDamIntake extends TEHorizontalDirection implements ITicka
 
     public int getWaterAmount()
     {
-        initializeMultiblockIfNecessary();
+        initializeMultiblockIfNecessary(false);
         return waterAmount;
     }
 
-    private void initializeMultiblockIfNecessary()
+    private void initializeMultiblockIfNecessary(boolean forced)
     {
         if (world.isRemote) return;
-        if (waterAmount < 0)
+        if (waterAmount < 0 || forced)
         {
             connectedWalls.clear();
             connectedWalls.add(pos);
@@ -108,11 +117,16 @@ public class TileEntityDamIntake extends TEHorizontalDirection implements ITicka
     @Override
     public void invalidate()
     {
+        cleanWallCached();
+        super.invalidate();
+    }
+
+    private void cleanWallCached()
+    {
         for (BlockPos wall : connectedWalls)
         {
             TileEntity te = world.getTileEntity(wall);
             if (te instanceof TileEntityConcrete) ((TileEntityConcrete) te).setUsed(false);
         }
-        super.invalidate();
     }
 }
