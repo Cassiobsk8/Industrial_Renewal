@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.container.ContainerFuseBox;
+import cassiokf.industrialrenewal.gui.container.ContainerFuseBox;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketReturnFuseBox;

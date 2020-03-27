@@ -1,7 +1,8 @@
-package cassiokf.industrialrenewal.container;
+package cassiokf.industrialrenewal.gui.container;
 
-import cassiokf.industrialrenewal.entity.EntityLogCart;
-import cassiokf.industrialrenewal.util.slots.LogSlot;
+import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
+import cassiokf.industrialrenewal.util.slots.FuelSlot;
+import cassiokf.industrialrenewal.util.slots.PlowSlot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -10,19 +11,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class ContainerLogCart extends Container {
+public class ContainerSteamLocomotive extends Container {
 
+    private EntitySteamLocomotive entity;
     private IItemHandler inventory;
 
-    public ContainerLogCart(IInventory playerInv, EntityLogCart cart) {
-        this.inventory = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
-        int numRows = this.inventory.getSlots() / 9;
+    public ContainerSteamLocomotive(IInventory playerInv, EntitySteamLocomotive entity) {
+        this.entity = entity;
+        this.inventory = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
 
-        for (int i = 0; i < numRows; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                this.addSlotToContainer(new LogSlot(inventory, j + i * 9, 8 + j * 18, 18 + i * 18));
-            }
-        }
+        this.addSlotToContainer(new PlowSlot(inventory, 6, 8, 52));
+
+        this.addSlotToContainer(new FuelSlot(inventory, 0, 100, 21));
+        this.addSlotToContainer(new FuelSlot(inventory, 1, 118, 21));
+        this.addSlotToContainer(new FuelSlot(inventory, 2, 136, 21));
+        this.addSlotToContainer(new FuelSlot(inventory, 3, 100, 39));
+        this.addSlotToContainer(new FuelSlot(inventory, 4, 118, 39));
+        this.addSlotToContainer(new FuelSlot(inventory, 5, 136, 39));
 
         //Player Slots
         int xPos = 8;
@@ -39,19 +44,6 @@ public class ContainerLogCart extends Container {
         }
     }
 
-
-    /**
-     * Determines whether supplied player can use this container
-     */
-    @Override
-    public boolean canInteractWith(EntityPlayer player) {
-        return !player.isSpectator();
-    }
-
-    /**
-     * Handle when the stack in slot {@code index} is shift-clicked. Normally this moves the stack between the player
-     * inventory and the other inventory(s).
-     */
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
@@ -87,4 +79,8 @@ public class ContainerLogCart extends Container {
         return itemstack;
     }
 
+    @Override
+    public boolean canInteractWith(EntityPlayer player) {
+        return !player.isSpectator();
+    }
 }

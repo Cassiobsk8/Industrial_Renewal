@@ -2,10 +2,10 @@ package cassiokf.industrialrenewal.tileentity.tubes;
 
 import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
 import cassiokf.industrialrenewal.blocks.pipes.BlockFluidPipe;
-import cassiokf.industrialrenewal.enums.EnumCableIn;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.util.Utils;
+import cassiokf.industrialrenewal.util.enums.EnumCableIn;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

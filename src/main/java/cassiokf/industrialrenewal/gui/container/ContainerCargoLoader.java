@@ -1,7 +1,6 @@
-package cassiokf.industrialrenewal.container;
+package cassiokf.industrialrenewal.gui.container;
 
-import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
-import cassiokf.industrialrenewal.util.slots.FirstAidSlot;
+import cassiokf.industrialrenewal.tileentity.railroad.TileEntityCargoLoader;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -9,60 +8,43 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerFirstAidKit extends Container {
+public class ContainerCargoLoader extends Container {
 
-    private TileEntityFirstAidKit te;
+    private TileEntityCargoLoader te;
     private IItemHandler inventory;
 
-    public ContainerFirstAidKit(IInventory playerInv, TileEntityFirstAidKit te) {
+    public ContainerCargoLoader(IInventory playerInv, TileEntityCargoLoader te) {
         this.te = te;
-        this.inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
+        this.inventory = te.getInternalCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
 
-        this.addSlotToContainer(new FirstAidSlot(inventory, 0, 53, 29) {
+        this.addSlotToContainer(new SlotItemHandler(inventory, 0, 62, 20) {
             @Override
             public void onSlotChanged() {
                 te.markDirty();
             }
         });
-        this.addSlotToContainer(new FirstAidSlot(inventory, 1, 71, 29) {
+        this.addSlotToContainer(new SlotItemHandler(inventory, 1, 80, 20) {
             @Override
             public void onSlotChanged() {
                 te.markDirty();
             }
         });
-        this.addSlotToContainer(new FirstAidSlot(inventory, 2, 89, 29) {
+        this.addSlotToContainer(new SlotItemHandler(inventory, 2, 98, 20) {
             @Override
             public void onSlotChanged() {
                 te.markDirty();
             }
         });
-        this.addSlotToContainer(new FirstAidSlot(inventory, 3, 107, 29) {
+        this.addSlotToContainer(new SlotItemHandler(inventory, 3, 71, 38) {
             @Override
             public void onSlotChanged() {
                 te.markDirty();
             }
         });
 
-        this.addSlotToContainer(new FirstAidSlot(inventory, 4, 53, 47) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FirstAidSlot(inventory, 5, 71, 47) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FirstAidSlot(inventory, 6, 89, 47) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FirstAidSlot(inventory, 7, 107, 47) {
+        this.addSlotToContainer(new SlotItemHandler(inventory, 4, 89, 38) {
             @Override
             public void onSlotChanged() {
                 te.markDirty();

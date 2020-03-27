@@ -1,10 +1,10 @@
 package cassiokf.industrialrenewal.init;
 
-import cassiokf.industrialrenewal.container.*;
 import cassiokf.industrialrenewal.entity.EntityHopperCart;
 import cassiokf.industrialrenewal.entity.EntityLogCart;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import cassiokf.industrialrenewal.gui.*;
+import cassiokf.industrialrenewal.gui.container.*;
 import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.TileEntityRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.machines.TELathe;

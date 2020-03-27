@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.container.ContainerSteamLocomotive;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
+import cassiokf.industrialrenewal.gui.container.ContainerSteamLocomotive;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

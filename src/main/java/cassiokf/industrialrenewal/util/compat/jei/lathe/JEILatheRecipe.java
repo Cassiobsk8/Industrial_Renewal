@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.compat.jei.lathe;
+package cassiokf.industrialrenewal.util.compat.jei.lathe;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;

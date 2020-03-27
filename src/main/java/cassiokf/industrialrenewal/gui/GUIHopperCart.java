@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.gui;
 
-import cassiokf.industrialrenewal.container.ContainerHopperCart;
 import cassiokf.industrialrenewal.entity.EntityHopperCart;
+import cassiokf.industrialrenewal.gui.container.ContainerHopperCart;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

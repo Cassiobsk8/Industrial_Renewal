@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.enums.OreQuality;
 import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
+import cassiokf.industrialrenewal.util.enums.OreQuality;
 
 import java.util.concurrent.ThreadLocalRandom;
 

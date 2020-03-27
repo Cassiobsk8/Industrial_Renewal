@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.compat.jei.lathe;
+package cassiokf.industrialrenewal.util.compat.jei.lathe;
 
 import cassiokf.industrialrenewal.References;
 import mezz.jei.api.IGuiHelper;

@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.abstracts;
 
-import cassiokf.industrialrenewal.enums.enumproperty.EnumFaceRotation;
+import cassiokf.industrialrenewal.util.enums.enumproperty.EnumFaceRotation;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;

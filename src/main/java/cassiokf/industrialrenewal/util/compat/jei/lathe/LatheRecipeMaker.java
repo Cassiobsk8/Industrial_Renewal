@@ -1,6 +1,5 @@
-package cassiokf.industrialrenewal.compat.jei.lathe;
+package cassiokf.industrialrenewal.util.compat.jei.lathe;
 
-import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import com.google.common.collect.Lists;
 import mezz.jei.api.IJeiHelpers;
@@ -15,7 +14,7 @@ public class LatheRecipeMaker
 {
     public static List<JEILatheRecipe> getRecipes(IJeiHelpers helpers)
     {
-        Set<Map.Entry<Item, LatheRecipe>> recipes = References.LATHE_RECIPES.entrySet();
+        Set<Map.Entry<Item, LatheRecipe>> recipes = LatheRecipe.LATHE_RECIPES.entrySet();
         List<JEILatheRecipe> jeiRecipes = Lists.newArrayList();
         for (Map.Entry<Item, LatheRecipe> entry : recipes)
         {

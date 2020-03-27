@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.gui;
 
-import cassiokf.industrialrenewal.container.ContainerLogCart;
 import cassiokf.industrialrenewal.entity.EntityLogCart;
+import cassiokf.industrialrenewal.gui.container.ContainerLogCart;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

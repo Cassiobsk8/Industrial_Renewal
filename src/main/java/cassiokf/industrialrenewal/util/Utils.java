@@ -1,15 +1,12 @@
 package cassiokf.industrialrenewal.util;
 
-import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
@@ -18,7 +15,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.wrappers.BlockLiquidWrapper;
 import net.minecraftforge.fluids.capability.wrappers.BlockWrapper;
 import net.minecraftforge.fluids.capability.wrappers.FluidBlockWrapper;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -42,20 +38,6 @@ public class Utils
     public static void sendConsoleMessage(String str)
     {
         System.out.println(str);
-    }
-
-    public static void populateLatheRecipes()
-    {
-        int recipesAmount = 0;
-        for (IRecipe recipe : ForgeRegistries.RECIPES)
-        {
-            if (recipe instanceof LatheRecipe)
-            {
-                References.LATHE_RECIPES.put(((LatheRecipe) recipe).getInput(), (LatheRecipe) recipe);
-                recipesAmount++;
-            }
-        }
-        System.out.println(References.NAME + " Registered " + recipesAmount + " Recipes for Lathe Machine");
     }
 
     public static boolean isWood(ItemStack stack)

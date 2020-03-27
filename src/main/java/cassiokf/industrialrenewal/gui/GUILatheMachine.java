@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.container.ContainerLatheMachine;
+import cassiokf.industrialrenewal.gui.container.ContainerLatheMachine;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.machines.TELathe;
 import cassiokf.industrialrenewal.util.Utils;

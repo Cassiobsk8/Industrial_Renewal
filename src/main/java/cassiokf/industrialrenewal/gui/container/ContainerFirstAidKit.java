@@ -1,7 +1,7 @@
-package cassiokf.industrialrenewal.container;
+package cassiokf.industrialrenewal.gui.container;
 
-import cassiokf.industrialrenewal.tileentity.redstone.TileEntityFuseBox;
-import cassiokf.industrialrenewal.util.slots.FuseBoxSlot;
+import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
+import cassiokf.industrialrenewal.util.slots.FirstAidSlot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -10,108 +10,59 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class ContainerFuseBox extends Container {
+public class ContainerFirstAidKit extends Container {
 
-    private TileEntityFuseBox te;
+    private TileEntityFirstAidKit te;
     private IItemHandler inventory;
 
-    public ContainerFuseBox(IInventory playerInv, TileEntityFuseBox te) {
+    public ContainerFirstAidKit(IInventory playerInv, TileEntityFirstAidKit te) {
         this.te = te;
         this.inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
 
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 0, 17, 26) {
+        this.addSlotToContainer(new FirstAidSlot(inventory, 0, 53, 29) {
             @Override
             public void onSlotChanged() {
                 te.markDirty();
             }
         });
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 1, 35, 26) {
+        this.addSlotToContainer(new FirstAidSlot(inventory, 1, 71, 29) {
             @Override
             public void onSlotChanged() {
                 te.markDirty();
             }
         });
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 2, 53, 26) {
+        this.addSlotToContainer(new FirstAidSlot(inventory, 2, 89, 29) {
             @Override
             public void onSlotChanged() {
                 te.markDirty();
             }
         });
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 3, 71, 26) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 4, 89, 26) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 5, 107, 26) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 6, 125, 26) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 7, 143, 26) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 8, 17, 44) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 9, 35, 44) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 10, 53, 44) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 11, 71, 44) {
+        this.addSlotToContainer(new FirstAidSlot(inventory, 3, 107, 29) {
             @Override
             public void onSlotChanged() {
                 te.markDirty();
             }
         });
 
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 12, 89, 44) {
+        this.addSlotToContainer(new FirstAidSlot(inventory, 4, 53, 47) {
             @Override
             public void onSlotChanged() {
                 te.markDirty();
             }
         });
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 13, 107, 44) {
+        this.addSlotToContainer(new FirstAidSlot(inventory, 5, 71, 47) {
             @Override
             public void onSlotChanged() {
                 te.markDirty();
             }
         });
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 14, 125, 44) {
+        this.addSlotToContainer(new FirstAidSlot(inventory, 6, 89, 47) {
             @Override
             public void onSlotChanged() {
                 te.markDirty();
             }
         });
-        this.addSlotToContainer(new FuseBoxSlot(inventory, 15, 143, 44) {
+        this.addSlotToContainer(new FirstAidSlot(inventory, 7, 107, 47) {
             @Override
             public void onSlotChanged() {
                 te.markDirty();

@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.compat.jei;
+package cassiokf.industrialrenewal.util.compat.jei;
 
 import cassiokf.industrialrenewal.References;
 

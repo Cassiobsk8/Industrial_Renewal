@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.enums.EnumCableIn;
+import cassiokf.industrialrenewal.util.enums.EnumCableIn;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityEnergyCableMVGauge extends TileEntityEnergyCableGauge

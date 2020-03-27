@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity.machines;
 
-import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
 import cassiokf.industrialrenewal.util.MachinesUtils;
@@ -58,7 +57,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack)
             {
-                return References.LATHE_RECIPES.containsKey(stack.getItem());
+                return LatheRecipe.LATHE_RECIPES.containsKey(stack.getItem());
             }
         };
         this.outPut = new ItemStackHandler(1)
@@ -99,9 +98,9 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             ItemStack inputStack = input.getStackInSlot(0);
             if (!inProcess
                     && !inputStack.isEmpty()
-                    && References.LATHE_RECIPES.containsKey(inputStack.getItem()))
+                    && LatheRecipe.LATHE_RECIPES.containsKey(inputStack.getItem()))
             {
-                LatheRecipe recipe = References.LATHE_RECIPES.get(inputStack.getItem());
+                LatheRecipe recipe = LatheRecipe.LATHE_RECIPES.get(inputStack.getItem());
                 if (recipe != null)
                 {
                     ItemStack result = recipe.getRecipeOutput();

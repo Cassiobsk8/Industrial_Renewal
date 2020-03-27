@@ -1,10 +1,10 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
-import cassiokf.industrialrenewal.enums.EnumCableIn;
-import cassiokf.industrialrenewal.enums.enumproperty.EnumBaseDirection;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.properties.PropertyBaseDirection;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityCableTray;
+import cassiokf.industrialrenewal.util.enums.EnumCableIn;
+import cassiokf.industrialrenewal.util.enums.enumproperty.EnumBaseDirection;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;

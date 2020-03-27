@@ -1,8 +1,8 @@
-package cassiokf.industrialrenewal.compat.jei.lathe;
+package cassiokf.industrialrenewal.util.compat.jei.lathe;
 
 import cassiokf.industrialrenewal.References;
-import cassiokf.industrialrenewal.compat.jei.RecipeCategories;
 import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.util.compat.jei.RecipeCategories;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;

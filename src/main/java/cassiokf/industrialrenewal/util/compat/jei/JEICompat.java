@@ -1,10 +1,10 @@
-package cassiokf.industrialrenewal.compat.jei;
+package cassiokf.industrialrenewal.util.compat.jei;
 
-import cassiokf.industrialrenewal.compat.jei.lathe.LatheRecipeCategory;
-import cassiokf.industrialrenewal.compat.jei.lathe.LatheRecipeMaker;
-import cassiokf.industrialrenewal.container.ContainerLatheMachine;
 import cassiokf.industrialrenewal.gui.GUILatheMachine;
+import cassiokf.industrialrenewal.gui.container.ContainerLatheMachine;
 import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.util.compat.jei.lathe.LatheRecipeCategory;
+import cassiokf.industrialrenewal.util.compat.jei.lathe.LatheRecipeMaker;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;

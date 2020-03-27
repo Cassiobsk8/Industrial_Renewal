@@ -44,6 +44,10 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.k-4u.nl"
     }
+    maven { // CraftTweaker (aka MineTweaker3)
+        name 'jared maven'
+        url "http://maven.blamejared.com/"
+    }
 }
 
 dependencies {
@@ -51,6 +55,7 @@ dependencies {
     deobfProvided "mezz.jei:jei_${mc_version}:${jei_version}:api"
     // at runtime, use the full JEI jar
     runtime "mezz.jei:jei_${mc_version}:${jei_version}"
+    compileOnly "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.8.468"
 }
 
 processResources {

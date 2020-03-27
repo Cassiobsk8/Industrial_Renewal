@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.recipes;
 
+import cassiokf.industrialrenewal.References;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.inventory.InventoryCrafting;
@@ -11,13 +12,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LatheRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
+    public static final Map<Item, LatheRecipe> LATHE_RECIPES = new HashMap<>();
+
     private final Item input;
     private final ItemStack output;
     private final int processTime;
@@ -104,5 +110,19 @@ public class LatheRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IR
             }
             return CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, memberName), context);
         }
+    }
+
+    public static void populateLatheRecipes()
+    {
+        int recipesAmount = 0;
+        for (IRecipe recipe : ForgeRegistries.RECIPES)
+        {
+            if (recipe instanceof LatheRecipe)
+            {
+                LATHE_RECIPES.put(((LatheRecipe) recipe).getInput(), (LatheRecipe) recipe);
+                recipesAmount++;
+            }
+        }
+        System.out.println(References.NAME + " Registered " + recipesAmount + " Recipes for Lathe Machine");
     }
 }

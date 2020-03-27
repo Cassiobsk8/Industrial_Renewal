@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.util.interfaces.IConnectibleCart;
+import cassiokf.industrialrenewal.util.interfaces.IDirectionCart;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,11 +22,12 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class EntitySteamLocomotive extends EntityMinecart implements IConnectibleCart
+public class EntitySteamLocomotive extends EntityMinecart implements IConnectibleCart, IDirectionCart
 {
 
     private static final DataParameter<Boolean> PLOW = EntityDataManager.createKey(EntitySteamLocomotive.class, DataSerializers.BOOLEAN);
     public boolean hasPlowItem;
+    private boolean rotated;
     public ItemStackHandler inventory = new ItemStackHandler(7)
     {
         @Override
@@ -34,6 +36,12 @@ public class EntitySteamLocomotive extends EntityMinecart implements IConnectibl
             EntitySteamLocomotive.this.Sync();
         }
     };
+
+    public EntitySteamLocomotive(World worldIn)
+    {
+        super(worldIn);
+        this.setSize(1.0F, 1.0F);
+    }
 
     @Override
     public float getMaxCouplingDistance(EntityMinecart cart)
@@ -45,12 +53,6 @@ public class EntitySteamLocomotive extends EntityMinecart implements IConnectibl
     public float getFixedDistance(EntityMinecart cart)
     {
         return 1f;
-    }
-
-    public EntitySteamLocomotive(World worldIn)
-    {
-        super(worldIn);
-        this.setSize(1.0F, 1.0F);
     }
 
     @Override
@@ -97,12 +99,14 @@ public class EntitySteamLocomotive extends EntityMinecart implements IConnectibl
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setTag("inventory", this.inventory.serializeNBT());
+        compound.setBoolean("rotated", rotated);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.inventory.deserializeNBT(compound.getCompoundTag("inventory"));
+        this.rotated = compound.getBoolean("rotated");
         this.Sync();
     }
 
@@ -145,5 +149,17 @@ public class EntitySteamLocomotive extends EntityMinecart implements IConnectibl
         {
             this.hasPlowItem = this.dataManager.get(PLOW);
         }
+    }
+
+    @Override
+    public boolean isRotated()
+    {
+        return rotated;
+    }
+
+    @Override
+    public void setRotation(boolean rotation)
+    {
+        rotated = rotation;
     }
 }

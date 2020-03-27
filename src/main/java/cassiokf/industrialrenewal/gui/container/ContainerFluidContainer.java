@@ -1,48 +1,23 @@
-package cassiokf.industrialrenewal.container;
+package cassiokf.industrialrenewal.gui.container;
 
-import cassiokf.industrialrenewal.tileentity.TileEntityRecordPlayer;
-import cassiokf.industrialrenewal.util.slots.RecordSlot;
+import cassiokf.industrialrenewal.entity.EntityFluidContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class ContainerRecordPlayer extends Container {
+public class ContainerFluidContainer extends Container {
 
-    private TileEntityRecordPlayer te;
-    private IItemHandler inventory;
+    private EntityFluidContainer entity;
+    private IFluidHandler inventory;
 
-    public ContainerRecordPlayer(IInventory playerInv, TileEntityRecordPlayer te) {
-        this.te = te;
-        this.inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
+    public ContainerFluidContainer(IInventory playerInv, EntityFluidContainer entity) {
+        this.entity = entity;
+        this.inventory = entity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
 
-        this.addSlotToContainer(new RecordSlot(inventory, 0, 80, 9) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new RecordSlot(inventory, 1, 80, 27) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new RecordSlot(inventory, 2, 80, 45) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
-        this.addSlotToContainer(new RecordSlot(inventory, 3, 80, 63) {
-            @Override
-            public void onSlotChanged() {
-                te.markDirty();
-            }
-        });
 
         //Player Slots
         int xPos = 8;

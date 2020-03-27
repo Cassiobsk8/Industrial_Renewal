@@ -1,13 +1,13 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.enums.EnumCableIn;
-import cassiokf.industrialrenewal.enums.EnumEnergyCableType;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableHV;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableLV;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableMV;
+import cassiokf.industrialrenewal.util.enums.EnumCableIn;
+import cassiokf.industrialrenewal.util.enums.EnumEnergyCableType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;

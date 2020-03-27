@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.properties;
 
-import cassiokf.industrialrenewal.enums.enumproperty.EnumBaseDirection;
+import cassiokf.industrialrenewal.util.enums.enumproperty.EnumBaseDirection;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import net.minecraft.block.properties.PropertyEnum;

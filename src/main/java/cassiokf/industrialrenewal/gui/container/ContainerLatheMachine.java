@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.container;
+package cassiokf.industrialrenewal.gui.container;
 
 import cassiokf.industrialrenewal.tileentity.machines.TELathe;
 import net.minecraft.entity.player.EntityPlayer;

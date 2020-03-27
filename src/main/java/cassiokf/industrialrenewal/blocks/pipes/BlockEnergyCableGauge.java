@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
-import cassiokf.industrialrenewal.enums.EnumEnergyCableType;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableGauge;
@@ -8,6 +7,7 @@ import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableHVGauge;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableLVGauge;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableMVGauge;
 import cassiokf.industrialrenewal.util.Utils;
+import cassiokf.industrialrenewal.util.enums.EnumEnergyCableType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.properties.IProperty;

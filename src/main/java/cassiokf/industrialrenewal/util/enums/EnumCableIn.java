@@ -1,4 +1,4 @@
-package cassiokf.industrialrenewal.enums;
+package cassiokf.industrialrenewal.util.enums;
 
 import net.minecraft.util.math.MathHelper;
 

@@ -6,7 +6,7 @@ import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
 import cassiokf.industrialrenewal.blocks.pipes.*;
 import cassiokf.industrialrenewal.blocks.redstone.BlockAlarm;
-import cassiokf.industrialrenewal.enums.enumproperty.EnumBaseDirection;
+import cassiokf.industrialrenewal.util.enums.enumproperty.EnumBaseDirection;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
