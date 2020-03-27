@@ -10,8 +10,8 @@
     "authorList": [
       "CassioKF"
     ],
-    "credits": "The internet, shadowfacts.net/tutorials, mcreator.net(for code reference), MrCrayfish's Model Creator, CJMinecraft01 and Harry's Tech Reviews for the tutorials",
-    "logoFile": "",
+    "credits": "shadowfacts.net/tutorials, CJMinecraft01 and Harry's Tech Reviews for the tutorials",
+    "logoFile": "assets/industrialrenewal/textures/logo.png",
     "screenshots": [],
     "dependencies": []
   }
