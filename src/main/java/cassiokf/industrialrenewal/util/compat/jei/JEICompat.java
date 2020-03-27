@@ -8,8 +8,8 @@ import cassiokf.industrialrenewal.util.compat.jei.lathe.LatheRecipeMaker;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.translation.I18n;
 
 import java.util.IllegalFormatException;
 
@@ -18,9 +18,7 @@ public class JEICompat implements IModPlugin
 {
     public static String translateToLocal(String key)
     {
-        if (I18n.canTranslate(key)) I18n.translateToLocal(key);
-
-        return I18n.translateToFallback(key);
+        return I18n.format(key);
     }
 
     public static String translateToLocalFormated(String key, Object... format)

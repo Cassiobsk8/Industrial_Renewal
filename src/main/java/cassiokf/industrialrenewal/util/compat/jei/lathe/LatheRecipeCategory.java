@@ -28,6 +28,7 @@ public class LatheRecipeCategory extends AbstractLatheRecipeCategory<JEILatheRec
     public void drawExtras(Minecraft minecraft)
     {
         cutterStatic.draw(minecraft, 80, 44);
+        energyBar.draw(minecraft, 4, 2);
     }
 
     @Override

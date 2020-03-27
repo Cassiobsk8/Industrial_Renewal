@@ -15,10 +15,12 @@ public abstract class AbstractLatheRecipeCategory<T extends IRecipeWrapper> impl
     protected static final int output = 1;
     protected final IDrawableStatic cutterStatic;
     protected final IDrawable icon;
+    protected final IDrawable energyBar;
 
     protected AbstractLatheRecipeCategory(IGuiHelper helper)
     {
         cutterStatic = helper.createDrawable(TEXTURE, 176, 70, 7, 13);
         icon = helper.createDrawable(TEXTURE, 240, 0, 16, 16);
+        energyBar = helper.createDrawable(TEXTURE, 176, 0, 16, 69);
     }
 }

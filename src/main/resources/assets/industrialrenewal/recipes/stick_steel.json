@@ -1,6 +1,6 @@
 {
   "type": "industrialrenewal:lathe",
-  "process_time": 40,
+  "process_time": 50,
   "input": {
     "type": "forge:ore_dict",
     "ore": "ingotSteel"

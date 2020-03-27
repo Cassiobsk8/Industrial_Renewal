@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.machines;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
 import cassiokf.industrialrenewal.util.MachinesUtils;
@@ -31,7 +32,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
     private int tick;
     private int processTime;
     private ItemStack processingItem;
-    private int energyPTick = 128;
+    private int energyPTick = IRConfig.MainConfig.Main.energyPerTickLatheMachine;
 
     public TELathe()
     {

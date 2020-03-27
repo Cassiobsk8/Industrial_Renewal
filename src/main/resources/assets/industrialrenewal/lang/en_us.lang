@@ -205,6 +205,7 @@ gui.config.emergency_mode.name=Deactivate Chunk Load
 gui.config.blade_durability.name=Wind Turbine Bade durability
 tesr.ir.mode=Mode
 tesr.ir.inventory=Inventory
+gui.jei.category.energyneeded=Energy Required:
 
 #Render
 render.industrialrenewal.energy=Energy
