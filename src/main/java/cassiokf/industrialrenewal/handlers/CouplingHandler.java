@@ -13,6 +13,7 @@ import java.util.UUID;
 
 /*
        High Inspired on Railcraft's CovertJaguar Linkage system
+       https://github.com/Railcraft/Railcraft
  */
 public class CouplingHandler
 {
