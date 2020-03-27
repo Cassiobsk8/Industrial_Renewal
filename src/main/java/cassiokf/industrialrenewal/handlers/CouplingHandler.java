@@ -11,6 +11,9 @@ import javax.annotation.Nullable;
 import javax.vecmath.Vector2d;
 import java.util.UUID;
 
+/*
+       High Inspired on Railcraft's CovertJaguar Linkage system
+ */
 public class CouplingHandler
 {
     public static @Nullable
