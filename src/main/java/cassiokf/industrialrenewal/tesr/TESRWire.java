@@ -5,7 +5,6 @@ import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -14,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.awt.*;
 
 @SideOnly(Side.CLIENT)
-public class TESRWire extends TileEntitySpecialRenderer<TileEntityHVConnectorBase>
+public class TESRWire extends TESRBase<TileEntityHVConnectorBase>
 {
     static Color c = new Color(56, 56, 56, 255);
     static Color c2 = new Color(43, 43, 43, 255);
