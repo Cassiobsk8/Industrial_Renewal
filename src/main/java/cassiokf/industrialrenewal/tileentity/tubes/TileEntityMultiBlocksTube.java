@@ -38,6 +38,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         if (!firstTick)
         {
             firstTick = true;
+            beforeInitialize();
             initializeMultiblockIfNecessary();
             onFirstTick();
         }
@@ -46,6 +47,11 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 
     public void tick()
     {
+    }
+
+    public void beforeInitialize()
+    {
+
     }
 
     public void onFirstTick()
@@ -202,13 +208,21 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 
     public void addMachine(BlockPos pos, EnumFacing face)
     {
-        if (!isMaster()) getMaster().addMachine(pos, face);
+        if (!isMaster())
+        {
+            getMaster().addMachine(pos, face);
+            return;
+        }
         posSet.put(pos, face);
     }
 
     public void removeMachine(BlockPos ownPos, BlockPos machinePos)
     {
-        if (!isMaster()) getMaster().removeMachine(ownPos, machinePos);
+        if (!isMaster())
+        {
+            getMaster().removeMachine(ownPos, machinePos);
+            return;
+        }
         posSet.remove(machinePos);
     }
 

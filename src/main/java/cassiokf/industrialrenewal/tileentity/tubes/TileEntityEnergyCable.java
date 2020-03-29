@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
+import cassiokf.industrialrenewal.tileentity.TileEntityWindTurbinePillar;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -18,6 +19,8 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
     public final VoltsEnergyContainer energyContainer;
 
     public int averageEnergy;
+    public int potentialEnergy;
+    private int oldPotential = -1;
     private int oldEnergy;
     private int tick;
 
@@ -45,8 +48,9 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
                 tick = 0;
                 averageEnergy = outPut / 10;
                 outPut = 0;
-                if (averageEnergy != oldEnergy)
+                if (averageEnergy != oldEnergy || potentialEnergy != oldPotential)
                 {
+                    oldPotential = potentialEnergy;
                     oldEnergy = averageEnergy;
                     Sync();
                 }
@@ -64,10 +68,9 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
 
         if (inUse) return 0; //to prevent stack overflow (IE)
         inUse = true;
-
+        if (!simulate) potentialEnergy = Math.min(maxReceive, this.energyContainer.getMaxOutput());
         if (maxReceive <= 0) return 0;
         int out = 0;
-
 
         final Map<BlockPos, EnumFacing> mapPosSet = getMachinesPosSet();
         int quantity = mapPosSet.size();
@@ -145,7 +148,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
             BlockPos currentPos = pos.offset(face);
             TileEntity te = world.getTileEntity(currentPos);
             boolean hasMachine = te != null
-                    && !(te instanceof TileEntityEnergyCable)
+                    && (!(te instanceof TileEntityEnergyCable) || te instanceof TileEntityWindTurbinePillar)
                     && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
             IEnergyStorage eStorage = null;
             if (hasMachine) eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());

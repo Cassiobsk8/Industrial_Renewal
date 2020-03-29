@@ -1,7 +1,8 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockWindTurbinePillar;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
+import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.block.state.IBlockState;
@@ -11,35 +12,23 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileEntityWindTurbinePillar>
+public class TileEntityWindTurbinePillar extends TileEntityEnergyCable
 {
-    private final VoltsEnergyContainer energyContainer;
     private final VoltsEnergyContainer dummyEnergyContainer;
 
     private float amount;//For Lerp
     private int oldOutPut = -1;
-    private int potentialEnergy;
-    private int oldPotential = -1;
 
     private EnumFacing facing;
 
-    private EnumFacing[] faces = new EnumFacing[]{EnumFacing.UP, EnumFacing.DOWN};
+    private final EnumFacing[] faces = new EnumFacing[]{EnumFacing.UP, EnumFacing.DOWN};
     private boolean isBase;
 
     public TileEntityWindTurbinePillar()
     {
-        this.energyContainer = new VoltsEnergyContainer(1024, 128, 128)
-        {
-            @Override
-            public int receiveEnergy(int maxReceive, boolean simulate)
-            {
-                return TileEntityWindTurbinePillar.this.passEnergy(maxReceive, simulate);
-            }
-        };
         this.dummyEnergyContainer = new VoltsEnergyContainer(0, 0, 0)
         {
             @Override
@@ -57,82 +46,15 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     }
 
     @Override
-    public void onFirstTick()
+    public int getMaxEnergyToTransport()
+    {
+        return IRConfig.MainConfig.Main.maxEnergySWindTurbine;
+    }
+
+    @Override
+    public void beforeInitialize()
     {
         isBase = getIsBase();
-    }
-
-    public int passEnergy(int amount, boolean simulate)
-    {
-        if (!isMaster() && !isMasterInvalid()) return getMaster().passEnergy(amount, simulate);
-
-        int out = 0;
-        int validOutputs = getOutputCount();
-        potentialEnergy = Math.min(amount, this.energyContainer.getMaxOutput());
-        if (validOutputs == 0)
-        {
-            outPut = 0;
-            if (outPut != oldOutPut || potentialEnergy != oldPotential)
-            {
-                oldPotential = potentialEnergy;
-                oldOutPut = outPut;
-                this.Sync();
-            }
-            return 0;
-        }
-
-        int realMaxOutput = Math.min(amount / validOutputs, this.energyContainer.getMaxOutput());
-        for (BlockPos posM : getMachinesPosSet().keySet())
-        {
-            TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = getMachinesPosSet().get(posM).getOpposite();
-            if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
-            {
-                IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
-                if (energyStorage != null && energyStorage.canReceive())
-                {
-                    int energy = energyStorage.receiveEnergy(realMaxOutput, simulate);
-
-                    out += energy;
-                }
-            }
-        }
-        if (!simulate)
-        {
-            outPut = out;
-        } else if (out == 0)
-        {
-            outPut = out;
-        }
-
-        if (outPut != oldOutPut || potentialEnergy != oldPotential)
-        {
-            oldPotential = potentialEnergy;
-            oldOutPut = outPut;
-            this.Sync();
-        }
-        return out;
-    }
-
-    public int getOutputCount()
-    {
-        int canAccept = 0;
-        int realMaxOutput = this.energyContainer.getMaxOutput();
-        for (BlockPos posM : getMachinesPosSet().keySet())
-        {
-            TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = getMachinesPosSet().get(posM).getOpposite();
-            if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
-            {
-                IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
-                if (energyStorage != null && energyStorage.canReceive())
-                {
-                    int energy = energyStorage.receiveEnergy(realMaxOutput, true);
-                    if (energy > 0) canAccept++;
-                }
-            }
-        }
-        return canAccept;
     }
 
     @Override
@@ -150,23 +72,20 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
     @Override
     public void checkForOutPuts(BlockPos bPos)
     {
-        isBase = getIsBase();
         outPut = 0;
         potentialEnergy = 0;
-        if (world.isRemote) return;
+        if (world.isRemote || !isBase) return;
         for (EnumFacing face : EnumFacing.HORIZONTALS)
         {
             BlockPos currentPos = pos.offset(face);
-            if (isBase)
-            {
-                IBlockState state = world.getBlockState(currentPos);
-                TileEntity te = world.getTileEntity(currentPos);
-                boolean hasMachine = !(state.getBlock() instanceof BlockWindTurbinePillar)
-                        && te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
 
-                if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
-                    addMachine(currentPos, face);
-            }
+            IBlockState state = world.getBlockState(currentPos);
+            TileEntity te = world.getTileEntity(currentPos);
+            boolean hasMachine = !(state.getBlock() instanceof BlockWindTurbinePillar)
+                    && te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
+
+            if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
+                addMachine(currentPos, face);
         }
         this.Sync();
     }
@@ -180,31 +99,22 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
         return facing;
     }
 
-    public float getGenerationforGauge()
+    public float getGenerationForGauge()
     {
-        float currentAmount = getEnergyGenerated();
-        float totalCapacity = this.energyContainer.getMaxOutput();
-        currentAmount = currentAmount / totalCapacity;
+        float currentAmount = Utils.normalize(getMaster().averageEnergy, 0, getMaxEnergyToTransport());
         amount = Utils.lerp(amount, currentAmount, 0.1f);
         return Math.min(amount, 1) * 90f;
     }
 
     public float getPotentialValue()
     {
-        float currentAmount = potentialEnergy;
-        float totalCapacity = this.energyContainer.getMaxOutput();
-        currentAmount = currentAmount / totalCapacity;
-        return Math.min(currentAmount, 1) * 90f;
-    }
-
-    public int getEnergyGenerated()
-    {
-        return getMaster().outPut;
+        float currentAmount = Utils.normalize(getMaster().potentialEnergy, 0, getMaxEnergyToTransport());
+        return currentAmount * 90f;
     }
 
     public String getText()
     {
-        return getEnergyGenerated() + " FE/t";
+        return getMaster().averageEnergy + " FE/t";
     }
 
     public boolean isBase()
