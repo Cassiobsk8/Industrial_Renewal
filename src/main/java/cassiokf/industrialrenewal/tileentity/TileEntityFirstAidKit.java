@@ -4,7 +4,6 @@ import cassiokf.industrialrenewal.blocks.BlockFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -13,7 +12,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityFirstAidKit extends TileEntitySyncable
 {
-
+    private EnumFacing facing;
     public ItemStackHandler inventory;
 
     public TileEntityFirstAidKit()
@@ -28,14 +27,10 @@ public class TileEntityFirstAidKit extends TileEntitySyncable
         };
     }
 
-    public EnumFacing getFaceDirection() {
-
-        return BlockFirstAidKit.getFaceDirection(this.world.getBlockState(this.pos));
-    }
-
-    @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        return new AxisAlignedBB(getPos(), getPos().add(1, 1, 1));
+    public EnumFacing getFaceDirection()
+    {
+        if (facing != null) return facing;
+        return facing = BlockFirstAidKit.getFaceDirection(world.getBlockState(pos));
     }
 
     @Override
@@ -57,7 +52,10 @@ public class TileEntityFirstAidKit extends TileEntitySyncable
 
     @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) this.inventory : super.getCapability(capability, facing);
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+                ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory)
+                : super.getCapability(capability, facing);
     }
 }

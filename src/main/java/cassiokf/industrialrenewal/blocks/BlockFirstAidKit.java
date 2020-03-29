@@ -84,10 +84,13 @@ public class BlockFirstAidKit extends BlockHorizontalFacing
 
     private ItemStack itemInKit(World world, BlockPos pos) {
         TileEntityFirstAidKit te = (TileEntityFirstAidKit) world.getTileEntity(pos);
-        IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        for (int slot = 0; slot < inventory.getSlots(); slot++) {
+        if (te == null) return null;
+        IItemHandler inventory = te.inventory;
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
             ItemStack stack = inventory.getStackInSlot(slot);
-            if (!stack.isEmpty()) {
+            if (!stack.isEmpty())
+            {
                 return stack;
             }
         }

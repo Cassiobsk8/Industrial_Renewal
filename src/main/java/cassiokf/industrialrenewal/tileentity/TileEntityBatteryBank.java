@@ -106,7 +106,7 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ITickab
         return blockFacing;
     }
 
-    public float GetTankFill() //0 ~ 180
+    public float getBatteryFill()
     {
         float currentAmount = container.getEnergyStored() / 1000F;
         float totalCapacity = container.getMaxEnergyStored() / 1000F;

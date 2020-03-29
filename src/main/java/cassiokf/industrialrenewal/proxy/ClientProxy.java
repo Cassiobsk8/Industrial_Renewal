@@ -52,7 +52,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolarPanelFrame.class, new TESRSolarPanelFrame());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipeGauge.class, new TESRPipeGauge());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnergyCableGauge.class, new TESRCableGauge());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnergyLevel.class, new TESREnergyFill());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnergyLevel.class, new TESREnergyLevelGauge());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidLoader.class, new TESRFluidLoader());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCargoLoader.class, new TESRCargoLoader());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityHVConnectorBase.class, new TESRWire());
