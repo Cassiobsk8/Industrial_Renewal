@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.tesr;
 import cassiokf.industrialrenewal.tileentity.machines.TELathe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -20,7 +21,8 @@ public class TESRLathe extends TESRBase<TELathe>
             if (result != null && !result.isEmpty())
             {
                 doTheMath(facing, x, z, 0.97, 1.1);
-                renderText(facing, xPos, y + 1.1, zPos, te.getResultItem().getDisplayName(), 0.005F);
+                String formated = TextFormatting.GREEN + te.getResultItem().getDisplayName();
+                renderText(facing, xPos, y + 1.1, zPos, formated, 0.005F);
                 doTheMath(facing, x, z, 0.97, 1.1);
                 render3dItem(facing, te.getWorld(), xPos, y + 1.2, zPos, result, 0.5f, true);
             }
