@@ -33,7 +33,7 @@ public abstract class TileEntityEnergyCableGauge extends TileEntityEnergyCable
         float totalCapacity = (float) energyContainer.getMaxOutput();
         currentAmount = Utils.normalize(currentAmount, 0, totalCapacity);
         amount = Utils.lerp(amount, currentAmount, 0.1f);
-        return amount * 90f;
+        return Math.min(amount, 1f) * 90f;
     }
 
     @Override

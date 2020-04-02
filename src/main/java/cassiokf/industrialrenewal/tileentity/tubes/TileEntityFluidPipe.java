@@ -69,8 +69,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
         {
             out = moveFluid(resource, doFill, mapPosSet);
             if (doFill) outPut += out;
-        }
-        outPutCount = quantity;
+        } else outPutCount = 0;
 
         inUse = false;
         return out;
@@ -80,6 +79,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     {
         int out = 0;
         int validOutputs = getMaxOutput(mapPosSet, resource);
+        outPutCount = validOutputs;
         if (validOutputs == 0) return 0;
         FluidStack realMaxOutput = new FluidStack(resource.getFluid(), Math.min(resource.amount / validOutputs, maxOutput));
         for (BlockPos posM : mapPosSet.keySet())

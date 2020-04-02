@@ -107,15 +107,15 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         }
     }
 
-    public int getLimitedValueForOutPut(int value, int maxOutPut, BlockPos storagePos, boolean simulate)
+    public int getLimitedValueForOutPut(int value, int maxTransferAmount, BlockPos storagePos, boolean simulate)
     {
         if (!limitedOutPutMap.containsKey(storagePos))
         {
             if (!simulate) limitedOutPutMap.put(storagePos, value);
-            return value;
+            return Math.min(value, maxTransferAmount);
         }
         int currentValue = limitedOutPutMap.get(storagePos);
-        int maxValue = maxOutPut - currentValue;
+        int maxValue = maxTransferAmount - currentValue;
         maxValue = Math.min(value, maxValue);
         if (!simulate) limitedOutPutMap.put(storagePos, currentValue + maxValue);
         return maxValue;

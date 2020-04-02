@@ -79,8 +79,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
         {
             out = moveEnergy(maxReceive, simulate, mapPosSet);
             if (!simulate) outPut += out;
-        }
-        outPutCount = quantity;
+        } else outPutCount = 0;
 
         inUse = false;
         return out;
@@ -90,6 +89,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
     {
         int out = 0;
         int validOutputs = getRealOutPutCount(mapPosSet);
+        outPutCount = validOutputs;
         if (validOutputs == 0) return 0;
         int realMaxOutput = Math.min(amount / validOutputs, getMaxEnergyToTransport());
 
