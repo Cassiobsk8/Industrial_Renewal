@@ -63,8 +63,6 @@ public class IndustrialRenewal {
         IRSoundRegister.registerSounds();
         EntityInit.registerEntities();
         proxy.preInit();
-        ModItems.registerOreDict();
-        ModBlocks.registerOreDict();
         NetworkHandler.init();
         ForgeChunkManager.setForcedChunkLoadingCallback(instance, new ChunkManagerCallback());
         proxy.registerRenderers();
@@ -83,6 +81,8 @@ public class IndustrialRenewal {
         public static void registerItems(RegistryEvent.Register<Item> event) {
             ModItems.register(event.getRegistry());
             ModBlocks.registerItemBlocks(event.getRegistry());
+            ModItems.registerOreDict();
+            ModBlocks.registerOreDict();
         }
 
         @SubscribeEvent
