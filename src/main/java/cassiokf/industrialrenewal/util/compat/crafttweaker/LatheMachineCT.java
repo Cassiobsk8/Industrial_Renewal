@@ -3,30 +3,33 @@ package cassiokf.industrialrenewal.util.compat.crafttweaker;
 import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
-import crafttweaker.api.item.IItemStack;
-import net.minecraft.item.Item;
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+
+import java.util.Arrays;
+import java.util.List;
 
 @ZenClass("mods.industrialrenewal.lathe")
 public class LatheMachineCT
 {
     @ZenMethod
-    public static void addRecipe(IItemStack output, IItemStack input, int time)
+    public static void addRecipe(IIngredient output, IIngredient input, int time)
     {
-        ItemStack inputStack = toStack(input);
-        ItemStack outputStack = toStack(output);
-        LatheRecipe latheRecipe = new LatheRecipe(inputStack.getItem(), outputStack, time);
-        CraftTweakerAPI.apply(new Add(inputStack.getItem(), latheRecipe));
+        ItemStack outputStack = CraftTweakerMC.getItemStacks(output.getItems())[0];
+        List<ItemStack> stackList = Arrays.asList(CraftTweakerMC.getItemStacks(input.getItems()));
+        LatheRecipe latheRecipe = new LatheRecipe(stackList, outputStack, time);
+        CraftTweakerAPI.apply(new Add(stackList, latheRecipe));
     }
 
     @ZenMethod
-    public static void removeRecipe(IItemStack output)
+    public static void removeRecipe(IIngredient output)
     {
-        ItemStack outputStack = toStack(output);
+        ItemStack outputStack = CraftTweakerMC.getItemStacks(output.getItems())[0];
         LatheRecipe recipeToRemove = null;
-        for (LatheRecipe recipe : LatheRecipe.LATHE_RECIPES.values())
+        for (LatheRecipe recipe : LatheRecipe.LATHE_RECIPES)
         {
             if (recipe.getRecipeOutput().getItem().equals(outputStack.getItem()))
             {
@@ -44,19 +47,12 @@ public class LatheMachineCT
         CraftTweakerAPI.apply(new RemoveAll());
     }
 
-    public static ItemStack toStack(IItemStack iStack)
-    {
-        if (iStack == null)
-            return ItemStack.EMPTY;
-        return (ItemStack) iStack.getInternal();
-    }
-
     private static class Add implements IAction
     {
         private final LatheRecipe recipe;
-        private final Item item;
+        private final List<ItemStack> item;
 
-        public Add(Item item, LatheRecipe recipe)
+        public Add(List<ItemStack> item, LatheRecipe recipe)
         {
             this.recipe = recipe;
             this.item = item;
@@ -65,7 +61,11 @@ public class LatheMachineCT
         @Override
         public void apply()
         {
-            LatheRecipe.LATHE_RECIPES.put(item, recipe);
+            LatheRecipe.LATHE_RECIPES.add(recipe);
+            for (ItemStack stack : item)
+            {
+                LatheRecipe.CACHED_RECIPES.put(stack.getItem(), recipe);
+            }
         }
 
         @Override
@@ -77,10 +77,10 @@ public class LatheMachineCT
 
     private static class Remove implements IAction
     {
-        private final Item item;
+        private final List<ItemStack> item;
         private final LatheRecipe recipe;
 
-        public Remove(Item item, LatheRecipe recipe)
+        public Remove(List<ItemStack> item, LatheRecipe recipe)
         {
             this.item = item;
             this.recipe = recipe;
@@ -89,7 +89,11 @@ public class LatheMachineCT
         @Override
         public void apply()
         {
-            LatheRecipe.LATHE_RECIPES.remove(item);
+            LatheRecipe.LATHE_RECIPES.remove(recipe);
+            for (ItemStack stack : item)
+            {
+                LatheRecipe.CACHED_RECIPES.remove(stack.getItem());
+            }
         }
 
         @Override
@@ -109,6 +113,7 @@ public class LatheMachineCT
         public void apply()
         {
             LatheRecipe.LATHE_RECIPES.clear();
+            LatheRecipe.CACHED_RECIPES.clear();
         }
 
         @Override

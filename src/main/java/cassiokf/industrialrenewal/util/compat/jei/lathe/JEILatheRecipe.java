@@ -10,13 +10,15 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 
 import java.awt.*;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class JEILatheRecipe implements IRecipeWrapper
 {
-    private final ItemStack input;
+    private final java.util.List<ItemStack> input;
     private final ItemStack outPut;
 
-    public JEILatheRecipe(ItemStack input, ItemStack outPut)
+    public JEILatheRecipe(java.util.List<ItemStack> input, ItemStack outPut)
     {
         this.input = input;
         this.outPut = outPut;
@@ -25,14 +27,16 @@ public class JEILatheRecipe implements IRecipeWrapper
     @Override
     public void getIngredients(IIngredients ingredients)
     {
-        ingredients.setInput(ItemStack.class, input);
+        List<java.util.List<ItemStack>> inceptionList = new CopyOnWriteArrayList<>();
+        inceptionList.add(input);
+        ingredients.setInputLists(ItemStack.class, inceptionList);
         ingredients.setOutput(ItemStack.class, outPut);
     }
 
     @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
     {
-        int time = LatheRecipe.LATHE_RECIPES.get(input.getItem()).getProcessTime();
+        int time = LatheRecipe.CACHED_RECIPES.get(input.get(0).getItem()).getProcessTime();
         String string = JEICompat.translateToLocalFormated("gui.jei.category.energyneeded")
                 + " "
                 + time * IRConfig.MainConfig.Main.energyPerTickLatheMachine

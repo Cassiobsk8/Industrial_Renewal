@@ -58,7 +58,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack)
             {
-                return LatheRecipe.LATHE_RECIPES.containsKey(stack.getItem());
+                return LatheRecipe.CACHED_RECIPES.containsKey(stack.getItem());
             }
         };
         this.outPut = new ItemStackHandler(1)
@@ -99,9 +99,9 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             ItemStack inputStack = input.getStackInSlot(0);
             if (!inProcess
                     && !inputStack.isEmpty()
-                    && LatheRecipe.LATHE_RECIPES.containsKey(inputStack.getItem()))
+                    && LatheRecipe.CACHED_RECIPES.containsKey(inputStack.getItem()))
             {
-                LatheRecipe recipe = LatheRecipe.LATHE_RECIPES.get(inputStack.getItem());
+                LatheRecipe recipe = LatheRecipe.CACHED_RECIPES.get(inputStack.getItem());
                 if (recipe != null)
                 {
                     ItemStack result = recipe.getRecipeOutput();

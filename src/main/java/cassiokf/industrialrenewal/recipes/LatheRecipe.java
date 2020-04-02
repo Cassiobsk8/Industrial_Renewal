@@ -19,16 +19,18 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LatheRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
-    public static final Map<Item, LatheRecipe> LATHE_RECIPES = new HashMap<>();
+    public static final List<LatheRecipe> LATHE_RECIPES = new CopyOnWriteArrayList<>();
+    public static final Map<Item, LatheRecipe> CACHED_RECIPES = new HashMap<>();
 
-    private final Item input;
+    private final List<ItemStack> input;
     private final ItemStack output;
     private final int processTime;
 
-    public LatheRecipe(Item input, ItemStack output, int processTime)
+    public LatheRecipe(List<ItemStack> input, ItemStack output, int processTime)
     {
         this.input = input;
         this.output = output;
@@ -46,9 +48,24 @@ public class LatheRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IR
         return processTime;
     }
 
-    public Item getInput()
+    public static void populateLatheRecipes()
     {
-        return this.input;
+        int recipesAmount = 0;
+        for (IRecipe recipe : ForgeRegistries.RECIPES)
+        {
+            if (recipe instanceof LatheRecipe)
+            {
+                //List<Item> list = LatheRecipe.inputToItemList(((LatheRecipe) recipe).input);
+                LATHE_RECIPES.add((LatheRecipe) recipe);
+                recipesAmount++;
+                for (ItemStack item : ((LatheRecipe) recipe).input)
+                {
+                    CACHED_RECIPES.put(item.getItem(), (LatheRecipe) recipe);
+                }
+            }
+        }
+
+        System.out.println(References.NAME + " Registered " + recipesAmount + " Recipes for Lathe Machine");
     }
 
     @Override
@@ -75,54 +92,50 @@ public class LatheRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IR
         return this.output.copy();
     }
 
+    public List<ItemStack> getInput()
+    {
+        return this.input;
+    }
+
     public static class Factory implements IRecipeFactory
     {
         @Override
         public IRecipe parse(final JsonContext context, final JsonObject json)
         {
-            final Item input = getOredictItemStack(context, json, "input").getItem();
-            final ItemStack result = getOredictItemStack(context, json, "result");
+            final List<ItemStack> input = getOredictItemStack(context, json, "input");
+            final ItemStack result = getOredictItemStack(context, json, "result").get(0);
             final int processTime = JsonUtils.getInt(json, "process_time");
             return new LatheRecipe(input, result, processTime);
         }
 
-        private ItemStack getOredictItemStack(final JsonContext context, final JsonObject json, String memberName)
+        private List<ItemStack> getOredictItemStack(final JsonContext context, final JsonObject json, String memberName)
         {
             JsonObject jsonObject = JsonUtils.getJsonObject(json, memberName);
+            List<ItemStack> list = new CopyOnWriteArrayList<>();
             if (jsonObject.has("ore"))
             {
                 String ore = jsonObject.get("ore").getAsString();
                 if (OreDictionary.doesOreNameExist(ore))
                 {
-                    List<ItemStack> stackList = OreDictionary.getOres(ore);
-                    if (!stackList.isEmpty())
+                    list = OreDictionary.getOres(ore);
+                    if (!list.isEmpty())
                     {
-                        ItemStack stack = stackList.get(0);
                         if (jsonObject.has("count"))
                         {
                             int count = jsonObject.get("count").getAsInt();
-                            stack.setCount(count);
+                            for (ItemStack stack : list)
+                            {
+                                stack.setCount(count);
+                            }
                         }
-                        return stack;
+                        return list;
                     }
                 }
                 throw new JsonSyntaxException("Unknown oreDict item '" + ore + "'");
             }
-            return CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, memberName), context);
-        }
-    }
 
-    public static void populateLatheRecipes()
-    {
-        int recipesAmount = 0;
-        for (IRecipe recipe : ForgeRegistries.RECIPES)
-        {
-            if (recipe instanceof LatheRecipe)
-            {
-                LATHE_RECIPES.put(((LatheRecipe) recipe).getInput(), (LatheRecipe) recipe);
-                recipesAmount++;
-            }
+            list.add(CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, memberName), context));
+            return list;
         }
-        System.out.println(References.NAME + " Registered " + recipesAmount + " Recipes for Lathe Machine");
     }
 }
