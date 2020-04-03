@@ -144,12 +144,12 @@ public class TileEntityDamTurbine extends TileEntityMultiBlockBase<TileEntityDam
         if (height < 0) return 0;
         int realAmount = 0;
         EnumFacing outPutFace = getMasterFacing().rotateYCCW();
-        BlockPos pos = getOutPutPosition().offset(outPutFace);
-        TileEntity te = world.getTileEntity(pos);
+        BlockPos outPutPos = getOutPutPosition().offset(outPutFace);
+        TileEntity te = world.getTileEntity(outPutPos);
         if (te instanceof ICompressedFluidCapability
-                && ((ICompressedFluidCapability) te).canAccept(outPutFace.getOpposite(), pos))
+                && ((ICompressedFluidCapability) te).canAccept(outPutFace.getOpposite(), outPutPos))
         {
-            realAmount = ((ICompressedFluidCapability) te).passCompressedFluid(amount, pos.getY() - 1, simulate);
+            realAmount = ((ICompressedFluidCapability) te).passCompressedFluid(amount, this.pos.getY() - 1, simulate);
         }
         passedFluid = realAmount;
         if (!simulate && realAmount > 0) hasFlow = true;
