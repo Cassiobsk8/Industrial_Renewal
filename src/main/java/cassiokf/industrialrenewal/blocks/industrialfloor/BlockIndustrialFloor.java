@@ -17,10 +17,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -193,7 +196,7 @@ public class BlockIndustrialFloor extends BlockBase
 
         if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.fluidPipe)))
         {
-            world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+            world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
             world.setBlockState(pos, ModBlocks.floorPipe.getDefaultState(), 3);
             if (!entity.isCreative())
             {
@@ -205,7 +208,7 @@ public class BlockIndustrialFloor extends BlockBase
                 || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableLV))
                 || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableHV)))
         {
-            world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+            world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
             Block block;
             if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableMV))) block = ModBlocks.floorCableMV;
             else if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableLV)))
@@ -220,7 +223,7 @@ public class BlockIndustrialFloor extends BlockBase
         }
         if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.fluorescent)))
         {
-            world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.NEUTRAL, 1.0F, 1.0F);
+            world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
             world.setBlockState(pos, ModBlocks.floorLamp.getDefaultState(), 3);
             if (entity.getHorizontalFacing() == EnumFacing.EAST || entity.getHorizontalFacing() == EnumFacing.WEST)
             {

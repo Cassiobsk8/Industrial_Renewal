@@ -54,6 +54,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
     private int tick;
     private int energyPerTick = 10;
     private EnumFacing facing;
+    private float volume = IRConfig.MainConfig.Sounds.pumpVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
 
     private List<BlockPos> fluidSet = new ArrayList<>();
     private int maxRadius = IRConfig.MainConfig.Main.maxPumpRadius;
@@ -119,13 +120,13 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
         if (!world.isRemote) return;
         if (isRunning && !starting)
         {
-            IRSoundHandler.playSound(world, IRSoundRegister.PUMP_START, IRConfig.MainConfig.Sounds.pumpVolume + 0.5f, 1.0F, pos);
+            IRSoundHandler.playSound(world, IRSoundRegister.PUMP_START, volume + 0.5f, 1.0F, pos);
             starting = true;
             oldStarting = true;
             Sync();
         } else if (isRunning)
         {
-            IRSoundHandler.playRepeatableSound(IRSoundRegister.PUMP_ROTATION_RESOURCEL, IRConfig.MainConfig.Sounds.pumpVolume, 1.0F, pos);
+            IRSoundHandler.playRepeatableSound(IRSoundRegister.PUMP_ROTATION_RESOURCEL, volume, 1.0F, pos);
         } else
         {
             IRSoundHandler.stopTileSound(pos);

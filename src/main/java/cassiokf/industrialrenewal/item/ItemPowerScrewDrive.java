@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.BlockSignBase;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.TileEntityBatteryBank;
@@ -110,6 +111,6 @@ public class ItemPowerScrewDrive extends ItemBase {
 
     public static void playDrillSound(World world, BlockPos pos)
     {
-        world.playSound(null, pos, IRSoundRegister.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound(null, pos, IRSoundRegister.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, 1.0F);
     }
 }

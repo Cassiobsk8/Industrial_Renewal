@@ -9,10 +9,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -64,7 +67,7 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipe>
         {
             if (!world.isRemote)
             {
-                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 world.setBlockState(pos, ModBlocks.floorPipe.getDefaultState(), 3);
                 if (!entity.isCreative())
                 {
@@ -77,7 +80,7 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipe>
         {
             if (!world.isRemote)
             {
-                world.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 world.setBlockState(pos, ModBlocks.fluidPipeGauge.getDefaultState().withProperty(BlockFluidPipeGauge.FACING, entity.getHorizontalFacing()), 3);
                 if (!entity.isCreative())
                 {

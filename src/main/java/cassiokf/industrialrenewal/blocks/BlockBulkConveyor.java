@@ -22,11 +22,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -91,7 +94,7 @@ public class BlockBulkConveyor extends BlockHorizontalFacing
                 {
                     EnumFacing facing1 = state.getValue(FACING);
                     worldIn.setBlockState(pos, ModBlocks.conveyorVHopper.getDefaultState().withProperty(FACING, facing1), 3);
-                    worldIn.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                    worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
                     if (!playerIn.isCreative()) heldItem.shrink(1);
                     return true;
                 }
@@ -99,7 +102,7 @@ public class BlockBulkConveyor extends BlockHorizontalFacing
                 {
                     EnumFacing facing1 = state.getValue(FACING);
                     worldIn.setBlockState(pos, ModBlocks.conveyorVInserter.getDefaultState().withProperty(FACING, facing1), 3);
-                    worldIn.playSound(null, pos, SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.metal.place"))), SoundCategory.BLOCKS, 1f, 1f);
+                    worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
                     if (!playerIn.isCreative()) heldItem.shrink(1);
                     return true;
                 }

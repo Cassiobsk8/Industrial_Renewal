@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
-import cassiokf.industrialrenewal.tileentity.TileEntityWindTurbinePillar;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -148,7 +147,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
             BlockPos currentPos = pos.offset(face);
             TileEntity te = world.getTileEntity(currentPos);
             boolean hasMachine = te != null
-                    && (!(te instanceof TileEntityEnergyCable) || te instanceof TileEntityWindTurbinePillar)
+                    && !(te instanceof TileEntityEnergyCable)
                     && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
             IEnergyStorage eStorage = null;
             if (hasMachine) eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());

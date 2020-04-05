@@ -70,10 +70,6 @@ public class IRConfig {
             @Config.LangKey("gui.config.electric_fence_knockback_amount.name")
             public double electricFenceKnockBack = 0.3;
 
-            @Config.Comment("The volume of the alarm (Default 4.0)")
-            @Config.LangKey("gui.config.alarm_volume.name")
-            public double alarmVolume = 4.0;
-
             @Config.Comment("If pumps will not consume the water (Default true)")
             @Config.LangKey("gui.config.pump_infinity_water.name")
             public boolean pumpInfinityWater = true;
@@ -191,6 +187,13 @@ public class IRConfig {
 
         public static class SubCategorySound
         {
+            @Config.Comment("Master volume Multiplier for all the machine (default 1.0f)")
+            public float masterVolumeMult = 1.0f;
+
+            @Config.Comment("The volume of the alarm (Default 4.0)")
+            @Config.LangKey("gui.config.alarm_volume.name")
+            public double alarmVolume = 4.0;
+
             @Config.Comment("Base volume of the Pump (default 0.3f)")
             public float pumpVolume = 0.3f;
 

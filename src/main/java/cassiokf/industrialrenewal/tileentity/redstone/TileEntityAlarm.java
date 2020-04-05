@@ -47,7 +47,7 @@ public class TileEntityAlarm extends TEBase implements ITickable
     public void playThis() {
         if (!world.isRemote && this.checkPowered())
         {
-            world.playSound(null, pos, IRSoundRegister.TILEENTITY_ALARM, SoundCategory.BLOCKS, (float) IRConfig.MainConfig.Main.alarmVolume, 1.0F);
+            world.playSound(null, pos, IRSoundRegister.TILEENTITY_ALARM, SoundCategory.BLOCKS, (float) IRConfig.MainConfig.Sounds.alarmVolume * IRConfig.MainConfig.Sounds.masterVolumeMult, 1.0F);
         }
     }
 }

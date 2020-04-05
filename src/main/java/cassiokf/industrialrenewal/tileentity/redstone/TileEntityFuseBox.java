@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBox;
 import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBoxConnector;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.tileentity.TileEntityBoxConnector;
 import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
@@ -54,7 +55,7 @@ public class TileEntityFuseBox extends TEBase
     }
 
     public void shockPlayer(EntityPlayer player) {
-        this.world.playSound(null, this.pos, IRSoundRegister.EFFECT_SHOCK, SoundCategory.BLOCKS, 1, 1);
+        this.world.playSound(null, this.pos, IRSoundRegister.EFFECT_SHOCK, SoundCategory.BLOCKS, 1f * IRConfig.MainConfig.Sounds.masterVolumeMult, 1);
         player.closeScreen();
         player.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 8f);
         player.knockBack(player, 0.4f, this.pos.getX() - player.posX, this.pos.getZ() - player.posZ);

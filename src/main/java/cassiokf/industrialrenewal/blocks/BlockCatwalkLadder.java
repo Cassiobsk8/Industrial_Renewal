@@ -1,9 +1,9 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
-import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -18,7 +18,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -57,7 +56,7 @@ public class BlockCatwalkLadder extends BlockHorizontalFacing
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         Item playerItem = entity.inventory.getCurrentItem().getItem();
         if (playerItem.equals(ModItems.screwDrive)) {
-            world.playSound(null, pos, IRSoundRegister.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            ItemPowerScrewDrive.playDrillSound(world, pos);
             world.setBlockState(pos, state.withProperty(ACTIVE, !state.getValue(ACTIVE)), 3);
             return true;
         }

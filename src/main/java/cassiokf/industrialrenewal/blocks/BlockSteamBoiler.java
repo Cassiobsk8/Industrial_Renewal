@@ -64,12 +64,12 @@ public class BlockSteamBoiler extends BlockMultiBlockBase<TileEntitySteamBoiler>
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand)
     {
-        TileEntitySteamBoiler te = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
+        TileEntitySteamBoiler te = (TileEntitySteamBoiler) world.getTileEntity(pos);
         if (te != null && te.isMaster() && te.getType() == 1 && te.getFuelFill() > 0 && rand.nextInt(24) == 0)
         {
-            worldIn.playSound(null, pos, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 0.3F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F);
+            world.playSound(null, pos, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, (0.3F + rand.nextFloat()) * IRConfig.MainConfig.Sounds.masterVolumeMult, rand.nextFloat() * 0.7F + 0.3F);
         }
     }
 

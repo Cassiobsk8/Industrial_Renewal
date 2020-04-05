@@ -10,16 +10,19 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.Objects;
 import java.util.Random;
 
 public class BlockFireExtinguisher extends BlockHorizontalFacing
@@ -45,7 +48,7 @@ public class BlockFireExtinguisher extends BlockHorizontalFacing
         if (player.isBurning()) {
             player.extinguish();
             world.spawnParticle(EnumParticleTypes.WATER_SPLASH, player.getPosition().getX(), player.getPosition().getY() + 1F, player.getPosition().getZ(), 0, 1, 0);
-            world.playSound(null, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, Objects.requireNonNull(SoundEvent.REGISTRY.getObject(new ResourceLocation(("block.fire.extinguish")))), SoundCategory.BLOCKS, 1.0F, 1.0F);
+            world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
         } else if (player.isSneaking()) {
             if (player.inventory.addItemStackToInventory(new ItemStack(ModItems.fireExtinguisher, 1))) {
                 world.setBlockToAir(pos);

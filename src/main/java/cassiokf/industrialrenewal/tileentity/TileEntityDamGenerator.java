@@ -24,7 +24,7 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
 {
     public static int maxGeneration = 1024;
     private final VoltsEnergyContainer energyContainer;
-    private float volume = IRConfig.MainConfig.Sounds.TurbineVolume;
+    private float volume = IRConfig.MainConfig.Sounds.TurbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
     private int oldGeneration;
     private int generation;
     private int rotation;

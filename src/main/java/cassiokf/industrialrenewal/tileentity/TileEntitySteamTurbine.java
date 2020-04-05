@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntitySteamTurbine> implements IDynamicSound
 {
     private final VoltsEnergyContainer energyContainer;
-    private float volume = IRConfig.MainConfig.Sounds.TurbineVolume;
+    private float volume = IRConfig.MainConfig.Sounds.TurbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
 
     public FluidTank waterTank = new FluidTank(32000)
     {

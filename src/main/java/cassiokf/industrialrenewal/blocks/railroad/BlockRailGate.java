@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.blocks.railroad;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
@@ -91,10 +92,10 @@ public class BlockRailGate extends BlockNormalRailBase
             float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
             if (flag2)
             {
-                worldIn.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F, pitch);
+                worldIn.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, pitch);
             } else
             {
-                worldIn.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F, pitch);
+                worldIn.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, pitch);
             }
         }
     }

@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks.railroad;
 
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -34,7 +35,7 @@ public class BlockCrossingRail extends BlockNormalRailBase {
         long thisTime = System.currentTimeMillis();
         if ((thisTime - lastTime) >= PERIOD) {
             lastTime = thisTime;
-            world.playSound(null, pos, IRSoundRegister.TILEENTITY_TRAINHORN, SoundCategory.BLOCKS, 2F, 1F);
+            world.playSound(null, pos, IRSoundRegister.TILEENTITY_TRAINHORN, SoundCategory.BLOCKS, 2F * IRConfig.MainConfig.Sounds.masterVolumeMult, 1F);
         }
     }
 
