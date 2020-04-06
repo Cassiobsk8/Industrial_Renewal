@@ -111,6 +111,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
         int canAccept = 0;
         for (BlockPos posM : mapPosSet.keySet())
         {
+            if (!mapPosSet.containsKey(posM)) continue;
             TileEntity te = world.getTileEntity(posM);
             EnumFacing face = mapPosSet.get(posM).getOpposite();
             if (te != null && te != this && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face))
