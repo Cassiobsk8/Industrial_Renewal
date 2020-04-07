@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.entity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModItems;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -20,7 +19,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
 
-public class EntityFluidBase extends EntityMinecart implements IFluidHandler
+public abstract class EntityFluidBase extends TrainBase implements IFluidHandler
 {
     private static final DataParameter<NBTTagCompound> TANK = EntityDataManager.createKey(EntityFluidBase.class, DataSerializers.COMPOUND_TAG);
     public FluidTank tank = new FluidTank(IRConfig.MainConfig.Main.fluidCartCapacity)

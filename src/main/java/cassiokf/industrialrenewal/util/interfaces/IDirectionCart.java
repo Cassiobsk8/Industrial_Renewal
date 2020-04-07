@@ -4,5 +4,5 @@ public interface IDirectionCart
 {
     boolean isRotated();
 
-    void setRotation(boolean rotation);
+    void setRotation(float rotation);
 }

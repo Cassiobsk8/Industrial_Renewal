@@ -22,14 +22,18 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class EntityLogCart extends EntityMinecart {
+public class EntityLogCart extends TrainBase
+{
 
     public int invItensCount = 0;
     private static final DataParameter<Integer> COUNT = EntityDataManager.createKey(EntityLogCart.class, DataSerializers.VARINT);
-    public ItemStackHandler inventory = new ItemStackHandler(27) {
+    public ItemStackHandler inventory = new ItemStackHandler(27)
+    {
         @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            if (stack.isEmpty()) {
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack)
+        {
+            if (stack.isEmpty())
+            {
                 return false;
             }
             return Utils.isWood(stack);

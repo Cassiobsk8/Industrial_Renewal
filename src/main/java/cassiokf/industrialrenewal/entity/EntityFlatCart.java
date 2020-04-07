@@ -1,12 +1,11 @@
 package cassiokf.industrialrenewal.entity;
 
 import cassiokf.industrialrenewal.init.ModItems;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityFlatCart extends EntityMinecart
+public class EntityFlatCart extends TrainBase
 {
 
     public EntityFlatCart(World worldIn)

@@ -22,12 +22,11 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class EntitySteamLocomotive extends EntityMinecart implements IConnectibleCart, IDirectionCart
+public class EntitySteamLocomotive extends TrainBase implements IConnectibleCart, IDirectionCart
 {
 
     private static final DataParameter<Boolean> PLOW = EntityDataManager.createKey(EntitySteamLocomotive.class, DataSerializers.BOOLEAN);
     public boolean hasPlowItem;
-    private boolean rotated;
     public ItemStackHandler inventory = new ItemStackHandler(7)
     {
         @Override
@@ -40,7 +39,7 @@ public class EntitySteamLocomotive extends EntityMinecart implements IConnectibl
     public EntitySteamLocomotive(World worldIn)
     {
         super(worldIn);
-        this.setSize(1.0F, 1.0F);
+        this.setSize(1F, 1.4F);
     }
 
     @Override
@@ -52,7 +51,7 @@ public class EntitySteamLocomotive extends EntityMinecart implements IConnectibl
     @Override
     public float getFixedDistance(EntityMinecart cart)
     {
-        return 1f;
+        return 0.9f;
     }
 
     @Override
@@ -60,6 +59,7 @@ public class EntitySteamLocomotive extends EntityMinecart implements IConnectibl
     {
         if (!player.isSneaking())
         {
+            this.rotationYaw += 180;
             if (!this.world.isRemote)
                 player.openGui(IndustrialRenewal.instance, GUIHandler.STEAMLOCOMOTIVE, this.world, this.getEntityId(), 0, 0);
             return true;
@@ -99,14 +99,12 @@ public class EntitySteamLocomotive extends EntityMinecart implements IConnectibl
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setTag("inventory", this.inventory.serializeNBT());
-        compound.setBoolean("rotated", rotated);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.inventory.deserializeNBT(compound.getCompoundTag("inventory"));
-        this.rotated = compound.getBoolean("rotated");
         this.Sync();
     }
 
@@ -154,12 +152,12 @@ public class EntitySteamLocomotive extends EntityMinecart implements IConnectibl
     @Override
     public boolean isRotated()
     {
-        return rotated;
+        return false;
     }
 
     @Override
-    public void setRotation(boolean rotation)
+    public void setRotation(float rotation)
     {
-        rotated = rotation;
+        //renderYaw = rotation;
     }
 }

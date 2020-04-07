@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.entity.render;
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import cassiokf.industrialrenewal.model.carts.ModelSteamLocomotive;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -11,13 +12,15 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 //@SideOnly(Side.CLIENT)
-public class RenderSteamLocomotive<T extends EntitySteamLocomotive> extends Render<EntitySteamLocomotive> {
+public class RenderSteamLocomotive<T extends EntitySteamLocomotive> extends Render<EntitySteamLocomotive>
+{
 
     public static final ResourceLocation TEXTURES = new ResourceLocation(References.MODID + ":textures/entities/steamlocomotive.png");
 
     protected ModelSteamLocomotive modelMinecart = new ModelSteamLocomotive();
 
-    public RenderSteamLocomotive(RenderManager renderManagerIn) {
+    public RenderSteamLocomotive(RenderManager renderManagerIn)
+    {
         super(renderManagerIn);
         this.shadowSize = 0.5F;
     }
@@ -60,7 +63,7 @@ public class RenderSteamLocomotive<T extends EntitySteamLocomotive> extends Rend
             if (vec3d3.length() != 0.0D)
             {
                 vec3d3 = vec3d3.normalize();
-                entityYaw = (float) (Math.atan2(vec3d3.z, vec3d3.x) * 180.0D / Math.PI);
+                entityYaw = (float) ((Math.atan2(vec3d3.z, vec3d3.x) / Math.PI) * 180.0D);
                 f3 = (float) (Math.atan(vec3d3.y) * 73.0D);
             }
         }
@@ -74,7 +77,8 @@ public class RenderSteamLocomotive<T extends EntitySteamLocomotive> extends Rend
         if (rYaw < 0) rYaw += 360;
         boolean applyRotateFix = false;
 
-        if (Math.abs(rYaw - yaw) > 100) {
+        if (Math.abs(rYaw - yaw) > 90D)
+        {
             applyRotateFix = true;
         }
 
@@ -100,16 +104,21 @@ public class RenderSteamLocomotive<T extends EntitySteamLocomotive> extends Rend
             GlStateManager.rotate(MathHelper.sin(f5) * f5 * f6 / 10.0F * (float) entity.getRollingDirection(), 1.0F, 0.0F, 0.0F);
         }
 
-        if (this.renderOutlines) {
+        if (this.renderOutlines)
+        {
             GlStateManager.enableColorMaterial();
             GlStateManager.enableOutlineMode(this.getTeamColor(entity));
         }
 
         GlStateManager.scale(-1.0F, -1.0F, 1.0F);
         this.modelMinecart.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        renderText((int) entityYaw + " " + (int) yaw, f, f1 - 50, f2 - 5.4);
+        GlStateManager.rotate(180, 0, 1, 0);
+        renderText((int) entityYaw + " " + (int) yaw, f, f1 - 50, f2 - 5.4);
         GlStateManager.popMatrix();
 
-        if (this.renderOutlines) {
+        if (this.renderOutlines)
+        {
             GlStateManager.disableOutlineMode();
             GlStateManager.disableColorMaterial();
         }
@@ -118,8 +127,22 @@ public class RenderSteamLocomotive<T extends EntitySteamLocomotive> extends Rend
 
     }
 
+    private void renderText(String text, double x, double y, double z)
+    {
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(0.1F, 0.1F, 0.1F);
+        GlStateManager.scale(0.07F, 0.07F, 1F);
+        //RenderHelper.disableStandardItemLighting();
+        int xh = -Minecraft.getMinecraft().fontRenderer.getStringWidth(text) / 2;
+        GlStateManager.translate(x, y, z);
+        Minecraft.getMinecraft().fontRenderer.drawString(text, xh, 0, 0xFFFFFFFF);
+        //RenderHelper.enableStandardItemLighting();
+        GlStateManager.popMatrix();
+    }
+
     @Override
-    protected ResourceLocation getEntityTexture(EntitySteamLocomotive entity) {
+    protected ResourceLocation getEntityTexture(EntitySteamLocomotive entity)
+    {
         return TEXTURES;
     }
 }
