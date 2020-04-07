@@ -27,7 +27,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
     private final VoltsEnergyContainer energyContainer;
     private final ItemStackHandler input;
     private final ItemStackHandler outPut;
-    private final ItemStackHandler hold;
+    private ItemStack hold;
     public boolean inProcess;
     private int tick;
     private int processTime;
@@ -77,20 +77,6 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
                 return false;
             }
         };
-        this.hold = new ItemStackHandler(1)
-        {
-            @Override
-            protected void onContentsChanged(int slot)
-            {
-                TELathe.this.Sync();
-            }
-
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack)
-            {
-                return false;
-            }
-        };
     }
 
     @Override
@@ -104,63 +90,65 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
                     && !inputStack.isEmpty()
                     && LatheRecipe.CACHED_RECIPES.containsKey(inputStack.getItem()))
             {
-                LatheRecipe recipe = LatheRecipe.CACHED_RECIPES.get(inputStack.getItem());
-                if (recipe != null)
-                {
-                    ItemStack result = recipe.getRecipeOutput();
-                    if (result != null
-                            && !result.isEmpty()
-                            && hold.insertItem(0, result, true).isEmpty()
-                            && outPut.insertItem(0, result, true).isEmpty()
-                            && energyContainer.getEnergyStored() >= (energyPTick * recipe.getProcessTime()))
-                    {
-                        processTime = recipe.getProcessTime();
-                        inProcess = true;
-                        processingItem = inputStack;
-                        if (!world.isRemote)
-                        {
-                            inputStack.shrink(1);
-                            hold.insertItem(0, result, false);
-                        }
-                    }
-                }
+                getProcessFromInputItem(inputStack);
             } else if (inProcess)
             {
-                energyContainer.extractEnergy(energyPTick, false);
-                tick++;
-                if (tick >= processTime)
-                {
-                    tick = 0;
-                    processTime = 0;
-                    inProcess = false;
-                    processingItem = null;
-                    if (!world.isRemote) outPut.insertItem(0, hold.extractItem(0, Integer.MAX_VALUE, false), false);
-                }
+                process();
             }
             renderCutterProcess = processTime > 0 ? Utils.normalize(tick, 0, processTime) * 0.8f : 0;
-            if (!world.isRemote && !outPut.getStackInSlot(0).isEmpty())
+            tryOutPutItem();
+        }
+    }
+
+    private void process()
+    {
+        energyContainer.extractEnergy(energyPTick, false);
+        tick++;
+        if (tick >= processTime)
+        {
+            tick = 0;
+            processTime = 0;
+            inProcess = false;
+            processingItem = null;
+            if (!world.isRemote) outPut.insertItem(0, hold, false);
+        }
+    }
+
+    private void getProcessFromInputItem(ItemStack inputStack)
+    {
+        LatheRecipe recipe = LatheRecipe.CACHED_RECIPES.get(inputStack.getItem());
+        if (recipe != null)
+        {
+            ItemStack result = recipe.getRecipeOutput();
+            if (result != null
+                    && !result.isEmpty()
+                    && outPut.insertItem(0, result, true).isEmpty()
+                    && energyContainer.getEnergyStored() >= (energyPTick * recipe.getProcessTime()))
             {
-                EnumFacing facing = getMasterFacing().rotateY();
-                TileEntity te = world.getTileEntity(pos.offset(facing, 2));
-                if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite()))
+                processTime = recipe.getProcessTime();
+                inProcess = true;
+                processingItem = inputStack;
+                if (!world.isRemote)
                 {
-                    IItemHandler outputCap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
-                    if (outputCap != null)
-                    {
-                        for (int j = 0; j < outputCap.getSlots(); j++)
-                        {
-                            ItemStack stack = outPut.extractItem(0, Integer.MAX_VALUE, true);
-                            if (!stack.isEmpty() && outputCap.isItemValid(j, stack))
-                            {
-                                ItemStack left = outputCap.insertItem(j, stack, false);
-                                if (!ItemStack.areItemStacksEqual(stack, left))
-                                {
-                                    int toExtract = stack.getCount() - left.getCount();
-                                    outPut.extractItem(0, toExtract, false);
-                                }
-                            }
-                        }
-                    }
+                    inputStack.shrink(recipe.getInput().get(0).getCount());
+                    hold = result;
+                }
+            }
+        }
+    }
+
+    private void tryOutPutItem()
+    {
+        if (!world.isRemote && !outPut.getStackInSlot(0).isEmpty())
+        {
+            EnumFacing facing = getMasterFacing().rotateY();
+            TileEntity te = world.getTileEntity(pos.offset(facing, 2));
+            if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite()))
+            {
+                IItemHandler outputCap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
+                if (outputCap != null)
+                {
+                    Utils.moveItemsBetweenInventories(outPut, outputCap);
                 }
             }
         }
@@ -195,7 +183,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
 
     public ItemStack getResultItem()
     {
-        return hold.getStackInSlot(0);
+        return hold;
     }
 
     public ItemStack getProcessingItem()
@@ -225,20 +213,16 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
     {
         TELathe masterTE = getMaster();
-        if (capability.equals(CapabilityEnergy.ENERGY)
+        if (masterTE == null || facing == null) return super.hasCapability(capability, facing);
+        EnumFacing inputFace = getMasterFacing().rotateYCCW();
+        return (capability.equals(CapabilityEnergy.ENERGY)
                 && facing.equals(getMasterFacing())
-                && pos.equals(masterTE.getPos().offset(getMasterFacing()).offset(getMasterFacing().rotateYCCW())))
-            return true;
-        if (capability.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY))
-        {
-            if (facing.equals(getMasterFacing().rotateYCCW())
-                    && pos.equals(masterTE.getPos().offset(getMasterFacing().rotateYCCW())))
-                return true;
-            if (facing.equals(getMasterFacing().rotateY())
-                    && pos.equals(masterTE.getPos().offset(getMasterFacing().rotateY())))
-                return true;
-        }
-        return super.hasCapability(capability, facing);
+                && pos.equals(masterTE.getPos().offset(getMasterFacing()).offset(inputFace)))
+                || (capability.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                && ((facing.equals(inputFace)
+                && pos.equals(masterTE.getPos().offset(inputFace)))
+                || (facing.equals(inputFace.getOpposite())
+                && pos.equals(masterTE.getPos().offset(inputFace.getOpposite())))));
     }
 
     @Nullable
@@ -246,6 +230,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
         TELathe masterTE = getMaster();
+        if (masterTE == null || facing == null) return super.getCapability(capability, facing);
         if (capability.equals(CapabilityEnergy.ENERGY)
                 && facing.equals(getMasterFacing())
                 && pos.equals(masterTE.getPos().offset(getMasterFacing()).offset(getMasterFacing().rotateYCCW())))

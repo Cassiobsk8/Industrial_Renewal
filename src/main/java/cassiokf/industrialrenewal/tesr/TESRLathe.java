@@ -18,20 +18,20 @@ public class TESRLathe extends TESRBase<TELathe>
             EnumFacing facing = te.getMasterFacing();
             //Result Screen
             ItemStack result = te.getResultItem();
-            if (result != null && !result.isEmpty())
+            if (te.inProcess)
             {
                 doTheMath(facing, x, z, 0.97, 1.1);
-                String formated = TextFormatting.GREEN + te.getResultItem().getDisplayName();
-                renderText(facing, xPos, y + 1.1, zPos, formated, 0.005F);
+                String formatted = TextFormatting.GREEN + te.getResultItem().getDisplayName();
+                renderText(facing, xPos, y + 1.1, zPos, formatted, 0.005F);
                 doTheMath(facing, x, z, 0.97, 1.1);
                 render3dItem(facing, te.getWorld(), xPos, y + 1.2, zPos, result, 0.5f, true);
             }
-            //Processing Item
+            //Processing Item inside lathe
             ItemStack processing = te.getProcessingItem();
             if (processing != null && !processing.isEmpty())
             {
                 doTheMath(facing, x, z, 0.13, 0);
-                render3dItem(facing, te.getWorld(), xPos, y + 1.05, zPos, te.getProcessingItem(), 1, true);
+                render3dItem(facing, te.getWorld(), xPos, y + 1.05, zPos, processing, 1, true);
             }
             //Cutter
             float progress = smoothAnimation(te.getNormalizedProcess(), te.getOldProcess(), partialTicks, false);

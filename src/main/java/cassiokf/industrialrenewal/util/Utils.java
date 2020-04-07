@@ -109,16 +109,13 @@ public class Utils
     public static void spawnItemStack(World worldIn, BlockPos pos, ItemStack stack)
     {
         if (worldIn.isRemote) return;
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
         float f = RANDOM.nextFloat() * 0.8F + 0.1F;
         float f1 = RANDOM.nextFloat() * 0.8F + 0.1F;
         float f2 = RANDOM.nextFloat() * 0.8F + 0.1F;
 
         while (!stack.isEmpty())
         {
-            EntityItem entityitem = new EntityItem(worldIn, x + (double) f, y + (double) f1, z + (double) f2, stack.splitStack(RANDOM.nextInt(21) + 10));
+            EntityItem entityitem = new EntityItem(worldIn, pos.getX() + (double) f, pos.getY() + (double) f1, pos.getZ() + (double) f2, stack.splitStack(RANDOM.nextInt(21) + 10));
             entityitem.motionX = RANDOM.nextGaussian() * 0.05000000074505806D;
             entityitem.motionY = RANDOM.nextGaussian() * 0.05000000074505806D + 0.20000000298023224D;
             entityitem.motionZ = RANDOM.nextGaussian() * 0.05000000074505806D;
@@ -129,21 +126,6 @@ public class Utils
     public static float lerp(float a, float b, float f)
     {
         return a + f * (b - a);
-    }
-
-    public static double lerp(double a, double b, float f)
-    {
-        return a + f * (b - a);
-    }
-
-    public static float preciseLerp(float start, float end, float a)
-    {
-        return start + (end - start) * a;
-    }
-
-    private static float apply(float a)
-    {
-        return a * a * (3 - 2 * a);
     }
 
     public static IFluidHandler wrapFluidBlock(Block block, World world, BlockPos pos)
@@ -241,7 +223,29 @@ public class Utils
         double deltaX = pos1.getX() - pos2.getX();
         double deltaY = pos1.getY() - pos2.getY();
         double deltaZ = pos1.getZ() - pos2.getZ();
-
         return Math.sqrt((deltaX * deltaX) + (deltaY * deltaY) + (deltaZ * deltaZ));
+    }
+
+    public static boolean moveItemsBetweenInventories(IItemHandler from, IItemHandler to)
+    {
+        boolean movement = false;
+        for (int i = 0; i < from.getSlots(); i++)
+        {
+            ItemStack stack = from.extractItem(i, Integer.MAX_VALUE, true);
+            for (int j = 0; j < to.getSlots(); j++)
+            {
+                if (!stack.isEmpty() && to.isItemValid(j, stack))
+                {
+                    ItemStack left = to.insertItem(j, stack, false);
+                    if (!ItemStack.areItemStacksEqual(stack, left))
+                    {
+                        int toExtract = stack.getCount() - left.getCount();
+                        from.extractItem(i, toExtract, false);
+                        movement = true;
+                    }
+                }
+            }
+        }
+        return movement;
     }
 }
