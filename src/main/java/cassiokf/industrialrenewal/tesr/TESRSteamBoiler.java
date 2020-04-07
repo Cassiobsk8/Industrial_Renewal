@@ -20,22 +20,22 @@ public class TESRSteamBoiler extends TESRBase<TileEntitySteamBoiler>
             EnumFacing facing = te.getMasterFacing();
             //WATER
             doTheMath(facing, x, z, 1.9, -0.69);
-            renderText(facing, xPos, y + 0.25, zPos, te.getWaterText(), 0.01F);
-            renderPointer(facing, xPos, y + 0.51, zPos, te.GetWaterFill(), pointer, 0.3F);
+            renderText(facing, xPos, y + 0.25, zPos, te.boiler.getWaterText(), 0.01F);
+            renderPointer(facing, xPos, y + 0.51, zPos, te.boiler.GetWaterFill(), pointer, 0.3F);
             //STEAM
             doTheMath(facing, x, z, 1.9, 0.69);
-            renderText(facing, xPos, y + 0.25, zPos, te.getSteamText(), 0.01F);
-            renderPointer(facing, xPos, y + 0.51, zPos, te.GetSteamFill(), pointer, 0.3F);
+            renderText(facing, xPos, y + 0.25, zPos, te.boiler.getSteamText(), 0.01F);
+            renderPointer(facing, xPos, y + 0.51, zPos, te.boiler.GetSteamFill(), pointer, 0.3F);
             //ENERGY
             doTheMath(facing, x, z, 1.9, 0);
             renderText(facing, xPos, y + 0.18, zPos, te.getFuelText(), 0.01F);
-            renderPointer(facing, xPos, y + 0.44, zPos, te.getFuelFill(), pointer, 0.3F);
+            renderPointer(facing, xPos, y + 0.44, zPos, te.boiler.getFuelFill(), pointer, 0.3F);
             //HEAT
             doTheMath(facing, x, z, 1.9, 0);
-            renderText(facing, xPos, y + 0.93, zPos, te.getHeatText(), 0.01F);
-            renderPointer(facing, xPos, y + 1.19, zPos, te.getHeatFill(), pointer, 0.3F);
+            renderText(facing, xPos, y + 0.93, zPos, te.boiler.getHeatText(), 0.01F);
+            renderPointer(facing, xPos, y + 1.19, zPos, te.boiler.getHeatFill(), pointer, 0.3F);
             //Fire
-            if (te.getType() > 0 && te.getFuelTime() > 0)
+            if (te.getType() > 0 && te.boiler.isBurning())
             {
                 doTheMath(facing, x, z, 1.9, 0);
                 render3dItem(facing, te.getWorld(), xPos, y - 0.7, zPos, fire, 1, true);

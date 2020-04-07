@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.config.IRConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -185,6 +186,25 @@ public class Utils
             case 2:
                 return (float) (temp + 273.15);
         }
+    }
+
+    public static String getConvertedTemperatureString(float temp)
+    {
+        String st;
+        switch (IRConfig.MainConfig.Main.temperatureScale)
+        {
+            default:
+            case 0:
+                st = " " + I18n.format("render.industrialrenewal.c");
+                break;
+            case 1:
+                st = " " + I18n.format("render.industrialrenewal.f");
+                break;
+            case 2:
+                st = " " + I18n.format("render.industrialrenewal.k");
+                break;
+        }
+        return (int) getConvertedTemperature(temp) + st;
     }
 
     public static String formatEnergyString(int energy)

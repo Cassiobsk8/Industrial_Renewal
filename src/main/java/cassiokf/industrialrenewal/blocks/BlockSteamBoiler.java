@@ -27,7 +27,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -67,18 +66,10 @@ public class BlockSteamBoiler extends BlockMultiBlockBase<TileEntitySteamBoiler>
     public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand)
     {
         TileEntitySteamBoiler te = (TileEntitySteamBoiler) world.getTileEntity(pos);
-        if (te != null && te.isMaster() && te.getType() == 1 && te.getFuelFill() > 0 && rand.nextInt(24) == 0)
+        if (te != null && te.isMaster() && te.getType() != 0 && te.boiler.isBurning() && rand.nextInt(12) == 0)
         {
-            world.playSound(null, pos, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, (0.3F + rand.nextFloat()) * IRConfig.MainConfig.Sounds.masterVolumeMult, rand.nextFloat() * 0.7F + 0.3F);
+            world.playSound(null, pos, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, (2F + rand.nextFloat()) * IRConfig.MainConfig.Sounds.masterVolumeMult, rand.nextFloat() * 0.7F + 0.3F);
         }
-    }
-
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TileEntitySteamBoiler te = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
-        if (te != null) te.dropAllItems();
-        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
@@ -91,22 +82,19 @@ public class BlockSteamBoiler extends BlockMultiBlockBase<TileEntitySteamBoiler>
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntitySteamBoiler tile = getTileEntity(world, pos);
-        IItemHandler itemHandler = tile.getFireBoxHandler();
         ItemStack heldItem = player.getHeldItem(hand);
         if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemFireBox || heldItem.getItem() instanceof ItemPowerScrewDrive))
         {
-            if (heldItem.getItem() instanceof ItemFireBox && itemHandler.getStackInSlot(0).isEmpty())
+            if (heldItem.getItem() instanceof ItemFireBox && tile.getType() == 0)
             {
                 int type = ((ItemFireBox) heldItem.getItem()).type;
-                itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1), false);
                 tile.setType(type);
                 if (!world.isRemote && !player.isCreative()) heldItem.shrink(1);
                 return true;
             }
-            if (heldItem.getItem() instanceof ItemPowerScrewDrive && !itemHandler.getStackInSlot(0).isEmpty())
+            if (heldItem.getItem() instanceof ItemPowerScrewDrive && tile.getType() != 0)
             {
-                ItemStack stack = itemHandler.extractItem(0, 64, false);
-                if (!world.isRemote && !player.isCreative()) player.addItemStackToInventory(stack);
+                if (!world.isRemote && !player.isCreative()) player.addItemStackToInventory(tile.getFireBoxStack());
                 tile.setType(0);
                 return true;
             }

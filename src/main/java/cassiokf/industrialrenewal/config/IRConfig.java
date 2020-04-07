@@ -17,6 +17,10 @@ public class IRConfig {
         fluidFuel.put("ic2biogas", 300);
         fluidFuel.put("crude_oil", 500);
         fluidFuel.put("refined_oil", 1000);
+        fluidFuel.put("oil", 500);
+        fluidFuel.put("oil_heavy", 600);
+        fluidFuel.put("oil_dense", 800);
+        fluidFuel.put("oil_distilled", 1200);
         fluidFuel.put("coal", 400);
         fluidFuel.put("refined_biofuel", 900);
         fluidFuel.put("bio_diesel", 600);
@@ -46,6 +50,9 @@ public class IRConfig {
 
         @Config.Comment("Sounds")
         public static final SubCategorySound Sounds = new SubCategorySound();
+
+        @Config.Comment("Render Configurations")
+        public static final SubCategoryRender Render = new SubCategoryRender();
 
         @Config.Comment("Recipes Configurations")
         @Config.LangKey("gui.config.category.recipes")
@@ -199,6 +206,12 @@ public class IRConfig {
 
             @Config.Comment("Base volume of the Steam Turbine (default 0.8f)")
             public float TurbineVolume = 0.8f;
+        }
+
+        public static class SubCategoryRender
+        {
+            @Config.Comment("The multiplier for the Wind Blades render distance (Default: 4D)")
+            public double windBladesRenderDistanceMult = 4.0D;
         }
 
         public static class SubCategoryRecipes
