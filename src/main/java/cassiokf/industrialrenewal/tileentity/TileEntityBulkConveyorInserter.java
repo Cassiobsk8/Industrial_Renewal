@@ -21,7 +21,7 @@ public class TileEntityBulkConveyorInserter extends TileEntityBulkConveyor
 
     private void insertItem()
     {
-        if (!inventory.getStackInSlot(2).isEmpty())
+        if (!inventory.getStackInSlot(frontNumber).isEmpty())
         {
             EnumFacing facing = getBlockFacing();
             TileEntity te = world.getTileEntity(pos.offset(facing));
@@ -32,14 +32,14 @@ public class TileEntityBulkConveyorInserter extends TileEntityBulkConveyor
                 {
                     for (int j = 0; j < itemHandler.getSlots(); j++)
                     {
-                        ItemStack stack = this.inventory.extractItem(2, 64, true);
+                        ItemStack stack = this.inventory.extractItem(frontNumber, 64, true);
                         if (!stack.isEmpty() && itemHandler.isItemValid(j, stack))
                         {
                             ItemStack left = itemHandler.insertItem(j, stack, false);
                             if (!ItemStack.areItemStacksEqual(stack, left))
                             {
                                 int toExtract = stack.getCount() - left.getCount();
-                                this.inventory.extractItem(2, toExtract, false);
+                                this.inventory.extractItem(frontNumber, toExtract, false);
                             }
                         }
                     }
@@ -49,8 +49,7 @@ public class TileEntityBulkConveyorInserter extends TileEntityBulkConveyor
     }
 
     @Override
-    public boolean dropFrontItem(EnumFacing facing, ItemStack frontPositionItem, BlockPos frontPos)
+    public void dropFrontItem(EnumFacing facing, ItemStack frontPositionItem, BlockPos frontPos)
     {
-        return false;
     }
 }

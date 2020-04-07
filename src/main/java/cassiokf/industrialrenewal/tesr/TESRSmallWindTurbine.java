@@ -18,9 +18,17 @@ public class TESRSmallWindTurbine extends TESRBase<TileEntitySmallWindTurbine>
         super.render(te, x, y, z, partialTicks, destroyStage, alpha);
         if (te.hasBlade())
         {
+            //shift = shiftOld + (shift - shiftOld) * partialTick
             EnumFacing facing = te.getBlockFacing();
             doTheMath(facing, x, z, 0, 0);
-            render3dItemRotatable(facing, te.getWorld(), xPos, y + 0.5f, zPos, blade, 12, false, true, te.getRotation(partialTicks), 0, 1, 0, true);
+            float rotation = smoothAnimation(te.getRotation(), te.getOldRotation(), partialTicks, true);
+            render3dItemRotatable(facing, te.getWorld(), xPos, y + 0.5f, zPos, blade, 12, false, true, rotation, 0, 1, 0, true);
         }
+    }
+
+    @Override
+    public boolean isGlobalRenderer(TileEntitySmallWindTurbine te)
+    {
+        return true;
     }
 }

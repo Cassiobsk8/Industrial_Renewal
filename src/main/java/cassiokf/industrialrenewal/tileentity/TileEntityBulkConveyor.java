@@ -15,18 +15,23 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TileEntityBulkConveyor extends TileEntitySyncable implements ITickable
 {
-    public double stack3Pos;
-    public double stack2Pos;
-    public double stack1Pos;
-    public double stack3YPos;
-    public double stack2YPos;
-    public double stack1YPos;
-    private int tick;
-    private boolean getInThisTick;
+    public static final int frontNumber = 2;
+    public static final int middleNumber = 1;
+    public static final int backNumber = 0;
+    private final int tickSpeed = 4;
+    private int frontTick;
+    private int middleTick;
+    private int backTick;
+    private float oldFrontTick;
+    private float oldMiddleTick;
+    private float oldBackTick;
+    private float rFrontTick;
+    private float rMiddleTick;
     public ItemStackHandler inventory = new ItemStackHandler(3)
     {
         @Override
@@ -36,96 +41,106 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ITicka
         }
 
         @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack)
+        {
+            return getStackInSlot(slot).isEmpty() && super.isItemValid(slot, stack);
+        }
+
+        @Override
         protected void onContentsChanged(int slot)
         {
-            TileEntityBulkConveyor.this.Sync();
-            if (slot == 0)
-            {
-                TileEntityBulkConveyor.this.getInThisTick = true;
-            }
+            TileEntityBulkConveyor.this.itemReceived(slot);
         }
     };
+    private float rBackTick;
+    private EnumFacing facing;
+
+    public static void dropInventoryItems(World worldIn, BlockPos pos, ItemStackHandler inventory)
+    {
+        for (int i = 0; i < 3; ++i)
+        {
+            ItemStack itemstack = inventory.getStackInSlot(i);
+
+            if (!itemstack.isEmpty())
+            {
+                Utils.spawnItemStack(worldIn, pos, itemstack);
+            }
+        }
+    }
 
     @Override
     public void update()
     {
-        if (world.isRemote)
+        //FRONT
+        if (!inventory.getStackInSlot(frontNumber).isEmpty())
         {
-            doAnimation();
-        } else
-        {
-            if (tick == 1) getInThisTick = false;
-            if (tick % 4 == 0)
+            if (frontTick >= tickSpeed)
             {
-                tick = 0;
-                moveItem();
+                updateFrontStack();
             }
-            tick++;
-        }
-    }
-
-    private void doAnimation()
-    {
-        ItemStack stack1 = getStackInSlot(0);
-        ItemStack stack2 = getStackInSlot(1);
-        ItemStack stack3 = getStackInSlot(2);
-        int mode = getMode();
-        float yPos;
-
-        float speed = 0.33f;
-        if (!stack3.isEmpty())
-        {
-            stack3Pos = Utils.lerp(stack3Pos, -0.9D, speed);
-            yPos = mode == 0 ? 0.47f : mode == 1 ? 1.3f : 0.65f;
-            if (mode == 0) stack3YPos = yPos;
-            else stack3YPos = Utils.lerp(stack3YPos, yPos, speed);
+            if (frontTick < tickSpeed) frontTick++;
+            oldFrontTick = rFrontTick;
+            rFrontTick = Utils.normalize((float) frontTick, 0.1f, (float) tickSpeed);
         } else
         {
-            stack3Pos = -0.57f;
-            stack3YPos = mode == 0 ? 0.47f : 0.97f;
+            oldFrontTick = 0;
+            rFrontTick = 0;
         }
-        if (!stack2.isEmpty())
+        //MIDDLE
+        if (!inventory.getStackInSlot(middleNumber).isEmpty())
         {
-            stack2Pos = Utils.lerp(stack2Pos, -0.57D, speed);
-            yPos = mode == 0 ? 0.47f : 0.97f;
-            if (mode == 0) stack2YPos = yPos;
-            else stack2YPos = Utils.lerp(stack2YPos, yPos, speed);
-        } else
-        {
-            stack2Pos = -0.25f;
-            if (mode == 1) stack2YPos = 0.65f;
-            if (mode == 2) stack2YPos = 1.3f;
+            if (middleTick >= tickSpeed)
+            {
+                updateMiddleStack();
+            }
+            if (middleTick < tickSpeed) middleTick++;
+            oldMiddleTick = rMiddleTick;
+            rMiddleTick = Utils.normalize((float) middleTick, 0, (float) tickSpeed);
         }
-        if (!stack1.isEmpty())
+        //BACK
+        if (!inventory.getStackInSlot(backNumber).isEmpty())
         {
-            stack1Pos = Utils.lerp(stack1Pos, -0.25D, speed);
-            yPos = mode == 0 ? 0.47f : mode == 1 ? 0.65f : 1.3f;
-            if (mode == 0) stack1YPos = yPos;
-            else stack1YPos = Utils.lerp(stack1YPos, yPos, speed);
-        } else
-        {
-            stack1Pos = 0f;
-            if (mode == 1) stack1YPos = 0.3f;
-            if (mode == 2) stack1YPos = 1.65f;
+            if (backTick >= tickSpeed)
+            {
+                updateBackStack();
+            }
+            if (backTick < tickSpeed) backTick++;
+            oldBackTick = rBackTick;
+            rBackTick = Utils.normalize((float) backTick, 0, (float) tickSpeed);
         }
+        Sync();
     }
 
-    private boolean isAllEmpry()
+    public void itemReceived(int slot)
     {
-        boolean flag1 = inventory.getStackInSlot(2).isEmpty();
-        boolean flag2 = inventory.getStackInSlot(1).isEmpty();
-        boolean flag3 = inventory.getStackInSlot(0).isEmpty();
-        return flag1 && flag2 && flag3;
+        ItemStack stack = inventory.getStackInSlot(slot);
+        if (!stack.isEmpty())
+        {
+            if (slot == frontNumber)
+            {
+                frontTick = 0;
+                rFrontTick = 0;
+            } else if (slot == middleNumber)
+            {
+                middleTick = 0;
+                rMiddleTick = 0;
+            } else if (slot == backNumber)
+            {
+                backTick = 0;
+                rMiddleTick = 0;
+            }
+        }
+        Sync();
     }
 
-    private void moveItem()
+    private boolean updateFrontStack()
     {
-        if (isAllEmpry()) return;
-        ItemStack frontPositionItem = inventory.getStackInSlot(2);
+        if (world.isRemote) return false;
+        ItemStack frontPositionItem = inventory.getStackInSlot(frontNumber);
         IBlockState ownState = world.getBlockState(pos);
-        if (!(ownState.getBlock() instanceof BlockBulkConveyor)) return;
+        if (!(ownState.getBlock() instanceof BlockBulkConveyor)) return false;
 
-        EnumFacing facing = ownState.getValue(BlockBulkConveyor.FACING);
+        EnumFacing facing = getBlockFacing();
         if (!frontPositionItem.isEmpty())
         {
             BlockPos frontPos = pos.offset(facing);
@@ -138,37 +153,91 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ITicka
                     TileEntityBulkConveyor te = (TileEntityBulkConveyor) world.getTileEntity(targetConveyorPos);
                     if (te.getBlockFacing() == getBlockFacing() && te.transferItem(frontPositionItem, false))
                     { // IF IS STRAIGHT
-                        inventory.setStackInSlot(2, ItemStack.EMPTY);
-                        frontPositionItem = ItemStack.EMPTY;
-                    } else if (te.getBlockFacing() != getBlockFacing().getOpposite() && te.getStackInSlot(1).isEmpty())
+                        inventory.setStackInSlot(frontNumber, ItemStack.EMPTY);
+                        return true;
+                    } else if (te.getBlockFacing() != getBlockFacing().getOpposite() && te.getStackInSlot(middleNumber).isEmpty())
                     { // IF IS CORNER
-                        if (te.transferItem(frontPositionItem, 1, false))
+                        if (te.transferItem(frontPositionItem, middleNumber, false))
                         {
-                            inventory.setStackInSlot(2, ItemStack.EMPTY);
-                            frontPositionItem = ItemStack.EMPTY;
+                            inventory.setStackInSlot(frontNumber, ItemStack.EMPTY);
+                            return true;
                         }
                     }
                 }
             } else if (world.getBlockState(frontPos).getBlock().isAir(world.getBlockState(frontPos), world, frontPos))
             {
-                if (dropFrontItem(facing, frontPositionItem, frontPos))
-                {
-                    frontPositionItem = ItemStack.EMPTY;
-                }
+                dropFrontItem(facing, frontPositionItem, frontPos);
+                return true;
             }
         }
-        ItemStack MiddlePositionItem = inventory.getStackInSlot(1);
+        return false;
+    }
+
+    private boolean updateMiddleStack()
+    {
+        if (world.isRemote) return false;
+        ItemStack MiddlePositionItem = inventory.getStackInSlot(middleNumber);
+        ItemStack frontPositionItem = inventory.getStackInSlot(frontNumber);
         if (frontPositionItem.isEmpty() && !MiddlePositionItem.isEmpty())
         {
-            moveItemInternaly(1, 2);
-            MiddlePositionItem = ItemStack.EMPTY;
+            moveItemInternally(middleNumber, frontNumber);
+            return true;
         }
-        ItemStack backPositionItem = inventory.getStackInSlot(0);
-        if (!backPositionItem.isEmpty() && MiddlePositionItem.isEmpty() && !getInThisTick)
+        return false;
+    }
+
+    private boolean updateBackStack()
+    {
+        if (world.isRemote) return false;
+        ItemStack backPositionItem = inventory.getStackInSlot(backNumber);
+        ItemStack MiddlePositionItem = inventory.getStackInSlot(middleNumber);
+        if (!backPositionItem.isEmpty() && MiddlePositionItem.isEmpty())
         {
-            moveItemInternaly(0, 1);
+            moveItemInternally(backNumber, middleNumber);
+            return true;
         }
-        getInThisTick = false;
+        return false;
+    }
+
+    public float getStackOffset(int slot, boolean old)
+    {
+        switch (slot)
+        {
+            default:
+            case 2:
+                return old ? oldFrontTick : rFrontTick;
+            case 1:
+                return old ? oldMiddleTick : rMiddleTick;
+            case 0:
+                return old ? oldBackTick : rBackTick;
+        }
+    }
+
+    public float getMinYOffset(int slot)
+    {
+        int mode = getMode();
+        switch (slot)
+        {
+            default:
+            case 2:
+                return mode == 0 ? 0.47f : 0.97f;
+            case 1:
+                if (mode == 1) return 0.65f;
+                if (mode == 2) return 1.3f;
+                return 0.47f;
+            case 0:
+                if (mode == 1) return 0.3f;
+                if (mode == 2) return 1.65f;
+                return 0.47f;
+        }
+    }
+
+    public float getMaxYOffset()
+    {
+        int mode = getMode();
+        if (mode == 0) return 0;
+        else if (mode == 1) return 0.33f;
+        return -0.33f;
     }
 
     private BlockPos frontConveyor(EnumFacing facing, int mode)
@@ -193,12 +262,11 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ITicka
                 ? frontPos : null;
     }
 
-    private void moveItemInternaly(int from, int to)
+    private void moveItemInternally(int from, int to)
     {
         inventory.setStackInSlot(to, inventory.getStackInSlot(from));
         inventory.setStackInSlot(from, ItemStack.EMPTY);
     }
-
 
     public ItemStackHandler getInventory()
     {
@@ -215,14 +283,12 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ITicka
         if (inventory.getStackInSlot(0).isEmpty() && !stack.isEmpty())
         {
             if (!simulate) inventory.setStackInSlot(slot, stack);
-            getInThisTick = true;
-            Sync();
             return true;
         }
         return false;
     }
 
-    public boolean dropFrontItem(EnumFacing facing, ItemStack frontPositionItem, BlockPos frontPos)
+    public void dropFrontItem(EnumFacing facing, ItemStack frontPositionItem, BlockPos frontPos)
     {
         double multiplierX = BlockBulkConveyor.getMotionX(facing);
         double multiplierZ = BlockBulkConveyor.getMotionZ(facing);
@@ -232,20 +298,6 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ITicka
         entityitem.motionZ = multiplierZ * 0.2;
         world.spawnEntity(entityitem);
         inventory.setStackInSlot(2, ItemStack.EMPTY);
-        return true;
-    }
-
-    public static void dropInventoryItems(World worldIn, BlockPos pos, ItemStackHandler inventory)
-    {
-        for (int i = 0; i < 3; ++i)
-        {
-            ItemStack itemstack = inventory.getStackInSlot(i);
-
-            if (!itemstack.isEmpty())
-            {
-                Utils.spawnItemStack(worldIn, pos, itemstack);
-            }
-        }
     }
 
     public void dropInventory()
@@ -282,6 +334,17 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ITicka
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
+        if (hasWorld() && world.isRemote)
+        {
+            frontTick = compound.getInteger("rFront");
+            middleTick = compound.getInteger("rMiddle");
+            backTick = compound.getInteger("rBack");
+
+            rFrontTick = compound.getFloat("oFront");
+            rMiddleTick = compound.getFloat("oMiddle");
+            rBackTick = compound.getFloat("oBack");
+        }
+
         this.inventory.deserializeNBT(compound.getCompoundTag("inv"));
         super.readFromNBT(compound);
     }
@@ -289,14 +352,24 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ITicka
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
+        compound.setInteger("rFront", frontTick);
+        compound.setInteger("rMiddle", middleTick);
+        compound.setInteger("rBack", backTick);
+
+        compound.setFloat("oFront", rFrontTick);
+        compound.setFloat("oMiddle", rMiddleTick);
+        compound.setFloat("oBack", rBackTick);
+
         compound.setTag("inv", this.inventory.serializeNBT());
         return super.writeToNBT(compound);
     }
 
     public EnumFacing getBlockFacing()
     {
+        if (facing != null) return facing;
         IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() instanceof BlockBulkConveyor) return state.getValue(BlockBulkConveyor.FACING);
+        if (state.getBlock() instanceof BlockBulkConveyor)
+            return facing = state.getValue(BlockBulkConveyor.FACING);
         return EnumFacing.NORTH;
     }
 }

@@ -147,4 +147,11 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
                 break;
         }
     }
+
+    public float smoothAnimation(float rotation, float oldRotation, float partialTick, boolean invert)
+    {
+        //shift = shiftOld + (shift - shiftOld) * partialTick
+        float r = oldRotation + (rotation - oldRotation) * partialTick;
+        return invert ? -r : r;
+    }
 }

@@ -31,6 +31,8 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
     public boolean inProcess;
     private int tick;
     private int processTime;
+    private float renderCutterProcess;
+    private float oldProcessTime;
     private ItemStack processingItem;
     private int energyPTick = IRConfig.MainConfig.Main.energyPerTickLatheMachine;
 
@@ -97,6 +99,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
         if (isMaster())
         {
             ItemStack inputStack = input.getStackInSlot(0);
+            oldProcessTime = renderCutterProcess;
             if (!inProcess
                     && !inputStack.isEmpty()
                     && LatheRecipe.CACHED_RECIPES.containsKey(inputStack.getItem()))
@@ -134,7 +137,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
                     if (!world.isRemote) outPut.insertItem(0, hold.extractItem(0, Integer.MAX_VALUE, false), false);
                 }
             }
-
+            renderCutterProcess = processTime > 0 ? Utils.normalize(tick, 0, processTime) * 0.8f : 0;
             if (!world.isRemote && !outPut.getStackInSlot(0).isEmpty())
             {
                 EnumFacing facing = getMasterFacing().rotateY();
@@ -202,7 +205,12 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
 
     public float getNormalizedProcess()
     {
-        return processTime > 0 ? Utils.normalize(tick, 0, processTime) : 0;
+        return renderCutterProcess;
+    }
+
+    public float getOldProcess()
+    {
+        return oldProcessTime;
     }
 
     @Override

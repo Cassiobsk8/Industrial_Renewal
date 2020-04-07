@@ -34,7 +34,7 @@ public class TESRLathe extends TESRBase<TELathe>
                 render3dItem(facing, te.getWorld(), xPos, y + 1.05, zPos, te.getProcessingItem(), 1, true);
             }
             //Cutter
-            float progress = te.getNormalizedProcess() * 0.8f;
+            float progress = smoothAnimation(te.getNormalizedProcess(), te.getOldProcess(), partialTicks, false);
             doTheMath(facing, x, z, 0.5, 0.05 + progress);
             render3dItem(facing, te.getWorld(), xPos, y - 0.25, zPos, cutter, 4, true);
         }

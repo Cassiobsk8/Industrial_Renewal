@@ -195,11 +195,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
 
     public float getCartFluidAngle()
     {
-        if (cartActivity <= 0) return 0;
-        float currentAmount = Utils.getInvNorm(inventory);
-        float totalCapacity = inventory.getSlots();
-        currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 180f;
+        return Utils.getInvNorm(inventory) * 180f;
     }
 
     public boolean isMaster()

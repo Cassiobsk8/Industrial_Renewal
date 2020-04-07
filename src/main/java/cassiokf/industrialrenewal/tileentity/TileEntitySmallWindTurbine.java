@@ -41,6 +41,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IT
         }
     };
     private float rotation;
+    private float oldRotation;
     private int tickToDamage;
 
     private Random random = new Random();
@@ -99,6 +100,18 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IT
                     }
                 }
             }
+        } else
+        {
+            if (hasBlade())
+            {
+                oldRotation = rotation;
+                rotation += 6f * getEfficiency();
+                if (rotation >= 360f)
+                {
+                    rotation -= 360f;
+                    oldRotation -= 360f;
+                }
+            }
         }
     }
 
@@ -107,12 +120,23 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IT
         return this.bladeInv;
     }
 
-    public float getRotation(float partialTicks)
+    public float getRotation()
     {
-        float inverted = Utils.normalize(partialTicks, 1, 0);
-        rotation = rotation + (4f * inverted) * getEfficiency();
-        if (rotation >= 360) rotation -= 360;
-        return -(rotation);
+        //float inverted = Utils.normalize(partialTicks, 1, 0);
+        //rotation = rotation + (4f * inverted) * getEfficiency();
+        //if (rotation >= 360) rotation -= 360;
+        return rotation;
+    }
+
+    public float getOldRotation()
+    {
+        return oldRotation;
+    }
+
+    @Override
+    public double getMaxRenderDistanceSquared()
+    {
+        return super.getMaxRenderDistanceSquared() * IRConfig.MainConfig.Render.windBladesRenderDistanceMult;
     }
 
     public boolean hasBlade()
