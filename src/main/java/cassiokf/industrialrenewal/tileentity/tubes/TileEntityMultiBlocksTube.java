@@ -20,11 +20,12 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 {
     private TE master;
     private boolean isMaster;
-    private Map<BlockPos, EnumFacing> posSet = new ConcurrentHashMap<>();
-    public Map<BlockPos, Integer> limitedOutPutMap = new ConcurrentHashMap<>();
+    final public Map<BlockPos, Integer> limitedOutPutMap = new ConcurrentHashMap<>();
+    final private Map<BlockPos, EnumFacing> posSet = new ConcurrentHashMap<>();
     public int outPut;
     int outPutCount;
     boolean firstTick = false;
+    protected boolean inUse = false;
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
@@ -43,6 +44,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
             onFirstTick();
         }
         tick();
+        limitedOutPutMap.clear();
     }
 
     public void tick()

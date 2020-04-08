@@ -1,10 +1,8 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.BlockSolarPanel;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -21,34 +19,74 @@ import javax.annotation.Nullable;
 public class TileEntitySolarPanelBase extends TEBase implements ITickable
 {
     public final VoltsEnergyContainer energyContainer;
+    private int tick;
+    private int random = 0;
+    private int energyCanGenerate;
 
     public TileEntitySolarPanelBase()
     {
         this.energyContainer = new VoltsEnergyContainer(600, 0, 120)
         {
             @Override
-            public void onEnergyChange()
-            {
-                TileEntitySolarPanelBase.this.markDirty();
-            }
-
-            @Override
             public boolean canReceive()
             {
                 return false;
+            }
+
+            @Override
+            public boolean canExtract()
+            {
+                return false;
+            }
+
+            @Override
+            public int receiveInternally(int maxReceive, boolean simulate)
+            {
+                return TileEntitySolarPanelBase.this.moveEnergyOut(maxReceive, simulate);
             }
         };
     }
 
     @Override
+    public void onLoad()
+    {
+        super.onLoad();
+        random = world.rand.nextInt(10);
+    }
+
+    @Override
     public void update()
     {
-        if (this.hasWorld() && !this.world.isRemote)
+        if (!world.isRemote)
         {
-            getEnergyFromSun();
-            int energy = this.energyContainer.getEnergyStored();
-            updatePanel(EnumFacing.DOWN, energy);
+            if (tick >= (20 + random))
+            {
+                tick = 0;
+                getEnergyFromSun();
+            }
+            tick++;
+
+            if (energyCanGenerate > 0) energyContainer.receiveInternally(energyCanGenerate, false);
         }
+    }
+
+    public int moveEnergyOut(int energy, boolean simulate)
+    {
+        EnumFacing facing = EnumFacing.DOWN;
+        final TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
+        int out = 0;
+        if (tileEntity != null)
+        {
+            if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
+            {
+                final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
+                if (consumer != null && consumer.canReceive())
+                {
+                    out = consumer.receiveEnergy(energy, simulate);
+                }
+            }
+        }
+        return out;
     }
 
     public static int getGeneration(World world, BlockPos pos)
@@ -71,43 +109,8 @@ public class TileEntitySolarPanelBase extends TEBase implements ITickable
         if (world.provider.hasSkyLight() && world.canBlockSeeSky(pos.offset(EnumFacing.UP))
                 && world.getSkylightSubtracted() == 0 && this.energyContainer.getEnergyStored() != this.energyContainer.getMaxEnergyStored())
         {
-            int result = this.energyContainer.getEnergyStored() + getGeneration(world, pos);
-            if (result > this.energyContainer.getMaxEnergyStored())
-            {
-                result = this.energyContainer.getMaxEnergyStored();
-            }
-            this.energyContainer.setEnergyStored(result);
+            energyCanGenerate = getGeneration(world, pos);
         }
-    }
-
-    public void updatePanel(EnumFacing facing, int energy)
-    {
-        final TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
-        if (tileEntity != null && !tileEntity.isInvalid())
-        {
-            if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()) && !(world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockSolarPanel))
-            {
-                final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
-                if (consumer != null && consumer.canReceive())
-                {
-                    this.energyContainer.extractEnergy(consumer.receiveEnergy(energy, false), false);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound compound)
-    {
-        this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
-        super.readFromNBT(compound);
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
-    {
-        compound.setTag("StoredIR", this.energyContainer.serializeNBT());
-        return super.writeToNBT(compound);
     }
 
     @Override

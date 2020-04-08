@@ -27,7 +27,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
     private final VoltsEnergyContainer energyContainer;
     private final ItemStackHandler input;
     private final ItemStackHandler outPut;
-    private ItemStack hold;
+    private ItemStack hold = ItemStack.EMPTY;
     public boolean inProcess;
     private int tick;
     private int processTime;

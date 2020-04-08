@@ -1,12 +1,12 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.BlockSolarPanel;
 import cassiokf.industrialrenewal.blocks.BlockSolarPanelFrame;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
+import cassiokf.industrialrenewal.util.MultiBlockHelper;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,11 +15,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,40 +23,34 @@ import java.util.Set;
 public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEntitySolarPanelFrame>
 {
     public final VoltsEnergyContainer energyContainer;
-    public ItemStackHandler panelInv = new ItemStackHandler(1)
-    {
-        @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack)
-        {
-            if (stack.isEmpty()) return false;
-            return Block.getBlockFromItem(stack.getItem()) instanceof BlockSolarPanel;
-        }
-
-        @Override
-        protected void onContentsChanged(int slot)
-        {
-            TileEntitySolarPanelFrame.this.Sync();
-        }
-    };
-
-    private Set<BlockPos> panelReady = new HashSet<>();
+    private final Set<BlockPos> panelReady = new HashSet<>();
+    private final ItemStack panelStack = new ItemStack(ModBlocks.spanel);
     private int tick;
     private EnumFacing blockFacing;
+    public boolean panelInv;
+    private int energyCanOutput = 0;
+    private int random = 0;
 
     public TileEntitySolarPanelFrame()
     {
-        this.energyContainer = new VoltsEnergyContainer(600, 0, 1024)
+        this.energyContainer = new VoltsEnergyContainer(10240, 0, 10240)
         {
-            @Override
-            public void onEnergyChange()
-            {
-                TileEntitySolarPanelFrame.this.markDirty();
-            }
-
             @Override
             public boolean canReceive()
             {
                 return false;
+            }
+
+            @Override
+            public boolean canExtract()
+            {
+                return false;
+            }
+
+            @Override
+            public int receiveInternally(int maxReceive, boolean simulate)
+            {
+                return TileEntitySolarPanelFrame.this.outputEnergy(maxReceive, simulate);
             }
         };
     }
@@ -68,48 +58,49 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     @Override
     public void onFirstTick()
     {
-        super.onLoad();
-        if (this.hasWorld() && !this.world.isRemote)
+        random = world.rand.nextInt(10);
+        if (!world.isRemote)
         {
             checkIfIsReady();
+            if (isMaster()) getEnergyFromSun();
         }
     }
 
     @Override
     public void tick()
     {
-        if (this.hasWorld() && !this.world.isRemote)
+        if (!this.world.isRemote)
         {
             if (isMaster())
             {
-                int size = panelReady.size();
-                energyContainer.setMaxEnergyStored(Math.max(600 * size, energyContainer.getEnergyStored()));
-                if (size > 0) getEnergyFromSun();
-                for (BlockPos posT : getMachinesPosSet().keySet())
-                {
-                    final TileEntity tileEntity = world.getTileEntity(posT);
-                    if (tileEntity != null && !tileEntity.isInvalid())
-                    {
-                        EnumFacing facing = getMachinesPosSet().get(posT);
-                        if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
-                        {
-                            final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
-                            if (consumer != null && consumer.canReceive())
-                            {
-                                this.energyContainer.extractEnergy(consumer.receiveEnergy(energyContainer.extractEnergy(energyContainer.getMaxOutput(), true), false), false);
-                            }
-                        }
-                    }
-                }
+                if (panelReady.size() > 0 && energyCanOutput > 0)
+                    energyContainer.receiveInternally(energyCanOutput, false);
             }
 
-            if (tick >= 20)
+            if (tick >= (20 + random))
             {
                 tick = 0;
                 checkIfIsReady();
+                if (isMaster()) getEnergyFromSun();
             }
             tick++;
         }
+    }
+
+    private int outputEnergy(int maxReceive, boolean simulate)
+    {
+        if (!isMaster()) return getMaster().outputEnergy(maxReceive, simulate);
+        if (inUse) return 0;
+        inUse = true;
+        int out = MultiBlockHelper.outputEnergy(this, maxReceive, energyContainer.getMaxOutput(), simulate, world).get(0);
+        inUse = false;
+        return out;
+    }
+
+    public void setPanelInv(boolean panelInv)
+    {
+        this.panelInv = panelInv;
+        Sync();
     }
 
     @Override
@@ -142,32 +133,26 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     public void checkForOutPuts(BlockPos bPos)
     {
         if (world.isRemote) return;
-        for (EnumFacing face : EnumFacing.VALUES)
+
+        EnumFacing facing = getBlockFacing();
+        BlockPos currentPos = pos.offset(facing);
+        IBlockState state = world.getBlockState(currentPos);
+        TileEntity te = world.getTileEntity(currentPos);
+        if (!(state.getBlock() instanceof BlockSolarPanelFrame)
+                && te != null
+                && te.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
         {
-            EnumFacing facing = getBlockFacing();
-            boolean canConnect = face == facing || face == facing.rotateY() || face == facing.rotateYCCW();
-            if (!canConnect) continue;
-            BlockPos currentPos = pos.offset(face);
-            IBlockState state = world.getBlockState(currentPos);
-            TileEntity te = world.getTileEntity(currentPos);
-            boolean hasMachine = !(state.getBlock() instanceof BlockSolarPanelFrame) && te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
-            if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
-                if (!isMasterInvalid()) getMaster().addMachine(currentPos, face);
-                else if (!isMasterInvalid()) getMaster().removeMachine(pos, currentPos);
-        }
+            getMaster().addMachine(currentPos, facing);
+        } else getMaster().removeMachine(pos, currentPos);
     }
 
     public void getEnergyFromSun()
     {
-        if (world.provider.hasSkyLight() && world.canBlockSeeSky(pos.offset(EnumFacing.UP))
-                && world.getSkylightSubtracted() == 0 && this.energyContainer.getEnergyStored() != this.energyContainer.getMaxEnergyStored())
+        if (world.provider.hasSkyLight()
+                && world.canBlockSeeSky(pos.offset(EnumFacing.UP))
+                && world.getSkylightSubtracted() == 0)
         {
-            int result = getMaster().energyContainer.getEnergyStored() + ((TileEntitySolarPanelBase.getGeneration(world, pos) * panelReady.size()) * getMultiplier());
-            if (result > getMaster().energyContainer.getMaxEnergyStored())
-            {
-                result = getMaster().energyContainer.getMaxEnergyStored();
-            }
-            getMaster().energyContainer.setEnergyStored(result);
+            energyCanOutput = ((TileEntitySolarPanelBase.getGeneration(world, pos) * panelReady.size()) * getMultiplier());
         }
     }
 
@@ -183,24 +168,21 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
         return IRConfig.MainConfig.Main.panelFrameMultiplier;
     }
 
-    public void dropAllItems()
+    @Override
+    public void invalidate()
     {
-        Utils.dropInventoryItems(world, pos, panelInv);
+        if (panelInv) Utils.spawnItemStack(world, pos, new ItemStack(ModBlocks.spanel));
+        super.invalidate();
     }
 
     public boolean hasPanel()
     {
-        return !this.panelInv.getStackInSlot(0).isEmpty();
+        return panelInv;
     }
 
     public ItemStack getPanel()
     {
-        return panelInv.getStackInSlot(0);
-    }
-
-    public IItemHandler getPanelHandler()
-    {
-        return this.panelInv;
+        return panelStack;
     }
 
     public EnumFacing getBlockFacing()
@@ -218,34 +200,29 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        this.panelInv.deserializeNBT(compound.getCompoundTag("bladeInv"));
-        this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
+        panelInv = compound.getBoolean("panel");
         super.readFromNBT(compound);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        compound.setTag("bladeInv", this.panelInv.serializeNBT());
-        compound.setTag("StoredIR", this.energyContainer.serializeNBT());
+        compound.setBoolean("panel", panelInv);
         return super.writeToNBT(compound);
     }
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        EnumFacing face = getBlockFacing();
-        boolean canConnect = facing == face || facing == face.rotateY() || facing == face.rotateYCCW();
-        return (capability == CapabilityEnergy.ENERGY && canConnect) || super.hasCapability(capability, facing);
+        return (capability == CapabilityEnergy.ENERGY && facing == getBlockFacing())
+                || super.hasCapability(capability, facing);
     }
 
     @Override
     @Nullable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
-        EnumFacing face = getBlockFacing();
-        boolean canConnect = facing == face || facing == face.rotateY() || facing == face.rotateYCCW();
-        if (capability == CapabilityEnergy.ENERGY && canConnect)
+        if (capability == CapabilityEnergy.ENERGY && facing == getBlockFacing())
             return CapabilityEnergy.ENERGY.cast(this.energyContainer);
         return super.getCapability(capability, facing);
     }

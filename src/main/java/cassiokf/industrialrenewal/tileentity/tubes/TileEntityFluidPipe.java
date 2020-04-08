@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.util.MultiBlockHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -13,7 +14,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
-import java.util.Map;
+import java.util.List;
 
 public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFluidPipe>
 {
@@ -49,7 +50,6 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
                 }
             }
             tick++;
-            limitedOutPutMap.clear();
         }
     }
 
@@ -59,80 +59,12 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
 
         if (inUse) return 0; //to prevent stack overflow (IE)
         inUse = true;
-
         if (resource == null || resource.amount <= 0) return 0;
-        int out = 0;
-        final Map<BlockPos, EnumFacing> mapPosSet = getMachinesPosSet();
-        int quantity = mapPosSet.size();
-
-        if (quantity > 0)
-        {
-            out = moveFluid(resource, doFill, mapPosSet);
-            if (doFill) outPut += out;
-        } else outPutCount = 0;
-
+        List<Integer> out = MultiBlockHelper.outputFluid(this, resource, maxOutput, doFill, world);
+        if (doFill) outPut += out.get(0);
+        outPutCount = out.get(1);
         inUse = false;
-        return out;
-    }
-
-    public int moveFluid(FluidStack resource, boolean doFill, Map<BlockPos, EnumFacing> mapPosSet)
-    {
-        int out = 0;
-        int validOutputs = getMaxOutput(mapPosSet, resource);
-        outPutCount = validOutputs;
-        if (validOutputs == 0) return 0;
-        FluidStack realMaxOutput = new FluidStack(resource.getFluid(), Math.min(resource.amount / validOutputs, maxOutput));
-        for (BlockPos posM : mapPosSet.keySet())
-        {
-            TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = mapPosSet.get(posM).getOpposite();
-            if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face))
-            {
-                IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
-                if (tankStorage != null
-                        && tankStorage.getTankProperties() != null
-                        && tankStorage.getTankProperties().length > 0
-                        && tankStorage.getTankProperties()[0].canFill())
-                {
-                    realMaxOutput.amount = getLimitedValueForOutPut(realMaxOutput.amount, maxOutput, te.getPos(), !doFill);
-                    if (realMaxOutput.amount > 0)
-                    {
-                        int fluid = tankStorage.fill(realMaxOutput, doFill);
-                        out += fluid;
-                    }
-                }
-            }
-        }
-        return out;
-    }
-
-    public int getMaxOutput(Map<BlockPos, EnumFacing> mapPosSet, FluidStack resource)
-    {
-        int canAccept = 0;
-        for (BlockPos posM : mapPosSet.keySet())
-        {
-            if (!mapPosSet.containsKey(posM)) continue;
-            TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = mapPosSet.get(posM).getOpposite();
-            if (te != null && te != this && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face))
-            {
-                IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
-                if (tankStorage != null
-                        && tankStorage.getTankProperties() != null
-                        && tankStorage.getTankProperties().length > 0
-                        && tankStorage.getTankProperties()[0].canFill())
-                {
-                    FluidStack realMaxOutput = resource;
-                    realMaxOutput.amount = getLimitedValueForOutPut(realMaxOutput.amount, maxOutput, te.getPos(), true);
-                    if (realMaxOutput.amount > 0)
-                    {
-                        int fluid = tankStorage.fill(realMaxOutput, false);
-                        if (fluid > 0) canAccept++;
-                    }
-                }
-            }
-        }
-        return canAccept;
+        return out.get(0);
     }
 
     @Override

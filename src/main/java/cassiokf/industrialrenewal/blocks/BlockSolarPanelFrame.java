@@ -23,7 +23,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -57,25 +56,25 @@ public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<Ti
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntitySolarPanelFrame tile = (TileEntitySolarPanelFrame) world.getTileEntity(pos);
-        IItemHandler itemHandler = tile.getPanelHandler();
+        if (tile == null) return false;
         ItemStack heldItem = player.getHeldItem(hand);
         if (!heldItem.isEmpty() && (Block.getBlockFromItem(heldItem.getItem()) instanceof BlockSolarPanel || heldItem.getItem() instanceof ItemPowerScrewDrive))
         {
-            if (Block.getBlockFromItem(heldItem.getItem()) instanceof BlockSolarPanel && itemHandler.getStackInSlot(0).isEmpty())
+            if (Block.getBlockFromItem(heldItem.getItem()) instanceof BlockSolarPanel && !tile.hasPanel())
             {
                 if (!world.isRemote)
                 {
-                    itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1), false);
+                    tile.setPanelInv(true);
                     if (!player.isCreative()) heldItem.shrink(1);
                 }
                 return true;
             }
-            if (heldItem.getItem() instanceof ItemPowerScrewDrive && !itemHandler.getStackInSlot(0).isEmpty())
+            if (heldItem.getItem() instanceof ItemPowerScrewDrive && tile.hasPanel())
             {
                 if (!world.isRemote)
                 {
-                    ItemStack panel = itemHandler.extractItem(0, 64, false);
-                    if (!player.isCreative()) player.addItemStackToInventory(panel);
+                    tile.setPanelInv(false);
+                    if (!player.isCreative()) player.addItemStackToInventory(tile.getPanel());
                 }
                 return true;
             }
@@ -83,28 +82,6 @@ public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<Ti
         return false;
     }
 
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TileEntitySolarPanelFrame te = (TileEntitySolarPanelFrame) worldIn.getTileEntity(pos);
-        if (te != null) te.dropAllItems();
-        super.breakBlock(worldIn, pos, state);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(FACING).getIndex();
-    }
-
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
@@ -125,15 +102,7 @@ public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<Ti
     }
 
     @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state)
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
         return false;
     }
@@ -141,6 +110,6 @@ public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<Ti
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
-        return face == EnumFacing.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+        return BlockFaceShape.UNDEFINED;
     }
 }

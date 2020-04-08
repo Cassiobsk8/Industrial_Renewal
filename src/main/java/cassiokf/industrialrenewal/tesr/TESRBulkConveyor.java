@@ -23,7 +23,7 @@ public class TESRBulkConveyor extends TESRBase<TileEntityBulkConveyor>
             float oldOffset = te.getStackOffset(2, true);
             if (offset < 0.2f) oldOffset = 0;
             float stack3Progress = smoothAnimation(offset, oldOffset, partialTicks, false);
-            System.out.println(offset + " " + oldOffset + " " + stack3Progress);
+            //System.out.println(offset + " " + oldOffset + " " + stack3Progress);
             doTheMath(facing, x, z, 0.45 - (0.33 * stack3Progress), 0);
             render3dItem(facing, te.getWorld(), xPos, (y + te.getMinYOffset(2)) + (te.getMaxYOffset() * stack3Progress), zPos, stack3, 1, false);
         }

@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
+import cassiokf.industrialrenewal.util.MultiBlockHelper;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -10,7 +11,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
-import java.util.Map;
+import java.util.List;
 
 public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<TileEntityEnergyCable>
 {
@@ -22,8 +23,6 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
     private int oldPotential = -1;
     private int oldEnergy;
     private int tick;
-
-    private boolean inUse = false;
 
     public TileEntityEnergyCable()
     {
@@ -55,7 +54,6 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
                 }
             }
             tick++;
-            limitedOutPutMap.clear();
         }
     }
 
@@ -69,73 +67,11 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
         inUse = true;
         if (!simulate) potentialEnergy = Math.min(maxReceive, this.energyContainer.getMaxOutput());
         if (maxReceive <= 0) return 0;
-        int out = 0;
-
-        final Map<BlockPos, EnumFacing> mapPosSet = getMachinesPosSet();
-        int quantity = mapPosSet.size();
-
-        if (quantity > 0)
-        {
-            out = moveEnergy(maxReceive, simulate, mapPosSet);
-            if (!simulate) outPut += out;
-        } else outPutCount = 0;
-
+        List<Integer> out = MultiBlockHelper.outputEnergy(this, maxReceive, energyContainer.getMaxOutput(), simulate, world);
+        if (!simulate) outPut += out.get(0);
+        outPutCount = out.get(1);
         inUse = false;
-        return out;
-    }
-
-    public int moveEnergy(int amount, boolean simulate, Map<BlockPos, EnumFacing> mapPosSet)
-    {
-        int out = 0;
-        int validOutputs = getRealOutPutCount(mapPosSet);
-        outPutCount = validOutputs;
-        if (validOutputs == 0) return 0;
-        int realMaxOutput = Math.min(amount / validOutputs, getMaxEnergyToTransport());
-
-        for (BlockPos posM : mapPosSet.keySet())
-        {
-            TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = mapPosSet.get(posM).getOpposite();
-            if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
-            {
-                IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
-                if (energyStorage != null && energyStorage.canReceive())
-                {
-                    realMaxOutput = getLimitedValueForOutPut(realMaxOutput, energyContainer.getMaxOutput(), te.getPos(), simulate);
-                    if (realMaxOutput > 0)
-                    {
-                        int energy = energyStorage.receiveEnergy(realMaxOutput, simulate);
-                        out += energy;
-                    }
-                }
-            }
-        }
-        return out;
-    }
-
-    public int getRealOutPutCount(Map<BlockPos, EnumFacing> mapPosSet)
-    {
-        int canAccept = 0;
-        int realMaxOutput = this.energyContainer.getMaxOutput();
-        for (BlockPos posM : mapPosSet.keySet())
-        {
-            TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = mapPosSet.get(posM).getOpposite();
-            if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
-            {
-                IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
-                if (energyStorage != null && energyStorage.canReceive())
-                {
-                    realMaxOutput = getLimitedValueForOutPut(realMaxOutput, energyContainer.getMaxOutput(), te.getPos(), true);
-                    if (realMaxOutput > 0)
-                    {
-                        int energy = energyStorage.receiveEnergy(realMaxOutput, true);
-                        if (energy > 0) canAccept++;
-                    }
-                }
-            }
-        }
-        return canAccept;
+        return out.get(0);
     }
 
     @Override

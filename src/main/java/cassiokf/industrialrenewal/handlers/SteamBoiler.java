@@ -251,6 +251,10 @@ public class SteamBoiler
     public void coolDown()
     {
         if (tiedTE.getWorld().isRemote) return;
+        if (this.steamTank.getFluidAmount() > 0 && heat < 9000)
+        {
+            this.steamTank.drainInternal(10, true);
+        }
         if (heat > 2420)
         {
             heat -= 6;
