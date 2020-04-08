@@ -71,11 +71,8 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     {
         if (!this.world.isRemote)
         {
-            if (isMaster())
-            {
-                if (panelReady.size() > 0 && energyCanOutput > 0)
-                    energyContainer.receiveInternally(energyCanOutput, false);
-            }
+            if (isMaster() && panelReady.size() > 0 && energyCanOutput > 0)
+                energyContainer.receiveInternally(energyCanOutput, false);
 
             if (tick >= (20 + random))
             {

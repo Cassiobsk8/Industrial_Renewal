@@ -75,15 +75,12 @@ public class TileEntitySolarPanelBase extends TEBase implements ITickable
         EnumFacing facing = EnumFacing.DOWN;
         final TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
         int out = 0;
-        if (tileEntity != null)
+        if (tileEntity != null && tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
         {
-            if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
+            final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
+            if (consumer != null && consumer.canReceive())
             {
-                final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
-                if (consumer != null && consumer.canReceive())
-                {
-                    out = consumer.receiveEnergy(energy, simulate);
-                }
+                out = consumer.receiveEnergy(energy, simulate);
             }
         }
         return out;
