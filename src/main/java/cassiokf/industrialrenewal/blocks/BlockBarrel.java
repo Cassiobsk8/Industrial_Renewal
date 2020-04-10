@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.tileentity.TileEntityBarrel;
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -38,7 +39,7 @@ public class BlockBarrel extends BlockHorizontalFacing
     {
         if (!worldIn.isRemote) {
             TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
-            if (!FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing))
+            if (te != null && !FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing))
                 playerIn.sendMessage(new TextComponentString(te.GetChatQuantity()));
         }
         return true;
@@ -64,6 +65,19 @@ public class BlockBarrel extends BlockHorizontalFacing
         ItemStack itemst = SaveStackContainer(te);
         spawnAsEntity(worldIn, pos, itemst);
         super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public boolean hasComparatorInputOverride(IBlockState state)
+    {
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
+    {
+        TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
+        return te != null ? (int) (Utils.normalize(te.tank.getFluidAmount(), 0, te.tank.getCapacity()) * 15) : 0;
     }
 
     @Override
