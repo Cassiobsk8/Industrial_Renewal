@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.blocks.abstracts.BlockToggleableBase;
 import cassiokf.industrialrenewal.tileentity.TileEntityEnergySwitch;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -16,7 +17,7 @@ public class BlockEnergySwitch extends BlockToggleableBase<TileEntityEnergySwitc
     }
 
     @Override
-    public void spawnParticle(World world, double i, double j, double k)
+    public void spawnParticle(World world, BlockPos pos)
     {
     }
 

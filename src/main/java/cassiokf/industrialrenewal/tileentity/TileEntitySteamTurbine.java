@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.handlers.IRSoundHandler;
-import cassiokf.industrialrenewal.init.FluidInit;
+import cassiokf.industrialrenewal.handlers.SteamBoiler;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
 import cassiokf.industrialrenewal.util.Utils;
@@ -215,7 +215,7 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
 
     public String getSteamText()
     {
-        return FluidInit.STEAM.getName();
+        return SteamBoiler.steamName;
     }
 
     public String getGenerationText()

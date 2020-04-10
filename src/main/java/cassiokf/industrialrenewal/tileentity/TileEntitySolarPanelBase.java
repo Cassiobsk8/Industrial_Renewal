@@ -98,6 +98,7 @@ public class TileEntitySolarPanelBase extends TEBase implements ITickable
         }
         i = MathHelper.clamp(i, 0, 15);
         float normalize = i / 15f;
+        if (world.isRaining()) normalize = normalize / 2;
         return Math.round(normalize * IRConfig.MainConfig.Main.baseSolarPanelMaxGeneration);
     }
 

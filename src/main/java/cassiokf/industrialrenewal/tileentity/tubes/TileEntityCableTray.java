@@ -102,7 +102,7 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
             if (player != null) player.inventory.addItemStackToInventory(stack);
             else Utils.spawnItemStack(world, pos, stack);
         }
-        if (dataCable) ;
+        //if (dataCable) ;
         if (energyCable != EnumCableIn.NONE)
         {
             switch (energyCable)

@@ -1,10 +1,8 @@
 package cassiokf.industrialrenewal.handlers;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import cassiokf.industrialrenewal.util.Utils;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -26,7 +24,7 @@ public class SteamBoiler
 {
     private final TileEntitySyncable tiedTE;
     private final int maxHeat = 32000;
-    private final String steamName = I18n.format(FluidInit.STEAM.getUnlocalizedName());
+    public static final String steamName = "Steam";//I18n.format(FluidInit.STEAM.getUnlocalizedName());
     public FluidTank waterTank = new FluidTank(32000)
     {
         @Override
@@ -75,6 +73,7 @@ public class SteamBoiler
     private int fuelTime;
     private String fuelName = "";
     private int maxFuelTime;
+    private final FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), Fluid.BUCKET_VOLUME);
     public FluidTank fuelTank = new FluidTank(32000)
     {
         @Override
@@ -107,8 +106,6 @@ public class SteamBoiler
     };
     private int oldFuelTime;
 
-    private boolean needSync;
-
     public SteamBoiler(TileEntitySyncable tiedTE, BoilerType useSolid, int amountPerTick)
     {
         this.tiedTE = tiedTE;
@@ -122,18 +119,8 @@ public class SteamBoiler
 
         updateHeat();
 
-        if (heat >= 10000 && this.waterTank.getFluidAmount() >= waterPtick && this.steamTank.getFluidAmount() < this.steamTank.getCapacity())
-        {
-            int amount = waterPtick;
-            float factor = (heat / 100f) / (maxHeat / 100f);
-            amount = Math.round(amount * factor);
-            this.waterTank.drainInternal(amount, true);
-            FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), amount * IRConfig.MainConfig.Main.steamBoilerConversionFactor);
-            this.steamTank.fillInternal(steamStack, true);
-            heat -= 2;
-        }
+        generateSteam();
 
-        heat -= 2;
         heat = MathHelper.clamp(heat, 2420, maxHeat);
         fuelTime = Math.max(0, fuelTime);
 
@@ -142,28 +129,40 @@ public class SteamBoiler
         //IF no heat turn steam to water
         if (this.steamTank.getFluidAmount() > 0 && heat < 9000)
         {
-            this.steamTank.drainInternal(10, true);
+            steamTank.drainInternal(10, true);
         }
 
-        if (needSync || oldHeat != heat || fuelTime != oldFuelTime)
+        if (oldHeat != heat || fuelTime != oldFuelTime)
         {
-            needSync = false;
             oldHeat = heat;
             oldFuelTime = fuelTime;
             tiedTE.Sync();
         }
     }
 
+    private void generateSteam()
+    {
+        if (heat >= 10000 && waterTank.getFluidAmount() >= waterPtick && steamTank.getFluidAmount() < steamTank.getCapacity())
+        {
+            float factor = Utils.normalize(heat, 10000, maxHeat);
+            int amount = Math.round(waterPtick * factor);
+            waterTank.drainInternal(amount, true);
+            steamStack.amount = amount * IRConfig.MainConfig.Main.steamBoilerConversionFactor;
+            steamTank.fillInternal(steamStack, true);
+            heat -= 4;
+        } else heat -= 2;
+    }
+
     public void outPutSteam()
     {
-        if (tiedTE.getWorld().isRemote || this.steamTank.getFluidAmount() <= 0) return;
+        if (tiedTE.getWorld().isRemote || steamTank.getFluidAmount() <= 0) return;
         BlockPos pos = tiedTE.getPos().up(2); //TODO this needs to change
         TileEntity tileEntity = tiedTE.getWorld().getTileEntity(pos);
         if (tileEntity != null && tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN))
         {
             IFluidHandler upTank = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN);
             if (upTank != null)
-                this.steamTank.drainInternal(upTank.fill(this.steamTank.drainInternal(10000, false), true), true);
+                steamTank.drainInternal(upTank.fill(steamTank.drainInternal(10000, false), true), true);
         }
 
     }
@@ -220,8 +219,7 @@ public class SteamBoiler
 
     private ItemStack updateSolidFuel(ItemStack stack, boolean simulate)
     {
-        if (!useSolid) return stack;
-        if (fuelTime > 0) return stack;
+        if (!useSolid || fuelTime > 0) return stack;
         int fuel = TileEntityFurnace.getItemBurnTime(stack);
         if (fuel > 0)
         {

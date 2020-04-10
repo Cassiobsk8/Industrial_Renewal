@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.blocks.abstracts;
 
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityToggleableBase;
 import cassiokf.industrialrenewal.util.enums.enumproperty.EnumFaceRotation;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -40,6 +41,22 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
     }
 
     @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        boolean flag = worldIn.isBlockPowered(pos);
+        TileEntityToggleableBase te = (TileEntityToggleableBase) worldIn.getTileEntity(pos);
+        if (te != null && (flag || blockIn.getDefaultState().canProvidePower()) && flag != te.powered)
+        {
+            te.setPowered(flag);
+            if (flag != state.getValue(ACTIVE))
+            {
+                te.setActive(flag);
+                worldIn.setBlockState(pos, state.withProperty(ACTIVE, flag), 3);
+            }
+        }
+    }
+
+    @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACING, ACTIVE, FACE_ROTATION);
@@ -50,10 +67,6 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
     {
         if (entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty())
         {
-            int i = pos.getX();
-            int j = pos.getY();
-            int k = pos.getZ();
-
             TileEntityToggleableBase te = (TileEntityToggleableBase) world.getTileEntity(pos);
             if (te == null) return false;
             te.playSwitchSound();
@@ -61,15 +74,18 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
             state = state.withProperty(ACTIVE, active);
             te.setActive(active);
             world.setBlockState(pos, state, 3);
-            spawnParticle(world, i, j, k);
+            //spawnParticle(world, pos);
             world.notifyNeighborsOfStateChange(pos, this, false);
             return true;
         }
         return false;
     }
 
-    public void spawnParticle(World world, double i, double j, double k)
+    public void spawnParticle(World world, BlockPos pos)
     {
+        int i = pos.getX();
+        int j = pos.getY();
+        int k = pos.getZ();
         world.spawnParticle(EnumParticleTypes.WATER_DROP, i, j, k, 1.0D, 1.0D, 1.0D);
     }
 
@@ -192,19 +208,12 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
     @Override
     public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack)
     {
-
         final TileEntityToggleableBase tileEntity = getTileEntity(world, pos);
 
         setFacing(world, pos, EnumFacing.getDirectionFromEntityLiving(pos, placer));
         setFace(world, pos);
 
         tileEntity.markDirty();
-    }
-
-    @Override
-    public boolean isTopSolid(final IBlockState state)
-    {
-        return false;
     }
 
     public EnumFacing getFacing(final IBlockAccess world, final BlockPos pos)
