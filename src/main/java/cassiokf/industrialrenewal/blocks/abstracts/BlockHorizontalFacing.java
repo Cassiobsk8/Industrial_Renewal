@@ -59,4 +59,10 @@ public abstract class BlockHorizontalFacing extends BlockBase
     {
         return false;
     }
+
+    @Override
+    public boolean isNormalCube(IBlockState state)
+    {
+        return false;
+    }
 }

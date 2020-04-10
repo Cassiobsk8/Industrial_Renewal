@@ -99,22 +99,18 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
     @Override
     public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
     {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == getOutPutFace())
-            return true;
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-        {
-            return isFacingEnabled(facing);
-        }
-        return super.hasCapability(capability, facing);
+        return (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && (facing == getOutPutFace() || facing == getOutPutFace().getOpposite()))
+                || super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing)
     {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == getOutPutFace())
-            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(dummyTank);
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && isFacingEnabled(facing))
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            if (facing == getOutPutFace())
+                return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(dummyTank);
+        if (facing == getOutPutFace().getOpposite())
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
         return super.getCapability(capability, facing);
     }

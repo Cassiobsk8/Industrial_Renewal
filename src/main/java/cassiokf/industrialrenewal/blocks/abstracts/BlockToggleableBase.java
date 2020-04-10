@@ -89,81 +89,10 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
         world.spawnParticle(EnumParticleTypes.WATER_DROP, i, j, k, 1.0D, 1.0D, 1.0D);
     }
 
-    public void setFace(World world, BlockPos pos)
-    {
-        TileEntityToggleableBase tileEntity = (TileEntityToggleableBase) world.getTileEntity(pos);
-        if (tileEntity == null) return;
-        EnumFacing vFace = getFacing(world, pos);
-        EnumFaceRotation rFace = getFaceRotation(world, pos);
-        if (vFace == EnumFacing.UP || vFace == EnumFacing.DOWN)
-        {
-            if (rFace == EnumFaceRotation.UP || rFace == EnumFaceRotation.DOWN)
-            {
-                tileEntity.activeFacing(EnumFacing.EAST);
-                tileEntity.activeFacing(EnumFacing.WEST);
-                tileEntity.disableFacing(EnumFacing.NORTH);
-                tileEntity.disableFacing(EnumFacing.SOUTH);
-                tileEntity.disableFacing(EnumFacing.UP);
-                tileEntity.disableFacing(EnumFacing.DOWN);
-            } else
-            {
-                tileEntity.activeFacing(EnumFacing.SOUTH);
-                tileEntity.activeFacing(EnumFacing.NORTH);
-                tileEntity.disableFacing(EnumFacing.UP);
-                tileEntity.disableFacing(EnumFacing.DOWN);
-                tileEntity.disableFacing(EnumFacing.EAST);
-                tileEntity.disableFacing(EnumFacing.WEST);
-            }
-        }
-        if (vFace == EnumFacing.NORTH || vFace == EnumFacing.SOUTH)
-        {
-            if (rFace == EnumFaceRotation.UP || rFace == EnumFaceRotation.DOWN)
-            {
-                tileEntity.activeFacing(EnumFacing.EAST);
-                tileEntity.activeFacing(EnumFacing.WEST);
-                tileEntity.disableFacing(EnumFacing.NORTH);
-                tileEntity.disableFacing(EnumFacing.SOUTH);
-                tileEntity.disableFacing(EnumFacing.UP);
-                tileEntity.disableFacing(EnumFacing.DOWN);
-            }
-            if (rFace == EnumFaceRotation.LEFT || rFace == EnumFaceRotation.RIGHT)
-            {
-                tileEntity.activeFacing(EnumFacing.UP);
-                tileEntity.activeFacing(EnumFacing.DOWN);
-                tileEntity.disableFacing(EnumFacing.NORTH);
-                tileEntity.disableFacing(EnumFacing.SOUTH);
-                tileEntity.disableFacing(EnumFacing.EAST);
-                tileEntity.disableFacing(EnumFacing.WEST);
-            }
-        }
-        if (vFace == EnumFacing.WEST || vFace == EnumFacing.EAST)
-        {
-            if (rFace == EnumFaceRotation.UP || rFace == EnumFaceRotation.DOWN)
-            {
-                tileEntity.activeFacing(EnumFacing.NORTH);
-                tileEntity.activeFacing(EnumFacing.SOUTH);
-                tileEntity.disableFacing(EnumFacing.EAST);
-                tileEntity.disableFacing(EnumFacing.WEST);
-                tileEntity.disableFacing(EnumFacing.UP);
-                tileEntity.disableFacing(EnumFacing.DOWN);
-            }
-            if (rFace == EnumFaceRotation.LEFT || rFace == EnumFaceRotation.RIGHT)
-            {
-                tileEntity.activeFacing(EnumFacing.UP);
-                tileEntity.activeFacing(EnumFacing.DOWN);
-                tileEntity.disableFacing(EnumFacing.NORTH);
-                tileEntity.disableFacing(EnumFacing.SOUTH);
-                tileEntity.disableFacing(EnumFacing.EAST);
-                tileEntity.disableFacing(EnumFacing.WEST);
-            }
-        }
-    }
-
     @Override
     public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
         rotateFace(world, pos);
-        setFace(world, pos);
         return true;
     }
 
@@ -200,19 +129,10 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
     }
 
     @Override
-    public boolean isNormalCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
     public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack)
     {
         final TileEntityToggleableBase tileEntity = getTileEntity(world, pos);
-
         setFacing(world, pos, EnumFacing.getDirectionFromEntityLiving(pos, placer));
-        setFace(world, pos);
-
         tileEntity.markDirty();
     }
 
