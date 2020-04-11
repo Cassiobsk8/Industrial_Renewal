@@ -88,6 +88,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     {
         if (!isMaster()) return getMaster().outputEnergy(maxReceive, simulate);
         if (inUse) return 0;
+        if (maxReceive <= 0) return 0;
         inUse = true;
         int out = MultiBlockHelper.outputEnergy(this, maxReceive, energyContainer.getMaxOutput(), simulate, world).get(0);
         inUse = false;

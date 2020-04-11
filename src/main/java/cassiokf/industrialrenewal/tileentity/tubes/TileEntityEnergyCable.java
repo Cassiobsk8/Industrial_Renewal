@@ -66,7 +66,11 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
         if (inUse) return 0; //to prevent stack overflow (IE)
         inUse = true;
         if (!simulate) potentialEnergy = Math.min(maxReceive, this.energyContainer.getMaxOutput());
-        if (maxReceive <= 0) return 0;
+        if (maxReceive <= 0)
+        {
+            inUse = false;
+            return 0;
+        }
         List<Integer> out = MultiBlockHelper.outputEnergy(this, maxReceive, energyContainer.getMaxOutput(), simulate, world);
         if (!simulate) outPut += out.get(0);
         outPutCount = out.get(1);
