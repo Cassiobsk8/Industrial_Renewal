@@ -171,8 +171,14 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 
     public void setMaster(TE master)
     {
+        boolean wasMaster = isMaster;
         this.master = master;
         isMaster = master == this;
+        if (wasMaster != isMaster)
+        {
+            final IBlockState state = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos, state, state, 2);
+        }
         if (!isMaster) posSet.clear();
     }
 

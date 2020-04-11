@@ -1,6 +1,8 @@
 package cassiokf.industrialrenewal.tileentity.machines;
 
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.handlers.IRSoundHandler;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
 import cassiokf.industrialrenewal.util.MachinesUtils;
@@ -10,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -28,13 +31,18 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
     private final ItemStackHandler input;
     private final ItemStackHandler outPut;
     private ItemStack hold = ItemStack.EMPTY;
-    public boolean inProcess;
+    public boolean inProcess = false;
+    private boolean oldInProcess;
     private int tick;
     private int processTime;
     private float renderCutterProcess;
     private float oldProcessTime;
     private ItemStack processingItem;
     private int energyPTick = IRConfig.MainConfig.Main.energyPerTickLatheMachine;
+    private float volume = IRConfig.MainConfig.Sounds.pumpVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
+    private boolean stopping = false;
+    private boolean stopped = true;
+    private boolean oldStopping = false;
 
     public TELathe()
     {
@@ -95,8 +103,38 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             {
                 process();
             }
+            if (!inProcess && !oldInProcess) stopping = true;
+            oldInProcess = inProcess;
             renderCutterProcess = processTime > 0 ? Utils.normalize(tick, 0, processTime) * 0.8f : 0;
             tryOutPutItem();
+            handleSound();
+        }
+    }
+
+    private void handleSound()
+    {
+        if (!inProcess && stopping && !stopped)
+        {
+            if (!world.isRemote)
+                world.playSound(null, pos, IRSoundRegister.LATHE_STOP, SoundCategory.BLOCKS, volume, 1.0F);
+            stopping = false;
+            stopped = true;
+            oldStopping = false;
+            Sync();
+        } else if (inProcess)
+        {
+            stopped = false;
+            if (world.isRemote)
+                IRSoundHandler.playRepeatableSound(IRSoundRegister.LATHE_RESOURCEL, volume, 1.0F, pos);
+        } else
+        {
+            if (world.isRemote) IRSoundHandler.stopTileSound(pos);
+            stopping = false;
+            if (oldStopping)
+            {
+                oldStopping = false;
+                Sync();
+            }
         }
     }
 
@@ -110,6 +148,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             processTime = 0;
             inProcess = false;
             processingItem = null;
+
             if (!world.isRemote) outPut.insertItem(0, hold, false);
         }
     }
@@ -131,8 +170,8 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
                 if (!world.isRemote)
                 {
                     inputStack.shrink(recipe.getInput().get(0).getCount());
-                    hold = result;
                 }
+                hold = result;
             }
         }
     }

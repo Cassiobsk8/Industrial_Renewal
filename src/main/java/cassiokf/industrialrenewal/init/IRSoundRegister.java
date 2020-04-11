@@ -15,7 +15,7 @@ public class IRSoundRegister
 
     public static SoundEvent TILEENTITY_TRAINHORN, TILEENTITY_VALVE_CHANGE, TILEENTITY_ALARM, ITEM_DRILL,
             BLOCK_CATWALKGATE_OPEN, BLOCK_CATWALKGATE_CLOSE, EFFECT_SHOCK, DISC_1, BOOK_FLIP, MOTOR_ROTATION, PUMP_ROTATION,
-            PUMP_START;
+            PUMP_START, LATHE, LATHE_STOP;
     public static ResourceLocation PUMP_ROTATION_RESOURCEL = new ResourceLocation(References.MODID, "pump_rotation");
 
     public static ResourceLocation TILEENTITY_TRAINHORN_RESOURCEL = new ResourceLocation(References.MODID, "railroad.train_horn");
@@ -29,6 +29,8 @@ public class IRSoundRegister
     public static ResourceLocation BOOK_FLIP_RESOURCEL = new ResourceLocation(References.MODID, "book_flip");
     public static ResourceLocation MOTOR_ROTATION_RESOURCEL = new ResourceLocation(References.MODID, "motor_rotation");
     public static ResourceLocation PUMP_START_RESOURCEL = new ResourceLocation(References.MODID, "pump_start");
+    public static ResourceLocation LATHE_RESOURCEL = new ResourceLocation(References.MODID, "lathe");
+    public static ResourceLocation LATHE_STOP_RESOURCEL = new ResourceLocation(References.MODID, "lathe_off");
 
 
     public static void registerSounds()
@@ -45,6 +47,8 @@ public class IRSoundRegister
         MOTOR_ROTATION = registerSound("motor_rotation", MOTOR_ROTATION_RESOURCEL, EnumSoundType.DYNAMIC);
         PUMP_ROTATION = registerSound("pump_rotation", PUMP_ROTATION_RESOURCEL, EnumSoundType.REPEATABLE_ONLY);
         PUMP_START = registerSound("pump_start", PUMP_START_RESOURCEL, EnumSoundType.NORMAL);
+        LATHE = registerSound("lathe", LATHE_RESOURCEL, EnumSoundType.REPEATABLE_ONLY);
+        LATHE_STOP = registerSound("lathe_off", LATHE_STOP_RESOURCEL, EnumSoundType.NORMAL);
     }
 
     private static SoundEvent registerSound(String name, ResourceLocation location, EnumSoundType type)

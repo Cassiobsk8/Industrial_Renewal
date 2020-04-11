@@ -118,5 +118,25 @@
         "stream": false
       }
     ]
+  },
+  "lathe": {
+    "category": "block",
+    "subtitle": "lathe",
+    "sounds": [
+      {
+        "name": "industrialrenewal:lathe",
+        "stream": false
+      }
+    ]
+  },
+  "lathe_off": {
+    "category": "block",
+    "subtitle": "lathe_off",
+    "sounds": [
+      {
+        "name": "industrialrenewal:lathe_off",
+        "stream": false
+      }
+    ]
   }
 }
