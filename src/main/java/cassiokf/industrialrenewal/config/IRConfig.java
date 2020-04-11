@@ -204,8 +204,8 @@ public class IRConfig {
             @Config.LangKey("gui.config.alarm_volume.name")
             public double alarmVolume = 4.0;
 
-            @Config.Comment("Base volume of the Pump (default 0.3f)")
-            public float pumpVolume = 0.3f;
+            @Config.Comment("Base volume of the Pump (default 0.4f)")
+            public float pumpVolume = 0.4f;
 
             @Config.Comment("Base volume of the Steam Turbine (default 0.8f)")
             public float TurbineVolume = 0.8f;

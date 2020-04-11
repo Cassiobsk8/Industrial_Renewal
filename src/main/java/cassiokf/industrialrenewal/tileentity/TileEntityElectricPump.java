@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -99,10 +100,8 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
                 }
                 tick++;
                 passFluidUp();
-            } else
-            {
-                handleSound();
             }
+            handleSound();
         }
     }
 
@@ -116,19 +115,20 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
 
     private void handleSound()
     {
-        if (!world.isRemote) return;
         if (isRunning && !starting)
         {
-            IRSoundHandler.playSound(world, IRSoundRegister.PUMP_START, volume + 0.5f, 1.0F, pos);
+            if (!world.isRemote)
+                world.playSound(null, pos, IRSoundRegister.PUMP_START, SoundCategory.BLOCKS, volume + 0.5f, 1.0F);
             starting = true;
             oldStarting = true;
             Sync();
         } else if (isRunning)
         {
-            IRSoundHandler.playRepeatableSound(IRSoundRegister.PUMP_ROTATION_RESOURCEL, volume, 1.0F, pos);
+            if (world.isRemote)
+                IRSoundHandler.playRepeatableSound(IRSoundRegister.PUMP_ROTATION_RESOURCEL, volume, 1.0F, pos);
         } else
         {
-            IRSoundHandler.stopTileSound(pos);
+            if (world.isRemote) IRSoundHandler.stopTileSound(pos);
             starting = false;
             if (oldStarting)
             {

@@ -7,9 +7,7 @@ import net.minecraft.client.audio.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -76,11 +74,6 @@ public class IRSoundHandler
             mc.getSoundHandler().stopSound(s);
             soundMap.remove(posKey);
         }
-    }
-
-    public static void playSound(World world, SoundEvent soundEvent, float volume, float pitch, BlockPos pos)
-    {
-        world.playSound(null, pos, soundEvent, SoundCategory.BLOCKS, volume, pitch);
     }
 
     public static void playSound(ISound sound)
