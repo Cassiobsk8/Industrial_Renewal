@@ -83,8 +83,14 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
 
     public TileEntityMining()
     {
-        this.energyContainer = new VoltsEnergyContainer(100000, 10240, 0)
+        this.energyContainer = new VoltsEnergyContainer(100000, 10240, 10240)
         {
+            @Override
+            public boolean canExtract()
+            {
+                return false;
+            }
+
             @Override
             public void onEnergyChange()
             {

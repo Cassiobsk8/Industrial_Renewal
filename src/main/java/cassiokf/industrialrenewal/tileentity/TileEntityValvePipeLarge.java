@@ -42,32 +42,29 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
     @Override
     public void update()
     {
-        if (this.hasWorld() && !world.isRemote)
+        if (this.hasWorld() && !world.isRemote && active)
         {
-            if (active)
+            EnumFacing faceToFill = getOutPutFace();
+            TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
+            TileEntity teIn = world.getTileEntity(pos.offset(faceToFill.getOpposite()));
+
+            boolean hasFluidInternally = tank.getFluidAmount() > 0;
+
+            if (teOut != null
+                    && (hasFluidInternally
+                    || (teIn != null && teIn.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill)))
+                    && teOut.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
+                    faceToFill.getOpposite()))
             {
-                EnumFacing faceToFill = getOutPutFace();
-                TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
-                TileEntity teIn = world.getTileEntity(pos.offset(faceToFill.getOpposite()));
-
-                boolean hasFluidInternally = tank.getFluidAmount() > 0;
-
-                if (teOut != null
-                        && (hasFluidInternally
-                        || (teIn != null && teIn.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill)))
-                        && teOut.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-                        faceToFill.getOpposite()))
+                IFluidHandler inTank = hasFluidInternally
+                        ? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank)
+                        : teIn.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill);
+                IFluidHandler outTank = teOut.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
+                        faceToFill.getOpposite());
+                if (inTank != null && outTank != null)
                 {
-                    IFluidHandler inTank = hasFluidInternally
-                            ? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank)
-                            : teIn.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill);
-                    IFluidHandler outTank = teOut.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-                            faceToFill.getOpposite());
-                    if (inTank != null && outTank != null)
-                    {
-                        FluidStack amountCanFill = inTank.drain(amountPerTick, false);
-                        if (amountCanFill != null) inTank.drain(outTank.fill(amountCanFill, true), true);
-                    }
+                    FluidStack amountCanFill = inTank.drain(amountPerTick, false);
+                    if (amountCanFill != null) inTank.drain(outTank.fill(amountCanFill, true), true);
                 }
             }
         }
@@ -108,10 +105,12 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
             if (facing == getOutPutFace())
                 return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(dummyTank);
-        if (facing == getOutPutFace().getOpposite())
-            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
+            if (facing == getOutPutFace().getOpposite())
+                return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
+        }
         return super.getCapability(capability, facing);
     }
 }

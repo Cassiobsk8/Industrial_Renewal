@@ -75,8 +75,20 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
 
     public TileEntitySteamTurbine()
     {
-        this.energyContainer = new VoltsEnergyContainer(100000, 0, 10240)
+        this.energyContainer = new VoltsEnergyContainer(100000, 10240, 10240)
         {
+            @Override
+            public boolean canExtract()
+            {
+                return false;
+            }
+
+            @Override
+            public boolean canReceive()
+            {
+                return false;
+            }
+
             @Override
             public void onEnergyChange()
             {
@@ -134,7 +146,7 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
         if (rotation >= 6000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored())
         {
             int energy = getEnergyProduction();
-            this.energyContainer.receiveInternally(energy, false);
+            energyContainer.receiveInternally(energy, false);
             rotation -= 6;
         } else rotation -= 2;
         rotation = MathHelper.clamp(rotation, 0, maxRotation);
@@ -148,7 +160,7 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
         {
             IEnergyStorage upTank = eTE.getCapability(CapabilityEnergy.ENERGY, facing.rotateY());
             if (upTank != null)
-                energyContainer.extractEnergy(upTank.receiveEnergy(energyContainer.extractEnergy(10240, true), false), false);
+                energyContainer.extractEnergyInternally(upTank.receiveEnergy(energyContainer.extractEnergyInternally(10240, true), false), false);
         }
     }
 

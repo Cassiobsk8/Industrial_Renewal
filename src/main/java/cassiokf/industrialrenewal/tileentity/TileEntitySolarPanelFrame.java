@@ -140,7 +140,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
                 && te.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
         {
             getMaster().addMachine(currentPos, facing);
-        } else getMaster().removeMachine(pos, currentPos);
+        }
     }
 
     public void getEnergyFromSun()

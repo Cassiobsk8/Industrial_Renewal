@@ -25,7 +25,7 @@ public class TileEntitySolarPanelBase extends TEBase implements ITickable
 
     public TileEntitySolarPanelBase()
     {
-        this.energyContainer = new VoltsEnergyContainer(600, 0, 120)
+        this.energyContainer = new VoltsEnergyContainer(600, 120, 120)
         {
             @Override
             public boolean canReceive()

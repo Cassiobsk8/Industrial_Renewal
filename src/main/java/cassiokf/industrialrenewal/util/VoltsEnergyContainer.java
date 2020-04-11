@@ -84,7 +84,8 @@ public class VoltsEnergyContainer implements IEnergyStorage, INBTSerializable<NB
     }
 
     @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
+    public int extractEnergy(int maxExtract, boolean simulate)
+    {
         final int removedPower = Math.min(this.getEnergyStored(), Math.min(this.getMaxOutput(), maxExtract));
         if (!simulate)
         {
@@ -94,12 +95,25 @@ public class VoltsEnergyContainer implements IEnergyStorage, INBTSerializable<NB
         return this.canExtract() ? removedPower : 0;
     }
 
+    public int extractEnergyInternally(int maxExtract, boolean simulate)
+    {
+        final int removedPower = Math.min(this.getEnergyStored(), Math.min(this.getMaxOutput(), maxExtract));
+        if (!simulate)
+        {
+            this.stored -= removedPower;
+            onEnergyChange();
+        }
+        return removedPower;
+    }
+
     @Override
-    public int getEnergyStored() {
+    public int getEnergyStored()
+    {
         return this.stored;
     }
 
-    public void setEnergyStored(int stored) {
+    public void setEnergyStored(int stored)
+    {
         this.stored = stored;
         onEnergyChange();
     }
