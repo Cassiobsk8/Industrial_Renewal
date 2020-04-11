@@ -81,6 +81,9 @@ public class IRConfig {
             @Config.LangKey("gui.config.pump_infinity_water.name")
             public boolean pumpInfinityWater = true;
 
+            @Config.Comment("How much will pump consume per tick (Default 10 FE/t)")
+            public int pumpEnergyPerTick = 10;
+
             @Config.Comment("The capacity of the barrel (Default 64000)")
             @Config.LangKey("gui.config.barrel_capacity.name")
             public int barrelCapacity = 64000;

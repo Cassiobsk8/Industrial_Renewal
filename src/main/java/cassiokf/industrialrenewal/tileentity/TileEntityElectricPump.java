@@ -52,7 +52,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
     private int index = -1;
     private int everyXtick = 10;
     private int tick;
-    private int energyPerTick = 10;
+    public static int energyPerTick = IRConfig.MainConfig.Main.pumpEnergyPerTick;
     private EnumFacing facing;
     private float volume = IRConfig.MainConfig.Sounds.pumpVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
 
@@ -66,7 +66,9 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
 
     public TileEntityElectricPump()
     {
-        this.energyContainer = new VoltsEnergyContainer(200, 200, 0)
+        this.energyContainer = new VoltsEnergyContainer(maxRadius * 2,
+                maxRadius * 2,
+                maxRadius * 2)
         {
             @Override
             public boolean canExtract()
@@ -85,9 +87,9 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
     @Override
     public void update()
     {
-        if (!world.isRemote)
+        if (getIndex() == 1)
         {
-            if (getIndex() == 1)
+            if (!world.isRemote)
             {
                 consumeEnergy();
                 if (tick >= everyXtick)
@@ -97,10 +99,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
                 }
                 tick++;
                 passFluidUp();
-            }
-        } else
-        {
-            if (getIndex() == 1)
+            } else
             {
                 handleSound();
             }
@@ -143,7 +142,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
     {
         if (energyContainer.getEnergyStored() >= energyPerTick)
         {
-            energyContainer.setEnergyStored(Math.max(energyContainer.getEnergyStored() - energyPerTick, 0));
+            energyContainer.extractEnergyInternally(energyPerTick, false);
             isRunning = true;
         } else
         {
@@ -195,7 +194,6 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
                     if (IRConfig.MainConfig.Main.repleceLavaWithCobble && stack != null && stack.getFluid().equals(FluidRegistry.LAVA))
                         world.setBlockState(fluidPos, Blocks.COBBLESTONE.getDefaultState());
                     tank.fillInternal(stack, true);
-                    isRunning = true;
                 }
                 getFluidSet().remove(fluidPos);
             }
@@ -253,7 +251,6 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
             if (upTank.fill(tank.drain(tank.getCapacity() / everyXtick, false), false) > 0)
             {
                 upTank.fill(tank.drain(tank.getCapacity() / everyXtick, true), true);
-                isRunning = true;
             }
         }
     }
@@ -288,6 +285,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
         NBTTagCompound tag = new NBTTagCompound();
         tank.writeToNBT(tag);
         compound.setTag("fluid", tag);
+        compound.setInteger("index", getIndex());
         compound.setBoolean("isRunning", isRunning);
         compound.setBoolean("starting", starting);
         compound.setTag("StoredIR", this.energyContainer.serializeNBT());
@@ -299,6 +297,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
     {
         NBTTagCompound tag = compound.getCompoundTag("fluid");
         tank.readFromNBT(tag);
+        index = compound.getInteger("index");
         isRunning = compound.getBoolean("isRunning");
         starting = compound.getBoolean("starting");
         this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));

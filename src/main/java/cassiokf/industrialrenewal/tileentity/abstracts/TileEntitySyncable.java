@@ -20,8 +20,8 @@ public abstract class TileEntitySyncable extends TEBase
     {
         if (!world.isRemote)
         {
-            final IBlockState state = this.world.getBlockState(this.pos);
-            this.world.notifyBlockUpdate(this.pos, state, state, 2);
+            final IBlockState state = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos, state, state, 2);
             this.markDirty();
         }
     }
