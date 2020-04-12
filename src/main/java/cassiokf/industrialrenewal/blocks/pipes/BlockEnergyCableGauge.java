@@ -138,8 +138,12 @@ public class BlockEnergyCableGauge extends BlockEnergyCable
     @Override
     public void onPlayerDestroy(World world, BlockPos pos, IBlockState state)
     {
-        ItemStack itemst = new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyLevel));
-        if (!world.isRemote) Utils.spawnItemStack(world, pos, itemst);
+        if (!world.isRemote)
+        {
+            ItemStack itemst = new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyLevel));
+            Utils.spawnItemStack(world, pos, itemst);
+            Utils.spawnItemStack(world, pos, getItem(world, pos, state));
+        }
         super.onPlayerDestroy(world, pos, state);
     }
 

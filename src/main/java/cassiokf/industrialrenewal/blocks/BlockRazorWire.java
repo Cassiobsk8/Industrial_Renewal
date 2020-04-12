@@ -24,7 +24,7 @@ public class BlockRazorWire extends BlockHorizontalFacing
 
     public BlockRazorWire(String name, CreativeTabs tab)
     {
-        super(name, tab, Material.WEB);
+        super(name, tab, Material.IRON);
     }
 
     @Override

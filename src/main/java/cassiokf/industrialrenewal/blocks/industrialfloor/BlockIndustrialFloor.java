@@ -189,8 +189,6 @@ public class BlockIndustrialFloor extends BlockBase
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-
-
         ItemStack playerStack = entity.getHeldItem(EnumHand.MAIN_HAND);
         Item playerItem = playerStack.getItem();
 

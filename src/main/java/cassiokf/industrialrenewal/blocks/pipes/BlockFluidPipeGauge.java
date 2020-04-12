@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.blocks.pipes;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeGauge;
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -12,6 +13,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -74,6 +76,18 @@ public class BlockFluidPipeGauge extends BlockFluidPipe
             }
         }
         return false;
+    }
+
+    @Override
+    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if (!worldIn.isRemote)
+        {
+            ItemStack itemst = new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.gauge));
+            Utils.spawnItemStack(worldIn, pos, itemst);
+            Utils.spawnItemStack(worldIn, pos, getItem(worldIn, pos, state));
+        }
+        super.onPlayerDestroy(worldIn, pos, state);
     }
 
     @Override
