@@ -215,6 +215,9 @@ public class IRConfig {
         {
             @Config.Comment("The multiplier for the Wind Blades render distance (Default: 4D)")
             public double windBladesRenderDistanceMult = 4.0D;
+
+            @Config.Comment("The multiplier for the Solar pane render distance on frames (Default: 2D)")
+            public double frameSolarPanelRenderMult = 2.0D;
         }
 
         public static class SubCategoryRecipes

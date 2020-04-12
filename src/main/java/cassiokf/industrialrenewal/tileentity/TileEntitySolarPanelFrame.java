@@ -95,6 +95,12 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
         return out;
     }
 
+    @Override
+    public double getMaxRenderDistanceSquared()
+    {
+        return super.getMaxRenderDistanceSquared() * IRConfig.MainConfig.Render.frameSolarPanelRenderMult;
+    }
+
     public void setPanelInv(boolean panelInv)
     {
         this.panelInv = panelInv;
