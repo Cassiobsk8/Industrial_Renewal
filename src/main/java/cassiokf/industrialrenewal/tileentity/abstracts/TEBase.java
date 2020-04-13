@@ -4,4 +4,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public abstract class TEBase extends TileEntity
 {
+    public void onBlockBreak()
+    {
+    }
 }

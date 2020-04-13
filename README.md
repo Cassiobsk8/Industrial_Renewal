@@ -1,4 +1,12 @@
 # Industrial Renewal
+<p align="center">
+  <a href="https://www.curseforge.com/minecraft/mc-mods/industrial-renewal">
+    <img src="https://cf.way2muchnoise.eu/full_industrial-renewal_downloads.svg">
+  </a>
+  <a href="">
+     <img src="http://cf.way2muchnoise.eu/versions/For%20MC_industrial-renewal_all.svg">
+  </a>
+</p>
 
 ![alt text](images/Logo.png)
 

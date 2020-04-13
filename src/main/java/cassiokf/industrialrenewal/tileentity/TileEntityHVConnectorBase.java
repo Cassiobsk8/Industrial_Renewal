@@ -39,8 +39,8 @@ public class TileEntityHVConnectorBase extends TileEntitySyncable
             Stack<TileEntityHVConnectorBase> traversingCables = new Stack<TileEntityHVConnectorBase>();
             IConnectorHV inTransformerT = null;
             IConnectorHV outTransformerT = null;
-            TileEntityHVConnectorBase master = (TileEntityHVConnectorBase) this;
-            traversingCables.add((TileEntityHVConnectorBase) this);
+            TileEntityHVConnectorBase master = this;
+            traversingCables.add(this);
             while (!traversingCables.isEmpty())
             {
                 TileEntityHVConnectorBase storage = traversingCables.pop();
@@ -221,9 +221,8 @@ public class TileEntityHVConnectorBase extends TileEntitySyncable
     }
 
     @Override
-    public void invalidate()
+    public void onBlockBreak()
     {
-        super.invalidate();
         if (isLeftConnected())
         {
             removeCableAndSpawn(leftConnectionPos);

@@ -173,10 +173,10 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     }
 
     @Override
-    public void invalidate()
+    public void onBlockBreak()
     {
         if (panelInv) Utils.spawnItemStack(world, pos, new ItemStack(ModBlocks.spanel));
-        super.invalidate();
+        super.onBlockBreak();
     }
 
     public boolean hasPanel()

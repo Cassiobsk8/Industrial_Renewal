@@ -199,10 +199,10 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
     }
 
     @Override
-    public void invalidate()
+    public void onBlockBreak()
     {
         spawnBlocks(null);
-        super.invalidate();
+        super.onBlockBreak();
         refreshConnections();
     }
 
