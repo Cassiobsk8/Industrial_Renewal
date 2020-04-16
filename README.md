@@ -25,9 +25,6 @@ Industrial Floor:
 
 ![alt text](images/peek.png)
 
-Alarm:
-![alt text](images/02.png)
-
 3D Rails:
 ![alt text](images/04.png)
 
