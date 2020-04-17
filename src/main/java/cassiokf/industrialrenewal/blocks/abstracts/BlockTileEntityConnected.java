@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.blocks.abstracts;
 
-import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -8,7 +7,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
@@ -36,14 +34,6 @@ public abstract class BlockTileEntityConnected<TE extends TileEntity> extends Bl
         IProperty[] listedProperties = new IProperty[]{FACING}; // listed properties
         IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{SOUTH, NORTH, EAST, WEST, UP, DOWN};
         return new ExtendedBlockState(this, listedProperties, unlistedProperties);
-    }
-
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TileEntity te = worldIn.getTileEntity(pos);
-        if (te instanceof TEBase) ((TEBase) te).onBlockBreak();
-        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
