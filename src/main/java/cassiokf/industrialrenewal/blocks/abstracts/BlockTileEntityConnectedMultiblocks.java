@@ -38,8 +38,8 @@ public abstract class BlockTileEntityConnectedMultiblocks<TE extends TileEntityM
             ((TileEntityMultiBlocksTube) te).startBreaking();
             for (EnumFacing face : EnumFacing.VALUES)
             {
-                BlockPos posM = pos.offset(face);
-                ((TileEntityMultiBlocksTube) te).removeMachine(pos, posM);
+                TileEntity tile = worldIn.getTileEntity(pos.offset(face));
+                if (tile != null) ((TileEntityMultiBlocksTube) te).removeMachine(tile);
             }
         }
         super.breakBlock(worldIn, pos, state);
