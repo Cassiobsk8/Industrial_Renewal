@@ -193,8 +193,7 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
         }
         for (TileEntityMultiBlocksTube cables : connectedCables)
         {
-            cables.setMaster(null);
-            cables.getMaster();
+            cables.initializeMultiblockIfNecessary(true);
         }
     }
 

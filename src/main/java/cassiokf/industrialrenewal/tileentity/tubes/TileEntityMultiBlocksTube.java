@@ -26,6 +26,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     int outPutCount;
     boolean firstTick = false;
     protected boolean inUse = false;
+    private boolean startBreaking;
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
@@ -60,9 +61,14 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     {
     }
 
-    private void initializeMultiblockIfNecessary()
+    public void initializeMultiblockIfNecessary()
     {
-        if (isMasterInvalid() && !world.isRemote)
+        initializeMultiblockIfNecessary(false);
+    }
+
+    public void initializeMultiblockIfNecessary(boolean forced)
+    {
+        if ((forced || isMasterInvalid()) && !world.isRemote)
         {
             if (isTray()) return;
             List<TileEntityMultiBlocksTube> connectedCables = new CopyOnWriteArrayList<>();
@@ -101,8 +107,19 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                 for (TileEntityMultiBlocksTube storage : connectedCables)
                 {
                     if (!canBeMaster(storage)) continue;
-                    storage.getMachinesPosSet().clear();
-                    storage.setMaster(null);
+                    else if (!canBeMaster(master) && canBeMaster(storage))
+                    {
+                        master = (TE) storage;
+                        break;
+                    }
+                }
+                if (!canBeMaster(master)) return;
+                for (TileEntityMultiBlocksTube storage : connectedCables)
+                {
+                    if (!canBeMaster(storage)) continue;
+                    storage.setMaster(master);
+                    storage.checkForOutPuts(storage.getPos());
+                    storage.markDirty();
                 }
             }
             Sync();
@@ -158,11 +175,12 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         if (master != null && !master.isMaster()) Sync();
         if (master == null)
         {
-            if (!world.isRemote)
+            if (!world.isRemote && !startBreaking)
             {
                 Utils.sendConsoleMessage("MultiBlock Pipe: " + this.getClass().toString() + " has no Master at " + pos);
                 Utils.sendConsoleMessage(" Break this pipe and try replace it, If this does not work, report the problem:");
                 Utils.sendConsoleMessage("https://github.com/Cassiobsk8/Industrial_Renewal/issues/new?template=bug_report.md");
+
             }
             return (TE) this;
         }
@@ -192,24 +210,15 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     {
         super.invalidate();
 
-        if (master != null)
-        {
-            master.setMaster(null);
-            if (master != null) master.getMaster();
-            else getMaster();
-        }
-
         for (EnumFacing d : EnumFacing.VALUES)
         {
             TileEntity te = world.getTileEntity(pos.offset(d));
             if (instanceOf(te))
             {
-                ((TileEntityMultiBlocksTube) te).master = null;
-
                 if (te instanceof TileEntityCableTray)
                     ((TileEntityCableTray) te).refreshConnections();
                 else
-                    ((TileEntityMultiBlocksTube) te).initializeMultiblockIfNecessary();
+                    ((TileEntityMultiBlocksTube) te).initializeMultiblockIfNecessary(true);
             }
         }
     }
@@ -226,12 +235,25 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 
     public void removeMachine(BlockPos ownPos, BlockPos machinePos)
     {
+        if (startBreaking || isInvalid()) return;
         if (!isMaster())
         {
             getMaster().removeMachine(ownPos, machinePos);
             return;
         }
         posSet.remove(machinePos);
+    }
+
+    public void startBreaking()
+    {
+        startBreaking = true;
+    }
+
+    @Override
+    public void onBlockBreak()
+    {
+        startBreaking = true;
+        super.onBlockBreak();
     }
 
     @Override
