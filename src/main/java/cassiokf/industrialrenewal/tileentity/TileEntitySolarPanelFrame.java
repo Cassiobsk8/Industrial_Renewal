@@ -23,7 +23,7 @@ import java.util.Set;
 public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEntitySolarPanelFrame>
 {
     public final VoltsEnergyContainer energyContainer;
-    private final Set<BlockPos> panelReady = new HashSet<>();
+    private final Set<TileEntitySolarPanelFrame> panelReady = new HashSet<>();
     private final ItemStack panelStack = new ItemStack(ModBlocks.spanel);
     private int tick;
     private EnumFacing blockFacing;
@@ -119,7 +119,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
         return te instanceof TileEntitySolarPanelFrame;
     }
 
-    public Set<BlockPos> getPanelReadySet()
+    public Set<TileEntitySolarPanelFrame> getPanelReadySet()
     {
         return panelReady;
     }
@@ -129,8 +129,8 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
         if (hasPanel() && world.provider.hasSkyLight() && world.canBlockSeeSky(pos.offset(EnumFacing.UP))
                 && world.getSkylightSubtracted() == 0)
         {
-            getMaster().getPanelReadySet().add(pos);
-        } else getMaster().getPanelReadySet().remove(pos);
+            getMaster().getPanelReadySet().add(this);
+        } else getMaster().getPanelReadySet().remove(this);
     }
 
     @Override
@@ -146,8 +146,8 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
                 && te != null
                 && te.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
         {
-            getMaster().addMachine(currentPos, facing);
-        }
+            addMachine(te, facing);
+        } else removeMachine(te);
     }
 
     public void getEnergyFromSun()
@@ -158,13 +158,6 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
         {
             energyCanOutput = ((TileEntitySolarPanelBase.getGeneration(world, pos) * panelReady.size()) * getMultiplier());
         }
-    }
-
-    @Override
-    public void removeMachine(BlockPos ownPos, BlockPos machinePos)
-    {
-        getPanelReadySet().remove(ownPos);
-        super.removeMachine(ownPos, machinePos);
     }
 
     private int getMultiplier()

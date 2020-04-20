@@ -51,16 +51,15 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
                 }
                 if (this.tank.getFluidAmount() > 0)
                 {
-                    int quantity = getMachinesPosSet().size() > 0 ? (this.tank.getFluidAmount() / getMachinesPosSet().size()) : 0;
-                    for (BlockPos outPutPos : getMachinesPosSet().keySet())
+                    int quantity = getMachineContainers().size() > 0 ? (this.tank.getFluidAmount() / getMachineContainers().size()) : 0;
+                    for (TileEntity tileEntity : getMachineContainers().keySet())
                     {
-                        final TileEntity tileEntity = world.getTileEntity(outPutPos);
                         if (tileEntity != null && !tileEntity.isInvalid())
                         {
-                            EnumFacing facing = getMachinesPosSet().get(outPutPos);
-                            if (tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite()))
+                            EnumFacing facing = getMachineContainers().get(tileEntity).getOpposite();
+                            if (tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
                             {
-                                final IFluidHandler consumer = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
+                                final IFluidHandler consumer = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
                                 if (consumer != null)
                                 {
                                     this.tank.drain(consumer.fill(this.tank.drain(quantity, false), true), true);
@@ -95,7 +94,8 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
         TileEntity te = world.getTileEntity(currentPos);
         boolean hasMachine = !(state.getBlock() instanceof BlockGutter) && te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
         if (hasMachine && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).getTankProperties()[0].canFill())
-            addMachine(currentPos, face);
+            addMachine(te, face);
+        else removeMachine(te);
     }
 
     public void checkIfIsReady()

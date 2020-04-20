@@ -91,8 +91,8 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
                     && machineCap.getTankProperties().length > 0
                     && machineCap.getTankProperties()[0].canFill())
             {
-                addMachine(currentPos, face);
-            } else removeMachine(pos, currentPos);
+                addMachine(te, face);
+            } else removeMachine(te);
         }
     }
 

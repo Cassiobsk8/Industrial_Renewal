@@ -43,7 +43,7 @@ public class TileEntityHighPressurePipe extends TileEntityMultiBlocksTube<TileEn
 
         if (amount <= 0) return 0;
         int out = 0;
-        final Map<BlockPos, EnumFacing> mapPosSet = getMachinesPosSet();
+        final Map<TileEntity, EnumFacing> mapPosSet = getMachineContainers();
         int quantity = mapPosSet.size();
 
         if (quantity > 0)
@@ -57,22 +57,23 @@ public class TileEntityHighPressurePipe extends TileEntityMultiBlocksTube<TileEn
         return out;
     }
 
-    public int moveFluid(int amount, int y, boolean simulate, Map<BlockPos, EnumFacing> mapPosSet)
+    public int moveFluid(int amount, int y, boolean simulate, Map<TileEntity, EnumFacing> mapPosSet)
     {
         int out = 0;
         int validOutputs = getMaxOutput(mapPosSet, amount, y);
         if (validOutputs == 0) return 0;
         int realMaxOutput = Math.min(amount / validOutputs, maxOutput);
-        for (BlockPos posM : mapPosSet.keySet())
+        for (TileEntity te : mapPosSet.keySet())
         {
-            ICompressedFluidCapability te = (ICompressedFluidCapability) world.getTileEntity(posM);
-            EnumFacing face = mapPosSet.get(posM).getOpposite();
-            if (te != null && te.canAccept(face, posM))
+            if (!(te instanceof ICompressedFluidCapability)) return 0;
+            ICompressedFluidCapability tube = (ICompressedFluidCapability) te;
+            EnumFacing face = mapPosSet.get(te).getOpposite();
+            if (tube.canAccept(face, te.getPos()))
             {
-                realMaxOutput = getLimitedValueForOutPut(realMaxOutput, maxOutput, posM, simulate);
+                realMaxOutput = getLimitedValueForOutPut(realMaxOutput, maxOutput, te, simulate);
                 if (realMaxOutput > 0)
                 {
-                    int fluid = te.passCompressedFluid(realMaxOutput, y, simulate);
+                    int fluid = tube.passCompressedFluid(realMaxOutput, y, simulate);
                     out += fluid;
                 }
             }
@@ -80,18 +81,17 @@ public class TileEntityHighPressurePipe extends TileEntityMultiBlocksTube<TileEn
         return out;
     }
 
-    public int getMaxOutput(Map<BlockPos, EnumFacing> mapPosSet, int amount, int y)
+    public int getMaxOutput(Map<TileEntity, EnumFacing> mapPosSet, int amount, int y)
     {
         int canAccept = 0;
-        for (BlockPos posM : mapPosSet.keySet())
+        for (TileEntity te : mapPosSet.keySet())
         {
-            TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = mapPosSet.get(posM).getOpposite();
+            EnumFacing face = mapPosSet.get(te).getOpposite();
             if (te instanceof ICompressedFluidCapability
-                    && ((ICompressedFluidCapability) te).canAccept(face, posM))
+                    && ((ICompressedFluidCapability) te).canAccept(face, te.getPos()))
             {
                 int realMaxOutput = amount;
-                realMaxOutput = getLimitedValueForOutPut(realMaxOutput, maxOutput, posM, true);
+                realMaxOutput = getLimitedValueForOutPut(realMaxOutput, maxOutput, te, true);
                 if (realMaxOutput > 0)
                 {
                     int fluid = ((ICompressedFluidCapability) te).passCompressedFluid(realMaxOutput, y, true);
@@ -114,8 +114,8 @@ public class TileEntityHighPressurePipe extends TileEntityMultiBlocksTube<TileEn
                     && te instanceof ICompressedFluidCapability
                     && ((ICompressedFluidCapability) te).canAccept(face.getOpposite(), currentPos))
             {
-                addMachine(currentPos, face);
-            }
+                addMachine(te, face);
+            } else removeMachine(te);
         }
     }
 

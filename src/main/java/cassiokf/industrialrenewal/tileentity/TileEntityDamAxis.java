@@ -23,12 +23,11 @@ public class TileEntityDamAxis extends TileEntityMultiBlocksTube<TileEntityDamAx
     {
         if (!isMaster() && !isMasterInvalid()) return getMaster().passRotation(amount);
 
-        if (getMachinesPosSet() != null && !getMachinesPosSet().isEmpty())
+        if (getMachineContainers() != null && !getMachineContainers().isEmpty())
         {
             IMecanicalEnergy te = null;
-            for (BlockPos pos : getMachinesPosSet().keySet())
+            for (TileEntity tile : getMachineContainers().keySet())
             {
-                TileEntity tile = world.getTileEntity(pos);
                 if (tile instanceof IMecanicalEnergy && !(tile instanceof TileEntityDamAxis))
                 {
                     te = (IMecanicalEnergy) tile;
@@ -57,8 +56,8 @@ public class TileEntityDamAxis extends TileEntityMultiBlocksTube<TileEntityDamAx
         TileEntity te = world.getTileEntity(bPos.up());
         if (!(te instanceof TileEntityDamAxis) && te instanceof IMecanicalEnergy)
         {
-            addMachine(bPos.up(), EnumFacing.UP);
-        }
+            addMachine(te, EnumFacing.UP);
+        } else removeMachine(te);
     }
 
     @Override

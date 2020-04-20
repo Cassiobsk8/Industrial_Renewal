@@ -85,7 +85,8 @@ public class TileEntityWindTurbinePillar extends TileEntityEnergyCable
                     && te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
 
             if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
-                addMachine(currentPos, face);
+                addMachine(te, face);
+            else removeMachine(te);
         }
         this.Sync();
     }

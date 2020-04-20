@@ -20,8 +20,8 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 {
     private TE master;
     private boolean isMaster;
-    final public Map<BlockPos, Integer> limitedOutPutMap = new ConcurrentHashMap<>();
-    final private Map<BlockPos, EnumFacing> posSet = new ConcurrentHashMap<>();
+    final public Map<TileEntity, Integer> limitedOutPutMap = new ConcurrentHashMap<>();
+    final private Map<TileEntity, EnumFacing> machineContainer = new ConcurrentHashMap<>();
     public int outPut;
     int outPutCount;
     boolean firstTick = false;
@@ -92,7 +92,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                     }
                 }
             }
-            master.getMachinesPosSet().clear();
+            master.getMachineContainers().clear();
             if (canBeMaster(master))
             {
                 for (TileEntityMultiBlocksTube storage : connectedCables)
@@ -126,17 +126,17 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         }
     }
 
-    public int getLimitedValueForOutPut(int value, int maxTransferAmount, BlockPos storagePos, boolean simulate)
+    public int getLimitedValueForOutPut(int value, int maxTransferAmount, TileEntity storage, boolean simulate)
     {
-        if (!limitedOutPutMap.containsKey(storagePos))
+        if (!limitedOutPutMap.containsKey(storage))
         {
-            if (!simulate) limitedOutPutMap.put(storagePos, value);
+            if (!simulate) limitedOutPutMap.put(storage, value);
             return Math.min(value, maxTransferAmount);
         }
-        int currentValue = limitedOutPutMap.get(storagePos);
+        int currentValue = limitedOutPutMap.get(storage);
         int maxValue = maxTransferAmount - currentValue;
         maxValue = Math.min(value, maxValue);
-        if (!simulate) limitedOutPutMap.put(storagePos, currentValue + maxValue);
+        if (!simulate) limitedOutPutMap.put(storage, currentValue + maxValue);
         return maxValue;
     }
 
@@ -197,12 +197,12 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
             final IBlockState state = world.getBlockState(pos);
             world.notifyBlockUpdate(pos, state, state, 2);
         }
-        if (!isMaster) posSet.clear();
+        if (!isMaster) machineContainer.clear();
     }
 
-    public Map<BlockPos, EnumFacing> getMachinesPosSet()
+    public Map<TileEntity, EnumFacing> getMachineContainers()
     {
-        return posSet;
+        return machineContainer;
     }
 
     @Override
@@ -223,25 +223,26 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         }
     }
 
-    public void addMachine(BlockPos pos, EnumFacing face)
+    public void addMachine(TileEntity machine, EnumFacing face)
     {
+        if (machine == null) return;
         if (!isMaster())
         {
-            getMaster().addMachine(pos, face);
+            getMaster().addMachine(machine, face);
             return;
         }
-        posSet.put(pos, face);
+        machineContainer.put(machine, face);
     }
 
-    public void removeMachine(BlockPos ownPos, BlockPos machinePos)
+    public void removeMachine(TileEntity machine)
     {
-        if (startBreaking || isInvalid()) return;
+        if (startBreaking || isInvalid() || machine == null) return;
         if (!isMaster())
         {
-            getMaster().removeMachine(ownPos, machinePos);
+            getMaster().removeMachine(machine);
             return;
         }
-        posSet.remove(machinePos);
+        machineContainer.remove(machine);
     }
 
     public void startBreaking()

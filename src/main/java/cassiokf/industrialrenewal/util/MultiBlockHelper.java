@@ -3,7 +3,6 @@ package cassiokf.industrialrenewal.util;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -20,10 +19,10 @@ public class MultiBlockHelper
     public static List<Integer> outputEnergy(TileEntityMultiBlocksTube machine, int maxReceive, int maxEnergyCanTransport, boolean simulate, World world)
     {
         List<Integer> list = new ArrayList<>();
-        int quantity = machine.getMachinesPosSet().size();
+        int quantity = machine.getMachineContainers().size();
         if (quantity > 0 && maxReceive > 0)
         {
-            list = moveEnergy(machine, maxReceive, maxEnergyCanTransport, simulate, world);
+            list = moveEnergy(machine, maxReceive, maxEnergyCanTransport, simulate);
         } else
         {
             list.add(0);
@@ -35,10 +34,10 @@ public class MultiBlockHelper
     public static List<Integer> outputFluid(TileEntityMultiBlocksTube machine, FluidStack resource, int maxFluidCanTransport, boolean doFill, World world)
     {
         List<Integer> list = new ArrayList<>();
-        int quantity = machine.getMachinesPosSet().size();
+        int quantity = machine.getMachineContainers().size();
         if (quantity > 0 && resource != null && resource.amount > 0)
         {
-            list = moveFluid(machine, resource, maxFluidCanTransport, doFill, world);
+            list = moveFluid(machine, resource, maxFluidCanTransport, doFill);
         } else
         {
             list.add(0);
@@ -48,21 +47,20 @@ public class MultiBlockHelper
         return list;
     }
 
-    private static List<Integer> moveFluid(TileEntityMultiBlocksTube machine, FluidStack resource, int maxFluidCanTransport, boolean doFill, World world)
+    private static List<Integer> moveFluid(TileEntityMultiBlocksTube machine, FluidStack resource, int maxFluidCanTransport, boolean doFill)
     {
         List<Integer> list = new ArrayList<>();
         list.add(0);
         list.add(0);
-        final Map<BlockPos, EnumFacing> mapPosSet = machine.getMachinesPosSet();
-        int validOutputs = getFluidMaxOutPutCount(resource, world, machine, maxFluidCanTransport, mapPosSet);
+        final Map<TileEntity, EnumFacing> mapPosSet = machine.getMachineContainers();
+        int validOutputs = getFluidMaxOutPutCount(resource, machine, maxFluidCanTransport, mapPosSet);
         if (validOutputs == 0) return list;
         list.add(1, validOutputs);
         FluidStack realMaxOutput = new FluidStack(resource.getFluid(), Math.min(resource.amount / validOutputs, maxFluidCanTransport));
         int out = 0;
-        for (BlockPos posM : mapPosSet.keySet())
+        for (TileEntity te : mapPosSet.keySet())
         {
-            TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = mapPosSet.get(posM).getOpposite();
+            EnumFacing face = mapPosSet.get(te).getOpposite();
             if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face))
             {
                 IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
@@ -71,7 +69,7 @@ public class MultiBlockHelper
                         && tankStorage.getTankProperties().length > 0
                         && tankStorage.getTankProperties()[0].canFill())
                 {
-                    realMaxOutput.amount = machine.getLimitedValueForOutPut(realMaxOutput.amount, maxFluidCanTransport, te.getPos(), !doFill);
+                    realMaxOutput.amount = machine.getLimitedValueForOutPut(realMaxOutput.amount, maxFluidCanTransport, te, !doFill);
                     if (realMaxOutput.amount > 0)
                     {
                         int fluid = tankStorage.fill(realMaxOutput, doFill);
@@ -84,27 +82,26 @@ public class MultiBlockHelper
         return list;
     }
 
-    private static List<Integer> moveEnergy(TileEntityMultiBlocksTube machine, int amount, int maxEnergyCanTransport, boolean simulate, World world)
+    private static List<Integer> moveEnergy(TileEntityMultiBlocksTube machine, int amount, int maxEnergyCanTransport, boolean simulate)
     {
         List<Integer> list = new ArrayList<>();
         list.add(0);
         list.add(0);
-        final Map<BlockPos, EnumFacing> mapPosSet = machine.getMachinesPosSet();
-        int validOutputs = getEnergyMaxOutPutCount(world, machine, maxEnergyCanTransport, mapPosSet);
+        final Map<TileEntity, EnumFacing> mapPosSet = machine.getMachineContainers();
+        int validOutputs = getEnergyMaxOutPutCount(machine, maxEnergyCanTransport, mapPosSet);
         if (validOutputs == 0) return list;
         list.add(1, validOutputs);
         int realMaxOutput = Math.min(amount / validOutputs, maxEnergyCanTransport);
         int out = 0;
-        for (BlockPos posM : mapPosSet.keySet())
+        for (TileEntity te : mapPosSet.keySet())
         {
-            TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = mapPosSet.get(posM).getOpposite();
+            EnumFacing face = mapPosSet.get(te).getOpposite();
             if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
             {
                 IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
                 if (energyStorage != null && energyStorage.canReceive())
                 {
-                    realMaxOutput = machine.getLimitedValueForOutPut(realMaxOutput, maxEnergyCanTransport, te.getPos(), simulate);
+                    realMaxOutput = machine.getLimitedValueForOutPut(realMaxOutput, maxEnergyCanTransport, te, simulate);
                     if (realMaxOutput > 0)
                     {
                         int energy = energyStorage.receiveEnergy(realMaxOutput, simulate);
@@ -117,14 +114,13 @@ public class MultiBlockHelper
         return list;
     }
 
-    public static int getFluidMaxOutPutCount(FluidStack resource, World world, TileEntityMultiBlocksTube machine, int maxFluidCanTransport, Map<BlockPos, EnumFacing> mapPosSet)
+    public static int getFluidMaxOutPutCount(FluidStack resource, TileEntityMultiBlocksTube machine, int maxFluidCanTransport, Map<TileEntity, EnumFacing> mapPosSet)
     {
         int canAccept = 0;
-        for (BlockPos posM : mapPosSet.keySet())
+        for (TileEntity te : mapPosSet.keySet())
         {
-            if (!mapPosSet.containsKey(posM)) continue;
-            TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = mapPosSet.get(posM).getOpposite();
+            if (!mapPosSet.containsKey(te)) continue;
+            EnumFacing face = mapPosSet.get(te).getOpposite();
             if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face))
             {
                 IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
@@ -134,7 +130,7 @@ public class MultiBlockHelper
                         && tankStorage.getTankProperties()[0].canFill())
                 {
                     FluidStack realMaxOutput = resource;
-                    realMaxOutput.amount = machine.getLimitedValueForOutPut(realMaxOutput.amount, maxFluidCanTransport, te.getPos(), true);
+                    realMaxOutput.amount = machine.getLimitedValueForOutPut(realMaxOutput.amount, maxFluidCanTransport, te, true);
                     if (realMaxOutput.amount > 0)
                     {
                         int fluid = tankStorage.fill(realMaxOutput, false);
@@ -146,20 +142,19 @@ public class MultiBlockHelper
         return canAccept;
     }
 
-    private static int getEnergyMaxOutPutCount(World world, TileEntityMultiBlocksTube machine, int maxEnergyCanTransport, Map<BlockPos, EnumFacing> mapPosSet)
+    private static int getEnergyMaxOutPutCount(TileEntityMultiBlocksTube machine, int maxEnergyCanTransport, Map<TileEntity, EnumFacing> mapPosSet)
     {
         int canAccept = 0;
         int realMaxOutput = maxEnergyCanTransport;
-        for (BlockPos posM : mapPosSet.keySet())
+        for (TileEntity te : mapPosSet.keySet())
         {
-            TileEntity te = world.getTileEntity(posM);
-            EnumFacing face = mapPosSet.get(posM).getOpposite();
+            EnumFacing face = mapPosSet.get(te).getOpposite();
             if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
             {
                 IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
                 if (energyStorage != null && energyStorage.canReceive())
                 {
-                    realMaxOutput = machine.getLimitedValueForOutPut(realMaxOutput, maxEnergyCanTransport, te.getPos(), true);
+                    realMaxOutput = machine.getLimitedValueForOutPut(realMaxOutput, maxEnergyCanTransport, te, true);
                     if (realMaxOutput > 0)
                     {
                         int energy = energyStorage.receiveEnergy(realMaxOutput, true);
