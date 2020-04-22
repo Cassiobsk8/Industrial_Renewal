@@ -29,7 +29,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     private EnumFacing blockFacing;
     public boolean panelInv;
     private int energyCanOutput = 0;
-    private int random = 0;
+    private final int random;
 
     public TileEntitySolarPanelFrame()
     {
@@ -53,12 +53,12 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
                 return TileEntitySolarPanelFrame.this.outputEnergy(maxReceive, simulate);
             }
         };
+        random = world.rand.nextInt(10);
     }
 
     @Override
     public void onFirstTick()
     {
-        random = world.rand.nextInt(10);
         if (!world.isRemote)
         {
             checkIfIsReady();

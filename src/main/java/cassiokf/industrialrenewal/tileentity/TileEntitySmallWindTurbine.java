@@ -7,7 +7,6 @@ import cassiokf.industrialrenewal.item.ItemWindBlade;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -177,7 +176,6 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IT
         IBlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof BlockSmallWindTurbine)
         {
-            IProperty FACING;
             return blockFacing = state.getValue(BlockHorizontalFacing.FACING);
         }
         return EnumFacing.NORTH;
