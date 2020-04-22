@@ -28,7 +28,7 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
     private boolean dataCable = false;
 
     @Override
-    public void onLoad()
+    public void update()
     {
         if (!firstTick)
         {

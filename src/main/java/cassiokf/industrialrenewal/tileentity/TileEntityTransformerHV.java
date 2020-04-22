@@ -321,7 +321,7 @@ public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntity
         {
             getMaster().isConnected = false;
             getMaster().cableConnectionPos = null;
-            otherSideTransformer = null;
+            getMaster().otherSideTransformer = null;
             getMaster().Sync();
         }
     }

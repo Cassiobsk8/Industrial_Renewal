@@ -20,7 +20,7 @@ public class TileEntitySolarPanelBase extends TEBase implements ITickable
 {
     public final VoltsEnergyContainer energyContainer;
     private int tick;
-    private int random = 0;
+    private final int random;
     private int energyCanGenerate;
 
     public TileEntitySolarPanelBase()
@@ -45,12 +45,6 @@ public class TileEntitySolarPanelBase extends TEBase implements ITickable
                 return TileEntitySolarPanelBase.this.moveEnergyOut(maxReceive, simulate);
             }
         };
-    }
-
-    @Override
-    public void onLoad()
-    {
-        super.onLoad();
         random = world.rand.nextInt(10);
     }
 

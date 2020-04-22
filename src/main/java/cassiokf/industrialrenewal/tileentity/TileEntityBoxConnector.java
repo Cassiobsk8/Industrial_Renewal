@@ -34,12 +34,6 @@ public class TileEntityBoxConnector extends TEBase
         return (oldState.getBlock() != newState.getBlock());
     }
 
-    @Override
-    public void onLoad()
-    {
-        passRedstone();
-    }
-
     public int passRedstone() {
         int value;
         if (getActive()) {

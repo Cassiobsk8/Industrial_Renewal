@@ -20,12 +20,6 @@ public class TileEntityBunkerHatch extends TEBase
     private TileEntityBunkerHatch masterTE;
     private boolean masterChecked = false;
 
-    @Override
-    public void onLoad()
-    {
-        this.isMaster();
-    }
-
     public TileEntityBunkerHatch getMaster()
     {
         List<BlockPos> list = MachinesUtils.getBlocksIn3x1x3Centered(this.pos);

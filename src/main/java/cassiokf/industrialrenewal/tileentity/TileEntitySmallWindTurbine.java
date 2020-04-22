@@ -1,11 +1,14 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockSmallWindTurbine;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.item.ItemWindBlade;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -43,6 +46,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IT
     private float rotation;
     private float oldRotation;
     private int tickToDamage;
+    private EnumFacing blockFacing;
 
     private Random random = new Random();
 
@@ -169,7 +173,14 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IT
 
     public EnumFacing getBlockFacing()
     {
-        return world.getBlockState(pos).getValue(BlockSmallWindTurbine.FACING);
+        if (blockFacing != null) return blockFacing;
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof BlockSmallWindTurbine)
+        {
+            IProperty FACING;
+            return blockFacing = state.getValue(BlockHorizontalFacing.FACING);
+        }
+        return EnumFacing.NORTH;
     }
 
     @Override

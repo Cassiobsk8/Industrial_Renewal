@@ -25,12 +25,6 @@ public class TileEntityHVConnectorBase extends TileEntitySyncable
     private TileEntityHVConnectorBase master;
     private boolean isMaster;
 
-    @Override
-    public void onLoad()
-    {
-        initializeNetworkIfNecessary();
-    }
-
     private void initializeNetworkIfNecessary()
     {
         if (master == null || master.isInvalid())
