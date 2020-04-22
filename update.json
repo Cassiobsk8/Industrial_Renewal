@@ -1,11 +1,11 @@
 {
   "homepage": "<https://minecraft.curseforge.com/projects/industrial-renewal>",
   "promos": {
-    "1.12.2-latest": "0.17.1",
-    "1.12.2-recommended": "0.17.1"
+    "1.12.2-latest": "0.17.2",
+    "1.12.2-recommended": "0.17.2"
   },
   "1.12.2": {
-    "0.17.1": "Lathe machine and optimizations",
+    "0.17.2": "Lathe machine and optimizations",
     "0.16.1": "Dam and HUGE pipe improvement",
     "0.15.0": "New: Cable/Pipe Tray",
     "0.14.3": "New:\n\n- Creative energy generator\n\n- HV wire energy transmission (Transformer - Isolators - transformer) (max 10240FE/t)\n\n- Two new energy cables (LV 256FE/t, MV 1024FE/t, HV 10240FE/t)\n\n- New Energy Breaker\n\nFixes:\n\n- see all on github",
