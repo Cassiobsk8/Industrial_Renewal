@@ -47,7 +47,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IT
     private int tickToDamage;
     private EnumFacing blockFacing;
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     public TileEntitySmallWindTurbine()
     {

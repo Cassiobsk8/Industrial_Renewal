@@ -15,6 +15,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TileEntitySolarPanelBase extends TEBase implements ITickable
 {
@@ -45,7 +46,7 @@ public class TileEntitySolarPanelBase extends TEBase implements ITickable
                 return TileEntitySolarPanelBase.this.moveEnergyOut(maxReceive, simulate);
             }
         };
-        random = world.rand.nextInt(10);
+        random = ThreadLocalRandom.current().nextInt(10);
     }
 
     @Override

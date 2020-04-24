@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class TileEntityOreVein extends TEBase
 {
-    private int oreQuantity;
+    private final int oreQuantity;
 
     public TileEntityOreVein()
     {

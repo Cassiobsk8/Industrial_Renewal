@@ -15,7 +15,7 @@ import java.util.Random;
 public class TileEntityEnergySwitch extends TileEntityToggleableBase
 {
     private final VoltsEnergyContainer dummyEnergy;
-    private Random r = new Random();
+    private final Random r = new Random();
 
     public TileEntityEnergySwitch()
     {

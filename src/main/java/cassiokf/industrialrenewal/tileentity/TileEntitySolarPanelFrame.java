@@ -19,6 +19,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEntitySolarPanelFrame>
 {
@@ -53,7 +54,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
                 return TileEntitySolarPanelFrame.this.outputEnergy(maxReceive, simulate);
             }
         };
-        random = world.rand.nextInt(10);
+        random = ThreadLocalRandom.current().nextInt(10);
     }
 
     @Override
