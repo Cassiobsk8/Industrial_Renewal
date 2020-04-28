@@ -19,7 +19,7 @@
     },
     "S": {
       "type": "forge:ore_dict",
-      "ore": "stickIron"
+      "ore": "ingotSteel"
     }
   },
   "result": {
