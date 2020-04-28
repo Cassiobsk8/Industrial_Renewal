@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,15 +112,20 @@ public class LatheRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IR
         private List<ItemStack> getOredictItemStack(final JsonContext context, final JsonObject json, String memberName)
         {
             JsonObject jsonObject = JsonUtils.getJsonObject(json, memberName);
-            List<ItemStack> list = new CopyOnWriteArrayList<>();
+            List<ItemStack> list = new ArrayList<>();
             if (jsonObject.has("ore"))
             {
                 String ore = jsonObject.get("ore").getAsString();
                 if (OreDictionary.doesOreNameExist(ore))
                 {
-                    list = OreDictionary.getOres(ore);
-                    if (!list.isEmpty())
+                    List<ItemStack> list2 = OreDictionary.getOres(ore);
+                    if (!list2.isEmpty())
                     {
+                        for (ItemStack stack : list2)
+                        {
+                            list.add(stack.copy());
+                        }
+
                         if (jsonObject.has("count"))
                         {
                             int count = jsonObject.get("count").getAsInt();
