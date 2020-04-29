@@ -1,7 +1,7 @@
 #Wed Dec 06 12:33:40 BRST 2017
 itemGroup.industrialrenewal=Industrial Renewal
 itemGroup.industrialrenewalrailroad=Ferrovias do Industrial Renewal
-itemGroup.industrialrenewalwip=Conteúdo WIP do Industrial Renewal
+itemGroup.industrialrenewalwip=Conteúdo em desenvolvimento (WIP) do Industrial Renewal
 
 #Items
 item.industrialrenewal.ir_manual.name=Manual do Industrial Renewal
