@@ -7,6 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -34,9 +35,9 @@ public class ItemBarrel extends ItemBase
             playSound(worldIn, pos, "block.metal.place");
 
             worldIn.setBlockState(posOffset, ModBlocks.barrel.getStateForPlacement(worldIn, posOffset, facing, 0, 0, 0, 0, player));
-            TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(posOffset);
-            if (itemstack.getTagCompound() != null && itemstack.getTagCompound().hasKey("FluidName") && te != null)
-                te.tank.readFromNBT(itemstack.getTagCompound());
+            TileEntity te = worldIn.getTileEntity(posOffset);
+            if (te instanceof TileEntityBarrel && itemstack.getTagCompound() != null && itemstack.getTagCompound().hasKey("FluidName"))
+                ((TileEntityBarrel) te).tank.readFromNBT(itemstack.getTagCompound());
             itemstack.shrink(1);
 
             return EnumActionResult.SUCCESS;

@@ -38,10 +38,11 @@ public class BlockOreVein extends BlockBase
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        TileEntityOreVein te = (TileEntityOreVein) worldIn.getTileEntity(pos);
-        if (te != null && playerIn.getHeldItem(hand).isEmpty())
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te instanceof TileEntityOreVein && playerIn.getHeldItem(hand).isEmpty())
         {
-            if (!worldIn.isRemote) playerIn.sendMessage(new TextComponentString(te.getQuality().name()));
+            if (!worldIn.isRemote)
+                playerIn.sendMessage(new TextComponentString(((TileEntityOreVein) te).getQuality().name()));
             return true;
         }
         return false;

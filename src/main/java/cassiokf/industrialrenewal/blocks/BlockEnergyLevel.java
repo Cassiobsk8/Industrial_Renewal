@@ -11,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -59,10 +60,9 @@ public class BlockEnergyLevel extends BlockHorizontalFacing
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        TileEntityEnergyLevel te = (TileEntityEnergyLevel) worldIn.getTileEntity(pos);
+        TileEntity te = worldIn.getTileEntity(pos);
         EnumFacing facing = state.getValue(BASE);
-        assert te != null;
-        te.setBaseFacing(facing);
+        if (te instanceof TileEntityEnergyLevel) ((TileEntityEnergyLevel) te).setBaseFacing(facing);
     }
 
     @Override

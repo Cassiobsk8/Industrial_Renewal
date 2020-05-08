@@ -13,6 +13,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -43,10 +44,10 @@ public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBattery
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (hand.equals(EnumHand.MAIN_HAND) && playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem().equals(ModItems.screwDrive) && worldIn.getTileEntity(pos) instanceof TileEntityBatteryBank)
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (hand.equals(EnumHand.MAIN_HAND) && playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem().equals(ModItems.screwDrive) && te instanceof TileEntityBatteryBank)
         {
-            TileEntityBatteryBank te = (TileEntityBatteryBank) worldIn.getTileEntity(pos);
-            if (te != null) te.toggleFacing(facing);
+            ((TileEntityBatteryBank) te).toggleFacing(facing);
             worldIn.notifyBlockUpdate(pos, state, state, 3);
             if (!worldIn.isRemote) ItemPowerScrewDrive.playDrillSound(worldIn, pos);
             return true;

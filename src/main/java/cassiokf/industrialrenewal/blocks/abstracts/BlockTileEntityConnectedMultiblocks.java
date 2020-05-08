@@ -24,8 +24,8 @@ public abstract class BlockTileEntityConnectedMultiblocks<TE extends TileEntityM
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
         if (!worldIn.isRemote)
         {
-            TileEntityMultiBlocksTube te = (TileEntityMultiBlocksTube) worldIn.getTileEntity(pos);
-            if (te != null) te.checkForOutPuts(pos);
+            TileEntity te = worldIn.getTileEntity(pos);
+            if (te instanceof TileEntityMultiBlocksTube) ((TileEntityMultiBlocksTube) te).checkForOutPuts(pos);
         }
     }
 

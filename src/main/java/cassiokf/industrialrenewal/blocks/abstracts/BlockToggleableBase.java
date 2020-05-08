@@ -15,6 +15,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
@@ -44,13 +45,13 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         boolean flag = worldIn.isBlockPowered(pos);
-        TileEntityToggleableBase te = (TileEntityToggleableBase) worldIn.getTileEntity(pos);
-        if (te != null && (flag || blockIn.getDefaultState().canProvidePower()) && flag != te.powered)
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te instanceof TileEntityToggleableBase && (flag || blockIn.getDefaultState().canProvidePower()) && flag != ((TileEntityToggleableBase) te).powered)
         {
-            te.setPowered(flag);
+            ((TileEntityToggleableBase) te).setPowered(flag);
             if (flag != state.getValue(ACTIVE))
             {
-                te.setActive(flag);
+                ((TileEntityToggleableBase) te).setActive(flag);
                 worldIn.setBlockState(pos, state.withProperty(ACTIVE, flag), 3);
             }
         }

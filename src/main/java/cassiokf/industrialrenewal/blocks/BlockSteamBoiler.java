@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -111,9 +112,12 @@ public class BlockSteamBoiler extends BlockMultiBlockBase<TileEntitySteamBoiler>
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        TileEntitySteamBoiler te = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
-        if (te == null || !state.getValue(MASTER)) return state.withProperty(TYPE, 0);
-        return state.withProperty(TYPE, te.getType());
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te instanceof TileEntitySteamBoiler && state.getValue(MASTER))
+        {
+            return state.withProperty(TYPE, ((TileEntitySteamBoiler) te).getType());
+        }
+        return state.withProperty(TYPE, 0);
     }
 
     @Nullable

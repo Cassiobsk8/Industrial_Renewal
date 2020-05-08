@@ -14,6 +14,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -79,8 +80,8 @@ public class BlockSmallWindTurbine extends BlockHorizontalFacing
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        TileEntitySmallWindTurbine te = (TileEntitySmallWindTurbine) worldIn.getTileEntity(pos);
-        if (te != null) te.dropAllItems();
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te instanceof TileEntitySmallWindTurbine) ((TileEntitySmallWindTurbine) te).dropAllItems();
         super.breakBlock(worldIn, pos, state);
     }
 

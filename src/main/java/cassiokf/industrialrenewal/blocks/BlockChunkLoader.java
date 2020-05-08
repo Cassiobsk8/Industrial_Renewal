@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -68,8 +69,8 @@ public class BlockChunkLoader extends BlockHorizontalFacing
         {
             return;
         }
-        TileEntityChunkLoader te = (TileEntityChunkLoader) worldIn.getTileEntity(pos);
-        if (te != null) te.setMaster(true);
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te instanceof TileEntityChunkLoader) ((TileEntityChunkLoader) te).setMaster(true);
         activateChunkLoader(worldIn, pos, (EntityPlayer) placer);
     }
 
@@ -83,12 +84,12 @@ public class BlockChunkLoader extends BlockHorizontalFacing
             return true;
         }
 
-        final TileEntityChunkLoader tileEntity = (TileEntityChunkLoader) worldIn.getTileEntity(pos);
-        if (tileEntity == null) return false;
+        final TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if (!(tileEntity instanceof TileEntityChunkLoader)) return false;
 
         boolean success = false;
 
-        if ((tileEntity.isExpired() || !tileEntity.hasTicket(playerIn)))
+        if ((((TileEntityChunkLoader) tileEntity).isExpired() || !((TileEntityChunkLoader) tileEntity).hasTicket(playerIn)))
         {
             activateChunkLoader(worldIn, tileEntity.getPos(), playerIn);
             success = true;
@@ -104,9 +105,9 @@ public class BlockChunkLoader extends BlockHorizontalFacing
         {
             if (IsLoader(worldIn, pos.up())) worldIn.setBlockToAir(pos.up());
 
-            final TileEntityChunkLoader tileEntity = (TileEntityChunkLoader) worldIn.getTileEntity(pos);
-            if (tileEntity == null) return;
-            tileEntity.expireAllTickets();
+            final TileEntity tileEntity = worldIn.getTileEntity(pos);
+            if (tileEntity instanceof TileEntityChunkLoader)
+                ((TileEntityChunkLoader) tileEntity).expireAllTickets();
         } else
         {
             if (IsLoader(worldIn, pos.down()))
@@ -130,8 +131,8 @@ public class BlockChunkLoader extends BlockHorizontalFacing
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        TileEntityChunkLoader te = (TileEntityChunkLoader) worldIn.getTileEntity(pos);
-        return state.withProperty(WORKING, state.getValue(MASTER) && te != null && te.isActive());
+        TileEntity te = worldIn.getTileEntity(pos);
+        return state.withProperty(WORKING, state.getValue(MASTER) && te instanceof TileEntityChunkLoader && ((TileEntityChunkLoader) te).isActive());
     }
 
     @Override
@@ -174,8 +175,8 @@ public class BlockChunkLoader extends BlockHorizontalFacing
     @Deprecated
     public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param)
     {
-        final TileEntityChunkLoader tileEntity = (TileEntityChunkLoader) worldIn.getTileEntity(pos);
-        if (tileEntity == null) return false;
+        final TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if (!(tileEntity instanceof TileEntityChunkLoader)) return false;
 
         tileEntity.receiveClientEvent(id, param);
         return true;

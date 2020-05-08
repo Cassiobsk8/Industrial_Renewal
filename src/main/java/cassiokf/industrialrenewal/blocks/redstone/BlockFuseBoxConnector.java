@@ -73,8 +73,8 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighborPos) {
         super.neighborChanged(state, worldIn, pos, blockIn, neighborPos);
-        TileEntityBoxConnector te = (TileEntityBoxConnector) worldIn.getTileEntity(pos);
-        if (te != null) {
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te instanceof TileEntityBoxConnector) {
             te.passRedstone();
         }
     }*/

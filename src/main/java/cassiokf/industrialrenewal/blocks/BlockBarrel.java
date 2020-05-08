@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -37,10 +38,11 @@ public class BlockBarrel extends BlockHorizontalFacing
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (!worldIn.isRemote) {
-            TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
-            if (te != null && !FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing))
-                playerIn.sendMessage(new TextComponentString(te.GetChatQuantity()));
+        if (!worldIn.isRemote)
+        {
+            TileEntity te = worldIn.getTileEntity(pos);
+            if (te instanceof TileEntityBarrel && !FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing))
+                playerIn.sendMessage(new TextComponentString(((TileEntityBarrel) te).GetChatQuantity()));
         }
         return true;
     }
@@ -61,9 +63,12 @@ public class BlockBarrel extends BlockHorizontalFacing
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
-        ItemStack itemst = SaveStackContainer(te);
-        spawnAsEntity(worldIn, pos, itemst);
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te instanceof TileEntityBarrel)
+        {
+            ItemStack itemst = SaveStackContainer((TileEntityBarrel) te);
+            spawnAsEntity(worldIn, pos, itemst);
+        }
         super.breakBlock(worldIn, pos, state);
     }
 
@@ -76,8 +81,8 @@ public class BlockBarrel extends BlockHorizontalFacing
     @Override
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
-        TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(pos);
-        return te != null ? (int) (Utils.normalize(te.tank.getFluidAmount(), 0, te.tank.getCapacity()) * 15) : 0;
+        TileEntity te = worldIn.getTileEntity(pos);
+        return te instanceof TileEntityBarrel ? (int) (Utils.normalize(((TileEntityBarrel) te).tank.getFluidAmount(), 0, ((TileEntityBarrel) te).tank.getCapacity()) * 15) : 0;
     }
 
     @Override

@@ -11,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -74,9 +75,9 @@ public class BlockGauge extends BlockHorizontalFacing
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        TileEntityGauge te = (TileEntityGauge) worldIn.getTileEntity(pos);
+        TileEntity te = worldIn.getTileEntity(pos);
         EnumFacing facing = state.getValue(BASE);
-        te.setBaseFacing(facing);
+        if (te instanceof TileEntityGauge) ((TileEntityGauge) te).setBaseFacing(facing);
     }
 
     @Nonnull

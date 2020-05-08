@@ -96,10 +96,10 @@ public class BlockTransformerHV extends BlockMultiBlockBase<TileEntityTransforme
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        TileEntityTransformerHV te = (TileEntityTransformerHV) worldIn.getTileEntity(pos);
+        TileEntity te = worldIn.getTileEntity(pos);
         int type;
-        if (te == null || !te.isMaster()) type = 0;
-        else type = (te.isOutPut) ? 2 : 1;
+        if (!(te instanceof TileEntityTransformerHV) || !((TileEntityTransformerHV) te).isMaster()) type = 0;
+        else type = (((TileEntityTransformerHV) te).isOutPut) ? 2 : 1;
         return state.withProperty(OUTPUT, type);
     }
 

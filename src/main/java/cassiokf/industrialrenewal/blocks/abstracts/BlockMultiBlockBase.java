@@ -10,6 +10,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -52,10 +53,10 @@ public abstract class BlockMultiBlockBase<TE extends TileEntityMultiBlockBase> e
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        TE te = (TE) worldIn.getTileEntity(pos);
-        if (te != null)
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te instanceof TileEntityMultiBlockBase)
         {
-            te.breakMultiBlocks();
+            ((TileEntityMultiBlockBase) te).breakMultiBlocks();
         }
         super.breakBlock(worldIn, pos, state);
     }

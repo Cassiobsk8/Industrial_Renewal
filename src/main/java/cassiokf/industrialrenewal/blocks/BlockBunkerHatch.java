@@ -96,17 +96,6 @@ public class BlockBunkerHatch extends BlockHorizontalFacing
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TileEntityBunkerHatch te = (TileEntityBunkerHatch) worldIn.getTileEntity(pos);
-        if (te != null)
-        {
-            te.breakMultiBlocks();
-        }
-        super.breakBlock(worldIn, pos, state);
-    }
-
-    @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         EntityPlayer player = worldIn.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 10D, false);

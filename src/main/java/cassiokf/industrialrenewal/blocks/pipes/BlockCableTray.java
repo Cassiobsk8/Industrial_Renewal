@@ -120,10 +120,10 @@ public class BlockCableTray extends BlockPipeBase<TileEntityCableTray>
             Block block = Block.getBlockFromItem(item);
             if (item instanceof ItemPowerScrewDrive || block instanceof BlockFluidPipe || block instanceof BlockEnergyCable)
             {
-                TileEntityCableTray te = (TileEntityCableTray) worldIn.getTileEntity(pos);
-                if (te != null)
+                TileEntity te = worldIn.getTileEntity(pos);
+                if (te instanceof TileEntityCableTray)
                 {
-                    boolean change = te.onBlockActivated(playerIn, playerIn.getHeldItemMainhand());
+                    boolean change = ((TileEntityCableTray) te).onBlockActivated(playerIn, playerIn.getHeldItemMainhand());
                     if (change) worldIn.notifyBlockUpdate(pos, state, state, 3);
                     return change;
                 }

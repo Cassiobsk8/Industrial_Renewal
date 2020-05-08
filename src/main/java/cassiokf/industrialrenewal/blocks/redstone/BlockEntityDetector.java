@@ -123,9 +123,9 @@ public class BlockEntityDetector extends BlockTileEntity<TileEntityEntityDetecto
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        TileEntityEntityDetector te = (TileEntityEntityDetector) worldIn.getTileEntity(pos);
+        TileEntity te = worldIn.getTileEntity(pos);
         EnumFacing facing = state.getValue(BASE);
-        te.setBlockFacing(facing);
+        if (te instanceof TileEntityEntityDetector) ((TileEntityEntityDetector) te).setBlockFacing(facing);
     }
 
     @SuppressWarnings("deprecation")
