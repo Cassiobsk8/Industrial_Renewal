@@ -62,13 +62,14 @@ public class TileEntityBunkerHatch extends TEBase
         }
     }
 
-    public void breakMultiBlocks()
+    @Override
+    public void onBlockBreak()
     {
         if (!this.isMaster())
         {
             if (getMaster() != null)
             {
-                getMaster().breakMultiBlocks();
+                getMaster().onBlockBreak();
             }
             return;
         }
