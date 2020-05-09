@@ -114,6 +114,7 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
     @Override
     public int passRotation(int amount)
     {
+        if (isInvalid() || getMaster().isInvalid()) return 0;
         if (!isMaster()) return getMaster().passRotation(amount);
         rotation = amount;
         return amount;
