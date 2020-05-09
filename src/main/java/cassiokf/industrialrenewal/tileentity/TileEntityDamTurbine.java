@@ -68,8 +68,9 @@ public class TileEntityDamTurbine extends TileEntityMultiBlockBase<TileEntityDam
     private void passRotationUp()
     {
         if (rotation <= 0) return;
-        TileEntity te = world.getTileEntity(pos.up(2));
-        if (te instanceof IMecanicalEnergy)
+        BlockPos outPos = pos.up(2);
+        TileEntity te = world.getTileEntity(outPos);
+        if (te instanceof IMecanicalEnergy && ((IMecanicalEnergy) te).canAcceptRotation(outPos, EnumFacing.DOWN))
         {
             ((IMecanicalEnergy) te).passRotation((int) rotation);
         }

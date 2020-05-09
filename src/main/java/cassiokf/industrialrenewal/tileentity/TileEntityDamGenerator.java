@@ -112,6 +112,12 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
     }
 
     @Override
+    public boolean canAcceptRotation(BlockPos pos, EnumFacing side)
+    {
+        return pos == getMaster().getPos().down() && side == EnumFacing.DOWN;
+    }
+
+    @Override
     public int passRotation(int amount)
     {
         if (isInvalid() || getMaster().isInvalid()) return 0;

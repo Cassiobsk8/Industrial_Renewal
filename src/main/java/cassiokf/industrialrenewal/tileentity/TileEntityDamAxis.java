@@ -12,10 +12,16 @@ import javax.annotation.Nullable;
 
 public class TileEntityDamAxis extends TileEntityMultiBlocksTube<TileEntityDamAxis> implements IMecanicalEnergy
 {
-    private EnumFacing[] faces = new EnumFacing[]{EnumFacing.UP, EnumFacing.DOWN};
+    private final EnumFacing[] faces = new EnumFacing[]{EnumFacing.UP, EnumFacing.DOWN};
 
     public TileEntityDamAxis()
     {
+    }
+
+    @Override
+    public boolean canAcceptRotation(BlockPos pos, EnumFacing side)
+    {
+        return side == EnumFacing.DOWN || side == EnumFacing.UP;
     }
 
     @Override
@@ -54,7 +60,7 @@ public class TileEntityDamAxis extends TileEntityMultiBlocksTube<TileEntityDamAx
     public void checkForOutPuts(BlockPos bPos)
     {
         TileEntity te = world.getTileEntity(bPos.up());
-        if (!(te instanceof TileEntityDamAxis) && te instanceof IMecanicalEnergy)
+        if (!(te instanceof TileEntityDamAxis) && te instanceof IMecanicalEnergy && ((IMecanicalEnergy) te).canAcceptRotation(bPos.up(), EnumFacing.DOWN))
         {
             addMachine(te, EnumFacing.UP);
         } else removeMachine(te);
