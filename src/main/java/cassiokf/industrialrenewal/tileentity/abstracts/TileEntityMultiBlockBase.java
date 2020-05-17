@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.tileentity.abstracts;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
 import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.Utils;
@@ -124,15 +123,20 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
         if (faceChecked) return EnumFacing.byIndex(faceIndex);
         if (getMaster() == null)
         {
-            IBlockState state = world.getBlockState(pos);
-            if (state.getProperties().containsKey(BlockHorizontalFacing.FACING))
-                return state.getValue(BlockHorizontalFacing.FACING);
-            return EnumFacing.NORTH;
+            return getBlockFace();
         }
-        EnumFacing facing = world.getBlockState(getMaster().getPos()).getValue(BlockMultiBlockBase.FACING);
+        EnumFacing facing = getMaster().getBlockFace();
         faceChecked = true;
         faceIndex = facing.getIndex();
         return facing;
+    }
+
+    public EnumFacing getBlockFace()
+    {
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof BlockMultiBlockBase)
+            return state.getValue(BlockMultiBlockBase.FACING);
+        return EnumFacing.NORTH;
     }
 
     public void onMasterBreak()
