@@ -6,7 +6,7 @@
     "2": "industrialrenewal:blocks/screen",
     "3": "industrialrenewal:blocks/entity_detector",
     "4": "industrialrenewal:blocks/galvanized_metal",
-    "7": "blocks/glass",
+    "7": "industrialrenewal:blocks/glass",
     "8": "industrialrenewal:blocks/hopper_inside",
     "9": "industrialrenewal:blocks/fluid_pipe",
     "1_1": "industrialrenewal:blocks/pipe",
@@ -440,7 +440,7 @@
             2,
             3,
             16,
-            7
+            8
           ],
           "texture": "#1"
         },
@@ -478,7 +478,7 @@
         },
         "east": {
           "uv": [
-            2,
+            1,
             0,
             16,
             2
@@ -922,9 +922,9 @@
         "north": {
           "uv": [
             0,
-            0,
-            15,
-            8.5
+            2,
+            4,
+            13.2
           ],
           "rotation": 180,
           "texture": "#1"
@@ -933,7 +933,7 @@
           "uv": [
             3,
             3,
-            12.2,
+            14.2,
             3.5
           ],
           "rotation": 270,
@@ -944,7 +944,7 @@
             12,
             3,
             16,
-            12.2
+            14.2
           ],
           "texture": "#1"
         },
@@ -952,8 +952,8 @@
           "uv": [
             0,
             0,
-            8.5,
-            3
+            11.2,
+            0.5
           ],
           "rotation": 90,
           "texture": "#1"
