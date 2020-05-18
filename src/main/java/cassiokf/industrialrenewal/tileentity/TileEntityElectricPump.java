@@ -275,7 +275,8 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
     {
         if (facing != null) return facing;
         IBlockState state = world.getBlockState(pos);
-        facing = state.getValue(BlockElectricPump.FACING);
+        if (state.getBlock() instanceof BlockElectricPump) facing = state.getValue(BlockElectricPump.FACING);
+        else return EnumFacing.NORTH;
         return facing;
     }
 
