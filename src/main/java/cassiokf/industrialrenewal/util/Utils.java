@@ -41,6 +41,11 @@ public class Utils
         System.out.println(str);
     }
 
+    public static String blockPosToString(BlockPos pos)
+    {
+        return "X: " + pos.getX() + " Y: " + pos.getY() + " Z: " + pos.getZ();
+    }
+
     public static boolean isWood(ItemStack stack)
     {
         int[] array = OreDictionary.getOreIDs(stack);
