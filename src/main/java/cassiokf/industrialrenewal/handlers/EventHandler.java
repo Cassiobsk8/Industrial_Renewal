@@ -1,7 +1,9 @@
 package cassiokf.industrialrenewal.handlers;
 
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.entity.LocomotiveBase;
 import cassiokf.industrialrenewal.item.ItemCartLinkable;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
@@ -15,7 +17,9 @@ public class EventHandler
     @SubscribeEvent
     public static void onMinecartUpdate(MinecartUpdateEvent event)
     {
-        CouplingHandler.onMinecartTick(event.getMinecart());
+        EntityMinecart cart = event.getMinecart();
+        CouplingHandler.onMinecartTick(cart);
+        if (cart instanceof LocomotiveBase) ((LocomotiveBase) cart).onLocomotiveUpdate();
     }
 
     @SubscribeEvent

@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnected;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityBatteryBank extends TileEntitySyncable implements ITickable
+public class TileEntityBatteryBank extends TileEntitySync implements ITickable
 {
     private final VoltsEnergyContainer container;
     private final VoltsEnergyContainer dummyEnergy;
@@ -34,7 +34,7 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ITickab
             {
                 if (!world.isRemote)
                 {
-                    TileEntityBatteryBank.this.Sync();
+                    TileEntityBatteryBank.this.sync();
                 }
             }
         };
@@ -70,12 +70,12 @@ public class TileEntityBatteryBank extends TileEntitySyncable implements ITickab
         if (outPutFacings.contains(facing))
         {
             outPutFacings.remove(facing);
-            this.Sync();
+            this.sync();
             return false;
         } else
         {
             outPutFacings.add(facing);
-            this.Sync();
+            this.sync();
             return true;
         }
     }

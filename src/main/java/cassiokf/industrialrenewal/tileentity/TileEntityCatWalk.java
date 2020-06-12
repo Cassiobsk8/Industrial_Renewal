@@ -1,13 +1,13 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 
 import java.util.EnumSet;
 import java.util.Set;
 
-public class TileEntityCatWalk extends TileEntitySyncable
+public class TileEntityCatWalk extends TileEntitySync
 {
     private final Set<EnumFacing> blackListedFaces = EnumSet.noneOf(EnumFacing.class);
 

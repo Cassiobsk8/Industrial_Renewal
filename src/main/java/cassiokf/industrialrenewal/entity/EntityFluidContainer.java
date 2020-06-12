@@ -1,13 +1,13 @@
 package cassiokf.industrialrenewal.entity;
 
 import cassiokf.industrialrenewal.init.ModItems;
-import cassiokf.industrialrenewal.util.interfaces.IConnectibleCart;
+import cassiokf.industrialrenewal.util.interfaces.ICoupleCart;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityFluidContainer extends EntityFluidBase implements IConnectibleCart
+public class EntityFluidContainer extends EntityFluidBase implements ICoupleCart
 {
 
     public EntityFluidContainer(World worldIn)

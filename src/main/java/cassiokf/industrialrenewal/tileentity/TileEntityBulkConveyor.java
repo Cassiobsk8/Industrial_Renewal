@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockBulkConveyor;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -18,7 +18,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityBulkConveyor extends TileEntitySyncable implements ITickable
+public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
 {
     public static final int frontNumber = 2;
     public static final int middleNumber = 1;
@@ -108,7 +108,7 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ITicka
             oldBackTick = rBackTick;
             rBackTick = Utils.normalize((float) backTick, 0, (float) tickSpeed);
         }
-        Sync();
+        sync();
     }
 
     public void itemReceived(int slot)
@@ -130,7 +130,7 @@ public class TileEntityBulkConveyor extends TileEntitySyncable implements ITicka
                 rMiddleTick = 0;
             }
         }
-        Sync();
+        sync();
     }
 
     private boolean updateFrontStack()

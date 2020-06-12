@@ -97,7 +97,7 @@ public class TileEntityDamTurbine extends TileEntityMultiBlockBase<TileEntityDam
         if (rotation != oldRotation)
         {
             oldRotation = rotation;
-            Sync();
+            sync();
         }
         hasFlow = false;
     }

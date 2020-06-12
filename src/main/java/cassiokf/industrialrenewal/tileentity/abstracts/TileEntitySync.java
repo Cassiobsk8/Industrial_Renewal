@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.abstracts;
 
+import cassiokf.industrialrenewal.util.interfaces.ISync;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -7,7 +8,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class TileEntitySyncable extends TEBase
+public abstract class TileEntitySync extends TEBase implements ISync
 {
 
     @Override
@@ -16,7 +17,20 @@ public abstract class TileEntitySyncable extends TEBase
         return oldState.getBlock() != newState.getBlock();
     }
 
-    public void Sync()
+    @Override
+    public BlockPos getThisPosition()
+    {
+        return getPos();
+    }
+
+    @Override
+    public World getThisWorld()
+    {
+        return getWorld();
+    }
+
+    @Override
+    public void sync()
     {
         if (!world.isRemote)
         {

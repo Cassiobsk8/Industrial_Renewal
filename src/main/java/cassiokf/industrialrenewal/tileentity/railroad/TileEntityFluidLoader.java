@@ -28,7 +28,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
 
         @Override
         protected void onContentsChanged() {
-            TileEntityFluidLoader.this.Sync();
+            TileEntityFluidLoader.this.sync();
         }
     };
     private int maxFlowPerTick = 200;
@@ -50,7 +50,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
                 if (cartActivity > 0)
                 {
                     cartActivity--;
-                    Sync();
+                    sync();
                 }
                 if (isUnload() && tank.getFluidAmount() > 0)
                 {
@@ -143,7 +143,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
                         if (loading != oldLoading)
                         {
                             oldLoading = loading;
-                            Sync();
+                            sync();
                         }
                         return true;
                     }
@@ -151,7 +151,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
                     if (loading != oldLoading)
                     {
                         oldLoading = loading;
-                        Sync();
+                        sync();
                     }
                     if (waitE == waitEnum.WAIT_EMPTY)
                     {
@@ -172,7 +172,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
                         if (loading != oldLoading)
                         {
                             oldLoading = loading;
-                            Sync();
+                            sync();
                         }
                         return true;
                     }
@@ -180,7 +180,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
                     if (loading != oldLoading)
                     {
                         oldLoading = loading;
-                        Sync();
+                        sync();
                     }
                     if (waitE == waitEnum.WAIT_FULL)
                     {

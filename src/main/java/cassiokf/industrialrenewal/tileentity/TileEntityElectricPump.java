@@ -4,7 +4,7 @@ import cassiokf.industrialrenewal.blocks.BlockElectricPump;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.handlers.IRSoundHandler;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.block.Block;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class TileEntityElectricPump extends TileEntitySyncable implements ITickable
+public class TileEntityElectricPump extends TileEntitySync implements ITickable
 {
     private final VoltsEnergyContainer energyContainer;
 
@@ -121,7 +121,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
                 world.playSound(null, pos, IRSoundRegister.PUMP_START, SoundCategory.BLOCKS, volume + 0.5f, 1.0F);
             starting = true;
             oldStarting = true;
-            Sync();
+            sync();
         } else if (isRunning)
         {
             if (world.isRemote)
@@ -133,7 +133,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
             if (oldStarting)
             {
                 oldStarting = false;
-                Sync();
+                sync();
             }
         }
     }
@@ -154,7 +154,7 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ITicka
         {
             oldIsRunning = isRunning;
             oldStarting = starting;
-            Sync();
+            sync();
         }
     }
 

@@ -71,7 +71,7 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
                 if (generation != oldGeneration)
                 {
                     oldGeneration = generation;
-                    Sync();
+                    sync();
                 }
                 rotation = 0;
             } else

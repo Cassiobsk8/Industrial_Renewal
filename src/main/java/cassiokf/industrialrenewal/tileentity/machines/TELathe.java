@@ -53,7 +53,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             {
                 if (!world.isRemote)
                 {
-                    TELathe.this.Sync();
+                    TELathe.this.sync();
                 }
             }
         };
@@ -62,7 +62,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             @Override
             protected void onContentsChanged(int slot)
             {
-                TELathe.this.Sync();
+                TELathe.this.sync();
             }
 
             @Override
@@ -76,7 +76,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             @Override
             protected void onContentsChanged(int slot)
             {
-                TELathe.this.Sync();
+                TELathe.this.sync();
             }
 
             @Override
@@ -120,7 +120,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             stopping = false;
             stopped = true;
             oldStopping = false;
-            Sync();
+            sync();
         } else if (inProcess)
         {
             stopped = false;
@@ -133,7 +133,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             if (oldStopping)
             {
                 oldStopping = false;
-                Sync();
+                sync();
             }
         }
     }

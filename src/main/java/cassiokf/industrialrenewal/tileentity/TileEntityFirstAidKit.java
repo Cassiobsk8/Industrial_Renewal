@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockFirstAidKit;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -10,7 +10,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityFirstAidKit extends TileEntitySyncable
+public class TileEntityFirstAidKit extends TileEntitySync
 {
     private EnumFacing facing;
     public ItemStackHandler inventory;
@@ -22,7 +22,7 @@ public class TileEntityFirstAidKit extends TileEntitySyncable
             @Override
             protected void onContentsChanged(int slot)
             {
-                TileEntityFirstAidKit.this.Sync();
+                TileEntityFirstAidKit.this.sync();
             }
         };
     }

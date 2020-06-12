@@ -104,7 +104,7 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     public void setPanelInv(boolean panelInv)
     {
         this.panelInv = panelInv;
-        Sync();
+        sync();
     }
 
     @Override

@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
-public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBase> extends TileEntitySyncable implements ITickable
+public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBase> extends TileEntitySync implements ITickable
 {
     private boolean isMaster;
     private boolean breaking;

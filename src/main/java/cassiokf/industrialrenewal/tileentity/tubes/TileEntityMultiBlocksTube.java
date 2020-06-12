@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,7 +16,7 @@ import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TileEntitySyncable implements ITickable
+public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TileEntitySync implements ITickable
 {
     private TE master;
     private boolean isMaster;
@@ -122,7 +122,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                     storage.markDirty();
                 }
             }
-            Sync();
+            sync();
         }
     }
 
@@ -172,7 +172,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     public TE getMaster()
     {
         initializeMultiblockIfNecessary();
-        if (master != null && !master.isMaster()) Sync();
+        if (master != null && !master.isMaster()) sync();
         if (master == null)
         {
             if (!world.isRemote && !startBreaking)

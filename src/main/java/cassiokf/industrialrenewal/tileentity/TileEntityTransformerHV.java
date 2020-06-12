@@ -110,7 +110,7 @@ public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntity
                 if (averageEnergy != oldEnergy)
                 {
                     oldEnergy = averageEnergy;
-                    Sync();
+                    sync();
                 }
             }
             tick++;
@@ -127,7 +127,7 @@ public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntity
             oldOutPut = isOutPut;
             IBlockState state = world.getBlockState(pos);
             world.notifyBlockUpdate(pos, state, state, 2);
-            this.Sync();
+            this.sync();
             this.checkIfNeedsNetworkRefresh();
         }
     }
@@ -285,7 +285,7 @@ public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntity
         {
             getMaster().checkIfNeedsNetworkRefresh();
         }
-        getMaster().Sync();
+        getMaster().sync();
     }
 
     @Override
@@ -298,7 +298,7 @@ public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntity
     public void setOtherSideTransformer(IConnectorHV transformer)
     {
         getMaster().otherSideTransformer = transformer;
-        getMaster().Sync();
+        getMaster().sync();
     }
 
     @Override
@@ -322,7 +322,7 @@ public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntity
             getMaster().isConnected = false;
             getMaster().cableConnectionPos = null;
             getMaster().otherSideTransformer = null;
-            getMaster().Sync();
+            getMaster().sync();
         }
     }
 }

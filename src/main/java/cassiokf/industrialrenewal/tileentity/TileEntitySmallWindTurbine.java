@@ -4,7 +4,7 @@ import cassiokf.industrialrenewal.blocks.BlockSmallWindTurbine;
 import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.item.ItemWindBlade;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.block.state.IBlockState;
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class TileEntitySmallWindTurbine extends TileEntitySyncable implements ITickable
+public class TileEntitySmallWindTurbine extends TileEntitySync implements ITickable
 {
     private final VoltsEnergyContainer energyContainer;
     public ItemStackHandler bladeInv = new ItemStackHandler(1)
@@ -39,7 +39,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IT
         @Override
         protected void onContentsChanged(int slot)
         {
-            TileEntitySmallWindTurbine.this.Sync();
+            TileEntitySmallWindTurbine.this.sync();
         }
     };
     private float rotation;

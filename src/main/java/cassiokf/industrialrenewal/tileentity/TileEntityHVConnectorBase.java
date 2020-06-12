@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.pipes.BlockHVConnectorBase;
 import cassiokf.industrialrenewal.init.ModItems;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
 import net.minecraft.item.ItemStack;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class TileEntityHVConnectorBase extends TileEntitySyncable
+public class TileEntityHVConnectorBase extends TileEntitySync
 {
     public BlockPos leftConnectionPos = null;
     public BlockPos rightConnectionPos = null;
@@ -127,14 +127,14 @@ public class TileEntityHVConnectorBase extends TileEntitySyncable
             leftConnectionPos = null;
             master = null;
             initializeNetworkIfNecessary();
-            this.Sync();
+            this.sync();
         } else if (sidePos.equals(rightConnectionPos))
         {
             rightConnected = false;
             rightConnectionPos = null;
             master = null;
             initializeNetworkIfNecessary();
-            this.Sync();
+            this.sync();
         }
     }
 
@@ -166,7 +166,7 @@ public class TileEntityHVConnectorBase extends TileEntitySyncable
             master = null;
             initializeNetworkIfNecessary();
         }
-        this.Sync();
+        this.sync();
     }
 
     public EnumFacing getBlockFacing()

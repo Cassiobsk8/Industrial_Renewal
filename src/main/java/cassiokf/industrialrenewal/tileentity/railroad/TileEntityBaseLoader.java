@@ -1,11 +1,11 @@
 package cassiokf.industrialrenewal.tileentity.railroad;
 
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 
-public abstract class TileEntityBaseLoader extends TileEntitySyncable
+public abstract class TileEntityBaseLoader extends TileEntitySync
 {
     public EnumFacing blockFacing;
     public waitEnum waitE = waitEnum.NO_ACTIVITY;
@@ -14,8 +14,10 @@ public abstract class TileEntityBaseLoader extends TileEntitySyncable
     public String cartName = "";
     public int cartActivity;
 
-    public waitEnum getWaitEnum() {
-        if (waitE == null) {
+    public waitEnum getWaitEnum()
+    {
+        if (waitE == null)
+        {
             waitE = waitEnum.WAIT_FULL;
         }
         return waitE;
@@ -29,13 +31,13 @@ public abstract class TileEntityBaseLoader extends TileEntitySyncable
     {
         int old = getWaitEnum().ordinal();
         waitE = waitEnum.valueOf(old + 1);
-        Sync();
+        sync();
     }
 
     public void changeUnload()
     {
         unload = !unload;
-        Sync();
+        sync();
     }
 
     public abstract EnumFacing getBlockFacing();

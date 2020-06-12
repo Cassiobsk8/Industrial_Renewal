@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemRecord;
@@ -16,7 +16,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityRecordPlayer extends TileEntitySyncable
+public class TileEntityRecordPlayer extends TileEntitySync
 {
     public ItemStackHandler inventory;
     private boolean playAll = false;
@@ -36,7 +36,7 @@ public class TileEntityRecordPlayer extends TileEntitySyncable
             {
                 if (!world.isRemote)
                 {
-                    TileEntityRecordPlayer.this.Sync();
+                    TileEntityRecordPlayer.this.sync();
                 }
             }
         };

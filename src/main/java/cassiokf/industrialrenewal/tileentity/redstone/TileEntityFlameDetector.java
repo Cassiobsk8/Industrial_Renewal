@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.blocks.redstone.BlockFlameDetector;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.state.IBlockState;
@@ -15,14 +15,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class TileEntityFlameDetector extends TileEntitySyncable implements ITickable
+public class TileEntityFlameDetector extends TileEntitySync implements ITickable
 {
 
     private EnumFacing blockFacing = EnumFacing.DOWN;
 
     private int tick = 0;
 
-    public boolean passRedstone() {
+    public boolean passRedstone()
+    {
         IBlockState state = world.getBlockState(pos);
         EnumFacing inFace = state.getValue(BlockFlameDetector.FACING);
         IBlockState neightbor = world.getBlockState(pos.offset(inFace));
@@ -48,7 +49,7 @@ public class TileEntityFlameDetector extends TileEntitySyncable implements ITick
         if (actualValue != value)
         {
             this.world.setBlockState(this.pos, state.withProperty(BlockFlameDetector.ACTIVE, value), 3);
-            this.Sync();
+            this.sync();
             world.notifyNeighborsOfStateChange(this.pos.offset(getBlockFacing()), state.getBlock(), true);
         }
     }

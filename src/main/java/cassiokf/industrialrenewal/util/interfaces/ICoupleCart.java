@@ -2,7 +2,7 @@ package cassiokf.industrialrenewal.util.interfaces;
 
 import net.minecraft.entity.item.EntityMinecart;
 
-public interface IConnectibleCart
+public interface ICoupleCart
 {
     default float getMaxCouplingDistance(EntityMinecart cart)
     {

@@ -48,7 +48,7 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
             if (!world.isRemote)
             {
                 world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-                Sync();
+                sync();
             }
             return true;
         }
@@ -72,7 +72,7 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
             if (!world.isRemote)
             {
                 world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-                Sync();
+                sync();
             }
             return true;
         }
@@ -86,7 +86,7 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
             if (!world.isRemote)
             {
                 ItemPowerScrewDrive.playDrillSound(world, pos);
-                Sync();
+                sync();
             }
             return true;
         }

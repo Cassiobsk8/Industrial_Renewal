@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.handlers;
 
 import cassiokf.industrialrenewal.util.enums.EnumCouplingType;
-import cassiokf.industrialrenewal.util.interfaces.IConnectibleCart;
+import cassiokf.industrialrenewal.util.interfaces.ICoupleCart;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.world.World;
@@ -140,12 +140,12 @@ public class CouplingHandler
     private static float getDistanceBetween(EntityMinecart cart1, EntityMinecart cart2)
     {
         float dist = 0;
-        if (cart1 instanceof IConnectibleCart)
-            dist += ((IConnectibleCart) cart1).getFixedDistance(cart2);
+        if (cart1 instanceof ICoupleCart)
+            dist += ((ICoupleCart) cart1).getFixedDistance(cart2);
         else
             dist += 0.78f;
-        if (cart2 instanceof IConnectibleCart)
-            dist += ((IConnectibleCart) cart2).getFixedDistance(cart1);
+        if (cart2 instanceof ICoupleCart)
+            dist += ((ICoupleCart) cart2).getFixedDistance(cart1);
         else
             dist += 0.78f;
         return dist;

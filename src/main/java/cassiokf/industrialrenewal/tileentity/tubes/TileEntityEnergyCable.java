@@ -50,7 +50,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
                 {
                     oldPotential = potentialEnergy;
                     oldEnergy = averageEnergy;
-                    Sync();
+                    sync();
                 }
             }
             tick++;

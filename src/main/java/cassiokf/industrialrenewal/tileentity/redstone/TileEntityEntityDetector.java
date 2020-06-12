@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.blocks.redstone.BlockEntityDetector;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class TileEntityEntityDetector extends TileEntitySyncable implements ITickable
+public class TileEntityEntityDetector extends TileEntitySync implements ITickable
 {
 
     private EnumFacing blockFacing = EnumFacing.DOWN;
@@ -26,7 +26,8 @@ public class TileEntityEntityDetector extends TileEntitySyncable implements ITic
     private int tick = 0;
     private entityEnum eEnum = entityEnum.ALL;
 
-    public enum entityEnum {
+    public enum entityEnum
+    {
         ALL(0),
         PLAYERS(1),
         MOBHOSTIL(2),
@@ -89,7 +90,7 @@ public class TileEntityEntityDetector extends TileEntitySyncable implements ITic
         boolean actualValue = state.getValue(BlockEntityDetector.ACTIVE);
         if (actualValue != value) {
             this.world.setBlockState(this.pos, state.withProperty(BlockEntityDetector.ACTIVE, value), 3);
-            this.Sync();
+            this.sync();
             world.notifyNeighborsOfStateChange(this.pos.offset(getBlockFacing()), state.getBlock(), true);
         }
     }
@@ -149,7 +150,7 @@ public class TileEntityEntityDetector extends TileEntitySyncable implements ITic
         if (value) {
             eEnum = TileEntityEntityDetector.entityEnum.valueOf(old + 1);
         }
-        this.Sync();
+        this.sync();
     }
 
     public void setNextDistance() {
@@ -157,7 +158,7 @@ public class TileEntityEntityDetector extends TileEntitySyncable implements ITic
         if (distanceD > 8) {
             distanceD = 1;
         }
-        this.Sync();
+        this.sync();
     }
 
     public int getDistance() {

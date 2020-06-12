@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -10,14 +10,14 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityBarrel extends TileEntitySyncable
+public class TileEntityBarrel extends TileEntitySync
 {
     public FluidTank tank = new FluidTank(IRConfig.MainConfig.Main.barrelCapacity)
     {
         @Override
         public void onContentsChanged()
         {
-            TileEntityBarrel.this.Sync();
+            TileEntityBarrel.this.sync();
         }
     };
 

@@ -46,7 +46,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
                 if (averageFluid != oldFluid)
                 {
                     oldFluid = averageFluid;
-                    Sync();
+                    sync();
                 }
             }
             tick++;

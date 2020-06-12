@@ -41,7 +41,7 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
         @Override
         public void onContentsChanged()
         {
-            TileEntitySteamTurbine.this.Sync();
+            TileEntitySteamTurbine.this.sync();
         }
     };
     private final FluidStack waterStack = new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
@@ -92,7 +92,7 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
             @Override
             public void onEnergyChange()
             {
-                TileEntitySteamTurbine.this.Sync();
+                TileEntitySteamTurbine.this.sync();
             }
         };
     }
@@ -115,7 +115,7 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
                 if (oldRotation != rotation)
                 {
                     oldRotation = rotation;
-                    this.Sync();
+                    this.sync();
                 }
             } else
             {

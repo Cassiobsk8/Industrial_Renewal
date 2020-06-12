@@ -44,7 +44,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
         @Override
         public void onContentsChanged()
         {
-            TileEntityMining.this.Sync();
+            TileEntityMining.this.sync();
         }
     };
     public ItemStackHandler drillInv = new ItemStackHandler(1)
@@ -59,7 +59,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
         @Override
         protected void onContentsChanged(int slot)
         {
-            TileEntityMining.this.Sync();
+            TileEntityMining.this.sync();
         }
     };
     private int maxHeat = 18000;
@@ -94,7 +94,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
             @Override
             public void onEnergyChange()
             {
-                TileEntityMining.this.Sync();
+                TileEntityMining.this.sync();
             }
         };
     }

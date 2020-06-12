@@ -3,7 +3,7 @@ package cassiokf.industrialrenewal.item;
 import cassiokf.industrialrenewal.handlers.CouplingHandler;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.enums.EnumCouplingType;
-import cassiokf.industrialrenewal.util.interfaces.IConnectibleCart;
+import cassiokf.industrialrenewal.util.interfaces.ICoupleCart;
 import com.google.common.collect.MapMaker;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
@@ -99,12 +99,12 @@ public class ItemCartLinkable extends ItemBase
     {
         float defaultDistance = 1.6f;
         float dist = 0;
-        if (cart1 instanceof IConnectibleCart)
-            dist += ((IConnectibleCart) cart1).getMaxCouplingDistance(cart2);
+        if (cart1 instanceof ICoupleCart)
+            dist += ((ICoupleCart) cart1).getMaxCouplingDistance(cart2);
         else
             dist += defaultDistance;
-        if (cart2 instanceof IConnectibleCart)
-            dist += ((IConnectibleCart) cart2).getMaxCouplingDistance(cart1);
+        if (cart2 instanceof ICoupleCart)
+            dist += ((ICoupleCart) cart2).getMaxCouplingDistance(cart1);
         else
             dist += defaultDistance;
         return dist * dist;

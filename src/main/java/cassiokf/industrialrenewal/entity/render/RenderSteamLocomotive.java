@@ -26,105 +26,70 @@ public class RenderSteamLocomotive<T extends EntitySteamLocomotive> extends Rend
     }
 
     @Override
-    public void doRender(final EntitySteamLocomotive entity, double x, double y, double z, float entityYaw, final float partialTicks) {
-
+    public void doRender(final EntitySteamLocomotive cart, double x, double y, double z, float yaw, final float partialTickTime)
+    {
+        //based on TechReborn's StevesCarts rotation code
         GlStateManager.pushMatrix();
-        this.bindEntityTexture(entity);
-        long i = (long) entity.getEntityId() * 493286711L;
-        i = i * i * 4392167121L + i * 98761L;
-        float f = (((float) (i >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        float f1 = (((float) (i >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        float f2 = (((float) (i >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        GlStateManager.translate(f, f1, f2);
-        double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-        double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-        double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
-        double d3 = 0.30000001192092896D;
-        Vec3d vec3d = entity.getPos(d0, d1, d2);
-        float f3 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
-
-        if (vec3d != null) {
-            Vec3d vec3d1 = entity.getPosOffset(d0, d1, d2, d3);
-            Vec3d vec3d2 = entity.getPosOffset(d0, d1, d2, -d3);
-
-            if (vec3d1 == null) {
-                vec3d1 = vec3d;
-            }
-
-            if (vec3d2 == null) {
-                vec3d2 = vec3d;
-            }
-
-            x += vec3d.x - d0;
-            y += (vec3d1.y + vec3d2.y) / 2.0D - d1;
-            z += vec3d.z - d2;
-            Vec3d vec3d3 = vec3d2.add(-vec3d1.x, -vec3d1.y, -vec3d1.z);
-
-            if (vec3d3.length() != 0.0D)
+        this.bindEntityTexture(cart);
+        final double partialPosX = cart.lastTickPosX + (cart.posX - cart.lastTickPosX) * partialTickTime;
+        final double partialPosY = cart.lastTickPosY + (cart.posY - cart.lastTickPosY) * partialTickTime;
+        final double partialPosZ = cart.lastTickPosZ + (cart.posZ - cart.lastTickPosZ) * partialTickTime;
+        float partialRotPitch = cart.prevRotationPitch + (cart.rotationPitch - cart.prevRotationPitch) * partialTickTime;
+        final Vec3d posFromRail = cart.getPos(partialPosX, partialPosY, partialPosZ);
+        if (posFromRail != null && cart.canUseRail())
+        {
+            final double predictionLength = 0.30000001192092896;
+            Vec3d lastPos = cart.getPosOffset(partialPosX, partialPosY, partialPosZ, predictionLength);
+            Vec3d nextPos = cart.getPosOffset(partialPosX, partialPosY, partialPosZ, -predictionLength);
+            if (lastPos == null)
             {
-                vec3d3 = vec3d3.normalize();
-                entityYaw = (float) ((Math.atan2(vec3d3.z, vec3d3.x) / Math.PI) * 180.0D);
-                f3 = (float) (Math.atan(vec3d3.y) * 73.0D);
+                lastPos = posFromRail;
+            }
+            if (nextPos == null)
+            {
+                nextPos = posFromRail;
+            }
+            x += posFromRail.x - partialPosX;
+            y += (lastPos.y + nextPos.y) / 2.0 - partialPosY;
+            z += posFromRail.z - partialPosZ;
+            Vec3d difference = nextPos.add(-lastPos.x, -lastPos.y, -lastPos.z);
+            if (difference.length() != 0.0)
+            {
+                difference = difference.normalize();
+                yaw = (float) (Math.atan2(difference.z, difference.x) * 180.0 / 3.141592653589793);
+                partialRotPitch = (float) (Math.atan(difference.y) * 73.0);
             }
         }
-
+        yaw = 180.0f - yaw;
+        partialRotPitch *= -1.0f;
+        float damageRot = cart.getRollingAmplitude() - partialTickTime;
+        float damageTime = cart.getDamage() - partialTickTime;
+        final float damageDir = cart.getRollingDirection();
+        if (damageTime < 0.0f)
+        {
+            damageTime = 0.0f;
+        }
+        boolean flip = cart.motionX > 0.0 != cart.motionZ > 0.0;
+        if (cart.cornerFlip)
+        {
+            flip = !flip;
+        }
+        if (cart.getRenderFlippedYaw(yaw + (flip ? 0.0f : 180.0f)))
+        {
+            flip = !flip;
+        }
         GlStateManager.translate((float) x, (float) y + 0.375F, (float) z);
-
-        // rotation fix based on notes from covertJaguar
-        double yaw = entity.rotationYaw;
-        if (yaw < 0) yaw += 360;
-        double rYaw = entityYaw;
-        if (rYaw < 0) rYaw += 360;
-        boolean applyRotateFix = false;
-
-        if (Math.abs(rYaw - yaw) > 90D)
+        GlStateManager.rotate(yaw, 0.0f, 1.0f, 0.0f);
+        GlStateManager.rotate(partialRotPitch, 0.0f, 0.0f, 1.0f);
+        if (damageRot > 0.0f)
         {
-            applyRotateFix = true;
+            damageRot = MathHelper.sin(damageRot) * damageRot * damageTime / 10.0f * damageDir;
+            GlStateManager.rotate(damageRot, 1.0f, 0.0f, 0.0f);
         }
-
-        if (applyRotateFix) {
-            entityYaw += 180;
-            f3 = -f3;
-        }
-
-        GlStateManager.rotate(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(-f3, 0.0F, 0.0F, 1.0F);
-
-        //GlStateManager.rotate(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
-        //GlStateManager.rotate(-f3, 0.0F, 0.0F, 1.0F);
-
-        float f5 = (float) entity.getRollingAmplitude() - partialTicks;
-        float f6 = entity.getDamage() - partialTicks;
-
-        if (f6 < 0.0F) {
-            f6 = 0.0F;
-        }
-
-        if (f5 > 0.0F) {
-            GlStateManager.rotate(MathHelper.sin(f5) * f5 * f6 / 10.0F * (float) entity.getRollingDirection(), 1.0F, 0.0F, 0.0F);
-        }
-
-        if (this.renderOutlines)
-        {
-            GlStateManager.enableColorMaterial();
-            GlStateManager.enableOutlineMode(this.getTeamColor(entity));
-        }
-
-        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-        this.modelMinecart.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-        renderText((int) entityYaw + " " + (int) yaw, f, f1 - 50, f2 - 5.4);
-        GlStateManager.rotate(180, 0, 1, 0);
-        renderText((int) entityYaw + " " + (int) yaw, f, f1 - 50, f2 - 5.4);
+        GlStateManager.rotate(flip ? 0.0f : 180.0f, 0.0f, 1.0f, 0.0f);
+        GlStateManager.scale(-1.0f, -1.0f, 1.0f);
+        modelMinecart.render(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GlStateManager.popMatrix();
-
-        if (this.renderOutlines)
-        {
-            GlStateManager.disableOutlineMode();
-            GlStateManager.disableColorMaterial();
-        }
-
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
-
     }
 
     private void renderText(String text, double x, double y, double z)

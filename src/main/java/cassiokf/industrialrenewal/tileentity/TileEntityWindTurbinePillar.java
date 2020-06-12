@@ -88,7 +88,7 @@ public class TileEntityWindTurbinePillar extends TileEntityEnergyCable
                 addMachine(te, face);
             else removeMachine(te);
         }
-        this.Sync();
+        this.sync();
     }
 
     public EnumFacing getBlockFacing()

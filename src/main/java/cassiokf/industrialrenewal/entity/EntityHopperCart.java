@@ -3,7 +3,7 @@ package cassiokf.industrialrenewal.entity;
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.init.ModItems;
-import cassiokf.industrialrenewal.util.interfaces.IConnectibleCart;
+import cassiokf.industrialrenewal.util.interfaces.ICoupleCart;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,7 +21,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class EntityHopperCart extends TrainBase implements IConnectibleCart
+public class EntityHopperCart extends TrainBase implements ICoupleCart
 {
 
     private static final DataParameter<Integer> COUNT = EntityDataManager.createKey(EntityHopperCart.class, DataSerializers.VARINT);

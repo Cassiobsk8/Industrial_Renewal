@@ -23,7 +23,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
     public ItemStackHandler inventory = new ItemStackHandler(5) {
         @Override
         protected void onContentsChanged(int slot) {
-            TileEntityCargoLoader.this.Sync();
+            TileEntityCargoLoader.this.sync();
         }
     };
     private int itemsPerTick = 16;
@@ -42,7 +42,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                 if (cartActivity > 0)
                 {
                     cartActivity--;
-                    Sync();
+                    sync();
                 }
                 TileEntity te = world.getTileEntity(pos.down().offset(getBlockFacing().getOpposite()));
                 if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getBlockFacing()))

@@ -66,7 +66,7 @@ public class TileEntitySteamBoiler extends TileEntityMultiBlockBase<TileEntitySt
         IBlockState state = this.world.getBlockState(this.pos).withProperty(BlockSteamBoiler.TYPE, type);
         this.world.setBlockState(this.pos, state, 3);
         world.notifyBlockUpdate(pos, state, state, 3);
-        this.Sync();
+        this.sync();
     }
 
     public String getFuelText()
