@@ -67,9 +67,9 @@ public class TileEntityElectricPump extends TileEntitySync implements ITickable
 
     public TileEntityElectricPump()
     {
-        this.energyContainer = new VoltsEnergyContainer(maxRadius * 2,
-                maxRadius * 2,
-                maxRadius * 2)
+        this.energyContainer = new VoltsEnergyContainer(energyPerTick * 2,
+                energyPerTick,
+                energyPerTick * 2)
         {
             @Override
             public boolean canExtract()
@@ -188,7 +188,7 @@ public class TileEntityElectricPump extends TileEntitySync implements ITickable
                         && downFluid.getTankProperties()[0].getContents().getFluid().equals(FluidRegistry.WATER)
                         && IRConfig.MainConfig.Main.pumpInfinityWater);
 
-                if (tank.fillInternal(downFluid.drain(Integer.MAX_VALUE, false), false) > 0 && energyContainer.getEnergyStored() >= (energyPerTick * everyXtick))
+                if (tank.fillInternal(downFluid.drain(Integer.MAX_VALUE, false), false) > 0)
                 {
                     FluidStack stack = downFluid.drain(Integer.MAX_VALUE, consumeFluid);
                     if (IRConfig.MainConfig.Main.repleceLavaWithCobble && stack != null && stack.getFluid().equals(FluidRegistry.LAVA))
