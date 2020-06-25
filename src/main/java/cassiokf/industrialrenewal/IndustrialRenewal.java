@@ -5,7 +5,6 @@ import cassiokf.industrialrenewal.handlers.ChunkManagerCallback;
 import cassiokf.industrialrenewal.handlers.EventHandler;
 import cassiokf.industrialrenewal.init.*;
 import cassiokf.industrialrenewal.proxy.CommonProxy;
-import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import cassiokf.industrialrenewal.recipes.ModRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -51,7 +50,7 @@ public class IndustrialRenewal {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         System.out.println(References.NAME + " is loading posInit!");
-        LatheRecipe.populateLatheRecipes();
+        //LatheRecipe.populateLatheRecipes();
         System.out.println("Done!");
     }
 

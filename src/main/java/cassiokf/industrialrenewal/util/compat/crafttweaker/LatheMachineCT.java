@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.util.compat.crafttweaker;
 import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @ZenClass("mods.industrialrenewal.lathe")
+@ZenRegister
 public class LatheMachineCT
 {
     @ZenMethod
@@ -66,6 +68,7 @@ public class LatheMachineCT
             {
                 LatheRecipe.CACHED_RECIPES.put(stack.getItem(), recipe);
             }
+            System.out.println("Added New Recipe " + recipe);
         }
 
         @Override
@@ -94,6 +97,7 @@ public class LatheMachineCT
             {
                 LatheRecipe.CACHED_RECIPES.remove(stack.getItem());
             }
+            System.out.println("Removed " + recipe);
         }
 
         @Override
@@ -114,6 +118,7 @@ public class LatheMachineCT
         {
             LatheRecipe.LATHE_RECIPES.clear();
             LatheRecipe.CACHED_RECIPES.clear();
+            System.out.println("All Recipes Removed");
         }
 
         @Override

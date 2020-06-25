@@ -3,13 +3,18 @@ package cassiokf.industrialrenewal.handlers;
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.entity.LocomotiveBase;
 import cassiokf.industrialrenewal.item.ItemCartLinkable;
+import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import static net.minecraftforge.fml.common.eventhandler.EventPriority.LOW;
 
 @Mod.EventBusSubscriber(modid = References.MODID)
 public class EventHandler
@@ -32,5 +37,11 @@ public class EventHandler
         if (thePlayer.getEntityWorld().isRemote || !event.getHand().equals(EnumHand.MAIN_HAND)) return;
 
         ItemCartLinkable.onPlayerUseLinkableItemOnCart(thePlayer, event.getMinecart());
+    }
+
+    @SubscribeEvent(priority = LOW)
+    public static void registerRecipes(RegistryEvent.Register<IRecipe> ev)
+    {
+        LatheRecipe.populateLatheRecipes();
     }
 }
