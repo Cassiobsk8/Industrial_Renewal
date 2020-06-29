@@ -4,7 +4,6 @@ import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.util.Utils;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,40 +11,17 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-public class EntityLogCart extends TrainBase
+public class EntityLogCart extends EntityInventoryCartBase
 {
 
     public int invItensCount = 0;
     private static final DataParameter<Integer> COUNT = EntityDataManager.createKey(EntityLogCart.class, DataSerializers.VARINT);
-    public ItemStackHandler inventory = new ItemStackHandler(27)
+
+    public EntityLogCart(World worldIn)
     {
-        @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack)
-        {
-            if (stack.isEmpty())
-            {
-                return false;
-            }
-            return Utils.isWood(stack);
-        }
-
-        @Override
-        protected void onContentsChanged(int slot) {
-            EntityLogCart.this.Sync();
-        }
-    };
-
-    public EntityLogCart(World worldIn) {
         super(worldIn);
         this.setSize(1.0F, 1.0F);
     }
@@ -67,10 +43,18 @@ public class EntityLogCart extends TrainBase
     }
 
     @Override
-    public void killMinecart(DamageSource source) {
+    public boolean isItemValidForSlot(int index, ItemStack stack)
+    {
+        return Utils.isWood(stack);
+    }
+
+    @Override
+    public void killMinecart(DamageSource source)
+    {
         this.setDead();
 
-        if (!source.isExplosion() && this.world.getGameRules().getBoolean("doEntityDrops")) {
+        if (!source.isExplosion() && this.world.getGameRules().getBoolean("doEntityDrops"))
+        {
             this.entityDropItem(new ItemStack(ModItems.logCart, 1), 0.0F);
         }
     }
@@ -94,10 +78,6 @@ public class EntityLogCart extends TrainBase
         return new ItemStack(ModItems.logCart);
     }
 
-    public EntityMinecart.Type getType() {
-        return Type.CHEST;
-    }
-
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
@@ -112,22 +92,18 @@ public class EntityLogCart extends TrainBase
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
-    }
-
-    @Nullable
-    @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) this.inventory : super.getCapability(capability, facing);
-    }
-
     public void Sync()
     {
         if (!this.world.isRemote)
         {
             this.dataManager.set(COUNT, GetInvNumber());
         }
+    }
+
+    @Override
+    public int getSizeInventory()
+    {
+        return 27;
     }
 
     @Override

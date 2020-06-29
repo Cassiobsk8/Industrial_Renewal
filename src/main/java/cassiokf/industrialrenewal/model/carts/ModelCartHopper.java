@@ -175,7 +175,7 @@ public class ModelCartHopper extends ModelBase
         bone.render(f5);
         bone2.render(f5);
         bone3.render(f5);
-        int items = ((EntityHopperCart) entity).invItensCount;
+        int items = ((EntityHopperCart) entity).invItemsCount;
         if (items > 0 && items < 18) canvas1.render(f5);
         else if (items > 17 && items < 27) canvas2.render(f5);
         else if (items > 26) canvas3.render(f5);

@@ -1,7 +1,8 @@
-package cassiokf.industrialrenewal.entity;
+package cassiokf.industrialrenewal.init;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.entity.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;

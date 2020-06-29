@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal;
 
-import cassiokf.industrialrenewal.entity.EntityInit;
 import cassiokf.industrialrenewal.handlers.ChunkManagerCallback;
 import cassiokf.industrialrenewal.handlers.EventHandler;
 import cassiokf.industrialrenewal.init.*;
