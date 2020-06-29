@@ -159,6 +159,7 @@ tile.industrialrenewal.dam_intake.name=Coletor Hídrico
 tile.industrialrenewal.dam_outflow.name=Ladrão Hídrico
 tile.industrialrenewal.block_steel.name=Bloco de Aço
 tile.industrialrenewal.lathe.name=Torno Mecânico
+tile.industrialrenewal.portable_generator.name=Gerador Portátil
 
 #Fluids
 fluid.steam=Vapor

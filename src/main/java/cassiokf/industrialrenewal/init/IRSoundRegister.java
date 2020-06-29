@@ -15,9 +15,9 @@ public class IRSoundRegister
 
     public static SoundEvent TILEENTITY_TRAINHORN, TILEENTITY_VALVE_CHANGE, TILEENTITY_ALARM, ITEM_DRILL,
             BLOCK_CATWALKGATE_OPEN, BLOCK_CATWALKGATE_CLOSE, EFFECT_SHOCK, DISC_1, BOOK_FLIP, MOTOR_ROTATION, PUMP_ROTATION,
-            PUMP_START, LATHE, LATHE_STOP;
-    public static ResourceLocation PUMP_ROTATION_RESOURCEL = new ResourceLocation(References.MODID, "pump_rotation");
+            PUMP_START, LATHE, LATHE_STOP, GENERATOR;
 
+    public static ResourceLocation PUMP_ROTATION_RESOURCEL = new ResourceLocation(References.MODID, "pump_rotation");
     public static ResourceLocation TILEENTITY_TRAINHORN_RESOURCEL = new ResourceLocation(References.MODID, "railroad.train_horn");
     public static ResourceLocation TILEENTITY_VALVE_CHANGE_RESOURCEL = new ResourceLocation(References.MODID, "valve");
     public static ResourceLocation TILEENTITY_ALARM_RESOURCEL = new ResourceLocation(References.MODID, "modern_alarm");
@@ -31,7 +31,7 @@ public class IRSoundRegister
     public static ResourceLocation PUMP_START_RESOURCEL = new ResourceLocation(References.MODID, "pump_start");
     public static ResourceLocation LATHE_RESOURCEL = new ResourceLocation(References.MODID, "lathe");
     public static ResourceLocation LATHE_STOP_RESOURCEL = new ResourceLocation(References.MODID, "lathe_off");
-
+    public static ResourceLocation GENERATOR_RESOURCEL = new ResourceLocation(References.MODID, "port_generator");
 
     public static void registerSounds()
     {
@@ -49,6 +49,7 @@ public class IRSoundRegister
         PUMP_START = registerSound("pump_start", PUMP_START_RESOURCEL, EnumSoundType.NORMAL);
         LATHE = registerSound("lathe", LATHE_RESOURCEL, EnumSoundType.REPEATABLE_ONLY);
         LATHE_STOP = registerSound("lathe_off", LATHE_STOP_RESOURCEL, EnumSoundType.NORMAL);
+        GENERATOR = registerSound("port_generator", GENERATOR_RESOURCEL, EnumSoundType.REPEATABLE_ONLY);
     }
 
     private static SoundEvent registerSound(String name, ResourceLocation location, EnumSoundType type)

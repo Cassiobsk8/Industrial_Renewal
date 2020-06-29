@@ -25,7 +25,7 @@ public class IRSoundHandler
 {
     private static Minecraft mc = Minecraft.getMinecraft();
 
-    private static Map<Long, ISound> soundMap = new HashMap<>();
+    private static final Map<Long, ISound> soundMap = new HashMap<>();
 
     public static boolean isSoundPlaying(BlockPos pos)
     {
@@ -99,7 +99,9 @@ public class IRSoundHandler
             event.setResultSound(resultSound);
         } else if (IRSoundRegister.REPEATABLE_SOUNDS.contains(soundLoc.toString()))
         {
-            resultSound = new TileSound(event.getSound(), resultSound.getVolume(), 1.0F, false);
+            ISound s = event.getSound();
+            float vol = resultSound.getVolume();
+            resultSound = new TileSound(s, vol, 1.0F, false);
             event.setResultSound(resultSound);
         } else
         {

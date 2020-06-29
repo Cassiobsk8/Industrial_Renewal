@@ -1,0 +1,28 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/anvil_base"
+    }
+  },
+  "variants": {
+    "facing=north": {
+      "model": "industrialrenewal:portable_generator"
+    },
+    "facing=west": {
+      "model": "industrialrenewal:portable_generator",
+      "y": -90
+    },
+    "facing=south": {
+      "model": "industrialrenewal:portable_generator",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "industrialrenewal:portable_generator",
+      "y": 90
+    },
+    "inventory": {
+      "model": "industrialrenewal:portable_generator"
+    }
+  }
+}

@@ -60,6 +60,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDamTurbine.class, new TESRDamTurbine());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDamGenerator.class, new TESRDamGenerator());
         ClientRegistry.bindTileEntitySpecialRenderer(TELathe.class, new TESRLathe());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPortableGenerator.class, new TESRPortableGenerator());
 
         ModelLoaderRegistry.registerLoader(new ModelLoaderCustom());
     }

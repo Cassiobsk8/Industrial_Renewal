@@ -88,6 +88,12 @@ public class IRConfig {
             @Config.LangKey("gui.config.barrel_capacity.name")
             public int barrelCapacity = 64000;
 
+            @Config.Comment("The capacity of the Portable Generator (Default 16000)")
+            public int portableGeneratorCapacity = 16000;
+
+            @Config.Comment("The amount of energy the Portable Generator generates per tick (Default 32)")
+            public int portableGeneratorEnergyPerTick = 32;
+
             @Config.Comment("The capacity of the Fluid Container Cart (Default 64000)")
             @Config.LangKey("gui.config.fluidcontainer_capacity.name")
             public int fluidCartCapacity = 64000;
@@ -206,6 +212,9 @@ public class IRConfig {
 
             @Config.Comment("Base volume of the Pump (default 0.4f)")
             public float pumpVolume = 0.4f;
+
+            @Config.Comment("Base volume of the Portable Generator (default 0.6f)")
+            public float genVolume = 0.6f;
 
             @Config.Comment("Base volume of the Steam Turbine (default 0.8f)")
             public float TurbineVolume = 0.8f;

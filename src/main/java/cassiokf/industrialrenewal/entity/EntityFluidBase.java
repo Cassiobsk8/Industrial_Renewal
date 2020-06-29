@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.entity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModItems;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -9,10 +10,12 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -35,6 +38,16 @@ public abstract class EntityFluidBase extends TrainBase implements IFluidHandler
     {
         super(worldIn);
         this.setSize(1.0F, 1.0F);
+    }
+
+    @Override
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
+    {
+        if (FluidUtil.interactWithFluidHandler(player, hand, tank))
+        {
+            if (world.isRemote) player.swingArm(hand);
+        }
+        return super.processInitialInteract(player, hand);
     }
 
     public EntityFluidBase(World worldIn, double x, double y, double z)

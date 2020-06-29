@@ -161,6 +161,7 @@ public class ModBlocks
     public static final BlockEotM baseEotM = new BlockEotM("eotm", References.CREATIVE_IR_TAB);
     public static final BlockElectricPump electricPump = new BlockElectricPump("electric_pump", References.CREATIVE_IR_TAB);
 
+    public static final BlockPortableGenerator portableGenerator = new BlockPortableGenerator("portable_generator", References.CREAATIVE_IRWIP_TAB);
     public static final BlockSteamBoiler steamBoiler = new BlockSteamBoiler("steam_boiler", References.CREATIVE_IR_TAB);
     public static final BlockSteamTurbine steamTurbine = new BlockSteamTurbine("steam_turbine", References.CREATIVE_IR_TAB);
     //public static final BlockMining mining = new BlockMining("mining", References.CREAATIVE_IRWIP_TAB);
@@ -281,6 +282,7 @@ public class ModBlocks
                 fpanel,
                 sWindTurbine,
                 turbinePillar,
+                portableGenerator,
                 batteryBank,
                 electricPump,
                 transformerHV,
@@ -375,6 +377,7 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileEntityConcrete.class, concrete.getRegistryName());
         GameRegistry.registerTileEntity(hvIsolator.getTileEntityClass(), hvIsolator.getRegistryName());
         GameRegistry.registerTileEntity(TELathe.class, latheMachine.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityPortableGenerator.class, portableGenerator.getRegistryName());
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -453,6 +456,7 @@ public class ModBlocks
                 fpanel.createItemBlock(),
                 sWindTurbine.createItemBlock(),
                 turbinePillar.createItemBlock(),
+                portableGenerator.createItemBlock(),
                 normalRail.createItemBlock(),
                 boosterRail.createItemBlock(),
                 crossingRail.createItemBlock(),
@@ -533,6 +537,7 @@ public class ModBlocks
         fpanel.registerItemModel(Item.getItemFromBlock(fpanel));
         sWindTurbine.registerItemModel(Item.getItemFromBlock(sWindTurbine));
         turbinePillar.registerItemModel(Item.getItemFromBlock(turbinePillar));
+        portableGenerator.registerItemModel(Item.getItemFromBlock(portableGenerator));
         firstAidKit.registerItemModel(Item.getItemFromBlock(firstAidKit));
         bufferStopRail.registerItemModel(Item.getItemFromBlock(bufferStopRail));
         signHV.registerItemModel(Item.getItemFromBlock(signHV));

@@ -61,6 +61,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
 
     public int onEnergyReceived(int maxReceive, boolean simulate)
     {
+        if (world.isRemote) return 0;
         if (!isMaster()) return getMaster().onEnergyReceived(maxReceive, simulate);
 
         if (inUse) return 0; //to prevent stack overflow (IE)
