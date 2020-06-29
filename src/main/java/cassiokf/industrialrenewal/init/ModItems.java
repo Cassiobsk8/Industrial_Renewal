@@ -55,6 +55,12 @@ public class ModItems
     public static final ItemBase fluidLoaderArm = new ItemBase("fluid_loader_arm", null);
     public static final ItemBase tambor = new ItemBase("rotary_drum", null);
     public static final ItemBase cutter = new ItemBase("lathecutter", null);
+    public static final ItemBase indicator_on = new ItemBase("indicator_on", null);
+    public static final ItemBase indicator_off = new ItemBase("indicator_off", null);
+    public static final ItemBase switch_on = new ItemBase("switch_on", null);
+    public static final ItemBase switch_off = new ItemBase("switch_off", null);
+    public static final ItemBase push_button = new ItemBase("push_button", null);
+    public static final ItemBase label_5 = new ItemBase("label_5", null);
 
     public static final ItemBattery battery = new ItemBattery("battery", References.CREATIVE_IR_TAB);
 
@@ -123,7 +129,13 @@ public class ModItems
                 //drillDiamond,
                 fluidLoaderArm,
                 tambor,
-                cutter
+                cutter,
+                indicator_on,
+                indicator_off,
+                switch_on,
+                switch_off,
+                push_button,
+                label_5
         );
     }
 
@@ -165,6 +177,12 @@ public class ModItems
         fluidLoaderArm.registerItemModel();
         tambor.registerItemModel();
         cutter.registerItemModel();
+        indicator_on.registerItemModel();
+        indicator_off.registerItemModel();
+        switch_on.registerItemModel();
+        switch_off.registerItemModel();
+        push_button.registerItemModel();
+        label_5.registerItemModel();
         fire.registerItemModel();
         barrel.registerItemModel();
         fireBoxSolid.registerItemModel();

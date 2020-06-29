@@ -26,6 +26,12 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
     public final ItemStack pointerLong = new ItemStack(ModItems.pointerLong);
     public final ItemStack pointer = new ItemStack(ModItems.pointer);
     public final ItemStack limiter = new ItemStack(ModItems.limiter);
+    public final ItemStack indicator_on = new ItemStack(ModItems.indicator_on);
+    public final ItemStack indicator_off = new ItemStack(ModItems.indicator_off);
+    public final ItemStack switch_on = new ItemStack(ModItems.switch_on);
+    public final ItemStack switch_off = new ItemStack(ModItems.switch_off);
+    public final ItemStack push_button = new ItemStack(ModItems.push_button);
+    public final ItemStack label_5 = new ItemStack(ModItems.label_5);
 
     public double xPos = 0D;
     public double zPos = 0D;
@@ -69,6 +75,16 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         fontRenderer.drawString(st, xh, 0, 0xFFFFFFFF);
         RenderHelper.enableStandardItemLighting();
         GlStateManager.popMatrix();
+    }
+
+    public ItemStack getIndicator(boolean value)
+    {
+        return value ? indicator_on : indicator_off;
+    }
+
+    public ItemStack getSwitch(boolean value)
+    {
+        return value ? switch_on : switch_off;
     }
 
     public void render3dItem(EnumFacing facing, World world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight)

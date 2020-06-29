@@ -48,6 +48,13 @@ public class JEICompat implements IModPlugin
         blackListedItems.add(new ItemStack(ModItems.fluidLoaderArm));
         blackListedItems.add(new ItemStack(ModItems.tambor));
         blackListedItems.add(new ItemStack(ModItems.cutter));
+        blackListedItems.add(new ItemStack(ModItems.indicator_on));
+        blackListedItems.add(new ItemStack(ModItems.indicator_off));
+        blackListedItems.add(new ItemStack(ModItems.switch_on));
+        blackListedItems.add(new ItemStack(ModItems.switch_off));
+        blackListedItems.add(new ItemStack(ModItems.push_button));
+        blackListedItems.add(new ItemStack(ModItems.label_5));
+
         for (ItemStack item : blackListedItems)
         {
             helpers.getItemBlacklist().addItemToBlacklist(item);

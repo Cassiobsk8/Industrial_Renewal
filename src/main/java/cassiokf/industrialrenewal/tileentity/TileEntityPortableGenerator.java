@@ -55,6 +55,11 @@ public class TileEntityPortableGenerator extends TileEntitySaveContent implement
         }
     }
 
+    public boolean isWorking()
+    {
+        return generator.isGenerating();
+    }
+
     @Override
     public void invalidate()
     {
