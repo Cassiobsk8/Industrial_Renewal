@@ -276,18 +276,19 @@ public class Utils
         return movement;
     }
 
-    public static boolean moveItemToInventory(ItemStack stack, IItemHandler to)
+    public static boolean moveItemToInventory(IItemHandler from, int slot, IItemHandler to)
     {
         boolean movement = false;
         for (int j = 0; j < to.getSlots(); j++)
         {
+            ItemStack stack = from.getStackInSlot(slot);
             if (!stack.isEmpty() && to.isItemValid(j, stack))
             {
                 ItemStack left = to.insertItem(j, stack, false);
                 if (!ItemStack.areItemStacksEqual(stack, left))
                 {
                     int toExtract = stack.getCount() - left.getCount();
-                    stack.shrink(toExtract);
+                    from.extractItem(slot, toExtract, false);
                     movement = true;
                 }
             }

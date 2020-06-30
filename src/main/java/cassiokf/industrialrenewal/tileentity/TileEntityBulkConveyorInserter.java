@@ -31,7 +31,7 @@ public class TileEntityBulkConveyorInserter extends TileEntityBulkConveyor
                 IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
                 if (itemHandler != null)
                 {
-                    Utils.moveItemToInventory(inventory.getStackInSlot(frontNumber), itemHandler);
+                    Utils.moveItemToInventory(inventory, frontNumber, itemHandler);
                 }
             }
         }
