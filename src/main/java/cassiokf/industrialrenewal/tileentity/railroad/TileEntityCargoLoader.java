@@ -5,7 +5,6 @@ import cassiokf.industrialrenewal.blocks.railroad.BlockCargoLoader;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -31,6 +30,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
     private int intUnloadActivity = 0;
     private boolean checked = false;
     private boolean master;
+    private int noActivity = 0;
 
     @Override
     public void update()
@@ -50,25 +50,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                     IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getBlockFacing());
                     if (handler != null)
                     {
-                        for (int i = 0; i < inventory.getSlots(); i++)
-                        {
-                            if (!inventory.getStackInSlot(i).isEmpty())
-                            {
-                                for (int j = 0; j < handler.getSlots(); j++)
-                                {
-                                    ItemStack stack = this.inventory.extractItem(i, itemsPerTick, true);
-                                    if (!stack.isEmpty() && handler.isItemValid(j, stack))
-                                    {
-                                        ItemStack left = handler.insertItem(j, stack, false);
-                                        if (!ItemStack.areItemStacksEqual(stack, left))
-                                        {
-                                            int toExtract = stack.getCount() - left.getCount();
-                                            this.inventory.extractItem(i, toExtract, false);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        Utils.moveItemsBetweenInventories(inventory, handler);
                     }
                 }
             }
@@ -86,95 +68,51 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
             {
                 if (isUnload()) //From cart to inventory
                 {
-                    boolean needBreak = false;
-                    boolean activity = false;
-                    for (int i = 0; i < cartCapability.getSlots(); i++)
+                    if (Utils.moveItemsBetweenInventories(cartCapability, inventory, true))
                     {
-                        for (int j = 0; j < this.inventory.getSlots(); j++)
-                        {
-                            ItemStack stack = cartCapability.extractItem(i, itemsPerTick, true);
-                            if (!stack.isEmpty())
-                            {
-                                ItemStack left = this.inventory.insertItem(j, stack, false);
-                                if (left.isEmpty() || left.getCount() < stack.getCount())
-                                {
-                                    activity = true;
-                                    intUnloadActivity = 0;
-                                }
-                                if (!ItemStack.areItemStacksEqual(stack, left))
-                                {
-                                    int toExtract = stack.getCount() - left.getCount();
-                                    cartCapability.extractItem(i, toExtract, false);
-                                    needBreak = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (needBreak)
-                        {
-                            break;
-                        }
-                    }
-                    if (activity)
-                    {
+                        noActivity = 0;
+                        intUnloadActivity = 0;
                         loading = true;
                         return true;
-                    } else intUnloadActivity++;
+                    }
+
+                    intUnloadActivity++;
                     loading = false;
                     if (waitE == waitEnum.WAIT_EMPTY)
                     {
                         return !Utils.IsInventoryEmpty(cartCapability);
-                    }
-                    if (waitE == waitEnum.WAIT_FULL)
+                    } else if (waitE == waitEnum.WAIT_FULL)
                     {
-                        return intUnloadActivity < 2 || !Utils.IsInventoryFull(cartCapability);
+                        return intUnloadActivity < 10 || !Utils.IsInventoryFull(cartCapability);
                     }
-                    if (waitE == waitEnum.NO_ACTIVITY) return false;
                 } else //From inventory to cart
                 {
-                    boolean needBreak = false;
-                    boolean activity = false;
-
-                    for (int i = 0; i < this.inventory.getSlots(); i++) {
-                        for (int j = 0; j < cartCapability.getSlots(); j++)
-                        {
-                            ItemStack stack = this.inventory.extractItem(i, itemsPerTick, true);
-                            if (!stack.isEmpty() && cartCapability.isItemValid(j, stack))
-                            {
-                                ItemStack left = cartCapability.insertItem(j, stack, false);
-                                if (left.isEmpty() || left.getCount() < stack.getCount()) {
-                                    activity = true;
-                                    intUnloadActivity = 0;
-                                }
-                                if (!ItemStack.areItemStacksEqual(stack, left)) {
-                                    int toExtract = stack.getCount() - left.getCount();
-                                    this.inventory.extractItem(i, toExtract, false);
-                                    needBreak = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (needBreak)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (activity)
+                    if (Utils.moveItemsBetweenInventories(inventory, cartCapability, true))
                     {
+                        noActivity = 0;
+                        intUnloadActivity = 0;
                         loading = true;
                         return true;
-                    } else intUnloadActivity++;
+                    }
+
+                    intUnloadActivity++;
                     loading = false;
                     if (waitE == waitEnum.WAIT_FULL)
                     {
-                        return intUnloadActivity < 2 || !Utils.IsInventoryFull(cartCapability);
-                    }
-                    if (waitE == waitEnum.WAIT_EMPTY)
+                        return intUnloadActivity < 10 || !Utils.IsInventoryFull(cartCapability);
+                    } else if (waitE == waitEnum.WAIT_EMPTY)
                     {
                         return !Utils.IsInventoryEmpty(cartCapability);
                     }
-                    if (waitE == waitEnum.NO_ACTIVITY) return false;
+                }
+                if (waitE == waitEnum.NO_ACTIVITY)
+                {
+                    noActivity++;
+                    if (noActivity >= 10)
+                    {
+                        return false;
+                    }
+                    return true;
                 }
             }
         }

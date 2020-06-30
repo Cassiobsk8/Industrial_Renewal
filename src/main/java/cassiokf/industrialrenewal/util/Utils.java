@@ -233,9 +233,15 @@ public class Utils
 
     public static boolean moveItemsBetweenInventories(IItemHandler from, IItemHandler to)
     {
+        return moveItemsBetweenInventories(from, to, false);
+    }
+
+    public static boolean moveItemsBetweenInventories(IItemHandler from, IItemHandler to, boolean stackPerTick)
+    {
         boolean movement = false;
         for (int i = 0; i < from.getSlots(); i++)
         {
+            boolean needBreak = false;
             ItemStack stack = from.extractItem(i, Integer.MAX_VALUE, true);
             for (int j = 0; j < to.getSlots(); j++)
             {
@@ -247,9 +253,15 @@ public class Utils
                         int toExtract = stack.getCount() - left.getCount();
                         from.extractItem(i, toExtract, false);
                         movement = true;
+                        if (stackPerTick)
+                        {
+                            needBreak = true;
+                            break;
+                        }
                     }
                 }
             }
+            if (stackPerTick && needBreak) break;
         }
         return movement;
     }
