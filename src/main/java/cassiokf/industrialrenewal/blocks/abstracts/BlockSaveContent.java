@@ -100,7 +100,9 @@ public abstract class BlockSaveContent extends BlockHorizontalFacing
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
         TileEntity te = worldIn.getTileEntity(pos);
-        return te instanceof TileEntitySaveContent ? (int) (Utils.normalize(((TileEntitySaveContent) te).getTank().getFluidAmount(), 0, ((TileEntityPortableGenerator) te).getTank().getCapacity()) * 15) : 0;
+        return te instanceof TileEntitySaveContent
+                ? (int) (Utils.normalize(((TileEntitySaveContent) te).getTank().getFluidAmount(), 0, ((TileEntitySaveContent) te).getTank().getCapacity()) * 15)
+                : 0;
     }
 
     private ItemStack SaveStackContainer(TileEntitySaveContent te)
