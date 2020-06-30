@@ -19,9 +19,11 @@ import javax.annotation.Nullable;
 
 public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITickable {
 
-    public ItemStackHandler inventory = new ItemStackHandler(5) {
+    public final ItemStackHandler inventory = new ItemStackHandler(5)
+    {
         @Override
-        protected void onContentsChanged(int slot) {
+        protected void onContentsChanged(int slot)
+        {
             TileEntityCargoLoader.this.sync();
         }
     };
@@ -108,11 +110,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                 if (waitE == waitEnum.NO_ACTIVITY)
                 {
                     noActivity++;
-                    if (noActivity >= 10)
-                    {
-                        return false;
-                    }
-                    return true;
+                    return noActivity < 10;
                 }
             }
         }
