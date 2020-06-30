@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -30,19 +31,7 @@ public class TileEntityBulkConveyorInserter extends TileEntityBulkConveyor
                 IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
                 if (itemHandler != null)
                 {
-                    for (int j = 0; j < itemHandler.getSlots(); j++)
-                    {
-                        ItemStack stack = this.inventory.extractItem(frontNumber, 64, true);
-                        if (!stack.isEmpty() && itemHandler.isItemValid(j, stack))
-                        {
-                            ItemStack left = itemHandler.insertItem(j, stack, false);
-                            if (!ItemStack.areItemStacksEqual(stack, left))
-                            {
-                                int toExtract = stack.getCount() - left.getCount();
-                                this.inventory.extractItem(frontNumber, toExtract, false);
-                            }
-                        }
-                    }
+                    Utils.moveItemToInventory(inventory.getStackInSlot(frontNumber), itemHandler);
                 }
             }
         }

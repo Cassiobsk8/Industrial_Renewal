@@ -89,7 +89,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                     }
                 } else //From inventory to cart
                 {
-                    if (Utils.moveItemsBetweenInventories(inventory, cartCapability, true))
+                    if (Utils.moveItemsBetweenInventories(inventory, cartCapability, itemsPerTick))
                     {
                         noActivity = 0;
                         intUnloadActivity = 0;

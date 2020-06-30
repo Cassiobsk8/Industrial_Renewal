@@ -236,13 +236,23 @@ public class Utils
         return moveItemsBetweenInventories(from, to, false);
     }
 
-    public static boolean moveItemsBetweenInventories(IItemHandler from, IItemHandler to, boolean stackPerTick)
+    public static boolean moveItemsBetweenInventories(IItemHandler from, IItemHandler to, boolean oneStackPerTick)
+    {
+        return moveItemsBetweenInventories(from, to, oneStackPerTick, Integer.MAX_VALUE);
+    }
+
+    public static boolean moveItemsBetweenInventories(IItemHandler from, IItemHandler to, int maxStackCount)
+    {
+        return moveItemsBetweenInventories(from, to, true, maxStackCount);
+    }
+
+    private static boolean moveItemsBetweenInventories(IItemHandler from, IItemHandler to, boolean stackPerTick, int maxStackCount)
     {
         boolean movement = false;
         for (int i = 0; i < from.getSlots(); i++)
         {
             boolean needBreak = false;
-            ItemStack stack = from.extractItem(i, Integer.MAX_VALUE, true);
+            ItemStack stack = from.extractItem(i, maxStackCount, true);
             for (int j = 0; j < to.getSlots(); j++)
             {
                 if (!stack.isEmpty() && to.isItemValid(j, stack))
@@ -262,6 +272,25 @@ public class Utils
                 }
             }
             if (stackPerTick && needBreak) break;
+        }
+        return movement;
+    }
+
+    public static boolean moveItemToInventory(ItemStack stack, IItemHandler to)
+    {
+        boolean movement = false;
+        for (int j = 0; j < to.getSlots(); j++)
+        {
+            if (!stack.isEmpty() && to.isItemValid(j, stack))
+            {
+                ItemStack left = to.insertItem(j, stack, false);
+                if (!ItemStack.areItemStacksEqual(stack, left))
+                {
+                    int toExtract = stack.getCount() - left.getCount();
+                    stack.shrink(toExtract);
+                    movement = true;
+                }
+            }
         }
         return movement;
     }

@@ -55,18 +55,7 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
                 if (itemHandler != null)
                 {
                     int itemsPerTick = 8;
-                    for (int i = 0; i < itemHandler.getSlots(); i++)
-                    {
-                        ItemStack stack = itemHandler.extractItem(i, itemsPerTick, true);
-                        ItemStack left = hopperInv.insertItem(0, stack, false);
-                        if (!ItemStack.areItemStacksEqual(stack, left))
-                        {
-                            int toExtract = stack.getCount() - left.getCount();
-                            itemHandler.extractItem(i, toExtract, false);
-                            markDirty();
-                            break;
-                        }
-                    }
+                    if (Utils.moveItemsBetweenInventories(itemHandler, hopperInv, itemsPerTick)) markDirty();
                 }
                 return true;
             }
