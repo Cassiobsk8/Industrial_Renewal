@@ -152,20 +152,6 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable>
         return false;
     }
 
-    public Class<? extends TileEntity> getTileEntityClass()
-    {
-        switch (type)
-        {
-            default:
-            case LV:
-                return TileEntityEnergyCableLV.class;
-            case MV:
-                return TileEntityEnergyCableMV.class;
-            case HV:
-                return TileEntityEnergyCableHV.class;
-        }
-    }
-
     @Nullable
     @Override
     public TileEntityEnergyCable createTileEntity(World world, IBlockState state)

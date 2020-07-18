@@ -139,11 +139,6 @@ public class BlockFuseBox extends BlockTileEntity<TileEntityFuseBox>
         return BlockFaceShape.UNDEFINED;
     }
 
-    @Override
-    public Class<TileEntityFuseBox> getTileEntityClass() {
-        return TileEntityFuseBox.class;
-    }
-
     @Nullable
     @Override
     public TileEntityFuseBox createTileEntity(World world, IBlockState state) {

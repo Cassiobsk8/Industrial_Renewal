@@ -141,11 +141,6 @@ public class BlockSignalIndicator extends BlockTileEntity<TileEntitySignalIndica
         return BlockFaceShape.UNDEFINED;
     }
 
-    @Override
-    public Class<TileEntitySignalIndicator> getTileEntityClass() {
-        return TileEntitySignalIndicator.class;
-    }
-
     @Nullable
     @Override
     public TileEntitySignalIndicator createTileEntity(World world, IBlockState state) {

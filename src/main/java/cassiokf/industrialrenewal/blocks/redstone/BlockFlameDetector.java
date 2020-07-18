@@ -140,11 +140,6 @@ public class BlockFlameDetector extends BlockTileEntity<TileEntityFlameDetector>
         return BlockFaceShape.UNDEFINED;
     }
 
-    @Override
-    public Class<TileEntityFlameDetector> getTileEntityClass() {
-        return TileEntityFlameDetector.class;
-    }
-
     @Nullable
     @Override
     public TileEntityFlameDetector createTileEntity(World world, IBlockState state) {

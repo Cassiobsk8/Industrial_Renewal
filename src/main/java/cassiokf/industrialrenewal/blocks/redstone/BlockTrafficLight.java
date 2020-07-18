@@ -140,11 +140,6 @@ public class BlockTrafficLight extends BlockTileEntity<TileEntityTrafficLight> {
         return BlockFaceShape.UNDEFINED;
     }
 
-    @Override
-    public Class<TileEntityTrafficLight> getTileEntityClass() {
-        return TileEntityTrafficLight.class;
-    }
-
     @Nullable
     @Override
     public TileEntityTrafficLight createTileEntity(World world, IBlockState state) {

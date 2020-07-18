@@ -75,10 +75,6 @@ public class BlockLoaderRail extends BlockRailFacing
         return true;
     }
 
-    public Class<TileEntityLoaderRail> getTileEntityClass() {
-        return TileEntityLoaderRail.class;
-    }
-
     @Nullable
     @Override
     public TileEntityLoaderRail createTileEntity(World world, IBlockState state) {

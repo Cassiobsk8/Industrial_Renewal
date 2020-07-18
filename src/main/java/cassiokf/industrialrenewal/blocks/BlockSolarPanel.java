@@ -45,12 +45,6 @@ public class BlockSolarPanel extends BlockTileEntity<TileEntitySolarPanelBase>
         return BLOCK_AABB;
     }
 
-    @Override
-    public Class<TileEntitySolarPanelBase> getTileEntityClass()
-    {
-        return TileEntitySolarPanelBase.class;
-    }
-
     @Nullable
     @Override
     public TileEntitySolarPanelBase createTileEntity(World world, IBlockState state)

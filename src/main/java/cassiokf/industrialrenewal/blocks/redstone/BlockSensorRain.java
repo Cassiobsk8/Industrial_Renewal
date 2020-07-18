@@ -94,11 +94,6 @@ public class BlockSensorRain extends BlockTileEntity<TileEntitySensorRain>
         return false;
     }
 
-    @Override
-    public Class<TileEntitySensorRain> getTileEntityClass() {
-        return TileEntitySensorRain.class;
-    }
-
     @Nullable
     @Override
     public TileEntitySensorRain createTileEntity(World world, IBlockState state) {

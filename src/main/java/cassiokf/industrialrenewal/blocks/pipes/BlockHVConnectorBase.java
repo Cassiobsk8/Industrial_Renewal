@@ -144,12 +144,6 @@ public class BlockHVConnectorBase extends BlockTileEntity<TileEntityHVConnectorB
         return BlockFaceShape.UNDEFINED;
     }
 
-    @Override
-    public Class<TileEntityHVConnectorBase> getTileEntityClass()
-    {
-        return TileEntityHVConnectorBase.class;
-    }
-
     @Nullable
     @Override
     public TileEntityHVConnectorBase createTileEntity(World world, IBlockState state)

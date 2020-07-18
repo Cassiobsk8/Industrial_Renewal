@@ -105,11 +105,6 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm>
         return false;
     }
 
-    @Override
-    public Class<TileEntityAlarm> getTileEntityClass() {
-        return TileEntityAlarm.class;
-    }
-
     @Nullable
     @Override
     public TileEntityAlarm createTileEntity(World world, IBlockState state) {

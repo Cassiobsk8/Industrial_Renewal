@@ -311,13 +311,6 @@ public class BlockBulkConveyor extends BlockHorizontalFacing
         return true;
     }
 
-    public Class<? extends TileEntityBulkConveyor> getTileEntityClass()
-    {
-        if (type == EnumBulkConveyorType.NORMAL) return TileEntityBulkConveyor.class;
-        if (type == EnumBulkConveyorType.HOPPER) return TileEntityBulkConveyorHopper.class;
-        return TileEntityBulkConveyorInserter.class;
-    }
-
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)

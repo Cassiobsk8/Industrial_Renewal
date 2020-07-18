@@ -155,11 +155,6 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
         return BlockFaceShape.UNDEFINED;
     }
 
-    @Override
-    public Class<TileEntityBoxConnector> getTileEntityClass() {
-        return TileEntityBoxConnector.class;
-    }
-
     @Nullable
     @Override
     public TileEntityBoxConnector createTileEntity(World world, IBlockState state) {

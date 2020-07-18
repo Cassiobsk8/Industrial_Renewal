@@ -224,12 +224,6 @@ public class BlockCatWalk extends BlockTileEntity<TileEntityCatWalk>
         return BlockFaceShape.UNDEFINED;
     }
 
-    @Override
-    public Class<TileEntityCatWalk> getTileEntityClass()
-    {
-        return TileEntityCatWalk.class;
-    }
-
     @Nullable
     @Override
     public TileEntityCatWalk createTileEntity(World world, IBlockState state)

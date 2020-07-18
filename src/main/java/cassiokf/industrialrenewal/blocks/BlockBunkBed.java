@@ -164,11 +164,6 @@ public class BlockBunkBed extends BlockBed
         return false;
     }
 
-    public Class<TileEntityBunkBed> getTileEntityClass()
-    {
-        return TileEntityBunkBed.class;
-    }
-
     @Nullable
     @Override
     public TileEntityBunkBed createTileEntity(World world, IBlockState state)
