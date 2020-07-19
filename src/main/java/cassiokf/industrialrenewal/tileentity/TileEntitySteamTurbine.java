@@ -44,7 +44,7 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
             TileEntitySteamTurbine.this.sync();
         }
     };
-    private final FluidStack waterStack = new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
+    private final FluidStack waterStack = new FluidStack(IRConfig.getWaterFromSteamFluid(), Fluid.BUCKET_VOLUME);
 
     private int maxRotation = 16000;
     private int rotation;

@@ -2,6 +2,8 @@ package cassiokf.industrialrenewal.config;
 
 import cassiokf.industrialrenewal.References;
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +39,26 @@ public class IRConfig {
         fluidFuel.put("ethanol", 900);
         fluidFuel.put("bio.ethanol", 900);
         return fluidFuel;
+    }
+
+    public static String[] waterTypesInit()
+    {
+        return new String[]{FluidRegistry.WATER.getName()};
+    }
+
+    public static Fluid getWaterFromSteamFluid()
+    {
+        Fluid fluid = FluidRegistry.getFluid(MainConfig.Main.waterFromSteam);
+        return fluid != null ? fluid : FluidRegistry.WATER;
+    }
+
+    public static boolean waterTypesContains(String name)
+    {
+        for (String c : MainConfig.Main.boilerWaterNames)
+        {
+            if (c.equals(name)) return true;
+        }
+        return false;
     }
 
     /////////////////////NEWWWWW
@@ -139,6 +161,12 @@ public class IRConfig {
             @Config.LangKey("gui.config.temp_mode.name")
             public int temperatureScale = 0;
 
+            @Config.Comment("The type of water used in the boiler (Default 'water')")
+            public String[] boilerWaterNames = waterTypesInit();
+
+            @Config.Comment("The type of water it will turn from steam (Default 'water')")
+            public String waterFromSteam = FluidRegistry.WATER.getName();
+
             @Config.Comment("How much water the Steam Boiler will consume to produce steam (Default 76)")
             public int steamBoilerWaterPerTick = 76;
 
@@ -234,7 +262,7 @@ public class IRConfig {
             @Config.LangKey("gui.config.recipes.spongeiron_recipe.name")
             public boolean spongeIronRecipeActive = true;
 
-            @Config.Comment("Sponge iron smelt into IndR Steel indot? (default false)")
+            @Config.Comment("Sponge iron smelt into IndR Steel ingot? (default false)")
             public boolean spongeDefaultIngotSteel = false;
         }
     }

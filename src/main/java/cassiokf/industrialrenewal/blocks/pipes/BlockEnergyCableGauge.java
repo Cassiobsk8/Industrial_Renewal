@@ -147,21 +147,6 @@ public class BlockEnergyCableGauge extends BlockEnergyCable
         super.onPlayerDestroy(world, pos, state);
     }
 
-    @Override
-    public Class<? extends TileEntity> getTileEntityClass()
-    {
-        switch (type)
-        {
-            default:
-            case LV:
-                return TileEntityEnergyCableLVGauge.class;
-            case MV:
-                return TileEntityEnergyCableMVGauge.class;
-            case HV:
-                return TileEntityEnergyCableHVGauge.class;
-        }
-    }
-
     @Nullable
     @Override
     public TileEntityEnergyCableGauge createTileEntity(World world, IBlockState state)

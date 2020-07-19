@@ -25,12 +25,12 @@ public class SteamBoiler
     private final ISync tiedTE;
     private final int maxHeat = 32000;
     public static final String steamName = "Steam";//I18n.format(FluidInit.STEAM.getUnlocalizedName());
-    public FluidTank waterTank = new FluidTank(32000)
+    public final FluidTank waterTank = new FluidTank(32000)
     {
         @Override
         public boolean canFillFluidType(FluidStack fluid)
         {
-            return fluid != null && fluid.getFluid().equals(FluidRegistry.WATER);
+            return fluid != null && IRConfig.waterTypesContains(fluid.getFluid().getName());
         }
 
         @Override
@@ -45,7 +45,7 @@ public class SteamBoiler
             SteamBoiler.this.tiedTE.sync();
         }
     };
-    public FluidTank steamTank = new FluidTank(320000)
+    public final FluidTank steamTank = new FluidTank(320000)
     {
         @Override
         public boolean canFill()
@@ -74,7 +74,7 @@ public class SteamBoiler
     private String fuelName = "";
     private int maxFuelTime;
     private final FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), Fluid.BUCKET_VOLUME);
-    public FluidTank fuelTank = new FluidTank(32000)
+    public final FluidTank fuelTank = new FluidTank(32000)
     {
         @Override
         public boolean canFillFluidType(FluidStack fluid)
@@ -88,7 +88,7 @@ public class SteamBoiler
             return SteamBoiler.this.updateLiquidFuel(resource, doFill);
         }
     };
-    public ItemStackHandler solidFuelInv = new ItemStackHandler(1)
+    public final ItemStackHandler solidFuelInv = new ItemStackHandler(1)
     {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack)
