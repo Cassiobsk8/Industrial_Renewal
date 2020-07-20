@@ -169,18 +169,27 @@ public class BlockCatwalkLadder extends BlockHorizontalFacing
         }
         if (face == EnumFacing.EAST) {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, LADDER_WEST_AABB);
-            if (active) {
+            if (active)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
             }
         }
-        if (down) {
+        if (down)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, DOWN_AABB);
         }
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        return false;
+    }
+
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 }
