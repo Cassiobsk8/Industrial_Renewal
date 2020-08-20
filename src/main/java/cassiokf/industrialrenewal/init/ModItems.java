@@ -87,7 +87,7 @@ public class ModItems
                 ingotSteel,
                 spongeIron,
                 screwDrive,
-                cartLinkable,
+                //cartLinkable,
                 steelSaw,
                 cargoContainer,
                 hopperCart,
@@ -144,7 +144,7 @@ public class ModItems
         ingotSteel.registerItemModel();
         spongeIron.registerItemModel();
         screwDrive.registerItemModel();
-        cartLinkable.registerItemModel();
+        //cartLinkable.registerItemModel();
         steelSaw.registerItemModel();
         cargoContainer.registerItemModel();
         hopperCart.registerItemModel();
