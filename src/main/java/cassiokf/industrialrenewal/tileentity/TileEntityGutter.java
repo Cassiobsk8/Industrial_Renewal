@@ -92,7 +92,8 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
         BlockPos currentPos = pos.offset(face);
         IBlockState state = world.getBlockState(currentPos);
         TileEntity te = world.getTileEntity(currentPos);
-        boolean hasMachine = !(state.getBlock() instanceof BlockGutter) && te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
+        if (te == null) return;
+        boolean hasMachine = !(state.getBlock() instanceof BlockGutter) && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
         IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
         if (hasMachine && handler != null && handler.getTankProperties().length > 0 && handler.getTankProperties()[0].canFill())
             addMachine(te, face);

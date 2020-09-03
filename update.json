@@ -1,11 +1,11 @@
 {
   "homepage": "<https://minecraft.curseforge.com/projects/industrial-renewal>",
   "promos": {
-    "1.12.2-latest": "0.18.0",
-    "1.12.2-recommended": "0.18.0"
+    "1.12.2-latest": "0.18.1",
+    "1.12.2-recommended": "0.18.1"
   },
   "1.12.2": {
-    "0.18.0": "New Portable Generator",
+    "0.18.1": "New Portable Generator",
     "0.17.6": "Lathe machine and optimizations",
     "0.16.1": "Dam and HUGE pipe improvement",
     "0.15.0": "New: Cable/Pipe Tray",
