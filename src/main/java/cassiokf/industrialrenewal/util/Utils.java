@@ -233,12 +233,7 @@ public class Utils
 
     public static boolean moveItemsBetweenInventories(IItemHandler from, IItemHandler to)
     {
-        return moveItemsBetweenInventories(from, to, false);
-    }
-
-    public static boolean moveItemsBetweenInventories(IItemHandler from, IItemHandler to, boolean oneStackPerTick)
-    {
-        return moveItemsBetweenInventories(from, to, oneStackPerTick, Integer.MAX_VALUE);
+        return moveItemsBetweenInventories(from, to, true, Integer.MAX_VALUE);
     }
 
     public static boolean moveItemsBetweenInventories(IItemHandler from, IItemHandler to, int maxStackCount)
