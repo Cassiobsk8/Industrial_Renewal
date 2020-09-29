@@ -88,6 +88,7 @@ public class MultiBlockHelper
         list.add(0);
         list.add(0);
         final Map<TileEntity, EnumFacing> mapPosSet = machine.getMachineContainers();
+        if (mapPosSet == null || mapPosSet.isEmpty()) return list;
         int validOutputs = getEnergyMaxOutPutCount(machine, maxEnergyCanTransport, mapPosSet);
         if (validOutputs == 0) return list;
         list.add(1, validOutputs);
@@ -95,8 +96,9 @@ public class MultiBlockHelper
         int out = 0;
         for (TileEntity te : mapPosSet.keySet())
         {
+            if (te == null || mapPosSet.get(te) == null) continue;
             EnumFacing face = mapPosSet.get(te).getOpposite();
-            if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face))
+            if (te.hasCapability(CapabilityEnergy.ENERGY, face))
             {
                 IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
                 if (energyStorage != null && energyStorage.canReceive())
