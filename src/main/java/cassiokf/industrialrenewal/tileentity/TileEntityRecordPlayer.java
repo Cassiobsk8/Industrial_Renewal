@@ -1,15 +1,12 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -42,15 +39,9 @@ public class TileEntityRecordPlayer extends TileEntitySync
         };
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
-    {
-        return (oldState.getBlock() != newState.getBlock());
-    }
-
     public boolean hasDiskInSlot(int slot)
     {
-        this.world.notifyBlockUpdate(this.pos, this.world.getBlockState(this.pos), this.world.getBlockState(this.pos), 3);
+        //this.world.notifyBlockUpdate(this.pos, this.world.getBlockState(this.pos), this.world.getBlockState(this.pos), 3);
         return !this.inventory.getStackInSlot(slot).isEmpty();
     }
 
@@ -72,12 +63,6 @@ public class TileEntityRecordPlayer extends TileEntitySync
             }
         }
     }*/
-
-    @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-        return new AxisAlignedBB(getPos(), getPos().add(1, 1, 1));
-    }
 
     public boolean playDisk(int slot)
     {

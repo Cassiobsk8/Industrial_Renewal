@@ -61,6 +61,7 @@ public class ModItems
     public static final ItemBase switch_off = new ItemBase("switch_off", null);
     public static final ItemBase push_button = new ItemBase("push_button", null);
     public static final ItemBase label_5 = new ItemBase("label_5", null);
+    public static final ItemBase discR = new ItemBase("disc_r", null);
 
     public static final ItemBattery battery = new ItemBattery("battery", References.CREATIVE_IR_TAB);
 
@@ -135,7 +136,8 @@ public class ModItems
                 switch_on,
                 switch_off,
                 push_button,
-                label_5
+                label_5,
+                discR
         );
     }
 
@@ -183,6 +185,7 @@ public class ModItems
         switch_off.registerItemModel();
         push_button.registerItemModel();
         label_5.registerItemModel();
+        discR.registerItemModel();
         fire.registerItemModel();
         barrel.registerItemModel();
         fireBoxSolid.registerItemModel();

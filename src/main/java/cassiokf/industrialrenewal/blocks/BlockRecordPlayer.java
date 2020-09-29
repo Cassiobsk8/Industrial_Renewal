@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.tileentity.TileEntityRecordPlayer;
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.BlockNote;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -33,10 +34,6 @@ import javax.annotation.Nullable;
 public class BlockRecordPlayer extends BlockHorizontalFacing
 {
     public static final PropertyBool DOWNNOTEBLOCK = PropertyBool.create("downnoteblock");
-    public static final PropertyBool DISK0 = PropertyBool.create("disc0");
-    public static final PropertyBool DISK1 = PropertyBool.create("disc1");
-    public static final PropertyBool DISK2 = PropertyBool.create("disc2");
-    public static final PropertyBool DISK3 = PropertyBool.create("disc3");
 
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1D, 0.875D, 1.0D);
 
@@ -45,8 +42,7 @@ public class BlockRecordPlayer extends BlockHorizontalFacing
         super(name, tab, Material.WOOD);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(DISK0, false).withProperty(DISK1, false)
-                .withProperty(DISK2, false).withProperty(DISK3, false).withProperty(DOWNNOTEBLOCK, false));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(DOWNNOTEBLOCK, false));
     }
 
     @Override
@@ -60,15 +56,10 @@ public class BlockRecordPlayer extends BlockHorizontalFacing
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntityRecordPlayer te = (TileEntityRecordPlayer) world.getTileEntity(pos);
+        assert te != null;
         IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-
-        for (int slot = 0; slot < inventory.getSlots(); slot++) {
-            ItemStack stack = inventory.getStackInSlot(slot);
-            if (!stack.isEmpty()) {
-                EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
-                world.spawnEntity(item);
-            }
-        }
+        assert inventory != null;
+        Utils.dropInventoryItems(world, pos, inventory);
         super.breakBlock(world, pos, state);
     }
 
@@ -81,14 +72,9 @@ public class BlockRecordPlayer extends BlockHorizontalFacing
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        TileEntityRecordPlayer te = (TileEntityRecordPlayer) world.getTileEntity(pos);
-        state = state.withProperty(DOWNNOTEBLOCK, isDownBlockaNoteBlock(world, pos))
-                .withProperty(DISK0, te.hasDiskInSlot(3))
-                .withProperty(DISK1, te.hasDiskInSlot(2))
-                .withProperty(DISK2, te.hasDiskInSlot(1))
-                .withProperty(DISK3, te.hasDiskInSlot(0));
-        return state;
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    {
+        return state.withProperty(DOWNNOTEBLOCK, isDownBlockaNoteBlock(world, pos));
     }
 
     @Override
@@ -98,7 +84,7 @@ public class BlockRecordPlayer extends BlockHorizontalFacing
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, DOWNNOTEBLOCK, DISK0, DISK1, DISK2, DISK3);
+        return new BlockStateContainer(this, FACING, DOWNNOTEBLOCK);
     }
 
     @Override

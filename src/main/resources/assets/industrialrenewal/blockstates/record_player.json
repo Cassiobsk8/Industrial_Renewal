@@ -23,46 +23,6 @@
       },
       "false": {}
     },
-    "disc0": {
-      "true": {
-        "submodel": {
-          "disc0": {
-            "model": "industrialrenewal:record_player_0"
-          }
-        }
-      },
-      "false": {}
-    },
-    "disc1": {
-      "true": {
-        "submodel": {
-          "disc1": {
-              "model": "industrialrenewal:record_player_1"
-          }
-        }
-      },
-      "false": {}
-    },
-    "disc2": {
-      "true": {
-        "submodel": {
-          "disc2": {
-            "model": "industrialrenewal:record_player_2"
-          }
-        }
-      },
-      "false": {}
-    },
-    "disc3": {
-      "true": {
-        "submodel": {
-          "disc3": {
-            "model": "industrialrenewal:record_player_3"
-          }
-        }
-      },
-      "false": {}
-    },
     "inventory": {
       "model": "industrialrenewal:record_player",
       "y": 180
