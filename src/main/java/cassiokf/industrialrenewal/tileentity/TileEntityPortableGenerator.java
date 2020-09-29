@@ -94,7 +94,11 @@ public class TileEntityPortableGenerator extends TileEntitySaveContent implement
 
     public EnumFacing getBlockFacing()
     {
-        if (blockFacing != null) return blockFacing;
+        return getBlockFacing(false);
+    }
+    public EnumFacing getBlockFacing(boolean force)
+    {
+        if (!force && blockFacing != null) return blockFacing;
         IBlockState state = world.getBlockState(pos);
         if (!(state.getBlock() instanceof BlockPortableGenerator)) return EnumFacing.NORTH;
         blockFacing = world.getBlockState(pos).getValue(BlockHorizontalFacing.FACING);

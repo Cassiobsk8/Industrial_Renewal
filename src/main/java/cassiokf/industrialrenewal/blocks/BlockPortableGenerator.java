@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 public class BlockPortableGenerator extends BlockSaveContent
 {
-
     public BlockPortableGenerator(String name, CreativeTabs tab)
     {
         super(name, tab, Material.IRON);
@@ -34,6 +33,15 @@ public class BlockPortableGenerator extends BlockSaveContent
                 ((TileEntityPortableGenerator) te).changeGenerator();
             }
         }
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        boolean result = super.rotateBlock(world, pos, axis);
+        TileEntity te = world.getTileEntity(pos);
+        if (te instanceof TileEntityPortableGenerator) ((TileEntityPortableGenerator) te).getBlockFacing(true);
+        return result;
     }
 
     @Override
