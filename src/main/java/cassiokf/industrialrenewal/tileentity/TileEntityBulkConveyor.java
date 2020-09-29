@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
@@ -148,9 +149,10 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
             BlockPos targetConveyorPos = frontConveyor(facing, mode);
             if (targetConveyorPos != null)
             {
-                if (world.getTileEntity(targetConveyorPos) instanceof TileEntityBulkConveyor)
+                TileEntity tileEntity = world.getTileEntity(targetConveyorPos);
+                if (tileEntity instanceof TileEntityBulkConveyor)
                 {
-                    TileEntityBulkConveyor te = (TileEntityBulkConveyor) world.getTileEntity(targetConveyorPos);
+                    TileEntityBulkConveyor te = (TileEntityBulkConveyor) tileEntity;
                     if (te.getBlockFacing() == getBlockFacing() && te.transferItem(frontPositionItem, false))
                     { // IF IS STRAIGHT
                         inventory.setStackInSlot(frontNumber, ItemStack.EMPTY);
