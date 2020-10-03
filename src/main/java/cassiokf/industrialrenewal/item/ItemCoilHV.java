@@ -80,7 +80,7 @@ public class ItemCoilHV extends ItemBase
                             return EnumActionResult.SUCCESS;
                         } else
                         {
-                            if (distance > 64)
+                            if (distance > IRConfig.MainConfig.Main.maxHVWireLength)
                                 Utils.sendChatMessage(player, "Far away from each other, Distence: " + distance);
                             cleanConnection(player);
                             return EnumActionResult.FAIL;
@@ -104,7 +104,7 @@ public class ItemCoilHV extends ItemBase
                     } else
                     {
                         int distance = (int) Utils.getDistancePointToPoint(firstConnectionPos, pos);
-                        if (teT.getPos() != firstConnectionPos && teT.canConnect() && distance > 0 && distance <= 64)
+                        if (teT.getPos() != firstConnectionPos && teT.canConnect() && distance > 0 && distance <= IRConfig.MainConfig.Main.maxHVWireLength)
                         {
                             isSecond = false;
                             connectFirst(worldIn, teT.getPos());
@@ -114,7 +114,7 @@ public class ItemCoilHV extends ItemBase
                             return EnumActionResult.SUCCESS;
                         } else
                         {
-                            if (distance > 64)
+                            if (distance > IRConfig.MainConfig.Main.maxHVWireLength)
                                 Utils.sendChatMessage(player, "Far away from each other, Distence: " + distance);
                             cleanConnection(player);
                             return EnumActionResult.FAIL;
