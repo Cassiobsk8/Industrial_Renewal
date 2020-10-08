@@ -40,7 +40,7 @@ public class TileEntityInfinityGenerator extends TEBase implements ITickable
         {
             for (EnumFacing facing : EnumFacing.HORIZONTALS)
             {
-                updatePanel(facing, 1024000);
+                updatePanel(facing, Integer.MAX_VALUE);
             }
         }
     }
