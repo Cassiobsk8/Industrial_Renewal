@@ -73,6 +73,7 @@ public class SteamBoiler
     private int fuelTime;
     private String fuelName = "";
     private int maxFuelTime;
+    private int steamGenerated;
     private final FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), Fluid.BUCKET_VOLUME);
     public final FluidTank fuelTank = new FluidTank(32000)
     {
@@ -154,9 +155,13 @@ public class SteamBoiler
             int amount = Math.round(waterPtick * factor);
             waterTank.drainInternal(amount, true);
             steamStack.amount = amount * IRConfig.MainConfig.Main.steamBoilerConversionFactor;
-            steamTank.fillInternal(steamStack, true);
+            steamGenerated = steamTank.fillInternal(steamStack, true);
             heat -= 4;
-        } else heat -= 2;
+        } else
+        {
+            steamGenerated = 0;
+            heat -= 2;
+        }
     }
 
     public void outPutSteam()
@@ -298,6 +303,7 @@ public class SteamBoiler
         newTag.setInteger("maxFuelTime", maxFuelTime);
         newTag.setInteger("amountPerTick", amountPerTick);
         newTag.setInteger("heat", heat);
+        newTag.setInteger("steamGen", steamGenerated);
         newTag.setBoolean("useSolid", useSolid);
         newTag.setString("fuelName", fuelName);
         newTag.setTag("steam", steamTank.writeToNBT(new NBTTagCompound()));
@@ -312,6 +318,7 @@ public class SteamBoiler
         maxFuelTime = nbt.getInteger("maxFuelTime");
         amountPerTick = nbt.getInteger("amountPerTick");
         heat = nbt.getInteger("heat");
+        steamGenerated = nbt.getInteger("steamGen");
         useSolid = nbt.getBoolean("useSolid");
         fuelName = nbt.getString("fuelName");
         steamTank.readFromNBT(nbt.getCompoundTag("steam"));
@@ -356,7 +363,8 @@ public class SteamBoiler
 
     public float GetSteamFill() //0 ~ 180
     {
-        return Utils.normalize(steamTank.getFluidAmount(), 0, steamTank.getCapacity()) * 180f;
+        int maxValue = IRConfig.MainConfig.Main.steamBoilerWaterPerTick * IRConfig.MainConfig.Main.steamBoilerConversionFactor;
+        return Utils.normalize(steamGenerated, 0, maxValue) * 180f;
     }
 
     public float getHeatFill() //0 ~ 140
