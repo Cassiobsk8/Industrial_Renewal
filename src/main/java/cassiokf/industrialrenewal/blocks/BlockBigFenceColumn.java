@@ -22,7 +22,7 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 
-public class BlockElectricBigFenceColumn extends BlockBasicElectricFence
+public class BlockBigFenceColumn extends BlockBasicElectricFence
 {
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
@@ -38,7 +38,7 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence
     public static final IUnlistedProperty<Boolean> ACTIVE_RIGHT_DOWN = new Properties.PropertyAdapter<>(PropertyBool.create("active_right_down"));
 
 
-    public BlockElectricBigFenceColumn(String name, CreativeTabs tab) {
+    public BlockBigFenceColumn(String name, CreativeTabs tab) {
         super(name, tab);
         setSoundType(SoundType.METAL);
     }
@@ -78,7 +78,7 @@ public class BlockElectricBigFenceColumn extends BlockBasicElectricFence
 
     public boolean IsBigFence(World world, BlockPos pos)
     {
-        return world.getBlockState(pos).getBlock() instanceof BlockElectricBigFenceColumn;
+        return world.getBlockState(pos).getBlock() instanceof BlockBigFenceColumn;
     }
 
     @Override

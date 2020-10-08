@@ -111,9 +111,10 @@ public class ModBlocks
     public static final BlockEnergyLevel energyLevel = new BlockEnergyLevel("energy_level", References.CREATIVE_IR_TAB);
 
     public static final BlockElectricFence efence = new BlockElectricFence("electric_fence", References.CREATIVE_IR_TAB);
-    public static final BlockElectricBigFenceColumn bigFenceColumn = new BlockElectricBigFenceColumn("fence_big_column", References.CREATIVE_IR_TAB);
+    public static final BlockBigFenceColumn bigFenceColumn = new BlockBigFenceColumn("fence_big_column", References.CREATIVE_IR_TAB);
     public static final BlockElectricBigFenceWire bigFenceWire = new BlockElectricBigFenceWire("fence_big_wire", References.CREATIVE_IR_TAB);
-    public static final BlockElectricBigFenceCorner bigFenceCorner = new BlockElectricBigFenceCorner("fence_big_corner", References.CREATIVE_IR_TAB);
+    public static final BlockBigFenceCorner bigFenceCorner = new BlockBigFenceCorner("fence_big_corner", References.CREATIVE_IR_TAB);
+    public static final BlockBigFenceCornerInner bigFenceInner = new BlockBigFenceCornerInner("fence_big_corner_inner", References.CREATIVE_IR_TAB);
     public static final BlockBaseWall concreteWall = new BlockBaseWall("wall_concrete", References.CREATIVE_IR_TAB);
     public static final BlockElectricGate egate = new BlockElectricGate("electric_gate", References.CREATIVE_IR_TAB);
     public static final BlockRazorWire razorWire = new BlockRazorWire("razor_wire", References.CREATIVE_IR_TAB);
@@ -161,6 +162,7 @@ public class ModBlocks
     public static final BlockSignBase signC = new BlockSignBase("sign_c", References.CREATIVE_IR_TAB);
 
     public static final BlockEotM baseEotM = new BlockEotM("eotm", References.CREATIVE_IR_TAB);
+    public static final BlockEotM andrbootEotM = new BlockEotM("eotm_andrboot", References.CREATIVE_IR_TAB);
     public static final BlockElectricPump electricPump = new BlockElectricPump("electric_pump", References.CREATIVE_IR_TAB);
 
     public static final BlockPortableGenerator portableGenerator = new BlockPortableGenerator("portable_generator", References.CREAATIVE_IRWIP_TAB);
@@ -243,6 +245,7 @@ public class ModBlocks
                 efence,
                 bigFenceColumn,
                 bigFenceCorner,
+                bigFenceInner,
                 concreteWall,
                 bigFenceWire,
                 egate,
@@ -316,6 +319,7 @@ public class ModBlocks
                 gutter,
                 //Patreons
                 baseEotM,
+                andrbootEotM,
                 //Fluids
                 steamBlock
         );
@@ -435,6 +439,7 @@ public class ModBlocks
                 efence.createItemBlock(),
                 bigFenceColumn.createItemBlock(),
                 bigFenceCorner.createItemBlock(),
+                bigFenceInner.createItemBlock(),
                 concreteWall.createItemBlock(),
                 bigFenceWire.createItemBlock(),
                 egate.createItemBlock(),
@@ -483,6 +488,7 @@ public class ModBlocks
                 steamTurbine.createItemBlock(),
                 //mining.createItemBlock(),
                 baseEotM.createItemBlock(),
+                andrbootEotM.createItemBlock(),
                 chunkLoader.createItemBlock(),
                 conveyorV.createItemBlock(),
                 steamBlock.createItemBlock()
@@ -528,6 +534,7 @@ public class ModBlocks
         efence.registerItemModel(Item.getItemFromBlock(efence));
         bigFenceColumn.registerItemModel(Item.getItemFromBlock(bigFenceColumn));
         bigFenceCorner.registerItemModel(Item.getItemFromBlock(bigFenceCorner));
+        bigFenceInner.registerItemModel(Item.getItemFromBlock(bigFenceInner));
         bigFenceWire.registerItemModel(Item.getItemFromBlock(bigFenceWire));
         concreteWall.registerItemModel(Item.getItemFromBlock(concreteWall));
         egate.registerItemModel(Item.getItemFromBlock(egate));
@@ -589,6 +596,7 @@ public class ModBlocks
         steamTurbine.registerItemModel(Item.getItemFromBlock(steamTurbine));
         //mining.registerItemModel(Item.getItemFromBlock(mining));
         baseEotM.registerItemModel(Item.getItemFromBlock(baseEotM));
+        andrbootEotM.registerItemModel(Item.getItemFromBlock(andrbootEotM));
         chunkLoader.registerItemModel(Item.getItemFromBlock(chunkLoader));
         conveyorV.registerItemModel(Item.getItemFromBlock(conveyorV));
         hvIsolator.registerItemModel(Item.getItemFromBlock(hvIsolator));

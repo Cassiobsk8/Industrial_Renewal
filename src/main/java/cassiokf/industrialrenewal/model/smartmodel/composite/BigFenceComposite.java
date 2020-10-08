@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.model.smartmodel.composite;
 
-import cassiokf.industrialrenewal.blocks.BlockElectricBigFenceColumn;
+import cassiokf.industrialrenewal.blocks.BlockBigFenceColumn;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -57,31 +57,31 @@ public class BigFenceComposite implements IBakedModel
             return quadsList;
         }
         IExtendedBlockState extendedBlockState = (IExtendedBlockState) blockState;
-        if (isLinkPresent(extendedBlockState, BlockElectricBigFenceColumn.CORE))
+        if (isLinkPresent(extendedBlockState, BlockBigFenceColumn.CORE))
         {
             quadsList.addAll(modelCore.getQuads(extendedBlockState, side, rand));
         }
-        if (isLinkPresent(extendedBlockState, BlockElectricBigFenceColumn.ACTIVE_LEFT))
+        if (isLinkPresent(extendedBlockState, BlockBigFenceColumn.ACTIVE_LEFT))
         {
             quadsList.addAll(modelDown.getQuads(extendedBlockState, side, rand));
         }
-        if (isLinkPresent(extendedBlockState, BlockElectricBigFenceColumn.ACTIVE_RIGHT))
+        if (isLinkPresent(extendedBlockState, BlockBigFenceColumn.ACTIVE_RIGHT))
         {
             quadsList.addAll(modelUp.getQuads(extendedBlockState, side, rand));
         }
-        if (isLinkPresent(extendedBlockState, BlockElectricBigFenceColumn.ACTIVE_LEFT_DOWN))
+        if (isLinkPresent(extendedBlockState, BlockBigFenceColumn.ACTIVE_LEFT_DOWN))
         {
             quadsList.addAll(modelWest.getQuads(extendedBlockState, side, rand));
         }
-        if (isLinkPresent(extendedBlockState, BlockElectricBigFenceColumn.ACTIVE_RIGHT_DOWN))
+        if (isLinkPresent(extendedBlockState, BlockBigFenceColumn.ACTIVE_RIGHT_DOWN))
         {
             quadsList.addAll(modelEast.getQuads(extendedBlockState, side, rand));
         }
-        if (isLinkPresent(extendedBlockState, BlockElectricBigFenceColumn.ACTIVE_LEFT_TOP))
+        if (isLinkPresent(extendedBlockState, BlockBigFenceColumn.ACTIVE_LEFT_TOP))
         {
             quadsList.addAll(modelNorth.getQuads(extendedBlockState, side, rand));
         }
-        if (isLinkPresent(extendedBlockState, BlockElectricBigFenceColumn.ACTIVE_RIGHT_TOP))
+        if (isLinkPresent(extendedBlockState, BlockBigFenceColumn.ACTIVE_RIGHT_TOP))
         {
             quadsList.addAll(modelSouth.getQuads(extendedBlockState, side, rand));
         }

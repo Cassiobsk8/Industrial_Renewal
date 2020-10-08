@@ -79,6 +79,8 @@ public class ModelLoaderCustom implements ICustomModelLoader
                 return new BigFenceColumnIModel();
             case "fence_big_corner":
                 return new BigFenceCornerIModel();
+            case "fence_big_corner_inner":
+                return new BigFenceInnerIModel();
             case "high_pressure_pipe":
                 return new PipePressurizedModel();
             default:

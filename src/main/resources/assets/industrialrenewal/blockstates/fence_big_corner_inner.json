@@ -1,0 +1,44 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/metal"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "industrialrenewal:smartmodel/fence_big_corner_inner"
+    },
+    "index": {
+      "0": {
+        "model": "industrialrenewal:smartmodel/fence_big_corner_inner"
+      },
+      "1": {
+        "model": "industrialrenewal:smartmodel/fence_big_corner_inner"
+      },
+      "2": {
+        "model": "industrialrenewal:smartmodel/fence_big_corner_inner"
+      }
+    },
+    "facing": {
+      "north": {
+        "model": "industrialrenewal:smartmodel/fence_big_corner_inner"
+      },
+      "south": {
+        "model": "industrialrenewal:smartmodel/fence_big_corner_inner",
+        "y": 180
+      },
+      "east": {
+        "model": "industrialrenewal:smartmodel/fence_big_corner_inner",
+        "y": 90
+      },
+      "west": {
+        "model": "industrialrenewal:smartmodel/fence_big_corner_inner",
+        "y": -90
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:fence_big/fence_big_corner_inner_core"
+    }
+  }
+}

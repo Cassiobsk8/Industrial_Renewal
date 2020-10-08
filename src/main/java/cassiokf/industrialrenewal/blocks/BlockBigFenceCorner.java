@@ -10,9 +10,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockElectricBigFenceCorner extends BlockElectricBigFenceColumn
+public class BlockBigFenceCorner extends BlockBigFenceColumn
 {
-    public BlockElectricBigFenceCorner(String name, CreativeTabs tab) {
+    public BlockBigFenceCorner(String name, CreativeTabs tab) {
         super(name, tab);
         setSoundType(SoundType.METAL);
     }
@@ -20,7 +20,7 @@ public class BlockElectricBigFenceCorner extends BlockElectricBigFenceColumn
     @Override
     public boolean IsBigFence(World world, BlockPos pos)
     {
-        return world.getBlockState(pos).getBlock() instanceof BlockElectricBigFenceCorner;
+        return world.getBlockState(pos).getBlock() instanceof BlockBigFenceCorner;
     }
 
     @Override
