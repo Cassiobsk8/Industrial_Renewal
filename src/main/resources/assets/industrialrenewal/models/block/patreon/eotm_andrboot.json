@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench - CassioKF",
 	"textures": {
 		"0": "industrialrenewal:blocks/patreon/eotm",
-		"1": "industrialrenewal:blocks/patreon/eotm_face",
-		"2": "industrialrenewal:blocks/patreon/eotm_name",
+		"1": "industrialrenewal:blocks/patreon/eotm_face_andrboot",
+		"2": "industrialrenewal:blocks/patreon/eotm_name_andrboot",
 		"particle": "industrialrenewal:blocks/patreon/eotm"
 	},
 	"elements": [
