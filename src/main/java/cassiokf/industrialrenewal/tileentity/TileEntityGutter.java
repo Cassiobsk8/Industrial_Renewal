@@ -85,7 +85,7 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
     }
 
     @Override
-    public void checkForOutPuts(BlockPos bPos)
+    public void checkForOutPuts()
     {
         if (world.isRemote) return;
         EnumFacing face = EnumFacing.DOWN;

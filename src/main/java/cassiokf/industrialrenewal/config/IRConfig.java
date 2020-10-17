@@ -83,6 +83,9 @@ public class IRConfig {
 
         public static class SubCategoryMain
         {
+            @Config.Comment("Debug messages on log")
+            public boolean debugMessages = false;
+
             @Config.Comment("Turn On/Off the manual item on first spawn (Default true) (WIP not working yet)")
             @Config.LangKey("gui.config.recipes.startwithmanual.name")
             public boolean startWithManual = true;

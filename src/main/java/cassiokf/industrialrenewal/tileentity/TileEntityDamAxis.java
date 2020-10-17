@@ -57,10 +57,10 @@ public class TileEntityDamAxis extends TileEntityMultiBlocksTube<TileEntityDamAx
     }
 
     @Override
-    public void checkForOutPuts(BlockPos bPos)
+    public void checkForOutPuts()
     {
-        TileEntity te = world.getTileEntity(bPos.up());
-        if (!(te instanceof TileEntityDamAxis) && te instanceof IMecanicalEnergy && ((IMecanicalEnergy) te).canAcceptRotation(bPos.up(), EnumFacing.DOWN))
+        TileEntity te = world.getTileEntity(pos.up());
+        if (!(te instanceof TileEntityDamAxis) && te instanceof IMecanicalEnergy && ((IMecanicalEnergy) te).canAcceptRotation(pos.up(), EnumFacing.DOWN))
         {
             addMachine(te, EnumFacing.UP);
         } else removeMachine(te);

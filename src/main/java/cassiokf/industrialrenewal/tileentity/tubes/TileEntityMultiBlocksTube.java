@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.state.IBlockState;
@@ -68,9 +69,10 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 
     public void initializeMultiblockIfNecessary(boolean forced)
     {
+        if (isTray()) return;
         if ((forced || isMasterInvalid()) && !world.isRemote)
         {
-            if (isTray()) return;
+            if (IRConfig.MainConfig.Main.debugMessages) System.out.println("initialize " + forced + " " + this + " " + pos);
             List<TileEntityMultiBlocksTube> connectedCables = new CopyOnWriteArrayList<>();
             Stack<TileEntityMultiBlocksTube> traversingCables = new Stack<>();
             TE master = (TE) this;
@@ -99,7 +101,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                 {
                     if (!canBeMaster(storage)) continue;
                     storage.setMaster(master);
-                    storage.checkForOutPuts(storage.getPos());
+                    storage.checkForOutPuts();
                     storage.markDirty();
                 }
             } else
@@ -118,7 +120,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                 {
                     if (!canBeMaster(storage)) continue;
                     storage.setMaster(master);
-                    storage.checkForOutPuts(storage.getPos());
+                    storage.checkForOutPuts();
                     storage.markDirty();
                 }
             }
@@ -162,7 +164,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 
     public abstract boolean instanceOf(TileEntity te);
 
-    public abstract void checkForOutPuts(BlockPos bPos);
+    public abstract void checkForOutPuts();
 
     public boolean isMaster()
     {
@@ -205,24 +207,6 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         return machineContainer;
     }
 
-    @Override
-    public void invalidate()
-    {
-        super.invalidate();
-
-        for (EnumFacing d : EnumFacing.VALUES)
-        {
-            TileEntity te = world.getTileEntity(pos.offset(d));
-            if (instanceOf(te))
-            {
-                if (te instanceof TileEntityCableTray)
-                    ((TileEntityCableTray) te).refreshConnections();
-                else
-                    ((TileEntityMultiBlocksTube) te).initializeMultiblockIfNecessary(true);
-            }
-        }
-    }
-
     public void addMachine(TileEntity machine, EnumFacing face)
     {
         if (machine == null) return;
@@ -255,6 +239,19 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     {
         startBreaking = true;
         super.onBlockBreak();
+        this.invalidate();
+        if (IRConfig.MainConfig.Main.debugMessages) System.out.println("Breaking " + this.blockType);
+        for (EnumFacing d : EnumFacing.VALUES)
+        {
+            TileEntity te = world.getTileEntity(pos.offset(d));
+            if (instanceOf(te))
+            {
+                if (te instanceof TileEntityCableTray)
+                    ((TileEntityCableTray) te).refreshConnections();
+                else
+                    ((TileEntityMultiBlocksTube) te).initializeMultiblockIfNecessary(true);
+            }
+        }
     }
 
     @Override

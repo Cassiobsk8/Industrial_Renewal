@@ -80,7 +80,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
     }
 
     @Override
-    public void checkForOutPuts(BlockPos bPos)
+    public void checkForOutPuts()
     {
         if (world.isRemote) return;
         for (EnumFacing face : EnumFacing.VALUES)
@@ -106,7 +106,7 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
     @Override
     @Nullable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if (capability == CapabilityEnergy.ENERGY && getMaster() != null)
+        if (capability == CapabilityEnergy.ENERGY)
             return CapabilityEnergy.ENERGY.cast(getMaster().energyContainer);
         return super.getCapability(capability, facing);
     }

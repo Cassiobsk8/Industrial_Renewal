@@ -153,7 +153,7 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
     }
 
     @Override
-    public void checkForOutPuts(BlockPos bPos)
+    public void checkForOutPuts()
     {
     }
 

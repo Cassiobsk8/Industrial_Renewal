@@ -70,7 +70,7 @@ public class TileEntityWindTurbinePillar extends TileEntityEnergyCable
     }
 
     @Override
-    public void checkForOutPuts(BlockPos bPos)
+    public void checkForOutPuts()
     {
         outPut = 0;
         potentialEnergy = 0;

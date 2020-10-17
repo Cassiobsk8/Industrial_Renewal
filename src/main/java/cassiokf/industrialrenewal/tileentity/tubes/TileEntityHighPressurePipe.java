@@ -103,7 +103,7 @@ public class TileEntityHighPressurePipe extends TileEntityMultiBlocksTube<TileEn
     }
 
     @Override
-    public void checkForOutPuts(BlockPos bPos)
+    public void checkForOutPuts()
     {
         if (world.isRemote) return;
         for (EnumFacing face : EnumFacing.VALUES)
