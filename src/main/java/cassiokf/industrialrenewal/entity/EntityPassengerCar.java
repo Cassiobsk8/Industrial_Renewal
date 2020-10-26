@@ -2,11 +2,13 @@ package cassiokf.industrialrenewal.entity;
 
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.entity.item.EntityMinecartEmpty;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class EntityPassengerCar extends EntityMinecartEmpty {
+public class EntityPassengerCar extends RotatableBase {
 
     public EntityPassengerCar(World worldIn) {
         super(worldIn);
@@ -15,6 +17,29 @@ public class EntityPassengerCar extends EntityMinecartEmpty {
 
     public EntityPassengerCar(World worldIn, double x, double y, double z) {
         super(worldIn, x, y, z);
+    }
+
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
+    {
+        if (super.processInitialInteract(player, hand)) return true;
+
+        if (player.isSneaking())
+        {
+            return false;
+        }
+        else if (this.isBeingRidden())
+        {
+            return true;
+        }
+        else
+        {
+            if (!this.world.isRemote)
+            {
+                player.startRiding(this);
+            }
+
+            return true;
+        }
     }
 
     @Override

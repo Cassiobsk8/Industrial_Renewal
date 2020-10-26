@@ -1,25 +1,19 @@
 package cassiokf.industrialrenewal.gui.container;
 
-import cassiokf.industrialrenewal.entity.EntityFluidContainer;
+import cassiokf.industrialrenewal.entity.EntityTenderBase;
+import cassiokf.industrialrenewal.util.slots.FuelSlot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
-public class ContainerFluidContainer extends Container {
-
-    private EntityFluidContainer entity;
-    private IFluidHandler inventory;
-
-    public ContainerFluidContainer(IInventory playerInv, EntityFluidContainer entity) {
-        this.entity = entity;
-        this.inventory = entity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
-
-
-        //Player Slots
+public abstract class ContainerBase extends Container
+{
+    public void drawPlayerInv(IInventory playerInv)
+    {
         int xPos = 8;
         int yPos = 84;
 

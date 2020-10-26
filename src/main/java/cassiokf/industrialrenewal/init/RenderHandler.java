@@ -20,6 +20,7 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityPassengerCar.class, RenderPassengerCar::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityFlatCart.class, RenderFlatCart::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityHopperCart.class, RenderHopperCart::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityTenderBase.class, RenderTender::new);
     }
 
     public static void registerCustomMeshesAndStates()

@@ -1,5 +1,7 @@
 package cassiokf.industrialrenewal.handlers;
 
+import cassiokf.industrialrenewal.entity.EntityTenderBase;
+import cassiokf.industrialrenewal.entity.LocomotiveBase;
 import cassiokf.industrialrenewal.util.enums.EnumCouplingType;
 import cassiokf.industrialrenewal.util.interfaces.ICoupleCart;
 import net.minecraft.entity.Entity;
@@ -67,6 +69,15 @@ public class CouplingHandler
             {
                 removeConnection(cart1, cart2);
                 return false;
+            }
+
+            if (cart1 instanceof EntityTenderBase && cart2 instanceof LocomotiveBase && ((LocomotiveBase) cart2).tender != cart1)
+            {
+                ((LocomotiveBase) cart2).setTender((EntityTenderBase) cart1);
+            }
+            else if (cart2 instanceof EntityTenderBase && cart1 instanceof LocomotiveBase && ((LocomotiveBase) cart1).tender != cart2)
+            {
+                ((LocomotiveBase) cart1).setTender((EntityTenderBase) cart2);
             }
 
             Vector2d cart1Pos = new Vector2d(cart1.posX, cart1.posZ);

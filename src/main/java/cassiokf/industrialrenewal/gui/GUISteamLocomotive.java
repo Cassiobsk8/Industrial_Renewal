@@ -16,8 +16,7 @@ import java.util.List;
 
 public class GUISteamLocomotive extends GuiContainer {
 
-    private EntitySteamLocomotive entity;
-    private IInventory playerInv;
+    private final IInventory playerInv;
 
     public GUISteamLocomotive(IInventory playerInv, EntitySteamLocomotive entity) {
         super(new ContainerSteamLocomotive(playerInv, entity));
@@ -25,7 +24,6 @@ public class GUISteamLocomotive extends GuiContainer {
         this.xSize = 176;
         this.ySize = 166;
 
-        this.entity = entity;
         this.playerInv = playerInv;
     }
 
@@ -52,14 +50,9 @@ public class GUISteamLocomotive extends GuiContainer {
         int actualMouseX = mouseX - ((this.width - this.xSize) / 2);
         int actualMouseY = mouseY - ((this.height - this.ySize) / 2);
 
-        if (isPointInRegion(8, 52, 16, 16, mouseX, mouseY)) {
+        if (isPointInRegion(44, 52, 16, 16, mouseX, mouseY)) {
             List<String> text = new ArrayList<String>();
             text.add(TextFormatting.GRAY + I18n.format("gui.industrialrenewal.entity_steamlocomotive.plow.tooltip"));
-            this.drawHoveringText(text, actualMouseX, actualMouseY);
-        }
-        if (isPointInRegion(100, 21, 52, 34, mouseX, mouseY)) {
-            List<String> text = new ArrayList<String>();
-            text.add(TextFormatting.GRAY + I18n.format("gui.industrialrenewal.fuel.tooltip"));
             this.drawHoveringText(text, actualMouseX, actualMouseY);
         }
     }

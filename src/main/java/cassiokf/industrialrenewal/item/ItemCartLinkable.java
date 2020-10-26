@@ -1,5 +1,8 @@
 package cassiokf.industrialrenewal.item;
 
+import cassiokf.industrialrenewal.entity.EntityTenderBase;
+import cassiokf.industrialrenewal.entity.LocomotiveBase;
+import cassiokf.industrialrenewal.entity.TrainBase;
 import cassiokf.industrialrenewal.handlers.CouplingHandler;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.enums.EnumCouplingType;
@@ -66,6 +69,10 @@ public class ItemCartLinkable extends ItemBase
         {
             if (hasFreeConnectionIn(from, link))
             {
+                if (from instanceof EntityTenderBase && to instanceof LocomotiveBase)
+                {
+                    ((LocomotiveBase) to).setTender((EntityTenderBase) from);
+                }
                 UUID id = to.getPersistentID();
                 from.getEntityData().setLong(link.tagMostSigBits, id.getMostSignificantBits());
                 from.getEntityData().setLong(link.tagLeastSigBits, id.getLeastSignificantBits());

@@ -36,6 +36,7 @@ public class ModItems
     public static final ItemLogCart logCart = new ItemLogCart("log_cart", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static final ItemMineCartPassengerCar passengerCar = new ItemMineCartPassengerCar("passenger_car", References.CREATIVE_IRLOCOMOTIVE_TAB);
     public static final ItemMineCartFlat mineCartFlat = new ItemMineCartFlat("minecart_flat", References.CREATIVE_IRLOCOMOTIVE_TAB);
+    public static final ItemCartTender tender = new ItemCartTender("tender", References.CREATIVE_IRLOCOMOTIVE_TAB);
 
     public static final ItemMedKit medkit = new ItemMedKit("medkit", References.CREATIVE_IR_TAB);
     public static final ItemFireExtinguisher fireExtinguisher = new ItemFireExtinguisher("item_fire_extinguisher", References.CREATIVE_IR_TAB);
@@ -88,7 +89,7 @@ public class ModItems
                 ingotSteel,
                 spongeIron,
                 screwDrive,
-                //cartLinkable,
+                cartLinkable,
                 steelSaw,
                 cargoContainer,
                 hopperCart,
@@ -97,6 +98,7 @@ public class ModItems
                 logCart,
                 passengerCar,
                 mineCartFlat,
+                tender,
                 smallSlab,
                 stickIron,
                 stickSteel,
@@ -146,7 +148,7 @@ public class ModItems
         ingotSteel.registerItemModel();
         spongeIron.registerItemModel();
         screwDrive.registerItemModel();
-        //cartLinkable.registerItemModel();
+        cartLinkable.registerItemModel();
         steelSaw.registerItemModel();
         cargoContainer.registerItemModel();
         hopperCart.registerItemModel();
@@ -155,6 +157,7 @@ public class ModItems
         logCart.registerItemModel();
         passengerCar.registerItemModel();
         mineCartFlat.registerItemModel();
+        tender.registerItemModel();
         smallSlab.registerItemModel();
         stickIron.registerItemModel();
         medkit.registerItemModel();

@@ -25,6 +25,7 @@ item.industrialrenewal.steam_locomotive.name=Steam Locomotive (WIP)
 item.industrialrenewal.cargo_container.name=Cargo Cart
 item.industrialrenewal.fluid_container.name=Fluid Tank Cart
 item.industrialrenewal.minecart_flat.name=Flat Cart
+item.industrialrenewal.tender.name=Tender
 item.industrialrenewal.plow_iron.name=Iron Snow Plow (WIP)
 item.industrialrenewal.screwdrive.name=Powered Screwdrive
 item.industrialrenewal.screwdrive.des0=A universal tool for this mod
@@ -174,6 +175,7 @@ entity.industrialrenewal.log_cart.name=Log Cart
 entity.industrialrenewal.passenger_car.name=Passenger Cart
 entity.industrialrenewal.minecart_flat.name=Flat Cart
 entity.industrialrenewal.cart_hopper.name=Bulk Cargo Cart
+entity.industrialrenewal.tender.name=Tender Cart
 
 #Config
 gui.config.main_title=Industrial Renewal Configuration
