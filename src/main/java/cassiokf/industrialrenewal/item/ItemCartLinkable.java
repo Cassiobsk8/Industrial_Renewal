@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.entity.EntityTenderBase;
 import cassiokf.industrialrenewal.entity.LocomotiveBase;
-import cassiokf.industrialrenewal.entity.TrainBase;
 import cassiokf.industrialrenewal.handlers.CouplingHandler;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.enums.EnumCouplingType;

@@ -1,12 +1,8 @@
 package cassiokf.industrialrenewal.entity.render;
 
-import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
-import cassiokf.industrialrenewal.entity.LocomotiveBase;
 import cassiokf.industrialrenewal.entity.RotatableBase;
-import cassiokf.industrialrenewal.entity.TrainBase;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;

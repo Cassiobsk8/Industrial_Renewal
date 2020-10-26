@@ -2,18 +2,11 @@ package cassiokf.industrialrenewal.entity.render;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.entity.EntityFluidContainer;
-import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.model.carts.ModelCartFluidTank;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

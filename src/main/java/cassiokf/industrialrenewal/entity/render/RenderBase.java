@@ -1,8 +1,5 @@
 package cassiokf.industrialrenewal.entity.render;
 
-import cassiokf.industrialrenewal.entity.EntityFlatCart;
-import cassiokf.industrialrenewal.entity.EntityFluidContainer;
-import cassiokf.industrialrenewal.entity.TrainBase;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;

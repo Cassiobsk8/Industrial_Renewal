@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.entity;
 
-import cassiokf.industrialrenewal.init.ModBlocks;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;

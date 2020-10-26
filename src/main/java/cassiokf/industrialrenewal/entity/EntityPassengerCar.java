@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.entity;
 
 import cassiokf.industrialrenewal.init.ModItems;
-import net.minecraft.entity.item.EntityMinecartEmpty;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;

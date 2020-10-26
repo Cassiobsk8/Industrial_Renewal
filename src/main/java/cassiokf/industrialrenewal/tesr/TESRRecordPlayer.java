@@ -1,9 +1,7 @@
 package cassiokf.industrialrenewal.tesr;
 
 import cassiokf.industrialrenewal.init.ModItems;
-import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.TileEntityRecordPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
