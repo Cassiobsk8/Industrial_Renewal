@@ -4,6 +4,7 @@ import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.item.*;
 import cassiokf.industrialrenewal.item.armor.ItemSafetyBelt;
 import cassiokf.industrialrenewal.item.armor.ItemSafetyHelmet;
+import cassiokf.industrialrenewal.item.carts.*;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 
