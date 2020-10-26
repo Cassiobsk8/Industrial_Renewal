@@ -19,25 +19,26 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 
-public class GUIManual extends GuiScreen {
+public class GUIManual extends GuiScreen
+{
 
+    private static final ResourceLocation bookBackground = new ResourceLocation(References.MODID, "textures/gui/book_background.png");
+    private static final ResourceLocation logoIMG = new ResourceLocation(References.MODID, "textures/gui/book/logo.png");
+    private static final ResourceLocation railroadIMG = new ResourceLocation(References.MODID, "textures/gui/book/railroad.png");
+    private static final ResourceLocation redstoneIMG = new ResourceLocation(References.MODID, "textures/gui/book/redstone.png");
+    private static final ResourceLocation utilsIMG = new ResourceLocation(References.MODID, "textures/gui/book/utils.png");
+    private static final ResourceLocation warning = new ResourceLocation(References.MODID, "textures/gui/book/warning.png");
     private final int bookImageWidth = 256;
     private final int bookImageHeight = 171;
-    private static ResourceLocation bookBackground = new ResourceLocation(References.MODID, "textures/gui/book_background.png");
-    private static ResourceLocation logoIMG = new ResourceLocation(References.MODID, "textures/gui/book/logo.png");
-    private static ResourceLocation railroadIMG = new ResourceLocation(References.MODID, "textures/gui/book/railroad.png");
-    private static ResourceLocation redstoneIMG = new ResourceLocation(References.MODID, "textures/gui/book/redstone.png");
-    private static ResourceLocation utilsIMG = new ResourceLocation(References.MODID, "textures/gui/book/utils.png");
-    private static ResourceLocation warning = new ResourceLocation(References.MODID, "textures/gui/book/warning.png");
-    private World world;
-    private EntityPlayer player;
+    private final World world;
+    private final EntityPlayer player;
     private int xOffset;
     private int yOffset;
-    private ArrayList<ItemStack> items = new ArrayList<>();
-    private ArrayList<String> texts = new ArrayList<>();
-    private ArrayList<ItemStack> railroadItems = new ArrayList<>();
-    private ArrayList<ItemStack> redstoneItems = new ArrayList<>();
-    private ArrayList<ItemStack> utilsItems = new ArrayList<>();
+    private final ArrayList<ItemStack> items = new ArrayList<>();
+    private final ArrayList<String> texts = new ArrayList<>();
+    private final ArrayList<ItemStack> railroadItems = new ArrayList<>();
+    private final ArrayList<ItemStack> redstoneItems = new ArrayList<>();
+    private final ArrayList<ItemStack> utilsItems = new ArrayList<>();
 
     private int page = 0;
     private ButtonBookOverIcon button1;
@@ -58,7 +59,8 @@ public class GUIManual extends GuiScreen {
     private ButtonBookOverIcon buttonUtils3;
     private ButtonBookOverIcon buttonBack;
 
-    public GUIManual(World world, EntityPlayer player) {
+    public GUIManual(World world, EntityPlayer player)
+    {
         this.world = world;
         this.player = player;
 
@@ -95,14 +97,16 @@ public class GUIManual extends GuiScreen {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    {
         this.drawDefaultBackground();
         xOffset = (this.width - bookImageWidth) / 2;
         yOffset = (this.height - bookImageHeight) / 2;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(bookBackground);
         drawTexturedModalRect(xOffset, yOffset, 0, 0, bookImageWidth, bookImageHeight);
-        switch (page) {
+        switch (page)
+        {
             default:
                 drawPictureOnTop(warning, 48, 0, 0);
                 drawText("Please, report this error code: " + "\n" + " \n " + "PAGEERROR" + page);
@@ -169,7 +173,8 @@ public class GUIManual extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
-    private void drawText(String text) {
+    private void drawText(String text)
+    {
         int maxPixelsPerLine = 93;
         StringBuilder currentLine = new StringBuilder();
         int currentWidth = 0, yoffset = 66, xoffset = 18, maxLineFirstPage = 9;
@@ -177,13 +182,17 @@ public class GUIManual extends GuiScreen {
         boolean changeLine = false;
         String[] words = text.split("\\s+");
 
-        for (String word : words) {
-            if (currentWidth + fontRenderer.getStringWidth(word) <= maxPixelsPerLine && !word.equals("$n")) {
+        for (String word : words)
+        {
+            if (currentWidth + fontRenderer.getStringWidth(word) <= maxPixelsPerLine && !word.equals("$n"))
+            {
                 currentLine.append(word).append(" ");
                 currentWidth += fontRenderer.getStringWidth(word);
-            } else {
+            } else
+            {
                 currentLineN++;
-                if (currentLineN > maxLineFirstPage && !changeLine) {
+                if (currentLineN > maxLineFirstPage && !changeLine)
+                {
                     changeLine = true;
                     yoffset = 18;
                     xoffset = xoffset + 110;
@@ -192,7 +201,8 @@ public class GUIManual extends GuiScreen {
                 currentLine = new StringBuilder();
                 currentWidth = 0;
                 yoffset += fontRenderer.FONT_HEIGHT;
-                if (!word.equals("$n")) {
+                if (!word.equals("$n"))
+                {
                     currentLine.append(word).append(" ");
                     currentWidth += fontRenderer.getStringWidth(word);
                 }
@@ -202,24 +212,31 @@ public class GUIManual extends GuiScreen {
             fontRenderer.drawString(I18n.format(currentLine.toString()), (this.width - bookImageWidth) / 2 + 5 + xoffset, (this.height - bookImageHeight) / 2 + yoffset, 4210752);
     }
 
-    private void drawIcons(ArrayList<ItemStack> array, ArrayList<String> texts, boolean pictureOnTop) {
+    private void drawIcons(ArrayList<ItemStack> array, ArrayList<String> texts, boolean pictureOnTop)
+    {
         int x = xOffset + 22;
         int y = yOffset + 12;
-        if (pictureOnTop) {
+        if (pictureOnTop)
+        {
             y = y + 52;
         }
         boolean secondSide = false;
-        for (ItemStack item : array) {
+        for (ItemStack item : array)
+        {
             String text;
-            if (texts == null || texts.get(items.indexOf(item)) == null) {
+            if (texts == null || texts.get(items.indexOf(item)) == null)
+            {
                 text = item.getDisplayName();
-            } else {
+            } else
+            {
                 text = texts.get(items.indexOf(item));
             }
             drawIcon(text, item, x, y);
             y = y + 20;
-            if (y > (yOffset + 150)) {
-                if (!secondSide) {
+            if (y > (yOffset + 150))
+            {
+                if (!secondSide)
+                {
                     y = yOffset + 12;
                     x = x + 108;
                     secondSide = true;
@@ -228,7 +245,8 @@ public class GUIManual extends GuiScreen {
         }
     }
 
-    private void drawIcon(String text, ItemStack item, int x, int y) {
+    private void drawIcon(String text, ItemStack item, int x, int y)
+    {
         RenderHelper.disableStandardItemLighting();
         RenderHelper.enableGUIStandardItemLighting();
         this.itemRender.renderItemIntoGUI(item, x, y);
@@ -237,7 +255,8 @@ public class GUIManual extends GuiScreen {
         RenderHelper.enableStandardItemLighting();
     }
 
-    private void drawPictureOnTop(ResourceLocation resourceLocation, int yImage, int startX, int startY) {
+    private void drawPictureOnTop(ResourceLocation resourceLocation, int yImage, int startX, int startY)
+    {
         int x = xOffset + 24;// + 132;
         int y = yOffset + 9;
         GlStateManager.pushMatrix();
@@ -247,8 +266,10 @@ public class GUIManual extends GuiScreen {
         GlStateManager.popMatrix();
     }
 
-    private void drawPageName() {
-        if (page < 7 && page > 0) {
+    private void drawPageName()
+    {
+        if (page < 7 && page > 0)
+        {
             int x = xOffset + (bookImageWidth / 4) - 4;
             int y = yOffset + 1;
             String name = texts.get(page - 1);
@@ -260,8 +281,10 @@ public class GUIManual extends GuiScreen {
         }
     }
 
-    private void drawPageNumber() {
-        if (page != 0) {
+    private void drawPageNumber()
+    {
+        if (page != 0)
+        {
             int x = xOffset + 222;
             int y = yOffset + 3;
             fontRenderer.drawString(String.valueOf(page), x, y, 0);
@@ -269,14 +292,19 @@ public class GUIManual extends GuiScreen {
     }
 
     @Override
-    protected void actionPerformed(GuiButton b) {
-        if (b.id < 200) {
+    protected void actionPerformed(GuiButton b)
+    {
+        if (b.id < 200)
+        {
             page = b.id;
         }
-        if (b.id == 200) {
-            if (page <= 10) {
+        if (b.id == 200)
+        {
+            if (page <= 10)
+            {
                 page = 0;
-            } else {
+            } else
+            {
                 int x = Math.abs(page);
                 page = (int) Math.floor(x / Math.pow(10, Math.floor(Math.log10(x))));
             }
@@ -284,7 +312,8 @@ public class GUIManual extends GuiScreen {
     }
 
     @Override
-    public void updateScreen() {
+    public void updateScreen()
+    {
         button1.visible = page == 0;
         button2.visible = page == 0;
         button3.visible = page == 0;
@@ -309,7 +338,8 @@ public class GUIManual extends GuiScreen {
     }
 
     @Override
-    public void initGui() {
+    public void initGui()
+    {
         xOffset = (this.width - bookImageWidth) / 2;
         yOffset = (this.height - bookImageHeight) / 2;
         //Keyboard.enableRepeatEvents(true);
@@ -382,12 +412,14 @@ public class GUIManual extends GuiScreen {
     }
 
     @Override
-    public boolean doesGuiPauseGame() {
+    public boolean doesGuiPauseGame()
+    {
         return true;
     }
 
     @Override
-    public void onGuiClosed() {
+    public void onGuiClosed()
+    {
         this.world.playSound(this.player, this.player.getPosition(), IRSoundRegister.BOOK_FLIP, SoundCategory.BLOCKS, 1f, 0.8f);
     }
 }

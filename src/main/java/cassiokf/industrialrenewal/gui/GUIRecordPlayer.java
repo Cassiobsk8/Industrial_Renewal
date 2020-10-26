@@ -2,49 +2,38 @@ package cassiokf.industrialrenewal.gui;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.gui.container.ContainerRecordPlayer;
+import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketReturnRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.TileEntityRecordPlayer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GUIRecordPlayer extends GuiContainer {
+public class GUIRecordPlayer extends GUIBase
+{
 
-    private TileEntityRecordPlayer te;
-    private IInventory playerInv;
+    private final TileEntityRecordPlayer te;
 
-    public GUIRecordPlayer(IInventory playerInv, TileEntityRecordPlayer te) {
-        super(new ContainerRecordPlayer(playerInv, te));
-
-        this.xSize = 176;
-        this.ySize = 166;
-
+    public GUIRecordPlayer(IInventory playerInv, TileEntityRecordPlayer te)
+    {
+        super(new ContainerRecordPlayer(playerInv, te), playerInv);
         this.te = te;
-        this.playerInv = playerInv;
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
-    }
-
-    @Override
-    protected void actionPerformed(GuiButton b) {
+    protected void actionPerformed(GuiButton b)
+    {
         NetworkHandler.INSTANCE.sendToServer(new PacketReturnRecordPlayer(this.te, b.id));
     }
 
     @Override
-    public void initGui() {
+    public void initGui()
+    {
         super.initGui();
         int posX1 = ((this.width - this.xSize) / 2);
         int posY1 = ((this.height - this.ySize) / 2);
@@ -60,22 +49,24 @@ public class GUIRecordPlayer extends GuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color(1F, 1F, 1F, 1F);
-        this.mc.getTextureManager().bindTexture(new ResourceLocation(References.MODID, "textures/gui/container/recordplayer.png"));
-        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
+    public String getTexturePath()
+    {
+        return "textures/gui/container/recordplayer.png";
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        //String name = I18n.format(ModBlocks.recordPlayer.getUnlocalizedName() + ".name");
-        //fontRenderer.drawString(name, 4, 6, 0x404040);
-        fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
+    public String getTranslationKey()
+    {
+        return ModBlocks.recordPlayer.getTranslationKey();
+    }
 
-        int actualMouseX = mouseX - ((this.width - this.xSize) / 2);
-        int actualMouseY = mouseY - ((this.height - this.ySize) / 2);
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY, 0, false);
 
-        if (isPointInRegion(80, 9, 16, 70, mouseX, mouseY)) {
+        if (isPointInRegion(80, 9, 16, 70, mouseX, mouseY))
+        {
             List<String> text = new ArrayList<String>();
             text.add(TextFormatting.GRAY + I18n.format("gui.industrialrenewal.blockrecordplayer.discs.tooltip"));
             this.drawHoveringText(text, actualMouseX, actualMouseY);

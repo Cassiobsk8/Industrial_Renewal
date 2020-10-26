@@ -1,49 +1,39 @@
 package cassiokf.industrialrenewal.gui;
 
-import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.gui.container.ContainerFuseBox;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketReturnFuseBox;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityFuseBox;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GUIFuseBox extends GuiContainer {
+public class GUIFuseBox extends GUIBase
+{
 
-    private TileEntityFuseBox te;
-    private EntityPlayer player;
+    private final TileEntityFuseBox te;
+    private final EntityPlayer player;
 
-    public GUIFuseBox(EntityPlayer player, IInventory playerInv, TileEntityFuseBox te) {
-        super(new ContainerFuseBox(playerInv, te));
-
-        this.xSize = 176;
-        this.ySize = 166;
-
+    public GUIFuseBox(EntityPlayer player, IInventory playerInv, TileEntityFuseBox te)
+    {
+        super(new ContainerFuseBox(playerInv, te), playerInv);
         this.te = te;
         this.player = player;
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
-    }
-
-    @Override
-    protected void handleMouseClick(Slot slotIn, int slotId, int mouseButton, ClickType type) {
-        if (te.getActive() && slotIn != null && slotIn.inventory != player.inventory) {
+    protected void handleMouseClick(Slot slotIn, int slotId, int mouseButton, ClickType type)
+    {
+        if (te.getActive() && slotIn.inventory != playerInv)
+        {
             NetworkHandler.INSTANCE.sendToServer(new PacketReturnFuseBox(te, player.getEntityId()));
             return;
         }
@@ -51,23 +41,24 @@ public class GUIFuseBox extends GuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color(1F, 1F, 1F, 1F);
-        this.mc.getTextureManager().bindTexture(new ResourceLocation(References.MODID, "textures/gui/container/fusebox.png"));
-        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
+    public String getTexturePath()
+    {
+        return "textures/gui/container/fusebox.png";
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+    public String getTranslationKey()
+    {
+        return ModBlocks.fuseBox.getTranslationKey();
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        String name = I18n.format(ModBlocks.fuseBox.getTranslationKey() + ".name");
-        fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
-        //fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
 
-        int actualMouseX = mouseX - ((this.width - this.xSize) / 2);
-        int actualMouseY = mouseY - ((this.height - this.ySize) / 2);
-
-        if (isPointInRegion(16, 25, 144, 36, mouseX, mouseY)) {
+        if (isPointInRegion(16, 25, 144, 36, mouseX, mouseY))
+        {
             List<String> text = new ArrayList<String>();
             text.add(TextFormatting.GRAY + I18n.format("gui.industrialrenewal.fusebox.slots.tooltip"));
             this.drawHoveringText(text, actualMouseX, actualMouseY);

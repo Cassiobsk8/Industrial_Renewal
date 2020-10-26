@@ -21,6 +21,6 @@ public class ContainerHopperCart extends ContainerBase
                 this.addSlotToContainer(new SlotItemHandler(inventory, j + i * 9, 8 + j * 18, 18 + i * 18));
             }
         }
-        drawPlayerInv(playerInv);
+        drawPlayerInv(playerInv, 1);
     }
 }
