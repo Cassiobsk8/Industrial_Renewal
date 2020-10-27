@@ -33,13 +33,10 @@ public abstract class BlockRailFacing extends BlockRailBase {
 
     public BlockRailFacing(String name, CreativeTabs tab) {
         super(false);
-        //super(name, tab);
         this.name = name;
 
         setRegistryName(References.MODID, name);
         setTranslationKey(References.MODID + "." + name);
-        setHardness(0.8f);
-        //setSoundType(SoundType.METAL);
         setCreativeTab(tab);
     }
 

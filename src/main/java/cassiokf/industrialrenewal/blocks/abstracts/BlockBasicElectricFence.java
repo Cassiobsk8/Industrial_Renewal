@@ -28,6 +28,8 @@ public abstract class BlockBasicElectricFence extends BlockBase
     {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
+        setHardness(5);
+        setResistance(25);
     }
 
     @Override

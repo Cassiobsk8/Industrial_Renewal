@@ -34,7 +34,8 @@ public class BlockNormalRailBase extends BlockRail {
         this.name = name;
         setRegistryName(References.MODID, name);
         setTranslationKey(References.MODID + "." + name);
-        setHardness(0.4f);
+        setHardness(1f);
+        setResistance(15f);
         //setSoundType(SoundType.METAL);
         setCreativeTab(tab);
         this.setDefaultState(blockState.getBaseState().withProperty(SNOW, EnumSnowRail.FALSE));
@@ -56,7 +57,7 @@ public class BlockNormalRailBase extends BlockRail {
 
     private void spawnSnowParticle(World world, double x, double y, double z) {
         float f = (float) MathHelper.ceil(1.0F);
-        double d0 = Math.min((double) (0.2F + f / 15.0F), 2.5D);
+        double d0 = Math.min(0.2F + f / 15.0F, 2.5D);
         int i = (int) (150.0D * d0);
         ((WorldServer) world).spawnParticle(EnumParticleTypes.BLOCK_DUST, x, y, z, i, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, Block.getStateId(Blocks.SNOW.getDefaultState()));
     }

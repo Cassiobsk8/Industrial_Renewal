@@ -3,7 +3,6 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.blocks.abstracts.BlockBasicElectricFence;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -30,17 +29,18 @@ public class BlockElectricFence extends BlockBasicElectricFence
     private static float SOUTHZ2 = 0.5625f;
     private static float WESTX1 = 0.4375f;
     private static float EASTX2 = 0.5625f;
-    private static float DOWNY1 = 0.0f;
-    private static float UPY2 = 1.5f;
-    private static float RUPY2 = 1.0f;
+    private static final float DOWNY1 = 0.0f;
+    private static final float UPY2 = 1.5f;
+    private static final float RUPY2 = 1.0f;
 
-    public BlockElectricFence(String name, CreativeTabs tab) {
+    public BlockElectricFence(String name, CreativeTabs tab)
+    {
         super(name, tab);
-        setSoundType(SoundType.METAL);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
     }
 
