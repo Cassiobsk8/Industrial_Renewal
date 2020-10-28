@@ -165,7 +165,7 @@ public class ModBlocks
     public static final BlockEotM andrbootEotM = new BlockEotM("eotm_andrboot", References.CREATIVE_IR_TAB);
     public static final BlockElectricPump electricPump = new BlockElectricPump("electric_pump", References.CREATIVE_IR_TAB);
 
-    public static final BlockPortableGenerator portableGenerator = new BlockPortableGenerator("portable_generator", References.CREAATIVE_IRWIP_TAB);
+    public static final BlockPortableGenerator portableGenerator = new BlockPortableGenerator("portable_generator", References.CREATIVE_IR_TAB);
     public static final BlockSteamBoiler steamBoiler = new BlockSteamBoiler("steam_boiler", References.CREATIVE_IR_TAB);
     public static final BlockSteamTurbine steamTurbine = new BlockSteamTurbine("steam_turbine", References.CREATIVE_IR_TAB);
     //public static final BlockMining mining = new BlockMining("mining", References.CREAATIVE_IRWIP_TAB);
