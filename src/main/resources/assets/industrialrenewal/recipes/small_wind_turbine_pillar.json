@@ -7,7 +7,7 @@
   ],
   "key": {
     "G": {
-      "item": "industrialrenewal:fluid_gauge"
+      "item": "industrialrenewal:energy_level"
     },
     "S": {
       "item": "industrialrenewal:catwalk_steel_pillar"
