@@ -20,7 +20,7 @@ public class TileEntityWindTurbinePillar extends TileEntityEnergyCable
     private final VoltsEnergyContainer dummyEnergyContainer;
 
     private float amount;//For Lerp
-    private int oldOutPut = -1;
+    private final int oldOutPut = -1;
 
     private EnumFacing facing;
 
@@ -132,18 +132,21 @@ public class TileEntityWindTurbinePillar extends TileEntityEnergyCable
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        return (capability == CapabilityEnergy.ENERGY && (facing == EnumFacing.UP || isBase())) || super.hasCapability(capability, facing);
+        return capability == CapabilityEnergy.ENERGY && (facing == EnumFacing.UP || isBase);
     }
 
     @Override
     @Nullable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
-        if (capability == CapabilityEnergy.ENERGY && (facing == EnumFacing.UP))
-            return CapabilityEnergy.ENERGY.cast(getMaster().energyContainer);
-        if (capability == CapabilityEnergy.ENERGY && (isBase()))
-            return CapabilityEnergy.ENERGY.cast(dummyEnergyContainer);
-        return super.getCapability(capability, facing);
+        if (capability == CapabilityEnergy.ENERGY)
+        {
+            if (facing == EnumFacing.UP)
+                return CapabilityEnergy.ENERGY.cast(getMaster().energyContainer);
+            else if (isBase)
+                return CapabilityEnergy.ENERGY.cast(dummyEnergyContainer);
+        }
+        return null;
     }
 
     @Override
