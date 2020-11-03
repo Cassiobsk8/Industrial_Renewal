@@ -17,21 +17,21 @@ public class IRSoundRegister
             BLOCK_CATWALKGATE_OPEN, BLOCK_CATWALKGATE_CLOSE, EFFECT_SHOCK, DISC_1, BOOK_FLIP, MOTOR_ROTATION, PUMP_ROTATION,
             PUMP_START, LATHE, LATHE_STOP, GENERATOR;
 
-    public static ResourceLocation PUMP_ROTATION_RESOURCEL = new ResourceLocation(References.MODID, "pump_rotation");
-    public static ResourceLocation TILEENTITY_TRAINHORN_RESOURCEL = new ResourceLocation(References.MODID, "railroad.train_horn");
-    public static ResourceLocation TILEENTITY_VALVE_CHANGE_RESOURCEL = new ResourceLocation(References.MODID, "valve");
-    public static ResourceLocation TILEENTITY_ALARM_RESOURCEL = new ResourceLocation(References.MODID, "modern_alarm");
-    public static ResourceLocation ITEM_DRILL_RESOURCEL = new ResourceLocation(References.MODID, "drill");
-    public static ResourceLocation BLOCK_CATWALKGATE_OPEN_RESOURCEL = new ResourceLocation(References.MODID, "gate_opening");
-    public static ResourceLocation BLOCK_CATWALKGATE_CLOSE_RESOURCEL = new ResourceLocation(References.MODID, "gate_closing");
-    public static ResourceLocation EFFECT_SHOCK_RESOURCEL = new ResourceLocation(References.MODID, "spark");
-    public static ResourceLocation DISC_1_RESOURCEL = new ResourceLocation(References.MODID, "music.visager_royal_entrance");
-    public static ResourceLocation BOOK_FLIP_RESOURCEL = new ResourceLocation(References.MODID, "book_flip");
-    public static ResourceLocation MOTOR_ROTATION_RESOURCEL = new ResourceLocation(References.MODID, "motor_rotation");
-    public static ResourceLocation PUMP_START_RESOURCEL = new ResourceLocation(References.MODID, "pump_start");
-    public static ResourceLocation LATHE_RESOURCEL = new ResourceLocation(References.MODID, "lathe");
-    public static ResourceLocation LATHE_STOP_RESOURCEL = new ResourceLocation(References.MODID, "lathe_off");
-    public static ResourceLocation GENERATOR_RESOURCEL = new ResourceLocation(References.MODID, "port_generator");
+    public static final ResourceLocation PUMP_ROTATION_RESOURCEL = new ResourceLocation(References.MODID, "pump_rotation");
+    public static final ResourceLocation TILEENTITY_TRAINHORN_RESOURCEL = new ResourceLocation(References.MODID, "railroad.train_horn");
+    public static final ResourceLocation TILEENTITY_VALVE_CHANGE_RESOURCEL = new ResourceLocation(References.MODID, "valve");
+    public static final ResourceLocation TILEENTITY_ALARM_RESOURCEL = new ResourceLocation(References.MODID, "modern_alarm");
+    public static final ResourceLocation ITEM_DRILL_RESOURCEL = new ResourceLocation(References.MODID, "drill");
+    public static final ResourceLocation BLOCK_CATWALKGATE_OPEN_RESOURCEL = new ResourceLocation(References.MODID, "gate_opening");
+    public static final ResourceLocation BLOCK_CATWALKGATE_CLOSE_RESOURCEL = new ResourceLocation(References.MODID, "gate_closing");
+    public static final ResourceLocation EFFECT_SHOCK_RESOURCEL = new ResourceLocation(References.MODID, "spark");
+    public static final ResourceLocation DISC_1_RESOURCEL = new ResourceLocation(References.MODID, "music.visager_royal_entrance");
+    public static final ResourceLocation BOOK_FLIP_RESOURCEL = new ResourceLocation(References.MODID, "book_flip");
+    public static final ResourceLocation MOTOR_ROTATION_RESOURCEL = new ResourceLocation(References.MODID, "motor_rotation");
+    public static final ResourceLocation PUMP_START_RESOURCEL = new ResourceLocation(References.MODID, "pump_start");
+    public static final ResourceLocation LATHE_RESOURCEL = new ResourceLocation(References.MODID, "lathe");
+    public static final ResourceLocation LATHE_STOP_RESOURCEL = new ResourceLocation(References.MODID, "lathe_off");
+    public static final ResourceLocation GENERATOR_RESOURCEL = new ResourceLocation(References.MODID, "port_generator");
 
     public static void registerSounds()
     {
