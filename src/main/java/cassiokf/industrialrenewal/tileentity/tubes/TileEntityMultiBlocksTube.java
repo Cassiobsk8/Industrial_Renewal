@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Map;
@@ -28,12 +27,6 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     boolean firstTick = false;
     protected boolean inUse = false;
     private boolean startBreaking;
-
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
-    {
-        return oldState.getBlock() != newState.getBlock();
-    }
 
     @Override
     public void update()

@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.tileentity.tubes;
 
 import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
 import cassiokf.industrialrenewal.blocks.pipes.BlockFluidPipe;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.util.Utils;
@@ -29,11 +30,11 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
     @Override
     public void update()
     {
-        if (!firstTick)
-        {
-            firstTick = true;
-            refreshConnections();
-        }
+        //if (!firstTick)
+        //{
+        //    firstTick = true;
+        //    refreshConnections();
+        //}
     }
 
     public boolean onBlockActivated(EntityPlayer player, ItemStack stack)
@@ -170,6 +171,7 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
 
     public void refreshConnections()
     {
+        if (IRConfig.MainConfig.Main.debugMessages) System.out.println("Refresh connections at" + pos);
         List<TileEntityMultiBlocksTube> connectedCables = new ArrayList<>();
         List<TileEntityCableTray> cableTrayList = new ArrayList<>();
         Stack<TileEntityCableTray> traversingCables = new Stack<>();
