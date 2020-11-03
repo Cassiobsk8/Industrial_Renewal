@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.tileentity.railroad;
 
 import cassiokf.industrialrenewal.blocks.BlockChunkLoader;
 import cassiokf.industrialrenewal.blocks.railroad.BlockCargoLoader;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityMinecart;
@@ -27,7 +28,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
             TileEntityCargoLoader.this.sync();
         }
     };
-    private int itemsPerTick = 16;
+    private final int itemsPerTick = IRConfig.MainConfig.Railroad.maxLoaderItemPerTick;
 
     private int intUnloadActivity = 0;
     private boolean checked = false;
@@ -70,7 +71,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
             {
                 if (isUnload()) //From cart to inventory
                 {
-                    if (Utils.moveItemsBetweenInventories(cartCapability, inventory))
+                    if (Utils.moveItemsBetweenInventories(cartCapability, inventory, itemsPerTick))
                     {
                         noActivity = 0;
                         intUnloadActivity = 0;

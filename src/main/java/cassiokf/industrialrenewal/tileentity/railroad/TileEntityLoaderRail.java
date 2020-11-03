@@ -1,6 +1,8 @@
 package cassiokf.industrialrenewal.tileentity.railroad;
 
 import cassiokf.industrialrenewal.blocks.railroad.BlockRailFacing;
+import cassiokf.industrialrenewal.entity.EntityTenderBase;
+import cassiokf.industrialrenewal.entity.LocomotiveBase;
 import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
@@ -56,16 +58,18 @@ public class TileEntityLoaderRail extends TEBase
 
     private int GetCartInvType(World world, BlockPos pos, IBlockState state, EntityMinecart cart)
     {
+        if (cart instanceof EntityTenderBase || cart instanceof LocomotiveBase) return 0;
         EnumFacing facing = state.getValue(BlockRailFacing.FACING);
         TileEntity leftTE = world.getTileEntity(pos.offset(facing.rotateYCCW()));
         TileEntity rightTE = world.getTileEntity(pos.offset(facing.rotateY()));
-        boolean itemCapability = cart.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
-        boolean fluidCapability = cart.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP);
+
         int type = 0;
-        if (itemCapability && (leftTE instanceof TileEntityCargoLoader || rightTE instanceof TileEntityCargoLoader))
+        if (cart.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+                && (leftTE instanceof TileEntityCargoLoader || rightTE instanceof TileEntityCargoLoader))
         {
             type = 1;
-        } else if (fluidCapability && (leftTE instanceof TileEntityFluidLoader || rightTE instanceof TileEntityFluidLoader))
+        } else if (cart.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)
+                && (leftTE instanceof TileEntityFluidLoader || rightTE instanceof TileEntityFluidLoader))
         {
             type = 2;
         }

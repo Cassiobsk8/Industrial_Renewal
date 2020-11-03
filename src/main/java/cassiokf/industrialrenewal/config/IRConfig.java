@@ -81,6 +81,9 @@ public class IRConfig {
         @Config.RequiresMcRestart
         public static final SubCategoryRecipes Recipes = new SubCategoryRecipes();
 
+        @Config.Comment("Railroad Configurations")
+        public static final SubCategoryRailroad Railroad = new SubCategoryRailroad();
+
         public static class SubCategoryMain
         {
             @Config.Comment("Debug messages on log")
@@ -267,6 +270,12 @@ public class IRConfig {
 
             @Config.Comment("Sponge iron smelt into IndR Steel ingot? (default false)")
             public boolean spongeDefaultIngotSteel = false;
+        }
+
+        public static class SubCategoryRailroad
+        {
+            @Config.Comment("Cart Item Loader items per Tick (default: 4)")
+            public int maxLoaderItemPerTick = 4;
         }
     }
 }
