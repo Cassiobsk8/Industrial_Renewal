@@ -11,7 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -55,19 +54,6 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
     };
     private float rBackTick;
     private EnumFacing facing;
-
-    public static void dropInventoryItems(World worldIn, BlockPos pos, ItemStackHandler inventory)
-    {
-        for (int i = 0; i < 3; ++i)
-        {
-            ItemStack itemstack = inventory.getStackInSlot(i);
-
-            if (!itemstack.isEmpty())
-            {
-                Utils.spawnItemStack(worldIn, pos, itemstack);
-            }
-        }
-    }
 
     @Override
     public void update()
@@ -304,7 +290,7 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
 
     public void dropInventory()
     {
-        dropInventoryItems(world, pos, inventory);
+        Utils.dropInventoryItems(world, pos, inventory);
     }
 
     public int getMode()
@@ -373,5 +359,10 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
         if (state.getBlock() instanceof BlockBulkConveyor)
             return facing = state.getValue(BlockBulkConveyor.FACING);
         return EnumFacing.NORTH;
+    }
+
+    public void setFacing(EnumFacing facing)
+    {
+        this.facing = facing;
     }
 }

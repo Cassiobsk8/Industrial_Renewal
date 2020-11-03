@@ -255,6 +255,13 @@ public class BlockBulkConveyor extends BlockHorizontalFacing
     @Override
     public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
+        TileEntity te = world.getTileEntity(pos);
+        if (te instanceof TileEntityBulkConveyor && super.rotateBlock(world, pos, axis))
+        {
+            EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+            ((TileEntityBulkConveyor) te).setFacing(facing);
+            return true;
+        }
         return false;
     }
 
