@@ -15,7 +15,7 @@ public class TESRSolarPanelFrame extends TESRBase<TileEntitySolarPanelFrame>
         {
             EnumFacing facing = te.getBlockFacing();
             doTheMath(facing, x, z, 0.4, 0);
-            render3dItemRotatable(facing, te.getWorld(), xPos, y + 0.45f, zPos, te.getPanel(), 4, false, true, 22.5f, 1, 0, 0, false);
+            render3dItem(facing, te.getWorld(), xPos, y + 0.45f, zPos, te.getPanel(), 4, false, 22.5f, 1, 0, 0);
         }
     }
 }

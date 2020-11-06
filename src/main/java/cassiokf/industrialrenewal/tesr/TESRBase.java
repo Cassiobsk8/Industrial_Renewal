@@ -61,7 +61,7 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
     /**
      * x = side / y = up / z = front
      */
-    public void renderText(EnumFacing facing, double x, double y, double z, String st, float scale)
+    public static void renderText(EnumFacing facing, double x, double y, double z, String st, float scale)
     {
 
         GlStateManager.pushMatrix();
@@ -77,22 +77,27 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         GlStateManager.popMatrix();
     }
 
-    public ItemStack getIndicator(boolean value)
+    public static ItemStack getIndicator(boolean value)
     {
         return value ? indicator_on : indicator_off;
     }
 
-    public ItemStack getSwitch(boolean value)
+    public static ItemStack getSwitch(boolean value)
     {
         return value ? switch_on : switch_off;
     }
 
-    public void render3dItem(EnumFacing facing, World world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight)
+    public static void render3dItem(EnumFacing facing, World world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight)
     {
-        render3dItemRotatable(facing, world, x, y, z, stack, scale, disableLight, false, 0, 0, 0, 0, false);
+        render3dItem(facing, world, x, y, z, stack, scale, disableLight, false, 0, 0, 0, 0, false, false);
     }
 
-    public void render3dItemRotatable(EnumFacing facing, World world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight, boolean applyRotation, float rotation, float rX, float rY, float rZ, boolean rotateHorizontal)
+    public static void render3dItem(EnumFacing facing, World world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight, float rotation, float rX, float rY, float rZ)
+    {
+        render3dItem(facing, world, x, y, z, stack, scale, disableLight, true, rotation, rX, rY, rZ, false, false);
+    }
+
+    public static void render3dItem(EnumFacing facing, World world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight, boolean applyRotation, float rotation, float rX, float rY, float rZ, boolean rotateHorizontal, boolean rotateVertical)
     {
         GlStateManager.enableRescaleNormal();
         GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
@@ -105,7 +110,7 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         rotateAccordingly(facing);
         GlStateManager.scale(scale, scale, scale);
         if (rotateHorizontal) GlStateManager.rotate(90, 1, 0, 0);
-
+        if (rotateVertical) GlStateManager.rotate(90, 0, 1, 0);
         if (applyRotation) GlStateManager.rotate(rotation, rX, rY, rZ);
 
         IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
@@ -120,7 +125,7 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         GlStateManager.disableBlend();
     }
 
-    public void renderBarLevel(EnumFacing facing, double x, double y, double z, float fill, float scale)
+    public static void renderBarLevel(EnumFacing facing, double x, double y, double z, float fill, float scale)
     {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
@@ -133,7 +138,7 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
     /**
      * x = side / y = up / z = front
      */
-    public void renderPointer(EnumFacing facing, double x, double y, double z, float angle, ItemStack pointer, float scale)
+    public static void renderPointer(EnumFacing facing, double x, double y, double z, float angle, ItemStack pointer, float scale)
     {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
@@ -145,7 +150,7 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         GlStateManager.popMatrix();
     }
 
-    public void rotateAccordingly(EnumFacing facing)
+    public static void rotateAccordingly(EnumFacing facing)
     {
         switch (facing)
         {
@@ -164,7 +169,7 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         }
     }
 
-    public float smoothAnimation(float rotation, float oldRotation, float partialTick, boolean invert)
+    public static float smoothAnimation(float rotation, float oldRotation, float partialTick, boolean invert)
     {
         //shift = shiftOld + (shift - shiftOld) * partialTick
         float r = oldRotation + (rotation - oldRotation) * partialTick;

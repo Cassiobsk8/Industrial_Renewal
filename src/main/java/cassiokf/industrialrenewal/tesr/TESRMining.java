@@ -16,7 +16,7 @@ public class TESRMining extends TESRBase<TileEntityMining>
             EnumFacing facing = te.getMasterFacing();
             if (te.hasDrill())
             {
-                render3dItemRotatable(facing, te.getWorld(), x + 0.5, y - 0.9f - te.getSlide(), z + 0.5, te.getDrill(), 4.5f, false, true, te.getRotation(), 0, 1, 0, false);
+                render3dItem(facing, te.getWorld(), x + 0.5, y - 0.9f - te.getSlide(), z + 0.5, te.getDrill(), 4.5f, false, te.getRotation(), 0, 1, 0);
             }
 
             doTheMath(facing, x, z, 1.95, -1.14);

@@ -1,8 +1,10 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockBulkConveyor;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import cassiokf.industrialrenewal.util.Utils;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -23,7 +25,7 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
     public static final int frontNumber = 2;
     public static final int middleNumber = 1;
     public static final int backNumber = 0;
-    private final int tickSpeed = 4;
+    private static final int tickSpeed = 4;
     private int frontTick;
     private int middleTick;
     private int backTick;
@@ -49,6 +51,7 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
         @Override
         protected void onContentsChanged(int slot)
         {
+            TileEntityBulkConveyor.this.markDirty();
             TileEntityBulkConveyor.this.itemReceived(slot);
         }
     };
@@ -58,16 +61,18 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
     @Override
     public void update()
     {
+        boolean moved = false;
         //FRONT
         if (!inventory.getStackInSlot(frontNumber).isEmpty())
         {
             if (frontTick >= tickSpeed)
             {
-                updateFrontStack();
+                moved = updateFrontStack();
             }
             if (frontTick < tickSpeed) frontTick++;
             oldFrontTick = rFrontTick;
-            rFrontTick = Utils.normalize((float) frontTick, 0.1f, (float) tickSpeed);
+            rFrontTick = Utils.normalize((float) frontTick, 0, (float) tickSpeed);
+            if (moved) return;
         } else
         {
             oldFrontTick = 0;
@@ -78,11 +83,12 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
         {
             if (middleTick >= tickSpeed)
             {
-                updateMiddleStack();
+                moved = updateMiddleStack();
             }
             if (middleTick < tickSpeed) middleTick++;
             oldMiddleTick = rMiddleTick;
             rMiddleTick = Utils.normalize((float) middleTick, 0, (float) tickSpeed);
+            if (moved) return;
         }
         //BACK
         if (!inventory.getStackInSlot(backNumber).isEmpty())
@@ -95,27 +101,25 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
             oldBackTick = rBackTick;
             rBackTick = Utils.normalize((float) backTick, 0, (float) tickSpeed);
         }
-        sync();
     }
 
     public void itemReceived(int slot)
     {
-        ItemStack stack = inventory.getStackInSlot(slot);
-        if (!stack.isEmpty())
+        if (slot == frontNumber)
         {
-            if (slot == frontNumber)
-            {
-                frontTick = 0;
-                rFrontTick = 0;
-            } else if (slot == middleNumber)
-            {
-                middleTick = 0;
-                rMiddleTick = 0;
-            } else if (slot == backNumber)
-            {
-                backTick = 0;
-                rMiddleTick = 0;
-            }
+            frontTick = 0;
+            oldFrontTick = 0;
+            rFrontTick = 0;
+        } else if (slot == middleNumber)
+        {
+            middleTick = 0;
+            oldMiddleTick = 0;
+            rMiddleTick = 0;
+        } else if (slot == backNumber)
+        {
+            backTick = 0;
+            oldBackTick = 0;
+            rMiddleTick = 0;
         }
         sync();
     }
@@ -152,7 +156,7 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
                         }
                     }
                 }
-            } else if (world.getBlockState(frontPos).getBlock().isAir(world.getBlockState(frontPos), world, frontPos))
+            } else if (world.getBlockState(frontPos).getMaterial() == Material.AIR)
             {
                 dropFrontItem(facing, frontPositionItem, frontPos);
                 return true;
@@ -174,17 +178,15 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
         return false;
     }
 
-    private boolean updateBackStack()
+    private void updateBackStack()
     {
-        if (world.isRemote) return false;
+        if (world.isRemote) return;
         ItemStack backPositionItem = inventory.getStackInSlot(backNumber);
         ItemStack MiddlePositionItem = inventory.getStackInSlot(middleNumber);
         if (!backPositionItem.isEmpty() && MiddlePositionItem.isEmpty())
         {
             moveItemInternally(backNumber, middleNumber);
-            return true;
         }
-        return false;
     }
 
     public float getStackOffset(int slot, boolean old)
@@ -364,5 +366,11 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
     public void setFacing(EnumFacing facing)
     {
         this.facing = facing;
+    }
+
+    @Override
+    public double getMaxRenderDistanceSquared()
+    {
+        return super.getMaxRenderDistanceSquared() * IRConfig.MainConfig.Render.conveyorsItemsRenderMult;
     }
 }

@@ -261,6 +261,9 @@ public class IRConfig {
 
             @Config.Comment("The multiplier for the Solar pane render distance on frames (Default: 2D)")
             public double frameSolarPanelRenderMult = 2.0D;
+
+            @Config.Comment("The multiplier for the Conveyors items render distance (Default: 1D)")
+            public double conveyorsItemsRenderMult = 1.0D;
         }
 
         public static class SubCategoryRecipes
