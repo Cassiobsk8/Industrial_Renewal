@@ -15,8 +15,8 @@ import java.awt.*;
 @SideOnly(Side.CLIENT)
 public class TESRWire extends TESRBase<TileEntityHVConnectorBase>
 {
-    static Color c = new Color(56, 56, 56, 255);
-    static Color c2 = new Color(43, 43, 43, 255);
+    private static final Color c = new Color(56, 56, 56, 255);
+    private static final Color c2 = new Color(43, 43, 43, 255);
 
     public static void renderWire(BlockPos startPos, BlockPos endTE, double x, double y, double z)
     {

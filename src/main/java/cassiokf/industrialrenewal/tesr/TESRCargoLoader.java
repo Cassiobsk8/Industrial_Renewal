@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TESRCargoLoader extends TESRBase<TileEntityCargoLoader>
 {
-    private final ItemStack arm = new ItemStack(ModItems.tambor);
+    private static final ItemStack arm = new ItemStack(ModItems.tambor);
 
     @Override
     public void render(TileEntityCargoLoader te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)

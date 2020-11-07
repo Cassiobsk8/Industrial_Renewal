@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TESRFluidLoader extends TESRBase<TileEntityFluidLoader>
 {
-    private final ItemStack arm = new ItemStack(ModItems.fluidLoaderArm);
+    private static final ItemStack arm = new ItemStack(ModItems.fluidLoaderArm);
 
     @Override
     public void render(TileEntityFluidLoader te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)

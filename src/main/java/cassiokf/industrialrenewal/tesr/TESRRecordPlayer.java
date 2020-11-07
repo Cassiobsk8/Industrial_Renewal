@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TESRRecordPlayer extends TESRBase<TileEntityRecordPlayer>
 {
-    private final ItemStack discR = new ItemStack(ModItems.discR);
+    private static final ItemStack discR = new ItemStack(ModItems.discR);
 
     @Override
     public void render(TileEntityRecordPlayer te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)

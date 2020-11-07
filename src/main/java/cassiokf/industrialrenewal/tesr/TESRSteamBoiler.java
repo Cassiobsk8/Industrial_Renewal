@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TESRSteamBoiler extends TESRBase<TileEntitySteamBoiler>
 {
-    private final ItemStack fire = new ItemStack(ModItems.fire);
+    private static final ItemStack fire = new ItemStack(ModItems.fire);
 
     @Override
     public void render(TileEntitySteamBoiler te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
