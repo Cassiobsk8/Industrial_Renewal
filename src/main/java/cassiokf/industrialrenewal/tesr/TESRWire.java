@@ -21,6 +21,7 @@ public class TESRWire extends TESRBase<TileEntityHVConnectorBase>
     public static void renderWire(BlockPos startPos, BlockPos endTE, double x, double y, double z)
     {
         if (startPos.getY() > endTE.getY()) return;
+        boolean sameLevel = startPos.getY() == endTE.getY();
 
         y -= 0.97D;
         x += 0.5D;
@@ -51,25 +52,28 @@ public class TESRWire extends TESRBase<TileEntityHVConnectorBase>
 
         for (int j = 0; j <= i; ++j)
         {
-            float f = Utils.normalize(c.getRed(), 0, 255);
-            float f1 = Utils.normalize(c.getGreen(), 0, 255);
-            float f2 = Utils.normalize(c.getBlue(), 0, 255);
-
-            if (j % 2 == 0)
+            if (!sameLevel || j < (i / 2) + 1)
             {
-                f = Utils.normalize(c2.getRed(), 0, 255);
-                f1 = Utils.normalize(c2.getGreen(), 0, 255);
-                f2 = Utils.normalize(c2.getBlue(), 0, 255);
+                float f = Utils.normalize(c.getRed(), 0, 255);
+                float f1 = Utils.normalize(c.getGreen(), 0, 255);
+                float f2 = Utils.normalize(c.getBlue(), 0, 255);
+
+                if (j % 2 == 0)
+                {
+                    f = Utils.normalize(c2.getRed(), 0, 255);
+                    f1 = Utils.normalize(c2.getGreen(), 0, 255);
+                    f2 = Utils.normalize(c2.getBlue(), 0, 255);
+                }
+
+                float f3 = (float) j / 24.0F;
+                double v = (d14 * (f3 * f3 + f3)) * 0.5D;
+                double b = ((24.0F - j) / 18.0F + 0.125F);
+
+                bufferbuilder.pos(x + d13 * f3, y + v + b, z + d15 * f3)
+                        .color(f, f1, f2, c.getTransparency()).endVertex();
+                bufferbuilder.pos(x + d13 * f3 + 0.025D, y + v + b + 0.025D, z + d15 * f3)
+                        .color(f, f1, f2, c.getTransparency()).endVertex();
             }
-
-            float f3 = (float) j / 24.0F;
-            double v = (d14 * (f3 * f3 + f3)) * 0.5D;
-            double b = ((24.0F - j) / 18.0F + 0.125F);
-
-            bufferbuilder.pos(x + d13 * f3, y + v + b, z + d15 * f3)
-                    .color(f, f1, f2, c.getTransparency()).endVertex();
-            bufferbuilder.pos(x + d13 * f3 + 0.025D, y + v + b + 0.025D, z + d15 * f3)
-                    .color(f, f1, f2, c.getTransparency()).endVertex();
         }
 
         tessellator.draw();
@@ -77,25 +81,28 @@ public class TESRWire extends TESRBase<TileEntityHVConnectorBase>
 
         for (int k = 0; k <= i; ++k)
         {
-            float f4 = Utils.normalize(c.getRed(), 0, 255);
-            float f5 = Utils.normalize(c.getGreen(), 0, 255);
-            float f6 = Utils.normalize(c.getBlue(), 0, 255);
-
-            if (k % 2 == 0)
+            if (!sameLevel || k < (i / 2) + 1)
             {
-                f4 = Utils.normalize(c2.getRed(), 0, 255);
-                f5 = Utils.normalize(c2.getGreen(), 0, 255);
-                f6 = Utils.normalize(c2.getBlue(), 0, 255);
+                float f4 = Utils.normalize(c.getRed(), 0, 255);
+                float f5 = Utils.normalize(c.getGreen(), 0, 255);
+                float f6 = Utils.normalize(c.getBlue(), 0, 255);
+
+                if (k % 2 == 0)
+                {
+                    f4 = Utils.normalize(c2.getRed(), 0, 255);
+                    f5 = Utils.normalize(c2.getGreen(), 0, 255);
+                    f6 = Utils.normalize(c2.getBlue(), 0, 255);
+                }
+
+                float f7 = (float) k / 24.0F;
+                double v = d14 * (f7 * f7 + f7) * 0.5D;
+                double b = ((24.0F - k) / 18.0F + 0.125F);
+
+                bufferbuilder.pos(x + d13 * f7, y + v + b + 0.025D, z + d15 * f7)
+                        .color(f4, f5, f6, c.getTransparency()).endVertex();
+                bufferbuilder.pos(x + d13 * f7 + 0.025D, y + v + b, z + d15 * f7 + 0.025D)
+                        .color(f4, f5, f6, c.getTransparency()).endVertex();
             }
-
-            float f7 = (float) k / 24.0F;
-            double v = d14 * (f7 * f7 + f7) * 0.5D;
-            double b = ((24.0F - k) / 18.0F + 0.125F);
-
-            bufferbuilder.pos(x + d13 * f7, y + v + b + 0.025D, z + d15 * f7)
-                    .color(f4, f5, f6, c.getTransparency()).endVertex();
-            bufferbuilder.pos(x + d13 * f7 + 0.025D, y + v + b, z + d15 * f7 + 0.025D)
-                    .color(f4, f5, f6, c.getTransparency()).endVertex();
         }
 
         tessellator.draw();

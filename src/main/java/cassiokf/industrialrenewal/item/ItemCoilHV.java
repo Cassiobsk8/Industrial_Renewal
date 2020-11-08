@@ -40,7 +40,8 @@ public class ItemCoilHV extends ItemBase
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (!worldIn.isRemote)
+        if (worldIn.isRemote) player.swingArm(hand);
+        else
         {
             if (hand.equals(EnumHand.MAIN_HAND))
             {
