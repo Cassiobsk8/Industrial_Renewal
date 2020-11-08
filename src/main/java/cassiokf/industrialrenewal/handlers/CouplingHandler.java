@@ -55,8 +55,8 @@ public class CouplingHandler
 
     private static void applyDrag(EntityMinecart cart)
     {
-        cart.motionX *= 0.96;
-        cart.motionZ *= 0.96;
+        cart.motionX *= 0.99;
+        cart.motionZ *= 0.99;
     }
 
     private static boolean updateCartVelocity(EntityMinecart cart1, EnumCouplingType ConnectionType)
@@ -110,7 +110,7 @@ public class CouplingHandler
 
     private static void applySpringForce(EntityMinecart cart1, EntityMinecart cart2, double distance, Vector2d normalized)
     {
-        double stretch = 0.8F * (distance - getDistanceBetween(cart1, cart2));
+        double stretch = 1.5F * (distance - getDistanceBetween(cart1, cart2));
 
         double springX = stretch * normalized.getX();
         double springZ = stretch * normalized.getY();
