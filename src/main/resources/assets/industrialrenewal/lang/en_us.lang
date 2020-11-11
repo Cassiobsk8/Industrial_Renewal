@@ -44,6 +44,7 @@ item.industrialrenewal.coil_hv.name=Ultra-HV Wire Coil
 item.industrialrenewal.drill_steel.name=Steel Drill
 item.industrialrenewal.drill_diamond.name=Diamond Drill
 item.industrialrenewal.drill_deep.name=Deep Drill
+item.industrialrenewal.prospecting_pan.name=Prospecting Pan
 
 #Discs
 item.industrialrenewal.record_royal_entrance.name=Music Disc

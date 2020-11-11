@@ -1,0 +1,20 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "particle": "blocks/planks_spruce"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "broken": 0
+      },
+      "model": "industrialrenewal:item/prospecting_pan2"
+    },
+    {
+      "predicate": {
+        "broken": 1
+      },
+      "model": "industrialrenewal:item/prospecting_pan_full"
+    }
+  ]
+}
