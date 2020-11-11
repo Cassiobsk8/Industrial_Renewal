@@ -1,0 +1,105 @@
+package cassiokf.industrialrenewal.item;
+
+import cassiokf.industrialrenewal.tileentity.TEDeepVein;
+import cassiokf.industrialrenewal.util.MachinesUtils;
+import cassiokf.industrialrenewal.util.Utils;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+public class ItemProspectingPan extends ItemBase
+{
+    public ItemProspectingPan(String name, CreativeTabs tab)
+    {
+        super(name, tab);
+        this.maxStackSize = 1;
+        this.setMaxDamage(17);
+        setContainerItem(this);
+        //this.addPropertyOverride(new ResourceLocation("broken"), new IItemPropertyGetter()
+        //{
+        //    @SideOnly(Side.CLIENT)
+        //    public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
+        //    {
+        //        return ItemProspectingPan.isEmpty(stack) ? 0.0F : 1.0F;
+        //    }
+        //});
+    }
+
+    public static boolean isEmpty(ItemStack stack)
+    {
+        return stack.getItemDamage() == 0;
+    }
+
+    @Override
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        ItemStack stack = player.getHeldItem(hand);
+        if (worldIn.provider.getDimension() == 0 && getDamage(stack) == 0)
+        {
+            if (!worldIn.isRemote) stack.setItemDamage(1);
+            return EnumActionResult.SUCCESS;
+        }
+        return EnumActionResult.FAIL;
+    }
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
+    {
+        ItemStack stack = playerIn.getHeldItem(handIn);
+        if (worldIn.provider.getDimension() == 0 && stack.getItemDamage() > 0)
+        {
+            playerIn.swingArm(handIn);
+            if (!worldIn.isRemote) prospect(worldIn, playerIn, handIn, stack);
+            return new ActionResult<>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
+        }
+        return super.onItemRightClick(worldIn, playerIn, handIn);
+    }
+
+    private void prospect(World worldIn, EntityPlayer playerIn, EnumHand hand, ItemStack stack)
+    {
+        stack.damageItem(1, playerIn);
+        if (stack.getItemDamage() >= 17)
+        {
+            TEDeepVein vein = MachinesUtils.getDeepVein(worldIn, playerIn.getPosition());
+            ItemStack stackv = vein != null ? vein.getOre(0, true) : ItemStack.EMPTY;
+            if (vein != null) stackv.setCount(vein.getOreQuantity());
+
+            boolean hasVein = !stackv.isEmpty();
+            String msg;
+            if (hasVein) msg = stackv.getDisplayName()
+                    + " "
+                    + I18n.format("info.industrialrenewal.prospecting_found")
+                    + " "
+                    + stackv.getCount();
+            else msg = I18n.format("info.industrialrenewal.prospecting_notfound");
+
+            Utils.sendChatMessage(playerIn, msg);
+            stack.setItemDamage(0);
+        }
+    }
+
+    public static ItemStack copyStack(ItemStack stack, int n)
+    {
+        return new ItemStack(stack.getItem(), n, stack.getItemDamage());
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack stack)
+    {
+        int dmg = stack.getItemDamage();
+        if (dmg == getMaxDamage(stack))
+        {
+            return new ItemStack(stack.getItem(), 0, getMaxDamage(stack));
+        }
+        ItemStack tr = copyStack(stack, 1);
+        tr.setItemDamage(dmg + 1);
+        return tr;
+    }
+}

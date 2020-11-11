@@ -6,7 +6,10 @@ import cassiokf.industrialrenewal.util.MachinesUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -23,6 +26,16 @@ public class BlockDamGenerator extends BlockMultiBlockBase<TileEntityDamGenerato
     {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    {
+        tooltip.add(I18n.format("info.industrialrenewal.produces")
+                + ": "
+                + (TileEntityDamGenerator.maxGeneration)
+                + " FE/t");
+        super.addInformation(stack, player, tooltip, advanced);
     }
 
     @SideOnly(Side.CLIENT)

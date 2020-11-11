@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 
 public class ItemWindBlade extends ItemBase
 {
-    private static int maxDamage = IRConfig.MainConfig.Main.ironBladeDurability;
+    private static final int maxDamage = IRConfig.MainConfig.Main.ironBladeDurability;
 
     public ItemWindBlade(String name, CreativeTabs tab)
     {

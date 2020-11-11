@@ -11,6 +11,7 @@
     }
   },
   "result": {
-    "item": "industrialrenewal:cable_tray"
+    "item": "industrialrenewal:cable_tray",
+    "count": 2
   }
 }

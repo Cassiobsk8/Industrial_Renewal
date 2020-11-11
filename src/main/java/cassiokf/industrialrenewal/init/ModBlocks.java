@@ -168,7 +168,7 @@ public class ModBlocks
     public static final BlockPortableGenerator portableGenerator = new BlockPortableGenerator("portable_generator", References.CREATIVE_IR_TAB);
     public static final BlockSteamBoiler steamBoiler = new BlockSteamBoiler("steam_boiler", References.CREATIVE_IR_TAB);
     public static final BlockSteamTurbine steamTurbine = new BlockSteamTurbine("steam_turbine", References.CREATIVE_IR_TAB);
-    //public static final BlockMining mining = new BlockMining("mining", References.CREAATIVE_IRWIP_TAB);
+    public static final BlockMining mining = new BlockMining("mining", References.CREATIVE_IR_TAB);
     public static final BlockTransformerHV transformerHV = new BlockTransformerHV("transformer_hv", References.CREATIVE_IR_TAB);
     public static final BlockDamTurbine damTurbine = new BlockDamTurbine("dam_turbine", References.CREATIVE_IR_TAB);
     public static final BlockDamGenerator damGenerator = new BlockDamGenerator("dam_generator", References.CREATIVE_IR_TAB);
@@ -177,11 +177,13 @@ public class ModBlocks
 
     public static final BlockChunkLoader chunkLoader = new BlockChunkLoader("chunk_loader", References.CREATIVE_IR_TAB);
 
-    public static final BlockOreVein veinHematite = new BlockOreVein("orevein_hematite", References.CREAATIVE_IRWIP_TAB);
+    public static final BlockDeepVein deepVein = new BlockDeepVein("deep_vein", null);
+    public static final BlockOreVein veinHematite = new BlockOreVein("orevein_hematite", "oreIron", References.CREAATIVE_IRWIP_TAB);
 
     public static void register(IForgeRegistry<Block> registry)
     {
         registry.registerAll(
+                deepVein,
                 veinHematite,
                 blockHazard,
                 aisleHazard,
@@ -220,8 +222,6 @@ public class ModBlocks
                 steel_pillar,
                 columSteel,
                 braceSteel,
-                //Machines
-                latheMachine,
                 //Redstone
                 alarm,
                 entityDetector,
@@ -298,7 +298,8 @@ public class ModBlocks
                 //Machines
                 steamBoiler,
                 steamTurbine,
-                //mining,
+                latheMachine,
+                mining,
                 //Railroad
                 normalRail,
                 boosterRail,
@@ -324,7 +325,7 @@ public class ModBlocks
                 steamBlock
         );
 
-        GameRegistry.registerTileEntity(TileEntityOreVein.class, veinHematite.getRegistryName());
+        GameRegistry.registerTileEntity(TEDeepVein.class, deepVein.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityEnergySwitch.class, energySwitch.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityValvePipeLarge.class, valveLarge.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityEnergyCableLV.class, energyCableLV.getRegistryName());
@@ -368,7 +369,7 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileEntityFluidPipeGauge.class, fluidPipeGauge.getRegistryName());
         GameRegistry.registerTileEntity(TileEntitySteamBoiler.class, steamBoiler.getRegistryName());
         GameRegistry.registerTileEntity(TileEntitySteamTurbine.class, steamTurbine.getRegistryName());
-        //GameRegistry.registerTileEntity(TileEntityMining.class, mining.getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityMining.class, mining.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityTrash.class, trash.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityBunkBed.class, bunkBed.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityBunkerHatch.class, bunkerHatch.getRegistryName());
@@ -388,6 +389,7 @@ public class ModBlocks
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
         registry.registerAll(
+                deepVein.createItemBlock(),
                 veinHematite.createItemBlock(),
                 blockHazard.createItemBlock(),
                 aisleHazard.createItemBlock(),
@@ -486,7 +488,7 @@ public class ModBlocks
                 highPressurePipe.createItemBlock(),
                 steamBoiler.createItemBlock(),
                 steamTurbine.createItemBlock(),
-                //mining.createItemBlock(),
+                mining.createItemBlock(),
                 baseEotM.createItemBlock(),
                 andrbootEotM.createItemBlock(),
                 chunkLoader.createItemBlock(),
@@ -496,6 +498,7 @@ public class ModBlocks
     }
 
     public static void registerItemModels() {
+        deepVein.registerItemModel(Item.getItemFromBlock(deepVein));
         veinHematite.registerItemModel(Item.getItemFromBlock(veinHematite));
         blockHazard.registerItemModel(Item.getItemFromBlock(blockHazard));
         blockIndFloor.registerItemModel(Item.getItemFromBlock(blockIndFloor));
@@ -594,7 +597,7 @@ public class ModBlocks
         highPressurePipe.registerItemModel(Item.getItemFromBlock(highPressurePipe));
         steamBoiler.registerItemModel(Item.getItemFromBlock(steamBoiler));
         steamTurbine.registerItemModel(Item.getItemFromBlock(steamTurbine));
-        //mining.registerItemModel(Item.getItemFromBlock(mining));
+        mining.registerItemModel(Item.getItemFromBlock(mining));
         baseEotM.registerItemModel(Item.getItemFromBlock(baseEotM));
         andrbootEotM.registerItemModel(Item.getItemFromBlock(andrbootEotM));
         chunkLoader.registerItemModel(Item.getItemFromBlock(chunkLoader));
@@ -606,5 +609,6 @@ public class ModBlocks
     public static void registerOreDict()
     {
         steelBlock.initOreDict();
+        veinHematite.initOreDict();
     }
 }

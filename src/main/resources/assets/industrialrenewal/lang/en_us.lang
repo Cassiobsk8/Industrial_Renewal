@@ -41,6 +41,9 @@ item.industrialrenewal.firebox_fluid.name=Firebox for Liquid Fuel
 item.industrialrenewal.small_wind_blade.name=Wind Generator Blades
 item.industrialrenewal.chunk_hematite.name=Hematite Chunk
 item.industrialrenewal.coil_hv.name=Ultra-HV Wire Coil
+item.industrialrenewal.drill_steel.name=Steel Drill
+item.industrialrenewal.drill_diamond.name=Diamond Drill
+item.industrialrenewal.drill_deep.name=Deep Drill
 
 #Discs
 item.industrialrenewal.record_royal_entrance.name=Music Disc
@@ -163,6 +166,7 @@ tile.industrialrenewal.dam_outflow.name=Dam OutFlow
 tile.industrialrenewal.block_steel.name=Block of Steel
 tile.industrialrenewal.lathe.name=Lathe Machine
 tile.industrialrenewal.portable_generator.name=Portable Generator
+tile.industrialrenewal.mining.name=Mining Drill
 
 #Fluids
 fluid.steam=Steam
@@ -215,6 +219,7 @@ gui.jei.category.energyneeded=Energy Required:
 #Render
 render.industrialrenewal.energy=Energy
 render.industrialrenewal.fluid=Fluid
+render.industrialrenewal.coolant=Coolant
 render.industrialrenewal.drillheat=Drill Heat
 render.industrialrenewal.c=°C
 render.industrialrenewal.k=K
@@ -231,6 +236,9 @@ info.industrialrenewal.firebox=Firebox with appropriate fuel
 info.industrialrenewal.gutter=For each Roof in gutter's direction
 info.industrialrenewal.gutter2=when it is raining
 info.industrialrenewal.cartridges=Used in Fuse box
+info.industrialrenewal.drill=Drill
+info.industrialrenewal.prospecting_found=Deep vein found size:
+info.industrialrenewal.prospecting_notfound=No deep vein found
 
 #Book
 gui.industrialrenewal.railroad.category=Railroad

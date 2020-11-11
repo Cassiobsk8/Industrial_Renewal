@@ -30,7 +30,8 @@ public class BlockInfinityGenerator extends BlockBase
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
     {
         tooltip.add(I18n.format("info.industrialrenewal.produces")
-                + " 102400"
+                + " "
+                + Integer.MAX_VALUE
                 + " FE/t");
         tooltip.add("This is not a scam, believe me");
         super.addInformation(stack, player, tooltip, advanced);

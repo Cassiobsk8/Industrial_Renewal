@@ -8,8 +8,13 @@ import cassiokf.industrialrenewal.item.carts.*;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ModItems
 {
+    public static final List<Item> allOres = new ArrayList<>();
+    public static final List<Item> deepVeinOres = new ArrayList<>();
 
     public static final ItemOreDict ingotSteel = new ItemOreDict("ingot_steel", "ingotSteel", References.CREATIVE_IR_TAB);
     public static final ItemOreDict stickIron = new ItemOreDict("stick_iron", "stickIron", References.CREATIVE_IR_TAB);
@@ -75,10 +80,12 @@ public class ModItems
     public static final ItemFireBox fireBoxFluid = new ItemFireBox("firebox_fluid", 2, References.CREATIVE_IR_TAB);
 
     public static final ItemWindBlade windBlade = new ItemWindBlade("small_wind_blade", References.CREATIVE_IR_TAB);
-    //public static final ItemDrill drillSteel = new ItemDrill("drill_steel", References.CREAATIVE_IRWIP_TAB);
-    //public static final ItemDrill drillDiamond = new ItemDrill("drill_diamond", References.CREAATIVE_IRWIP_TAB);
+    public static final ItemDrill drillSteel = new ItemDrill("drill_steel", References.CREATIVE_IR_TAB, 400);
+    public static final ItemDrill drillDiamond = new ItemDrill("drill_diamond", References.CREATIVE_IR_TAB, 2000);
+    public static final ItemDrill drillDeep = new ItemDrill("drill_deep", References.CREATIVE_IR_TAB, 12000);
 
-    public static final ItemOre hematiteChunk = new ItemOre("chunk_hematite", "oreIron", References.CREAATIVE_IRWIP_TAB);
+    public static final ItemProspectingPan prospectingPan = new ItemProspectingPan("prospecting_pan", References.CREATIVE_IR_TAB);
+    public static final ItemOre hematiteChunk = new ItemOre("chunk_hematite", "oreIron", References.CREATIVE_IR_TAB);
 
     //public static final ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
 
@@ -86,6 +93,7 @@ public class ModItems
     {
         registry.registerAll(
                 hematiteChunk,
+                prospectingPan,
                 manual,
                 ingotSteel,
                 spongeIron,
@@ -129,8 +137,9 @@ public class ModItems
                 battery,
                 sMotor,
                 windBlade,
-                //drillSteel,
-                //drillDiamond,
+                drillSteel,
+                drillDiamond,
+                drillDeep,
                 fluidLoaderArm,
                 tambor,
                 cutter,
@@ -146,6 +155,7 @@ public class ModItems
 
     public static void registerModels() {
         hematiteChunk.registerItemModel();
+        prospectingPan.registerItemModel();
         ingotSteel.registerItemModel();
         spongeIron.registerItemModel();
         screwDrive.registerItemModel();
@@ -197,8 +207,9 @@ public class ModItems
         battery.registerItemModel();
         sMotor.registerItemModel();
         windBlade.registerItemModel();
-        //drillSteel.registerItemModel();
-        //drillDiamond.registerItemModel();
+        drillSteel.registerItemModel();
+        drillDiamond.registerItemModel();
+        drillDeep.registerItemModel();
     }
 
     public static void registerOreDict() {

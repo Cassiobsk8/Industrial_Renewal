@@ -20,7 +20,7 @@ public class FluidGenerator
             FluidGenerator.this.sync();
         }
     };
-    public int energyPerTick = IRConfig.MainConfig.Main.portableGeneratorEnergyPerTick;
+    public static int energyPerTick = IRConfig.MainConfig.Main.portableGeneratorEnergyPerTick;
     public final VoltsEnergyContainer energyStorage = new VoltsEnergyContainer(128, 128, energyPerTick)
     {
         @Override

@@ -1,9 +1,18 @@
 package cassiokf.industrialrenewal.config;
 
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.ModItems;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +50,59 @@ public class IRConfig {
         return fluidFuel;
     }
 
+    public static Map<String, Integer> getDeepVeinDefaultOres()
+    {
+        Map<String, Integer> list = new HashMap<>();
+        list.put("oreCoal", 60);
+        list.put("oreCopper", 40);
+        list.put("oreTin", 40);
+        list.put("oreIron", 30);
+        list.put("oreSilver", 20);
+        list.put("oreGold", 10);
+        list.put("oreRedstone", 6);
+        list.put("oreLapis", 6);
+        list.put("oreDiamond", 1);
+
+        return list;
+    }
+
+    public static void populateDeepVeinOres()
+    {
+        Map<String, Integer> map = MainConfig.Generation.deepVeinOres;
+        int i = 0;
+        for (String str : map.keySet())
+        {
+            if (OreDictionary.doesOreNameExist(str))
+            {
+                NonNullList<ItemStack> list = OreDictionary.getOres(str);
+                ItemStack stack = list.get(0).copy();
+                if (str.equals("oreIron")) stack = new ItemStack(ModBlocks.veinHematite);
+                if (!stack.isEmpty() && !ModItems.deepVeinOres.contains(stack.getItem()))
+                {
+                    placeItemXTimes(stack.getItem(), map.get(str));
+                    i++;
+                }
+            } else
+            {
+                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(str));
+                if (item != null && !ModItems.deepVeinOres.contains(item))
+                {
+                    placeItemXTimes(item, map.get(str));
+                    i++;
+                }
+            }
+        }
+        System.out.println(TextFormatting.GREEN + References.NAME + " Registered " + i + " DeepVein Variants");
+    }
+
+    private static void placeItemXTimes(Item item, int t)
+    {
+        for (int i = 0; i < t; i++)
+        {
+            ModItems.deepVeinOres.add(item);
+        }
+    }
+
     public static String[] waterTypesInit()
     {
         return new String[]{FluidRegistry.WATER.getName()};
@@ -69,6 +131,9 @@ public class IRConfig {
         @Config.Comment("Main")
         @Config.LangKey("gui.config.main_title")
         public static final SubCategoryMain Main = new SubCategoryMain();
+
+        @Config.Comment("World Generation")
+        public static final SubCategoryGen Generation = new SubCategoryGen();
 
         @Config.Comment("Sounds")
         public static final SubCategorySound Sounds = new SubCategorySound();
@@ -233,6 +298,28 @@ public class IRConfig {
 
             @Config.Comment("How much Energy the Lathe Machine will require for each tick (Default 128)")
             public int energyPerTickLatheMachine = 128;
+        }
+
+        public static class SubCategoryGen
+        {
+            @Config.Comment("Spawn Deep Vein (Default: true)")
+            public boolean spawnDeepVein = true;
+
+            @Config.Comment("Re-Generate Deep Vein in the world 'will be disabled automatically' 'Need at least 1 new chunck to be generated' (Default: false)")
+            public boolean regenerateDeepVein = false;
+
+            @Config.Comment("Deep Vein spawn rate (Default: 1)")
+            public int deepVeinSpawnRate = 1;
+
+            @Config.Comment("Deep Vein min ore quantity (Default: 1000)")
+            public int deepVeinMinOre = 1000;
+
+            @Config.Comment("Deep Vein max ore quantity (Default: 8000)")
+            public int deepVeinMaxOre = 8000;
+
+            @Config.Comment("Ores to generate in Deep Vein (Oredict/id name and spawn chance)")
+            @Config.RequiresMcRestart
+            public Map<String, Integer> deepVeinOres = getDeepVeinDefaultOres();
         }
 
         public static class SubCategorySound

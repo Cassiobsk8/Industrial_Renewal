@@ -1,9 +1,9 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
-    "SIS",
-    "SIS",
-    "SIS"
+    "ISI",
+    "ISI",
+    "ISI"
   ],
   "key": {
     "S": {
@@ -17,6 +17,6 @@
   },
   "result": {
     "item": "industrialrenewal:fence_big_column",
-    "count": 4
+    "count": 8
   }
 }

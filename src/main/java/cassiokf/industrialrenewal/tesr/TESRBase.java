@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
@@ -58,12 +59,26 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         }
     }
 
+    public static void renderScreenTexts(EnumFacing facing, double x, double y, double z, String[] text, float spacing, float scale)
+    {
+        double lY = y;
+        for (String line : text)
+        {
+            renderText(facing, x, lY, z, TextFormatting.GREEN + line, scale, false);
+            lY -= spacing;
+        }
+    }
+
     /**
      * x = side / y = up / z = front
      */
     public static void renderText(EnumFacing facing, double x, double y, double z, String st, float scale)
     {
+        renderText(facing, x, y, z, st, scale, true);
+    }
 
+    private static void renderText(EnumFacing facing, double x, double y, double z, String st, float scale, boolean centerText)
+    {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
         RenderHelper.disableStandardItemLighting();
@@ -71,7 +86,7 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         GlStateManager.rotate(180, 1, 0, 0);
         GlStateManager.scale(scale, scale, 1F);
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        int xh = -fontRenderer.getStringWidth(st) / 2;
+        int xh = centerText ? (-fontRenderer.getStringWidth(st) / 2) : 0;
         fontRenderer.drawString(st, xh, 0, 0xFFFFFFFF);
         RenderHelper.enableStandardItemLighting();
         GlStateManager.popMatrix();

@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.init.ModItems;
-import cassiokf.industrialrenewal.tileentity.TileEntityOreVein;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -11,11 +10,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -23,29 +19,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockOreVein extends BlockBase
+public class BlockOreVein extends BlockOredict
 {
 
     public static final PropertyInteger QUANTITY = PropertyInteger.create("quantity", 0, 4);
 
-    public BlockOreVein(String name, CreativeTabs tab)
+    public BlockOreVein(String name, String oreName, CreativeTabs tab)
     {
-        super(Material.ROCK, name, tab);
+        super(Material.ROCK, name, oreName, tab);
         this.setHardness(8f);
         this.setDefaultState(this.getDefaultState().withProperty(QUANTITY, 0));
-    }
-
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        TileEntity te = worldIn.getTileEntity(pos);
-        if (te instanceof TileEntityOreVein && playerIn.getHeldItem(hand).isEmpty())
-        {
-            if (!worldIn.isRemote)
-                playerIn.sendMessage(new TextComponentString(((TileEntityOreVein) te).getQuality().name()));
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -112,18 +95,5 @@ public class BlockOreVein extends BlockBase
     public boolean isFullCube(IBlockState state)
     {
         return false;
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntityOreVein createTileEntity(World world, IBlockState state)
-    {
-        return new TileEntityOreVein();
     }
 }

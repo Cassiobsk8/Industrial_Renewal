@@ -1,13 +1,16 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.item.ItemDrill;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
+import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -15,7 +18,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -28,12 +33,14 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
 {
     private final VoltsEnergyContainer energyContainer;
-    public FluidTank waterTank = new FluidTank(32000)
+    public final FluidTank waterTank = new FluidTank(32000)
     {
         @Override
         public boolean canFillFluidType(FluidStack fluid)
@@ -47,31 +54,47 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
             TileEntityMining.this.sync();
         }
     };
-    public ItemStackHandler drillInv = new ItemStackHandler(1)
+    public final ItemStackHandler drillInv = new ItemStackHandler(1)
     {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack)
         {
-            if (stack.isEmpty()) return false;
-            return stack.getItem() instanceof ItemDrill;
+            return !stack.isEmpty() && stack.getItem() instanceof ItemDrill;
         }
 
         @Override
         protected void onContentsChanged(int slot)
         {
-            TileEntityMining.this.sync();
+            TileEntityMining.this.checkDeepMine();
         }
     };
-    private int maxHeat = 18000;
+    public final ItemStackHandler internalInv = new ItemStackHandler(1)
+    {
+        @Override
+        protected void onContentsChanged(int slot)
+        {
+            TileEntityMining.this.markDirty();
+        }
+    };
+    private static final int maxHeat = 18000;
     private int drillHeat;
-    private int oldHeat;
+    private int oldDrillHeat;
 
-    private int waterPtick = 10;
-    private int energyPerTick = 1000;
+    public static final int waterPerTick = 10;
+    public static final int energyPerTick = 768;
+    public static final int deepEnergyPerTick = 1024;
+    private static final int cooldown = 120;
+    private static final int damageAmount = 1;
+    private int currentTick = 0;
 
     private boolean running;
+    private boolean oldRunning;
+    private boolean depleted = false;
+    private boolean isDeepMine = false;
 
-    private Set<BlockPos> oresPos;
+    private final Stack<OreMining> ores = new Stack<>();
+    private TEDeepVein vein;
+    private int size;
 
     //Client only
     private float rotation;
@@ -104,18 +127,160 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
     {
         if (this.isMaster())
         {
-            running = canRun();
-            doAnimation();
             if (!world.isRemote)
             {
-                if (running)
+                outputOrSpawn();
+                if (canRun())
                 {
-                    if (drillHeat < (waterTank.getFluidAmount() > waterPtick ? 9300 : 17300)) drillHeat += 20;
+                    if (isDeepMine() ? vein == null : ores.isEmpty()) getOres();
+
+                    if (isDeepMine() ? vein != null : !ores.isEmpty()) running = true;
+                    else depleted = true;
+
+                    if (running)
+                    {
+                        size = isDeepMine() && vein != null ? vein.getOreQuantity() : ores.size();
+                        consumeEnergy();
+                        if (drillHeat < (waterTank.getFluidAmount() >= waterPerTick ? 9400 : 17300)) drillHeat += 20;
+                        mineOre();
+                    } else
+                    {
+                        size = 0;
+                        drillHeat -= 30;
+                        currentTick = 0;
+                    }
                 } else
                 {
+                    size = isDeepMine() && vein != null ? vein.getOreQuantity() : ores.size();
                     drillHeat -= 30;
+                    running = false;
+                    currentTick = 0;
                 }
+
                 drillHeat = MathHelper.clamp(drillHeat, 3200, maxHeat);
+                if (running != oldRunning || drillHeat != oldDrillHeat)
+                {
+                    oldRunning = running;
+                    oldDrillHeat = drillHeat;
+                    sync();
+                }
+            }
+            doAnimation();
+        }
+    }
+
+    private boolean isDeepMine()
+    {
+        return isDeepMine;
+    }
+
+    public void checkDeepMine()
+    {
+        isDeepMine = drillInv.getStackInSlot(0).getItem() == ModItems.drillDeep;
+        sync();
+    }
+
+    private void consumeEnergy()
+    {
+        energyContainer.extractEnergy(isDeepMine() ? deepEnergyPerTick : energyPerTick, false);
+        waterTank.drain(waterPerTick, true);
+    }
+
+    private int getFortune()
+    {
+        return drillInv.getStackInSlot(0).getItem().equals(ModItems.drillDiamond) ? 2 : 1;
+    }
+
+    private int getMaxCooldown()
+    {
+        int t = waterTank.getFluidAmount() >= waterPerTick ? cooldown : cooldown * 2;
+        return isDeepMine() ? t * 2 : t;
+    }
+
+    private void mineOre()
+    {
+        if (currentTick >= getMaxCooldown())
+        {
+            ItemStack stack;
+            int fortune = getFortune();
+            if (isDeepMine())
+            {
+                currentTick = 0;
+                stack = vein.getOre(fortune, false);
+            } else
+            {
+                if (ores.isEmpty()) return;
+                OreMining ore = ores.pop();
+                Block block = ore.state.getBlock();
+                if (world.getBlockState(ore.pos).getBlock() != ore.state.getBlock()) return;
+                currentTick = 0;
+                int quantity = block.quantityDroppedWithBonus(fortune, world.rand);
+                Item item = block.getItemDropped(ore.state, world.rand, fortune);
+                stack = new ItemStack(item, quantity, block.damageDropped(ore.state));
+                world.setBlockState(ore.pos, Blocks.COBBLESTONE.getDefaultState());
+            }
+            internalInv.insertItem(0, stack, false);
+            damageDrill();
+        } else currentTick++;
+    }
+
+    private void damageDrill()
+    {
+        int damage = drillHeat <= 13000 ? damageAmount : damageAmount * 4;
+        ItemStack stack = drillInv.getStackInSlot(0);
+        if (stack.attemptDamageItem(damage, world.rand, null))
+        {
+            stack.shrink(stack.getCount());
+        }
+    }
+
+    private void outputOrSpawn()
+    {
+        if (internalInv.getStackInSlot(0).isEmpty()) return;
+
+        BlockPos outPos = pos.offset(getMasterFacing(), 2).down();
+        TileEntity te = world.getTileEntity(outPos);
+        if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getMasterFacing().getOpposite()))
+        {
+            IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getMasterFacing().getOpposite());
+            if (handler != null)
+            {
+                Utils.moveItemToInventory(internalInv, 0, handler);
+            }
+        } else
+        {
+            IBlockState state = world.getBlockState(outPos);
+            if (state.getBlock().isAir(state, world, outPos))
+            {
+                Utils.spawnItemStack(world, outPos, internalInv.getStackInSlot(0));
+            }
+        }
+    }
+
+    private void getOres()
+    {
+        if (isDeepMine())
+        {
+            vein = MachinesUtils.getDeepVein(world, pos);
+            return;
+        }
+        Chunk chunk = world.getChunk(pos);
+        int a = chunk.x * 16;
+        int b = chunk.z * 16;
+
+        for (double y = 1; y <= pos.getY() - 2; y++)
+        {
+            for (double x = 0; x <= 15; x++)
+            {
+                for (double z = 0; z <= 15; z++)
+                {
+                    BlockPos actualPosition = new BlockPos(a + x, y, b + z);
+                    IBlockState state = chunk.getBlockState(actualPosition);
+                    if (ModItems.allOres.contains(Item.getItemFromBlock(state.getBlock())))
+                    {
+                        ores.add(new OreMining(state, actualPosition));
+                    }
+                }
             }
         }
     }
@@ -126,11 +291,12 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
         {
             if (running)
             {
-                if (waterTank.getFluidAmount() > 0 && particleTick >= 10)
+                if (particleTick >= 10)
                 {
                     particleTick = 0;
                     spawnFluidParticle(pos.getX() + 0.5f, pos.getY() - 1f, pos.getZ() + 0.5f, Blocks.STONE);
-                    spawnFluidParticle(pos.getX() + 0.5f, pos.getY() - 1f, pos.getZ() + 0.5f, waterTank.getFluid().getFluid().getBlock());
+                    if (waterTank.getFluidAmount() > 0)
+                        spawnFluidParticle(pos.getX() + 0.5f, pos.getY() - 1f, pos.getZ() + 0.5f, waterTank.getFluid().getFluid().getBlock());
                 }
                 particleTick++;
             }
@@ -160,7 +326,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
     private void spawnFluidParticle(double x, double y, double z, Block block)
     {
         float f = (float) MathHelper.ceil(1.0F);
-        double d0 = Math.min((double) (0.2F + f / 15.0F), 2.5D);
+        double d0 = Math.min(0.2F + f / 15.0F, 2.5D);
         int i = (int) (150.0D * d0);
         ((WorldServer) world).spawnParticle(EnumParticleTypes.BLOCK_DUST, x, y, z, i, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, Block.getStateId(block.getDefaultState()));
     }
@@ -169,9 +335,11 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
     {
         EnumFacing facing = getMasterFacing();
         BlockPos posPort = pos.offset(facing.rotateYCCW()).offset(facing.getOpposite()).down();
-        return (world.isBlockPowered(posPort) || world.isBlockPowered(posPort.offset(facing.getOpposite())))
-                && energyContainer.getEnergyStored() >= energyPerTick
-                && !drillInv.getStackInSlot(0).isEmpty();
+        return !depleted
+                && (world.isBlockPowered(posPort) || world.isBlockPowered(posPort.offset(facing.getOpposite())))
+                && energyContainer.getEnergyStored() >= (isDeepMine() ? deepEnergyPerTick : energyPerTick)
+                && !drillInv.getStackInSlot(0).isEmpty()
+                && internalInv.getStackInSlot(0).isEmpty();
     }
 
     public boolean isRunning()
@@ -186,8 +354,8 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
 
     public String getWaterText(int line)
     {
-        if (line == 1) return I18n.format("render.industrialrenewal.fluid") + ":";
-        return FluidRegistry.WATER.getName();
+        if (line == 1) return I18n.format("render.industrialrenewal.coolant") + ":";
+        return waterTank.getFluid() != null ? waterTank.getFluid().getLocalizedName() : "---";
     }
 
     public String getEnergyText(int line)
@@ -199,47 +367,41 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
 
     public String getHeatText()
     {
-        String st;
-        switch (IRConfig.MainConfig.Main.temperatureScale)
-        {
-            default:
-            case 0:
-                st = " ºC";
-                break;
-            case 1:
-                st = " ºF";
-                break;
-            case 2:
-                st = " K";
-                break;
-        }
         String name = I18n.format("render.industrialrenewal.drillheat") + ": ";
-        return name + (int) Utils.getConvertedTemperature(drillHeat / 100F) + st;
+        if (drillHeat > 13000) name += TextFormatting.RED;
+        return name + Utils.getConvertedTemperatureString(drillHeat / 100F);
     }
 
+    public String[] getScreenTexts()
+    {
+        List<String> texts = new ArrayList<>();
+        if (energyContainer.getEnergyStored() <= 0) return EMPTY_ARRAY;
+        texts.add("Mining Drill Status: " + (running ? "Running" : TextFormatting.RED + " Stoped"));
+        texts.add("Mining Drill Mode: " + TextFormatting.BLUE + (isDeepMine ? "Deep Mine" : "Surface Mine"));
+        texts.add("Vein Size: " + size);
+        texts.add("Consumption: " + (isDeepMine() ? deepEnergyPerTick : energyPerTick) + " FE/t");
+        texts.add(getHeatText());
+        int maxD = getDrill().getMaxDamage();
+        texts.add("Drill condition: " + (maxD - getDrill().getItemDamage()) + "/" + maxD);
+
+        String[] itemsArray = new String[texts.size()];
+        itemsArray = texts.toArray(itemsArray);
+        return itemsArray;
+    }
 
     public float getWaterFill() //0 ~ 180
     {
-        float currentAmount = this.waterTank.getFluidAmount() / 1000F;
-        float totalCapacity = this.waterTank.getCapacity() / 1000F;
-        currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 180f;
+        return Utils.normalize(this.waterTank.getFluidAmount(), 0, this.waterTank.getCapacity()) * 180f;
     }
 
     public float getEnergyFill() //0 ~ 180
     {
-        float currentAmount = this.energyContainer.getEnergyStored() / 1000F;
-        float totalCapacity = this.energyContainer.getMaxEnergyStored() / 1000F;
-        currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 180f;
+        return Utils.normalize(this.energyContainer.getEnergyStored(), 0, this.energyContainer.getMaxEnergyStored());
     }
 
     public float getHeatFill() //0 ~ 180
     {
-        float currentAmount = drillHeat;
-        float totalCapacity = maxHeat;
-        currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 180f;
+        return Utils.normalize(drillHeat, 0, maxHeat) * 180f;
     }
 
     public boolean hasDrill()
@@ -271,17 +433,22 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
         compound.setTag("firebox", this.drillInv.serializeNBT());
         compound.setTag("StoredIR", this.energyContainer.serializeNBT());
         compound.setInteger("heat", drillHeat);
+        compound.setBoolean("running", running);
+        compound.setBoolean("deep", isDeepMine);
+        compound.setInteger("vsize", size);
         return super.writeToNBT(compound);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        NBTTagCompound waterTag = compound.getCompoundTag("water");
-        this.waterTank.readFromNBT(waterTag);
+        this.waterTank.readFromNBT(compound.getCompoundTag("water"));
         this.drillInv.deserializeNBT(compound.getCompoundTag("firebox"));
         this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
         this.drillHeat = compound.getInteger("heat");
+        this.running = compound.getBoolean("running");
+        this.isDeepMine = compound.getBoolean("deep");
+        this.size = compound.getInteger("vsize");
         super.readFromNBT(compound);
     }
 
@@ -313,5 +480,17 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
     public IItemHandler getDrillHandler()
     {
         return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.getMaster().drillInv);
+    }
+
+    public class OreMining
+    {
+        public final IBlockState state;
+        public final BlockPos pos;
+
+        OreMining(IBlockState state, BlockPos pos)
+        {
+            this.state = state;
+            this.pos = pos;
+        }
     }
 }

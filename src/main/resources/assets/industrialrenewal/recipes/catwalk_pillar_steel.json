@@ -1,9 +1,9 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
-    "SIS",
-    "SIS",
-    "SIS"
+    "ISI",
+    "ISI",
+    "ISI"
   ],
   "key": {
     "S": {

@@ -44,8 +44,8 @@ public class BlockSmallWindTurbine extends BlockHorizontalFacing
             {
                 if (!world.isRemote)
                 {
-                    itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1), false);
-                    heldItem.shrink(1);
+                    itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1, heldItem.getItem().getDamage(heldItem)), false);
+                    if (!player.isCreative()) heldItem.shrink(1);
                 }
                 return true;
             }

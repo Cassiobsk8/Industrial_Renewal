@@ -1,0 +1,26 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " R ",
+    "RRR",
+    "BDB"
+  ],
+  "key": {
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "blockSteel"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "blockDiamond"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:drill_deep",
+    "count": 1
+  }
+}

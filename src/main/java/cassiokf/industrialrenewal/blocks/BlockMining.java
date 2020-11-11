@@ -9,10 +9,14 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -48,6 +52,7 @@ public class BlockMining extends BlockMultiBlockBase<TileEntityMining>
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntityMining tile = (TileEntityMining) world.getTileEntity(pos);
+        if (tile == null) return false;
         IItemHandler itemHandler = tile.getDrillHandler();
         ItemStack heldItem = player.getHeldItem(hand);
         if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemDrill || heldItem.getItem() instanceof ItemPowerScrewDrive))
@@ -56,8 +61,8 @@ public class BlockMining extends BlockMultiBlockBase<TileEntityMining>
             {
                 if (!world.isRemote)
                 {
-                    itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1), false);
-                    heldItem.shrink(1);
+                    itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1, heldItem.getItem().getDamage(heldItem)), false);
+                    if (!player.isCreative()) heldItem.shrink(1);
                 }
                 return true;
             }
@@ -71,6 +76,29 @@ public class BlockMining extends BlockMultiBlockBase<TileEntityMining>
             }
         }
         return false;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    {
+        tooltip.add(I18n.format("info.industrialrenewal.requires")
+                + ":");
+        tooltip.add(" -" + I18n.format("info.industrialrenewal.drill"));
+        tooltip.add(" -" + Blocks.WATER.getLocalizedName()
+                + ": "
+                + TileEntityMining.waterPerTick
+                + " mB/t");
+        tooltip.add(" -" + (TileEntityMining.energyPerTick)
+                + " ~ "
+                + TileEntityMining.deepEnergyPerTick
+                + " FE/t");
+        super.addInformation(stack, player, tooltip, advanced);
+    }
+
+    @Override
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override

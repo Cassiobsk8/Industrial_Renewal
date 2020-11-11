@@ -85,8 +85,8 @@ public class TileEntitySmallWindTurbine extends TileEntitySync implements ITicka
                 if (tickToDamage >= 1200 && energyGen > 0)
                 {
                     tickToDamage = 0;
-                    bladeInv.getStackInSlot(0).attemptDamageItem(1, random, null);
-                    if (bladeInv.getStackInSlot(0).getItemDamage() < 0) bladeInv.setStackInSlot(0, ItemStack.EMPTY);
+                    if (bladeInv.getStackInSlot(0).attemptDamageItem(1, random, null))
+                        bladeInv.setStackInSlot(0, ItemStack.EMPTY);
                 }
                 if (tickToDamage < 1201) tickToDamage++;
             }
