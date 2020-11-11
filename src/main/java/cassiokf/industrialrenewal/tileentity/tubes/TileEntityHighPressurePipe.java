@@ -44,7 +44,7 @@ public class TileEntityHighPressurePipe extends TileEntityMultiBlocksTube<TileEn
         if (amount <= 0) return 0;
         int out = 0;
         final Map<TileEntity, EnumFacing> mapPosSet = getMachineContainers();
-        int quantity = mapPosSet.size();
+        int quantity = getRealQuantity(mapPosSet);
 
         if (quantity > 0)
         {
@@ -54,6 +54,17 @@ public class TileEntityHighPressurePipe extends TileEntityMultiBlocksTube<TileEn
         outPutCount = quantity;
 
         inUse = false;
+        return out;
+    }
+
+    private int getRealQuantity(Map<TileEntity, EnumFacing> mapPosSet)
+    {
+        int out = 0;
+        for (TileEntity te : mapPosSet.keySet())
+        {
+            if (te != null && !te.isInvalid()) out++;
+            else mapPosSet.remove(te);
+        }
         return out;
     }
 
