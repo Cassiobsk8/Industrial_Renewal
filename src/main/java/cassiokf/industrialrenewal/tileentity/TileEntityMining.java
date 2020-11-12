@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.item.ItemDrill;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
@@ -65,6 +66,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
         @Override
         protected void onContentsChanged(int slot)
         {
+            TileEntityMining.this.depleted = false;
             TileEntityMining.this.checkDeepMine();
         }
     };
@@ -80,10 +82,10 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
     private int drillHeat;
     private int oldDrillHeat;
 
-    public static final int waterPerTick = 10;
-    public static final int energyPerTick = 768;
-    public static final int deepEnergyPerTick = 1024;
-    private static final int cooldown = 120;
+    public static int waterPerTick = IRConfig.MainConfig.Main.miningWaterPerTick;
+    public static int energyPerTick = IRConfig.MainConfig.Main.miningEnergyPerTick;
+    public static int deepEnergyPerTick = IRConfig.MainConfig.Main.miningDeepEnergyPerTick;
+    private static final int cooldown = IRConfig.MainConfig.Main.miningCooldown;
     private static final int damageAmount = 1;
     private int currentTick = 0;
 

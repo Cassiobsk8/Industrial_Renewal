@@ -57,8 +57,11 @@ public class IRConfig {
         list.put("oreCopper", 40);
         list.put("oreTin", 40);
         list.put("oreIron", 30);
+        list.put("oreOsmium", 20);
         list.put("oreSilver", 20);
         list.put("oreGold", 10);
+        list.put("oreNickel", 10);
+        list.put("oreAluminum", 10);
         list.put("oreRedstone", 6);
         list.put("oreLapis", 6);
         list.put("oreDiamond", 1);
@@ -298,6 +301,15 @@ public class IRConfig {
 
             @Config.Comment("How much Energy the Lathe Machine will require for each tick (Default 128)")
             public int energyPerTickLatheMachine = 128;
+
+            @Config.Comment("Mining drill water consumption (default 10)")
+            public int miningWaterPerTick = 10;
+            @Config.Comment("Mining drill Energy consumption on world ores (default 768)")
+            public int miningEnergyPerTick = 768;
+            @Config.Comment("Mining drill Energy consumption on Deep veins (default 1024)")
+            public int miningDeepEnergyPerTick = 1024;
+            @Config.Comment("Mining drill cooldown time between mining (default 120)")
+            public int miningCooldown = 120;
         }
 
         public static class SubCategoryGen
@@ -308,8 +320,8 @@ public class IRConfig {
             @Config.Comment("Re-Generate Deep Vein in the world 'will be disabled automatically' 'Need at least 1 new chunck to be generated' (Default: false)")
             public boolean regenerateDeepVein = false;
 
-            @Config.Comment("Deep Vein spawn rate (Default: 1)")
-            public int deepVeinSpawnRate = 1;
+            @Config.Comment("Deep Vein spawn rate in % (Default: 5)")
+            public int deepVeinSpawnRate = 5;
 
             @Config.Comment("Deep Vein min ore quantity (Default: 1000)")
             public int deepVeinMinOre = 1000;

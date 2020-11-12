@@ -38,8 +38,8 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
     private float renderCutterProcess;
     private float oldProcessTime;
     private ItemStack processingItem;
-    private int energyPTick = IRConfig.MainConfig.Main.energyPerTickLatheMachine;
-    private float volume = IRConfig.MainConfig.Sounds.pumpVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
+    private static final int energyPTick = IRConfig.MainConfig.Main.energyPerTickLatheMachine;
+    private static final float volume = 0.2f * IRConfig.MainConfig.Sounds.masterVolumeMult;
     private boolean stopping = false;
     private boolean stopped = true;
     private boolean oldStopping = false;

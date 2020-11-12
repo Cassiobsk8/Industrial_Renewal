@@ -45,6 +45,7 @@ item.industrialrenewal.drill_steel.name=Steel Drill
 item.industrialrenewal.drill_diamond.name=Diamond Drill
 item.industrialrenewal.drill_deep.name=Deep Drill
 item.industrialrenewal.prospecting_pan.name=Prospecting Pan
+item.industrialrenewal.regen_wand.name=Wand of Deep Vein Regeneration
 
 #Discs
 item.industrialrenewal.record_royal_entrance.name=Music Disc

@@ -34,6 +34,12 @@ public class ItemBattery extends ItemBase implements ICapabilityProvider
         list.add("Energy: " + this.container.getEnergyStored() + " / " + this.container.getMaxEnergyStored());
     }
 
+    //@Override
+    //public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt)
+    //{
+    //    return this;
+    //}
+
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {

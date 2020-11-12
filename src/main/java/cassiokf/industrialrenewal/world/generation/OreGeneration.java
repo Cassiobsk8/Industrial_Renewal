@@ -46,7 +46,7 @@ public class OreGeneration implements IWorldGenerator
         i = 0;
         if (world instanceof WorldServer)
         {
-            Iterator<Chunk> chunks = ((WorldServer) world).getPlayerChunkMap().getChunkIterator();
+            Iterator<Chunk> chunks = ((WorldServer) world).getChunkProvider().loadedChunks.values().stream().iterator();
             chunks.forEachRemaining(t -> OreGeneration.generateDeepVein(world.rand, t.x, t.z, world, true));
         }
         IRConfig.MainConfig.Generation.regenerateDeepVein = false;

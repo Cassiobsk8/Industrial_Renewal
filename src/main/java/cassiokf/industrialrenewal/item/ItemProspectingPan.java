@@ -3,7 +3,6 @@ package cassiokf.industrialrenewal.item;
 import cassiokf.industrialrenewal.tileentity.TEDeepVein;
 import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.Utils;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,11 +18,14 @@ import javax.annotation.Nullable;
 
 public class ItemProspectingPan extends ItemBase
 {
+    private static final String found = "Deep vein found size:";
+    private static final String notFound = "No deep vein found";
+
     public ItemProspectingPan(String name, CreativeTabs tab)
     {
         super(name, tab);
         this.maxStackSize = 1;
-        this.setMaxDamage(17);
+        this.setMaxDamage(18);
         setContainerItem(this);
         this.addPropertyOverride(new ResourceLocation("broken"), new IItemPropertyGetter()
         {
@@ -55,7 +57,7 @@ public class ItemProspectingPan extends ItemBase
             if (!worldIn.isRemote) stack.setItemDamage(1);
             return EnumActionResult.SUCCESS;
         }
-        return EnumActionResult.FAIL;
+        return EnumActionResult.PASS;
     }
 
     @Override
@@ -73,8 +75,9 @@ public class ItemProspectingPan extends ItemBase
 
     private void prospect(World worldIn, EntityPlayer playerIn, EnumHand hand, ItemStack stack)
     {
+        if (worldIn.isRemote) return;
         stack.damageItem(1, playerIn);
-        if (stack.getItemDamage() >= 17 && !worldIn.isRemote)
+        if (stack.getItemDamage() >= 17)
         {
             TEDeepVein vein = MachinesUtils.getDeepVein(worldIn, playerIn.getPosition());
             ItemStack stackv = vein != null ? vein.getOre(0, true) : ItemStack.EMPTY;
@@ -84,10 +87,10 @@ public class ItemProspectingPan extends ItemBase
             String msg;
             if (hasVein) msg = stackv.getDisplayName()
                     + " "
-                    + I18n.format("info.industrialrenewal.prospecting_found")
+                    + found
                     + " "
                     + stackv.getCount();
-            else msg = I18n.format("info.industrialrenewal.prospecting_notfound");
+            else msg = notFound;
 
             Utils.sendChatMessage(playerIn, msg);
             stack.setItemDamage(0);

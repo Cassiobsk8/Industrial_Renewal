@@ -87,6 +87,7 @@ public class ModItems
     public static final ItemProspectingPan prospectingPan = new ItemProspectingPan("prospecting_pan", References.CREATIVE_IR_TAB);
     public static final ItemOre hematiteChunk = new ItemOre("chunk_hematite", "oreIron", References.CREATIVE_IR_TAB);
 
+    public static final ItemRegenerationWand regenerationWand = new ItemRegenerationWand("regen_wand", References.CREAATIVE_IRWIP_TAB);
     //public static final ItemInstantNoodle instantNoodle = new ItemInstantNoodle("instant_noodle", References.CREAATIVE_IRWIP_TAB);
 
     public static void register(IForgeRegistry<Item> registry)
@@ -123,9 +124,7 @@ public class ModItems
                 cartridge_half,
                 cartridge_double,
                 cartridge_inverter,
-
                 coilHV,
-
                 pointer,
                 limiter,
                 pointerLong,
@@ -149,7 +148,8 @@ public class ModItems
                 switch_off,
                 push_button,
                 label_5,
-                discR
+                discR,
+                regenerationWand
         );
     }
 
@@ -210,6 +210,7 @@ public class ModItems
         drillSteel.registerItemModel();
         drillDiamond.registerItemModel();
         drillDeep.registerItemModel();
+        regenerationWand.registerItemModel();
     }
 
     public static void registerOreDict() {

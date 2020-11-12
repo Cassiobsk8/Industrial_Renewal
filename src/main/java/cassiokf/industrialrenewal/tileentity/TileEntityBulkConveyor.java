@@ -203,31 +203,29 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
         }
     }
 
-    public float getMinYOffset(int slot)
+    public float getMinYOffset(int slot, int mode)
     {
-        int mode = getMode();
         switch (slot)
         {
             default:
             case 2:
-                return mode == 0 ? 0.47f : 0.97f;
+                return mode == 0 ? 0.60f : 1.1f;
             case 1:
-                if (mode == 1) return 0.65f;
-                if (mode == 2) return 1.3f;
-                return 0.47f;
+                if (mode == 1) return 0.78f;
+                if (mode == 2) return 1.43f;
+                return 0.61f;
             case 0:
-                if (mode == 1) return 0.3f;
-                if (mode == 2) return 1.65f;
-                return 0.47f;
+                if (mode == 1) return 0.43f;
+                if (mode == 2) return 1.78f;
+                return 0.60f;
         }
     }
 
-    public float getMaxYOffset()
+    public float getMaxYOffset(int mode)
     {
-        int mode = getMode();
         if (mode == 0) return 0;
-        else if (mode == 1) return 0.33f;
-        return -0.33f;
+        else if (mode == 1) return 0.46f;
+        return -0.46f;
     }
 
     private BlockPos frontConveyor(EnumFacing facing, int mode)

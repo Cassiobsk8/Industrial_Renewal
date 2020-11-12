@@ -16,6 +16,7 @@ public class TESRBulkConveyor extends TESRBase<TileEntityBulkConveyor>
         ItemStack stack2 = te.getStackInSlot(1);
         ItemStack stack3 = te.getStackInSlot(2);
         EnumFacing facing = te.getBlockFacing();
+        int mode = te.getMode();
 
         if (!stack3.isEmpty())
         {
@@ -24,20 +25,20 @@ public class TESRBulkConveyor extends TESRBase<TileEntityBulkConveyor>
             if (offset < 0.2f) oldOffset = 0;
             float stack3Progress = smoothAnimation(offset, oldOffset, partialTicks, false);
 
-            doTheMath(facing, x, z, 0.45 - (0.33 * stack3Progress), 0);
-            render3dItem(facing, te.getWorld(), xPos, (y + te.getMinYOffset(2)) + (te.getMaxYOffset() * stack3Progress), zPos, stack3, 1, false, 90, 0, 1, 0);
+            doTheMath(facing, x, z, 0.45 - (0.51 * stack3Progress), 0);
+            render3dItem(facing, te.getWorld(), xPos, (y + te.getMinYOffset(2, mode)) + (te.getMaxYOffset(mode) * stack3Progress), zPos, stack3, 1, false, 90, 1, 0, 0);
         }
         if (!stack2.isEmpty())
         {
             float stack2Pos = smoothAnimation(te.getStackOffset(1, false), te.getStackOffset(1, true), partialTicks, false);
-            doTheMath(facing, x, z, 0.77 - (0.33 * stack2Pos), 0);
-            render3dItem(facing, te.getWorld(), xPos, (y + te.getMinYOffset(1)) + (te.getMaxYOffset() * stack2Pos), zPos, stack2, 1, false, 90, 0, 1, 0);
+            doTheMath(facing, x, z, 0.77 - (0.51 * stack2Pos), 0);
+            render3dItem(facing, te.getWorld(), xPos, (y + te.getMinYOffset(1, mode)) + (te.getMaxYOffset(mode) * stack2Pos), zPos, stack2, 1, false, 90, 1, 0, 0);
         }
         if (!stack1.isEmpty())
         {
             float stack1Pos = smoothAnimation(te.getStackOffset(0, false), te.getStackOffset(0, true), partialTicks, false);
-            doTheMath(facing, x, z, 1.09 - (0.33 * stack1Pos), 0);
-            render3dItem(facing, te.getWorld(), xPos, (y + te.getMinYOffset(0)) + (te.getMaxYOffset() * stack1Pos), zPos, stack1, 1, false, 90, 0, 1, 0);
+            doTheMath(facing, x, z, 1.09 - (0.51 * stack1Pos), 0);
+            render3dItem(facing, te.getWorld(), xPos, (y + te.getMinYOffset(0, mode)) + (te.getMaxYOffset(mode) * stack1Pos), zPos, stack1, 1, false, 90, 1, 0, 0);
         }
     }
 }
