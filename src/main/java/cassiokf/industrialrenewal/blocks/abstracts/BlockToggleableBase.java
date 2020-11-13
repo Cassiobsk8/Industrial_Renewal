@@ -66,20 +66,16 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (entity.getHeldItem(EnumHand.MAIN_HAND).isEmpty())
-        {
-            TileEntityToggleableBase te = (TileEntityToggleableBase) world.getTileEntity(pos);
-            if (te == null) return false;
-            te.playSwitchSound();
-            boolean active = !state.getValue(ACTIVE);
-            state = state.withProperty(ACTIVE, active);
-            te.setActive(active);
-            world.setBlockState(pos, state, 3);
-            //spawnParticle(world, pos);
-            world.notifyNeighborsOfStateChange(pos, this, false);
-            return true;
-        }
-        return false;
+        TileEntityToggleableBase te = (TileEntityToggleableBase) world.getTileEntity(pos);
+        if (te == null) return false;
+        te.playSwitchSound();
+        boolean active = !state.getValue(ACTIVE);
+        state = state.withProperty(ACTIVE, active);
+        te.setActive(active);
+        world.setBlockState(pos, state, 3);
+        //spawnParticle(world, pos);
+        world.notifyNeighborsOfStateChange(pos, this, false);
+        return true;
     }
 
     public void spawnParticle(World world, BlockPos pos)
