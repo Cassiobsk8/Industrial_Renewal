@@ -9,8 +9,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBase> extends TileEntitySync implements ITickable
@@ -173,5 +177,13 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
         this.isMaster = compound.getBoolean("master");
         this.masterChecked = compound.getBoolean("checked");
         super.readFromNBT(compound);
+    }
+
+    @Nonnull
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return new AxisAlignedBB(pos.add(-1D, -1D, -1D), pos.add(2D, 2D, 2D));
     }
 }

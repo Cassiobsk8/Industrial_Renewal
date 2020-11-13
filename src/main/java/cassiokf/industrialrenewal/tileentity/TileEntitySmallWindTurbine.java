@@ -13,10 +13,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -26,6 +29,7 @@ import java.util.Random;
 
 public class TileEntitySmallWindTurbine extends TileEntitySync implements ITickable
 {
+    public static final AxisAlignedBB SMALL_BLADES_AABB = new AxisAlignedBB(-4D, -4D, -4D, 5D, 5D, 5D);
     private final VoltsEnergyContainer energyContainer;
     public ItemStackHandler bladeInv = new ItemStackHandler(1)
     {
@@ -210,5 +214,13 @@ public class TileEntitySmallWindTurbine extends TileEntitySync implements ITicka
         compound.setTag("bladeInv", this.bladeInv.serializeNBT());
         compound.setInteger("damageTick", tickToDamage);
         return super.writeToNBT(compound);
+    }
+
+    @Nonnull
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return new AxisAlignedBB(pos.add(-4D, -4D, -4D), pos.add(5D, 5D, 5D));
     }
 }

@@ -27,4 +27,10 @@ public class TESRTransformerHV extends TESRBase<TileEntityTransformerHV>
             renderPointer(facing, xPos, y + 0.36, zPos, te.getGenerationFill(), pointerLong, 0.5F);
         }
     }
+
+    @Override
+    public boolean isGlobalRenderer(TileEntityTransformerHV te)
+    {
+        return true;
+    }
 }
