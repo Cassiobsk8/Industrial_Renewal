@@ -33,11 +33,6 @@ public class BlockCatwalkHatch extends BlockHorizontalFacing
 
     protected static final AxisAlignedBB RDOWN_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D);
 
-    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 0.0625D);
-    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.9375D, 1.0D, 0.125D, 1.0D);
-    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 0.125D, 1.0D);
-    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.9375D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
-
     protected static final AxisAlignedBB OPEN_NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0625D);
     protected static final AxisAlignedBB OPEN_SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.9375D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB OPEN_WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 1.0D, 1.0D);
@@ -102,13 +97,10 @@ public class BlockCatwalkHatch extends BlockHorizontalFacing
             if (face == EnumFacing.WEST) {
                 return RWEST_AABB;
             }
-            if (face == EnumFacing.EAST) {
-                return REAST_AABB;
-            }
+            return REAST_AABB;
         } else {
             return RDOWN_AABB;
         }
-        return RNORTH_AABB;
     }
 
     @Override
@@ -119,24 +111,12 @@ public class BlockCatwalkHatch extends BlockHorizontalFacing
             EnumFacing face = state.getValue(FACING);
             if (face == EnumFacing.NORTH) {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, OPEN_NORTH_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
             } else if (face == EnumFacing.SOUTH) {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, OPEN_SOUTH_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
             } else if (face == EnumFacing.WEST) {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, OPEN_WEST_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
             } else if (face == EnumFacing.EAST) {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, OPEN_EAST_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
             }
         } else {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, RDOWN_AABB);
