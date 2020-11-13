@@ -28,8 +28,8 @@ public class BlockDamIntake extends BlockHorizontalFacing
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         TileEntity te = worldIn.getTileEntity(pos);
-        if (!worldIn.isRemote && hand.equals(EnumHand.MAIN_HAND) && te instanceof TileEntityDamIntake)
-            ((TileEntityDamIntake) te).onBlockActivated(playerIn);
+        if (hand.equals(EnumHand.MAIN_HAND) && te instanceof TileEntityDamIntake)
+            return ((TileEntityDamIntake) te).onBlockActivated(playerIn);
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
     }
 

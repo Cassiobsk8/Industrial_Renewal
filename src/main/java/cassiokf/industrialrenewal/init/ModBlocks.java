@@ -378,7 +378,6 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileEntityBulkConveyorInserter.class, conveyorVInserter.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityDamIntake.class, damIntake.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityDamOutFlow.class, damOutFlow.getRegistryName());
-        GameRegistry.registerTileEntity(TileEntityConcrete.class, concrete.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityHVConnectorBase.class, hvIsolator.getRegistryName());
         GameRegistry.registerTileEntity(TELathe.class, latheMachine.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityPortableGenerator.class, portableGenerator.getRegistryName());
