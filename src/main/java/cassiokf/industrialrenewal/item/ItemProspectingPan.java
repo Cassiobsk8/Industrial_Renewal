@@ -1,8 +1,9 @@
 package cassiokf.industrialrenewal.item;
 
-import cassiokf.industrialrenewal.tileentity.TEDeepVein;
-import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.Utils;
+import cassiokf.industrialrenewal.world.generation.OreGeneration;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,17 +16,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemProspectingPan extends ItemBase
 {
     private static final String found = "Deep vein found size:";
-    private static final String notFound = "No deep vein found";
+    public static final String notFound = "No deep vein found";
 
     public ItemProspectingPan(String name, CreativeTabs tab)
     {
         super(name, tab);
         this.maxStackSize = 1;
-        this.setMaxDamage(18);
+        this.setMaxDamage(13);
         setContainerItem(this);
         this.addPropertyOverride(new ResourceLocation("broken"), new IItemPropertyGetter()
         {
@@ -35,6 +37,13 @@ public class ItemProspectingPan extends ItemBase
                 return ItemProspectingPan.isEmpty(stack) ? 0.0F : 1.0F;
             }
         });
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        tooltip.add(I18n.format("info.industrialrenewal.prospectingpan.info"));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     public static boolean isEmpty(ItemStack stack)
@@ -67,21 +76,19 @@ public class ItemProspectingPan extends ItemBase
         if (worldIn.provider.getDimension() == 0 && stack.getItemDamage() > 0)
         {
             playerIn.swingArm(handIn);
-            prospect(worldIn, playerIn, handIn, stack);
+            prospect(worldIn, playerIn, stack);
             return new ActionResult<>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
         }
         return super.onItemRightClick(worldIn, playerIn, handIn);
     }
 
-    private void prospect(World worldIn, EntityPlayer playerIn, EnumHand hand, ItemStack stack)
+    private void prospect(World worldIn, EntityPlayer playerIn, ItemStack stack)
     {
         if (worldIn.isRemote) return;
         stack.damageItem(1, playerIn);
-        if (stack.getItemDamage() >= 17)
+        if (stack.getItemDamage() >= 12)
         {
-            TEDeepVein vein = MachinesUtils.getDeepVein(worldIn, playerIn.getPosition());
-            ItemStack stackv = vein != null ? vein.getOre(0, true) : ItemStack.EMPTY;
-            if (vein != null) stackv.setCount(vein.getOreQuantity());
+            ItemStack stackv = OreGeneration.getChunkVein(worldIn, playerIn.getPosition());
 
             boolean hasVein = !stackv.isEmpty();
             String msg;
@@ -97,11 +104,6 @@ public class ItemProspectingPan extends ItemBase
         }
     }
 
-    public static ItemStack copyStack(ItemStack stack, int n)
-    {
-        return new ItemStack(stack.getItem(), n, stack.getItemDamage());
-    }
-
     @Override
     public ItemStack getContainerItem(ItemStack stack)
     {
@@ -110,7 +112,7 @@ public class ItemProspectingPan extends ItemBase
         {
             return new ItemStack(stack.getItem(), 0, getMaxDamage(stack));
         }
-        ItemStack tr = copyStack(stack, 1);
+        ItemStack tr = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
         tr.setItemDamage(dmg + 1);
         return tr;
     }

@@ -55,7 +55,6 @@ public class JEICompat implements IModPlugin
         blackListedItems.add(new ItemStack(ModItems.push_button));
         blackListedItems.add(new ItemStack(ModItems.label_5));
         blackListedItems.add(new ItemStack(ModItems.discR));
-        blackListedItems.add(new ItemStack(ModBlocks.deepVein));
 
         for (ItemStack item : blackListedItems)
         {

@@ -80,7 +80,7 @@ public class IRConfig {
                 NonNullList<ItemStack> list = OreDictionary.getOres(str);
                 ItemStack stack = list.get(0).copy();
                 if (str.equals("oreIron")) stack = new ItemStack(ModBlocks.veinHematite);
-                if (!stack.isEmpty() && !ModItems.deepVeinOres.contains(stack.getItem()))
+                if (!stack.isEmpty() && !ModItems.DEEP_VEIN_ORES.contains(stack.getItem()))
                 {
                     placeItemXTimes(stack.getItem(), map.get(str));
                     i++;
@@ -88,7 +88,7 @@ public class IRConfig {
             } else
             {
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(str));
-                if (item != null && !ModItems.deepVeinOres.contains(item))
+                if (item != null && !ModItems.DEEP_VEIN_ORES.contains(item))
                 {
                     placeItemXTimes(item, map.get(str));
                     i++;
@@ -102,7 +102,7 @@ public class IRConfig {
     {
         for (int i = 0; i < t; i++)
         {
-            ModItems.deepVeinOres.add(item);
+            ModItems.DEEP_VEIN_ORES.add(item);
         }
     }
 
@@ -316,9 +316,6 @@ public class IRConfig {
         {
             @Config.Comment("Spawn Deep Vein (Default: true)")
             public boolean spawnDeepVein = true;
-
-            @Config.Comment("Re-Generate Deep Vein in the world 'will be disabled automatically' 'Need at least 1 new chunck to be generated' (Default: false)")
-            public boolean regenerateDeepVein = false;
 
             @Config.Comment("Deep Vein spawn rate in % (Default: 5)")
             public int deepVeinSpawnRate = 5;

@@ -1,78 +1,63 @@
 package cassiokf.industrialrenewal.world.generation;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.util.Utils;
-import net.minecraft.init.Blocks;
+import cassiokf.industrialrenewal.init.ModItems;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
-
-import static cassiokf.industrialrenewal.References.MODID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class OreGeneration implements IWorldGenerator
 {
-    private static int i = 0;
+    public static Map<ChunkPos, ItemStack> CHUNKS_VEIN = new ConcurrentHashMap<>();
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
         if (world.provider.getDimension() == 0)
         {
-            generateOverworld(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+            //generateOverworld(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
         }
     }
 
     private static void generateOverworld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
-        if (world.isRemote || world.provider.getDimension() != 0)
-            return;
-        if (IRConfig.MainConfig.Generation.regenerateDeepVein) OreGeneration.tryRetrogenDeepVein(world);
-        generateDeepVein(random, chunkX, chunkZ, world, false);
+        //if (world.isRemote || world.provider.getDimension() != 0)
+        //    return;
+        //if (IRConfig.MainConfig.Generation.regenerateDeepVein) OreGeneration.tryRetrogenDeepVein(world);
+        //generateDeepVein(random, chunkX, chunkZ, world, false);
     }
 
-    public static void tryRetrogenDeepVein(World world)
+    public static ItemStack getChunkVein(World world, BlockPos pos)
     {
-        i = 0;
-        if (world instanceof WorldServer)
-        {
-            Iterator<Chunk> chunks = ((WorldServer) world).getChunkProvider().loadedChunks.values().stream().iterator();
-            chunks.forEachRemaining(t -> OreGeneration.generateDeepVein(world.rand, t.x, t.z, world, true));
-        }
-        IRConfig.MainConfig.Generation.regenerateDeepVein = false;
-        ConfigManager.sync(MODID, Config.Type.INSTANCE);
-        world.playerEntities.forEach(t -> Utils.sendChatMessage(t, "ReGeneration Done in " + i + " Chunks"));
+        ChunkPos cPos = world.getChunk(pos).getPos();
+        ItemStack stack = CHUNKS_VEIN.get(cPos);
+        return stack != null ? stack : ItemStack.EMPTY;
     }
 
-    public static void generateDeepVein(Random random, int chunkX, int chunkZ, World world, boolean remove)
+    public static ItemStack generateNewVein(World world)
     {
-        if (!IRConfig.MainConfig.Generation.spawnDeepVein) return;
-
-        BlockPos pos = new BlockPos(chunkX * 16 + 8, 1, chunkZ * 16 + 8);
-        if (remove) world.setBlockState(pos, Blocks.BEDROCK.getDefaultState());
-        //if (remove) world.setBlockState(new BlockPos(chunkX * 16 + 8, 150, chunkZ * 16 + 8), Blocks.AIR.getDefaultState());
+        if (!IRConfig.MainConfig.Generation.spawnDeepVein) return ItemStack.EMPTY;
         int chance = IRConfig.MainConfig.Generation.deepVeinSpawnRate;
-        if (random.nextInt(100) <= chance)
+        if (world.rand.nextInt(100) < chance)
         {
-            WorldGenDeepMinable worldGenMinable = new WorldGenDeepMinable(ModBlocks.deepVein.getDefaultState(), 1);
-            worldGenMinable.generate(world, random, pos);
-            //worldGenMinable.generate(world, random, new BlockPos(chunkX * 16 + 8, 150, chunkZ * 16 + 8));
-            //System.out.println(TextFormatting.BLUE + "Generated at: " + pos);
+            int min = IRConfig.MainConfig.Generation.deepVeinMinOre;
+            int oreQuantity = world.rand.nextInt(IRConfig.MainConfig.Generation.deepVeinMaxOre - min) + min;
+            Item item = ModItems.DEEP_VEIN_ORES.get(world.rand.nextInt(ModItems.DEEP_VEIN_ORES.size() - 1));
+            Block block = Block.getBlockFromItem(item);
+            ItemStack stack = new ItemStack(block.getItemDropped(block.getDefaultState(), world.rand, 0));
+            stack.setCount(oreQuantity);
+            return stack;
         }
-        if (remove)
-        {
-            i++;
-            System.out.println(TextFormatting.BLUE + "ReGeneration Done in " + chunkX + " " + chunkZ);
-        }
+        return ItemStack.EMPTY;
     }
 }

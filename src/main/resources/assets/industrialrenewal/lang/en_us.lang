@@ -45,7 +45,7 @@ item.industrialrenewal.drill_steel.name=Steel Drill
 item.industrialrenewal.drill_diamond.name=Diamond Drill
 item.industrialrenewal.drill_deep.name=Deep Drill
 item.industrialrenewal.prospecting_pan.name=Prospecting Pan
-item.industrialrenewal.regen_wand.name=Wand of Deep Vein Regeneration
+item.industrialrenewal.regen_wand.name=Wand of Deep Vein Search
 
 #Discs
 item.industrialrenewal.record_royal_entrance.name=Music Disc
@@ -241,6 +241,7 @@ info.industrialrenewal.cartridges=Used in Fuse box
 info.industrialrenewal.drill=Drill
 info.industrialrenewal.prospecting_found=Deep vein found size:
 info.industrialrenewal.prospecting_notfound=No deep vein found
+info.industrialrenewal.prospectingpan.info=Used to prospect deep ore veins at the player's position
 
 #Book
 gui.industrialrenewal.railroad.category=Railroad

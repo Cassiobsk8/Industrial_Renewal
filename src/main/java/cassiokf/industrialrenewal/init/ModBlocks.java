@@ -177,13 +177,11 @@ public class ModBlocks
 
     public static final BlockChunkLoader chunkLoader = new BlockChunkLoader("chunk_loader", References.CREATIVE_IR_TAB);
 
-    public static final BlockDeepVein deepVein = new BlockDeepVein("deep_vein", null);
     public static final BlockOreVein veinHematite = new BlockOreVein("orevein_hematite", "oreIron", References.CREAATIVE_IRWIP_TAB);
 
     public static void register(IForgeRegistry<Block> registry)
     {
         registry.registerAll(
-                deepVein,
                 veinHematite,
                 blockHazard,
                 aisleHazard,
@@ -325,7 +323,6 @@ public class ModBlocks
                 steamBlock
         );
 
-        GameRegistry.registerTileEntity(TEDeepVein.class, deepVein.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityEnergySwitch.class, energySwitch.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityValvePipeLarge.class, valveLarge.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityEnergyCableLV.class, energyCableLV.getRegistryName());
@@ -389,7 +386,6 @@ public class ModBlocks
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
         registry.registerAll(
-                deepVein.createItemBlock(),
                 veinHematite.createItemBlock(),
                 blockHazard.createItemBlock(),
                 aisleHazard.createItemBlock(),
@@ -498,7 +494,6 @@ public class ModBlocks
     }
 
     public static void registerItemModels() {
-        deepVein.registerItemModel(Item.getItemFromBlock(deepVein));
         veinHematite.registerItemModel(Item.getItemFromBlock(veinHematite));
         blockHazard.registerItemModel(Item.getItemFromBlock(blockHazard));
         blockIndFloor.registerItemModel(Item.getItemFromBlock(blockIndFloor));

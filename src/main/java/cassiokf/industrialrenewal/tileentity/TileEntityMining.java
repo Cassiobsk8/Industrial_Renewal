@@ -4,9 +4,9 @@ import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.item.ItemDrill;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
-import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
+import cassiokf.industrialrenewal.world.generation.OreGeneration;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -95,7 +95,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
     private boolean isDeepMine = false;
 
     private final Stack<OreMining> ores = new Stack<>();
-    private TEDeepVein vein;
+    private ItemStack vein = ItemStack.EMPTY;
     private int size;
 
     //Client only
@@ -134,14 +134,14 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
                 outputOrSpawn();
                 if (canRun())
                 {
-                    if (isDeepMine() ? vein == null : ores.isEmpty()) getOres();
+                    if (isDeepMine() ? vein.isEmpty() : ores.isEmpty()) getOres();
 
-                    if (isDeepMine() ? vein != null : !ores.isEmpty()) running = true;
+                    if (isDeepMine() ? !vein.isEmpty() : !ores.isEmpty()) running = true;
                     else depleted = true;
 
                     if (running)
                     {
-                        size = isDeepMine() && vein != null ? vein.getOreQuantity() : ores.size();
+                        size = isDeepMine() && !vein.isEmpty() ? vein.getCount() : ores.size();
                         consumeEnergy();
                         if (drillHeat < (waterTank.getFluidAmount() >= waterPerTick ? 9400 : 17300)) drillHeat += 20;
                         mineOre();
@@ -153,7 +153,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
                     }
                 } else
                 {
-                    size = isDeepMine() && vein != null ? vein.getOreQuantity() : ores.size();
+                    size = isDeepMine() && !vein.isEmpty() ? vein.getCount() : ores.size();
                     drillHeat -= 30;
                     running = false;
                     currentTick = 0;
@@ -208,7 +208,10 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
             if (isDeepMine())
             {
                 currentTick = 0;
-                stack = vein.getOre(fortune, false);
+
+                stack = vein.copy();
+                stack.setCount(1);
+                vein.shrink(1);
             } else
             {
                 if (ores.isEmpty()) return;
@@ -263,7 +266,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
     {
         if (isDeepMine())
         {
-            vein = MachinesUtils.getDeepVein(world, pos);
+            vein = OreGeneration.getChunkVein(world, pos);
             return;
         }
         Chunk chunk = world.getChunk(pos);
@@ -278,7 +281,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
                 {
                     BlockPos actualPosition = new BlockPos(a + x, y, b + z);
                     IBlockState state = chunk.getBlockState(actualPosition);
-                    if (ModItems.allOres.contains(Item.getItemFromBlock(state.getBlock())))
+                    if (ModItems.POSSIBLE_DEEP_VEIN_ITEMS.contains(Item.getItemFromBlock(state.getBlock())))
                     {
                         ores.add(new OreMining(state, actualPosition));
                     }

@@ -87,7 +87,7 @@ public class IndustrialRenewal {
             NonNullList<ItemStack> ores = OreDictionary.getOres(name);
             for (ItemStack ore : ores)
             {
-                ModItems.allOres.add(ore.getItem());
+                ModItems.POSSIBLE_DEEP_VEIN_ITEMS.add(ore.getItem());
             }
         }
         IRConfig.populateDeepVeinOres();

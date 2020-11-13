@@ -1,31 +1,13 @@
 package cassiokf.industrialrenewal.util;
 
-import cassiokf.industrialrenewal.tileentity.TEDeepVein;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MachinesUtils
 {
-    public static TEDeepVein getDeepVein(World world, BlockPos pos)
-    {
-        Chunk chunk = world.getChunk(pos);
-        int a = chunk.x * 16;
-        int b = chunk.z * 16;
-        BlockPos actualPosition = new BlockPos(a + 8, 1, b + 8);
-        TileEntity te = world.getTileEntity(actualPosition);
-        if (te instanceof TEDeepVein)
-        {
-            return (TEDeepVein) te;
-        }
-        return null;
-    }
-
     public static List<BlockPos> getBlocksIn3x3x3Centered(BlockPos pos)
     {
         List<BlockPos> list = new ArrayList<BlockPos>();
