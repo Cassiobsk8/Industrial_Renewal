@@ -182,7 +182,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
         {
             EnumFacing facing = getMasterFacing().rotateY();
             TileEntity te = world.getTileEntity(pos.offset(facing, 2));
-            if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite()))
+            if (te != null)
             {
                 IItemHandler outputCap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
                 if (outputCap != null)
@@ -246,22 +246,6 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
         Utils.dropInventoryItems(world, pos.offset(getMasterFacing().rotateYCCW()), input);
         Utils.dropInventoryItems(world, pos.offset(getMasterFacing().rotateY()), outPut);
         super.onMasterBreak();
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        TELathe masterTE = getMaster();
-        if (masterTE == null || facing == null) return super.hasCapability(capability, facing);
-        EnumFacing inputFace = getMasterFacing().rotateYCCW();
-        return (capability.equals(CapabilityEnergy.ENERGY)
-                && facing.equals(getMasterFacing())
-                && pos.equals(masterTE.getPos().offset(getMasterFacing()).offset(inputFace)))
-                || (capability.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                && ((facing.equals(inputFace)
-                && pos.equals(masterTE.getPos().offset(inputFace)))
-                || (facing.equals(inputFace.getOpposite())
-                && pos.equals(masterTE.getPos().offset(inputFace.getOpposite())))));
     }
 
     @Nullable

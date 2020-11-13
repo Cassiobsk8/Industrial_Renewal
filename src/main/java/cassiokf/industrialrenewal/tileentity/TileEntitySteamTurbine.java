@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntitySteamTurbine> implements IDynamicSound
 {
     private final VoltsEnergyContainer energyContainer;
-    private float volume = IRConfig.MainConfig.Sounds.TurbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
+    private final float volume = IRConfig.MainConfig.Sounds.TurbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
 
     public FluidTank waterTank = new FluidTank(32000)
     {
@@ -46,11 +46,11 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
     };
     private final FluidStack waterStack = new FluidStack(IRConfig.getWaterFromSteamFluid(), Fluid.BUCKET_VOLUME);
 
-    private int maxRotation = 16000;
+    private final int maxRotation = 16000;
     private int rotation;
-    private int energyPerTick = IRConfig.MainConfig.Main.steamTurbineEnergyPerTick;
+    private final int energyPerTick = IRConfig.MainConfig.Main.steamTurbineEnergyPerTick;
     private int oldRotation;
-    private int steamPerTick = IRConfig.MainConfig.Main.steamTurbineSteamPerTick;
+    private final int steamPerTick = IRConfig.MainConfig.Main.steamTurbineSteamPerTick;
     public FluidTank steamTank = new FluidTank(IRConfig.MainConfig.Main.steamTurbineSteamPerTick)
     {
         @Override
@@ -156,7 +156,7 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
     {
         EnumFacing facing = getMasterFacing();
         TileEntity eTE = world.getTileEntity(pos.offset(facing.getOpposite()).down().offset(facing.rotateYCCW(), 2));
-        if (eTE != null && energyContainer.getEnergyStored() > 0 && eTE.hasCapability(CapabilityEnergy.ENERGY, facing.rotateY()))
+        if (eTE != null && energyContainer.getEnergyStored() > 0)
         {
             IEnergyStorage upTank = eTE.getCapability(CapabilityEnergy.ENERGY, facing.rotateY());
             if (upTank != null)
@@ -168,7 +168,7 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
     {
         EnumFacing facing = getMasterFacing();
         TileEntity wTE = world.getTileEntity(pos.offset(facing, 2).down());
-        if (wTE != null && waterTank.getFluidAmount() > 0 && wTE.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite()))
+        if (wTE != null && waterTank.getFluidAmount() > 0)
         {
             IFluidHandler wTank = wTE.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
             if (wTank != null) waterTank.drain(wTank.fill(waterTank.drain(2000, false), true), true);
@@ -299,19 +299,6 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
         this.rotation = compound.getInteger("heat");
         this.steamReceivedNorm = compound.getFloat("steamOnTick");
         super.readFromNBT(compound);
-    }
-
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
-    {
-        TileEntitySteamTurbine masterTE = this.getMaster();
-        if (masterTE == null) return false;
-        EnumFacing face = masterTE.getMasterFacing();
-        BlockPos masterPos = masterTE.getPos();
-
-        return (facing == EnumFacing.UP && pos.equals(masterPos.up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                || (facing == face && pos.equals(masterPos.down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                || (facing == face.rotateYCCW() && pos.equals(masterPos.down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityEnergy.ENERGY);
     }
 
     @Nullable

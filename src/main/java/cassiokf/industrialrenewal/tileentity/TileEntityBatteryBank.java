@@ -54,10 +54,11 @@ public class TileEntityBatteryBank extends TileEntitySync implements ITickable
             for (EnumFacing face : outPutFacings)
             {
                 TileEntity te = world.getTileEntity(pos.offset(face));
-                if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite()))
+                if (te != null)
                 {
                     IEnergyStorage eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
-                    if (eStorage != null && eStorage.canReceive()) {
+                    if (eStorage != null && eStorage.canReceive())
+                    {
                         this.container.extractEnergy(eStorage.receiveEnergy(this.container.extractEnergy(this.container.getMaxOutput(), true), false), false);
                     }
                 }
@@ -112,12 +113,6 @@ public class TileEntityBatteryBank extends TileEntitySync implements ITickable
         float totalCapacity = container.getMaxEnergyStored() / 1000F;
         currentAmount = currentAmount / totalCapacity;
         return currentAmount;
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == CapabilityEnergy.ENERGY && isFacingOutput(facing)) return true;
-        return (capability == CapabilityEnergy.ENERGY && facing != getBlockFacing().getOpposite()) || super.hasCapability(capability, facing);
     }
 
     @Override

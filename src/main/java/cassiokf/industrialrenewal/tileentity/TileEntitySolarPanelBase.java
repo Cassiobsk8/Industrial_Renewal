@@ -70,7 +70,7 @@ public class TileEntitySolarPanelBase extends TEBase implements ITickable
         EnumFacing facing = EnumFacing.DOWN;
         final TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
         int out = 0;
-        if (tileEntity != null && tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
+        if (tileEntity != null)
         {
             final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
             if (consumer != null && consumer.canReceive())
@@ -104,12 +104,6 @@ public class TileEntitySolarPanelBase extends TEBase implements ITickable
         {
             energyCanGenerate = getGeneration(world, pos);
         }
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-    {
-        return (capability == CapabilityEnergy.ENERGY && facing == EnumFacing.DOWN) || super.hasCapability(capability, facing);
     }
 
     @Override

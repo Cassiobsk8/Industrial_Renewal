@@ -50,21 +50,12 @@ public class TileEntityInfinityGenerator extends TEBase implements ITickable
         final TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
         if (tileEntity != null && !tileEntity.isInvalid())
         {
-            if (tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
+            final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
+            if (consumer != null && consumer.canReceive())
             {
-                final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
-                if (consumer != null && consumer.canReceive())
-                {
-                    consumer.receiveEnergy(energy, false);
-                }
+                consumer.receiveEnergy(energy, false);
             }
         }
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-    {
-        return (capability == CapabilityEnergy.ENERGY && facing != EnumFacing.DOWN && facing != EnumFacing.UP) || super.hasCapability(capability, facing);
     }
 
     @Override

@@ -48,7 +48,7 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                     sync();
                 }
                 TileEntity te = world.getTileEntity(pos.down().offset(getBlockFacing().getOpposite()));
-                if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getBlockFacing()))
+                if (te != null)
                 {
                     IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getBlockFacing());
                     if (handler != null)
@@ -184,14 +184,6 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
     public <T> T getInternalCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
         return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.inventory);
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        BlockPos masterPos = getMasterPos();
-        if (masterPos == null) return false;
-        return (pos.equals(masterPos.up()) && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                || super.hasCapability(capability, facing);
     }
 
     @Nullable

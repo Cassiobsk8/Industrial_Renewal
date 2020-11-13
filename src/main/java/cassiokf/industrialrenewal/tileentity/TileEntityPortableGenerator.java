@@ -27,7 +27,7 @@ public class TileEntityPortableGenerator extends TileEntitySaveContent implement
     private final FluidGenerator generator = new FluidGenerator(this);
     private EnumFacing blockFacing;
     private boolean soundStarted = false;
-    private float volume = IRConfig.MainConfig.Sounds.genVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
+    private final float volume = IRConfig.MainConfig.Sounds.genVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
 
     @Override
     public void update()
@@ -119,14 +119,6 @@ public class TileEntityPortableGenerator extends TileEntitySaveContent implement
         super.readFromNBT(compound);
     }
 
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
-    {
-        return (capability == CapabilityEnergy.ENERGY && facing == getBlockFacing())
-                || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
-                || super.hasCapability(capability, facing);
-    }
-
     @Nullable
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing)
@@ -154,11 +146,11 @@ public class TileEntityPortableGenerator extends TileEntitySaveContent implement
 
     public float getEnergyFill()
     {
-        return Utils.normalize(generator.isGenerating() ? generator.energyPerTick : 0, 0, 128) * 90;
+        return Utils.normalize(generator.isGenerating() ? FluidGenerator.energyPerTick : 0, 0, 128) * 90;
     }
 
     public String getEnergyText()
     {
-        return Utils.formatEnergyString(generator.isGenerating() ? generator.energyPerTick : 0) + "/t";
+        return Utils.formatEnergyString(generator.isGenerating() ? FluidGenerator.energyPerTick : 0) + "/t";
     }
 }

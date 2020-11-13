@@ -34,7 +34,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
             TileEntityFluidLoader.this.sync();
         }
     };
-    private int maxFlowPerTick = 200;
+    private final int maxFlowPerTick = 200;
     private boolean checked = false;
     private boolean master;
     private float ySlide = 0;
@@ -58,7 +58,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
                 if (isUnload() && tank.getFluidAmount() > 0)
                 {
                     TileEntity te = world.getTileEntity(pos.offset(getBlockFacing().getOpposite()));
-                    if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getBlockFacing()))
+                    if (te != null)
                     {
                         IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getBlockFacing());
                         if (handler != null)
@@ -215,12 +215,6 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
         cartActivity = compound.getInteger("activity");
         loading = compound.getBoolean("loading");
         super.readFromNBT(compound);
-    }
-
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing) {
-        return (facing == getBlockFacing().getOpposite() && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                || super.hasCapability(capability, facing);
     }
 
     @Nullable

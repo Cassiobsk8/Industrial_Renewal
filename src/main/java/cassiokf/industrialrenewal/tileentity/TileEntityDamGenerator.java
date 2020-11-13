@@ -24,7 +24,7 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
 {
     public static int maxGeneration = 1024;
     private final VoltsEnergyContainer energyContainer;
-    private float volume = IRConfig.MainConfig.Sounds.TurbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
+    private final float volume = IRConfig.MainConfig.Sounds.TurbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
     private int oldGeneration;
     private int generation;
     private int rotation;
@@ -58,7 +58,7 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
                 if (generation > 0)
                 {
                     TileEntity te = world.getTileEntity(pos.up(2));
-                    if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, EnumFacing.DOWN))
+                    if (te != null)
                     {
                         IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, EnumFacing.DOWN);
                         if (energyStorage != null)
@@ -136,14 +136,6 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
     public boolean instanceOf(TileEntity tileEntity)
     {
         return tileEntity instanceof TileEntityDamGenerator;
-    }
-
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
-    {
-        return facing == EnumFacing.UP
-                && pos.equals(getMaster().getPos().up())
-                && capability == CapabilityEnergy.ENERGY;
     }
 
     @Nullable

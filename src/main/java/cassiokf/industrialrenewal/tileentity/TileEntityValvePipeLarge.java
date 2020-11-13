@@ -37,7 +37,7 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
         }
     };
 
-    private int amountPerTick = 1000;
+    private final int amountPerTick = 1000;
 
     @Override
     public void update()
@@ -91,13 +91,6 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
     {
         tank.writeToNBT(tag);
         return super.writeToNBT(tag);
-    }
-
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
-    {
-        return (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && (facing == getOutPutFace() || facing == getOutPutFace().getOpposite()))
-                || super.hasCapability(capability, facing);
     }
 
     @Nullable

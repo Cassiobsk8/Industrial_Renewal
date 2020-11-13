@@ -88,7 +88,7 @@ public class TileEntityGauge extends TEBase
     public IFluidHandler forceCheck()
     {
         TileEntity te = world.getTileEntity(pos.offset(baseFacing));
-        if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, baseFacing.getOpposite()))
+        if (te != null)
         {
             IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, baseFacing.getOpposite());
             if (handler != null)

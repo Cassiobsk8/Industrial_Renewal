@@ -89,7 +89,7 @@ public class TileEntityEnergyLevel extends TEBase
     public IEnergyStorage forceCheck()
     {
         TileEntity te = this.world.getTileEntity(pos.offset(baseFacing));
-        if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, baseFacing.getOpposite()))
+        if (te != null)
         {
             IEnergyStorage handler = te.getCapability(CapabilityEnergy.ENERGY, baseFacing.getOpposite());
             if (handler != null)

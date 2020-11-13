@@ -79,9 +79,7 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
         {
             BlockPos currentPos = pos.offset(face);
             TileEntity te = world.getTileEntity(currentPos);
-            boolean hasMachine = te != null
-                    && !(te instanceof TileEntityFluidPipe)
-                    && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
+            boolean hasMachine = te != null && !(te instanceof TileEntityFluidPipe);
             IFluidHandler machineCap = null;
             if (hasMachine)
                 machineCap = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
@@ -100,14 +98,6 @@ public class TileEntityFluidPipe extends TileEntityMultiBlocksTube<TileEntityFlu
     public boolean instanceOf(TileEntity te)
     {
         return te instanceof TileEntityFluidPipe || (te instanceof TileEntityCableTray && ((TileEntityCableTray) te).hasPipe());
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-            return true;
-        return super.hasCapability(capability, facing);
     }
 
     @Nullable

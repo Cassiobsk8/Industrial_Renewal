@@ -87,20 +87,13 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
         {
             BlockPos currentPos = pos.offset(face);
             TileEntity te = world.getTileEntity(currentPos);
-            boolean hasMachine = te != null
-                    && !(te instanceof TileEntityEnergyCable)
-                    && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
+            boolean hasMachine = te != null && !(te instanceof TileEntityEnergyCable);
             IEnergyStorage eStorage = null;
             if (hasMachine) eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
             if (hasMachine && eStorage != null && eStorage.canReceive())
                 addMachine(te, face);
             else removeMachine(te);
         }
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return capability == CapabilityEnergy.ENERGY || super.hasCapability(capability, facing);
     }
 
     @Override

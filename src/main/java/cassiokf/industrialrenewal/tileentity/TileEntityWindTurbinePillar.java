@@ -130,12 +130,6 @@ public class TileEntityWindTurbinePillar extends TileEntityEnergyCable
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-    {
-        return capability == CapabilityEnergy.ENERGY && (facing == EnumFacing.UP || isBase);
-    }
-
-    @Override
     @Nullable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {

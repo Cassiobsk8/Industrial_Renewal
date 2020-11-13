@@ -51,14 +51,14 @@ public class TileEntityElectricPump extends TileEntitySync implements ITickable
     };
 
     private int index = -1;
-    private int everyXtick = 10;
+    private final int everyXtick = 10;
     private int tick;
     public static int energyPerTick = IRConfig.MainConfig.Main.pumpEnergyPerTick;
     private EnumFacing facing;
-    private float volume = IRConfig.MainConfig.Sounds.pumpVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
+    private final float volume = IRConfig.MainConfig.Sounds.pumpVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
 
-    private List<BlockPos> fluidSet = new ArrayList<>();
-    private int maxRadius = IRConfig.MainConfig.Main.maxPumpRadius;
+    private final List<BlockPos> fluidSet = new ArrayList<>();
+    private final int maxRadius = IRConfig.MainConfig.Main.maxPumpRadius;
 
     private boolean isRunning = false;
     private boolean oldIsRunning = false;
@@ -303,19 +303,6 @@ public class TileEntityElectricPump extends TileEntitySync implements ITickable
         starting = compound.getBoolean("starting");
         this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
         super.readFromNBT(compound);
-    }
-
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing) {
-        IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() instanceof BlockElectricPump)
-        {
-            int index = getIndex();
-            EnumFacing face = getBlockFacing();
-            return (index == 1 && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == EnumFacing.UP)
-                    || (index == 0 && capability == CapabilityEnergy.ENERGY && facing == face.getOpposite());
-        }
-        return false;
     }
 
     @Nullable

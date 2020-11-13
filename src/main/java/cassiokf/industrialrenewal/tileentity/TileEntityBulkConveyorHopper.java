@@ -49,15 +49,15 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
         if (hopperInv.getStackInSlot(0).isEmpty())
         {
             TileEntity te = world.getTileEntity(pos.up());
-            if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN))
+            if (te != null)
             {
                 IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
                 if (itemHandler != null)
                 {
                     int itemsPerTick = 8;
                     if (Utils.moveItemsBetweenInventories(itemHandler, hopperInv, itemsPerTick)) markDirty();
+                    return true;
                 }
-                return true;
             }
         }
         return false;
@@ -94,12 +94,6 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
     {
         Utils.dropInventoryItems(world, pos, hopperInv);
         super.dropInventory();
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-    {
-        return capability.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) && facing != EnumFacing.DOWN;
     }
 
     @Nullable

@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityBarrel extends TileEntitySaveContent
 {
-    public FluidTank tank = new FluidTank(IRConfig.MainConfig.Main.barrelCapacity)
+    public final FluidTank tank = new FluidTank(IRConfig.MainConfig.Main.barrelCapacity)
     {
         @Override
         public void onContentsChanged()
@@ -55,12 +55,6 @@ public class TileEntityBarrel extends TileEntitySaveContent
         tank.readFromNBT(tag);
 
         super.readFromNBT(compound);
-    }
-
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
-    {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Nullable

@@ -55,13 +55,6 @@ public class TileEntityTrash extends TEBase
         };
     }
 
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
-    {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityEnergy.ENERGY
-                || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
-    }
-
     @Nullable
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing)

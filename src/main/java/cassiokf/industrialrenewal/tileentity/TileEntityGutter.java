@@ -21,7 +21,7 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
 {
     EnumFacing blockFacing = null;
 
-    public FluidTank tank = new FluidTank(1000)
+    public final FluidTank tank = new FluidTank(1000)
     {
         @Override
         public boolean canFill()
@@ -57,13 +57,10 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
                         if (tileEntity != null && !tileEntity.isInvalid())
                         {
                             EnumFacing facing = getMachineContainers().get(tileEntity).getOpposite();
-                            if (tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
+                            final IFluidHandler consumer = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+                            if (consumer != null)
                             {
-                                final IFluidHandler consumer = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
-                                if (consumer != null)
-                                {
-                                    this.tank.drain(consumer.fill(this.tank.drain(quantity, false), true), true);
-                                }
+                                this.tank.drain(consumer.fill(this.tank.drain(quantity, false), true), true);
                             }
                         }
                     }
@@ -93,7 +90,7 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
         IBlockState state = world.getBlockState(currentPos);
         TileEntity te = world.getTileEntity(currentPos);
         if (te == null) return;
-        boolean hasMachine = !(state.getBlock() instanceof BlockGutter) && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
+        boolean hasMachine = !(state.getBlock() instanceof BlockGutter);
         IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite());
         if (hasMachine && handler != null && handler.getTankProperties().length > 0 && handler.getTankProperties()[0].canFill())
             addMachine(te, face);
@@ -125,12 +122,6 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
         if (blockFacing != null) return blockFacing;
         IBlockState state = world.getBlockState(pos);
         return blockFacing = state.getBlock() instanceof BlockGutter ? state.getValue(BlockGutter.FACING) : EnumFacing.NORTH;
-    }
-
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
-    {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == EnumFacing.DOWN;
     }
 
     @Nullable

@@ -26,7 +26,7 @@ public class TileEntityBulkConveyorInserter extends TileEntityBulkConveyor
         {
             EnumFacing facing = getBlockFacing();
             TileEntity te = world.getTileEntity(pos.offset(facing));
-            if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite()))
+            if (te != null)
             {
                 IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
                 if (itemHandler != null)

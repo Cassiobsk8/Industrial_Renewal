@@ -457,16 +457,6 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
         super.readFromNBT(compound);
     }
 
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
-    {
-        TileEntityMining masterTE = this.getMaster();
-        if (masterTE == null) return false;
-        EnumFacing face = masterTE.getMasterFacing();
-        return (facing == face && this.pos.equals(masterTE.getPos().down().offset(face).offset(face.rotateY())) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                || (facing == EnumFacing.UP && this.pos.equals(masterTE.getPos().offset(face.getOpposite()).up()) && capability == CapabilityEnergy.ENERGY);
-    }
-
     @Nullable
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing)

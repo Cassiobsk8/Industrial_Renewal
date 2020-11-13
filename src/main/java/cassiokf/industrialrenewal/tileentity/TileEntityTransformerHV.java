@@ -86,7 +86,7 @@ public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntity
             //OUTPUT ENERGY
             BlockPos outPutPos = pos.offset(getMasterFacing().getOpposite(), 2).down();
             TileEntity outTileEntity = world.getTileEntity(outPutPos);
-            if (outTileEntity != null && outTileEntity.hasCapability(CapabilityEnergy.ENERGY, getMasterFacing()))
+            if (outTileEntity != null)
             {
                 IEnergyStorage outPutStorage = outTileEntity.getCapability(CapabilityEnergy.ENERGY, getMasterFacing());
                 if (outPutStorage != null && outPutStorage.canReceive())
@@ -208,18 +208,6 @@ public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntity
         isOutPut = compound.getBoolean("isOutPut");
         averageEnergy = compound.getInteger("energy_average");
         super.readFromNBT(compound);
-    }
-
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
-    {
-        TileEntityTransformerHV masterTE = this.getMaster();
-        if (masterTE == null) return false;
-        EnumFacing face = masterTE.getMasterFacing();
-
-        return facing == face.getOpposite()
-                && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()))
-                && capability == CapabilityEnergy.ENERGY;
     }
 
     @Nullable

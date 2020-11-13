@@ -2,17 +2,13 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import cassiokf.industrialrenewal.util.interfaces.IMecanicalEnergy;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.capabilities.Capability;
-
-import javax.annotation.Nullable;
 
 public class TileEntityDamAxis extends TileEntityMultiBlocksTube<TileEntityDamAxis> implements IMecanicalEnergy
 {
-    private final EnumFacing[] faces = new EnumFacing[]{EnumFacing.UP, EnumFacing.DOWN};
+    private static final EnumFacing[] faces = new EnumFacing[]{EnumFacing.UP, EnumFacing.DOWN};
 
     public TileEntityDamAxis()
     {
@@ -64,30 +60,5 @@ public class TileEntityDamAxis extends TileEntityMultiBlocksTube<TileEntityDamAx
         {
             addMachine(te, EnumFacing.UP);
         } else removeMachine(te);
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-    {
-        return super.hasCapability(capability, facing);
-    }
-
-    @Override
-    @Nullable
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        return super.getCapability(capability, facing);
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound compound)
-    {
-        super.readFromNBT(compound);
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
-    {
-        return super.writeToNBT(compound);
     }
 }

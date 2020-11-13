@@ -37,17 +37,6 @@ public class TileEntityEnergySwitch extends TileEntityToggleableBase
                 pitch);
     }
 
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
-    {
-        EnumFacing faceToFill = getOutPutFace();
-
-        if ((capability == CapabilityEnergy.ENERGY && facing == faceToFill)
-                || (capability == CapabilityEnergy.ENERGY && facing == faceToFill.getOpposite()))
-            return true;
-        return super.hasCapability(capability, facing);
-    }
-
     @Nullable
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing)

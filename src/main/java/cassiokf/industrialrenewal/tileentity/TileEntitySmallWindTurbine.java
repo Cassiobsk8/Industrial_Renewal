@@ -98,7 +98,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySync implements ITicka
             if (energyGen > 0)
             {
                 TileEntity te = world.getTileEntity(pos.down());
-                if (te != null && te.hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP))
+                if (te != null)
                 {
                     IEnergyStorage downE = te.getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP);
                     if (downE != null && downE.canReceive())
@@ -183,12 +183,6 @@ public class TileEntitySmallWindTurbine extends TileEntitySync implements ITicka
             return blockFacing = state.getValue(BlockHorizontalFacing.FACING);
         }
         return EnumFacing.NORTH;
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-    {
-        return (capability == CapabilityEnergy.ENERGY) || super.hasCapability(capability, facing);
     }
 
     @Override

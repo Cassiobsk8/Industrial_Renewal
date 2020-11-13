@@ -142,9 +142,8 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
         BlockPos currentPos = pos.offset(facing);
         IBlockState state = world.getBlockState(currentPos);
         TileEntity te = world.getTileEntity(currentPos);
-        if (!(state.getBlock() instanceof BlockSolarPanelFrame)
-                && te != null
-                && te.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
+        if (te == null) return;
+        if (!(state.getBlock() instanceof BlockSolarPanelFrame) && te.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
         {
             addMachine(te, facing);
         } else removeMachine(te);
@@ -206,13 +205,6 @@ public class TileEntitySolarPanelFrame extends TileEntityMultiBlocksTube<TileEnt
     {
         compound.setBoolean("panel", panelInv);
         return super.writeToNBT(compound);
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-    {
-        return (capability == CapabilityEnergy.ENERGY && facing == getBlockFacing())
-                || super.hasCapability(capability, facing);
     }
 
     @Override

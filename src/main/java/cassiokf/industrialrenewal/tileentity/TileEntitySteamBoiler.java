@@ -112,19 +112,6 @@ public class TileEntitySteamBoiler extends TileEntityMultiBlockBase<TileEntitySt
         super.readFromNBT(compound);
     }
 
-    @Override
-    public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing)
-    {
-        TileEntitySteamBoiler masterTE = this.getMaster();
-        if (masterTE == null) return false;
-        EnumFacing face = masterTE.getMasterFacing();
-        boolean matchFuelFace = facing == face.rotateYCCW() && pos.equals(masterTE.getPos().down().offset(face.getOpposite()).offset(face.rotateYCCW()));
-        return (facing == EnumFacing.UP && pos.equals(masterTE.getPos().up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                || (facing == face && pos.equals(masterTE.getPos().down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                || (masterTE.getType() == 1 && matchFuelFace && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                || (masterTE.getType() == 2 && matchFuelFace && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
-    }
-
     @Nullable
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing)
