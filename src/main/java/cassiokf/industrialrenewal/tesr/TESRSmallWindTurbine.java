@@ -15,7 +15,6 @@ public class TESRSmallWindTurbine extends TESRBase<TileEntitySmallWindTurbine>
     @Override
     public void render(TileEntitySmallWindTurbine te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
-        super.render(te, x, y, z, partialTicks, destroyStage, alpha);
         if (te.hasBlade())
         {
             //shift = shiftOld + (shift - shiftOld) * partialTick

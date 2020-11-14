@@ -103,6 +103,19 @@ public class BlockWindTurbinePillar extends BlockTileEntityConnectedMultiblocks<
     }
 
     @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        TileEntity te = world.getTileEntity(pos);
+        if (te instanceof TileEntityWindTurbinePillar && super.rotateBlock(world, pos, axis))
+        {
+            EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+            ((TileEntityWindTurbinePillar) te).setFacing(facing);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
