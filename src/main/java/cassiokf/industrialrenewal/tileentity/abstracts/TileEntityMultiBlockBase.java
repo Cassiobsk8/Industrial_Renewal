@@ -51,6 +51,7 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
 
     public TE getMaster()
     {
+        if (isMaster) return (TE) this;
         if (masterTE == null || masterTE.isInvalid())
         {
             List<BlockPos> list = MachinesUtils.getBlocksIn3x3x3Centered(this.pos);

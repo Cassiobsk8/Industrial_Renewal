@@ -63,9 +63,10 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     public void initializeMultiblockIfNecessary(boolean forced)
     {
         if (isTray()) return;
-        if ((forced || isMasterInvalid()) && !world.isRemote)
+        if ((forced || isMasterInvalid()))
         {
-            if (IRConfig.MainConfig.Main.debugMessages) System.out.println("initialize " + forced + " " + this + " " + pos);
+            if (IRConfig.MainConfig.Main.debugMessages)
+                System.out.println("initialize " + forced + " " + this + " " + pos);
             List<TileEntityMultiBlocksTube> connectedCables = new CopyOnWriteArrayList<>();
             Stack<TileEntityMultiBlocksTube> traversingCables = new Stack<>();
             TE master = (TE) this;
@@ -166,6 +167,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
 
     public TE getMaster()
     {
+        if (isMaster) return (TE) this;
         initializeMultiblockIfNecessary();
         if (master != null && !master.isMaster()) sync();
         if (master == null)
