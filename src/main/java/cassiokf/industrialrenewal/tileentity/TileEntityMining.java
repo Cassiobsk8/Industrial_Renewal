@@ -1,6 +1,8 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.handlers.IRSoundHandler;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.item.ItemDrill;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
@@ -66,7 +68,6 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
         @Override
         protected void onContentsChanged(int slot)
         {
-            TileEntityMining.this.depleted = false;
             TileEntityMining.this.checkDeepMine();
         }
     };
@@ -85,6 +86,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
     public static int waterPerTick = IRConfig.MainConfig.Main.miningWaterPerTick;
     public static int energyPerTick = IRConfig.MainConfig.Main.miningEnergyPerTick;
     public static int deepEnergyPerTick = IRConfig.MainConfig.Main.miningDeepEnergyPerTick;
+    public static float volume = IRConfig.MainConfig.Sounds.miningVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
     private static final int cooldown = IRConfig.MainConfig.Main.miningCooldown;
     private static final int damageAmount = 1;
     private int currentTick = 0;
@@ -156,6 +158,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
                     size = isDeepMine() && !vein.isEmpty() ? vein.getCount() : ores.size();
                     drillHeat -= 30;
                     running = false;
+                    depleted = false;
                     currentTick = 0;
                 }
 
@@ -168,6 +171,19 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
                 }
             }
             doAnimation();
+            updateSound();
+        }
+    }
+
+    private void updateSound()
+    {
+        if (!world.isRemote) return;
+        if (this.running)
+        {
+            IRSoundHandler.playRepeatableSound(IRSoundRegister.MINING_RESOURCEL, volume, 1f, pos);
+        } else
+        {
+            IRSoundHandler.stopTileSound(pos);
         }
     }
 

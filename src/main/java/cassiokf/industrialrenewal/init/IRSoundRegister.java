@@ -15,7 +15,7 @@ public class IRSoundRegister
 
     public static SoundEvent TILEENTITY_TRAINHORN, TILEENTITY_VALVE_CHANGE, TILEENTITY_ALARM, ITEM_DRILL,
             BLOCK_CATWALKGATE_OPEN, BLOCK_CATWALKGATE_CLOSE, EFFECT_SHOCK, DISC_1, BOOK_FLIP, MOTOR_ROTATION, PUMP_ROTATION,
-            PUMP_START, LATHE, LATHE_STOP, GENERATOR;
+            PUMP_START, LATHE, LATHE_STOP, GENERATOR, MINING;
 
     public static final ResourceLocation PUMP_ROTATION_RESOURCEL = new ResourceLocation(References.MODID, "pump_rotation");
     public static final ResourceLocation TILEENTITY_TRAINHORN_RESOURCEL = new ResourceLocation(References.MODID, "railroad.train_horn");
@@ -32,6 +32,7 @@ public class IRSoundRegister
     public static final ResourceLocation LATHE_RESOURCEL = new ResourceLocation(References.MODID, "lathe");
     public static final ResourceLocation LATHE_STOP_RESOURCEL = new ResourceLocation(References.MODID, "lathe_off");
     public static final ResourceLocation GENERATOR_RESOURCEL = new ResourceLocation(References.MODID, "port_generator");
+    public static final ResourceLocation MINING_RESOURCEL = new ResourceLocation(References.MODID, "mining");
 
     public static void registerSounds()
     {
@@ -50,6 +51,7 @@ public class IRSoundRegister
         LATHE = registerSound("lathe", LATHE_RESOURCEL, EnumSoundType.REPEATABLE_ONLY);
         LATHE_STOP = registerSound("lathe_off", LATHE_STOP_RESOURCEL, EnumSoundType.NORMAL);
         GENERATOR = registerSound("port_generator", GENERATOR_RESOURCEL, EnumSoundType.REPEATABLE_ONLY);
+        MINING = registerSound("mining", MINING_RESOURCEL, EnumSoundType.REPEATABLE_ONLY);
     }
 
     private static SoundEvent registerSound(String name, ResourceLocation location, EnumSoundType type)

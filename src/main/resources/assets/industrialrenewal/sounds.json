@@ -148,5 +148,15 @@
         "stream": false
       }
     ]
+  },
+  "mining": {
+    "category": "block",
+    "subtitle": "mining",
+    "sounds": [
+      {
+        "name": "industrialrenewal:mining",
+        "stream": false
+      }
+    ]
   }
 }

@@ -347,7 +347,10 @@ public class IRConfig {
             public float genVolume = 0.6f;
 
             @Config.Comment("Base volume of the Steam Turbine (default 0.8f)")
-            public float TurbineVolume = 0.8f;
+            public float turbineVolume = 0.8f;
+
+            @Config.Comment("Base volume of the Mining (default 0.8f)")
+            public float miningVolume = 0.8f;
         }
 
         public static class SubCategoryRender

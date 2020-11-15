@@ -20,7 +20,7 @@ import java.util.List;
 
 public class TileEntityDamTurbine extends TileEntityMultiBlockBase<TileEntityDamTurbine> implements ICompressedFluidCapability, IDynamicSound
 {
-    private float volume = IRConfig.MainConfig.Sounds.TurbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
+    private final float volume = IRConfig.MainConfig.Sounds.turbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
     private BlockPos outPos = null;
     private int passedFluid = 0;
     private boolean hasFlow = false;
