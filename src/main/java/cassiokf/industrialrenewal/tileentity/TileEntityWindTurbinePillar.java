@@ -100,16 +100,21 @@ public class TileEntityWindTurbinePillar extends TileEntityEnergyCable
         return facing;
     }
 
+    public void setFacing(EnumFacing facing)
+    {
+        this.facing = facing;
+    }
+
     public float getGenerationForGauge()
     {
-        float currentAmount = Utils.normalize(getMaster().averageEnergy, 0, getMaxEnergyToTransport());
+        float currentAmount = Utils.normalize(getMaster().averageEnergy, 0, 128);
         amount = Utils.lerp(amount, currentAmount, 0.1f);
         return Math.min(amount, 1) * 90f;
     }
 
     public float getPotentialValue()
     {
-        float currentAmount = Utils.normalize(getMaster().potentialEnergy, 0, getMaxEnergyToTransport());
+        float currentAmount = Utils.normalize(getMaster().potentialEnergy, 0, 128);
         return currentAmount * 90f;
     }
 
