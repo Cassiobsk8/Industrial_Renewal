@@ -1,0 +1,79 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/pipe"
+    }
+  },
+  "variants": {
+    "master": {
+      "true": {
+        "model": "industrialrenewal:tank/tank_mid"
+      },
+      "false": {
+        "model": "industrialrenewal:dummy"
+      }
+    },
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
+    "top": {
+      "0": {
+        "submodel": {
+          "top": {
+            "model": "industrialrenewal:dummy"
+          }
+        }
+      },
+      "1": {
+        "submodel": {
+          "top": {
+            "model": "industrialrenewal:tank/tank_top_true"
+          }
+        }
+      },
+      "2": {
+        "submodel": {
+          "top": {
+            "model": "industrialrenewal:tank/tank_top_false"
+          }
+        }
+      }
+    },
+    "bot": {
+      "0": {
+        "submodel": {
+          "bot": {
+            "model": "industrialrenewal:dummy"
+          }
+        }
+      },
+      "1": {
+        "submodel": {
+          "bot": {
+            "model": "industrialrenewal:tank/tank_bot_true"
+          }
+        }
+      },
+      "2": {
+        "submodel": {
+          "bot": {
+            "model": "industrialrenewal:tank/tank_bot_false"
+          }
+        }
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:tank/tank_item"
+    }
+  }
+}

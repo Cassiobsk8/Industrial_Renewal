@@ -37,6 +37,9 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
     public double xPos = 0D;
     public double zPos = 0D;
 
+    @Override
+    public abstract void render(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha);
+
     public void doTheMath(EnumFacing facing, double x, double z, double offset, double sidePlus)
     {
         switch (facing)

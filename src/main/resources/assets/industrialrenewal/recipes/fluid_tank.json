@@ -1,0 +1,27 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "IBI",
+    "IBI",
+    "TGT"
+  ],
+  "key": {
+    "B": {
+      "item": "industrialrenewal:barrel_item"
+    },
+    "G": {
+      "item": "industrialrenewal:fluid_gauge"
+    },
+    "T": {
+      "item": "industrialrenewal:catwalk_pillar"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotSteel"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:fluid_tank",
+    "count": 1
+  }
+}

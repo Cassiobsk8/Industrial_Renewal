@@ -13,7 +13,7 @@ public class TESRGauge extends TESRBase<TileEntityGauge>
     {
         EnumFacing facing = te.getGaugeFacing();
         doTheMath(facing, x, z, 0.6, 0);
-        renderText(facing, xPos, y + 0.2, zPos, te.GetText(), 0.01F);
-        renderPointer(facing, xPos, y + 0.5, zPos, te.GetTankFill(), pointer, 0.3F);
+        renderText(facing, xPos, y + 0.18, zPos, te.GetText(), 0.01F);
+        renderPointer(facing, xPos, y + 0.45, zPos, te.GetTankFill(), pointer, 0.3F);
     }
 }

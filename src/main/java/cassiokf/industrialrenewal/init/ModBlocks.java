@@ -174,6 +174,7 @@ public class ModBlocks
     public static final BlockDamGenerator damGenerator = new BlockDamGenerator("dam_generator", References.CREATIVE_IR_TAB);
     public static final BlockDamAxis damAxis = new BlockDamAxis("dam_axis", References.CREATIVE_IR_TAB);
     public static final BlockHighPressurePipe highPressurePipe = new BlockHighPressurePipe("high_pressure_pipe", References.CREATIVE_IR_TAB);
+    public static final BlockFluidTank fluidTank = new BlockFluidTank("fluid_tank", References.CREATIVE_IR_TAB);
 
     public static final BlockChunkLoader chunkLoader = new BlockChunkLoader("chunk_loader", References.CREATIVE_IR_TAB);
 
@@ -294,6 +295,7 @@ public class ModBlocks
                 damAxis,
                 highPressurePipe,
                 //Machines
+                fluidTank,
                 steamBoiler,
                 steamTurbine,
                 latheMachine,
@@ -364,6 +366,7 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileEntityCableTray.class, cableTray.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityFluidPipe.class, fluidPipe.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityFluidPipeGauge.class, fluidPipeGauge.getRegistryName());
+        GameRegistry.registerTileEntity(TEFluidTank.class, fluidTank.getRegistryName());
         GameRegistry.registerTileEntity(TileEntitySteamBoiler.class, steamBoiler.getRegistryName());
         GameRegistry.registerTileEntity(TileEntitySteamTurbine.class, steamTurbine.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityMining.class, mining.getRegistryName());
@@ -481,6 +484,7 @@ public class ModBlocks
                 damGenerator.createItemBlock(),
                 damAxis.createItemBlock(),
                 highPressurePipe.createItemBlock(),
+                fluidTank.createItemBlock(),
                 steamBoiler.createItemBlock(),
                 steamTurbine.createItemBlock(),
                 mining.createItemBlock(),
@@ -589,6 +593,7 @@ public class ModBlocks
         damGenerator.registerItemModel(Item.getItemFromBlock(damGenerator));
         damAxis.registerItemModel(Item.getItemFromBlock(damAxis));
         highPressurePipe.registerItemModel(Item.getItemFromBlock(highPressurePipe));
+        fluidTank.registerItemModel(Item.getItemFromBlock(fluidTank));
         steamBoiler.registerItemModel(Item.getItemFromBlock(steamBoiler));
         steamTurbine.registerItemModel(Item.getItemFromBlock(steamTurbine));
         mining.registerItemModel(Item.getItemFromBlock(mining));

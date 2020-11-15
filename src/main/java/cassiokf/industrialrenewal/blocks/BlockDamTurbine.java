@@ -28,12 +28,6 @@ public class BlockDamTurbine extends BlockMultiBlockBase<TileEntityDamTurbine>
         return MachinesUtils.getBlocksIn3x2x3CenteredPlus1OnTop(masterPos);
     }
 
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
-
     @Nullable
     @Override
     public TileEntityDamTurbine createTileEntity(World world, IBlockState state)
