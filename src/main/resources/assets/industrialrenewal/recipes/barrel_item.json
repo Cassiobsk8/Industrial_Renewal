@@ -2,13 +2,10 @@
   "type": "forge:ore_shaped",
   "pattern": [
     "SLS",
-    "SCS",
+    "S S",
     "SLS"
   ],
   "key": {
-    "C": {
-      "item": "minecraft:cauldron"
-    },
     "S": {
       "type": "forge:ore_dict",
       "ore": "ingotIron"

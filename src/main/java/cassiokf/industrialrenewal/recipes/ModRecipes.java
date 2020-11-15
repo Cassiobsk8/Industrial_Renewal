@@ -26,7 +26,7 @@ public class ModRecipes
         GameRegistry.addSmelting(ModItems.hematiteChunk, new ItemStack(Items.IRON_INGOT, 1), 0.7f);
         GameRegistry.addSmelting(ModBlocks.veinHematite, new ItemStack(Items.IRON_INGOT, 1), 0.7f);
 
-        GameRegistry.addShapelessRecipe(new ResourceLocation("industrialrenewal:small_slabs"), new ResourceLocation("small_slabs"), new ItemStack(OreDictionary.getOres("minislabStone").get(0).getItem(), 4),
+        GameRegistry.addShapelessRecipe(new ResourceLocation("industrialrenewal:small_slabs"), new ResourceLocation("small_slabs"), new ItemStack(OreDictionary.getOres("minislabStone").get(0).getItem(), 8),
                 Ingredient.fromStacks(new ItemStack(ModItems.steelSaw, 1, OreDictionary.WILDCARD_VALUE)), Ingredient.fromStacks(new ItemStack(Blocks.STONE_SLAB, 1)));
         GameRegistry.addShapelessRecipe(new ResourceLocation("industrialrenewal:record_royal_entrance"), new ResourceLocation("record_royal_entrance"),
                 new ItemStack(ModItems.disc1),
