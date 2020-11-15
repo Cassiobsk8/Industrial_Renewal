@@ -12,6 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
@@ -54,7 +55,8 @@ public class TileEntityWindTurbinePillar extends TileEntityEnergyCable
     @Override
     public void beforeInitialize()
     {
-        isBase = getIsBase();
+        getIsBase();
+        sync();
     }
 
     @Override
@@ -72,21 +74,23 @@ public class TileEntityWindTurbinePillar extends TileEntityEnergyCable
     @Override
     public void checkForOutPuts()
     {
+        getIsBase();
         outPut = 0;
         potentialEnergy = 0;
-        if (world.isRemote || !isBase) return;
-        for (EnumFacing face : EnumFacing.HORIZONTALS)
+        if (!world.isRemote && isBase)
         {
-            BlockPos currentPos = pos.offset(face);
+            for (EnumFacing face : EnumFacing.HORIZONTALS)
+            {
+                BlockPos currentPos = pos.offset(face);
 
-            IBlockState state = world.getBlockState(currentPos);
-            TileEntity te = world.getTileEntity(currentPos);
-            boolean hasMachine = !(state.getBlock() instanceof BlockWindTurbinePillar)
-                    && te != null && te.hasCapability(CapabilityEnergy.ENERGY, face.getOpposite());
-
-            if (hasMachine && te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()).canReceive())
-                addMachine(te, face);
-            else removeMachine(te);
+                TileEntity te = world.getTileEntity(currentPos);
+                boolean hasMachine = !(te instanceof TileEntityWindTurbinePillar) && te != null;
+                IEnergyStorage cap = null;
+                if (hasMachine) cap = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
+                if (hasMachine && cap != null && cap.canReceive())
+                    addMachine(te, face);
+                else removeMachine(te);
+            }
         }
         this.sync();
     }
@@ -131,7 +135,8 @@ public class TileEntityWindTurbinePillar extends TileEntityEnergyCable
     public boolean getIsBase()
     {
         IBlockState state = world.getBlockState(pos.down());
-        return !(state.getBlock() instanceof BlockWindTurbinePillar);
+        isBase = !(state.getBlock() instanceof BlockWindTurbinePillar);
+        return isBase;
     }
 
     @Override

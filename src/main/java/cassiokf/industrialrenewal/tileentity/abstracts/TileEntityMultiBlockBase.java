@@ -91,6 +91,12 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
         }
     }
 
+    @Override
+    public void sync()
+    {
+        if (isMaster) super.sync();
+    }
+
     public void breakMultiBlocks()
     {
         startBreaking = true;
