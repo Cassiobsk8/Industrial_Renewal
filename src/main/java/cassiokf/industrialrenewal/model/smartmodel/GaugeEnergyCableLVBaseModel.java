@@ -19,21 +19,21 @@ public class GaugeEnergyCableLVBaseModel implements IModel
     public static final ResourceLocation TEXTURE_SHEET = new ResourceLocation("industrialrenewal:blocks/energy_meter_256");
 
     public static final ModelResourceLocation MODEL_CORE = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/pipe_core_gauge");
-    public static final ModelResourceLocation MODEL_MASTER = new ModelResourceLocation("industrialrenewal:pipe_energy/cable_master");
+    public static final ModelResourceLocation MODEL_MASTER = EnergyCableBaseModel.MODEL_MASTER;
 
-    public static final ModelResourceLocation MODEL_DOWN = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con_down");
-    public static final ModelResourceLocation MODEL_UP = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con_up");
-    public static final ModelResourceLocation MODEL_NORTH = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con_north");
-    public static final ModelResourceLocation MODEL_SOUTH = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con_south");
-    public static final ModelResourceLocation MODEL_WEST = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con_west");
-    public static final ModelResourceLocation MODEL_EAST = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con_east");
+    public static final ModelResourceLocation MODEL_DOWN = EnergyCableBaseModel.MODEL_DOWN;
+    public static final ModelResourceLocation MODEL_UP = EnergyCableBaseModel.MODEL_UP;
+    public static final ModelResourceLocation MODEL_NORTH = EnergyCableBaseModel.MODEL_NORTH;
+    public static final ModelResourceLocation MODEL_SOUTH = EnergyCableBaseModel.MODEL_SOUTH;
+    public static final ModelResourceLocation MODEL_WEST = EnergyCableBaseModel.MODEL_WEST;
+    public static final ModelResourceLocation MODEL_EAST = EnergyCableBaseModel.MODEL_EAST;
 
-    public static final ModelResourceLocation MODEL2_DOWN = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con2_down");
-    public static final ModelResourceLocation MODEL2_UP = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con2_up");
-    public static final ModelResourceLocation MODEL2_NORTH = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con2_north");
-    public static final ModelResourceLocation MODEL2_SOUTH = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con2_south");
-    public static final ModelResourceLocation MODEL2_WEST = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con2_west");
-    public static final ModelResourceLocation MODEL2_EAST = new ModelResourceLocation("industrialrenewal:pipe_energy_lv/con2_east");
+    public static final ModelResourceLocation MODEL2_DOWN = EnergyCableBaseModel.MODEL2_DOWN;
+    public static final ModelResourceLocation MODEL2_UP = EnergyCableBaseModel.MODEL2_UP;
+    public static final ModelResourceLocation MODEL2_NORTH = EnergyCableBaseModel.MODEL2_NORTH;
+    public static final ModelResourceLocation MODEL2_SOUTH = EnergyCableBaseModel.MODEL2_SOUTH;
+    public static final ModelResourceLocation MODEL2_WEST = EnergyCableBaseModel.MODEL2_WEST;
+    public static final ModelResourceLocation MODEL2_EAST = EnergyCableBaseModel.MODEL2_EAST;
 
     @Override
     public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter)

@@ -29,9 +29,9 @@
         "north": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
           "rotation": 180,
           "texture": "#particle"
@@ -39,27 +39,29 @@
         "east": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
+          "rotation": 180,
           "texture": "#particle"
         },
         "south": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
+          "rotation": 180,
           "texture": "#particle"
         },
         "west": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
           "rotation": 180,
           "texture": "#particle"
@@ -332,12 +334,12 @@
       "name": "Cube",
       "from": [
         7,
-        0.75,
+        0.65,
         7
       ],
       "to": [
         9,
-        2.75,
+        2.85,
         9
       ],
       "rotation": {
@@ -345,7 +347,7 @@
         "axis": "y",
         "origin": [
           8,
-          1.75,
+          1.65,
           8
         ]
       },
@@ -2042,7 +2044,7 @@
       ],
       "to": [
         2.75,
-        12.25,
+        12.35,
         2.75
       ],
       "rotation": {
@@ -2906,9 +2908,9 @@
         "north": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
           "rotation": 270,
           "texture": "#particle"
@@ -2916,9 +2918,9 @@
         "south": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
           "rotation": 270,
           "texture": "#particle"
@@ -2936,9 +2938,9 @@
         "up": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
           "rotation": 270,
           "texture": "#particle"
@@ -2946,11 +2948,11 @@
         "down": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
-          "rotation": 90,
+          "rotation": 270,
           "texture": "#particle"
         }
       }
@@ -3232,9 +3234,9 @@
         "north": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
           "rotation": 270,
           "texture": "#particle"
@@ -3242,9 +3244,9 @@
         "south": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
           "rotation": 270,
           "texture": "#particle"
@@ -3262,9 +3264,9 @@
         "up": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
           "rotation": 270,
           "texture": "#particle"
@@ -3272,11 +3274,11 @@
         "down": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
-          "rotation": 90,
+          "rotation": 270,
           "texture": "#particle"
         }
       }

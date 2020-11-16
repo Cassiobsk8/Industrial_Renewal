@@ -19,84 +19,72 @@ import java.util.List;
 
 public class CableTrayComposite implements IBakedModel
 {
-    private IBakedModel modelCore;
-    private IBakedModel modelMaster;
+    private final IBakedModel modelCore;
+    private final IBakedModel modelMaster;
 
     //Tray connections
-    private IBakedModel modelWest;
-    private IBakedModel modelEast;
-    private IBakedModel modelNorth;
-    private IBakedModel modelSouth;
-    private IBakedModel modelUp;
-    private IBakedModel modelDown;
+    private final IBakedModel modelWest;
+    private final IBakedModel modelEast;
+    private final IBakedModel modelNorth;
+    private final IBakedModel modelSouth;
+    private final IBakedModel modelUp;
+    private final IBakedModel modelDown;
 
     //close tray
-    private IBakedModel model2West;
-    private IBakedModel model2East;
-    private IBakedModel model2North;
-    private IBakedModel model2South;
+    private final IBakedModel model2West;
+    private final IBakedModel model2East;
+    private final IBakedModel model2North;
+    private final IBakedModel model2South;
 
     //between trays
-    private IBakedModel modelPipeCore;
-    private IBakedModel modelPipeNorth;
-    private IBakedModel modelPipeSouth;
-    private IBakedModel modelPipeEast;
-    private IBakedModel modelPipeWest;
-    private IBakedModel modelPipeUp;
-    private IBakedModel modelPipeDown;
+    private final IBakedModel modelPipeCore;
+    private final IBakedModel modelPipeNorth;
+    private final IBakedModel modelPipeSouth;
+    private final IBakedModel modelPipeEast;
+    private final IBakedModel modelPipeWest;
+    private final IBakedModel modelPipeUp;
+    private final IBakedModel modelPipeDown;
 
-    private IBakedModel modelHvCore;
-    private IBakedModel modelHvNorth;
-    private IBakedModel modelHvSouth;
-    private IBakedModel modelHvEast;
-    private IBakedModel modelHvWest;
-    private IBakedModel modelHvUp;
-    private IBakedModel modelHvDown;
+    private final IBakedModel modelHvCore;
 
-    private IBakedModel modelMvCore;
-    private IBakedModel modelMvNorth;
-    private IBakedModel modelMvSouth;
-    private IBakedModel modelMvEast;
-    private IBakedModel modelMvWest;
-    private IBakedModel modelMvUp;
-    private IBakedModel modelMvDown;
+    private final IBakedModel modelMvCore;
+    private final IBakedModel modelMvNorth;
+    private final IBakedModel modelMvSouth;
+    private final IBakedModel modelMvEast;
+    private final IBakedModel modelMvWest;
+    private final IBakedModel modelMvUp;
+    private final IBakedModel modelMvDown;
 
-    private IBakedModel modelLvCore;
-    private IBakedModel modelLvNorth;
-    private IBakedModel modelLvSouth;
-    private IBakedModel modelLvEast;
-    private IBakedModel modelLvWest;
-    private IBakedModel modelLvUp;
-    private IBakedModel modelLvDown;
+    private final IBakedModel modelLvCore;
 
     //to capability
-    private IBakedModel model2PipeNorth;
-    private IBakedModel model2PipeSouth;
-    private IBakedModel model2PipeEast;
-    private IBakedModel model2PipeWest;
-    private IBakedModel model2PipeUp;
-    private IBakedModel model2PipeDown;
+    private final IBakedModel model2PipeNorth;
+    private final IBakedModel model2PipeSouth;
+    private final IBakedModel model2PipeEast;
+    private final IBakedModel model2PipeWest;
+    private final IBakedModel model2PipeUp;
+    private final IBakedModel model2PipeDown;
 
-    private IBakedModel model2HvNorth;
-    private IBakedModel model2HvSouth;
-    private IBakedModel model2HvEast;
-    private IBakedModel model2HvWest;
-    private IBakedModel model2HvUp;
-    private IBakedModel model2HvDown;
+    private final IBakedModel model2HvNorth;
+    private final IBakedModel model2HvSouth;
+    private final IBakedModel model2HvEast;
+    private final IBakedModel model2HvWest;
+    private final IBakedModel model2HvUp;
+    private final IBakedModel model2HvDown;
 
-    private IBakedModel model2MvNorth;
-    private IBakedModel model2MvSouth;
-    private IBakedModel model2MvEast;
-    private IBakedModel model2MvWest;
-    private IBakedModel model2MvUp;
-    private IBakedModel model2MvDown;
+    private final IBakedModel model2MvNorth;
+    private final IBakedModel model2MvSouth;
+    private final IBakedModel model2MvEast;
+    private final IBakedModel model2MvWest;
+    private final IBakedModel model2MvUp;
+    private final IBakedModel model2MvDown;
 
-    private IBakedModel model2LvNorth;
-    private IBakedModel model2LvSouth;
-    private IBakedModel model2LvEast;
-    private IBakedModel model2LvWest;
-    private IBakedModel model2LvUp;
-    private IBakedModel model2LvDown;
+    private final IBakedModel model2LvNorth;
+    private final IBakedModel model2LvSouth;
+    private final IBakedModel model2LvEast;
+    private final IBakedModel model2LvWest;
+    private final IBakedModel model2LvUp;
+    private final IBakedModel model2LvDown;
 
     public CableTrayComposite(IBakedModel i_modelCore, IBakedModel i_modelMaster, IBakedModel i_modelWest,
                               IBakedModel i_modelEast, IBakedModel i_modelNorth, IBakedModel i_modelSouth,
@@ -107,9 +95,7 @@ public class CableTrayComposite implements IBakedModel
                               IBakedModel i_modelPipeDown, IBakedModel i_model2PipeNorth,
                               IBakedModel i_model2PipeSouth, IBakedModel i_model2PipeEast, IBakedModel i_model2PipeWest,
                               IBakedModel i_model2PipeUp, IBakedModel i_model2PipeDown,
-                              IBakedModel i_modelHvCore, IBakedModel i_modelHvNorth, IBakedModel i_modelHvSouth,
-                              IBakedModel i_modelHvEast, IBakedModel i_modelHvWest, IBakedModel i_modelHvUp,
-                              IBakedModel i_modelHvDown, IBakedModel i_model2HvNorth,
+                              IBakedModel i_modelHvCore, IBakedModel i_model2HvNorth,
                               IBakedModel i_model2HvSouth, IBakedModel i_model2HvEast, IBakedModel i_model2HvWest,
                               IBakedModel i_model2HvUp, IBakedModel i_model2HvDown,
                               IBakedModel i_modelMvCore, IBakedModel i_modelMvNorth, IBakedModel i_modelMvSouth,
@@ -117,9 +103,7 @@ public class CableTrayComposite implements IBakedModel
                               IBakedModel i_modelMvDown, IBakedModel i_model2MvNorth,
                               IBakedModel i_model2MvSouth, IBakedModel i_model2MvEast, IBakedModel i_model2MvWest,
                               IBakedModel i_model2MvUp, IBakedModel i_model2MvDown,
-                              IBakedModel i_modelLvCore, IBakedModel i_modelLvNorth, IBakedModel i_modelLvSouth,
-                              IBakedModel i_modelLvEast, IBakedModel i_modelLvWest, IBakedModel i_modelLvUp,
-                              IBakedModel i_modelLvDown, IBakedModel i_model2LvNorth,
+                              IBakedModel i_modelLvCore, IBakedModel i_model2LvNorth,
                               IBakedModel i_model2LvSouth, IBakedModel i_model2LvEast, IBakedModel i_model2LvWest,
                               IBakedModel i_model2LvUp, IBakedModel i_model2LvDown)
     {
@@ -153,12 +137,6 @@ public class CableTrayComposite implements IBakedModel
         model2PipeDown = i_model2PipeDown;
 
         modelHvCore = i_modelHvCore;
-        modelHvNorth = i_modelHvNorth;
-        modelHvSouth = i_modelHvSouth;
-        modelHvEast = i_modelHvEast;
-        modelHvWest = i_modelHvWest;
-        modelHvUp = i_modelHvUp;
-        modelHvDown = i_modelHvDown;
 
         model2HvNorth = i_model2HvNorth;
         model2HvSouth = i_model2HvSouth;
@@ -183,12 +161,6 @@ public class CableTrayComposite implements IBakedModel
         model2MvDown = i_model2MvDown;
 
         modelLvCore = i_modelLvCore;
-        modelLvNorth = i_modelLvNorth;
-        modelLvSouth = i_modelLvSouth;
-        modelLvEast = i_modelLvEast;
-        modelLvWest = i_modelLvWest;
-        modelLvUp = i_modelLvUp;
-        modelLvDown = i_modelLvDown;
 
         model2LvNorth = i_model2LvNorth;
         model2LvSouth = i_model2LvSouth;
@@ -318,31 +290,6 @@ public class CableTrayComposite implements IBakedModel
         {
             quadsList.addAll(modelHvCore.getQuads(extendedBlockState, side, rand));
         }
-        if (isLinkPresent(extendedBlockState, BlockCableTray.HV_SOUTH))
-        {
-            quadsList.addAll(modelHvSouth.getQuads(extendedBlockState, side, rand));
-        }
-        if (isLinkPresent(extendedBlockState, BlockCableTray.HV_NORTH))
-        {
-            quadsList.addAll(modelHvNorth.getQuads(extendedBlockState, side, rand));
-        }
-        if (isLinkPresent(extendedBlockState, BlockCableTray.HV_EAST))
-        {
-            quadsList.addAll(modelHvEast.getQuads(extendedBlockState, side, rand));
-        }
-        if (isLinkPresent(extendedBlockState, BlockCableTray.HV_WEST))
-        {
-            quadsList.addAll(modelHvWest.getQuads(extendedBlockState, side, rand));
-        }
-        if (isLinkPresent(extendedBlockState, BlockCableTray.HV_UP))
-        {
-            quadsList.addAll(modelHvUp.getQuads(extendedBlockState, side, rand));
-        }
-        if (isLinkPresent(extendedBlockState, BlockCableTray.HV_DOWN))
-        {
-            quadsList.addAll(modelHvDown.getQuads(extendedBlockState, side, rand));
-        }
-
         if (isLinkPresent(extendedBlockState, BlockCableTray.HV2_NORTH))
         {
             quadsList.addAll(model2HvNorth.getQuads(extendedBlockState, side, rand));
@@ -427,30 +374,6 @@ public class CableTrayComposite implements IBakedModel
         if (isLinkPresent(extendedBlockState, BlockCableTray.LV_CORE))
         {
             quadsList.addAll(modelLvCore.getQuads(extendedBlockState, side, rand));
-        }
-        if (isLinkPresent(extendedBlockState, BlockCableTray.LV_SOUTH))
-        {
-            quadsList.addAll(modelLvSouth.getQuads(extendedBlockState, side, rand));
-        }
-        if (isLinkPresent(extendedBlockState, BlockCableTray.LV_NORTH))
-        {
-            quadsList.addAll(modelLvNorth.getQuads(extendedBlockState, side, rand));
-        }
-        if (isLinkPresent(extendedBlockState, BlockCableTray.LV_EAST))
-        {
-            quadsList.addAll(modelLvEast.getQuads(extendedBlockState, side, rand));
-        }
-        if (isLinkPresent(extendedBlockState, BlockCableTray.LV_WEST))
-        {
-            quadsList.addAll(modelLvWest.getQuads(extendedBlockState, side, rand));
-        }
-        if (isLinkPresent(extendedBlockState, BlockCableTray.LV_UP))
-        {
-            quadsList.addAll(modelLvUp.getQuads(extendedBlockState, side, rand));
-        }
-        if (isLinkPresent(extendedBlockState, BlockCableTray.LV_DOWN))
-        {
-            quadsList.addAll(modelLvDown.getQuads(extendedBlockState, side, rand));
         }
 
         if (isLinkPresent(extendedBlockState, BlockCableTray.LV2_NORTH))

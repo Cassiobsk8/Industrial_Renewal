@@ -9,10 +9,10 @@
         "model": "industrialrenewal:pipe_energy_lv/cable_center",
         "submodel": {
           "pipe_north": {
-            "model": "industrialrenewal:pipe_energy_lv/cable_side"
+            "model": "industrialrenewal:pipe_energy/cable_side"
           },
           "pipe_south": {
-            "model": "industrialrenewal:pipe_energy_lv/cable_side",
+            "model": "industrialrenewal:pipe_energy/cable_side",
             "y": 180
           }
         }

@@ -38,38 +38,36 @@
         "east": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
-          "rotation": 90,
           "texture": "#particle"
         },
         "west": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
-          "rotation": 90,
           "texture": "#particle"
         },
         "up": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
           "texture": "#particle"
         },
         "down": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
           "texture": "#particle"
         }
