@@ -71,7 +71,8 @@ public class EventHandler
         {
             stack = OreGeneration.generateNewVein(event.getWorld());
         }
-        OreGeneration.CHUNKS_VEIN.put(event.getChunk().getPos(), stack);
+        if (!OreGeneration.CHUNKS_VEIN.containsKey(event.getChunk().getPos()))
+            OreGeneration.CHUNKS_VEIN.put(event.getChunk().getPos(), stack);
     }
 
     @SubscribeEvent
