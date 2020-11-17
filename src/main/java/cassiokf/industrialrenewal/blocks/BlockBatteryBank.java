@@ -5,6 +5,7 @@ import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityBatteryBank;
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -36,8 +37,7 @@ public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBattery
     {
         tooltip.add(I18n.format("info.industrialrenewal.capacity")
                 + ": "
-                + (IRConfig.MainConfig.Main.batteryBankCapacity)
-                + " FE/t");
+                + Utils.formatEnergyString(IRConfig.MainConfig.Main.batteryBankCapacity));
         super.addInformation(stack, player, tooltip, advanced);
     }
 

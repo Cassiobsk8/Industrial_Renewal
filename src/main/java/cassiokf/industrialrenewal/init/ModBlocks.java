@@ -6,12 +6,14 @@ import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorLamp;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
+import cassiokf.industrialrenewal.blocks.machines.BlockIndustrialBatteryBank;
 import cassiokf.industrialrenewal.blocks.machines.BlockLathe;
 import cassiokf.industrialrenewal.blocks.pipes.*;
 import cassiokf.industrialrenewal.blocks.railroad.*;
 import cassiokf.industrialrenewal.blocks.redstone.*;
 import cassiokf.industrialrenewal.fluids.BlockFluid;
 import cassiokf.industrialrenewal.tileentity.*;
+import cassiokf.industrialrenewal.tileentity.machines.TEIndustrialBatteryBank;
 import cassiokf.industrialrenewal.tileentity.machines.TELathe;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityFluidLoader;
@@ -175,6 +177,7 @@ public class ModBlocks
     public static final BlockDamAxis damAxis = new BlockDamAxis("dam_axis", References.CREATIVE_IR_TAB);
     public static final BlockHighPressurePipe highPressurePipe = new BlockHighPressurePipe("high_pressure_pipe", References.CREATIVE_IR_TAB);
     public static final BlockFluidTank fluidTank = new BlockFluidTank("fluid_tank", References.CREATIVE_IR_TAB);
+    public static final BlockIndustrialBatteryBank industrialBattery = new BlockIndustrialBatteryBank("ind_battery_bank", References.CREATIVE_IR_TAB);
 
     public static final BlockChunkLoader chunkLoader = new BlockChunkLoader("chunk_loader", References.CREATIVE_IR_TAB);
 
@@ -296,6 +299,7 @@ public class ModBlocks
                 highPressurePipe,
                 //Machines
                 fluidTank,
+                industrialBattery,
                 steamBoiler,
                 steamTurbine,
                 latheMachine,
@@ -367,6 +371,7 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileEntityFluidPipe.class, fluidPipe.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityFluidPipeGauge.class, fluidPipeGauge.getRegistryName());
         GameRegistry.registerTileEntity(TEFluidTank.class, fluidTank.getRegistryName());
+        GameRegistry.registerTileEntity(TEIndustrialBatteryBank.class, industrialBattery.getRegistryName());
         GameRegistry.registerTileEntity(TileEntitySteamBoiler.class, steamBoiler.getRegistryName());
         GameRegistry.registerTileEntity(TileEntitySteamTurbine.class, steamTurbine.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityMining.class, mining.getRegistryName());
@@ -485,6 +490,7 @@ public class ModBlocks
                 damAxis.createItemBlock(),
                 highPressurePipe.createItemBlock(),
                 fluidTank.createItemBlock(),
+                industrialBattery.createItemBlock(),
                 steamBoiler.createItemBlock(),
                 steamTurbine.createItemBlock(),
                 mining.createItemBlock(),
@@ -594,6 +600,7 @@ public class ModBlocks
         damAxis.registerItemModel(Item.getItemFromBlock(damAxis));
         highPressurePipe.registerItemModel(Item.getItemFromBlock(highPressurePipe));
         fluidTank.registerItemModel(Item.getItemFromBlock(fluidTank));
+        industrialBattery.registerItemModel(Item.getItemFromBlock(industrialBattery));
         steamBoiler.registerItemModel(Item.getItemFromBlock(steamBoiler));
         steamTurbine.registerItemModel(Item.getItemFromBlock(steamTurbine));
         mining.registerItemModel(Item.getItemFromBlock(mining));

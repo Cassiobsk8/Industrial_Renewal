@@ -29,6 +29,8 @@ public class Utils
 {
 
     private static final Random RANDOM = new Random();
+    private static final DecimalFormat form = new DecimalFormat("0.0");
+    private static final DecimalFormat preciseForm = new DecimalFormat("0.00");
 
     public static void sendChatMessage(EntityPlayer player, String str)
     {
@@ -197,24 +199,24 @@ public class Utils
     public static String formatEnergyString(int energy)
     {
         String text = energy + " FE";
-        DecimalFormat form = new DecimalFormat("0.0");
         if (energy >= 1000 && energy < 1000000)
             text = form.format((float) energy / 1000) + "K FE";
-        if (energy >= 1000000)
+        else if (energy >= 1000000 && energy < 1000000000)
             text = form.format((float) energy / 1000000) + "M FE";
-
+        else if (energy >= 1000000000)
+            text = form.format((float) energy / 1000000000) + "B FE";
         return text;
     }
 
     public static String formatPreciseEnergyString(int energy)
     {
         String text = energy + " FE";
-        DecimalFormat form = new DecimalFormat("0.00");
         if (energy >= 1000 && energy < 1000000)
-            text = form.format((float) energy / 1000) + "K FE";
-        if (energy >= 1000000)
-            text = form.format((float) energy / 1000000) + "M FE";
-
+            text = preciseForm.format((float) energy / 1000) + "K FE";
+        else if (energy >= 1000000 && energy < 1000000000)
+            text = preciseForm.format((float) energy / 1000000) + "M FE";
+        else if (energy >= 1000000000)
+            text = preciseForm.format((float) energy / 1000000000) + "B FE";
         return text;
     }
 

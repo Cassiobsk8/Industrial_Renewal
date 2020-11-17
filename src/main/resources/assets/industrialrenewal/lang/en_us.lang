@@ -46,6 +46,7 @@ item.industrialrenewal.drill_diamond.name=Diamond Drill
 item.industrialrenewal.drill_deep.name=Deep Drill
 item.industrialrenewal.prospecting_pan.name=Prospecting Pan
 item.industrialrenewal.regen_wand.name=Wand of Deep Vein Search
+item.industrialrenewal.battery_lithium.name=Lithium Battery
 
 #Discs
 item.industrialrenewal.record_royal_entrance.name=Music Disc
@@ -170,6 +171,7 @@ tile.industrialrenewal.lathe.name=Lathe Machine
 tile.industrialrenewal.portable_generator.name=Portable Generator
 tile.industrialrenewal.mining.name=Mining Drill
 tile.industrialrenewal.fluid_tank.name=Fluid Tank
+tile.industrialrenewal.ind_battery_bank.name=Industrial Battery Bank
 
 #Fluids
 fluid.steam=Steam

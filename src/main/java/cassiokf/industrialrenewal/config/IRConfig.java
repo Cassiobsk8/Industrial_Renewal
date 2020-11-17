@@ -206,6 +206,9 @@ public class IRConfig {
             @Config.LangKey("gui.config.batterybank_output.name")
             public int batteryBankMaxOutput = 10240;
 
+            @Config.Comment("The Max Transfer amount of the Industrial Battery Bank (Default 102400)")
+            public int industrialBatteryBankMaxTransfer = 102400;
+
             @Config.Comment("If renders a indicator to show wat pipe/cable is master 'the one who controls all other connected pipes' (Default: false)")
             public boolean showMaster = false;
 

@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnected;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
+import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.VoltsEnergyContainer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -87,13 +88,7 @@ public class TileEntityBatteryBank extends TileEntitySync implements ITickable
     }
 
     public String GetText() {
-        int energy = container.getEnergyStored();
-        String text = energy + " FE";
-        if (energy >= 1000 && energy < 1000000)
-            text = energy / 1000 + "K FE";
-        if (energy >= 1000000)
-            text = energy / 1000000 + "M FE";
-        return text;
+        return Utils.formatEnergyString(container.getEnergyStored());
     }
 
     public EnumFacing getBlockFacing() {
@@ -109,10 +104,7 @@ public class TileEntityBatteryBank extends TileEntitySync implements ITickable
 
     public float getBatteryFill()
     {
-        float currentAmount = container.getEnergyStored() / 1000F;
-        float totalCapacity = container.getMaxEnergyStored() / 1000F;
-        currentAmount = currentAmount / totalCapacity;
-        return currentAmount;
+        return Utils.normalize(container.getEnergyStored(), 0, container.getMaxEnergyStored());
     }
 
     @Override

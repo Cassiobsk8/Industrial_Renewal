@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " B ",
+    "BIB",
+    " B "
+  ],
+  "key": {
+    "B": {
+      "item": "industrialrenewal:battery"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    }
+  },
+  "result": {
+    "item": "industrialrenewal:battery_lithium",
+    "count": 1
+  }
+}

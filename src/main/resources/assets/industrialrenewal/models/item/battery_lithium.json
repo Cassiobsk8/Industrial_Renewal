@@ -1,22 +1,30 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "1": "industrialrenewal:blocks/battery_pack",
-    "2": "industrialrenewal:blocks/pipe",
-    "particle": "industrialrenewal:blocks/battery_pack"
+    "1": "industrialrenewal:blocks/battery_pack_l",
+    "particle": "industrialrenewal:blocks/battery_pack_l"
   },
   "elements": [
     {
       "from": [
-        5,
-        2.4375,
-        6
+        3,
+        0.0375,
+        4
       ],
       "to": [
-        11,
-        8.4375,
-        10
+        13,
+        12.0375,
+        12
       ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          11.1,
+          8
+        ]
+      },
       "faces": {
         "north": {
           "uv": [
@@ -68,15 +76,24 @@
     },
     {
       "from": [
-        4.75,
-        8.4375,
-        5.75
+        2.75,
+        12.0375,
+        3.75
       ],
       "to": [
-        11.25,
-        8.9375,
-        10.25
+        13.25,
+        12.5375,
+        12.25
       ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          11.1,
+          8
+        ]
+      },
       "faces": {
         "north": {
           "uv": [
@@ -138,121 +155,137 @@
     },
     {
       "from": [
-        9.5,
-        8.4375,
-        7.5
+        10.2,
+        12.0375,
+        7
       ],
       "to": [
-        10.5,
-        9.4375,
-        8.5
+        12.2,
+        14.0375,
+        9
       ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          11.1,
+          8
+        ]
+      },
       "faces": {
         "north": {
           "uv": [
-            0,
-            0,
-            1,
-            1
+            14.25,
+            6.75,
+            15.25,
+            7.75
           ],
-          "texture": "#2"
+          "texture": "#1"
         },
         "east": {
           "uv": [
-            0,
-            0,
-            1,
-            1
+            14.25,
+            6.75,
+            15.25,
+            7.75
           ],
-          "texture": "#2"
+          "texture": "#1"
         },
         "south": {
           "uv": [
-            0,
-            0,
-            1,
-            1
+            14.25,
+            6.75,
+            15.25,
+            7.75
           ],
-          "texture": "#2"
+          "texture": "#1"
         },
         "west": {
           "uv": [
-            0,
-            0,
-            1,
-            1
+            14.25,
+            6.75,
+            15.25,
+            7.75
           ],
-          "texture": "#2"
+          "texture": "#1"
         },
         "up": {
           "uv": [
-            0,
-            0,
-            1,
-            1
+            14.25,
+            6.75,
+            15.25,
+            7.75
           ],
-          "rotation": 180,
-          "texture": "#2"
+          "texture": "#1"
         }
       }
     },
     {
       "from": [
-        5.5,
-        8.4375,
-        7.5
+        3.8,
+        12.0375,
+        7
       ],
       "to": [
-        6.5,
-        9.4375,
-        8.5
+        5.8,
+        14.0375,
+        9
       ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          11.1,
+          8
+        ]
+      },
       "faces": {
         "north": {
           "uv": [
-            0,
-            0,
-            1,
-            1
+            14.25,
+            6.75,
+            15.25,
+            7.75
           ],
-          "texture": "#2"
+          "texture": "#1"
         },
         "east": {
           "uv": [
-            0,
-            0,
-            1,
-            1
+            14.25,
+            6.75,
+            15.25,
+            7.75
           ],
-          "texture": "#2"
+          "texture": "#1"
         },
         "south": {
           "uv": [
-            0,
-            0,
-            1,
-            1
+            14.25,
+            6.75,
+            15.25,
+            7.75
           ],
-          "texture": "#2"
+          "texture": "#1"
         },
         "west": {
           "uv": [
-            0,
-            0,
-            1,
-            1
+            14.25,
+            6.75,
+            15.25,
+            7.75
           ],
-          "texture": "#2"
+          "texture": "#1"
         },
         "up": {
           "uv": [
-            0,
-            0,
-            1,
-            1
+            14.25,
+            6.75,
+            15.25,
+            7.75
           ],
-          "rotation": 180,
-          "texture": "#2"
+          "texture": "#1"
         }
       }
     }
@@ -261,7 +294,7 @@
     "thirdperson_righthand": {
       "rotation": [
         75,
-        45,
+        -135,
         0
       ],
       "translation": [
@@ -278,7 +311,7 @@
     "thirdperson_lefthand": {
       "rotation": [
         75,
-        45,
+        -135,
         0
       ],
       "translation": [
@@ -300,13 +333,13 @@
       ],
       "translation": [
         0,
-        3.5,
-        0
+        1.75,
+        2.25
       ],
       "scale": [
-        0.8,
-        0.8,
-        0.8
+        0.4,
+        0.4,
+        0.4
       ]
     },
     "firstperson_lefthand": {
@@ -316,14 +349,14 @@
         0
       ],
       "translation": [
-        0,
-        3.5,
-        0
+        -1,
+        1.75,
+        2.75
       ],
       "scale": [
-        0.8,
-        0.8,
-        0.8
+        0.4,
+        0.4,
+        0.4
       ]
     },
     "ground": {
@@ -346,13 +379,13 @@
       ],
       "translation": [
         0,
-        3,
+        1.25,
         0
       ],
       "scale": [
-        1.6,
-        1.6,
-        1.6
+        0.8,
+        0.8,
+        0.8
       ]
     },
     "head": {
@@ -363,14 +396,14 @@
       ],
       "translation": [
         0,
-        13,
-        7
+        2,
+        -5.5
       ]
     },
     "fixed": {
       "rotation": [
         0,
-        -90,
+        -180,
         0
       ],
       "translation": [

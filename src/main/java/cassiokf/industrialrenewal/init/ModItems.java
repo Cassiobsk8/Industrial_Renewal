@@ -71,6 +71,7 @@ public class ModItems
     public static final ItemBase discR = new ItemBase("disc_r", null);
 
     public static final ItemBattery battery = new ItemBattery("battery", References.CREATIVE_IR_TAB);
+    public static final ItemBattery battery_lithium = new ItemBattery("battery_lithium", References.CREATIVE_IR_TAB);
 
     public static final ItemCoilHV coilHV = new ItemCoilHV("coil_hv", References.CREATIVE_IR_TAB);
 
@@ -134,6 +135,7 @@ public class ModItems
                 fireBoxSolid,
                 fireBoxFluid,
                 battery,
+                battery_lithium,
                 sMotor,
                 windBlade,
                 drillSteel,
@@ -205,6 +207,7 @@ public class ModItems
         fireBoxSolid.registerItemModel();
         fireBoxFluid.registerItemModel();
         battery.registerItemModel();
+        battery_lithium.registerItemModel();
         sMotor.registerItemModel();
         windBlade.registerItemModel();
         drillSteel.registerItemModel();

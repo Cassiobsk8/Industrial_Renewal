@@ -30,19 +30,24 @@ public class VoltsEnergyContainer implements IEnergyStorage, INBTSerializable<NB
     }
 
     @Override
-    public NBTTagCompound serializeNBT() {
+    public NBTTagCompound serializeNBT()
+    {
         final NBTTagCompound dataTag = new NBTTagCompound();
-
-        dataTag.setInteger("IRStored", this.stored);
-        dataTag.setInteger("IRCapacity", this.capacity);
-        dataTag.setInteger("IRInput", this.input);
-        dataTag.setInteger("IROutput", this.output);
-
+        serializeNBT(dataTag);
         return dataTag;
     }
 
+    public void serializeNBT(NBTTagCompound compound)
+    {
+        compound.setInteger("IRStored", this.stored);
+        compound.setInteger("IRCapacity", this.capacity);
+        compound.setInteger("IRInput", this.input);
+        compound.setInteger("IROutput", this.output);
+    }
+
     @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
+    public void deserializeNBT(NBTTagCompound nbt)
+    {
         if (nbt.hasKey("IRStored"))
             this.stored = nbt.getInteger("IRStored");
         if (nbt.hasKey("IRCapacity"))

@@ -14,6 +14,7 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
     private boolean isBottom = false;
     private boolean isTop = false;
     public T bottomTE = (T) this;
+    public T topTE = (T) this;
 
     @Override
     public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
@@ -59,39 +60,42 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
         }
     }
 
-    public void checkSize()
+    public void checkSize(T top)
     {
         TileEntity te = world.getTileEntity(pos.down(3));
         if (instanceOf(te))
         {
-            bottomTE = (T) ((T) te).passValueDown(1);
+            bottomTE = (T) ((T) te).passValueDown(1, top);
         } else
         {
             isBottom = true;
             bottomTE = (T) this;
+            topTE = top;
         }
 
         if (isBottom)
         {
             setSize(1);
             bottomTE = (T) this;
+            topTE = top;
         }
         sync();
     }
 
     public abstract void setSize(int i);
 
-    public TEMultiTankBase passValueDown(int i)
+    public TEMultiTankBase passValueDown(int i, T top)
     {
         TileEntity te = world.getTileEntity(pos.down(3));
         if (instanceOf(te))
         {
             isBottom = false;
             sync();
-            return ((TEMultiTankBase<?>) te).passValueDown(i + 1);
+            return ((T) te).passValueDown(i + 1, top);
         } else
         {
             isBottom = true;
+            topTE = top;
             setSize(i + 1);
             return this;
         }
@@ -107,13 +111,18 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
         } else
         {
             isTop = true;
-            checkSize();
+            checkSize((T) this);
         }
     }
 
     public T getBottomTE()
     {
         return bottomTE;
+    }
+
+    public T getTopTE()
+    {
+        return topTE;
     }
 
     public void setBottom(boolean value)
@@ -124,7 +133,7 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
     public void setTop(boolean value)
     {
         isTop = value;
-        if (isTop) checkSize();
+        if (isTop) checkSize((T) this);
         else reachTop();
     }
 

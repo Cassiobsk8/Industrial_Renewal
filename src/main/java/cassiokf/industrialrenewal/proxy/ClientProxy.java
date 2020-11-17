@@ -6,6 +6,7 @@ import cassiokf.industrialrenewal.init.RenderHandler;
 import cassiokf.industrialrenewal.model.ModelLoaderCustom;
 import cassiokf.industrialrenewal.tesr.*;
 import cassiokf.industrialrenewal.tileentity.*;
+import cassiokf.industrialrenewal.tileentity.machines.TEIndustrialBatteryBank;
 import cassiokf.industrialrenewal.tileentity.machines.TELathe;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityCargoLoader;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityFluidLoader;
@@ -63,6 +64,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPortableGenerator.class, new TESRPortableGenerator());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRecordPlayer.class, new TESRRecordPlayer());
         ClientRegistry.bindTileEntitySpecialRenderer(TEFluidTank.class, new TESRFluidTank());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEIndustrialBatteryBank.class, new TESRIndBatteryBank());
 
         ModelLoaderRegistry.registerLoader(new ModelLoaderCustom());
     }
