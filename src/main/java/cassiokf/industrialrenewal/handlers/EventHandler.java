@@ -16,7 +16,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
-import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -25,8 +24,8 @@ import static net.minecraftforge.fml.common.eventhandler.EventPriority.LOW;
 @Mod.EventBusSubscriber(modid = References.MODID)
 public class EventHandler
 {
-    public static final String deepVeinKeyItem = "Indr_dv_id";
-    public static final String deepVeinKeyQuantity = "Indr_dv_q";
+    public static final String deepVeinKeyItem = "indr_dv_id";
+    public static final String deepVeinKeyQuantity = "indr_dv_q";
 
     @SubscribeEvent
     public static void onMinecartUpdate(MinecartUpdateEvent event)
@@ -71,18 +70,8 @@ public class EventHandler
         } else
         {
             stack = OreGeneration.generateNewVein(event.getWorld());
-            event.getChunk().markDirty();
         }
-        if (!OreGeneration.CHUNKS_VEIN.containsKey(event.getChunk().getPos()))
-            OreGeneration.CHUNKS_VEIN.put(event.getChunk().getPos(), stack);
-    }
-
-    @SubscribeEvent
-    public static void onChunkUnload(ChunkEvent.Unload event)
-    {
-        if (event.getWorld().isRemote || event.getWorld().provider.getDimension() != 0)
-            return;
-        OreGeneration.CHUNKS_VEIN.remove(event.getChunk().getPos());
+        OreGeneration.CHUNKS_VEIN.put(event.getChunk().getPos(), stack);
     }
 
     @SubscribeEvent
@@ -100,5 +89,10 @@ public class EventHandler
         NBTTagCompound data = event.getData();
         data.setInteger(deepVeinKeyItem, Item.getIdFromItem(stack.getItem()));
         data.setInteger(deepVeinKeyQuantity, stack.getCount() <= 0 ? 1 : stack.getCount());
+
+        if (!event.getChunk().isLoaded())
+        {
+            OreGeneration.CHUNKS_VEIN.remove(event.getChunk().getPos());
+        }
     }
 }

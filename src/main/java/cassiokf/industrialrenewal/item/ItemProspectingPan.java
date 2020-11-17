@@ -82,25 +82,25 @@ public class ItemProspectingPan extends ItemBase
         return super.onItemRightClick(worldIn, playerIn, handIn);
     }
 
-    private void prospect(World worldIn, EntityPlayer playerIn, ItemStack stack)
+    private static void prospect(World worldIn, EntityPlayer playerIn, ItemStack panStack)
     {
         if (worldIn.isRemote) return;
-        stack.damageItem(1, playerIn);
-        if (stack.getItemDamage() >= 12)
+        panStack.damageItem(1, playerIn);
+        if (panStack.getItemDamage() >= 12)
         {
-            ItemStack stackv = OreGeneration.getChunkVein(worldIn, playerIn.getPosition());
+            ItemStack stackV = OreGeneration.getChunkVein(worldIn, playerIn.getPosition());
 
-            boolean hasVein = !stackv.isEmpty();
+            boolean hasVein = !stackV.isEmpty();
             String msg;
-            if (hasVein) msg = stackv.getDisplayName()
+            if (hasVein) msg = stackV.getDisplayName()
                     + " "
                     + found
                     + " "
-                    + stackv.getCount();
+                    + stackV.getCount();
             else msg = notFound;
 
             Utils.sendChatMessage(playerIn, msg);
-            stack.setItemDamage(0);
+            panStack.setItemDamage(0);
         }
     }
 

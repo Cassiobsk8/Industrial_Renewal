@@ -54,7 +54,7 @@ public class OreGeneration implements IWorldGenerator
             int oreQuantity = world.rand.nextInt(IRConfig.MainConfig.Generation.deepVeinMaxOre - min) + min;
             Item item = ModItems.DEEP_VEIN_ORES.get(world.rand.nextInt(ModItems.DEEP_VEIN_ORES.size() - 1));
             Block block = Block.getBlockFromItem(item);
-            ItemStack stack = new ItemStack(block.getItemDropped(block.getDefaultState(), world.rand, 0));
+            ItemStack stack = new ItemStack(block.getItemDropped(block.getDefaultState(), world.rand, 0), 1, block.damageDropped(block.getDefaultState()));
             stack.setCount(oreQuantity);
             return stack;
         }
