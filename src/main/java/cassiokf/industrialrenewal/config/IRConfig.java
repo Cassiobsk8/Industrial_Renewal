@@ -5,7 +5,6 @@ import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.config.Config;
@@ -15,6 +14,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class IRConfig {
@@ -72,12 +72,18 @@ public class IRConfig {
     public static void populateDeepVeinOres()
     {
         Map<String, Integer> map = MainConfig.Generation.deepVeinOres;
+        if (map.isEmpty()) return;
         int i = 0;
         for (String str : map.keySet())
         {
             if (OreDictionary.doesOreNameExist(str))
             {
-                NonNullList<ItemStack> list = OreDictionary.getOres(str);
+                List<ItemStack> list = OreDictionary.getOres(str);
+                if (list.isEmpty())
+                {
+                    System.out.println(TextFormatting.RED + "Oredict not found for: " + str + " , this ore will not be generate in Deep Veins");
+                    continue;
+                }
                 ItemStack stack = list.get(0).copy();
                 if (str.equals("oreIron")) stack = new ItemStack(ModBlocks.veinHematite);
                 if (!stack.isEmpty() && !ModItems.DEEP_VEIN_ORES.contains(stack.getItem()))
