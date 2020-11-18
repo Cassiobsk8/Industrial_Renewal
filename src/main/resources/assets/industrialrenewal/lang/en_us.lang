@@ -220,6 +220,8 @@ gui.config.blade_durability.name=Wind Turbine Blade durability
 tesr.ir.mode=Mode
 tesr.ir.inventory=Inventory
 gui.jei.category.energyneeded=Energy Required:
+tesr.indr.in=Input
+tesr.indr.out=Output
 
 #Render
 render.industrialrenewal.energy=Energy

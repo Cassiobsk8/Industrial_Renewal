@@ -206,6 +206,9 @@ public class IRConfig {
             @Config.LangKey("gui.config.batterybank_output.name")
             public int batteryBankMaxOutput = 10240;
 
+            @Config.Comment("The capacity of the Lithium Battery (Default 5000000)")
+            public int lithiumBatteryCapacity = 5000000;
+
             @Config.Comment("The Max Transfer amount of the Industrial Battery Bank (Default 102400)")
             public int industrialBatteryBankMaxTransfer = 102400;
 

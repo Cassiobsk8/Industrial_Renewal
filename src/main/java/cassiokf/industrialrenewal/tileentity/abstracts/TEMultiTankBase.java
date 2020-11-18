@@ -7,10 +7,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEntityMultiBlockBase<T>
 {
+    protected final List<T> machines = new ArrayList<>();
     private boolean isBottom = false;
     private boolean isTop = false;
     public T bottomTE = (T) this;
@@ -63,6 +65,8 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
     public void checkSize(T top)
     {
         TileEntity te = world.getTileEntity(pos.down(3));
+        top.machines.clear();
+        top.machines.add(this);
         if (instanceOf(te))
         {
             bottomTE = (T) ((T) te).passValueDown(1, top);
@@ -76,7 +80,6 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
         if (isBottom)
         {
             setSize(1);
-            bottomTE = (T) this;
             topTE = top;
         }
         sync();
@@ -86,6 +89,7 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
 
     public TEMultiTankBase passValueDown(int i, T top)
     {
+        top.machines.add(this);
         TileEntity te = world.getTileEntity(pos.down(3));
         if (instanceOf(te))
         {
