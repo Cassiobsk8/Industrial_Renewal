@@ -316,16 +316,12 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        if (hasWorld() && world.isRemote)
-        {
-            frontTick = compound.getInteger("rFront");
-            middleTick = compound.getInteger("rMiddle");
-            backTick = compound.getInteger("rBack");
-
-            rFrontTick = compound.getFloat("oFront");
-            rMiddleTick = compound.getFloat("oMiddle");
-            rBackTick = compound.getFloat("oBack");
-        }
+        frontTick = compound.getInteger("rFront");
+        middleTick = compound.getInteger("rMiddle");
+        backTick = compound.getInteger("rBack");
+        rFrontTick = compound.getFloat("oFront");
+        rMiddleTick = compound.getFloat("oMiddle");
+        rBackTick = compound.getFloat("oBack");
 
         this.inventory.deserializeNBT(compound.getCompoundTag("inv"));
         super.readFromNBT(compound);
