@@ -100,8 +100,14 @@ public class IRSoundHandler
         } else if (IRSoundRegister.REPEATABLE_SOUNDS.contains(soundLoc.toString()))
         {
             ISound s = event.getSound();
-            float vol = 0f;
-            if (resultSound.getSound() != null) vol = resultSound.getVolume();
+            float vol = 0.4f;
+            try
+            {
+                vol = resultSound.getVolume();
+            } catch (Exception e)
+            {
+                //Because Galacticraft
+            }
             resultSound = new TileSound(s, vol, 1.0F, false);
             event.setResultSound(resultSound);
         } else
