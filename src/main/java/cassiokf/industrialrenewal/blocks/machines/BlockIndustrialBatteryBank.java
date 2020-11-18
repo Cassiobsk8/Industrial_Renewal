@@ -31,9 +31,12 @@ public class BlockIndustrialBatteryBank extends BlockMultiTankBase<TEIndustrialB
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add(I18n.format("info.industrialrenewal.fluid_tank.info"));
+        tooltip.add(I18n.format("info.industrialrenewal.requires")
+                + ": 24 x "
+                + I18n.format("item.industrialrenewal.battery_lithium.name"));
         tooltip.add(I18n.format("info.industrialrenewal.capacity")
                 + ": "
-                + Utils.formatEnergyString(TEIndustrialBatteryBank.capacity));
+                + Utils.formatEnergyString(TEIndustrialBatteryBank.capacity * 24));
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 

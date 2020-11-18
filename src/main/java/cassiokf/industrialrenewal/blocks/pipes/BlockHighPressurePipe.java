@@ -55,7 +55,7 @@ public class BlockHighPressurePipe extends BlockPipeBase<TileEntityHighPressureP
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
     {
-        tooltip.add("Cannot Transfer Normal Fluid");
+        tooltip.add("Does not transfer normal fluids");
         super.addInformation(stack, player, tooltip, advanced);
     }
 
