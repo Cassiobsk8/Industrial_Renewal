@@ -82,6 +82,7 @@ public class TEFluidTank extends TEMultiTankBase<TEFluidTank>
     public void setSize(int i)
     {
         int cap = i * capacity;
+        if (cap < 0) cap = Integer.MAX_VALUE;
         if (cap < tank.getFluidAmount())
         {
             FluidStack stack = tank.getFluid();

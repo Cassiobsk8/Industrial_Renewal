@@ -164,6 +164,7 @@ public class TEIndustrialBatteryBank extends TEMultiTankBase<TEIndustrialBattery
         {
             realCapacity += te.getRealCapacity();
         }
+        if (realCapacity <= -1) realCapacity = Integer.MAX_VALUE;
         energyContainer.setMaxEnergyStored(MathHelper.clamp(realCapacity, 0, Integer.MAX_VALUE));
         sync();
     }
