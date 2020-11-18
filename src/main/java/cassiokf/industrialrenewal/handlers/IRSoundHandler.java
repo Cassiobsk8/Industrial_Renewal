@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @SideOnly(Side.CLIENT)
 public class IRSoundHandler
 {
-    private static Minecraft mc = Minecraft.getMinecraft();
+    private static final Minecraft mc = Minecraft.getMinecraft();
 
     private static final Map<Long, ISound> soundMap = new HashMap<>();
 
@@ -100,7 +100,8 @@ public class IRSoundHandler
         } else if (IRSoundRegister.REPEATABLE_SOUNDS.contains(soundLoc.toString()))
         {
             ISound s = event.getSound();
-            float vol = resultSound.getVolume();
+            float vol = 0f;
+            if (resultSound.getSound() != null) vol = resultSound.getVolume();
             resultSound = new TileSound(s, vol, 1.0F, false);
             event.setResultSound(resultSound);
         } else
@@ -124,17 +125,17 @@ public class IRSoundHandler
 
     private static class TileSound implements ITickableSound
     {
-        private Minecraft mc = Minecraft.getMinecraft();
+        private final Minecraft mc = Minecraft.getMinecraft();
         // Choose an interval between 60-80 ticks (3-4 seconds) to check for muffling changes. We do this
         // to ensure that not every tile sound tries to run on the same tick and thus create
         // uneven spikes of CPU usage
-        private int checkInterval = 1 + ThreadLocalRandom.current().nextInt(8);
+        private final int checkInterval = 1 + ThreadLocalRandom.current().nextInt(8);
 
-        private ISound sound;
+        private final ISound sound;
         private float volume;
         private float pitch;
         private boolean donePlaying = false;
-        private boolean isDynamic;
+        private final boolean isDynamic;
 
         TileSound(ISound sound, float volume, float pitch, boolean isDynamic)
         {
