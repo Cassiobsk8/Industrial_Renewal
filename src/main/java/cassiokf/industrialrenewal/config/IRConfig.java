@@ -309,7 +309,7 @@ public class IRConfig {
             public int maxPumpRadius = 8;
 
             @Config.Comment("Pump replace the lava with cobblestone for lag reasons (default: true)")
-            public boolean repleceLavaWithCobble = true;
+            public boolean replaceLavaWithCobble = true;
 
             @Config.Comment("How much Energy the Lathe Machine will require for each tick (Default 128)")
             public int energyPerTickLatheMachine = 128;

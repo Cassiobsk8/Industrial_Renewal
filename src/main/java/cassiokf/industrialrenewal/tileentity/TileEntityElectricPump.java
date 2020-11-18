@@ -191,7 +191,7 @@ public class TileEntityElectricPump extends TileEntitySync implements ITickable
                 if (tank.fillInternal(downFluid.drain(Integer.MAX_VALUE, false), false) > 0)
                 {
                     FluidStack stack = downFluid.drain(Integer.MAX_VALUE, consumeFluid);
-                    if (IRConfig.MainConfig.Main.repleceLavaWithCobble && stack != null && stack.getFluid().equals(FluidRegistry.LAVA))
+                    if (IRConfig.MainConfig.Main.replaceLavaWithCobble && stack != null && stack.getFluid().equals(FluidRegistry.LAVA))
                         world.setBlockState(fluidPos, Blocks.COBBLESTONE.getDefaultState());
                     tank.fillInternal(stack, true);
                 }
