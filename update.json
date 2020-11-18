@@ -1,29 +1,15 @@
 {
   "homepage": "<https://minecraft.curseforge.com/projects/industrial-renewal>",
   "promos": {
-    "1.12.2-latest": "0.19.0",
-    "1.12.2-recommended": "0.19.0"
+    "1.12.2-latest": "0.20.1",
+    "1.12.2-recommended": "0.20.1"
   },
   "1.12.2": {
+    "0.20.1": "New: Dynamic Fluid Tank, Dynamic Industrial Battery, Mining Drill, Deep Vein spawn",
     "0.19.0": "New Big Fence Inner Corner and HUGE performance improvement",
     "0.18.2": "New Portable Generator",
     "0.17.6": "Lathe machine and optimizations",
     "0.16.1": "Dam and HUGE pipe improvement",
-    "0.15.0": "New: Cable/Pipe Tray",
-    "0.14.3": "New:\n\n- Creative energy generator\n\n- HV wire energy transmission (Transformer - Isolators - transformer) (max 10240FE/t)\n\n- Two new energy cables (LV 256FE/t, MV 1024FE/t, HV 10240FE/t)\n\n- New Energy Breaker\n\nFixes:\n\n- see all on github",
-    "0.13.1": "Fix:\nGauges wrong state crash\nConfig to change wind turbine base generation\nFix detectors not activate redstone if theres a block between",
-    "0.13.0": "Rail Gate\n\nRazor wire\n\nCargo/Fluid cart Transfer\n\nBulk cargo cart\n\nBulk conveyor Inserter (right click bulk conveyor Dispenser)\n\nFixes:\n\nSave content fixes\n\nsee more on github.",
-    "0.12.1": "fix Crash with thermal dynamics fluiducts",
-    "0.12.0": "NEW: \n\nEnergy Cable (1024 FE/t per connector)\n\nFluid Pipe (600 mB/t per connector)\n\nBulk conveyor (Transport itens)\n\nSolar Frame (generates twice per solar panel)\n\nEnergy level indicator (Shows the block energy level)\n\nChanges:\n\nValve pipe now pull fluids from containers",
-    "0.11.0": "New:\n\n-Bunker Hatch\n\n-Wind Turbine (~110 FE/t)\n\n-Bunker bed\n\n-Chunk Loader\n\n \n\nChanges:\n\n-New Config file (Remove config file before updating)\n\n-Gauge on Fluid tank cart (Removed GUI)\n\n-Fluid valve can pull fluids\n\n-Roofs are now rotateable\n\n-catwalks rails can be disabled with power screw drive",
-    "0.10.0": "New:\n\n-Flat Cart\n\n-Fluid Cart\n\n-Fluid Pipe (Still Wip)\n\n-Trash bin (Voids Energy, Itens and Fluids)\n\n-Basic Solar Panel (generates 10 FE/t)\n\n-Battery Bank (Store 1M FE)\n\n-Steam Boiler (Generate Steam from water using Solid fuel (Solid Firebox) or Fluids (Fluid Firebox))\n\n-Steam Turbine (Generates 1000 FE/t)\n\n-Electric Pump (Collect fluids below)\n\nFixes:\n\n-Fixed packet crash on load itens or fluid in carts",
-    "0.9": "New:\n\n- Log cart\n\n- Passenger cart\n\n- Fluid Barrel\n\n- Fluid Gauge\n\n- Emergency redstone button\n\n- Big electric fence\n\nChange:\n\n- electric gate now is multiblock (1 wide max)",
-    "0.8.1": "Fix:\n-Fix crash when player die nearby First aid box\nNew:\n-Electric fence config\n-Implement Double Electric Gate",
-    "0.8.0": "New:\n- Manual (WIP)\nSteel Blocks Variants",
-    "0.7.0": "NEW:\n- Locker\n- Entity detector\n- Fuse box w/ cartridges\nChanges:\n- clear window texture\n- catwalks no longer connects with down fullblocks\nFixes:\n- MultiDisk disconnecting player",
-    "0.6.0": "NEW:\n-OSHA-specified hazards blocks variants\n-Block Handrail\n-Flame detector\nChanges:\n-window frame model\n-some blocks are cheaper\nFixes:\n-some",
-    "0.5.0": "New:\n-Safety Helmet\n-Safety Belt\n-Rails now can stack snow\n-zh_cn language (Thanks TartaricAcid)\n-Signal Light\n-Traffic Light\n-(Tons of WIP content improvements mostly locomotive)",
-    "0.4.0": "New Blocks:\n-Buffer stop rail\n-Hazard signs (ground and wall)\n-New WIP Creative tab for blocks that is not done yet\n-New 8-bit music disc\n-New Disc player (store up to 4 discs)\n-rain sensor\nChanges:\n-Removed some WIP blocks (need to be reworked)\n-Fire extinguisher can now be pickup from ground and can cools lava\nFixes:\n-Some Localizations (Thanks slava110)\n-Fix cargo container droping minecart and chest",
-    "0.3.0": "Work Safety Update:\nFirst aid kit and Fire extinguisher"
+    "0.15.0": "New: Cable/Pipe Tray"
   }
 }
