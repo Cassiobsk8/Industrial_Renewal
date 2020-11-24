@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "0.20.1"
+version = "0.20.2A"
 group = "cassiokf.industrialrenewal" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "IndustrialRenewal_1.12.2"// + version
 
@@ -54,7 +54,7 @@ dependencies {
     // compile against the JEI API but do not include it at runtime
     deobfProvided "mezz.jei:jei_${mc_version}:${jei_version}:api"
     // at runtime, use the full JEI jar
-    runtime "mezz.jei:jei_${mc_version}:${jei_version}"
+    //runtime "mezz.jei:jei_${mc_version}:${jei_version}"
     compileOnly "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.8.468"
 }
 

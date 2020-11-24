@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.recipes;
 
+import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
@@ -8,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.JsonUtils;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IRecipeFactory;
@@ -41,7 +43,7 @@ public class LatheRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IR
 
         // This output is not required, but it can be used to detect when a recipe has been
         // loaded into the game.
-        System.out.println("Loaded " + this.toString());
+        IndustrialRenewal.LOGGER.info("Loaded " + this.output.getDisplayName() + " Lathe Recipe");
     }
 
     public int getProcessTime()
@@ -66,7 +68,7 @@ public class LatheRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IR
             }
         }
 
-        System.out.println(References.NAME + " Registered " + recipesAmount + " Recipes for Lathe Machine");
+        IndustrialRenewal.LOGGER.info(TextFormatting.GREEN + References.NAME + " Registered " + recipesAmount + " Recipes for Lathe Machine");
     }
 
     @Override

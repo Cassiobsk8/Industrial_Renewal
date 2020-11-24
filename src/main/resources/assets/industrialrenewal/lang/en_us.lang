@@ -172,6 +172,8 @@ tile.industrialrenewal.portable_generator.name=Portable Generator
 tile.industrialrenewal.mining.name=Mining Drill
 tile.industrialrenewal.fluid_tank.name=Fluid Tank
 tile.industrialrenewal.ind_battery_bank.name=Industrial Battery Bank
+tile.industrialrenewal.storage_rack.name=Storage Rack (Crate)
+tile.industrialrenewal.storage_chest.name=Storage Rack (Chest)
 
 #Fluids
 fluid.steam=Steam

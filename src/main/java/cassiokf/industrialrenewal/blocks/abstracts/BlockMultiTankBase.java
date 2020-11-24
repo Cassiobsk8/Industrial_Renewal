@@ -53,8 +53,7 @@ public abstract class BlockMultiTankBase<T extends TEMultiTankBase> extends Bloc
         return instanceOf(world.getBlockState(pos.offset(EnumFacing.UP, 2)).getBlock()) ? 2 : 1;
     }
 
-    private int isBot(IBlockAccess world, BlockPos pos)
-    {
+    protected int isBot(IBlockAccess world, BlockPos pos) {
         return instanceOf(world.getBlockState(pos.offset(EnumFacing.DOWN, 2)).getBlock()) ? 2 : 1;
     }
 

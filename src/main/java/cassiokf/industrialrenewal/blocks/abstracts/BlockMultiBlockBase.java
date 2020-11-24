@@ -67,19 +67,21 @@ public abstract class BlockMultiBlockBase<TE extends TileEntityMultiBlockBase> e
         EntityPlayer player = worldIn.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 10D, false);
         if (player == null) return false;
         EnumFacing facing = player.getHorizontalFacing();
-        List<BlockPos> posList = getMachineBlockPosList(pos.offset(facing).up(), facing);
-        for (BlockPos currentPos : posList)
-        {
+        List<BlockPos> posList = getMachineBlockPosList(getMasterPosBasedOnPlace(pos, facing), facing);
+        for (BlockPos currentPos : posList) {
             if (!isReplaceable(worldIn, currentPos)) return false;
         }
         return true;
     }
 
+    protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, EnumFacing facing) {
+        return pos.offset(facing).up();
+    }
+
     public abstract List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing);
 
     @Override
-    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
-    {
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
         return false;
     }
 

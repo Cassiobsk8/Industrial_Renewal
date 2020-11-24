@@ -341,7 +341,7 @@ public class IRConfig {
 
             @Config.RequiresMcRestart
             @Config.Comment("CAUTION: change this will cause DeepOreVeins to ReGenerate (Default: 'indr_dv')")
-            public String deepVeinID = "indr_dv";
+            public String deepVeinID = "dv";
 
             @Config.Comment("Ores to generate in Deep Vein (Oredict/id name and spawn chance)")
             @Config.RequiresMcRestart

@@ -8,15 +8,12 @@ import net.minecraft.item.ItemStack;
 
 public abstract class ContainerBase extends Container
 {
-    public void drawPlayerInv(IInventory playerInv, int yOffset)
-    {
-        int xPos = 8;
+    public void drawPlayerInv(IInventory playerInv, int yOffset, int xOffset) {
+        int xPos = 8 + xOffset;
         int yPos = 84 + yOffset;
 
-        for (int y = 0; y < 3; ++y)
-        {
-            for (int x = 0; x < 9; ++x)
-            {
+        for (int y = 0; y < 3; ++y) {
+            for (int x = 0; x < 9; ++x) {
                 this.addSlotToContainer(new Slot(playerInv, x + y * 9 + 9, xPos + x * 18, yPos + y * 18));
             }
         }
@@ -29,7 +26,7 @@ public abstract class ContainerBase extends Container
 
     public void drawPlayerInv(IInventory playerInv)
     {
-        drawPlayerInv(playerInv, 0);
+        drawPlayerInv(playerInv, 0, 0);
     }
 
     @Override

@@ -24,7 +24,7 @@ import static net.minecraftforge.fml.common.eventhandler.EventPriority.LOW;
 
 @Mod.EventBusSubscriber(modid = References.MODID)
 public class EventHandler {
-    public static final String id = IRConfig.MainConfig.Generation.deepVeinID;
+    public static final String id = "indr_" + IRConfig.MainConfig.Generation.deepVeinID;
     public static final String deepVeinKeyItem = id + "_id";
     public static final String deepVeinKeyQuantity = id + "_q";
 

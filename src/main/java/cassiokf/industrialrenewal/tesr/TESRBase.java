@@ -115,8 +115,7 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         render3dItem(facing, world, x, y, z, stack, scale, disableLight, true, rotation, rX, rY, rZ, false, false);
     }
 
-    public static void render3dItem(EnumFacing facing, World world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight, boolean applyRotation, float rotation, float rX, float rY, float rZ, boolean rotateHorizontal, boolean rotateVertical)
-    {
+    public static void render3dItem(EnumFacing facing, World world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight, boolean applyRotation, float rotation, float rX, float rY, float rZ, boolean rotateHorizontal, boolean rotateVertical) {
         GlStateManager.enableRescaleNormal();
         GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
         GlStateManager.enableBlend();
@@ -143,8 +142,31 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         GlStateManager.disableBlend();
     }
 
-    public static void renderBarLevel(EnumFacing facing, double x, double y, double z, float fill, float scale)
-    {
+    public static void render2dItem(EnumFacing facing, World world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight) {
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
+        GlStateManager.enableBlend();
+        if (disableLight) RenderHelper.disableStandardItemLighting();
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+        GlStateManager.pushMatrix();
+
+        GlStateManager.translate(x, y, z);
+        rotateAccordingly(facing);
+        GlStateManager.scale(scale, scale, scale);
+
+        IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
+        model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);
+
+        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
+
+        GlStateManager.popMatrix();
+        GlStateManager.disableRescaleNormal();
+        if (disableLight) RenderHelper.enableStandardItemLighting();
+        GlStateManager.disableBlend();
+    }
+
+    public static void renderBarLevel(EnumFacing facing, double x, double y, double z, float fill, float scale) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
         rotateAccordingly(facing);

@@ -1,8 +1,6 @@
 package cassiokf.industrialrenewal.tileentity.abstracts;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiTankBase;
 import cassiokf.industrialrenewal.util.MachinesUtils;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +25,9 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
     @Override
     public void onFirstTick()
     {
-        setParameters();
+        if (isMaster()) {
+            reachTop();
+        }
     }
 
     @Override
@@ -45,20 +45,6 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
         {
             ((T) downTE).setTop(true);
             ((T) downTE).sync();
-        }
-    }
-
-    public void setParameters()
-    {
-        if (!world.isRemote && isMaster())
-        {
-            IBlockState state = world.getBlockState(pos);
-            if (state.getBlock() instanceof BlockMultiTankBase)
-            {
-                state = state.getActualState(world, getPos());
-                setBottom(state.getValue(BlockMultiTankBase.DOWN) == 1);
-                setTop(state.getValue(BlockMultiTankBase.TOP) == 1);
-            }
         }
     }
 

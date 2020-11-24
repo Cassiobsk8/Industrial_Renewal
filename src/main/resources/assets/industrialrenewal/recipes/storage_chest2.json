@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "industrialrenewal:storage_rack"
+    }
+  ],
+  "result": {
+    "item": "industrialrenewal:storage_chest",
+    "count": 1
+  }
+}

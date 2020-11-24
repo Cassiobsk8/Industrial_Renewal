@@ -178,13 +178,14 @@ public class ModBlocks
     public static final BlockHighPressurePipe highPressurePipe = new BlockHighPressurePipe("high_pressure_pipe", References.CREATIVE_IR_TAB);
     public static final BlockFluidTank fluidTank = new BlockFluidTank("fluid_tank", References.CREATIVE_IR_TAB);
     public static final BlockIndustrialBatteryBank industrialBattery = new BlockIndustrialBatteryBank("ind_battery_bank", References.CREATIVE_IR_TAB);
+    public static final BlockStorage storageRack = new BlockStorage("storage_rack", References.CREATIVE_IR_TAB);
+    public static final BlockStorageChest storageChest = new BlockStorageChest("storage_chest", References.CREATIVE_IR_TAB);
 
     public static final BlockChunkLoader chunkLoader = new BlockChunkLoader("chunk_loader", References.CREATIVE_IR_TAB);
 
     public static final BlockOreVein veinHematite = new BlockOreVein("orevein_hematite", "oreIron", References.CREAATIVE_IRWIP_TAB);
 
-    public static void register(IForgeRegistry<Block> registry)
-    {
+    public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
                 veinHematite,
                 blockHazard,
@@ -300,6 +301,8 @@ public class ModBlocks
                 //Machines
                 fluidTank,
                 industrialBattery,
+                storageRack,
+                storageChest,
                 steamBoiler,
                 steamTurbine,
                 latheMachine,
@@ -372,6 +375,8 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileEntityFluidPipeGauge.class, fluidPipeGauge.getRegistryName());
         GameRegistry.registerTileEntity(TEFluidTank.class, fluidTank.getRegistryName());
         GameRegistry.registerTileEntity(TEIndustrialBatteryBank.class, industrialBattery.getRegistryName());
+        GameRegistry.registerTileEntity(TEStorage.class, storageRack.getRegistryName());
+        GameRegistry.registerTileEntity(TEStorageChest.class, storageChest.getRegistryName());
         GameRegistry.registerTileEntity(TileEntitySteamBoiler.class, steamBoiler.getRegistryName());
         GameRegistry.registerTileEntity(TileEntitySteamTurbine.class, steamTurbine.getRegistryName());
         GameRegistry.registerTileEntity(TileEntityMining.class, mining.getRegistryName());
@@ -491,6 +496,8 @@ public class ModBlocks
                 highPressurePipe.createItemBlock(),
                 fluidTank.createItemBlock(),
                 industrialBattery.createItemBlock(),
+                storageRack.createItemBlock(),
+                storageChest.createItemBlock(),
                 steamBoiler.createItemBlock(),
                 steamTurbine.createItemBlock(),
                 mining.createItemBlock(),
@@ -601,6 +608,8 @@ public class ModBlocks
         highPressurePipe.registerItemModel(Item.getItemFromBlock(highPressurePipe));
         fluidTank.registerItemModel(Item.getItemFromBlock(fluidTank));
         industrialBattery.registerItemModel(Item.getItemFromBlock(industrialBattery));
+        storageRack.registerItemModel(Item.getItemFromBlock(storageRack));
+        storageChest.registerItemModel(Item.getItemFromBlock(storageChest));
         steamBoiler.registerItemModel(Item.getItemFromBlock(steamBoiler));
         steamTurbine.registerItemModel(Item.getItemFromBlock(steamTurbine));
         mining.registerItemModel(Item.getItemFromBlock(mining));

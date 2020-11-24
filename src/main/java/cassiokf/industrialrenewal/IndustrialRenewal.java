@@ -27,6 +27,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class IndustrialRenewal {
     public static IndustrialRenewal instance;
     @SidedProxy(clientSide = "cassiokf.industrialrenewal.proxy.ClientProxy", serverSide = "cassiokf.industrialrenewal.proxy.CommonProxy", modId = MODID)
     public static CommonProxy proxy;
+    public static Logger LOGGER;
 
     static
     {
@@ -48,9 +50,9 @@ public class IndustrialRenewal {
     }
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
-        System.out.println(References.NAME + " is loading preInit!");
+    public void preInit(FMLPreInitializationEvent event) {
+        LOGGER = event.getModLog();
+        LOGGER.info(References.NAME + " is loading preInit!");
         FluidInit.registerFluids();
         IRSoundRegister.registerSounds();
         EntityInit.registerEntities();
@@ -60,22 +62,22 @@ public class IndustrialRenewal {
         ForgeChunkManager.setForcedChunkLoadingCallback(instance, new ChunkManagerCallback());
         proxy.registerRenderers();
         MinecraftForge.EVENT_BUS.register(EventHandler.class);
-        System.out.println("Done!");
+        LOGGER.info("Done!");
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-        System.out.println(References.NAME + " is loading init!");
+        LOGGER.info(References.NAME + " is loading init!");
         ModRecipes.init();
         proxy.Init();
-        System.out.println("Done!");
+        LOGGER.info("Done!");
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
-        System.out.println(References.NAME + " is loading posInit!");
+        LOGGER.info(References.NAME + " is loading posInit!");
 
         final List<String> names = new ArrayList<>();
         for (String name : OreDictionary.getOreNames())
@@ -92,7 +94,7 @@ public class IndustrialRenewal {
         }
         IRConfig.populateDeepVeinOres();
 
-        System.out.println("Done!");
+        LOGGER.info("Done!");
     }
 
     @Mod.EventBusSubscriber

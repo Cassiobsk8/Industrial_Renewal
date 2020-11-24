@@ -6,6 +6,7 @@ import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import cassiokf.industrialrenewal.entity.EntityTenderBase;
 import cassiokf.industrialrenewal.gui.*;
 import cassiokf.industrialrenewal.gui.container.*;
+import cassiokf.industrialrenewal.tileentity.TEStorageChest;
 import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
 import cassiokf.industrialrenewal.tileentity.TileEntityRecordPlayer;
 import cassiokf.industrialrenewal.tileentity.machines.TELathe;
@@ -35,6 +36,7 @@ public class GUIHandler implements IGuiHandler {
     public static final int FLUIDLOADER = 9;
     public static final int HOPPERCART = 10;
     public static final int TENDER = 11;
+    public static final int STORAGECHEST = 12;
 
     @Nullable
     @Override
@@ -69,13 +71,14 @@ public class GUIHandler implements IGuiHandler {
         {
             return new ContainerHopperCart(player.inventory, (EntityHopperCart) world.getEntityByID(x));
         }
-        if (ID == LATHE)
-        {
+        if (ID == LATHE) {
             return new ContainerLatheMachine(player.inventory, (TELathe) world.getTileEntity(new BlockPos(x, y, z)));
         }
-        if (ID == TENDER)
-        {
+        if (ID == TENDER) {
             return new ContainerTender(player.inventory, (EntityTenderBase) world.getEntityByID(x));
+        }
+        if (ID == STORAGECHEST) {
+            return new ContainerStorageChest(player.inventory, (TEStorageChest) world.getTileEntity(new BlockPos(x, y, z)));
         }
         return null;
     }
@@ -116,13 +119,14 @@ public class GUIHandler implements IGuiHandler {
         {
             return new GUIHopperCart(player.inventory, (EntityHopperCart) world.getEntityByID(x));
         }
-        if (ID == LATHE)
-        {
+        if (ID == LATHE) {
             return new GUILatheMachine(player.inventory, (TELathe) world.getTileEntity(new BlockPos(x, y, z)));
         }
-        if (ID == TENDER)
-        {
+        if (ID == TENDER) {
             return new GUITender(player.inventory, (EntityTenderBase) world.getEntityByID(x));
+        }
+        if (ID == STORAGECHEST) {
+            return new GUIStorageChest(player.inventory, (TEStorageChest) world.getTileEntity(new BlockPos(x, y, z)));
         }
         return null;
     }

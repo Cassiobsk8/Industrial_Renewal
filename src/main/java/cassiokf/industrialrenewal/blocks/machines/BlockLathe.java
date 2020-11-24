@@ -58,17 +58,8 @@ public class BlockLathe extends BlockMultiBlockBase<TELathe>
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-    {
-        EntityPlayer player = worldIn.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 10D, false);
-        if (player == null) return false;
-        EnumFacing facing = player.getHorizontalFacing();
-        List<BlockPos> posList = getMachineBlockPosList(pos, facing);
-        for (BlockPos currentPos : posList)
-        {
-            if (!isReplaceable(worldIn, currentPos)) return false;
-        }
-        return true;
+    protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, EnumFacing facing) {
+        return pos;
     }
 
     @Override

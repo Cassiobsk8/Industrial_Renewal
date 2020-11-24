@@ -1,0 +1,56 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "industrialrenewal:blocks/pipe"
+    }
+  },
+  "variants": {
+    "master": {
+      "true": {
+        "model": "industrialrenewal:storage/master_chest"
+      },
+      "false": {
+        "model": "industrialrenewal:dummy"
+      }
+    },
+    "facing": {
+      "north": {},
+      "south": {
+        "y": 180
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": -90
+      }
+    },
+    "bot": {
+      "0": {
+        "submodel": {
+          "bot": {
+            "model": "industrialrenewal:dummy"
+          }
+        }
+      },
+      "1": {
+        "submodel": {
+          "bot": {
+            "model": "industrialrenewal:dummy"
+          }
+        }
+      },
+      "2": {
+        "submodel": {
+          "bot": {
+            "model": "industrialrenewal:dummy"
+          }
+        }
+      }
+    },
+    "inventory": {
+      "model": "industrialrenewal:storage/master_chest"
+    }
+  }
+}
