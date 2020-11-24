@@ -10,7 +10,7 @@ public class References {
 
     public static final String NAME = "Industrial Renewal";
 
-    public static final String VERSION = "0.20.2A";
+    public static final String VERSION = "0.21.0";
 
     public static final String NETWORKCHANNEL = MODID;
 
@@ -28,6 +28,7 @@ public class References {
     public static final int ENTITY_FLATCART_ID = 125;
     public static final int ENTITY_HOPPERCART_ID = 126;
     public static final int ENTITY_TENDER_ID = 127;
+    public static final int ENTITY_CONTAINER_SHIP = 128;
 
     public static final String VERSION_CHECKER_URL = "https://raw.githubusercontent.com/Cassiobsk8/Industrial_Renewal/master/update.json";
 }
