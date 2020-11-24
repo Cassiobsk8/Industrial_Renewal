@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.handlers;
 
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.entity.LocomotiveBase;
 import cassiokf.industrialrenewal.item.ItemCartLinkable;
 import cassiokf.industrialrenewal.recipes.LatheRecipe;
@@ -22,14 +23,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import static net.minecraftforge.fml.common.eventhandler.EventPriority.LOW;
 
 @Mod.EventBusSubscriber(modid = References.MODID)
-public class EventHandler
-{
-    public static final String deepVeinKeyItem = "indr_dv_id";
-    public static final String deepVeinKeyQuantity = "indr_dv_q";
+public class EventHandler {
+    public static final String id = IRConfig.MainConfig.Generation.deepVeinID;
+    public static final String deepVeinKeyItem = id + "_id";
+    public static final String deepVeinKeyQuantity = id + "_q";
 
     @SubscribeEvent
-    public static void onMinecartUpdate(MinecartUpdateEvent event)
-    {
+    public static void onMinecartUpdate(MinecartUpdateEvent event) {
         EntityMinecart cart = event.getMinecart();
         CouplingHandler.onMinecartTick(cart);
         if (cart instanceof LocomotiveBase) ((LocomotiveBase) cart).onLocomotiveUpdate();
@@ -70,6 +70,7 @@ public class EventHandler
         } else
         {
             stack = OreGeneration.generateNewVein(event.getWorld());
+            event.getChunk().markDirty();
         }
         if (!OreGeneration.CHUNKS_VEIN.containsKey(event.getChunk().getPos()))
             OreGeneration.CHUNKS_VEIN.put(event.getChunk().getPos(), stack);

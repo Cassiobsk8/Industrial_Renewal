@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.config;
 
+import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.init.ModItems;
@@ -81,7 +82,7 @@ public class IRConfig {
                 List<ItemStack> list = OreDictionary.getOres(str);
                 if (list.isEmpty())
                 {
-                    System.out.println(TextFormatting.RED + "Oredict not found for: " + str + " , this ore will not be generate in Deep Veins");
+                    IndustrialRenewal.LOGGER.warn(TextFormatting.RED + "Oredict not found for: " + str + " , this ore will not be generate in Deep Veins");
                     continue;
                 }
                 ItemStack stack = list.get(0).copy();
@@ -101,7 +102,7 @@ public class IRConfig {
                 }
             }
         }
-        System.out.println(TextFormatting.GREEN + References.NAME + " Registered " + i + " DeepVein Variants");
+        IndustrialRenewal.LOGGER.info(TextFormatting.GREEN + References.NAME + " Registered " + i + " DeepVein Variants");
     }
 
     private static void placeItemXTimes(Item item, int t)
@@ -337,6 +338,10 @@ public class IRConfig {
 
             @Config.Comment("Deep Vein max ore quantity (Default: 8000)")
             public int deepVeinMaxOre = 8000;
+
+            @Config.RequiresMcRestart
+            @Config.Comment("CAUTION: change this will cause DeepOreVeins to ReGenerate (Default: 'indr_dv')")
+            public String deepVeinID = "indr_dv";
 
             @Config.Comment("Ores to generate in Deep Vein (Oredict/id name and spawn chance)")
             @Config.RequiresMcRestart
