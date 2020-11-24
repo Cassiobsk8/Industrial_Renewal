@@ -8,16 +8,10 @@ import cassiokf.industrialrenewal.tileentity.TEStorageChest;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.IInventory;
 import org.lwjgl.input.Mouse;
 
-import java.lang.reflect.Field;
-import java.util.Map;
-
 public class GUIStorageChest extends GUIBase {
-    private static Field campo;
-    private static Map<String, KeyBinding> binds;
     private final TEStorageChest te;
     private GuiButton upB;
     private GuiButton downB;
@@ -27,17 +21,6 @@ public class GUIStorageChest extends GUIBase {
         this.xSize = 220;
         this.ySize = 202;
         this.te = te;
-        try {
-            campo = KeyBinding.class.getDeclaredField("KEYBIND_ARRAY");
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        campo.setAccessible(true);
-        try {
-            binds = (Map<String, KeyBinding>) campo.get(null);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
