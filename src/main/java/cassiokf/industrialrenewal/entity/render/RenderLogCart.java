@@ -10,13 +10,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderLogCart<T extends EntityLogCart> extends RenderBase<EntityLogCart> {
+public class RenderLogCart<T extends EntityLogCart> extends RenderCartsBase<EntityLogCart>
+{
 
     public static final ResourceLocation TEXTURES = new ResourceLocation(References.MODID + ":textures/entities/log_cart.png");
 
     protected ModelLogCart modelMinecart = new ModelLogCart();
 
-    public RenderLogCart(RenderManager renderManagerIn) {
+    public RenderLogCart(RenderManager renderManagerIn)
+    {
         super(renderManagerIn);
     }
 

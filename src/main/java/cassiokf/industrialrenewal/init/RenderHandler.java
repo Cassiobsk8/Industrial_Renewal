@@ -10,9 +10,11 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
-public class RenderHandler {
+public class RenderHandler
+{
 
-    public static void registerEntitiesRender() {
+    public static void registerEntitiesRender()
+    {
         RenderingRegistry.registerEntityRenderingHandler(EntityCargoContainer.class, RenderCargoContainer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityFluidContainer.class, RenderFluidContainer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntitySteamLocomotive.class, RenderSteamLocomotive::new);
@@ -21,6 +23,7 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityFlatCart.class, RenderFlatCart::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityHopperCart.class, RenderHopperCart::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityTenderBase.class, RenderTender::new);
+        //RenderingRegistry.registerEntityRenderingHandler(EntityContainerShip.class, RenderContainerShip::new);
     }
 
     public static void registerCustomMeshesAndStates()

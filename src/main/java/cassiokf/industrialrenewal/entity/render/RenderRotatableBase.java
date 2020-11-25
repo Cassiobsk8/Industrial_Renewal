@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class RenderRotatableBase<T extends RotatableBase> extends RenderBase<T>
+public abstract class RenderRotatableBase<T extends RotatableBase> extends RenderCartsBase<T>
 {
     public RenderRotatableBase(RenderManager renderManagerIn)
     {

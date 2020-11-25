@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderFlatCart<T extends EntityFlatCart> extends RenderBase<EntityFlatCart>
+public class RenderFlatCart<T extends EntityFlatCart> extends RenderCartsBase<EntityFlatCart>
 {
 
     public static final ResourceLocation TEXTURES = new ResourceLocation(References.MODID + ":textures/entities/base_cart.png");

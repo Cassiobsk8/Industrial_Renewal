@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderHopperCart<T extends EntityHopperCart> extends RenderBase<EntityHopperCart>
+public class RenderHopperCart<T extends EntityHopperCart> extends RenderCartsBase<EntityHopperCart>
 {
 
     public static final ResourceLocation TEXTURES = new ResourceLocation(References.MODID + ":textures/entities/hopper_cart.png");

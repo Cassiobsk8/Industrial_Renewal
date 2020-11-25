@@ -11,13 +11,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderFluidContainer<T extends EntityFluidContainer> extends RenderBase<EntityFluidContainer> {
+public class RenderFluidContainer<T extends EntityFluidContainer> extends RenderCartsBase<EntityFluidContainer>
+{
 
     public static final ResourceLocation TEXTURES = new ResourceLocation(References.MODID + ":textures/entities/fluid_container.png");
 
     protected ModelCartFluidTank modelMinecart = new ModelCartFluidTank();
 
-    public RenderFluidContainer(RenderManager renderManagerIn) {
+    public RenderFluidContainer(RenderManager renderManagerIn)
+    {
         super(renderManagerIn);
     }
 

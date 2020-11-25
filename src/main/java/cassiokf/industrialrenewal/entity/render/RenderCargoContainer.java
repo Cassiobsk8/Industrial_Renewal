@@ -10,13 +10,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderCargoContainer<T extends EntityCargoContainer> extends RenderBase<EntityCargoContainer> {
+public class RenderCargoContainer<T extends EntityCargoContainer> extends RenderCartsBase<EntityCargoContainer>
+{
 
     public static final ResourceLocation TEXTURES = new ResourceLocation(References.MODID + ":textures/entities/cargocontainer.png");
 
     protected ModelCargoContainer modelMinecart = new ModelCargoContainer();
 
-    public RenderCargoContainer(RenderManager renderManagerIn) {
+    public RenderCargoContainer(RenderManager renderManagerIn)
+    {
         super(renderManagerIn);
     }
 
