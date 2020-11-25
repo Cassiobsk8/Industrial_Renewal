@@ -165,6 +165,7 @@ public class ModBlocks
 
     public static final BlockEotM baseEotM = new BlockEotM("eotm", References.CREATIVE_IR_TAB);
     public static final BlockEotM andrbootEotM = new BlockEotM("eotm_andrboot", References.CREATIVE_IR_TAB);
+    public static final BlockEotM ic2exp = new BlockEotM("eotm_ic2exp", References.CREATIVE_IR_TAB);
     public static final BlockElectricPump electricPump = new BlockElectricPump("electric_pump", References.CREATIVE_IR_TAB);
 
     public static final BlockPortableGenerator portableGenerator = new BlockPortableGenerator("portable_generator", References.CREATIVE_IR_TAB);
@@ -328,6 +329,7 @@ public class ModBlocks
                 //Patreons
                 baseEotM,
                 andrbootEotM,
+                ic2exp,
                 //Fluids
                 steamBlock
         );
@@ -503,6 +505,7 @@ public class ModBlocks
                 mining.createItemBlock(),
                 baseEotM.createItemBlock(),
                 andrbootEotM.createItemBlock(),
+                ic2exp.createItemBlock(),
                 chunkLoader.createItemBlock(),
                 conveyorV.createItemBlock(),
                 steamBlock.createItemBlock()
@@ -615,6 +618,7 @@ public class ModBlocks
         mining.registerItemModel(Item.getItemFromBlock(mining));
         baseEotM.registerItemModel(Item.getItemFromBlock(baseEotM));
         andrbootEotM.registerItemModel(Item.getItemFromBlock(andrbootEotM));
+        ic2exp.registerItemModel(Item.getItemFromBlock(ic2exp));
         chunkLoader.registerItemModel(Item.getItemFromBlock(chunkLoader));
         conveyorV.registerItemModel(Item.getItemFromBlock(conveyorV));
         hvIsolator.registerItemModel(Item.getItemFromBlock(hvIsolator));
