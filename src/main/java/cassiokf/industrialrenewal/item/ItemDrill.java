@@ -16,6 +16,12 @@ public class ItemDrill extends ItemBase
         setContainerItem(this);
     }
 
+    @Override
+    public boolean isRepairable()
+    {
+        return false;
+    }
+
     public static ItemStack copyStack(ItemStack stack, int n)
     {
         return new ItemStack(stack.getItem(), n, stack.getItemDamage());
