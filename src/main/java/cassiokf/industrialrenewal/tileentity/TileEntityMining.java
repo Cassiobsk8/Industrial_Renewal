@@ -297,7 +297,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
                 {
                     BlockPos actualPosition = new BlockPos(a + x, y, b + z);
                     IBlockState state = chunk.getBlockState(actualPosition);
-                    if (ModItems.POSSIBLE_DEEP_VEIN_ITEMS.contains(Item.getItemFromBlock(state.getBlock())))
+                    if (OreGeneration.MINERABLE_ORES.contains(Item.getItemFromBlock(state.getBlock())))
                     {
                         ores.add(new OreMining(state, actualPosition));
                     }

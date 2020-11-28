@@ -8,14 +8,8 @@ import cassiokf.industrialrenewal.item.carts.*;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ModItems
 {
-    public static final List<Item> POSSIBLE_DEEP_VEIN_ITEMS = new ArrayList<>();
-    public static final List<Item> DEEP_VEIN_ORES = new ArrayList<>();
-
     public static final ItemOreDict ingotSteel = new ItemOreDict("ingot_steel", "ingotSteel", References.CREATIVE_IR_TAB);
     public static final ItemOreDict stickIron = new ItemOreDict("stick_iron", "stickIron", References.CREATIVE_IR_TAB);
     public static final ItemOreDict stickSteel = new ItemOreDict("stick_steel", "stickSteel", References.CREATIVE_IR_TAB);
