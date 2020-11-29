@@ -19,14 +19,15 @@ public class PacketReturnTEStorageChest implements IMessage {
     private BlockPos pos;
     private int dimension;
     private int ButtonId;
-    private boolean messageValid;
     private int playerID;
+    private boolean messageValid;
 
     public PacketReturnTEStorageChest() {
         this.messageValid = false;
     }
 
-    public PacketReturnTEStorageChest(BlockPos pos, int dimension, int playerID, int ButtonId) {
+    public PacketReturnTEStorageChest(BlockPos pos, int dimension, int ButtonId, int playerID)
+    {
         this.dimension = dimension;
         this.pos = pos;
         this.playerID = playerID;
@@ -34,18 +35,22 @@ public class PacketReturnTEStorageChest implements IMessage {
         this.messageValid = true;
     }
 
-    public PacketReturnTEStorageChest(TEStorageChest te, int playerID, int ButtonId) {
-        this(te.getPos(), te.getWorld().provider.getDimension(), playerID, ButtonId);
+    public PacketReturnTEStorageChest(TEStorageChest te, int ButtonId, int playerID)
+    {
+        this(te.getPos(), te.getWorld().provider.getDimension(), ButtonId, playerID);
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-        try {
+    public void fromBytes(ByteBuf buf)
+    {
+        try
+        {
             pos = BlockPos.fromLong(buf.readLong());
             dimension = buf.readInt();
             playerID = buf.readInt();
             ButtonId = buf.readInt();
-        } catch (IndexOutOfBoundsException ioe) {
+        } catch (IndexOutOfBoundsException ioe)
+        {
             System.out.println(ioe);
             return;
         }

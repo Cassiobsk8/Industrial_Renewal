@@ -19,54 +19,63 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.List;
 
-public class TEStorageChest extends TEMultiTankBase<TEStorageChest> {
-    public final InventoryHandler inventory = new InventoryHandler(slots) {
+public class TEStorageChest extends TEMultiTankBase<TEStorageChest>
+{
+    private static final int slots = 66;
+    public final InventoryHandler inventory = new InventoryHandler(slots)
+    {
         @Override
-        protected void onContentsChanged(int slot) {
+        protected void onContentsChanged(int slot)
+        {
             TEStorageChest.this.markDirty();
         }
 
         @Override
-        public void itemsToSpawn(List<ItemStack> list) {
+        public void itemsToSpawn(List<ItemStack> list)
+        {
             for (ItemStack item : list) TEStorageChest.this.spawnItems(item);
         }
     };
-    private static final int slots = 66;
     public int additionalLines;
     public int currentLine;
 
     @Override
-    public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition) {
+    public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
+    {
         return MachinesUtils.getBlocksIn3x3x2Centered(centerPosition, getMasterFacing());
     }
 
-    public void guiButtonClick(int id, EntityPlayer player) {
-        boolean change = false;
-        if (id == 1 && currentLine > 0) {
+    public void guiButtonClick(int id, EntityPlayer player)
+    {
+        if (id == 1 && currentLine > 0)
+        {
             currentLine--;
-            change = true;
-        } else if (id == 2 && currentLine < additionalLines) {
+        }
+        else if (id == 2 && currentLine < additionalLines)
+        {
             currentLine++;
-            change = true;
         }
-        if (change) {
-            openGui(player, false);
-        }
+        openGui(player, false);
     }
 
-    public void openGui(EntityPlayer player, boolean resetLine) {
+    public void openGui(EntityPlayer player, boolean resetLine)
+    {
         if (resetLine) currentLine = 0;
         if (!world.isRemote)
+        {
             player.openGui(IndustrialRenewal.instance, GUIHandler.STORAGECHEST, world, pos.getX(), pos.getY(), pos.getZ());
+        }
     }
 
-    public void setLineValues(int currentLine, int additionalLines) {
+    public void setLineValues(int currentLine, int additionalLines)
+    {
         this.currentLine = currentLine;
         this.additionalLines = additionalLines;
     }
 
     @Override
-    public void setSize(int i) {
+    public void setSize(int i)
+    {
         int newCapacity = slots * i;
         if (newCapacity < 0) newCapacity = Integer.MAX_VALUE;
 
@@ -78,35 +87,41 @@ public class TEStorageChest extends TEMultiTankBase<TEStorageChest> {
     }
 
     @Override
-    public void onMasterBreak() {
+    public void onMasterBreak()
+    {
         super.onMasterBreak();
         Utils.dropInventoryItems(world, pos, inventory);
     }
 
-    private void spawnItems(ItemStack stack) {
+    private void spawnItems(ItemStack stack)
+    {
         if (!stack.isEmpty()) Utils.spawnItemStack(world, pos.offset(getMasterFacing().getOpposite(), 2), stack);
     }
 
     @Override
-    public boolean instanceOf(TileEntity tileEntity) {
+    public boolean instanceOf(TileEntity tileEntity)
+    {
         return tileEntity instanceof TEStorageChest;
     }
 
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
         if (capability.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY))
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(getMaster().getBottomTE().inventory);
         return super.getCapability(capability, facing);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
         compound.setTag("inv", inventory.serializeNBT());
         return super.writeToNBT(compound);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(NBTTagCompound compound)
+    {
         inventory.deserializeNBT(compound.getCompoundTag("inv"));
         super.readFromNBT(compound);
     }

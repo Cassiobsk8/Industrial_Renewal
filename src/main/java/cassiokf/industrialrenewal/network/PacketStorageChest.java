@@ -40,6 +40,7 @@ public class PacketStorageChest implements IMessage {
             additionalLine = buf.readInt();
         } catch (IndexOutOfBoundsException ioe) {
             System.out.println(ioe);
+            return;
         }
         this.messageValid = true;
     }

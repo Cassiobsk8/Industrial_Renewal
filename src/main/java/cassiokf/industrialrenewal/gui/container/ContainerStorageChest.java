@@ -12,13 +12,23 @@ public class ContainerStorageChest extends ContainerBase {
         int startIndex = te.currentLine * 11;
         int numRows = inventory.getSlots() / 11;
         int limit = 0;
-        for (int y = 0; y < numRows; ++y) {
-            for (int x = 0; x < 11; ++x) {
-                limit++;
-                this.addSlotToContainer(new SlotItemHandler(inventory, startIndex + x + y * 11, 8 + x * 18, 7 + y * 18));
-                if (limit >= 66) break;
+        int xS = 0;
+        int yS = 0;
+        for (int y = 0; y < numRows; ++y)
+        {
+            for (int x = 0; x < 11; ++x)
+            {
+                int index = x + y * 11;
+                if (index >= startIndex && limit < 66)
+                {
+                    limit++;
+                    xS = x;
+                    this.addSlotToContainer(new SlotItemHandler(inventory, index, 8 + xS * 18, 7 + yS * 18));
+                }
+                else
+                    this.addSlotToContainer(new SlotItemHandler(inventory, index, Integer.MIN_VALUE, Integer.MIN_VALUE));
             }
-            if (limit >= 66) break;
+            if (xS > 0) yS++;
         }
         drawPlayerInv(playerInv, 36, 18);
     }

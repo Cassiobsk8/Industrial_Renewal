@@ -29,7 +29,8 @@ public class GUIStorageChest extends GUIBase {
     }
 
     private void sendToServer(int id) {
-        NetworkHandler.INSTANCE.sendToServer(new PacketReturnTEStorageChest(this.te, Minecraft.getMinecraft().player.getEntityId(), id));
+        te.guiButtonClick(id, null);
+        NetworkHandler.INSTANCE.sendToServer(new PacketReturnTEStorageChest(this.te, id, Minecraft.getMinecraft().player.getEntityId()));
     }
 
     @Override
