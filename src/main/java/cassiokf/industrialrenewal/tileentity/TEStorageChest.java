@@ -21,7 +21,7 @@ import java.util.List;
 
 public class TEStorageChest extends TEMultiTankBase<TEStorageChest>
 {
-    private static final int slots = 66;
+    private static final int slots = 99;
     public final InventoryHandler inventory = new InventoryHandler(slots)
     {
         @Override
@@ -79,7 +79,7 @@ public class TEStorageChest extends TEMultiTankBase<TEStorageChest>
         int newCapacity = slots * i;
         if (newCapacity < 0) newCapacity = Integer.MAX_VALUE;
 
-        additionalLines = (i - 1) * 6;
+        additionalLines = (newCapacity / 11) - 6;
         currentLine = 0;
         inventory.setInvSize(newCapacity);
         NetworkHandler.INSTANCE.sendToAll(new PacketStorageChest(this));
