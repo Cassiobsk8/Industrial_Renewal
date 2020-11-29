@@ -3,9 +3,11 @@ package cassiokf.industrialrenewal.handlers;
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.entity.LocomotiveBase;
+import cassiokf.industrialrenewal.gui.GUIStorageChest;
 import cassiokf.industrialrenewal.item.ItemCartLinkable;
 import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import cassiokf.industrialrenewal.world.generation.OreGeneration;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -13,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
@@ -51,6 +54,16 @@ public class EventHandler {
     public static void registerRecipes(RegistryEvent.Register<IRecipe> ev)
     {
         LatheRecipe.populateLatheRecipes();
+    }
+
+    @SubscribeEvent
+    public static void onKeyboardEvent(GuiScreenEvent.KeyboardInputEvent event)
+    {
+        GuiScreen screen = event.getGui();
+        if (screen instanceof GUIStorageChest)
+        {
+            ((GUIStorageChest) screen).onKeyboardEvent(event);
+        }
     }
 
     @SubscribeEvent

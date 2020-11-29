@@ -115,6 +115,9 @@ public class IRConfig {
             @Config.LangKey("gui.config.recipes.startwithmanual.name")
             public boolean startWithManual = true;
 
+            @Config.Comment("If the search bar on the containers will be active by default (Default: false)")
+            public boolean searchBarStartFocused = false;
+
             @Config.Comment("'0': Do damage only to monsters and only knockback players. '1': Do damage to monsters and player. '2': do only knockback to all living things. '3': do damage to all living things. '4': normal fence (Default 0)")
             @Config.LangKey("gui.config.electric_fence_damage_type.name")
             public int electricFenceMode = 0;

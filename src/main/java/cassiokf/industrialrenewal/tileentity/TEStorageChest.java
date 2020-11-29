@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.init.NetworkHandler;
 import cassiokf.industrialrenewal.network.PacketStorageChest;
@@ -38,6 +39,8 @@ public class TEStorageChest extends TEMultiTankBase<TEStorageChest>
     };
     public int additionalLines;
     public int currentLine;
+    public String search = "";
+    public boolean searchActive = IRConfig.MainConfig.Main.searchBarStartFocused;
 
     @Override
     public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
@@ -60,7 +63,12 @@ public class TEStorageChest extends TEMultiTankBase<TEStorageChest>
 
     public void openGui(EntityPlayer player, boolean resetLine)
     {
-        if (resetLine) currentLine = 0;
+        if (resetLine)
+        {
+            currentLine = 0;
+            search = "";
+            searchActive = IRConfig.MainConfig.Main.searchBarStartFocused;
+        }
         if (!world.isRemote)
         {
             player.openGui(IndustrialRenewal.instance, GUIHandler.STORAGECHEST, world, pos.getX(), pos.getY(), pos.getZ());

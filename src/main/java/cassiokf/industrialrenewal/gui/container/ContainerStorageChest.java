@@ -23,13 +23,13 @@ public class ContainerStorageChest extends ContainerBase {
                 {
                     limit++;
                     xS = x;
-                    this.addSlotToContainer(new SlotItemHandler(inventory, index, 8 + xS * 18, 7 + yS * 18));
+                    this.addSlotToContainer(new SlotItemHandler(inventory, index, 8 + xS * 18, 16 + yS * 18));
                 }
                 else
                     this.addSlotToContainer(new SlotItemHandler(inventory, index, Integer.MIN_VALUE, Integer.MIN_VALUE));
             }
             if (xS > 0) yS++;
         }
-        drawPlayerInv(playerInv, 36, 18);
+        drawPlayerInv(playerInv, 45, 18);
     }
 }
