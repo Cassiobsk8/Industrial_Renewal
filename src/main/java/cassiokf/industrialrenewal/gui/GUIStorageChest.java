@@ -57,8 +57,8 @@ public class GUIStorageChest extends GUIBase
         super.initGui();
         int posX1 = ((this.width - this.xSize) / 2);
         int posY1 = ((this.height - this.ySize) / 2);
-        upB = new GuiButton(1, posX1 + 206, posY1 + 15, 10, 18, "Λ");
-        downB = new GuiButton(2, posX1 + 206, posY1 + 105, 10, 18, "V");
+        upB = new GuiButton(1, posX1 + 206, posY1 + 15, 10, 18, "▲");
+        downB = new GuiButton(2, posX1 + 206, posY1 + 105, 10, 18, "▼");
         upB.enabled = false;
         downB.enabled = te.currentLine < te.additionalLines;
         this.buttonList.add(upB);

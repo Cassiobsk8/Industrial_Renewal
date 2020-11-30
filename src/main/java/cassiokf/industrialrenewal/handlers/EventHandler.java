@@ -4,9 +4,11 @@ import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.entity.LocomotiveBase;
 import cassiokf.industrialrenewal.gui.GUIStorageChest;
+import cassiokf.industrialrenewal.gui.GUIWire;
 import cassiokf.industrialrenewal.item.ItemCartLinkable;
 import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import cassiokf.industrialrenewal.world.generation.OreGeneration;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +18,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
@@ -64,6 +67,13 @@ public class EventHandler {
         {
             ((GUIStorageChest) screen).onKeyboardEvent(event);
         }
+    }
+
+    @SubscribeEvent
+    public static void onRenderGui(RenderGameOverlayEvent.Post event)
+    {
+        if (event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE) return;
+        new GUIWire(Minecraft.getMinecraft());
     }
 
     @SubscribeEvent

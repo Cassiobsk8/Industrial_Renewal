@@ -9,6 +9,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -225,12 +226,12 @@ public class Utils
         return (value - min) / (max - min);
     }
 
-    public static double getDistancePointToPoint(BlockPos pos1, BlockPos pos2)
+    public static int getDistancePointToPoint(BlockPos pos1, BlockPos pos2)
     {
-        double deltaX = pos1.getX() - pos2.getX();
-        double deltaY = pos1.getY() - pos2.getY();
-        double deltaZ = pos1.getZ() - pos2.getZ();
-        return Math.sqrt((deltaX * deltaX) + (deltaY * deltaY) + (deltaZ * deltaZ));
+        int deltaX = pos1.getX() - pos2.getX();
+        int deltaY = pos1.getY() - pos2.getY();
+        int deltaZ = pos1.getZ() - pos2.getZ();
+        return (int) MathHelper.sqrt((deltaX * deltaX) + (deltaY * deltaY) + (deltaZ * deltaZ));
     }
 
     public static boolean moveItemsBetweenInventories(IItemHandler from, IItemHandler to)

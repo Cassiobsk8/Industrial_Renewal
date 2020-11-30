@@ -14,6 +14,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -70,7 +71,7 @@ public class ItemCoilHV extends ItemBase
                         }
                     } else
                     {
-                        int distance = (int) Utils.getDistancePointToPoint(firstConnectionPos, pos);
+                        int distance = Utils.getDistancePointToPoint(firstConnectionPos, pos);
                         if (teT.getConnectorPos() != firstConnectionPos && teT.canConnect(pos) && distance > 0 && distance <= IRConfig.MainConfig.Main.maxHVWireLength)
                         {
                             isSecond = false;
@@ -104,7 +105,7 @@ public class ItemCoilHV extends ItemBase
                         }
                     } else
                     {
-                        int distance = (int) Utils.getDistancePointToPoint(firstConnectionPos, pos);
+                        int distance = Utils.getDistancePointToPoint(firstConnectionPos, pos);
                         if (teT.getPos() != firstConnectionPos && teT.canConnect() && distance > 0 && distance <= IRConfig.MainConfig.Main.maxHVWireLength)
                         {
                             isSecond = false;
@@ -121,13 +122,22 @@ public class ItemCoilHV extends ItemBase
                             return EnumActionResult.FAIL;
                         }
                     }
-                } else if (isSecond)
+                }
+                else if (isSecond)
                 {
                     cleanConnection(player);
                 }
             }
         }
         return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+    }
+
+    public String getDistanceText(EntityPlayer player)
+    {
+        if (!isSecond) return "";
+        int distance = Utils.getDistancePointToPoint(firstConnectionPos, player.getPosition());
+        String text = "Current Wire Distance: " + distance;
+        return (distance > IRConfig.MainConfig.Main.maxHVWireLength ? TextFormatting.RED : TextFormatting.GREEN) + text;
     }
 
     private void cleanConnection(EntityPlayer player)

@@ -19,7 +19,7 @@ import java.util.Random;
 public class TileEntityValvePipeLarge extends TileEntityToggleableBase implements ITickable
 {
 
-    public static FluidTank dummyTank = new FluidTank(0)
+    public static final FluidTank dummyTank = new FluidTank(0)
     {
         @Override
         public boolean canFill()
@@ -28,7 +28,7 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
         }
     };
 
-    public FluidTank tank = new FluidTank(2000)
+    public final FluidTank tank = new FluidTank(2000)
     {
         @Override
         protected void onContentsChanged()
