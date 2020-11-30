@@ -93,7 +93,6 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
             if (hasMachine) eStorage = te.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
             if (hasMachine && eStorage != null && eStorage.canReceive())
                 addMachine(te, face);
-            else removeMachine(te);
         }
     }
 

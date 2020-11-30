@@ -27,8 +27,27 @@ import javax.annotation.Nullable;
 
 public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntitySteamTurbine> implements IDynamicSound
 {
-    private final VoltsEnergyContainer energyContainer;
-    private final float volume = IRConfig.MainConfig.Sounds.turbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
+    private final VoltsEnergyContainer energyContainer = new VoltsEnergyContainer(100000, 10240, 10240)
+    {
+        @Override
+        public boolean canExtract()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean canReceive()
+        {
+            return false;
+        }
+
+        @Override
+        public void onEnergyChange()
+        {
+            TileEntitySteamTurbine.this.sync();
+        }
+    };
+    private static final float volume = IRConfig.MainConfig.Sounds.turbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
 
     public FluidTank waterTank = new FluidTank(32000)
     {
@@ -46,12 +65,12 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
     };
     private final FluidStack waterStack = new FluidStack(IRConfig.getWaterFromSteamFluid(), Fluid.BUCKET_VOLUME);
 
-    private final int maxRotation = 16000;
     private int rotation;
-    private final int energyPerTick = IRConfig.MainConfig.Main.steamTurbineEnergyPerTick;
     private int oldRotation;
-    private final int steamPerTick = IRConfig.MainConfig.Main.steamTurbineSteamPerTick;
-    public FluidTank steamTank = new FluidTank(IRConfig.MainConfig.Main.steamTurbineSteamPerTick)
+    private static final int maxRotation = 16000;
+    private static final int energyPerTick = IRConfig.MainConfig.Main.steamTurbineEnergyPerTick;
+    private static final int steamPerTick = IRConfig.MainConfig.Main.steamTurbineSteamPerTick;
+    public final FluidTank steamTank = new FluidTank(IRConfig.MainConfig.Main.steamTurbineSteamPerTick)
     {
         @Override
         public boolean canFillFluidType(FluidStack fluid)
@@ -72,30 +91,6 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
         }
     };
     private float steamReceivedNorm = 0f;
-
-    public TileEntitySteamTurbine()
-    {
-        this.energyContainer = new VoltsEnergyContainer(100000, 10240, 10240)
-        {
-            @Override
-            public boolean canExtract()
-            {
-                return false;
-            }
-
-            @Override
-            public boolean canReceive()
-            {
-                return false;
-            }
-
-            @Override
-            public void onEnergyChange()
-            {
-                TileEntitySteamTurbine.this.sync();
-            }
-        };
-    }
 
     @Override
     public void tick()
@@ -254,7 +249,7 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
 
     private float getRotation()
     {
-        return Utils.normalize(this.rotation, 0, this.maxRotation);
+        return Utils.normalize(this.rotation, 0, maxRotation);
     }
 
     public float getGenerationFill() //0 ~ 180
