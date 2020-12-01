@@ -25,6 +25,8 @@ import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static net.minecraftforge.fml.common.eventhandler.EventPriority.LOW;
 
@@ -59,6 +61,7 @@ public class EventHandler {
         LatheRecipe.populateLatheRecipes();
     }
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void onKeyboardEvent(GuiScreenEvent.KeyboardInputEvent event)
     {
@@ -69,6 +72,7 @@ public class EventHandler {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void onRenderGui(RenderGameOverlayEvent.Post event)
     {
