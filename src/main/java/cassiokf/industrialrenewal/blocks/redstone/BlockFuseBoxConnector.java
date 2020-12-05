@@ -1,120 +1,134 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
+import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.tileentity.TileEntityBoxConnector;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockFuseBoxConnector extends BlockAbstractHorizontalFacing
+public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnector>
 {
-    public static final IntegerProperty UPCONDUIT = IntegerProperty.create("up", 0, 2);
+
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+    public static final PropertyInteger UPCONDUIT = PropertyInteger.create("up", 0, 2);
 
 
-    private static final VoxelShape WEST_EAST_BLOCK_AABB = Block.makeCuboidShape(6, 0, 0, 10, 2, 16);
-    private static final VoxelShape NORTH_SOUTH_BLOCK_AABB = Block.makeCuboidShape(0, 0, 6, 16, 2, 10);
+    private static final AxisAlignedBB WEST_EAST_BLOCK_AABB = new AxisAlignedBB(0.375D, 0D, 0D, 0.625D, 0.125D, 1D);
+    private static final AxisAlignedBB NORTH_SOUTH_BLOCK_AABB = new AxisAlignedBB(0D, 0D, 0.375D, 1D, 0.125D, 0.625D);
 
-    public BlockFuseBoxConnector()
-    {
-        super(Block.Properties.create(Material.IRON));
+    public BlockFuseBoxConnector(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
+        setSoundType(SoundType.METAL);
+        setHardness(0.8f);
     }
 
     @Override
-    public boolean canProvidePower(BlockState state)
-    {
+    public boolean canProvidePower(IBlockState state) {
         return true;
     }
 
     @Override
-    public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, @Nullable Direction side)
-    {
-        return side == state.get(FACING).rotateY() || side == state.get(FACING).rotateYCCW();
+    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+        return side == state.getValue(FACING).rotateY() || side == state.getValue(FACING).rotateYCCW();
     }
 
     @Override
-    public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
-    {
+    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         return blockState.getWeakPower(blockAccess, pos, side);
     }
 
     @Override
-    public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side)
-    {
+    public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         TileEntityBoxConnector te = (TileEntityBoxConnector) world.getTileEntity(pos);
         int value = te.passRedstone();
-        return state.get(FACING).rotateYCCW() == side ? value : 0;
+        return state.getValue(FACING).rotateYCCW() == side ? value : 0;
     }
 
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
+            rotateBlock(world, pos, state);
+            return true;
+        }
+        return false;
+    }
 /*
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighborPos) {
         super.neighborChanged(state, worldIn, pos, blockIn, neighborPos);
-        TileEntityBoxConnector te = (TileEntityBoxConnector) worldIn.getTileEntity(pos);
-        if (te != null) {
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te instanceof TileEntityBoxConnector) {
             te.passRedstone();
         }
     }*/
 
-    @Override
-    public BlockState rotate(BlockState state, Rotation rot)
-    {
-        Direction newFace = state.get(FACING).getOpposite();
-        return state.with(FACING, newFace);
+    private void rotateBlock(World world, BlockPos pos,  BlockState state) {
+        EnumFacing newFace = state.getValue(FACING).getOpposite();
+        world.setBlockState(pos, state.withProperty(FACING, newFace));
     }
 
-    private int canConnectConduit(BlockState state, IBlockReader world, BlockPos pos)
-    {
-        BlockState upState = world.getBlockState(pos.up());
-        if (upState.getBlock() instanceof BlockFuseBox || upState.getBlock() instanceof BlockFuseBoxConduitExtension)
-        {
-            if (state.get(FACING) == upState.get(FACING))
-            {
+    private int canConnectConduit(IBlockState state, IBlockAccess world, BlockPos pos) {
+         BlockState upState = world.getBlockState(pos.up());
+        if (upState.getBlock() instanceof BlockFuseBox || upState.getBlock() instanceof BlockFuseBoxConduitExtension) {
+            if (state.getValue(FACING) == upState.getValue(FACING)) {
                 return 1;
             }
-            if (state.get(FACING) == upState.get(FACING).getOpposite())
-            {
+            if (state.getValue(FACING) == upState.getValue(FACING).getOpposite()) {
                 return 2;
             }
         }
         return 0;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        stateIn = stateIn.with(UPCONDUIT, canConnectConduit(stateIn, worldIn, currentPos));
-        return stateIn;
+    public  BlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
+        state = state.withProperty(UPCONDUIT, canConnectConduit(state, world, pos));
+        return state;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public  BlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(UPCONDUIT, 0);
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
-    {
-        return this.getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing()).with(UPCONDUIT, 0);
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, UPCONDUIT);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public  BlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(FACING, UPCONDUIT);
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(FACING).getHorizontalIndex();
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        switch (state.get(FACING))
-        {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        switch (state.getActualState(source, pos).getValue(FACING)) {
             default:
             case NORTH:
             case SOUTH:
@@ -126,15 +140,24 @@ public class BlockFuseBoxConnector extends BlockAbstractHorizontalFacing
     }
 
     @Override
-    public boolean hasTileEntity(BlockState state)
-    {
-        return true;
+    @Deprecated
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    @Deprecated
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
     }
 
     @Nullable
     @Override
-    public TileEntityBoxConnector createTileEntity(BlockState state, IBlockReader world)
-    {
+    public TileEntityBoxConnector createTileEntity(World world,  BlockState state) {
         return new TileEntityBoxConnector();
     }
 }

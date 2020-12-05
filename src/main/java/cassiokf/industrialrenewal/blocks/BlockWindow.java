@@ -1,50 +1,167 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractSixWayConnections;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.Direction;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockWindow extends BlockAbstractSixWayConnections
-{
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-    public BlockWindow()
-    {
-        super(Block.Properties.create(Material.IRON), 2, 16);
+public class BlockWindow extends BlockBase {
+    public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
+            Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
+    private static float NORTHZ1 = 0.4375f;
+    private static float SOUTHZ2 = 0.5625f;
+    private static float WESTX1 = 0.4375f;
+    private static float EASTX2 = 0.5625f;
+    private static float DOWNY1 = 0.0f;
+    private static float UPY2 = 1.0f;
+
+    public BlockWindow(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
+        setSoundType(SoundType.METAL);
+        setHardness(0.8f);
     }
 
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+         BlockState actualState = state.getActualState(source, pos);
 
-    private boolean shouldRenderCenter(IBlockReader world, BlockPos ownPos)
-    {
-        return (!isThisConnected(world, ownPos, Direction.SOUTH) && !isThisConnected(world, ownPos, Direction.NORTH) && !isThisConnected(world, ownPos, Direction.WEST) && !isThisConnected(world, ownPos, Direction.EAST))
-                || ((isThisConnected(world, ownPos, Direction.SOUTH) && isThisConnected(world, ownPos, Direction.WEST))
-                || (isThisConnected(world, ownPos, Direction.SOUTH) && isThisConnected(world, ownPos, Direction.EAST))
-                || (isThisConnected(world, ownPos, Direction.NORTH) && isThisConnected(world, ownPos, Direction.WEST))
-                || (isThisConnected(world, ownPos, Direction.NORTH) && isThisConnected(world, ownPos, Direction.EAST)))
-                || (sidesConnected(world, ownPos) == 1);
+        if (isConnected(actualState, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.0f;
+        } else
+        {
+            NORTHZ1 = 0.4375f;
+        }
+        if (isConnected(actualState, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 1.0f;
+        } else
+        {
+            SOUTHZ2 = 0.5625f;
+        }
+        if (isConnected(actualState, EnumFacing.WEST)) {
+            WESTX1 = 0.0f;
+        } else
+        {
+            WESTX1 = 0.4375f;
+        }
+        if (isConnected(actualState, EnumFacing.EAST)) {
+            EASTX2 = 1.0f;
+        } else
+        {
+            EASTX2 = 0.5625f;
+        }
+        return new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
+        if (!isActualState) {
+            state = state.getActualState(worldIn, pos);
+        }
+        if (isConnected(state, EnumFacing.NORTH)) {
+            NORTHZ1 = 0.0f;
+        } else
+        {
+            NORTHZ1 = 0.4375f;
+        }
+        if (isConnected(state, EnumFacing.SOUTH)) {
+            SOUTHZ2 = 1.0f;
+        } else
+        {
+            SOUTHZ2 = 0.5625f;
+        }
+        if (isConnected(state, EnumFacing.WEST)) {
+            WESTX1 = 0.0f;
+        } else
+        {
+            WESTX1 = 0.4375f;
+        }
+        if (isConnected(state, EnumFacing.EAST)) {
+            EASTX2 = 1.0f;
+        } else
+        {
+            EASTX2 = 0.5625f;
+        }
+        final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public  BlockState getStateFromMeta(final int meta) {
+        return getDefaultState();
+    }
+
+    @Override
+    public int getMetaFromState(final  BlockState state) {
+        return 0;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isOpaqueCube(final  BlockState state) {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isFullCube(final  BlockState state) {
+        return false;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos)
+    public BlockRenderLayer getRenderLayer()
     {
-        return 1.0F;
+        return BlockRenderLayer.TRANSLUCENT;
     }
 
-    private int sidesConnected(IBlockReader world, BlockPos pos)
-    {
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.MODEL;
+    }
+
+    private boolean shouldRenderCenter(IBlockAccess world, BlockPos ownPos) {
+        return (!isThisConnected(world, ownPos, EnumFacing.SOUTH) && !isThisConnected(world, ownPos, EnumFacing.NORTH) && !isThisConnected(world, ownPos, EnumFacing.WEST) && !isThisConnected(world, ownPos, EnumFacing.EAST))
+                || ((isThisConnected(world, ownPos, EnumFacing.SOUTH) && isThisConnected(world, ownPos, EnumFacing.WEST))
+                || (isThisConnected(world, ownPos, EnumFacing.SOUTH) && isThisConnected(world, ownPos, EnumFacing.EAST))
+                || (isThisConnected(world, ownPos, EnumFacing.NORTH) && isThisConnected(world, ownPos, EnumFacing.WEST))
+                || (isThisConnected(world, ownPos, EnumFacing.NORTH) && isThisConnected(world, ownPos, EnumFacing.EAST)))
+                || (sidesConnected(world, ownPos) == 1);
+    }
+
+    private int sidesConnected(IBlockAccess world, BlockPos pos) {
         int sides = 0;
-        for (Direction faces : Direction.Plane.HORIZONTAL)
-        {
-            BlockState neighborState = world.getBlockState(pos.offset(faces));
-            Block nb = neighborState.getBlock();
-            if (nb instanceof BlockWindow || neighborState.isSolid() || nb instanceof BlockBaseWall)
+        for (EnumFacing faces : EnumFacing.HORIZONTALS) {
+             BlockState neighbourState = world.getBlockState(pos.offset(faces));
+            Block nb = neighbourState.getBlock();
+            if (nb instanceof BlockWindow || nb.isFullCube(neighbourState) || nb instanceof BlockBaseWall)
             {
                 sides++;
             }
@@ -52,37 +169,49 @@ public class BlockWindow extends BlockAbstractSixWayConnections
         return sides;
     }
 
-    @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        return stateIn.with(getPropertyBasedOnDirection(facing), canConnectTo(worldIn, currentPos, facing)).with(UP, shouldRenderCenter(worldIn, currentPos));
-    }
-
-    @Override
-    public boolean canConnectTo(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
-    {
-        if (neighborDirection == Direction.DOWN)
-        {
+    protected boolean isValidConnection(final  BlockState ownState, final  BlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+        Block nb = neighbourState.getBlock();
+        if (neighbourDirection == EnumFacing.DOWN) {
             return false;
         }
-
-        if (neighborDirection == Direction.UP)
-        {
-            return shouldRenderCenter(worldIn, currentPos);
+        if (neighbourDirection == EnumFacing.UP) {
+            return shouldRenderCenter(world, ownPos);
         }
-        BlockState neighborState = worldIn.getBlockState(currentPos.offset(neighborDirection));
-        Block nb = neighborState.getBlock();
-        return nb instanceof BlockWindow
-                || neighborState.isSolidSide(worldIn, currentPos.offset(neighborDirection), neighborDirection.getOpposite())
-                || nb instanceof BlockBaseWall;
+        return nb instanceof BlockWindow || nb.isFullCube(neighbourState) || nb instanceof BlockBaseWall;
     }
 
-    private boolean isThisConnected(IBlockReader world, BlockPos pos, Direction neighborFacing)
-    {
-        BlockState neighborState = world.getBlockState(pos.offset(neighborFacing));
-        Block nb = neighborState.getBlock();
-        return nb instanceof BlockWindow
-                || neighborState.isSolidSide(world, pos.offset(neighborFacing), neighborFacing.getOpposite())
-                || nb instanceof BlockBaseWall;
+    private boolean isThisConnected(IBlockAccess world, BlockPos pos, EnumFacing neighbourFacing) {
+         BlockState neighbourState = world.getBlockState(pos.offset(neighbourFacing));
+        Block nb = neighbourState.getBlock();
+        return nb instanceof BlockWindow || nb.isFullCube(neighbourState) || nb instanceof BlockBaseWall;
+    }
+
+    private boolean canConnectTo(final  BlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
+        final  BlockState neighbourState = worldIn.getBlockState(neighbourPos);
+        return isValidConnection(ownState, neighbourState, worldIn, ownPos, neighbourDirection);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public  BlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
+        for (final EnumFacing facing : EnumFacing.VALUES) {
+            state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()),
+                    canConnectTo(state, world, pos, facing));
+        }
+        return state;
+    }
+
+    public final boolean isConnected(final  BlockState state, final EnumFacing facing) {
+        return state.getValue(CONNECTED_PROPERTIES.get(facing.getIndex()));
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
+        if (face == EnumFacing.EAST || face == EnumFacing.WEST || face == EnumFacing.NORTH || face == EnumFacing.SOUTH) {
+            return BlockFaceShape.SOLID;
+        } else {
+            return BlockFaceShape.UNDEFINED;
+        }
     }
 }

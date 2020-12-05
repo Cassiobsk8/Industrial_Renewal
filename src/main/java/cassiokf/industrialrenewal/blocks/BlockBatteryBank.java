@@ -1,78 +1,98 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnected;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.ItemsRegistration;
+import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityBatteryBank;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.IExtendedBlockState;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockBatteryBank extends BlockAbstractHorizontalFacing
+public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBatteryBank>
 {
-    public BlockBatteryBank()
-    {
-        super(Block.Properties.create(Material.IRON));
+    public BlockBatteryBank(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
     {
-        tooltip.add(new StringTextComponent(I18n.format("info.industrialrenewal.capacity")
+        tooltip.add(I18n.format("info.industrialrenewal.capacity")
                 + ": "
-                + (IRConfig.Main.batteryBankCapacity.get())
-                + " FE/t"));
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+                + Utils.formatEnergyString(IRConfig.MainConfig.Main.batteryBankCapacity));
+        super.addInformation(stack, player, tooltip, advanced);
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public boolean onBlockActivated(World worldIn, BlockPos pos,  BlockState state, PlayerEntity playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (handIn.equals(Hand.MAIN_HAND) && player.getHeldItem(Hand.MAIN_HAND).getItem().equals(ItemsRegistration.SCREWDRIVE.get()))
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (hand.equals(EnumHand.MAIN_HAND) && playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem().equals(ModItems.screwDrive) && te instanceof TileEntityBatteryBank)
         {
-            TileEntityBatteryBank te = (TileEntityBatteryBank) worldIn.getTileEntity(pos);
-            if (te != null) te.toggleFacing(hit.getFace());
+            ((TileEntityBatteryBank) te).toggleFacing(facing);
             worldIn.notifyBlockUpdate(pos, state, state, 3);
             if (!worldIn.isRemote) ItemPowerScrewDrive.playDrillSound(worldIn, pos);
-            return ActionResultType.SUCCESS;
+            return true;
         }
-        return ActionResultType.PASS;
+        return false;
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        return false;
+    }
+
+
+    @Override
+    public  BlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        if (state instanceof IExtendedBlockState)
+        {
+            EnumFacing facing = state.getValue(FACING);
+            IExtendedBlockState eState = (IExtendedBlockState) state;
+            TileEntityBatteryBank te = (TileEntityBatteryBank) world.getTileEntity(pos);
+            if (te != null) return eState.withProperty(SOUTH, te.isFacingOutput(facing.getOpposite()))
+                    .withProperty(NORTH, te.isFacingOutput(facing))
+                    .withProperty(EAST, te.isFacingOutput(facing.rotateY()))
+                    .withProperty(WEST, te.isFacingOutput(facing.rotateYCCW()))
+                    .withProperty(UP, te.isFacingOutput(EnumFacing.UP))
+                    .withProperty(DOWN, te.isFacingOutput(EnumFacing.DOWN));
+        }
+        return state;
+    }
+
+    @Override
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
     }
 
     @Nullable
     @Override
-    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
-    {
-        return new Direction[0];
-    }
-
-    @Override
-    public boolean hasTileEntity(BlockState state)
-    {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntityBatteryBank createTileEntity(BlockState state, IBlockReader world)
-    {
+    public TileEntityBatteryBank createTileEntity(World world,  BlockState state) {
         return new TileEntityBatteryBank();
     }
 }

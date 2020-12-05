@@ -7,90 +7,35 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.LockableLootTileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-
-import static cassiokf.industrialrenewal.init.TileRegistration.LOCKER_TILE;
 
 public class TileEntityLocker extends LockableLootTileEntity
 {
 
     private NonNullList<ItemStack> chestContents = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
 
-    public TileEntityLocker()
+    protected TileEntityLocker(TileEntityType<?> typeIn)
     {
-        super(LOCKER_TILE.get());
+        super(typeIn);
     }
 
-    public void read(CompoundNBT compound)
-    {
+    public void read(CompoundNBT compound) {
         super.read(compound);
         this.chestContents = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
-
-        if (!this.checkLootAndRead(compound))
-        {
+        if (!this.checkLootAndRead(compound)) {
             ItemStackHelper.loadAllItems(compound, this.chestContents);
         }
-
-        if (compound.contains("CustomName", 8))
-        {
-            this.setCustomName(new StringTextComponent(compound.getString("CustomName")));
-        }
     }
 
-    public CompoundNBT write(CompoundNBT compound)
-    {
+    public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);
-
-        if (!this.checkLootAndWrite(compound))
-        {
+        if (!this.checkLootAndWrite(compound)) {
             ItemStackHelper.saveAllItems(compound, this.chestContents);
         }
-
-        if (this.hasCustomName())
-        {
-            compound.putString("CustomName", this.getCustomName().getString());
-        }
-
         return compound;
-    }
-
-    @Override
-    protected NonNullList<ItemStack> getItems()
-    {
-        return this.chestContents;
-    }
-
-    @Override
-    protected void setItems(NonNullList<ItemStack> itemsIn)
-    {
-
-    }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return 27;
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        for (ItemStack itemstack : this.chestContents)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
     }
 
     @Override
@@ -106,4 +51,36 @@ public class TileEntityLocker extends LockableLootTileEntity
         //return new ChestContainer(player, "minecraft:chest", player);
         return ChestContainer.createGeneric9X3(id, player, this);
     }
+
+    @Override
+    protected NonNullList<ItemStack> getItems() {
+        return this.chestContents;
+    }
+
+    @Override
+    protected void setItems(NonNullList<ItemStack> itemsIn)
+    {
+
+    }
+
+    @Override
+    public int getSizeInventory() {
+        return 27;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        for (ItemStack itemstack : this.chestContents) {
+            if (!itemstack.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 64;
+    }
+
 }

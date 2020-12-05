@@ -1,6 +1,6 @@
 {
   "textures": {
-    "0": "block/rail"
+    "0": "blocks/rail_normal"
   },
   "display": {
     "gui": {

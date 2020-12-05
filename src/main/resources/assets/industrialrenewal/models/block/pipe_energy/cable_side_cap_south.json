@@ -22,42 +22,42 @@
       "faces": {
         "east": {
           "uv": [
-            14,
+            0,
             2,
-            16,
-            6.25
+            2,
+            6
           ],
           "rotation": 90,
           "texture": "#4"
         },
         "west": {
           "uv": [
-            14,
+            0,
             2,
-            16,
-            6.25
+            2,
+            6
           ],
           "rotation": 90,
           "texture": "#4"
         },
         "up": {
           "uv": [
-            14,
+            0,
             2,
-            16,
-            6.25
+            2,
+            6
           ],
-          "rotation": 180,
+          "rotation": 90,
           "texture": "#4"
         },
         "down": {
           "uv": [
-            14,
+            0,
             2,
-            16,
+            2,
             6
           ],
-          "rotation": 180,
+          "rotation": 90,
           "texture": "#4"
         }
       }

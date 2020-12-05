@@ -1,13 +1,12 @@
 package cassiokf.industrialrenewal.tileentity.railroad;
 
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
+import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-public abstract class TileEntityBaseLoader extends TileEntitySyncable implements ICapabilityProvider
+public abstract class TileEntityBaseLoader extends TileEntitySync
 {
     public Direction blockFacing;
     public waitEnum waitE = waitEnum.NO_ACTIVITY;
@@ -30,8 +29,7 @@ public abstract class TileEntityBaseLoader extends TileEntitySyncable implements
         return waitE;
     }
 
-    public void setWaitEnum(int value)
-    {
+    public void setWaitEnum(int value) {
         waitE = waitEnum.valueOf(value);
     }
 
@@ -39,24 +37,23 @@ public abstract class TileEntityBaseLoader extends TileEntitySyncable implements
     {
         int old = getWaitEnum().ordinal();
         waitE = waitEnum.valueOf(old + 1);
-        Sync();
+        sync();
     }
 
     public void changeUnload()
     {
         unload = !unload;
-        Sync();
+        sync();
     }
 
     public abstract Direction getBlockFacing();
 
     public abstract boolean isUnload();
 
-    public abstract boolean onMinecartPass(AbstractMinecartEntity entityMinecart, TileEntityLoaderRail loaderRail);
+    public abstract boolean onMinecartPass(MinecartEntity entityMinecart, TileEntityLoaderRail loaderRail);
 
     @Override
-    public CompoundNBT write(CompoundNBT compound)
-    {
+    public CompoundNBT write(CompoundNBT compound) {
         compound.putInt("EnumConfig", this.waitE.intValue);
         compound.putBoolean("unload", unload);
         compound.putBoolean("loading", loading);
@@ -65,8 +62,7 @@ public abstract class TileEntityBaseLoader extends TileEntitySyncable implements
     }
 
     @Override
-    public void read(CompoundNBT compound)
-    {
+    public void read(CompoundNBT compound) {
         waitE = waitEnum.valueOf(compound.getInt("EnumConfig"));
         unload = compound.getBoolean("unload");
         loading = compound.getBoolean("loading");
@@ -74,8 +70,7 @@ public abstract class TileEntityBaseLoader extends TileEntitySyncable implements
         super.read(compound);
     }
 
-    public enum waitEnum
-    {
+    public enum waitEnum {
         WAIT_FULL(0),
         WAIT_EMPTY(1),
         NO_ACTIVITY(2),
@@ -83,19 +78,15 @@ public abstract class TileEntityBaseLoader extends TileEntitySyncable implements
 
         public int intValue;
 
-        waitEnum(int value)
-        {
+        waitEnum(int value) {
             intValue = value;
         }
 
-        public static waitEnum valueOf(int waitNo)
-        {
-            if (waitNo > waitEnum.values().length - 1)
-            {
+        public static waitEnum valueOf(int waitNo) {
+            if (waitNo > waitEnum.values().length - 1) {
                 waitNo = 0;
             }
-            for (waitEnum l : waitEnum.values())
-            {
+            for (waitEnum l : waitEnum.values()) {
                 if (l.intValue == waitNo) return l;
             }
             throw new IllegalArgumentException("waitEnum not found");

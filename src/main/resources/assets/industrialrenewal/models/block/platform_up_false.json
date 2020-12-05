@@ -1,8 +1,8 @@
 {
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "textures": {
-    "0": "block/spruce_planks",
-    "1": "block/oak_planks"
+    "0": "blocks/planks_spruce",
+    "1": "blocks/planks_oak"
   },
   "display": {
     "gui": {

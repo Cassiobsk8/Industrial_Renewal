@@ -3,8 +3,8 @@
   "textures": {
     "2": "industrialrenewal:blocks/anvil_base",
     "4": "industrialrenewal:blocks/cable_gold",
-    "1_1": "industrialrenewal:blocks/pipe",
-    "particle": "industrialrenewal:blocks/cable_gold"
+    "particle": "industrialrenewal:blocks/cable_gold",
+    "1_1": "industrialrenewal:blocks/pipe"
   },
   "elements": [
     {
@@ -22,40 +22,42 @@
       "faces": {
         "east": {
           "uv": [
-            14,
+            0,
             2,
-            16,
-            6.25
+            2,
+            6
           ],
           "rotation": 90,
           "texture": "#4"
         },
         "west": {
           "uv": [
-            14,
+            0,
             2,
-            16,
-            6.25
+            2,
+            6
           ],
           "rotation": 90,
           "texture": "#4"
         },
         "up": {
           "uv": [
-            14,
+            0,
             2,
-            16,
-            6.25
+            2,
+            6
           ],
+          "rotation": 90,
           "texture": "#4"
         },
         "down": {
           "uv": [
-            14,
+            0,
             2,
-            16,
+            2,
             6
           ],
+          "rotation": 90,
           "texture": "#4"
         }
       }

@@ -1,70 +1,99 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
-import cassiokf.industrialrenewal.tileentity.TileEntityOreVein;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Random;
 
-public class BlockOreVein extends BlockTileEntity<TileEntityOreVein>
+public class BlockOreVein extends BlockOredict
 {
 
-    public static final IntegerProperty QUANTITY = IntegerProperty.create("quantity", 0, 4);
+    public static final PropertyInteger QUANTITY = PropertyInteger.create("quantity", 0, 4);
 
-    public BlockOreVein()
+    public BlockOreVein(String name, String oreName, CreativeTabs tab)
     {
-        super(Block.Properties.create(Material.IRON));
-        this.setDefaultState(this.getDefaultState().with(QUANTITY, 0));
+        super(Material.ROCK, name, oreName, tab);
+        this.setHardness(8f);
+        this.setDefaultState(this.getDefaultState().withProperty(QUANTITY, 0));
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
+    protected BlockStateContainer createBlockState()
     {
-        TileEntityOreVein te = (TileEntityOreVein) worldIn.getTileEntity(pos);
-        if (te != null && player.getHeldItem(handIn).isEmpty())
-        {
-            if (!worldIn.isRemote) player.sendMessage(new StringTextComponent(te.getQuality().name()));
-            return ActionResultType.SUCCESS;
-        }
-        return ActionResultType.PASS;
+        return new BlockStateContainer(this, QUANTITY);
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(QUANTITY);
-    }
-
-    @Override
-    public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack)
+    public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos,  BlockState state, @Nullable TileEntity te, ItemStack stack)
     {
         super.harvestBlock(worldIn, player, pos, state, te, stack);
-        int stage = state.get(QUANTITY);
+        int stage = state.getActualState(worldIn, pos).getValue(QUANTITY);
         if (stage < 4)
         {
-            worldIn.setBlockState(pos, state.with(QUANTITY, stage + 1));
-            //return;
+            worldIn.setBlockState(pos, state.withProperty(QUANTITY, stage + 1));
         }
     }
 
-    @Nullable
     @Override
-    public TileEntityOreVein createTileEntity(BlockState state, IBlockReader world)
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return new TileEntityOreVein();
+        return ModItems.hematiteChunk;
+    }
+
+    @Override
+    public int quantityDroppedWithBonus(int fortune, Random random)
+    {
+        return 1 + fortune;
+    }
+
+    @Override
+    public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune)
+    {
+        Random rand = world instanceof World ? ((World) world).rand : new Random();
+        return MathHelper.getInt(rand, 3, 7);
+    }
+
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    @Override
+    public  BlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(QUANTITY, meta);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(QUANTITY);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    @Deprecated
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    @Deprecated
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
     }
 }

@@ -1,24 +1,26 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockEnergyLevel;
-import cassiokf.industrialrenewal.util.Utils;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.ENERGYLEVEL_TILE;
-
-public class TileEntityEnergyLevel extends TileEntity
+public class TileEntityEnergyLevel extends TEBase
 {
     private Direction baseFacing = Direction.DOWN;
     private Direction indicatorHorizontalFacing;
     private IEnergyStorage energyStorage;
 
-    public TileEntityEnergyLevel()
+    public TileEntityEnergyLevel(TileEntityType<?> tileEntityTypeIn)
     {
-        super(ENERGYLEVEL_TILE.get());
+        super(tileEntityTypeIn);
     }
 
     public String GetText()
@@ -26,8 +28,20 @@ public class TileEntityEnergyLevel extends TileEntity
         if (getEnergyStorage() != null)
         {
             int energy = energyStorage.getEnergyStored();
+            String text = energy + "";
+            if (energy >= 1000 && energy < 1000000)
+                text = energy / 1000 + "K";
+            if (energy >= 1000000)
+                text = energy / 1000000 + "M";
+
             int energy2 = energyStorage.getMaxEnergyStored();
-            return Utils.formatEnergyString(energy) + " / " + Utils.formatEnergyString(energy2);
+            String textM = energy2 + " FE";
+            if (energy >= 1000 && energy2 < 1000000)
+                textM = energy2 / 1000 + "K FE";
+            if (energy2 >= 1000000)
+                textM = energy2 / 1000000 + "M FE";
+
+            return text + " / " + textM;
         } else return "No Battery";
     }
 
@@ -50,7 +64,7 @@ public class TileEntityEnergyLevel extends TileEntity
 
     public Direction forceIndicatorCheck()
     {
-        indicatorHorizontalFacing = getBlockState().get(BlockEnergyLevel.FACING);
+        indicatorHorizontalFacing = this.world.getBlockState(this.pos).get(BlockEnergyLevel.FACING);
         return indicatorHorizontalFacing;
     }
 
@@ -96,9 +110,15 @@ public class TileEntityEnergyLevel extends TileEntity
     }
 
     @Override
-    public void read(CompoundNBT tag)
+    public void read(final CompoundNBT tag)
     {
         baseFacing = Direction.byIndex(tag.getInt("baseFacing"));
         super.read(tag);
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag()
+    {
+        return write(new CompoundNBT());
     }
 }

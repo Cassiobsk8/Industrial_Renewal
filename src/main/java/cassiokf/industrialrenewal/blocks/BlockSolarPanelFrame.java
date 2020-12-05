@@ -1,112 +1,115 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockConnectedMultiblocks;
-import cassiokf.industrialrenewal.init.BlocksRegistration;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnectedMultiblocks;
+import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntitySolarPanelFrame;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockSolarPanelFrame extends BlockConnectedMultiblocks<TileEntitySolarPanelFrame>
+public class BlockSolarPanelFrame extends BlockTileEntityConnectedMultiblocks<TileEntitySolarPanelFrame>
 {
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final PropertyDirection FACING = BlockHorizontalFacing.FACING;
 
-    public BlockSolarPanelFrame()
+    public BlockSolarPanelFrame(String name, CreativeTabs tab)
     {
-        super(Block.Properties.create(Material.IRON));
+        super(Material.IRON, name, tab);
+        setSoundType(SoundType.METAL);
+        setHardness(0.8f);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
     {
-        tooltip.add(new StringTextComponent(
-                I18n.format("info.industrialrenewal.requires")
-                        + ": "
-                        + BlocksRegistration.SPANEL.get().getNameTextComponent().getFormattedText()));
-        tooltip.add(new StringTextComponent(
-                I18n.format("info.industrialrenewal.produces")
-                        + ": "
-                        + ("Solar panel")
-                        + " * 2"
-                        + " FE/t"));
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        tooltip.add(I18n.format("info.industrialrenewal.requires")
+                + ": "
+                + ModBlocks.spanel.getLocalizedName());
+        tooltip.add(I18n.format("info.industrialrenewal.produces")
+                + ": "
+                + ("Solar panel")
+                + " * 2"
+                + " FE/t");
+        super.addInformation(stack, player, tooltip, advanced);
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
+    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntitySolarPanelFrame tile = (TileEntitySolarPanelFrame) worldIn.getTileEntity(pos);
-        IItemHandler itemHandler = tile.getPanelHandler();
-        ItemStack heldItem = player.getHeldItem(handIn);
+        TileEntitySolarPanelFrame tile = (TileEntitySolarPanelFrame) world.getTileEntity(pos);
+        if (tile == null) return false;
+        ItemStack heldItem = player.getHeldItem(hand);
         if (!heldItem.isEmpty() && (Block.getBlockFromItem(heldItem.getItem()) instanceof BlockSolarPanel || heldItem.getItem() instanceof ItemPowerScrewDrive))
         {
-            if (Block.getBlockFromItem(heldItem.getItem()) instanceof BlockSolarPanel && itemHandler.getStackInSlot(0).isEmpty())
+            if (Block.getBlockFromItem(heldItem.getItem()) instanceof BlockSolarPanel && !tile.hasPanel())
             {
-                if (!worldIn.isRemote)
+                if (!world.isRemote)
                 {
-                    itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1), false);
+                    tile.setPanelInv(true);
                     if (!player.isCreative()) heldItem.shrink(1);
                 }
-                return ActionResultType.SUCCESS;
+                return true;
             }
-            if (heldItem.getItem() instanceof ItemPowerScrewDrive && !itemHandler.getStackInSlot(0).isEmpty())
+            if (heldItem.getItem() instanceof ItemPowerScrewDrive && tile.hasPanel())
             {
-                if (!worldIn.isRemote)
+                if (!world.isRemote)
                 {
-                    ItemStack panel = itemHandler.extractItem(0, 64, false);
-                    if (!player.isCreative()) player.addItemStackToInventory(panel);
+                    tile.setPanelInv(false);
+                    if (!player.isCreative()) player.addItemStackToInventory(tile.getPanel());
                 }
-                return ActionResultType.SUCCESS;
+                return true;
             }
         }
-        return ActionResultType.PASS;
+        return false;
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    public  BlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        if (state.getBlock() == newState.getBlock()) return;
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+        return getDefaultState().withProperty(FACING, placer.isSneaking() ? placer.getHorizontalFacing().getOpposite() : placer.getHorizontalFacing());
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, FACING);
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
-    {
-        return getDefaultState().with(FACING, context.getPlayer().isCrouching() ? context.getPlayer().getHorizontalFacing().getOpposite() : context.getPlayer().getHorizontalFacing());
-    }
-
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(FACING);
-    }
-
-    @Nullable
-    @Override
-    public TileEntitySolarPanelFrame createTileEntity(BlockState state, IBlockReader world)
+    public TileEntitySolarPanelFrame createTileEntity(World world,  BlockState state)
     {
         return new TileEntitySolarPanelFrame();
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        return false;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
     }
 }

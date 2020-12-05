@@ -3,8 +3,8 @@
   "textures": {
     "2": "industrialrenewal:blocks/concrete",
     "5": "industrialrenewal:blocks/rust",
-    "6": "block/brown_concrete",
-    "particle": "block/brown_concrete"
+    "6": "blocks/concrete_brown",
+    "particle": "blocks/concrete_brown"
   },
   "elements": [
     {

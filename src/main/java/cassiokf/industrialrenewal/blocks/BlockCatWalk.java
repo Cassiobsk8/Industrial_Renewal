@@ -1,242 +1,232 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractSixWayConnections;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
+import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorLamp;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
 import cassiokf.industrialrenewal.blocks.pipes.BlockEnergyCable;
-import cassiokf.industrialrenewal.init.BlocksRegistration;
-import cassiokf.industrialrenewal.init.ItemsRegistration;
+import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityCatWalk;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
-import net.minecraft.util.*;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class BlockCatWalk extends BlockAbstractSixWayConnections
+public class BlockCatWalk extends BlockTileEntity<TileEntityCatWalk>
 {
-    protected static final VoxelShape BASE_AABB = Block.makeCuboidShape(0, 0, 0, 16, 0.5, 16);
 
-    protected static final VoxelShape RNORTH_AABB = Block.makeCuboidShape(0, 0, 0, 16, 16, 0.5);
-    protected static final VoxelShape RSOUTH_AABB = Block.makeCuboidShape(0, 0, 15.5, 16, 16, 16);
-    protected static final VoxelShape RWEST_AABB = Block.makeCuboidShape(0, 0, 0, 0.5, 16, 16);
-    protected static final VoxelShape REAST_AABB = Block.makeCuboidShape(15.5, 0, 0, 16, 16, 16);
+    public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
+            Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
+    protected static final AxisAlignedBB RENDER_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.1876D, 1.0D);
+    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.03125D, 1.0D);
+    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.5D, 0.03125D);
+    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.96875D, 1.0D, 1.5D, 1.0D);
+    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.03125D, 1.5D, 1.0D);
+    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 1.5D, 1.0D);
 
-    protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0, 0, 0, 16, 24, 0.5);
-    protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0, 0, 15.5, 16, 24, 16);
-    protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(0, 0, 0, 0.5, 24, 16);
-    protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(15.5, 0, 0, 16, 24, 16);
-
-    public BlockCatWalk()
-    {
-        super(Block.Properties.create(Material.IRON).speedFactor(1.2F), 16, 2);
-        BlockState defaultState = getDefaultState();
-        for (Direction dir : Direction.values())
-        {
-            defaultState = defaultState.with(getPropertyBasedOnDirection(dir), true);
-        }
-        setDefaultState(defaultState.with(UP, false));
+    public BlockCatWalk(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
+        setSoundType(SoundType.METAL);
+        setHardness(0.8f);
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
-    {
-        if (handIn == Hand.MAIN_HAND)
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (hand == EnumHand.MAIN_HAND)
         {
-            Item playerItem = player.getHeldItem(Hand.MAIN_HAND).getItem();
-            if (playerItem.equals(ItemsRegistration.SCREWDRIVE.get()))
+            Item playerItem = player.getHeldItem(EnumHand.MAIN_HAND).getItem();
+            if (playerItem.equals(ModItems.screwDrive))
             {
-                TileEntityCatWalk te = (TileEntityCatWalk) worldIn.getTileEntity(pos);
+                TileEntityCatWalk te = (TileEntityCatWalk) world.getTileEntity(pos);
                 if (te != null)
                 {
-                    te.toggleFacing(hit.getFace());
-                    if (!worldIn.isRemote) ItemPowerScrewDrive.playDrillSound(worldIn, pos);
-                    worldIn.setBlockState(pos, updatePostPlacement(state, hit.getFace(), null, worldIn, pos, null));
-                    return ActionResultType.SUCCESS;
+                    te.toggleFacing(side);
+                    if (!world.isRemote) ItemPowerScrewDrive.playDrillSound(world, pos);
+                    world.notifyBlockUpdate(pos, state, state, 2);
                 }
             }
             BlockPos posOffset = pos.offset(player.getHorizontalFacing());
-            BlockState stateOffset = worldIn.getBlockState(posOffset);
-            if (playerItem.equals(BlocksRegistration.CATWALK_ITEM.get())
-                    || playerItem.equals(BlocksRegistration.CATWALKSTEEL_ITEM.get()))
+             BlockState stateOffset = world.getBlockState(posOffset);
+            if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catWalk))
+                    || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catWalkSteel)))
             {
-                if (hit.getFace() == Direction.UP)
+                if (side == EnumFacing.UP)
                 {
-                    if (stateOffset.getMaterial().isReplaceable())
+                    if (stateOffset.getBlock().isReplaceable(world, posOffset))
                     {
-                        worldIn.setBlockState(pos.offset(player.getHorizontalFacing()), getBlockFromItem(playerItem).getDefaultState(), 3);
-                        worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
+                        world.setBlockState(pos.offset(player.getHorizontalFacing()), getBlockFromItem(playerItem).getDefaultState(), 3);
                         if (!player.isCreative())
                         {
-                            player.getHeldItemMainhand().shrink(1);
+                            player.inventory.clearMatchingItems(playerItem, 0, 1, null);
                         }
-                        return ActionResultType.SUCCESS;
+                        return true;
                     }
+                    return true;
                 }
+                return false;
             }
-            if (playerItem.equals(BlocksRegistration.CATWALKSTAIR_ITEM.get()) || playerItem.equals(BlocksRegistration.CATWALKSTAIRSTEEL_ITEM.get()))
+            if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catwalkStair)) || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.catwalkStairSteel)))
             {
-                if (stateOffset.getBlock().isAir(stateOffset, worldIn, posOffset))
+                if (stateOffset.getBlock().isAir(stateOffset, world, posOffset))
                 {
-                    worldIn.setBlockState(posOffset, getBlockFromItem(playerItem).getDefaultState().with(BlockCatwalkStair.FACING, player.getHorizontalFacing()), 3);
+                    world.setBlockState(posOffset, getBlockFromItem(playerItem).getDefaultState().withProperty(BlockCatwalkStair.FACING, player.getHorizontalFacing()), 3);
                     if (!player.isCreative())
                     {
-                        player.getHeldItemMainhand().shrink(1);
+                        player.inventory.clearMatchingItems(playerItem, 0, 1, null);
                     }
-                    return ActionResultType.SUCCESS;
+                    return true;
                 }
+                return true;
             }
         }
-        return ActionResultType.PASS;
+        return false;
     }
 
-    protected boolean isValidConnection(final BlockState neighborState, final IBlockReader world, final BlockPos ownPos, final Direction neighborDirection)
-    {
+    @SuppressWarnings("deprecation")
+    @Override
+    public  BlockState getStateFromMeta(final int meta) {
+        return getDefaultState();
+    }
+
+    @Override
+    public int getMetaFromState(final  BlockState state) {
+        return 0;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isOpaqueCube(final  BlockState state) {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isFullCube(final  BlockState state) {
+        return false;
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.MODEL;
+    }
+
+    protected boolean isValidConnection(final  BlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
         TileEntityCatWalk te = (TileEntityCatWalk) world.getTileEntity(ownPos);
-        if (te != null && te.isFacingBlackListed(neighborDirection)) return true;
+        if (te != null && te.isFacingBlackListed(neighbourDirection)) return true;
 
-        BlockState downstate = world.getBlockState(ownPos.offset(neighborDirection).down());
-        Block nb = neighborState.getBlock();
+         BlockState downstate = world.getBlockState(ownPos.offset(neighbourDirection).down());
+        Block nb = neighbourState.getBlock();
 
-        if (neighborDirection != Direction.UP && neighborDirection != Direction.DOWN)
-        {
+        if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
             return nb instanceof BlockCatWalk
-                    || nb instanceof DoorBlock
+                    || nb instanceof BlockDoor
                     || nb instanceof BlockElectricGate
-                    || (nb instanceof StairsBlock && (neighborState.get(StairsBlock.FACING) == neighborDirection || neighborState.get(StairsBlock.FACING) == neighborDirection.getOpposite()))
-                    || (downstate.getBlock() instanceof StairsBlock && downstate.get(StairsBlock.FACING) == neighborDirection.getOpposite())
-                    || (nb instanceof BlockCatwalkHatch && neighborState.get(BlockCatwalkHatch.FACING) == neighborDirection)
-                    || (nb instanceof BlockCatwalkGate && neighborState.get(BlockCatwalkGate.FACING) == neighborDirection.getOpposite())
-                    || (nb instanceof BlockCatwalkStair && neighborState.get(BlockCatwalkStair.FACING) == neighborDirection)
-                    || (downstate.getBlock() instanceof BlockCatwalkStair && downstate.get(BlockCatwalkStair.FACING) == neighborDirection.getOpposite())
-                    || (downstate.getBlock() instanceof BlockCatwalkLadder && downstate.get(BlockCatwalkLadder.FACING) == neighborDirection.getOpposite())
-                    || (nb instanceof BlockCatwalkLadder && neighborState.get(BlockCatwalkLadder.FACING) == neighborDirection && !neighborState.get(BlockCatwalkLadder.ACTIVE));
+                    || (nb instanceof BlockStairs && (neighbourState.getValue(BlockStairs.FACING) == neighbourDirection || neighbourState.getValue(BlockStairs.FACING) == neighbourDirection.getOpposite()))
+                    || (downstate.getBlock() instanceof BlockStairs && downstate.getValue(BlockStairs.FACING) == neighbourDirection.getOpposite())
+                    || (nb instanceof BlockCatwalkHatch && neighbourState.getValue(BlockCatwalkHatch.FACING) == neighbourDirection)
+                    || (nb instanceof BlockCatwalkGate && neighbourState.getValue(BlockCatwalkGate.FACING) == neighbourDirection.getOpposite())
+                    || (nb instanceof BlockCatwalkStair && neighbourState.getValue(BlockCatwalkStair.FACING) == neighbourDirection)
+                    || (downstate.getBlock() instanceof BlockCatwalkStair && downstate.getValue(BlockCatwalkStair.FACING) == neighbourDirection.getOpposite())
+                    || (downstate.getBlock() instanceof BlockCatwalkLadder && downstate.getValue(BlockCatwalkLadder.FACING) == neighbourDirection.getOpposite())
+                    || (nb instanceof BlockCatwalkLadder && neighbourState.getValue(BlockCatwalkLadder.FACING) == neighbourDirection && !neighbourState.getValue(BlockCatwalkLadder.ACTIVE));
         }
-        if (neighborDirection == Direction.DOWN)
-        {
+        if (neighbourDirection == EnumFacing.DOWN) {
             return nb instanceof BlockCatwalkLadder
-                    || nb instanceof LadderBlock
-                    || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorCable || nb instanceof BlockFloorPipe
+                    || nb instanceof BlockLadder
+                    || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp || nb instanceof BlockFloorCable || nb instanceof BlockFloorPipe
                     || nb instanceof BlockCatWalk;
         }
-        return !(neighborState.getBlock() instanceof BlockEnergyCable);
+        return !(neighbourState.getBlock() instanceof BlockEnergyCable);
     }
 
-    @Nullable
+    private boolean canConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
+        final  BlockState neighbourState = worldIn.getBlockState(neighbourPos);
+
+        return !isValidConnection(neighbourState, worldIn, ownPos, neighbourDirection);
+    }
+
+    @SuppressWarnings("deprecation")
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
-    {
-        BlockState state = getDefaultState();
-        for (Direction direction : Direction.values())
-        {
-            state = state.with(getPropertyBasedOnDirection(direction), canConnectTo(context.getWorld(), context.getPos(), direction));
+    public  BlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
+        for (final EnumFacing facing : EnumFacing.VALUES) {
+            state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()),
+                    canConnectTo(world, pos, facing));
         }
         return state;
     }
 
-    @Override
-    public boolean canConnectTo(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
-    {
-        final BlockPos neighborPos = currentPos.offset(neighborDirection);
-        final BlockState neighborState = worldIn.getBlockState(neighborPos);
+    public final boolean isConnected(final  BlockState state, final EnumFacing facing) {
+        return state.getValue(CONNECTED_PROPERTIES.get(facing.getIndex()));
+    }
 
-        return !isValidConnection(neighborState, worldIn, currentPos, neighborDirection);
+    @SuppressWarnings("deprecation")
+    @Override
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
+
+        if (!isActualState) {
+            state = state.getActualState(worldIn, pos);
+        }
+        if (isConnected(state, EnumFacing.DOWN)) {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
+        }
+        if (isConnected(state, EnumFacing.NORTH)) {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
+        }
+        if (isConnected(state, EnumFacing.SOUTH)) {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
+        }
+        if (isConnected(state, EnumFacing.WEST)) {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
+        }
+        if (isConnected(state, EnumFacing.EAST)) {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
+        }
+
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        return stateIn.with(getPropertyBasedOnDirection(facing), canConnectTo(worldIn, currentPos, facing));
-    }
-
-    public final boolean isConnected(final BlockState state, final Direction facing)
-    {
-        return state.get(getPropertyBasedOnDirection(facing));
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return RENDER_AABB;
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        VoxelShape SHAPE = NULL_SHAPE;
-        if (isConnected(state, Direction.DOWN))
-        {
-            SHAPE = VoxelShapes.or(SHAPE, BASE_AABB);
-        }
-        if (isConnected(state, Direction.NORTH))
-        {
-            SHAPE = VoxelShapes.or(SHAPE, RNORTH_AABB);
-        }
-        if (isConnected(state, Direction.SOUTH))
-        {
-            SHAPE = VoxelShapes.or(SHAPE, RSOUTH_AABB);
-        }
-        if (isConnected(state, Direction.WEST))
-        {
-            SHAPE = VoxelShapes.or(SHAPE, RWEST_AABB);
-        }
-        if (isConnected(state, Direction.EAST))
-        {
-            SHAPE = VoxelShapes.or(SHAPE, REAST_AABB);
-        }
-        return SHAPE;
-    }
-
-    @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        VoxelShape SHAPE = NULL_SHAPE;
-        if (isConnected(state, Direction.DOWN))
-        {
-            SHAPE = VoxelShapes.or(SHAPE, BASE_AABB);
-        }
-        if (isConnected(state, Direction.NORTH))
-        {
-            SHAPE = VoxelShapes.or(SHAPE, NORTH_AABB);
-        }
-        if (isConnected(state, Direction.SOUTH))
-        {
-            SHAPE = VoxelShapes.or(SHAPE, SOUTH_AABB);
-        }
-        if (isConnected(state, Direction.WEST))
-        {
-            SHAPE = VoxelShapes.or(SHAPE, WEST_AABB);
-        }
-        if (isConnected(state, Direction.EAST))
-        {
-            SHAPE = VoxelShapes.or(SHAPE, EAST_AABB);
-        }
-        return SHAPE;
-    }
-
-    @Override
-    public boolean collisionExtendsVertically(BlockState state, IBlockReader world, BlockPos pos, Entity collidingEntity)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean hasTileEntity(BlockState state)
-    {
-        return true;
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
     }
 
     @Nullable
     @Override
-    public TileEntityCatWalk createTileEntity(BlockState state, IBlockReader world)
+    public TileEntityCatWalk createTileEntity(World world,  BlockState state)
     {
         return new TileEntityCatWalk();
     }

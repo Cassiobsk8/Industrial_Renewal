@@ -1,165 +1,273 @@
 package cassiokf.industrialrenewal.blocks.industrialfloor;
 
+import cassiokf.industrialrenewal.blocks.BlockBase;
 import cassiokf.industrialrenewal.blocks.BlockCatwalkHatch;
 import cassiokf.industrialrenewal.blocks.BlockCatwalkLadder;
-import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractSixWayConnections;
-import cassiokf.industrialrenewal.init.BlocksRegistration;
+import cassiokf.industrialrenewal.init.ModBlocks;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DoorBlock;
+import net.minecraft.block.BlockDoor;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.common.property.Properties;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
-public class BlockIndustrialFloor extends BlockAbstractSixWayConnections
+public class BlockIndustrialFloor extends BlockBase
 {
-    protected static final VoxelShape NONE_AABB = Block.makeCuboidShape(6, 6, 6, 10, 10, 10);
 
-    protected static final VoxelShape C_UP_AABB = Block.makeCuboidShape(0, 15, 0, 16, 16, 16);
-    protected static final VoxelShape C_DOWN_AABB = Block.makeCuboidShape(0, 0, 0, 16, 1, 16);
-    protected static final VoxelShape C_NORTH_AABB = Block.makeCuboidShape(0, 0, 0, 16, 16, 1);
-    protected static final VoxelShape C_SOUTH_AABB = Block.makeCuboidShape(0, 0, 15, 16, 16, 16);
-    protected static final VoxelShape C_WEST_AABB = Block.makeCuboidShape(0, 0, 0, 1, 16, 16);
-    protected static final VoxelShape C_EAST_AABB = Block.makeCuboidShape(15, 0, 0, 16, 16, 16);
+    public static final ImmutableList<IUnlistedProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
+            Stream.of(EnumFacing.VALUES)
+                    .map(facing -> new Properties.PropertyAdapter<>(PropertyBool.create(facing.getName())))
+                    .collect(Collectors.toList())
+    );
+    protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.0D, 0.875D, 0.0D, 1.0D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
+    protected static final AxisAlignedBB NONE_AABB = new AxisAlignedBB(0.3125D, 0.3125D, 0.3125D, 0.6875D, 0.6875D, 0.6875D);
+    protected static final AxisAlignedBB C_UP_AABB = new AxisAlignedBB(0.0D, 0.9375D, 0.0D, 1.0D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB C_DOWN_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0625D, 1.0D);
+    protected static final AxisAlignedBB C_NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0625D);
+    protected static final AxisAlignedBB C_SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.9375D, 1.0D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB C_WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB C_EAST_AABB = new AxisAlignedBB(0.9375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    public BlockIndustrialFloor()
-    {
-        super(Block.Properties.create(Material.IRON), 16, 16);
+    public BlockIndustrialFloor(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
+        setHardness(0.8f);
+        setSoundType(SoundType.METAL);
+        //setLightOpacity(255);
+
     }
 
-    private static boolean isValidConnection(final BlockState neighborState, final IBlockReader world, final BlockPos ownPos, final Direction neighborDirection)
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        Block nb = neighborState.getBlock();
+        if (isConnected(worldIn, pos, state, EnumFacing.UP) && !isConnected(worldIn, pos, state, EnumFacing.DOWN))
+        {
+            return UP_AABB;
+        }
+        if (!isConnected(worldIn, pos, state, EnumFacing.UP) && isConnected(worldIn, pos, state, EnumFacing.DOWN))
+        {
+            return DOWN_AABB;
+        }
+        if (!isConnected(worldIn, pos, state, EnumFacing.UP) && !isConnected(worldIn, pos, state, EnumFacing.DOWN))
+        {
+            return NONE_AABB;
+        }
+        return FULL_BLOCK_AABB;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    {
+        if (isConnected(worldIn, pos, state, EnumFacing.UP))
+        {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, C_UP_AABB);
+        }
+        if (isConnected(worldIn, pos, state, EnumFacing.DOWN))
+        {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, C_DOWN_AABB);
+        }
+        if (isConnected(worldIn, pos, state, EnumFacing.NORTH))
+        {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, C_NORTH_AABB);
+        }
+        if (isConnected(worldIn, pos, state, EnumFacing.SOUTH))
+        {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, C_SOUTH_AABB);
+        }
+        if (isConnected(worldIn, pos, state, EnumFacing.WEST))
+        {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, C_WEST_AABB);
+        }
+        if (isConnected(worldIn, pos, state, EnumFacing.EAST))
+        {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, C_EAST_AABB);
+        }
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        IProperty[] listedProperties = new IProperty[]{}; // listed properties
+        IUnlistedProperty[] unlistedProperties = CONNECTED_PROPERTIES.toArray(new IUnlistedProperty[CONNECTED_PROPERTIES.size()]);
+        return new ExtendedBlockState(this, listedProperties, unlistedProperties);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public  BlockState getStateFromMeta(final int meta) {
+        return getDefaultState();
+    }
+
+    @Override
+    public int getMetaFromState(final  BlockState state) {
+        return 0;
+    }
+
+    private static boolean isValidConnection(final  BlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection)
+    {
+        Block nb = neighbourState.getBlock();
         return nb instanceof BlockIndustrialFloor
                 || nb instanceof BlockFloorPipe
                 || nb instanceof BlockFloorCable
-                || (nb instanceof DoorBlock && neighborState.get(DoorBlock.FACING).equals(neighborDirection))
-                || (neighborDirection.equals(Direction.DOWN) && nb instanceof BlockCatwalkLadder)
-                || (neighborDirection.equals(Direction.UP) && nb instanceof BlockCatwalkHatch)
+                || (nb instanceof BlockDoor && neighbourState.getValue(BlockDoor.FACING).equals(neighbourDirection))
+                || (neighbourDirection.equals(EnumFacing.DOWN) && nb instanceof BlockCatwalkLadder)
+                || (neighbourDirection.equals(EnumFacing.UP) && nb instanceof BlockCatwalkHatch)
                 //start check for horizontal Iladder
-                || ((neighborDirection != Direction.UP && neighborDirection != Direction.DOWN)
-                && nb instanceof BlockCatwalkLadder && !neighborState.get(BlockCatwalkLadder.ACTIVE))
+                || ((neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN)
+                && nb instanceof BlockCatwalkLadder && !neighbourState.getValue(BlockCatwalkLadder.ACTIVE))
                 //end
                 ;
     }
 
-    public static boolean canConnect(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
+    public static boolean canConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection)
     {
-        final BlockPos neighborPos = currentPos.offset(neighborDirection);
-        final BlockState neighborState = worldIn.getBlockState(neighborPos);
+        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
+        final  BlockState neighbourState = worldIn.getBlockState(neighbourPos);
 
-        return !isValidConnection(neighborState, worldIn, currentPos, neighborDirection);
+        return !isValidConnection(neighbourState, worldIn, ownPos, neighbourDirection);
     }
 
     @Override
-    public boolean canConnectTo(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
+    public  BlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        return canConnect(worldIn, currentPos, neighborDirection);
+        if (state instanceof IExtendedBlockState)
+        {
+            IExtendedBlockState eState = (IExtendedBlockState) state;
+            for (final EnumFacing facing : EnumFacing.VALUES)
+            {
+                eState = eState.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()), canConnectTo(world, pos, facing));
+            }
+            return eState;
+        }
+        return state;
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return getVoxelShape(state);
+        return true;
     }
 
+    public final boolean isConnected(IBlockAccess world, BlockPos pos,  BlockState state, final EnumFacing facing)
+    {
+        if (state instanceof IExtendedBlockState)
+        {
+            state = getExtendedState(state, world, pos);
+            IExtendedBlockState eState = (IExtendedBlockState) state;
+            return eState.getValue(CONNECTED_PROPERTIES.get(facing.getIndex()));
+        }
+        return false;
+    }
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        return VoxelShapes.or(getVoxelShape(state), NONE_AABB);
-    }
+        ItemStack playerStack = entity.getHeldItem(EnumHand.MAIN_HAND);
+        Item playerItem = playerStack.getItem();
 
-    private VoxelShape getVoxelShape(BlockState state)
-    {
-        VoxelShape FINAL_SHAPE = NULL_SHAPE;
-        if (isConnected(state, UP))
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.fluidPipe)))
         {
-            FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, C_UP_AABB);
+            world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
+            world.setBlockState(pos, ModBlocks.floorPipe.getDefaultState(), 3);
+            if (!entity.isCreative())
+            {
+                playerStack.shrink(1);
+            }
+            return true;
         }
-        if (isConnected(state, DOWN))
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableMV))
+                || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableLV))
+                || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableHV)))
         {
-            FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, C_DOWN_AABB);
+            world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
+            Block block;
+            if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableMV))) block = ModBlocks.floorCableMV;
+            else if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.energyCableLV)))
+                block = ModBlocks.floorCableLV;
+            else block = ModBlocks.floorCableHV;
+            world.setBlockState(pos, block.getDefaultState(), 3);
+            if (!entity.isCreative())
+            {
+                playerStack.shrink(1);
+            }
+            return true;
         }
-        if (isConnected(state, NORTH))
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.fluorescent)))
         {
-            FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, C_NORTH_AABB);
+            world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+            world.setBlockState(pos, ModBlocks.floorLamp.getDefaultState(), 3);
+            if (entity.getHorizontalFacing() == EnumFacing.EAST || entity.getHorizontalFacing() == EnumFacing.WEST)
+            {
+                world.setBlockState(pos.up(), ModBlocks.dummy.getDefaultState(), 3);
+            }
+            if (!entity.isCreative())
+            {
+                playerStack.shrink(1);
+            }
+            return true;
         }
-        if (isConnected(state, SOUTH))
-        {
-            FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, C_SOUTH_AABB);
-        }
-        if (isConnected(state, WEST))
-        {
-            FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, C_WEST_AABB);
-        }
-        if (isConnected(state, EAST))
-        {
-            FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, C_EAST_AABB);
-        }
-        return FINAL_SHAPE;
-    }
-
-    @Override
-    public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side)
-    {
         return false;
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
-    {
-        ItemStack playerStack = player.getHeldItem(Hand.MAIN_HAND);
-        Item playerItem = playerStack.getItem();
+    @Deprecated
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
 
-        if (playerItem.equals(BlocksRegistration.FLUIDPIPE_ITEM.get()))
+    @Override
+    @Deprecated
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Deprecated
+    public boolean isTopSolid(IBlockState state)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        return side.equals(EnumFacing.UP);
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face)
+    {
+        if (face == EnumFacing.UP || face == EnumFacing.DOWN)
         {
-            worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-            worldIn.setBlockState(pos, BlocksRegistration.FLOORPIPE.get().getDefaultState());
-            if (!player.isCreative())
-            {
-                playerStack.shrink(1);
-            }
-            return ActionResultType.SUCCESS;
+            return BlockFaceShape.SOLID;
         }
-        if (playerItem.equals(BlocksRegistration.ENERGYCABLEMV_ITEM.get())
-                || playerItem.equals(BlocksRegistration.ENERGYCABLELV_ITEM.get())
-                || playerItem.equals(BlocksRegistration.ENERGYCABLEHV_ITEM.get()))
-        {
-            worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-            Block block;
-            if (playerItem.equals(BlocksRegistration.ENERGYCABLEMV_ITEM.get()))
-                block = BlocksRegistration.FLOORCABLEMV.get();
-            else if (playerItem.equals(BlocksRegistration.ENERGYCABLELV_ITEM.get()))
-                block = BlocksRegistration.FLOORCABLELV.get();
-            else block = BlocksRegistration.FLOORCABLEHV.get();
-            worldIn.setBlockState(pos, block.getDefaultState());
-            if (!player.isCreative())
-            {
-                playerStack.shrink(1);
-            }
-            return ActionResultType.SUCCESS;
-        }
-        if (playerItem.equals(BlocksRegistration.FLUORESCENT_ITEM.get()))
-        {
-            worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-            worldIn.setBlockState(pos, BlocksRegistration.FLOORLAMP.get().getDefaultState());
-            if (!player.isCreative())
-            {
-                playerStack.shrink(1);
-            }
-            return ActionResultType.SUCCESS;
-        }
-        return ActionResultType.PASS;
+        return BlockFaceShape.UNDEFINED;
     }
 }

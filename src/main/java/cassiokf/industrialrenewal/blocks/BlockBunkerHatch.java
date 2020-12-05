@@ -1,57 +1,57 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.tileentity.TileEntityBunkerHatch;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
-public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
+public class BlockBunkerHatch extends BlockHorizontalFacing
 {
+    public static final PropertyBool MASTER = PropertyBool.create("master");
+    public static final PropertyBool OPEN = PropertyBool.create("open");
 
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty MASTER = BooleanProperty.create("master");
-    public static final BooleanProperty OPEN = BooleanProperty.create("open");
+    protected static final AxisAlignedBB RENDER_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    public BlockBunkerHatch()
+    public BlockBunkerHatch(String name, CreativeTabs tab)
     {
-        super(Block.Properties.create(Material.IRON));
-        setDefaultState(getDefaultState().with(OPEN, false));
+        super(name, tab, Material.IRON);
+        setSoundType(SoundType.METAL);
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
+    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntityBunkerHatch tile = getTileEntity(worldIn, pos);
-        tile.changeOpen();
-        return ActionResultType.SUCCESS;
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile != null && tile instanceof TileEntityBunkerHatch)
+        {
+            ((TileEntityBunkerHatch) tile).changeOpen();
+        }
+        return true;
     }
 
     @Override
-    public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos)
+    public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        if (state.get(OPEN))
+         BlockState actualState = state.getActualState(world, pos);
+        if (actualState.getValue(OPEN))
         {
             return 0;
         } else
@@ -61,34 +61,27 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos)
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
-        return state.get(OPEN);
-    }
-
-    @Nullable
-    @Override
-    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
-    {
-        return new Direction[0];
+        return false;
     }
 
     @Override
-    public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type)
+    public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos).get(OPEN);
+        return worldIn.getBlockState(pos).getValue(OPEN);
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos,  BlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        worldIn.setBlockState(pos.offset(state.get(FACING)), state.with(MASTER, true));
+        worldIn.setBlockState(pos.offset(state.getValue(FACING)), state.withProperty(MASTER, true));
     }
 
     @Override
-    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
+    public void onBlockAdded(World worldIn, BlockPos pos,  BlockState state)
     {
-        if (state.get(MASTER))
+        if (state.getValue(MASTER))
         {
             for (int z = -1; z < 2; z++)
             {
@@ -96,71 +89,95 @@ public class BlockBunkerHatch extends BlockTileEntity<TileEntityBunkerHatch>
                 {
                     BlockPos currentPos = new BlockPos(pos.getX() + x, pos.getY(), pos.getZ() + z);
                     if (z != 0 || x != 0)
-                        worldIn.setBlockState(currentPos, state.with(MASTER, false));
+                        worldIn.setBlockState(currentPos, state.withProperty(MASTER, false));
                 }
             }
         }
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        if (state.getBlock() == newState.getBlock()) return;
-
-        TileEntityBunkerHatch te = (TileEntityBunkerHatch) worldIn.getTileEntity(pos);
-        if (te != null)
-        {
-            te.breakMultiBlocks();
-        }
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
-    }
-
-
-    @Override
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
-    {
+        PlayerEntity player = worldIn.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 10D, false);
+        if (player == null) return false;
         for (int z = 0; z < 3; z++)
         {
             for (int x = -1; x < 2; x++)
             {
-                Direction facing = state.get(FACING);
+                EnumFacing facing = player.getHorizontalFacing();
                 BlockPos currentPos = new BlockPos(pos.offset(facing, z).offset(facing.rotateY(), x));
-                BlockState currentState = worldIn.getBlockState(currentPos);
-                if (!currentState.getMaterial().isReplaceable()) return false;
+                 BlockState state = worldIn.getBlockState(currentPos);
+                if (!state.getBlock().isReplaceable(worldIn, currentPos)) return false;
             }
         }
         return true;
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected BlockStateContainer createBlockState()
     {
-        builder.add(FACING, MASTER, OPEN);
-    }
-
-
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
-    {
-        return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing())
-                .with(MASTER, false).with(OPEN, false);
+        return new BlockStateContainer(this, FACING, MASTER, OPEN);
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public  BlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        Boolean active = state.get(OPEN);
+        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(MASTER, false).withProperty(OPEN, false);
+    }
+
+    @Override
+    public  BlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(MASTER, (meta & 4) > 0).withProperty(OPEN, (meta & 8) > 0);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        int i = 0;
+        i = i | state.getValue(FACING).getHorizontalIndex();
+
+        if (state.getValue(MASTER))
+        {
+            i |= 4;
+        }
+
+        if (state.getValue(OPEN))
+        {
+            i |= 8;
+        }
+        return i;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return RENDER_AABB;
+    }
+
+    @Override
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    {
+         BlockState actualState = getActualState(state, worldIn, pos);
+        Boolean active = actualState.getValue(OPEN);
         if (active)
         {
-            return NULL_SHAPE;
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+        } else
+        {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, RENDER_AABB);
         }
-        return FULL_SHAPE;
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
     }
 
     @Nullable
     @Override
-    public TileEntityBunkerHatch createTileEntity(BlockState state, IBlockReader world)
+    public TileEntityBunkerHatch createTileEntity(World world,  BlockState state)
     {
         return new TileEntityBunkerHatch();
     }

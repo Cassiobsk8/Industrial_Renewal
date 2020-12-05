@@ -1,29 +1,28 @@
 package cassiokf.industrialrenewal.tileentity.railroad;
 
 import cassiokf.industrialrenewal.blocks.railroad.BlockRailFacing;
+import cassiokf.industrialrenewal.entity.EntityTenderBase;
+import cassiokf.industrialrenewal.entity.LocomotiveBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.LOADERRAIL_TILE;
-
-public class TileEntityLoaderRail extends TileEntity
+public class TileEntityLoaderRail extends TEBase
 {
 
-    public TileEntityLoaderRail()
+    public TileEntityLoaderRail(TileEntityType<?> tileEntityTypeIn)
     {
-        super(LOADERRAIL_TILE.get());
+        super(tileEntityTypeIn);
     }
 
-    public void onMinecartPass(AbstractMinecartEntity ecart)
+    public void onMinecartPass(MinecartEntity ecart)
     {
         BlockState state = world.getBlockState(pos);
         if (GetCartInvType(world, pos, state, ecart) == 0)
@@ -35,7 +34,7 @@ public class TileEntityLoaderRail extends TileEntity
         }
     }
 
-    private void informLoader(BlockState state, AbstractMinecartEntity ecart)
+    private void informLoader(BlockState state, MinecartEntity ecart)
     {
         Direction facing = state.get(BlockRailFacing.FACING);
         TileEntity leftTE = world.getTileEntity(pos.offset(facing.rotateYCCW()));
@@ -50,7 +49,7 @@ public class TileEntityLoaderRail extends TileEntity
             if (teLoader.onMinecartPass(ecart, this))
             {
                 ecart.setPosition(pos.getX() + 0.5D, ecart.getPosY(), pos.getZ() + 0.5D);
-                ecart.setVelocity(0D, 0D, 0D);
+                ecart.setMotion(0,0,0);
             } else
             {
                 BlockRailFacing.propelMinecart(state, ecart);
@@ -61,18 +60,20 @@ public class TileEntityLoaderRail extends TileEntity
         }
     }
 
-    private int GetCartInvType(World world, BlockPos pos, BlockState state, AbstractMinecartEntity cart)
+    private int GetCartInvType(World world, BlockPos pos, BlockState state, MinecartEntity cart)
     {
+        if (cart instanceof EntityTenderBase || cart instanceof LocomotiveBase) return 0;
         Direction facing = state.get(BlockRailFacing.FACING);
         TileEntity leftTE = world.getTileEntity(pos.offset(facing.rotateYCCW()));
         TileEntity rightTE = world.getTileEntity(pos.offset(facing.rotateY()));
-        LazyOptional<IItemHandler> itemCapability = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
-        LazyOptional<IFluidHandler> fluidCapability = cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP);
+
         int type = 0;
-        if (itemCapability.isPresent() && (leftTE instanceof TileEntityCargoLoader || rightTE instanceof TileEntityCargoLoader))
+        if (cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP).orElse(null) != null
+                && (leftTE instanceof TileEntityCargoLoader || rightTE instanceof TileEntityCargoLoader))
         {
             type = 1;
-        } else if (fluidCapability.isPresent() && (leftTE instanceof TileEntityFluidLoader || rightTE instanceof TileEntityFluidLoader))
+        } else if (cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP).orElse(null) != null
+                && (leftTE instanceof TileEntityFluidLoader || rightTE instanceof TileEntityFluidLoader))
         {
             type = 2;
         }

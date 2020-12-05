@@ -1,30 +1,34 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
-import cassiokf.industrialrenewal.util.CustomItemStackHandler;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.TileFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.TRASH_TILE;
-
-public class TileEntityTrash extends TileFluidHandler implements ICapabilityProvider
+public class TileEntityTrash extends TEBase
 {
-    public CustomFluidTank tank = new CustomFluidTank(IRConfig.Main.barrelCapacity.get())
+    private static final CustomEnergyStorage energyContainer = new CustomEnergyStorage(1000000, 1000000, 1000000)
+    {
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate)
+        {
+            return maxReceive;
+        }
+    };
+    public static final CustomFluidTank tank = new CustomFluidTank(IRConfig.Main.barrelCapacity.get())
     {
         @Override
         public int fill(FluidStack resource, FluidAction action)
@@ -32,43 +36,25 @@ public class TileEntityTrash extends TileFluidHandler implements ICapabilityProv
             return resource != null ? resource.getAmount() : 0;
         }
     };
-    public LazyOptional<IItemHandler> inventory = LazyOptional.of(this::createHandler);
-    private LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(this::createEnergy);
-
-    public TileEntityTrash()
+    public static final ItemStackHandler inventory = new ItemStackHandler(10)
     {
-        super(TRASH_TILE.get());
-    }
-
-    private IItemHandler createHandler()
-    {
-        return new CustomItemStackHandler(10)
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack)
         {
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack)
-            {
-                return true;
-            }
+            return true;
+        }
 
-            @Override
-            @Nonnull
-            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
-            {
-                return ItemStack.EMPTY;
-            }
-        };
-    }
-
-    private IEnergyStorage createEnergy()
-    {
-        return new CustomEnergyStorage(1000000, 1000000, 1000000)
+        @Override
+        @Nonnull
+        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
         {
-            @Override
-            public int receiveEnergy(int maxReceive, boolean simulate)
-            {
-                return maxReceive;
-            }
-        };
+            return ItemStack.EMPTY;
+        }
+    };
+
+    public TileEntityTrash(TileEntityType<?> tileEntityTypeIn)
+    {
+        super(tileEntityTypeIn);
     }
 
     @Nullable
@@ -78,9 +64,9 @@ public class TileEntityTrash extends TileFluidHandler implements ICapabilityProv
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return LazyOptional.of(() -> tank).cast();
         if (capability == CapabilityEnergy.ENERGY)
-            return energyStorage.cast();
+            return LazyOptional.of(() -> energyContainer).cast();
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return inventory.cast();
+            return LazyOptional.of(() -> inventory).cast();
         return super.getCapability(capability, facing);
     }
 }

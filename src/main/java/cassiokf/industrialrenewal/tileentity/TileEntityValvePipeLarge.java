@@ -1,11 +1,11 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.init.SoundsRegistration;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityToggleableBase;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.capabilities.Capability;
@@ -15,23 +15,20 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
-import java.util.Random;
-
-import static cassiokf.industrialrenewal.init.TileRegistration.VALVELARGE_TILE;
 
 public class TileEntityValvePipeLarge extends TileEntityToggleableBase implements ITickableTileEntity
 {
 
-    public static CustomFluidTank dummyTank = new CustomFluidTank(0)
+    public static final CustomFluidTank dummyTank = new CustomFluidTank(0)
     {
         @Override
-        public boolean canFill()
+        public boolean canFill(FluidStack stack)
         {
             return false;
         }
     };
 
-    public CustomFluidTank tank = new CustomFluidTank(2000)
+    public final CustomFluidTank tank = new CustomFluidTank(2000)
     {
         @Override
         protected void onContentsChanged()
@@ -40,42 +37,35 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
         }
     };
 
-    private int amountPerTick = 1000;
+    private static final int amountPerTick = 1000;
 
-    public TileEntityValvePipeLarge()
+    public TileEntityValvePipeLarge(TileEntityType<?> tileEntityTypeIn)
     {
-        super(VALVELARGE_TILE.get());
+        super(tileEntityTypeIn);
     }
 
     @Override
     public void tick()
     {
-        if (this.hasWorld() && !world.isRemote)
+        if (this.hasWorld() && !world.isRemote && active)
         {
-            if (active)
+            Direction faceToFill = getOutPutFace();
+            TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
+            TileEntity teIn = world.getTileEntity(pos.offset(faceToFill.getOpposite()));
+
+            boolean hasFluidInternally = tank.getFluidAmount() > 0;
+
+            if (teOut != null && (hasFluidInternally || (teIn != null)))
             {
-                Direction faceToFill = getOutPutFace();
-                TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
-                TileEntity teIn = world.getTileEntity(pos.offset(faceToFill.getOpposite()));
-
-                boolean hasFluidInternally = tank.getFluidAmount() > 0;
-
-                if (teOut != null
-                        && (hasFluidInternally
-                        || (teIn != null && teIn.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill).isPresent()))
-                        && teOut.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill.getOpposite()).isPresent())
+                IFluidHandler inTank = hasFluidInternally
+                        ? tank
+                        : teIn.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill).orElse(null);
+                IFluidHandler outTank = teOut.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
+                        faceToFill.getOpposite()).orElse(null);
+                if (inTank != null && outTank != null)
                 {
-                    IFluidHandler inTank = hasFluidInternally
-                            ? tank
-                            : teIn.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill).orElse(null);
-                    IFluidHandler outTank = teOut.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-                            faceToFill.getOpposite()).orElse(null);
-                    if (inTank != null && outTank != null)
-                    {
-                        FluidStack amountCanFill = inTank.drain(amountPerTick, IFluidHandler.FluidAction.SIMULATE);
-                        if (amountCanFill != null)
-                            inTank.drain(outTank.fill(amountCanFill, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
-                    }
+                    FluidStack amountCanFill = inTank.drain(amountPerTick, IFluidHandler.FluidAction.SIMULATE);
+                    if (amountCanFill != null) inTank.drain(outTank.fill(amountCanFill, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
                 }
             }
         }
@@ -84,14 +74,13 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
     @Override
     public void playSwitchSound()
     {
-        Random r = new Random();
-        float pitch = r.nextFloat() * (1.2f - 0.8f) + 0.8f;
-        this.getWorld().playSound(null, this.getPos(), SoundsRegistration.TILEENTITY_VALVE_CHANGE.get(), SoundCategory.BLOCKS, 1F,
+        float pitch = rand.nextFloat() * (1.2f - 0.8f) + 0.8f;
+        this.getWorld().playSound(null, this.getPos(), IRSoundRegister.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1F,
                 pitch);
     }
 
     @Override
-    public void read(CompoundNBT tag)
+    public void read(final CompoundNBT tag)
     {
         tank.readFromNBT(tag);
         super.read(tag);
@@ -108,10 +97,13 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
     @Override
     public <T> LazyOptional<T> getCapability(final Capability<T> capability, @Nullable final Direction facing)
     {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == getOutPutFace())
-            return LazyOptional.of(() -> dummyTank).cast();
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && isFacingEnabled(facing))
-            return LazyOptional.of(() -> tank).cast();
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
+            if (facing == getOutPutFace())
+                return LazyOptional.of(() -> dummyTank).cast();
+            if (facing == getOutPutFace().getOpposite())
+                return LazyOptional.of(() -> tank).cast();
+        }
         return super.getCapability(capability, facing);
     }
 }

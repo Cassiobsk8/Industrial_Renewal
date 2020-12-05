@@ -1,78 +1,58 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockFirstAidKit;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import cassiokf.industrialrenewal.util.CustomItemStackHandler;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.FIRSTAIDKIT_TILE;
-
-public class TileEntityFirstAidKit extends TileEntitySyncable implements ICapabilityProvider
+public class TileEntityFirstAidKit extends TileEntitySync
 {
-
-    public LazyOptional<IItemHandler> inventory = LazyOptional.of(this::createHandler);
-
-    public TileEntityFirstAidKit()
+    private Direction facing;
+    public final CustomItemStackHandler inventory = new CustomItemStackHandler(8)
     {
-        super(FIRSTAIDKIT_TILE.get());
-    }
-
-    private IItemHandler createHandler()
-    {
-        return new CustomItemStackHandler(8)
+        @Override
+        protected void onContentsChanged(int slot)
         {
-            @Override
-            protected void onContentsChanged(int slot)
-            {
-                TileEntityFirstAidKit.this.Sync();
-            }
-        };
+            TileEntityFirstAidKit.this.sync();
+        }
+    };
+
+    public TileEntityFirstAidKit(TileEntityType<?> tileEntityTypeIn)
+    {
+        super(tileEntityTypeIn);
     }
 
     public Direction getFaceDirection()
     {
-        return BlockFirstAidKit.getFaceDirection(getBlockState());
+        if (facing != null) return facing;
+        return facing = BlockFirstAidKit.getFaceDirection(getBlockState());
     }
 
     @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-        return new AxisAlignedBB(getPos(), getPos().add(1, 1, 1));
-    }
-
-    @Override
-    public void read(CompoundNBT compound)
-    {
-        CompoundNBT invTag = compound.getCompound("inv");
-        inventory.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(invTag));
-        super.read(compound);
-    }
-
-    @Override
-    public CompoundNBT write(CompoundNBT compound)
-    {
-        inventory.ifPresent(h ->
-        {
-            CompoundNBT tag = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
-            compound.put("inv", tag);
-        });
+    public CompoundNBT write(CompoundNBT compound) {
+        compound.put("inventory", inventory.serializeNBT());
         return super.write(compound);
+    }
+
+    @Override
+    public void read(CompoundNBT compound) {
+        inventory.deserializeNBT(compound.getCompound("inventory"));
+        super.read(compound);
     }
 
     @Nullable
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing)
     {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? inventory.cast() : super.getCapability(capability, facing);
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+                ? LazyOptional.of(() -> inventory).cast()
+                : super.getCapability(capability, facing);
     }
 }

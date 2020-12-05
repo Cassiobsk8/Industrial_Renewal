@@ -1,49 +1,64 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.Block3x3x3Base;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.tileentity.TileEntitySteamTurbine;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import cassiokf.industrialrenewal.util.MachinesUtils;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockSteamTurbine extends Block3x3x3Base<TileEntitySteamTurbine>
+public class BlockSteamTurbine extends BlockMultiBlockBase<TileEntitySteamTurbine>
 {
-    public BlockSteamTurbine()
+    public BlockSteamTurbine(String name, CreativeTabs tab)
     {
-        super(Block.Properties.create(Material.IRON));
+        super(Material.IRON, name, tab);
+        setSoundType(SoundType.METAL);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
     {
-        tooltip.add(new StringTextComponent(
-                I18n.format("info.industrialrenewal.requires")
-                        + ": "
-                        + "Steam"
-                        + " "
-                        + (IRConfig.Main.steamTurbineSteamPerTick.get().toString())
-                        + " mB/t"));
-        tooltip.add(new StringTextComponent(
-                I18n.format("info.industrialrenewal.produces")
-                        + ": "
-                        + (IRConfig.Main.steamTurbineEnergyPerTick.get().toString())
-                        + " FE/t"));
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        tooltip.add(I18n.format("info.industrialrenewal.requires")
+                + ": "
+                + FluidInit.STEAM.getName()
+                + " "
+                + (IRConfig.MainConfig.Main.steamTurbineSteamPerTick)
+                + " mB/t");
+        tooltip.add(I18n.format("info.industrialrenewal.produces")
+                + ": "
+                + (IRConfig.MainConfig.Main.steamTurbineEnergyPerTick)
+                + " FE/t");
+        super.addInformation(stack, player, tooltip, advanced);
+    }
+
+    @Override
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing)
+    {
+        return MachinesUtils.getBlocksIn3x3x3Centered(masterPos);
     }
 
     @Nullable
     @Override
-    public TileEntitySteamTurbine createTileEntity(BlockState state, IBlockReader world)
+    public TileEntitySteamTurbine createTileEntity(World world,  BlockState state)
     {
         return new TileEntitySteamTurbine();
     }

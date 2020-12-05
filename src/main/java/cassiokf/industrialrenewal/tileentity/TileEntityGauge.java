@@ -1,24 +1,27 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockGauge;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
+import cassiokf.industrialrenewal.util.Utils;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.GAUGE_TILE;
-
-public class TileEntityGauge extends TileEntity
+public class TileEntityGauge extends TEBase
 {
+
     private Direction baseFacing = Direction.DOWN;
     private Direction indicatorHorizontalFacing;
     private IFluidHandler tankStorage;
 
-    public TileEntityGauge()
+    public TileEntityGauge(TileEntityType<?> tileEntityTypeIn)
     {
-        super(GAUGE_TILE.get());
+        super(tileEntityTypeIn);
     }
 
     public Direction getBaseFacing()
@@ -40,36 +43,25 @@ public class TileEntityGauge extends TileEntity
 
     public Direction forceIndicatorCheck()
     {
-        indicatorHorizontalFacing = getBlockState().get(BlockGauge.FACING);
+        indicatorHorizontalFacing = this.world.getBlockState(this.pos).get(BlockGauge.FACING);
         return indicatorHorizontalFacing;
     }
 
     public String GetText()
     {
-        if (getTankStorage() != null)
+        if (getTankStorage() != null && getTankStorage().getTanks() > 0)
         {
-            IFluidHandler properties = getTankStorage();
-            if (properties != null)
-            {
-                FluidStack stack = properties.getFluidInTank(0);
-                return stack != null ? stack.getDisplayName().getString() : "Empty";
-            }
+            FluidStack stack = getTankStorage().getFluidInTank(0);
+            return stack.getDisplayName().getFormattedText();
         }
         return "No Tank";
     }
 
     public float GetTankFill() //0 ~ 180
     {
-        if (getTankStorage() != null)
+        if (getTankStorage() != null && getTankStorage().getTanks() > 0 && !getTankStorage().getFluidInTank(0).isEmpty())
         {
-            IFluidHandler properties = getTankStorage();
-            if (properties != null)
-            {
-                float currentAmount = properties.getFluidInTank(0).getAmount() / 1000f;
-                float totalCapacity = properties.getTankCapacity(0) / 1000f;
-                currentAmount = currentAmount / totalCapacity;
-                return currentAmount * 180f;
-            }
+            return Utils.normalize(getTankStorage().getFluidInTank(0).getAmount(), 0, getTankStorage().getTankCapacity(0)) * 180f;
         }
         return 0;
     }
@@ -83,7 +75,7 @@ public class TileEntityGauge extends TileEntity
     public IFluidHandler forceCheck()
     {
         TileEntity te = world.getTileEntity(pos.offset(baseFacing));
-        if (te != null && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, baseFacing.getOpposite()).isPresent())
+        if (te != null)
         {
             IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, baseFacing.getOpposite()).orElse(null);
             if (handler != null)
@@ -104,7 +96,7 @@ public class TileEntityGauge extends TileEntity
     }
 
     @Override
-    public void read(CompoundNBT tag)
+    public void read(final CompoundNBT tag)
     {
         baseFacing = Direction.byIndex(tag.getInt("baseFacing"));
         super.read(tag);

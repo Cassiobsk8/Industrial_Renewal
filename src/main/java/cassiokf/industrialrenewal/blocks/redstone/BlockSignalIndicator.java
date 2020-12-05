@@ -1,85 +1,91 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalFacing;
-import net.minecraft.block.Block;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
+import cassiokf.industrialrenewal.tileentity.redstone.TileEntitySignalIndicator;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class BlockSignalIndicator extends BlockAbstractHorizontalFacing
-{
+public class BlockSignalIndicator extends BlockTileEntity<TileEntitySignalIndicator> {
+
+    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.625D, 0.75D);
+
+    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0F, 0.25F, 0.25F, 0.625F, 1F, 0.75D);
+    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1F, 0.25F, 0.25F, 0.375F, 1F, 0.75D);
+    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0.25F, 0.375F, 0.75D, 1F, 1);
+    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0.25F, 0.625F, 0.75D, 1F, 0);
+
+    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty ONWALL = BooleanProperty.create("onwall");
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-    protected static final VoxelShape AABB = Block.makeCuboidShape(4, 0, 4, 12, 26, 12);
-    private static final VoxelShape WEST_BLOCK_AABB = Block.makeCuboidShape(0, 4, 4, 10, 16, 12);
-    private static final VoxelShape EAST_BLOCK_AABB = Block.makeCuboidShape(6, 4, 4, 16, 16, 12);
-    private static final VoxelShape SOUTH_BLOCK_AABB = Block.makeCuboidShape(4, 4, 6, 12, 16, 16);
-    private static final VoxelShape NORTH_BLOCK_AABB = Block.makeCuboidShape(4, 4, 0, 12, 16, 10);
-
-    public BlockSignalIndicator()
-    {
-        super(Block.Properties.create(Material.IRON).lightValue(7));
+    public BlockSignalIndicator(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
+        this.lightValue = 7;
     }
 
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
-    {
-        Direction facing = context.getPlacementHorizontalFacing();
-        if (Direction.Plane.HORIZONTAL.test(context.getFace()))
-            facing = context.getFace().getOpposite();
-        BlockState state = getDefaultState()
-                .with(FACING, facing)
-                .with(ONWALL, context.getFace() != Direction.UP);
-        return state.with(ACTIVE, getSignal(context.getWorld(), context.getPos(), state));
-    }
-
-    private boolean getSignal(IWorld world, BlockPos pos, BlockState state)
-    {
-        World worldIn = world.getWorld();
-        BlockPos offsetPos = pos.offset(state.get(FACING));
-        boolean onWall = state.get(ONWALL);
-        if (!onWall)
-        {
-            return worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.down());
-        } else
-        {
-            return worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(offsetPos);
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
+        if (side == EnumFacing.UP) {
+            return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos.up()).getBlock().isReplaceable(worldIn, pos.up());
         }
+        return super.canPlaceBlockAt(worldIn, pos);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public BlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(ONWALL, facing != EnumFacing.UP).withProperty(ACTIVE, false);
+    }
+
+    private boolean getSignal(IBlockAccess world, BlockPos pos) {
+        TileEntitySignalIndicator te = (TileEntitySignalIndicator) world.getTileEntity(pos);
+        return te.active();
     }
 
     @Override
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
-    {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
-        worldIn.setBlockState(pos, state.with(ACTIVE, getSignal(worldIn, pos, state)));
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos.up()).getBlock().isReplaceable(worldIn, pos.up());
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public  BlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
+        return state.withProperty(ACTIVE, getSignal(world, pos));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public  BlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return getDefaultState().withProperty(ACTIVE, false);
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        return stateIn.with(ACTIVE, getSignal(worldIn, currentPos, stateIn));
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        if (state.get(ONWALL))
-        {
-            switch (state.get(FACING))
-            {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        if (state.getValue(ONWALL)) {
+            switch (state.getValue(FACING)) {
                 default:
                 case NORTH:
                     return NORTH_BLOCK_AABB;
@@ -90,15 +96,60 @@ public class BlockSignalIndicator extends BlockAbstractHorizontalFacing
                 case WEST:
                     return WEST_BLOCK_AABB;
             }
-        } else
-        {
+
+        } else {
             return AABB;
         }
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, ONWALL, ACTIVE);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public  BlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(ONWALL, (meta & 4) > 0);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        int i = 0;
+        i = i | state.getValue(FACING).getHorizontalIndex();
+
+        if (state.getValue(ONWALL)) {
+            i |= 4;
+        }
+        return i;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public BlockRenderLayer getRenderLayer()
     {
-        builder.add(FACING, ONWALL, ACTIVE);
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    @Deprecated
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    @Deprecated
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
+    }
+
+    @Nullable
+    @Override
+    public TileEntitySignalIndicator createTileEntity(World world,  BlockState state) {
+        return new TileEntitySignalIndicator();
     }
 }

@@ -2,131 +2,121 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.ItemsRegistration;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
+import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.TRANSFORMERHV_TILE;
-
-public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntityTransformerHV> implements ITickableTileEntity, IConnectorHV
+public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntityTransformerHV> implements IConnectorHV
 {
-    public boolean isOutPut;
+    private final CustomEnergyStorage energyContainer = new CustomEnergyStorage(IRConfig.Main.maxHVTransformerTransferAmount.get(), IRConfig.Main.maxHVTransformerTransferAmount.get(), IRConfig.Main.maxHVTransformerTransferAmount.get())
+    {
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate)
+        {
+            return TileEntityTransformerHV.this.onEnergyReceived(maxReceive, simulate);
+        }
+    };
+    private static final CustomEnergyStorage dummyEnergyContainer = new CustomEnergyStorage(0, 0, 0)
+    {
+        @Override
+        public boolean canExtract()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean canReceive()
+        {
+            return false;
+        }
+    };
     IConnectorHV otherSideTransformer;
-    private LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(this::createEnergy);
-    private LazyOptional<IEnergyStorage> dummyEnergy = LazyOptional.of(this::createEnergyDummy);
+    public boolean isOutPut;
     private BlockPos cableConnectionPos;
     private int energyTransfer;
-    private int oldEnergyTransfer;
     private boolean oldOutPut;
     private boolean isConnected;
 
-    public TileEntityTransformerHV()
+    public int averageEnergy;
+    private int oldEnergy;
+    private int tick;
+    private boolean inUse = false;
+
+    public TileEntityTransformerHV(TileEntityType<?> tileEntityTypeIn)
     {
-        super(TRANSFORMERHV_TILE.get());
+        super(tileEntityTypeIn);
     }
 
-    private IEnergyStorage createEnergy()
+    public int onEnergyReceived(int maxReceive, boolean simulate)
     {
-        return new CustomEnergyStorage(IRConfig.Main.maxHVTransformerTransferAmount.get(), IRConfig.Main.maxHVTransformerTransferAmount.get(), IRConfig.Main.maxHVTransformerTransferAmount.get())
+        if (maxReceive <= 0) return 0;
+        if (inUse) return 0; //to prevent stack overflow (IE)
+        inUse = true;
+        int out = 0;
+        if (!isOutPut)
         {
-            @Override
-            public void onEnergyChange()
+            if (otherSideTransformer != null)
             {
-                TileEntityTransformerHV.this.Sync();
+                out = otherSideTransformer.receiveEnergy(Math.min(maxReceive, energyContainer.getMaxOutput()), simulate);
             }
 
-            @Override
-            public boolean canExtract()
-            {
-                return true;
-            }
-
-            @Override
-            public boolean canReceive()
-            {
-                return true;
-            }
-        };
-    }
-
-    private IEnergyStorage createEnergyDummy()
-    {
-        return new CustomEnergyStorage(0, 0, 0)
+        } else
         {
-            @Override
-            public boolean canExtract()
+            //OUTPUT ENERGY
+            BlockPos outPutPos = pos.offset(getMasterFacing().getOpposite(), 2).down();
+            TileEntity outTileEntity = world.getTileEntity(outPutPos);
+            if (outTileEntity != null)
             {
-                return false;
+                IEnergyStorage outPutStorage = outTileEntity.getCapability(CapabilityEnergy.ENERGY, getMasterFacing()).orElse(null);
+                if (outPutStorage != null && outPutStorage.canReceive())
+                {
+                    out = outPutStorage.receiveEnergy(maxReceive, simulate);
+                }
             }
-
-            @Override
-            public boolean canReceive()
-            {
-                return false;
-            }
-        };
+        }
+        if (!simulate) energyTransfer += out;
+        inUse = false;
+        return out;
     }
 
     @Override
-    public void tick()
+    public void onTick()
     {
-        if (this.isMaster())
+        if (!world.isRemote && isMaster())
         {
-            isOutPut();
-            if (this.hasWorld() && !world.isRemote)
+            if (tick >= 10)
             {
-                IEnergyStorage thisEnergy = energyStorage.orElse(null);
-                if (!isOutPut)
+                tick = 0;
+                isOutPut();
+                averageEnergy = energyTransfer / 10;
+                energyTransfer = 0;
+                if (averageEnergy != oldEnergy)
                 {
-                    if (otherSideTransformer != null && thisEnergy.getEnergyStored() > 0)
-                    {
-                        int energy = thisEnergy.extractEnergy(IRConfig.Main.maxHVTransformerTransferAmount.get(), true);
-                        int energy1 = otherSideTransformer.receiveEnergy(energy, false);
-                        energyTransfer = thisEnergy.extractEnergy(energy1, false);
-                    } else energyTransfer = 0;
-
-                } else
-                {
-                    //OUTPUT ENERGY
-                    if (thisEnergy.getEnergyStored() > 0)
-                    {
-                        BlockPos outPutPos = pos.offset(getMasterFacing().getOpposite(), 2).down();
-                        TileEntity outTileEntity = world.getTileEntity(outPutPos);
-                        if (outTileEntity != null)
-                        {
-                            IEnergyStorage outPutStorage = outTileEntity.getCapability(CapabilityEnergy.ENERGY, getMasterFacing()).orElse(null);
-                            if (outPutStorage != null)
-                            {
-                                int energy = thisEnergy.extractEnergy(IRConfig.Main.maxHVTransformerTransferAmount.get(), true);
-                                int energy1 = outPutStorage.receiveEnergy(energy, false);
-                                energyTransfer = thisEnergy.extractEnergy(energy1, false);
-                            } else energyTransfer = 0;
-                        } else energyTransfer = 0;
-                    } else energyTransfer = 0;
-                }
-
-                if (energyTransfer != oldEnergyTransfer)
-                {
-                    oldEnergyTransfer = energyTransfer;
-                    this.Sync();
+                    oldEnergy = averageEnergy;
+                    sync();
                 }
             }
+            tick++;
         }
     }
 
@@ -140,7 +130,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
             oldOutPut = isOutPut;
             BlockState state = world.getBlockState(pos);
             world.notifyBlockUpdate(pos, state, state, 2);
-            this.Sync();
+            this.sync();
             this.checkIfNeedsNetworkRefresh();
         }
     }
@@ -161,9 +151,9 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
                     setOtherSideTransformer(null);
                     ((IConnectorHV) te).setOtherSideTransformer(null);
                 }
-            } else if (te instanceof TileEntityWireIsolator)
+            } else if (te instanceof TileEntityHVConnectorBase)
             {
-                ((TileEntityWireIsolator) te).forceRecheck();
+                ((TileEntityHVConnectorBase) te).forceRecheck();
             }
         }
     }
@@ -171,7 +161,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     @Override
     public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
     {
-        return Utils.getBlocksIn3x2x3CenteredPlus1OnTop(centerPosition);
+        return MachinesUtils.getBlocksIn3x2x3CenteredPlus1OnTop(centerPosition);
     }
 
     @Override
@@ -182,16 +172,13 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
 
     public String getGenerationText()
     {
-        int energy = energyTransfer;
+        int energy = averageEnergy;
         return Utils.formatEnergyString(energy) + "/t";
     }
 
     public float getGenerationFill() //0 ~ 90
     {
-        float currentAmount = energyTransfer;
-        float totalCapacity = IRConfig.Main.maxHVTransformerTransferAmount.get();
-        currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 90f;
+        return Utils.normalize(averageEnergy, 0, energyContainer.getMaxOutput()) * 90f;
     }
 
     @Override
@@ -202,12 +189,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
 
         compound.putBoolean("connected", isConnected);
         compound.putBoolean("isOutPut", isOutPut);
-        compound.putInt("transfer", energyTransfer);
-        energyStorage.ifPresent(h ->
-        {
-            CompoundNBT tag = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
-            compound.put("energy", tag);
-        });
+        compound.putInt("energy_average", averageEnergy);
         return super.write(compound);
     }
 
@@ -220,8 +202,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
 
         isConnected = compound.getBoolean("connected");
         isOutPut = compound.getBoolean("isOutPut");
-        energyTransfer = compound.getInt("transfer");
-        energyStorage.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(compound.getCompound("StoredIR")));
+        averageEnergy = compound.getInt("energy_average");
         super.read(compound);
     }
 
@@ -230,14 +211,13 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     public <T> LazyOptional<T> getCapability(final Capability<T> capability, @Nullable final Direction facing)
     {
         TileEntityTransformerHV masterTE = this.getMaster();
-        Direction face = masterTE.getMasterFacing();
         if (masterTE == null) return super.getCapability(capability, facing);
-
+        Direction face = masterTE.getMasterFacing();
         if (facing == face.getOpposite()
                 && this.pos.equals(masterTE.getPos().down().offset(face.getOpposite()))
                 && capability == CapabilityEnergy.ENERGY)
-            return masterTE.isOutPut ? dummyEnergy.cast()
-                    : masterTE.energyStorage.cast();
+            return masterTE.isOutPut ? LazyOptional.of(() -> dummyEnergyContainer).cast()
+                    : LazyOptional.of(() -> masterTE.energyContainer).cast();
 
         return super.getCapability(capability, facing);
     }
@@ -254,9 +234,9 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     private void disableConnectedCables(BlockPos connectedPos)
     {
         TileEntity te = world.getTileEntity(connectedPos);
-        if (te instanceof TileEntityWireIsolator)
+        if (te instanceof TileEntityHVConnectorBase)
         {
-            ((TileEntityWireIsolator) te).removeConnection(getConnectorPos());
+            ((TileEntityHVConnectorBase) te).removeConnection(getConnectorPos());
         } else if (te instanceof IConnectorHV)
         {
             ((IConnectorHV) te).removeConnection();
@@ -293,7 +273,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
         {
             getMaster().checkIfNeedsNetworkRefresh();
         }
-        getMaster().Sync();
+        getMaster().sync();
     }
 
     @Override
@@ -306,7 +286,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     public void setOtherSideTransformer(IConnectorHV transformer)
     {
         getMaster().otherSideTransformer = transformer;
-        getMaster().Sync();
+        getMaster().sync();
     }
 
     @Override
@@ -319,7 +299,7 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
     public int receiveEnergy(int quantity, boolean simulate)
     {
         if (isRemoved()) return 0;
-        return getMaster().energyStorage.orElse(null).receiveEnergy(quantity, simulate);
+        return getMaster().energyContainer.receiveEnergy(quantity, simulate);
     }
 
     @Override
@@ -329,8 +309,16 @@ public class TileEntityTransformerHV extends TileEntity3x3MachineBase<TileEntity
         {
             getMaster().isConnected = false;
             getMaster().cableConnectionPos = null;
-            otherSideTransformer = null;
-            getMaster().Sync();
+            getMaster().otherSideTransformer = null;
+            getMaster().sync();
         }
+    }
+
+    @Nonnull
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return INFINITE_EXTENT_AABB;
     }
 }

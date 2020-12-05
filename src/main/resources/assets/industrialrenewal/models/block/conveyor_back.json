@@ -2,7 +2,7 @@
   "credit": "Made with Blockbench",
   "textures": {
     "0": "industrialrenewal:blocks/conveyor_belt",
-    "3": "industrialrenewal:blocks/anvil_base",
+    "3": "blocks/anvil_base",
     "4": "industrialrenewal:blocks/fuse_box",
     "5": "industrialrenewal:blocks/pipe",
     "1_0": "industrialrenewal:blocks/pipe_blue",

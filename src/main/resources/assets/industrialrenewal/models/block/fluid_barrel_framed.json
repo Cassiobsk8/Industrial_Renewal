@@ -2,7 +2,7 @@
   "credit": "Made with Blockbench",
   "textures": {
     "0": "industrialrenewal:blocks/pipe",
-    "1": "industrialrenewal:blocks/anvil_base",
+    "1": "blocks/anvil_base",
     "2": "industrialrenewal:blocks/barrel_front",
     "particle": "industrialrenewal:blocks/pipe"
   },

@@ -1,6 +1,5 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 

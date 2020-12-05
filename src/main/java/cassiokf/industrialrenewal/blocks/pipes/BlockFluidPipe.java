@@ -1,80 +1,107 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.BlocksRegistration;
+import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityCableTray;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipe;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeBase;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipeBase>
+public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipe>
 {
-    public BlockFluidPipe()
+    public BlockFluidPipe(String name, CreativeTabs tab)
     {
-        super(Block.Properties.create(Material.IRON), 4, 4);
+        super(name, tab);
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
+    public boolean canConnectToPipe(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
     {
-        ItemStack heldStack = player.getHeldItemMainhand();
-        if (heldStack.getItem() == BlocksRegistration.INDFLOOR_ITEM.get())
+        BlockPos neighbourPos = ownPos.offset(neighbourDirection);
+         BlockState state = worldIn.getBlockState(neighbourPos);
+        Block block = state.getBlock();
+
+        return block instanceof BlockFluidPipe || (block instanceof BlockCableTray && trayHasPipe(worldIn, neighbourPos));
+    }
+
+    private boolean trayHasPipe(IBlockAccess world, BlockPos pos)
+    {
+        TileEntityCableTray te = (TileEntityCableTray) world.getTileEntity(pos);
+        if (te != null)
         {
-            if (!worldIn.isRemote)
-            {
-                worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                worldIn.setBlockState(pos, BlocksRegistration.FLOORPIPE.get().getDefaultState(), 3);
-                if (!player.isCreative())
-                {
-                    heldStack.shrink(1);
-                }
-            }
-            return ActionResultType.SUCCESS;
+            return te.hasPipe();
         }
-        if (heldStack.getItem() == BlocksRegistration.GAUGE_ITEM.get())
-        {
-            if (!worldIn.isRemote)
-            {
-                worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                worldIn.setBlockState(pos, BlocksRegistration.FLUIDPIPEGAUGE.get().getDefaultState().with(BlockFluidPipeGauge.FACING, player.getHorizontalFacing()));
-                if (!player.isCreative())
-                {
-                    heldStack.shrink(1);
-                }
-            }
-            return ActionResultType.SUCCESS;
-        }
-        return ActionResultType.PASS;
+        return false;
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    public boolean canConnectToCapability(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
     {
-        tooltip.add(new StringTextComponent(IRConfig.Main.maxFluidPipeTransferAmount.get() + " mB/t"));
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        BlockPos pos = ownPos.offset(neighbourDirection);
+         BlockState state = worldIn.getBlockState(pos);
+        TileEntity te = worldIn.getTileEntity(pos);
+        return !(state.getBlock() instanceof BlockFluidPipe) && !(state.getBlock() instanceof BlockFluidPipeGauge)
+                && te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, neighbourDirection.getOpposite());
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (entity.getHeldItem(EnumHand.MAIN_HAND).getItem() == ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor))
+        {
+            if (!world.isRemote)
+            {
+                world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                world.setBlockState(pos, ModBlocks.floorPipe.getDefaultState(), 3);
+                if (!entity.isCreative())
+                {
+                    entity.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                }
+            }
+            return true;
+        }
+        if (entity.getHeldItem(EnumHand.MAIN_HAND).getItem() == ItemBlock.getItemFromBlock(ModBlocks.gauge))
+        {
+            if (!world.isRemote)
+            {
+                world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                world.setBlockState(pos, ModBlocks.fluidPipeGauge.getDefaultState().withProperty(BlockFluidPipeGauge.FACING, entity.getHorizontalFacing()), 3);
+                if (!entity.isCreative())
+                {
+                    entity.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    {
+        tooltip.add(IRConfig.MainConfig.Main.maxFluidPipeTransferAmount + " mB/t");
+        super.addInformation(stack, player, tooltip, advanced);
     }
 
     @Nullable
     @Override
-    public TileEntityFluidPipeBase createTileEntity(BlockState state, IBlockReader world)
-    {
+    public TileEntityFluidPipe createTileEntity(World world,  BlockState state) {
         return new TileEntityFluidPipe();
     }
 }

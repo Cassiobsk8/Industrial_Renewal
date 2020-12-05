@@ -1,29 +1,28 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
+import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.blocks.BlockElectricPump;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.SoundsRegistration;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.handlers.IRSoundHandler;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import cassiokf.industrialrenewal.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
@@ -32,64 +31,66 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.ELECTRICPUMP_TILE;
-
-public class TileEntityElectricPump extends TileEntitySyncable implements ICapabilityProvider, ITickableTileEntity
+public class TileEntityElectricPump extends TileEntitySync implements ITickableTileEntity
 {
-    public CustomFluidTank tank = new CustomFluidTank(1000)
+    private final CustomEnergyStorage energyContainer = new CustomEnergyStorage(energyPerTick * 2,
+            energyPerTick,
+            energyPerTick * 2)
     {
+        @Override
+        public boolean canExtract()
+        {
+            return false;
+        }
+
+        @Override
+        public void onEnergyChange()
+        {
+            TileEntityElectricPump.this.markDirty();
+        }
+    };
+
+    public CustomFluidTank tank = new CustomFluidTank(References.BUCKET_VOLUME)
+    {
+        @Override
+        public boolean canFill(FluidStack stack)
+        {
+            return false;
+        }
+
         @Override
         protected void onContentsChanged()
         {
             TileEntityElectricPump.this.markDirty();
         }
     };
-    private LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(this::createEnergy);
+
     private int index = -1;
-    private int everyXtick = 10;
+    private final int everyXtick = 10;
     private int tick;
-    private int energyPerTick = 10;
+    public static int energyPerTick = IRConfig.Main.pumpEnergyPerTick.get();
     private Direction facing;
+    private final float volume = IRConfig.Sounds.pumpVolume.get() * IRConfig.Sounds.masterVolumeMult.get();
 
-    private List<BlockPos> fluidSet = new ArrayList<>();
-    private int maxRadius = IRConfig.Main.maxPumpRadius.get();
-
-    IEnergyStorage motorEnergy = null;
+    private final List<BlockPos> fluidSet = new ArrayList<>();
+    private final int maxRadius = IRConfig.Main.maxPumpRadius.get();
 
     private boolean isRunning = false;
     private boolean oldIsRunning = false;
     private boolean starting = false;
     private boolean oldStarting = false;
 
-    public TileEntityElectricPump()
+    public TileEntityElectricPump(TileEntityType<?> tileEntityTypeIn)
     {
-        super(ELECTRICPUMP_TILE.get());
-    }
-
-    private IEnergyStorage createEnergy()
-    {
-        return new CustomEnergyStorage(200, 200, 0)
-        {
-            @Override
-            public boolean canExtract()
-            {
-                return false;
-            }
-
-            @Override
-            public void onEnergyChange()
-            {
-                TileEntityElectricPump.this.Sync();
-            }
-        };
+        super(tileEntityTypeIn);
     }
 
     @Override
     public void tick()
     {
-        if (!world.isRemote)
+        if (getIndex() == 1)
         {
-            if (getIdex() == 1)
+            if (!world.isRemote)
             {
                 consumeEnergy();
                 if (tick >= everyXtick)
@@ -100,16 +101,11 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
                 tick++;
                 passFluidUp();
             }
-        } else
-        {
-            if (getIdex() == 1)
-            {
-                handleSound();
-            }
+            handleSound();
         }
     }
 
-    private int getIdex()
+    private int getIndex()
     {
         if (index != -1) return index;
         BlockState state = world.getBlockState(pos);
@@ -119,82 +115,85 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
 
     private void handleSound()
     {
-        if (!world.isRemote) return;
         if (isRunning && !starting)
         {
-            IRSoundHandler.playSound(world, SoundsRegistration.PUMP_START.get(), IRConfig.Main.pumpVolume.get().floatValue() + 0.5f, 1.0F, pos);
+            if (!world.isRemote)
+                world.playSound(null, pos, IRSoundRegister.PUMP_START, SoundCategory.BLOCKS, volume + 0.5f, 1.0F);
             starting = true;
             oldStarting = true;
-            Sync();
+            sync();
         } else if (isRunning)
         {
-            IRSoundHandler.playRepeatableSound(this, SoundsRegistration.PUMP_ROTATION.get(), IRConfig.MAIN.pumpVolume.get().floatValue(), 1.0F);
+            if (world.isRemote)
+                IRSoundHandler.playRepeatableSound(IRSoundRegister.PUMP_ROTATION_RESOURCEL, volume, 1.0F, pos);
         } else
         {
-            IRSoundHandler.stopTileSound(pos);
+            if (world.isRemote) IRSoundHandler.stopTileSound(pos);
             starting = false;
             if (oldStarting)
             {
                 oldStarting = false;
-                Sync();
+                sync();
             }
         }
     }
 
     private void consumeEnergy()
     {
-        IEnergyStorage motorEnergyContainer = GetEnergyContainer();
-        if (motorEnergyContainer != null && motorEnergyContainer.getEnergyStored() >= energyPerTick)
+        if (energyContainer.getEnergyStored() >= energyPerTick)
         {
-            motorEnergyContainer.extractEnergy(energyPerTick, false);
+            energyContainer.extractEnergyInternally(energyPerTick, false);
             isRunning = true;
         } else
         {
             isRunning = false;
             starting = false;
-            Sync();
         }
+
         if (oldIsRunning != isRunning || oldStarting != starting)
         {
             oldIsRunning = isRunning;
             oldStarting = starting;
-            Sync();
+            sync();
         }
     }
 
     private void GetFluidDown()
     {
-        if (tank.getFluidAmount() <= 0 && isRunning)
+        if (isRunning && tank.getFluidAmount() <= 0)
         {
             if (IRConfig.Main.pumpInfinityWater.get()
-                    && world.getBlockState(pos.down()).getBlock().equals(Blocks.WATER))
+                    && (world.getBlockState(pos.down()).getBlock().equals(Blocks.WATER)
+                    || world.getBlockState(pos.down()).getBlock().equals(Blocks.FLOWING_WATER)))
             {
-                tank.fill(new FluidStack(Fluids.WATER, 1000), IFluidHandler.FluidAction.EXECUTE);
+                tank.fillInternal(new FluidStack(FluidRegistry.WATER, References.BUCKET_VOLUME), true);
+                return;
             }
             if (getFluidSet() != null && !getFluidSet().isEmpty())
             {
                 BlockPos fluidPos = getFluidSet().get(0);
 
-                while (!instanceOf(fluidPos, true))
+                while (!instanceOf(fluidPos, true, null))
                 {
                     getFluidSet().remove(fluidPos);
                     if (getFluidSet() == null || getFluidSet().isEmpty()) return;
                     fluidPos = getFluidSet().get(0);
                 }
 
-                BlockState state = world.getBlockState(fluidPos);
-                IFluidHandler downFluid = Utils.wrapFluidBlock(state, world, fluidPos);
+                BlockState blockState = world.getBlockState(fluidPos);
+                IFluidHandler downFluid = Utils.wrapFluidBlock(blockState, world, fluidPos);
 
-                boolean consumeFluid = !(downFluid.getFluidInTank(0).getFluid().equals(Fluids.WATER)
+                boolean consumeFluid = !(downFluid.getTanks() > 0
+                        && !downFluid.getFluidInTank(0).isEmpty()
+                        && downFluid.getFluidInTank(0).getFluid().equals(FluidRegistry.WATER)
                         && IRConfig.Main.pumpInfinityWater.get());
 
-                if (tank.fill(downFluid.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.EXECUTE) > 0 && GetEnergyContainer().getEnergyStored() >= (energyPerTick * everyXtick))
+                if (tank.fillInternal(downFluid.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.SIMULATE) > 0)
                 {
                     FluidStack stack = downFluid.drain(Integer.MAX_VALUE, consumeFluid ? IFluidHandler.FluidAction.EXECUTE : IFluidHandler.FluidAction.SIMULATE);
-                    if (IRConfig.Main.repleceLavaWithCobble.get() && stack != null && stack.getFluid().equals(Fluids.LAVA))
+                    if (IRConfig.Main.replaceLavaWithCobble.get() && stack != null && stack.getFluid().equals(FluidRegistry.LAVA))
                         world.setBlockState(fluidPos, Blocks.COBBLESTONE.getDefaultState());
-                    tank.fill(stack, IFluidHandler.FluidAction.EXECUTE);
-                    isRunning = true;
+                    tank.fillInternal(stack, IFluidHandler.FluidAction.EXECUTE);
                 }
                 getFluidSet().remove(fluidPos);
             }
@@ -209,21 +208,23 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
 
     private void getAllFluids()
     {
-        if (world.getBlockState(pos.down()).getBlock() instanceof FlowingFluidBlock)
+        Block block = world.getBlockState(pos.down()).getBlock();
+        if (block instanceof IFluidBlock)
         {
             Stack<BlockPos> traversingFluids = new Stack<>();
             List<BlockPos> flowingPos = new ArrayList<>();
             traversingFluids.add(pos.down());
+            IFluidBlock filter = (IFluidBlock) block;
             while (!traversingFluids.isEmpty())
             {
                 BlockPos fluidPos = traversingFluids.pop();
-                if (instanceOf(fluidPos, true)) fluidSet.add(fluidPos);
+                if (instanceOf(fluidPos, true, filter)) fluidSet.add(fluidPos);
                 else flowingPos.add(fluidPos);
 
                 for (Direction d : Direction.values())
                 {
                     BlockPos newPos = fluidPos.offset(d);
-                    if (instanceOf(newPos, false) && !fluidSet.contains(newPos) && !flowingPos.contains(newPos))
+                    if (instanceOf(newPos, false, filter) && !fluidSet.contains(newPos) && !flowingPos.contains(newPos))
                     {
                         traversingFluids.add(newPos);
                     }
@@ -232,25 +233,22 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
         }
     }
 
-    private boolean instanceOf(BlockPos pos, boolean checkLevel)
+    private boolean instanceOf(BlockPos pos, boolean checkLevel, IFluidBlock filter)
     {
         if (pos == null) return false;
-        BlockState state = world.getBlockState(pos);
-        return state.getBlock() instanceof FlowingFluidBlock
-                && (!checkLevel || state.get(FlowingFluidBlock.LEVEL) == 0)
-                && getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) <= maxRadius * maxRadius;
+        BlockState state = getBlockState();
+        return state.getBlock() instanceof IFluidBlock
+                && (filter == null || state.getBlock() == filter)
+                && (!checkLevel || state.get(BlockLiquid.LEVEL) == 0)
+                && this.pos.distanceSq(pos.getX(), pos.getY(), pos.getZ(), true) <= maxRadius * maxRadius;
     }
 
     private void passFluidUp()
     {
         IFluidHandler upTank = GetTankUp();
-        if (upTank != null)
+        if (upTank != null && tank.getFluidAmount() > 0)
         {
-            if (upTank.fill(tank.drain(tank.getCapacity() / everyXtick, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.SIMULATE) > 0)
-            {
-                upTank.fill(tank.drain(tank.getCapacity() / everyXtick, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
-                isRunning = true;
-            }
+            tank.tryPassFluid(tank.getCapacity()/ everyXtick, upTank);
         }
     }
 
@@ -262,29 +260,12 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
         super.remove();
     }
 
-    private IEnergyStorage GetEnergyContainer()
-    {
-        if (getIdex() == 0) return energyStorage.orElse(null);
-        if (motorEnergy != null) return motorEnergy;
-        BlockState state = getBlockState();
-        if (state.getBlock() instanceof BlockElectricPump)
-        {
-            Direction facing = state.get(BlockElectricPump.FACING);
-            TileEntityElectricPump te = (TileEntityElectricPump) world.getTileEntity(this.pos.offset(facing.getOpposite()));
-            if (te != null)
-            {
-                motorEnergy = te.energyStorage.orElse(null);
-            }
-        }
-        return motorEnergy;
-    }
-
-    private IFluidHandler GetTankUp()
-    {
-        TileEntity upTE = world.getTileEntity(this.pos.up());
+    private IFluidHandler GetTankUp() {
+        TileEntity upTE = world.getTileEntity(pos.up());
         if (upTE != null)
         {
-            return upTE.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.DOWN).orElse(null);
+            IFluidHandler cap = upTE.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.DOWN).orElse(null);
+            if (cap != null) return cap;
         }
         return null;
     }
@@ -292,8 +273,9 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
     private Direction getBlockFacing()
     {
         if (facing != null) return facing;
-        BlockState state = world.getBlockState(pos);
-        facing = state.get(BlockElectricPump.FACING);
+        BlockState state = getBlockState();
+        if (state.getBlock() instanceof BlockElectricPump) facing = state.get(BlockElectricPump.FACING);
+        else return Direction.NORTH;
         return facing;
     }
 
@@ -303,13 +285,10 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
         CompoundNBT tag = new CompoundNBT();
         tank.writeToNBT(tag);
         compound.put("fluid", tag);
+        compound.putInt("index", getIndex());
         compound.putBoolean("isRunning", isRunning);
         compound.putBoolean("starting", starting);
-        energyStorage.ifPresent(h ->
-        {
-            CompoundNBT tag2 = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
-            compound.put("energy", tag2);
-        });
+        compound.put("StoredIR", this.energyContainer.serializeNBT());
         return super.write(compound);
     }
 
@@ -318,22 +297,26 @@ public class TileEntityElectricPump extends TileEntitySyncable implements ICapab
     {
         CompoundNBT tag = compound.getCompound("fluid");
         tank.readFromNBT(tag);
+        index = compound.getInt("index");
         isRunning = compound.getBoolean("isRunning");
         starting = compound.getBoolean("starting");
-        energyStorage.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(compound.getCompound("StoredIR")));
+        this.energyContainer.deserializeNBT(compound.getCompound("StoredIR"));
         super.read(compound);
     }
 
     @Nullable
     @Override
-    public <T> LazyOptional<T> getCapability(final Capability<T> capability, @Nullable final Direction facing)
-    {
-        int index = getIdex();
+    public <T> LazyOptional<T> getCapability(final Capability<T> capability, @Nullable final Direction facing) {
+        int index = getIndex();
         if (index == 1 && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == Direction.UP)
             return LazyOptional.of(() -> tank).cast();
         Direction face = getBlockFacing();
         if (index == 0 && capability == CapabilityEnergy.ENERGY && facing == face.getOpposite())
-            return energyStorage.cast();
+        {
+            TileEntityElectricPump te = (TileEntityElectricPump) world.getTileEntity(pos.offset(face));
+            if (te != null)
+                return LazyOptional.of(() -> te.energyContainer).cast();
+        }
         return super.getCapability(capability, facing);
     }
 }

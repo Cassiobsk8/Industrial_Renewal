@@ -1,13 +1,12 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import net.minecraft.tileentity.TileEntity;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
+import net.minecraft.tileentity.TileEntityType;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.BUNKBED_TILE;
-
-public class TileEntityBunkBed extends TileEntity
+public class TileEntityBunkBed extends TEBase
 {
-    public TileEntityBunkBed()
+    public TileEntityBunkBed(TileEntityType<?> tileEntityTypeIn)
     {
-        super(BUNKBED_TILE.get());
+        super(tileEntityTypeIn);
     }
 }

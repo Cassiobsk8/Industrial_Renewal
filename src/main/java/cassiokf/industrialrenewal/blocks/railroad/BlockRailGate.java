@@ -1,70 +1,68 @@
 package cassiokf.industrialrenewal.blocks.railroad;
 
-import cassiokf.industrialrenewal.init.SoundsRegistration;
-import net.minecraft.block.AbstractRailBlock;
+import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.IProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.RailShape;
+import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
-public class BlockRailGate extends AbstractRailBlock
+public class BlockRailGate extends BlockNormalRailBase
 {
-    public static final EnumProperty<RailShape> SHAPE = EnumProperty.create("shape", RailShape.class, dir ->
-            dir == RailShape.NORTH_SOUTH || dir == RailShape.EAST_WEST
-    );
-    public static final BooleanProperty OPEN = BooleanProperty.create("open");
-    protected static final VoxelShape CNORTH_AABB = Block.makeCuboidShape(-4, 0, 6, 20, 32, 10);
-    protected static final VoxelShape CWEST_AABB = Block.makeCuboidShape(6, 0, -4, 10, 32, 20);
+
+    public static final PropertyBool OPEN = PropertyBool.create("open");
+    protected static final AxisAlignedBB CNORTH_AABB = new AxisAlignedBB(-0.25D, 0.0D, 0.375D, 1.25D, 2D, 0.625D);
+    protected static final AxisAlignedBB CWEST_AABB = new AxisAlignedBB(0.375D, 0.0D, -0.25D, 0.625D, 2D, 1.25D);
     protected String name;
 
-    public BlockRailGate()
+    public BlockRailGate(String name, CreativeTabs tab)
     {
-        super(true, Block.Properties.create(Material.IRON));
-        setDefaultState(getDefaultState().with(OPEN, false));
+        super(name, tab);
+        setDefaultState(getDefaultState().withProperty(OPEN, false));
     }
 
-    public IProperty<RailShape> getShapeProperty()
+
+    @Override
+    public boolean canCollideCheck(IBlockState state, boolean hitIfLiquid)
     {
-        return SHAPE;
+        return super.canCollideCheck(state, hitIfLiquid);
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
     {
-        RailShape direction = state.get(SHAPE);
-        VoxelShape FINAL_SHAPE = FLAT_AABB;
-        if (!state.get(OPEN))
+        EnumRailDirection direction = state.getValue(SHAPE);
+        if (!state.getValue(OPEN))
         {
             switch (direction)
             {
                 case NORTH_SOUTH:
-                    FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, CNORTH_AABB);
+                    addCollisionBoxToList(pos, entityBox, collidingBoxes, CNORTH_AABB);
                     break;
                 case EAST_WEST:
-                    FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, CWEST_AABB);
+                    addCollisionBoxToList(pos, entityBox, collidingBoxes, CWEST_AABB);
                     break;
             }
         }
-        return FINAL_SHAPE;
+        super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        RailShape direction = state.get(SHAPE);
+        EnumRailDirection direction = state.getValue(SHAPE);
         switch (direction)
         {
             default:
@@ -76,41 +74,67 @@ public class BlockRailGate extends AbstractRailBlock
     }
 
     @Override
-    protected void updateState(BlockState state, World worldIn, BlockPos pos, Block blockIn)
+    public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
     {
-        boolean flag1 = state.get(OPEN);
+        return worldIn.getBlockState(pos).getValue(OPEN);
+    }
+
+    @Override
+    protected void updateState(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
+    {
+        boolean flag1 = state.getValue(OPEN);
         boolean flag2 = worldIn.isBlockPowered(pos);
         if (flag1 != flag2)
         {
-            worldIn.setBlockState(pos, state.with(OPEN, flag2), 3);
+            worldIn.setBlockState(pos, state.withProperty(OPEN, flag2), 3);
             //Sound
             Random r = new Random();
             float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
             if (flag2)
             {
-                worldIn.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_OPEN.get(), SoundCategory.NEUTRAL, 1.0F, pitch);
+                worldIn.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, pitch);
             } else
             {
-                worldIn.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_CLOSE.get(), SoundCategory.NEUTRAL, 1.0F, pitch);
+                worldIn.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, pitch);
             }
         }
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected BlockStateContainer createBlockState()
     {
-        builder.add(OPEN, SHAPE);
+        return new BlockStateContainer(this, OPEN, SHAPE, SNOW);
     }
 
     @Override
-    public boolean canMakeSlopes(BlockState state, IBlockReader world, BlockPos pos)
+    public boolean canMakeSlopes(IBlockAccess world, BlockPos pos)
     {
         return false;
     }
 
     @Override
-    public boolean isFlexibleRail(BlockState state, IBlockReader world, BlockPos pos)
+    public boolean isFlexibleRail(IBlockAccess world, BlockPos pos)
     {
         return false;
+    }
+
+    @Override
+    public  BlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.byMetadata(meta & 7)).withProperty(OPEN, (meta & 8) > 0);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        int i = 0;
+        i = i | (state.getValue(SHAPE)).getMetadata();
+
+        if (state.getValue(OPEN))
+        {
+            i |= 8;
+        }
+
+        return i;
     }
 }

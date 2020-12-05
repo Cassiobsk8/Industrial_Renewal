@@ -1,21 +1,20 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 
 import java.util.EnumSet;
 import java.util.Set;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.CATWALKSTAIR_TILE;
-
-public class TileEntityCatWalkStair extends TileEntitySyncable
+public class TileEntityCatWalkStair extends TileEntitySync
 {
     private final Set<Direction> blackListedFaces = EnumSet.noneOf(Direction.class);
 
-    public TileEntityCatWalkStair()
+    public TileEntityCatWalkStair(TileEntityType<?> tileEntityTypeIn)
     {
-        super(CATWALKSTAIR_TILE.get());
+        super(tileEntityTypeIn);
     }
 
     public boolean toggleFacing(final Direction facing)

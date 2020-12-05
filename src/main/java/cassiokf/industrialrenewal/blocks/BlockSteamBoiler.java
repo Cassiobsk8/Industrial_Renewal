@@ -1,129 +1,128 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.Block3x3x3Base;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.FluidInit;
 import cassiokf.industrialrenewal.item.ItemFireBox;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntitySteamBoiler;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import cassiokf.industrialrenewal.util.MachinesUtils;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.*;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockSteamBoiler extends Block3x3x3Base<TileEntitySteamBoiler>
+public class BlockSteamBoiler extends BlockMultiBlockBase<TileEntitySteamBoiler>
 {
-    public static final IntegerProperty TYPE = IntegerProperty.create("type", 0, 2);
+    public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 2);
 
-    public BlockSteamBoiler()
+    public BlockSteamBoiler(String name, CreativeTabs tab)
     {
-        super(Block.Properties.create(Material.IRON));
+        super(Material.IRON, name, tab);
+        setSoundType(SoundType.METAL);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
     {
-        tooltip.add(new StringTextComponent(
-                I18n.format("info.industrialrenewal.requires")
-                        + ":"));
-        tooltip.add(new StringTextComponent(" -" + I18n.format("info.industrialrenewal.firebox")));
-        tooltip.add(new StringTextComponent(
-                " -" + Blocks.WATER.getNameTextComponent().getFormattedText()
-                        + ": "
-                        + IRConfig.Main.steamBoilerWaterPerTick.get().toString()
-                        + " mB/t"));
-        int mult = IRConfig.Main.steamBoilerWaterPerTick.get() * IRConfig.Main.steamBoilerConversionFactor.get();
-        tooltip.add(new StringTextComponent(
-                I18n.format("info.industrialrenewal.produces")
-                        + " "
-                        + "Steam"
-                        + ": "
-                        + mult
-                        + " mB/t"));
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        tooltip.add(I18n.format("info.industrialrenewal.requires")
+                + ":");
+        tooltip.add(" -" + I18n.format("info.industrialrenewal.firebox"));
+        tooltip.add(" -" + Blocks.WATER.getLocalizedName()
+                + ": "
+                + IRConfig.MainConfig.Main.steamBoilerWaterPerTick
+                + " mB/t");
+        tooltip.add(I18n.format("info.industrialrenewal.produces")
+                + " "
+                + FluidInit.STEAM.getName()
+                + ": "
+                + (IRConfig.MainConfig.Main.steamBoilerWaterPerTick * IRConfig.MainConfig.Main.steamBoilerConversionFactor)
+                + " mB/t");
+        super.addInformation(stack, player, tooltip, advanced);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand)
     {
-        TileEntitySteamBoiler te = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
-        if (te != null && te.isMaster() && te.getIntType() == 1 && te.getFuelFill() > 0 && rand.nextInt(24) == 0)
+        TileEntitySteamBoiler te = (TileEntitySteamBoiler) world.getTileEntity(pos);
+        if (te != null && te.isMaster() && te.getBoilerType() != 0 && te.boiler.isBurning() && rand.nextInt(12) == 0)
         {
-            worldIn.playSound(null, pos, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 0.3F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F);
+            world.playSound(null, pos, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, (2F + rand.nextFloat()) * IRConfig.MainConfig.Sounds.masterVolumeMult, rand.nextFloat() * 0.7F + 0.3F);
         }
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing)
     {
-        if (state.getBlock() == newState.getBlock()) return;
-        TileEntitySteamBoiler te = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
-        if (te != null) te.dropAllItems();
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+        return MachinesUtils.getBlocksIn3x3x3Centered(masterPos);
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
+    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntitySteamBoiler tile = (TileEntitySteamBoiler) worldIn.getTileEntity(pos);
-        IItemHandler itemHandler = tile.getFireBoxHandler();
-        ItemStack heldItem = player.getHeldItem(handIn);
+        TileEntitySteamBoiler tile = getTileEntity(world, pos);
+        ItemStack heldItem = player.getHeldItem(hand);
         if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemFireBox || heldItem.getItem() instanceof ItemPowerScrewDrive))
         {
-            if (heldItem.getItem() instanceof ItemFireBox && itemHandler.getStackInSlot(0).isEmpty())
+            if (heldItem.getItem() instanceof ItemFireBox && tile.getBoilerType() == 0)
             {
                 int type = ((ItemFireBox) heldItem.getItem()).type;
-                itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1), false);
                 tile.setType(type);
-                if (!worldIn.isRemote && !player.isCreative()) heldItem.shrink(1);
-                return ActionResultType.SUCCESS;
+                if (!world.isRemote && !player.isCreative()) heldItem.shrink(1);
+                return true;
             }
-            if (heldItem.getItem() instanceof ItemPowerScrewDrive && !itemHandler.getStackInSlot(0).isEmpty())
+            if (heldItem.getItem() instanceof ItemPowerScrewDrive && tile.getBoilerType() != 0)
             {
-                ItemStack stack = itemHandler.extractItem(0, 64, false);
-                if (!worldIn.isRemote && !player.isCreative()) player.addItemStackToInventory(stack);
+                if (!world.isRemote && !player.isCreative()) player.addItemStackToInventory(tile.getFireBoxStack());
                 tile.setType(0);
-                return ActionResultType.SUCCESS;
+                return true;
             }
         }
-        return ActionResultType.PASS;
+        return false;
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected BlockStateContainer createBlockState()
     {
-        builder.add(FACING, MASTER, TYPE);
+        return new BlockStateContainer(this, FACING, MASTER, TYPE);
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public  BlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        TileEntitySteamBoiler te = (TileEntitySteamBoiler) worldIn.getTileEntity(currentPos);
-        if (te == null || !stateIn.get(MASTER)) return stateIn.with(TYPE, 0);
-        return stateIn.with(TYPE, te.getIntType());
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te instanceof TileEntitySteamBoiler && state.getValue(MASTER))
+        {
+            return state.withProperty(TYPE, ((TileEntitySteamBoiler) te).getBoilerType());
+        }
+        return state.withProperty(TYPE, 0);
     }
 
     @Nullable
     @Override
-    public TileEntitySteamBoiler createTileEntity(BlockState state, IBlockReader world)
+    public TileEntitySteamBoiler createTileEntity(World world,  BlockState state)
     {
         return new TileEntitySteamBoiler();
     }

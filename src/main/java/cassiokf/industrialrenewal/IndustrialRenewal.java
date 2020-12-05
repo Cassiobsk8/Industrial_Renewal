@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.entity.EntitiesRegistration;
+import cassiokf.industrialrenewal.handlers.EventHandler;
 import cassiokf.industrialrenewal.init.*;
 import cassiokf.industrialrenewal.model.ModelLoaderCustom;
 import net.minecraft.client.renderer.RenderType;
@@ -41,6 +42,7 @@ public class IndustrialRenewal
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(EventHandler.class);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, IRConfig.COMMON_SPEC, References.MODID + ".toml");
     }
 

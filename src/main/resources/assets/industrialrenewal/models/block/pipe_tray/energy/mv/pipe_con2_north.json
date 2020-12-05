@@ -38,9 +38,9 @@
         "east": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            3
           ],
           "rotation": 90,
           "texture": "#particle"
@@ -48,9 +48,9 @@
         "west": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            3
           ],
           "rotation": 90,
           "texture": "#particle"
@@ -58,19 +58,21 @@
         "up": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            3
           ],
+          "rotation": 90,
           "texture": "#particle"
         },
         "down": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            3
           ],
+          "rotation": 90,
           "texture": "#particle"
         }
       }
@@ -1113,36 +1115,36 @@
         "north": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            2
+            7.25
           ],
           "texture": "#particle"
         },
         "east": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            2
+            7.25
           ],
           "texture": "#particle"
         },
         "south": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            2
+            7.25
           ],
           "texture": "#particle"
         },
         "west": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            2
+            7.25
           ],
           "texture": "#particle"
         },
@@ -1158,9 +1160,9 @@
         "down": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            2
+            4
           ],
           "texture": "#particle"
         }

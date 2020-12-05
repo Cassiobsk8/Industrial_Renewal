@@ -29,9 +29,9 @@
         "north": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            5
           ],
           "rotation": 180,
           "texture": "#particle"
@@ -39,27 +39,29 @@
         "east": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            5
           ],
+          "rotation": 180,
           "texture": "#particle"
         },
         "south": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            5
           ],
+          "rotation": 180,
           "texture": "#particle"
         },
         "west": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            5
           ],
           "rotation": 180,
           "texture": "#particle"

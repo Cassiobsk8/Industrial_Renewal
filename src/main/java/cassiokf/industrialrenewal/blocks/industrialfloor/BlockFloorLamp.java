@@ -1,72 +1,115 @@
 package cassiokf.industrialrenewal.blocks.industrialfloor;
 
-import cassiokf.industrialrenewal.init.BlocksRegistration;
-import net.minecraft.block.BlockState;
+import cassiokf.industrialrenewal.init.ModBlocks;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Random;
 
 
 public class BlockFloorLamp extends BlockIndustrialFloor
 {
-    public BlockFloorLamp()
-    {
-        super();
+    public BlockFloorLamp(String name, CreativeTabs tab) {
+        super(name, tab);
+        setSoundType(SoundType.METAL);
+        setLightLevel(1.0F);
     }
 
     @Override
-    public BlockState getDefaultBlockState()
-    {
-        return super.getDefaultBlockState().with(UP, true);
+    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        return false;
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+        return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor)).getItem();
+    }
+
+    @Override
+    public void onPlayerDestroy(World world, BlockPos pos,  BlockState state)
     {
-        if (state.getBlock() == newState.getBlock()) return;
-        ItemStack itemst = new ItemStack(BlocksRegistration.FLUORESCENT_ITEM.get());
-        if (!worldIn.isRemote)
-        {
-            spawnAsEntity(worldIn, pos, itemst);
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        ItemStack itemst = new ItemStack(Item.getItemFromBlock(ModBlocks.fluorescent));
+        EntityItem entity = new EntityItem(world, x, y, z, itemst);
+        if (!world.isRemote) {
+            world.spawnEntity(entity);
         }
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public ItemStack getItem(World worldIn, BlockPos pos,  BlockState state) {
+        return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public  BlockState getStateFromMeta(final int meta) {
+        return getDefaultState();
     }
 
     @Override
-    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
+    public int getMetaFromState(final  BlockState state) {
+        return 0;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public BlockRenderLayer getRenderLayer()
     {
-        for (Direction face : Direction.values())
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    @Deprecated
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    @Deprecated
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Deprecated
+    public boolean isTopSolid(IBlockState state)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        return side.equals(EnumFacing.UP);
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face)
+    {
+        if (face == EnumFacing.DOWN)
         {
-            state = state.with(getPropertyBasedOnDirection(face), canConnectTo(worldIn, pos, face));
+            return BlockFaceShape.SOLID;
         }
-        worldIn.setBlockState(pos, state);
-        super.onBlockAdded(state, worldIn, pos, oldState, isMoving);
-    }
-
-    @Override
-    public boolean canConnectTo(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
-    {
-        if (neighborDirection == Direction.UP) return true;
-        return super.canConnectTo(worldIn, currentPos, neighborDirection);
-    }
-
-    @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
-    {
-        return ActionResultType.PASS;
-    }
-
-    @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
-    {
-        return new ItemStack(BlocksRegistration.INDFLOOR_ITEM.get());
+        return BlockFaceShape.UNDEFINED;
     }
 }

@@ -1,21 +1,20 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 
 import java.util.EnumSet;
 import java.util.Set;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.CATWALK_TILE;
-
-public class TileEntityCatWalk extends TileEntitySyncable
+public class TileEntityCatWalk extends TileEntitySync
 {
     private final Set<Direction> blackListedFaces = EnumSet.noneOf(Direction.class);
 
-    public TileEntityCatWalk()
+    public TileEntityCatWalk(TileEntityType<?> tileEntityTypeIn)
     {
-        super(CATWALK_TILE.get());
+        super(tileEntityTypeIn);
     }
 
     public boolean toggleFacing(final Direction facing)
@@ -23,12 +22,34 @@ public class TileEntityCatWalk extends TileEntitySyncable
         if (blackListedFaces.contains(facing))
         {
             blackListedFaces.remove(facing);
-            markDirty();
             return false;
         } else
         {
             blackListedFaces.add(facing);
-            markDirty();
+            return true;
+        }
+    }
+
+    public boolean disableFacing(final Direction facing)
+    {
+        if (blackListedFaces.contains(facing))
+        {
+            blackListedFaces.remove(facing);
+            return false;
+        } else
+        {
+            return true;
+        }
+    }
+
+    public boolean activeFacing(final Direction facing)
+    {
+        if (blackListedFaces.contains(facing))
+        {
+            return false;
+        } else
+        {
+            blackListedFaces.add(facing);
             return true;
         }
     }

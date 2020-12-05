@@ -1,11 +1,9 @@
 package cassiokf.industrialrenewal.item;
 
-import net.minecraft.item.Item;
+import net.minecraft.creativetab.CreativeTabs;
 
-public class ItemIronPlow extends ItemBase
-{
-    public ItemIronPlow(Item.Properties properties)
-    {
-        super(properties);
+public class ItemIronPlow extends ItemBase {
+    public ItemIronPlow(String name, CreativeTabs tab) {
+        super(name, tab);
     }
 }

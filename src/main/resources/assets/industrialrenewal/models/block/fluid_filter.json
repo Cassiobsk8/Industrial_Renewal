@@ -2,8 +2,8 @@
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "textures": {
     "0": "industrialrenewal:blocks/pipe",
-    "1": "block/iron_bars",
-    "2": "block/glass"
+    "1": "blocks/iron_bars",
+    "2": "blocks/glass"
   },
   "display": {
     "gui": {

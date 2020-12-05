@@ -1,9 +1,10 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySaveContent;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -11,33 +12,37 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import javax.annotation.Nullable;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.BARREL_TILE;
-
-public class TileEntityBarrel extends TileEntitySyncable
+public class TileEntityBarrel extends TileEntitySaveContent
 {
-    public CustomFluidTank tank = new CustomFluidTank(IRConfig.Main.barrelCapacity.get())
+    public final CustomFluidTank tank = new CustomFluidTank(IRConfig.Main.barrelCapacity.get())
     {
         @Override
         public void onContentsChanged()
         {
-            TileEntityBarrel.this.Sync();
+            TileEntityBarrel.this.sync();
         }
     };
 
-    public TileEntityBarrel()
+    public TileEntityBarrel(TileEntityType<?> tileEntityTypeIn)
     {
-        super(BARREL_TILE.get());
+        super(tileEntityTypeIn);
     }
 
     public String GetChatQuantity()
     {
-        if (!tank.getFluid().isEmpty())
+        if (this.tank.getFluid() != null)
         {
-            return tank.getFluid().getDisplayName().getString() + ": " + tank.getFluidAmount() + " mB";
+            return this.tank.getFluid().getDisplayName().getFormattedText() + ": " + this.tank.getFluidAmount() + " mB";
         } else
         {
             return "Empty";
         }
+    }
+
+    @Override
+    public CustomFluidTank getTank()
+    {
+        return tank;
     }
 
     @Override
@@ -46,7 +51,6 @@ public class TileEntityBarrel extends TileEntitySyncable
         CompoundNBT tag = new CompoundNBT();
         tank.writeToNBT(tag);
         compound.put("fluid", tag);
-
         return super.write(compound);
     }
 
@@ -55,7 +59,6 @@ public class TileEntityBarrel extends TileEntitySyncable
     {
         CompoundNBT tag = compound.getCompound("fluid");
         tank.readFromNBT(tag);
-
         super.read(compound);
     }
 

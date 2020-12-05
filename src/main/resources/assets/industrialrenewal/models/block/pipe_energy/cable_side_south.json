@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "industrialrenewal:blocks/cable_gold",
-    "particle": "industrialrenewal:blocks/cable_gold"
+    "0": "industrialrenewal:blocks/cable_lv",
+    "particle": "industrialrenewal:blocks/cable_lv"
   },
   "elements": [
     {
@@ -21,28 +21,19 @@
         "east": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
           "rotation": 90,
-          "texture": "#0"
-        },
-        "south": {
-          "uv": [
-            14,
-            14,
-            16,
-            16
-          ],
           "texture": "#0"
         },
         "west": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
           "rotation": 90,
           "texture": "#0"
@@ -50,21 +41,21 @@
         "up": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
-          "rotation": 180,
+          "rotation": 90,
           "texture": "#0"
         },
         "down": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            8
           ],
-          "rotation": 180,
+          "rotation": 90,
           "texture": "#0"
         }
       }

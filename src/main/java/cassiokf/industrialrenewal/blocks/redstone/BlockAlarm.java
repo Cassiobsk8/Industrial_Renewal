@@ -1,37 +1,48 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityAlarm;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockAlarm extends BlockAbstractFacing
+public class BlockAlarm extends BlockTileEntity<TileEntityAlarm>
 {
-    private static final VoxelShape UP_BLOCK_AABB = Block.makeCuboidShape(2, 0, 2, 14, 7, 14);
-    private static final VoxelShape DOWN_BLOCK_AABB = Block.makeCuboidShape(2, 16, 2, 14, 9, 14);
-    private static final VoxelShape EAST_BLOCK_AABB = Block.makeCuboidShape(0, 2, 2, 7, 14, 14);
-    private static final VoxelShape WEST_BLOCK_AABB = Block.makeCuboidShape(16, 2, 2, 9, 14, 14);
-    private static final VoxelShape NORTH_BLOCK_AABB = Block.makeCuboidShape(2, 2, 9, 14, 14, 16);
-    private static final VoxelShape SOUTH_BLOCK_AABB = Block.makeCuboidShape(2, 2, 7, 14, 14, 0);
+    public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
+    private static final AxisAlignedBB UP_BLOCK_AABB = new AxisAlignedBB(0.125F, 0, 0.125F, 0.875F, 0.4375F, 0.875F);
+    private static final AxisAlignedBB DOWN_BLOCK_AABB = new AxisAlignedBB(0.125F, 1, 0.125F, 0.875F, 0.5625F, 0.875F);
+    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(0F, 0.125F, 0.125F, 0.4375F, 0.875F, 0.875F);
+    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(1F, 0.125F, 0.125F, 0.5625F, 0.875F, 0.875F);
+    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.5625F, 0.875F, 0.875F, 1);
+    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.4375F, 0.875F, 0.875F, 0);
 
+    public BlockAlarm(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
+        setHardness(0.8f);
+        //setSoundType(SoundType.METAL);
+        this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.UP));
 
-    public BlockAlarm()
-    {
-        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
-    public VoxelShape getVoxelShape(BlockState state)
-    {
-        Direction dir = state.get(FACING);
-        switch (dir)
-        {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        EnumFacing dir = state.getValue(FACING);
+        switch (dir) {
             case NORTH:
                 return NORTH_BLOCK_AABB;
             case SOUTH:
@@ -48,15 +59,59 @@ public class BlockAlarm extends BlockAbstractFacing
     }
 
     @Override
-    public boolean hasTileEntity(BlockState state)
-    {
-        return true;
+    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        //todo make it change sound on right clicked with ScrewDrive
+        return false;
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if (!(world.isSideSolid(pos.offset(state.getValue(FACING).getOpposite()), state.getValue(FACING))))
+        {
+            this.dropBlockAsItem(world, pos, world.getBlockState(pos), 0);
+            world.setBlockToAir(pos);
+        }
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING);
+    }
+
+    @Override
+    public  BlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(FACING).getIndex();
+    }
+
+    @Override
+    public  BlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+        return this.getDefaultState().withProperty(FACING, facing);
+    }
+
+    @Override
+    @Deprecated
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    @Deprecated
+    public boolean isFullCube(IBlockState state) {
+        return false;
     }
 
     @Nullable
     @Override
-    public TileEntityAlarm createTileEntity(BlockState state, IBlockReader world)
-    {
+    public TileEntityAlarm createTileEntity(World world,  BlockState state) {
         return new TileEntityAlarm();
+    }
+
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
+        return face == state.getValue(FACING).getOpposite() ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
     }
 }

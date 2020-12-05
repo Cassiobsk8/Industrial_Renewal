@@ -1,27 +1,32 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import cassiokf.industrialrenewal.util.CustomItemStackHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MusicDiscItem;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.RECORDPLAYER_TILE;
-
-public class TileEntityRecordPlayer extends TileEntitySyncable implements ICapabilityProvider
+public class TileEntityRecordPlayer extends TileEntitySync
 {
-    public LazyOptional<IItemHandler> inventory = LazyOptional.of(this::createHandler);
+    public final CustomItemStackHandler inventory = new CustomItemStackHandler(4)
+    {
+        @Override
+        protected void onContentsChanged(int slot)
+        {
+            if (!world.isRemote)
+            {
+                TileEntityRecordPlayer.this.sync();
+            }
+        }
+    };
     private boolean playAll = false;
     private boolean playing = false;
 
@@ -30,35 +35,20 @@ public class TileEntityRecordPlayer extends TileEntitySyncable implements ICapab
     private boolean played2 = false;
     private boolean played3 = false;
 
-    public TileEntityRecordPlayer()
+    public TileEntityRecordPlayer(TileEntityType<?> tileEntityTypeIn)
     {
-        super(RECORDPLAYER_TILE.get());
-    }
-
-    private IItemHandler createHandler()
-    {
-        return new CustomItemStackHandler(4)
-        {
-            @Override
-            protected void onContentsChanged(int slot)
-            {
-                if (!TileEntityRecordPlayer.this.world.isRemote)
-                {
-                    TileEntityRecordPlayer.this.Sync();
-                }
-            }
-        };
+        super(tileEntityTypeIn);
     }
 
     public boolean hasDiskInSlot(int slot)
     {
-        world.notifyBlockUpdate(this.pos, getBlockState(), getBlockState(), 3);
-        return !inventory.orElse(null).getStackInSlot(slot).isEmpty();
+        //this.world.notifyBlockUpdate(this.pos, this.world.getBlockState(this.pos), this.world.getBlockState(this.pos), 3);
+        return !this.inventory.getStackInSlot(slot).isEmpty();
     }
 
     /*
     @Override
-    public void tick() {
+    public void update() {
         if (playAll) {
             if (canPlay() && playDisk(0, true)) {
                 playDisk(0);
@@ -75,12 +65,6 @@ public class TileEntityRecordPlayer extends TileEntitySyncable implements ICapab
         }
     }*/
 
-    @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-        return new AxisAlignedBB(getPos(), getPos().add(1, 1, 1));
-    }
-
     public boolean playDisk(int slot)
     {
         return playDisk(slot, false);
@@ -90,19 +74,19 @@ public class TileEntityRecordPlayer extends TileEntitySyncable implements ICapab
     {
         setAllToFalse();
         playAll = false;
-        world.playEvent(1010, this.pos, 0);
+        this.world.playEvent(1010, this.pos, 0);
     }
 
     private boolean playDisk(int slot, boolean simulate)
     {
-        ItemStack diskStack = inventory.orElse(null).getStackInSlot(slot);
+        ItemStack diskStack = this.inventory.getStackInSlot(slot);
         if (!diskStack.isEmpty())
         {
             if (!simulate)
             {
                 MusicDiscItem diskItem = (MusicDiscItem) diskStack.getItem();
                 //SoundEvent sound = diskItem.getSound();
-                world.playEvent(1010, this.pos, Item.getIdFromItem(diskItem));
+                world.playEvent(1010, pos, Item.getIdFromItem(diskItem));
                 setPlaying(slot);
             }
             return true;
@@ -127,7 +111,6 @@ public class TileEntityRecordPlayer extends TileEntitySyncable implements ICapab
                 return;
             case 3:
                 played3 = true;
-                return;
         }
     }
 
@@ -151,28 +134,23 @@ public class TileEntityRecordPlayer extends TileEntitySyncable implements ICapab
     }
 
     @Override
-    public void read(CompoundNBT compound)
+    public CompoundNBT write(CompoundNBT compound)
     {
-        CompoundNBT invTag = compound.getCompound("inv");
-        inventory.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(invTag));
-        super.read(compound);
+        compound.put("rpinventory", this.inventory.serializeNBT());
+        return super.write(compound);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound)
+    public void read(CompoundNBT compound)
     {
-        inventory.ifPresent(h ->
-        {
-            CompoundNBT tag = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
-            compound.put("inv", tag);
-        });
-        return super.write(compound);
+        this.inventory.deserializeNBT(compound.getCompound("rpinventory"));
+        super.read(compound);
     }
 
     @Nullable
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing)
     {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? inventory.cast() : super.getCapability(capability, facing);
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? LazyOptional.of(() -> inventory).cast() : super.getCapability(capability, facing);
     }
 }

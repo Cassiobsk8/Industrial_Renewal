@@ -1,7 +1,7 @@
 package cassiokf.industrialrenewal.util.slots;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.tileentity.FurnaceTileEntity;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -15,15 +15,11 @@ public class FuelSlot extends SlotItemHandler {
     public boolean isItemValid(ItemStack itemstack) {
         if (itemstack.isEmpty())
             return false;
-        return /*TileEntityFurnace.isItemFuel(itemstack) ||*/ isBucket(itemstack);
+        return FurnaceTileEntity.isFuel(itemstack);
     }
 
     @Override
     public int getSlotStackLimit() {
         return 64;
-    }
-
-    public static boolean isBucket(ItemStack stack) {
-        return stack.getItem() == Items.BUCKET;
     }
 }

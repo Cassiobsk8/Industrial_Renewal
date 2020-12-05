@@ -29,9 +29,9 @@
         "north": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            6.6
           ],
           "rotation": 90,
           "texture": "#particle"
@@ -39,9 +39,9 @@
         "south": {
           "uv": [
             14,
-            0,
+            2,
             16,
-            6
+            6.6
           ],
           "rotation": 90,
           "texture": "#particle"
@@ -58,9 +58,9 @@
         "up": {
           "uv": [
             14,
-            0,
-            16,
-            6
+            2,
+            15.9,
+            6.6
           ],
           "rotation": 270,
           "texture": "#particle"
@@ -68,9 +68,9 @@
         "down": {
           "uv": [
             14,
-            0,
-            16,
-            6
+            2,
+            15.9,
+            6.6
           ],
           "rotation": 90,
           "texture": "#particle"
@@ -1198,7 +1198,7 @@
       ],
       "to": [
         2.75,
-        12.25,
+        12.35,
         9
       ],
       "rotation": {

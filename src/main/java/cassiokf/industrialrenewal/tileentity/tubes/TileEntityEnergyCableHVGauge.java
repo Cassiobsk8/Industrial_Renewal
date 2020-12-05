@@ -1,16 +1,15 @@
 package cassiokf.industrialrenewal.tileentity.tubes;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.enums.EnumCableIn;
+import cassiokf.industrialrenewal.util.enums.EnumCableIn;
 import net.minecraft.tileentity.TileEntity;
-
-import static cassiokf.industrialrenewal.init.TileRegistration.ENERGYCABLEGAUGEHV_TILE;
+import net.minecraft.tileentity.TileEntityType;
 
 public class TileEntityEnergyCableHVGauge extends TileEntityEnergyCableGauge
 {
-    public TileEntityEnergyCableHVGauge()
+    public TileEntityEnergyCableHVGauge(TileEntityType<?> tileEntityTypeIn)
     {
-        super(ENERGYCABLEGAUGEHV_TILE.get());
+        super(tileEntityTypeIn);
     }
 
     @Override

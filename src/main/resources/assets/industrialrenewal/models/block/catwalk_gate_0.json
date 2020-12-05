@@ -3,7 +3,7 @@
   "textures": {
     "0": "industrialrenewal:blocks/block_hazard",
     "1": "industrialrenewal:blocks/pipe",
-    "2": "industrialrenewal:blocks/anvil_base"
+    "2": "blocks/anvil_base"
   },
   "display": {
     "gui": {

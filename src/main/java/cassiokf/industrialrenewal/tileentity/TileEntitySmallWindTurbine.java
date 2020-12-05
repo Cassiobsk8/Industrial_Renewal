@@ -1,43 +1,74 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.BlockBatteryBank;
+import cassiokf.industrialrenewal.blocks.BlockSmallWindTurbine;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.item.ItemWindBlade;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySyncable;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
-import cassiokf.industrialrenewal.util.CustomItemStackHandler;
 import cassiokf.industrialrenewal.util.Utils;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.SWINDTURBINE_TILE;
-
-public class TileEntitySmallWindTurbine extends TileEntitySyncable implements ICapabilityProvider, ITickableTileEntity
+public class TileEntitySmallWindTurbine extends TileEntitySync implements ITickableTileEntity
 {
-    public LazyOptional<IItemHandler> bladeInv = LazyOptional.of(this::createHandler);
-    private LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(this::createEnergy);
-    private float rotation;
-    private int energyGenerated;
-    private int tickToDamage;
-
-    public TileEntitySmallWindTurbine()
+    private final CustomEnergyStorage energyContainer = new CustomEnergyStorage(32000, 1024, 1024)
     {
-        super(SWINDTURBINE_TILE.get());
+        @Override
+        public boolean canReceive()
+        {
+            return false;
+        }
+    };
+    public ItemStackHandler bladeInv = new ItemStackHandler(1)
+    {
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack)
+        {
+            if (stack.isEmpty()) return false;
+            return stack.getItem() instanceof ItemWindBlade;
+        }
+
+        @Override
+        protected void onContentsChanged(int slot)
+        {
+            TileEntitySmallWindTurbine.this.sync();
+        }
+    };
+    private float rotation;
+    private float oldRotation;
+    private int tickToDamage;
+    private Direction blockFacing;
+
+    private static final Random random = new Random();
+
+    public TileEntitySmallWindTurbine(TileEntityType<?> tileEntityTypeIn)
+    {
+        super(tileEntityTypeIn);
+    }
+
+    public void dropAllItems()
+    {
+        Utils.dropInventoryItems(world, pos, bladeInv);
     }
 
     public static int getMaxGeneration()
@@ -45,69 +76,27 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
         return IRConfig.Main.maxEnergySWindTurbine.get();
     }
 
-    private IItemHandler createHandler()
-    {
-        return new CustomItemStackHandler(1)
-        {
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack)
-            {
-                if (stack.isEmpty()) return false;
-                return stack.getItem() instanceof ItemWindBlade;
-            }
-
-            @Override
-            protected void onContentsChanged(int slot)
-            {
-                TileEntitySmallWindTurbine.this.Sync();
-            }
-        };
-    }
-
-    private IEnergyStorage createEnergy()
-    {
-        return new CustomEnergyStorage(32000, 1024, 1024)
-        {
-            @Override
-            public void onEnergyChange()
-            {
-                TileEntitySmallWindTurbine.this.Sync();
-            }
-        };
-    }
-
-    @Override
-    public void remove()
-    {
-        Utils.dropInventoryItems(world, pos, bladeInv.orElse(null));
-        super.remove();
-    }
-
     @Override
     public void tick()
     {
         if (!world.isRemote)
         {
+            int energyGen = 0;
             //Generate Energy
-            IEnergyStorage thisEnergy = energyStorage.orElse(null);
             if (hasBlade())
             {
-                int energyGen = Math.round(getMaxGeneration() * getEfficiency());
-                energyGenerated = thisEnergy.receiveEnergy(energyGen, false);
+                energyGen = Math.round(getMaxGeneration() * getEfficiency());
+                //damage blade
                 if (tickToDamage >= 1200 && energyGen > 0)
                 {
                     tickToDamage = 0;
-                    bladeInv.orElse(null).getStackInSlot(0).attemptDamageItem(1, new Random(), null);
-                    if (bladeInv.orElse(null).getStackInSlot(0).getDamage() < 0)
-                        bladeInv.ifPresent(e -> ((CustomItemStackHandler) e).setStackInSlot(0, ItemStack.EMPTY));
+                    if (bladeInv.getStackInSlot(0).attemptDamageItem(1, random, null))
+                        bladeInv.setStackInSlot(0, ItemStack.EMPTY);
                 }
                 if (tickToDamage < 1201) tickToDamage++;
-            } else
-            {
-                energyGenerated = 0;
             }
             //OutPut Energy
-            if (thisEnergy.getEnergyStored() > 0)
+            if (energyGen > 0)
             {
                 TileEntity te = world.getTileEntity(pos.down());
                 if (te != null)
@@ -115,31 +104,52 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
                     IEnergyStorage downE = te.getCapability(CapabilityEnergy.ENERGY, Direction.UP).orElse(null);
                     if (downE != null && downE.canReceive())
                     {
-                        thisEnergy.extractEnergy(downE.receiveEnergy(thisEnergy.extractEnergy(1024, true), false), false);
-                        this.markDirty();
+                        downE.receiveEnergy(energyGen, false);
                     }
                 }
             }
         } else
         {
-            rotation += 4.5f * getEfficiency();
-            if (rotation > 360) rotation = 0;
+            if (hasBlade())
+            {
+                oldRotation = rotation;
+                rotation += 6f * getEfficiency();
+                if (rotation >= 360f)
+                {
+                    rotation -= 360f;
+                    oldRotation -= 360f;
+                }
+            }
         }
     }
 
     public IItemHandler getBladeHandler()
     {
-        return bladeInv.orElse(null);
+        return this.bladeInv;
     }
 
     public float getRotation()
     {
-        return -rotation;
+        //float inverted = Utils.normalize(partialTicks, 1, 0);
+        //rotation = rotation + (4f * inverted) * getEfficiency();
+        //if (rotation >= 360) rotation -= 360;
+        return rotation;
+    }
+
+    public float getOldRotation()
+    {
+        return oldRotation;
+    }
+
+    @Override
+    public double getMaxRenderDistanceSquared()
+    {
+        return super.getMaxRenderDistanceSquared() * IRConfig.Render.windBladesRenderDistanceMult.get();
     }
 
     public boolean hasBlade()
     {
-        return !bladeInv.orElse(null).getStackInSlot(0).isEmpty();
+        return !this.bladeInv.getStackInSlot(0).isEmpty();
     }
 
     private float getEfficiency()
@@ -161,13 +171,19 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
         if (pos.getY() - 62 <= 0) heightModifier = 0;
         else heightModifier = (pos.getY() - posMin) / (255 - posMin);
         heightModifier = MathHelper.clamp(heightModifier, 0, 1);
-        //System.out.println(weatherModifier + " H " + heightModifier + " " + (pos.getY()- posMin)/(255-posMin));
+
         return weatherModifier * heightModifier;
     }
 
     public Direction getBlockFacing()
     {
-        return getBlockState().get(BlockBatteryBank.FACING);
+        if (blockFacing != null) return blockFacing;
+        BlockState state = getBlockState();
+        if (state.getBlock() instanceof BlockSmallWindTurbine)
+        {
+            return blockFacing = state.get(BlockHorizontalFacing.FACING);
+        }
+        return Direction.NORTH;
     }
 
     @Override
@@ -175,38 +191,31 @@ public class TileEntitySmallWindTurbine extends TileEntitySyncable implements IC
     public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing)
     {
         if (capability == CapabilityEnergy.ENERGY)
-            return energyStorage.cast();
+            return LazyOptional.of(() -> energyContainer).cast();
         return super.getCapability(capability, facing);
     }
 
     @Override
     public void read(CompoundNBT compound)
     {
-        energyStorage.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(compound.getCompound("StoredIR")));
-        CompoundNBT invTag = compound.getCompound("inv");
-        bladeInv.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(invTag));
-        energyGenerated = compound.getInt("generation");
-        tickToDamage = compound.getInt("damageTick");
-        //this.rotation = compound.getFloat("rotation");
+        this.bladeInv.deserializeNBT(compound.getCompound("bladeInv"));
+        this.tickToDamage = compound.getInt("damageTick");
         super.read(compound);
     }
 
     @Override
     public CompoundNBT write(CompoundNBT compound)
     {
-        energyStorage.ifPresent(h ->
-        {
-            CompoundNBT tag = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
-            compound.put("energy", tag);
-        });
-        bladeInv.ifPresent(h ->
-        {
-            CompoundNBT tag = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
-            compound.put("inv", tag);
-        });
-        compound.putInt("generation", this.energyGenerated);
+        compound.put("bladeInv", this.bladeInv.serializeNBT());
         compound.putInt("damageTick", tickToDamage);
-        //compound.setFloat("rotation", this.rotation);
         return super.write(compound);
+    }
+
+    @Nonnull
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return new AxisAlignedBB(pos.add(-4D, -4D, -4D), pos.add(5D, 5D, 5D));
     }
 }

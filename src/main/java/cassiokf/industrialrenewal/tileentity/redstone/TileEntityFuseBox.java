@@ -1,136 +1,112 @@
 package cassiokf.industrialrenewal.tileentity.redstone;
 
 import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBox;
-import cassiokf.industrialrenewal.blocks.redstone.BlockFuseBoxConnector;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.SoundsRegistration;
 import cassiokf.industrialrenewal.tileentity.TileEntityBoxConnector;
-import net.minecraft.block.Block;
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
+import cassiokf.industrialrenewal.util.CustomItemStackHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.FUSEBOX_TILE;
-
-public class TileEntityFuseBox extends TileEntity implements ICapabilityProvider
+public class TileEntityFuseBox extends TEBase
 {
 
-    public LazyOptional<IItemHandler> inventory = LazyOptional.of(this::createHandler);
-
-    public TileEntityFuseBox()
+    public CustomItemStackHandler inventory = new CustomItemStackHandler(16)
     {
-        super(FUSEBOX_TILE.get());
-    }
-
-    private IItemHandler createHandler()
-    {
-        return new ItemStackHandler(16);
-    }
-
-    public void changeActivate()
-    {
-        BlockState state = getBlockState();
-        boolean active = state.get(BlockFuseBox.ACTIVE);
-        world.setBlockState(pos, state.with(BlockFuseBox.ACTIVE, !active));
-        TileEntityBoxConnector te = getTE();
-        if (te != null)
+        @Override
+        protected void onContentsChanged(int slot)
         {
+            TileEntityFuseBox.this.markDirty();
+        }
+    };
+
+    public TileEntityFuseBox(TileEntityType<?> tileEntityTypeIn)
+    {
+        super(tileEntityTypeIn);
+    }
+
+    public void changeActivate() {
+        BlockState state = this.world.getBlockState(this.pos);
+        boolean active = state.get(BlockFuseBox.ACTIVE);
+        this.world.setBlockState(this.pos, state.with(BlockFuseBox.ACTIVE, !active));
+        TileEntityBoxConnector te = getTE();
+        if (te != null) {
             te.passRedstone();
         }
     }
 
-    public void shockPlayer(PlayerEntity player)
-    {
-        world.playSound(null, pos, SoundsRegistration.EFFECT_SHOCK.get(), SoundCategory.BLOCKS, 1, 1);
+    public void shockPlayer(PlayerEntity player) {
+        this.world.playSound(null, this.pos, SoundsRegistration.EFFECT_SHOCK, SoundCategory.BLOCKS, 1f * IRConfig.Sounds.masterVolumeMult.get(), 1);
         player.closeScreen();
         player.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 8f);
         player.knockBack(player, 0.4f, this.pos.getX() - player.getPosX(), this.pos.getZ() - player.getPosZ());
     }
 
-    public boolean getActive()
-    {
+    public boolean getActive() {
         BlockState state = getBlockState();
         return state.get(BlockFuseBox.ACTIVE);
     }
 
-    public IItemHandler getInv()
-    {
-        return inventory.orElse(null);
+    public ItemStackHandler getInv() {
+        return this.inventory;
     }
 
-    public int getPowerOut()
-    {
+    public int getPowerOut() {
         TileEntityBoxConnector te = getTE();
-        if (te != null)
-        {
+        if (te != null) {
             return te.getSignalWithAllTheMath(getInPower());
         }
         return getInPower();
     }
 
-    public int getInPower()
-    {
+    public int getInPower() {
         TileEntityBoxConnector te = getTE();
-        if (te != null)
-        {
+        if (te != null) {
             return te.getPowerIn();
         }
         return 0;
     }
 
-    private TileEntityBoxConnector getTE()
-    {
+    private TileEntityBoxConnector getTE() {
         int i = 1;
-        while (i < 64)
-        {
-            Block block = world.getBlockState(this.pos.down(i)).getBlock();
-            if (block instanceof BlockFuseBoxConnector)
-            {
-                TileEntityBoxConnector te = (TileEntityBoxConnector) world.getTileEntity(this.pos.down(i));
-                return te;
-            }
+        while (i < 64) {
+            TileEntity te = this.world.getTileEntity(this.pos.down(i));
+            if (te instanceof TileEntityBoxConnector) return (TileEntityBoxConnector) te;
             i++;
         }
         return null;
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound)
-    {
-        inventory.ifPresent(h ->
-        {
-            CompoundNBT tag = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
-            compound.put("inv", tag);
-        });
+    public CompoundNBT write(CompoundNBT compound) {
+        compound.put("inventory", this.inventory.serializeNBT());
         return super.write(compound);
     }
 
     @Override
-    public void read(CompoundNBT compound)
-    {
-        CompoundNBT invTag = compound.getCompound("inv");
-        inventory.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(invTag));
+    public void read(CompoundNBT compound) {
+        this.inventory.deserializeNBT(compound.getCompound("inventory"));
         super.read(compound);
     }
 
     @Nullable
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing)
-    {
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-                ? inventory.cast()
+                ? LazyOptional.of(() -> inventory).cast()
                 : super.getCapability(capability, facing);
     }
 }

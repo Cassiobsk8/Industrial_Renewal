@@ -1,45 +1,50 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockBase;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
-public class BlockDummy extends BlockBase
-{
+import javax.annotation.Nullable;
+import java.util.List;
+
+public class BlockDummy extends BlockBase {
 
     protected static final AxisAlignedBB NONE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 
 
-    public BlockDummy(Block.Properties property)
-    {
-        super(property);
+    public BlockDummy(String name, CreativeTabs tab) {
+        super(Material.IRON, name, tab);
     }
 
     @Override
-    public boolean isReplaceable(BlockState state, BlockItemUseContext useContext)
-    {
+    public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos) {
         return true;
     }
-/*
+
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return NONE_AABB;
     }
 
-
     @Override
-    public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, NONE_AABB);
     }
-*/
 
     @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
+    @Deprecated
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    @Deprecated
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 }

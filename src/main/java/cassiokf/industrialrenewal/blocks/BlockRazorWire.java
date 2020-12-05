@@ -1,66 +1,64 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockRazorWire extends BlockAbstractHorizontalFacing
-{
-    public static final BooleanProperty FRAME = BooleanProperty.create("frame");
+import javax.annotation.Nullable;
 
-    public BlockRazorWire()
+public class BlockRazorWire extends BlockHorizontalFacing
+{
+    public static final PropertyBool FRAME = PropertyBool.create("frame");
+
+    public BlockRazorWire(String name, CreativeTabs tab)
     {
-        super(Block.Properties.create(Material.IRON));
+        super(name, tab, Material.IRON);
     }
 
     @Override
-    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    public void onEntityCollision(World worldIn, BlockPos pos,  BlockState state, Entity entityIn)
     {
-        if (entityIn instanceof LivingEntity)
+        if (entityIn instanceof EntityLivingBase)
         {
-            entityIn.setMotionMultiplier(state, new Vec3d(0.25D, 0.05D, 0.25D));
-            entityIn.attackEntityFrom(DamageSource.CACTUS, IRConfig.Main.razorWireDamage.get().floatValue());
+            entityIn.setInWeb();
+            entityIn.attackEntityFrom(DamageSource.CACTUS, IRConfig.MainConfig.Main.razorWireDamage);
         }
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    @Nullable
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
-        return NULL_SHAPE;
+        return NULL_AABB;
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected BlockStateContainer createBlockState()
     {
-        builder.add(FACING, FRAME);
+        return new BlockStateContainer(this, FACING, FRAME);
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public  BlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        Direction face = stateIn.get(FACING);
-        if (facing == face.rotateY()) return stateIn.with(FRAME, canConnect(worldIn, currentPos, stateIn));
-        return stateIn;
+        return state.withProperty(FRAME, canConnect(worldIn, pos, state));
     }
 
-    private boolean canConnect(IBlockReader world, BlockPos pos, BlockState state)
+    private boolean canConnect(IBlockAccess world, BlockPos pos,  BlockState state)
     {
-        Direction facing = state.get(FACING);
+        EnumFacing facing = state.getValue(FACING);
         return !(world.getBlockState(pos.offset(facing.rotateY())).getBlock() instanceof BlockRazorWire);
     }
 }

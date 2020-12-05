@@ -1,75 +1,130 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
-import cassiokf.industrialrenewal.init.BlocksRegistration;
+import cassiokf.industrialrenewal.init.ModBlocks;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeBaseGauge;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityFluidPipeGauge;
+import cassiokf.industrialrenewal.util.Utils;
+import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockFluidPipeGauge extends BlockFluidPipe
 {
-    public BlockFluidPipeGauge()
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+
+    public BlockFluidPipeGauge(String name, CreativeTabs tab)
     {
-        super();
+        super(name, tab);
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected BlockStateContainer createBlockState()
     {
-        builder.add(FACING);
+        IProperty[] listedProperties = new IProperty[]{FACING}; // listed properties
+        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{MASTER, SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN};
+        return new ExtendedBlockState(this, listedProperties, unlistedProperties);
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
+    public  BlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        if (player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemPowerScrewDrive)
+        if (state instanceof IExtendedBlockState)
         {
-            if (!worldIn.isRemote)
-            {
-                worldIn.setBlockState(pos, BlocksRegistration.FLUIDPIPE.get().getDefaultState(), 3);
-                if (!player.isCreative())
-                    player.addItemStackToInventory(new ItemStack(BlocksRegistration.GAUGE_ITEM.get()));
-                ItemPowerScrewDrive.playDrillSound(worldIn, pos);
-            }
-            return ActionResultType.SUCCESS;
+            EnumFacing facing = state.getValue(FACING);
+            IExtendedBlockState eState = (IExtendedBlockState) state;
+            return eState.withProperty(MASTER, isMaster(world, pos))
+                    .withProperty(SOUTH, canConnectToPipe(world, pos, facing.getOpposite())).withProperty(NORTH, canConnectToPipe(world, pos, facing))
+                    .withProperty(EAST, canConnectToPipe(world, pos, facing.rotateY())).withProperty(WEST, canConnectToPipe(world, pos, facing.rotateYCCW()))
+                    .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
+                    .withProperty(CSOUTH, canConnectToCapability(world, pos, facing.getOpposite())).withProperty(CNORTH, canConnectToCapability(world, pos, facing))
+                    .withProperty(CEAST, canConnectToCapability(world, pos, facing.rotateY())).withProperty(CWEST, canConnectToCapability(world, pos, facing.rotateYCCW()))
+                    .withProperty(CUP, canConnectToCapability(world, pos, EnumFacing.UP)).withProperty(CDOWN, canConnectToCapability(world, pos, EnumFacing.DOWN));
         }
-        return ActionResultType.PASS;
+        return state;
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        if (entity.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemPowerScrewDrive)
+        {
+            if (!world.isRemote)
+            {
+                world.setBlockState(pos, ModBlocks.fluidPipe.getDefaultState(), 3);
+                if (!entity.isCreative())
+                    entity.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(ModBlocks.gauge)));
+                ItemPowerScrewDrive.playDrillSound(world, pos);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onPlayerDestroy(World worldIn, BlockPos pos,  BlockState state)
+    {
+        if (!worldIn.isRemote)
+        {
+            ItemStack itemst = new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.gauge));
+            Utils.spawnItemStack(worldIn, pos, itemst);
+            Utils.spawnItemStack(worldIn, pos, getItem(worldIn, pos, state));
+        }
+        super.onPlayerDestroy(worldIn, pos, state);
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    {
+        return false;
+    }
+
+    @Override
+    public ItemStack getItem(World worldIn, BlockPos pos,  BlockState state)
+    {
+        return new ItemStack(Item.getItemFromBlock(ModBlocks.fluidPipe));
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    {
+        tooltip.add("600" + " mB/t");
+        super.addInformation(stack, player, tooltip, advanced);
+    }
+
+    @Override
+    public  BlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(FACING).getHorizontalIndex();
     }
 
     @Nullable
     @Override
-    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
+    public TileEntityFluidPipeGauge createTileEntity(World world,  BlockState state)
     {
-        return new Direction[0];
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
-    {
-        tooltip.add(new StringTextComponent("600" + " mB/t"));
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-    }
-
-    @Nullable
-    @Override
-    public TileEntityFluidPipeBaseGauge createTileEntity(BlockState state, IBlockReader world)
-    {
-        return new TileEntityFluidPipeBaseGauge();
+        return new TileEntityFluidPipeGauge();
     }
 }

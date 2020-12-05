@@ -1,26 +1,51 @@
 package cassiokf.industrialrenewal.item;
 
+import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.Item;
-import net.minecraft.item.MusicDiscItem;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemRecord;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemDiscBase extends MusicDiscItem
-{
-    public ItemDiscBase(Item.Properties properties, SoundEvent sound)
-    {
-        super(8, sound, properties);
+public class ItemDiscBase extends ItemRecord {
+
+    protected String name;
+
+    public ItemDiscBase(String name, CreativeTabs tab, SoundEvent sound) {
+        super(name, sound);
+        this.name = name;
+        this.setRegistryName(References.MODID, name);
+        this.setTranslationKey(References.MODID + "." + name);
+        this.setCreativeTab(tab);
+    }
+
+    public void initOreDict() {
+        OreDictionary.registerOre("record", this);
+    }
+
+    @Override
+    public EnumRarity getRarity(ItemStack stack) {
+        return EnumRarity.EPIC;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public ITextComponent getRecordDescription()
-    {
-        return new StringTextComponent(I18n.format("item." + References.MODID + "." + getRegistryName().getPath() + ".des0"));
+    public String getRecordNameLocal() {
+        return I18n.format("item." + References.MODID + "." + name + ".des0");
+    }
+
+    public void registerItemModel() {
+        IndustrialRenewal.proxy.registerItemRenderer(this, 0, name);
+    }
+
+    @Override
+    public ItemDiscBase setCreativeTab(CreativeTabs tab) {
+        super.setCreativeTab(tab);
+        return this;
     }
 }

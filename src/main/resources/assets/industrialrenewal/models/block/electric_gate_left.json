@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "industrialrenewal:blocks/anvil_base",
-    "2": "block/orange_terracotta"
+    "0": "blocks/anvil_base",
+    "2": "blocks/hardened_clay"
   },
   "elements": [
     {

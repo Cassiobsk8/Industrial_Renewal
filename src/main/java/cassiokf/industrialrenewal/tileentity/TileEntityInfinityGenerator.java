@@ -1,55 +1,48 @@
 package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.INFINITYGENERATOR_TILE;
-
-public class TileEntityInfinityGenerator extends TileEntity implements ICapabilityProvider, ITickableTileEntity
+public class TileEntityInfinityGenerator extends TEBase implements ITickableTileEntity
 {
-    private LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(this::createEnergy);
-
-    public TileEntityInfinityGenerator()
+    public static final CustomEnergyStorage energyContainer = new CustomEnergyStorage(0, 0, 0)
     {
-        super(INFINITYGENERATOR_TILE.get());
-    }
-
-    private IEnergyStorage createEnergy()
-    {
-        return new CustomEnergyStorage(0, 0, 0)
+        @Override
+        public boolean canReceive()
         {
-            @Override
-            public boolean canReceive()
-            {
-                return false;
-            }
+            return false;
+        }
 
-            @Override
-            public boolean canExtract()
-            {
-                return false;
-            }
-        };
+        @Override
+        public boolean canExtract()
+        {
+            return false;
+        }
+    };
+
+    public TileEntityInfinityGenerator(TileEntityType<?> tileEntityTypeIn)
+    {
+        super(tileEntityTypeIn);
     }
 
     @Override
     public void tick()
     {
-        if (this.hasWorld() && !world.isRemote)
+        if (this.hasWorld() && !this.world.isRemote)
         {
-            int energy = 102400;
             for (Direction facing : Direction.Plane.HORIZONTAL)
             {
-                updatePanel(facing, energy);
+                updatePanel(facing, Integer.MAX_VALUE);
             }
         }
     }
@@ -57,10 +50,10 @@ public class TileEntityInfinityGenerator extends TileEntity implements ICapabili
     public void updatePanel(Direction facing, int energy)
     {
         final TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
-        if (facing != Direction.UP && tileEntity != null && !tileEntity.isRemoved())
+        if (tileEntity != null && !tileEntity.isRemoved())
         {
             final IEnergyStorage consumer = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite()).orElse(null);
-            if (consumer != null)
+            if (consumer != null && consumer.canReceive())
             {
                 consumer.receiveEnergy(energy, false);
             }
@@ -72,7 +65,7 @@ public class TileEntityInfinityGenerator extends TileEntity implements ICapabili
     public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing)
     {
         if (capability == CapabilityEnergy.ENERGY && facing != Direction.DOWN && facing != Direction.UP)
-            return energyStorage.cast();
+            return LazyOptional.of(() -> energyContainer).cast();
         return super.getCapability(capability, facing);
     }
 }

@@ -1,50 +1,55 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalFacing;
+import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.tileentity.TileEntityFirstAidKit;
 import cassiokf.industrialrenewal.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockFirstAidKit extends BlockAbstractHorizontalFacing
+public class BlockFirstAidKit extends BlockHorizontalFacing
 {
-    private static final VoxelShape WEST_BLOCK_AABB = Block.makeCuboidShape(0, 3, 3, 5, 13, 13);
-    private static final VoxelShape EAST_BLOCK_AABB = Block.makeCuboidShape(11, 3, 3, 16, 13, 13);
-    private static final VoxelShape SOUTH_BLOCK_AABB = Block.makeCuboidShape(3, 3, 11, 13, 13, 16);
-    private static final VoxelShape NORTH_BLOCK_AABB = Block.makeCuboidShape(3, 3, 0, 13, 13, 5);
+    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0F, 0.1875F, 0.1875F, 0.3125F, 0.8125F, 0.8125F);
+    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1F, 0.1875F, 0.1875F, 0.6875F, 0.8125F, 0.8125F);
+    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.1875F, 0.1875F, 0.6875F, 0.8125F, 0.8125F, 1);
+    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.1875F, 0.1875F, 0.3125F, 0.8125F, 0.8125F, 0);
 
-
-    public BlockFirstAidKit()
+    public BlockFirstAidKit(String name, CreativeTabs tab)
     {
-        super(Block.Properties.create(Material.IRON));
+        super(name, tab, Material.IRON);
+        setHardness(0.8f);
+        //setSoundType(SoundType.METAL);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        Direction dir = state.get(FACING);
-        switch (dir)
-        {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        EnumFacing dir = state.getValue(FACING);
+        switch (dir) {
             default:
             case NORTH:
                 return NORTH_BLOCK_AABB;
@@ -57,88 +62,82 @@ public class BlockFirstAidKit extends BlockAbstractHorizontalFacing
         }
     }
 
-    public static Direction getFaceDirection(BlockState state)
-    {
-        if (state.getBlock() instanceof BlockFirstAidKit)
-        {
-            return state.get(FACING);
+    public static Direction getFaceDirection(BlockState state) {
+        if (state.getBlock() instanceof BlockFirstAidKit) {
+            return state.getValue(FACING);
         }
-        return Direction.NORTH;
+        return EnumFacing.NORTH;
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
-    {
-        if (worldIn.isRemote)
-        {
-            return ActionResultType.SUCCESS;
+    public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (world.isRemote) {
+            return true;
         }
-        if (!player.isCrouching())
-        {
-            ItemStack stack = itemInKit(worldIn, pos);
-            if (stack != null && player.shouldHeal() && !player.isPotionActive(Effects.REGENERATION))
-            {
-                player.addPotionEffect(new EffectInstance(Effects.REGENERATION, IRConfig.Main.medKitEffectDuration.get(), 1, false, false));
+        if (!player.isSneaking()) {
+            ItemStack stack = itemInKit(world, pos);
+            if (stack != null && player.shouldHeal() && !player.isPotionActive(MobEffects.REGENERATION)) {
+                player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, IRConfig.MainConfig.Main.medKitEffectDuration, 1, false, false));
                 stack.shrink(1);
             }
-        } else
-        {
-            OpenGUI(worldIn, pos, player);
+        } else {
+            OpenGUI(world, pos, player);
         }
-        return ActionResultType.SUCCESS;
+        return true;
     }
 
-    private ItemStack itemInKit(World world, BlockPos pos)
-    {
+    private ItemStack itemInKit(World world, BlockPos pos) {
         TileEntityFirstAidKit te = (TileEntityFirstAidKit) world.getTileEntity(pos);
-        if (te != null)
+        if (te == null) return null;
+        IItemHandler inventory = te.inventory;
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
         {
-            IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).orElse(null);
-            if (inventory != null)
+            ItemStack stack = inventory.getStackInSlot(slot);
+            if (!stack.isEmpty())
             {
-                for (int slot = 0; slot < inventory.getSlots(); slot++)
-                {
-                    ItemStack stack = inventory.getStackInSlot(slot);
-                    if (!stack.isEmpty())
-                    {
-                        return stack;
-                    }
-                }
+                return stack;
             }
         }
         return null;
     }
 
-    private void OpenGUI(World world, BlockPos pos, PlayerEntity player)
-    {
-        //player.openGui(IndustrialRenewal.instance, GUIHandler.FIRSTAIDKIT, world, pos.getX(), pos.getY(), pos.getZ());
+    private void OpenGUI(World world, BlockPos pos, PlayerEntity player) {
+        player.openGui(IndustrialRenewal.instance, GUIHandler.FIRSTAIDKIT, world, pos.getX(), pos.getY(), pos.getZ());
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    public void breakBlock(World world, BlockPos pos,  BlockState state)
     {
-        if (state.getBlock() == newState.getBlock()) return;
-        TileEntityFirstAidKit te = (TileEntityFirstAidKit) worldIn.getTileEntity(pos);
-        if (te != null)
+        TileEntityFirstAidKit te = (TileEntityFirstAidKit) world.getTileEntity(pos);
+        IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+
+        if (inventory != null)
         {
-
-            IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).orElse(null);
-            Utils.dropInventoryItems(worldIn, pos, inventory);
+            Utils.dropInventoryItems(world, pos, inventory);
         }
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+        super.breakBlock(world, pos, state);
+    }
+
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
-    {
-        return this.getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing());
-    }
-
-    @Nullable
-    @Override
-    public TileEntityFirstAidKit createTileEntity(BlockState state, IBlockReader world)
-    {
+    public TileEntityFirstAidKit createTileEntity(World world,  BlockState state) {
         return new TileEntityFirstAidKit();
     }
 }

@@ -1,5 +1,5 @@
 {
-  "credit": "Made with Blockbench",
+  "credit": "Made with Blockbench - CassioKF",
   "textures": {
     "1": "industrialrenewal:blocks/battery_pack",
     "2": "industrialrenewal:blocks/pipe",
@@ -8,14 +8,14 @@
   "elements": [
     {
       "from": [
-        6,
+        5,
         2.4375,
-        5
+        6
       ],
       "to": [
-        10,
+        11,
         8.4375,
-        11
+        10
       ],
       "faces": {
         "north": {
@@ -38,18 +38,18 @@
         },
         "south": {
           "uv": [
-            0,
+            5.25,
             6,
-            5,
+            10.25,
             16
           ],
           "texture": "#1"
         },
         "west": {
           "uv": [
-            5.25,
+            0,
             6,
-            10.25,
+            5,
             16
           ],
           "texture": "#1"
@@ -61,28 +61,28 @@
             5,
             16
           ],
-          "rotation": 90,
+          "rotation": 180,
           "texture": "#1"
         }
       }
     },
     {
       "from": [
-        5.75,
+        4.75,
         8.4375,
-        4.75
+        5.75
       ],
       "to": [
-        10.25,
+        11.25,
         8.9375,
-        11.25
+        10.25
       ],
       "faces": {
         "north": {
           "uv": [
             0,
             0,
-            4.5,
+            6.5,
             0.5
           ],
           "texture": "#1"
@@ -91,7 +91,7 @@
           "uv": [
             0,
             0,
-            6.5,
+            4.5,
             0.5
           ],
           "texture": "#1"
@@ -100,7 +100,7 @@
           "uv": [
             0,
             0,
-            4.5,
+            6.5,
             0.5
           ],
           "texture": "#1"
@@ -109,7 +109,7 @@
           "uv": [
             0,
             0,
-            6.5,
+            4.5,
             0.5
           ],
           "texture": "#1"
@@ -121,7 +121,7 @@
             9.75,
             5
           ],
-          "rotation": 270,
+          "rotation": 180,
           "texture": "#1"
         },
         "down": {
@@ -131,21 +131,21 @@
             0.75,
             0.75
           ],
-          "rotation": 90,
+          "rotation": 180,
           "texture": "#1"
         }
       }
     },
     {
       "from": [
-        7.5,
+        9.5,
         8.4375,
-        9.5
+        7.5
       ],
       "to": [
-        8.5,
+        10.5,
         9.4375,
-        10.5
+        8.5
       ],
       "faces": {
         "north": {
@@ -191,21 +191,21 @@
             1,
             1
           ],
-          "rotation": 270,
+          "rotation": 180,
           "texture": "#2"
         }
       }
     },
     {
       "from": [
-        7.5,
+        5.5,
         8.4375,
-        5.5
+        7.5
       ],
       "to": [
-        8.5,
+        6.5,
         9.4375,
-        6.5
+        8.5
       ],
       "faces": {
         "north": {
@@ -251,7 +251,7 @@
             1,
             1
           ],
-          "rotation": 270,
+          "rotation": 180,
           "texture": "#2"
         }
       }

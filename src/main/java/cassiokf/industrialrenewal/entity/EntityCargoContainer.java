@@ -10,6 +10,8 @@ import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 public class EntityCargoContainer extends ContainerMinecartEntity
@@ -31,6 +33,21 @@ public class EntityCargoContainer extends ContainerMinecartEntity
         super(type, world);
     }
 
+    public Type getMinecartType()
+    {
+        return Type.CHEST;
+    }
+
+    @Override
+    public void killMinecart(DamageSource source)
+    {
+        this.remove();
+
+        if (!source.isExplosion() && this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
+            this.entityDropItem(new ItemStack(ItemsRegistration.CARGOCONTAINER.get()), 0.0F);
+        }
+    }
+
     @Override
     protected Container createContainer(int id, PlayerInventory playerInventoryIn)
     {
@@ -38,21 +55,13 @@ public class EntityCargoContainer extends ContainerMinecartEntity
     }
 
     @Override
-    public Type getMinecartType()
-    {
-        return Type.CHEST;
-    }
-
-    @Override
-    public ItemStack getCartItem()
-    {
+    public ItemStack getCartItem() {
         return new ItemStack(ItemsRegistration.CARGOCONTAINER.get());
     }
 
     @Override
     public int getSizeInventory()
     {
-        return 36;
+        return 32;
     }
-
 }

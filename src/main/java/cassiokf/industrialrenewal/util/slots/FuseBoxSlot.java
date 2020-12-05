@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.util.slots;
 
-import net.minecraft.item.Item;
+import cassiokf.industrialrenewal.item.ItemCartridge;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -15,7 +15,7 @@ public class FuseBoxSlot extends SlotItemHandler {
     public boolean isItemValid(ItemStack itemstack) {
         if (itemstack.isEmpty())
             return false;
-        return itemstack.getItem() instanceof Item;
+        return itemstack.getItem() instanceof ItemCartridge && itemstack.getCount() == 1;
     }
 
 

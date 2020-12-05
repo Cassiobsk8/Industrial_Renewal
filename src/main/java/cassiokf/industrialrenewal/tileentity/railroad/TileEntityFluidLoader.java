@@ -5,10 +5,11 @@ import cassiokf.industrialrenewal.blocks.railroad.BlockFluidLoader;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -18,15 +19,13 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.FLUIDLOADER_TILE;
-
 public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITickableTileEntity
 {
 
-    public CustomFluidTank tank = new CustomFluidTank(16000)
+    public final CustomFluidTank tank = new CustomFluidTank(16000)
     {
         @Override
-        public boolean isFluidValid(FluidStack stack)
+        public boolean canFill(FluidStack resource)
         {
             return !TileEntityFluidLoader.this.isUnload();
         }
@@ -34,34 +33,34 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
         @Override
         protected void onContentsChanged()
         {
-            TileEntityFluidLoader.this.Sync();
+            TileEntityFluidLoader.this.sync();
         }
     };
-    private int maxFlowPerTick = 200;
+    private static final int maxFlowPerTick = 200;
     private boolean checked = false;
     private boolean master;
-    private boolean oldLoading;
     private float ySlide = 0;
 
     private int cartFluidAmount;
     private int cartFluidCapacity;
+    private int noActivity = 0;
 
-    public TileEntityFluidLoader()
+    public TileEntityFluidLoader(TileEntityType<?> tileEntityTypeIn)
     {
-        super(FLUIDLOADER_TILE.get());
+        super(tileEntityTypeIn);
     }
 
     @Override
     public void tick()
     {
-        if (isMaster() && !isRemoved())
+        if (isMaster())
         {
             if (!world.isRemote)
             {
                 if (cartActivity > 0)
                 {
                     cartActivity--;
-                    Sync();
+                    sync();
                 }
                 if (isUnload() && tank.getFluidAmount() > 0)
                 {
@@ -90,7 +89,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
     {
         if (!checked)
         {
-            master = getBlockState().get(BlockChunkLoader.MASTER);
+            master = world.getBlockState(pos).get(BlockChunkLoader.MASTER);
             checked = true;
         }
         return master;
@@ -99,7 +98,7 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
     public String getTankText()
     {
         if (tank.getFluid().isEmpty()) return I18n.format("gui.industrialrenewal.fluid.empty");
-        return I18n.format("render.industrialrenewal.fluid") + ": " + tank.getFluid().getDisplayName().getString();
+        return I18n.format("render.industrialrenewal.fluid") + ": " + tank.getFluid().getDisplayName().getFormattedText();
     }
 
     public String getCartName()
@@ -116,89 +115,74 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
     public float getCartFluidAngle()
     {
         if (cartActivity <= 0) return 0;
-        float currentAmount = cartFluidAmount / 1000F;
-        float totalCapacity = cartFluidCapacity / 1000F;
-        currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 180f;
+        float currentAmount = cartFluidAmount;
+        float totalCapacity = cartFluidCapacity;
+        return Utils.normalize(currentAmount, 0, totalCapacity) * 180f;
     }
 
     public float getTankFluidAngle()
     {
-        float currentAmount = tank.getFluidAmount() / 1000F;
-        float totalCapacity = tank.getCapacity() / 1000F;
-        currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 180f;
+        float currentAmount = tank.getFluidAmount();
+        float totalCapacity = tank.getCapacity();
+        return Utils.normalize(currentAmount, 0, totalCapacity) * 180f;
     }
 
     @Override
-    public boolean onMinecartPass(AbstractMinecartEntity cart, TileEntityLoaderRail loaderRail)
+    public boolean onMinecartPass(MinecartEntity cart, TileEntityLoaderRail loaderRail)
     {
         if (!world.isRemote && isMaster())
         {
-            cartName = cart.getName().getString();
+            cartName = cart.getName().getFormattedText();
             cartActivity = 10;
             IFluidHandler cartCapability = cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP).orElse(null);
             if (cartCapability != null)
             {
-                cartFluidAmount = cartCapability.getFluidInTank(0).getAmount();
+                if (cartCapability.getTanks() <= 0) return false;
+
+                FluidStack cartStack = cartCapability.getFluidInTank(0);
+                cartFluidAmount = cartStack.getAmount();
                 cartFluidCapacity = cartCapability.getTankCapacity(0);
+
                 if (isUnload())
                 {
-                    if (cartFluidAmount > 0 && tank.getFluidAmount() < tank.getCapacity())
+                    if (cartStack.getAmount() > 0 && tank.getFluidAmount() < tank.getCapacity())
                     {
-                        cartCapability.drain(tank.fill(cartCapability.drain(maxFlowPerTick, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
+                        cartCapability.drain(tank.fillInternal(cartCapability.drain(maxFlowPerTick, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
                         loading = true;
-                        if (loading != oldLoading)
-                        {
-                            oldLoading = loading;
-                            Sync();
-                        }
+                        noActivity = 0;
                         return true;
                     }
                     loading = false;
-                    if (loading != oldLoading)
-                    {
-                        oldLoading = loading;
-                        Sync();
-                    }
                     if (waitE == waitEnum.WAIT_EMPTY)
                     {
-                        return cartFluidAmount > 0;
-                    }
-                    if (waitE == waitEnum.WAIT_FULL)
+                        return cartStack.getAmount() > 0;
+                    } else if (waitE == waitEnum.WAIT_FULL)
                     {
-                        return cartFluidAmount < cartCapability.getTankCapacity(0);
+                        return cartStack.getAmount() < cartFluidCapacity;
                     }
-                    if (waitE == waitEnum.NO_ACTIVITY) return false;
                 } else
                 {
-                    FluidStack cartStack = cartCapability.getFluidInTank(0);
-                    if (tank.getFluidAmount() > 0 && (cartFluidAmount < cartCapability.getTankCapacity(0)))
+                    if (tank.getFluidAmount() > 0 && cartStack.getAmount() < cartFluidCapacity)
                     {
                         tank.drain(cartCapability.fill(tank.drain(maxFlowPerTick, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
                         loading = true;
-                        if (loading != oldLoading)
-                        {
-                            oldLoading = loading;
-                            Sync();
-                        }
+                        noActivity = 0;
                         return true;
                     }
+
                     loading = false;
-                    if (loading != oldLoading)
-                    {
-                        oldLoading = loading;
-                        Sync();
-                    }
                     if (waitE == waitEnum.WAIT_FULL)
                     {
-                        return cartFluidAmount < cartCapability.getTankCapacity(0);
-                    }
-                    if (waitE == waitEnum.WAIT_EMPTY)
+                        return cartStack.getAmount() < cartFluidCapacity;
+                    } else if (waitE == waitEnum.WAIT_EMPTY)
                     {
-                        return cartFluidAmount > 0;
+                        return cartStack.getAmount() > 0;
                     }
-                    if (waitE == waitEnum.NO_ACTIVITY) return false;
+                }
+                if (waitE == waitEnum.NO_ACTIVITY)
+                {
+                    noActivity++;
+                    return noActivity < 10;
                 }
             }
         }
@@ -214,27 +198,27 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
     @Override
     public Direction getBlockFacing()
     {
-        if (blockFacing == null) blockFacing = world.getBlockState(pos).get(BlockFluidLoader.FACING);
+        if (blockFacing == null) blockFacing =getBlockState().get(BlockFluidLoader.FACING);
         return blockFacing;
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound)
-    {
+    public CompoundNBT write(CompoundNBT compound) {
         tank.writeToNBT(compound);
         compound.putInt("capacity", cartFluidCapacity);
         compound.putInt("cartAmount", cartFluidAmount);
         compound.putInt("activity", cartActivity);
+        compound.putBoolean("loading", loading);
         return super.write(compound);
     }
 
     @Override
-    public void read(CompoundNBT compound)
-    {
+    public void read(CompoundNBT compound) {
         tank.readFromNBT(compound);
         cartFluidCapacity = compound.getInt("capacity");
         cartFluidAmount = compound.getInt("cartAmount");
         cartActivity = compound.getInt("activity");
+        loading = compound.getBoolean("loading");
         super.read(compound);
     }
 
@@ -242,10 +226,8 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
     @Override
     public <T> LazyOptional<T> getCapability(final Capability<T> capability, @Nullable final Direction facing)
     {
-        if (facing == getBlockFacing().getOpposite() && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-        {
-            return LazyOptional.of(() -> tank).cast();
-        }
-        return super.getCapability(capability, facing);
+        return (facing == getBlockFacing().getOpposite() && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+                ? LazyOptional.of(() -> tank).cast()
+                : super.getCapability(capability, facing);
     }
 }

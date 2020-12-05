@@ -5,13 +5,12 @@ import cassiokf.industrialrenewal.blocks.BlockRoof;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityMultiBlocksTube;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -19,17 +18,16 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.GUTTER_TILE;
-
-public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter> implements ICapabilityProvider
+public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter>
 {
+    Direction blockFacing = null;
 
-    public CustomFluidTank tank = new CustomFluidTank(1000)
+    public final CustomFluidTank tank = new CustomFluidTank(1000)
     {
         @Override
-        public boolean isFluidValid(FluidStack stack)
+        public boolean canFill(FluidStack stack)
         {
-            return stack.getFluid().equals(Fluids.WATER);
+            return false;
         }
 
         @Override
@@ -40,37 +38,35 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
     };
     private int tick;
     private int fillAmount;
-    private Direction direction = null;
 
-    public TileEntityGutter()
+    public TileEntityGutter(TileEntityType<?> tileEntityTypeIn)
     {
-        super(GUTTER_TILE.get());
+        super(tileEntityTypeIn);
     }
 
     @Override
-    public void doTick()
+    public void onTick()
     {
-        if (!world.isRemote)
+        if (this.hasWorld() && !world.isRemote)
         {
             if (isMaster())
             {
                 if (world.isRaining())
                 {
-                    tank.fill(new FluidStack(Fluids.WATER, fillAmount), IFluidHandler.FluidAction.EXECUTE);
+                    this.tank.fillInternal(new FluidStack(FluidRegistry.WATER, fillAmount), true);
                 }
-                if (tank.getFluidAmount() > 0)
+                if (this.tank.getFluidAmount() > 0)
                 {
-                    int quantity = getPosSet().size() > 0 ? (tank.getFluidAmount() / getPosSet().size()) : 0;
-                    for (BlockPos outPutPos : getPosSet().keySet())
+                    int quantity = getMachineContainers().size() > 0 ? (this.tank.getFluidAmount() / getMachineContainers().size()) : 0;
+                    for (TileEntity tileEntity : getMachineContainers().keySet())
                     {
-                        final TileEntity tileEntity = world.getTileEntity(outPutPos);
                         if (tileEntity != null && !tileEntity.isRemoved())
                         {
-                            Direction facing = getPosSet().get(outPutPos);
-                            final IFluidHandler consumer = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite()).orElse(null);
+                            Direction facing = getMachineContainers().get(tileEntity).getOpposite();
+                            final IFluidHandler consumer = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing).orElse(null);
                             if (consumer != null)
                             {
-                                tank.drain(consumer.fill(tank.drain(quantity, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
+                                tank.tryPassFluid(quantity, consumer);
                             }
                         }
                     }
@@ -92,17 +88,19 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
     }
 
     @Override
-    public void checkForOutPuts(BlockPos bPos)
+    public void checkForOutPuts()
     {
         if (world.isRemote) return;
         Direction face = Direction.DOWN;
         BlockPos currentPos = pos.offset(face);
         BlockState state = world.getBlockState(currentPos);
         TileEntity te = world.getTileEntity(currentPos);
-        boolean hasMachine = !(state.getBlock() instanceof BlockGutter) && te != null;
-        if (hasMachine && te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).isPresent())
-            if (!isMasterInvalid()) getMaster().addMachine(currentPos, face);
-            else if (!isMasterInvalid()) getMaster().removeMachine(pos, currentPos);
+        if (te == null) return;
+        boolean hasMachine = !(state.getBlock() instanceof BlockGutter);
+        IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face.getOpposite()).orElse(null);
+        if (hasMachine && handler != null && handler.getTanks() > 0)
+            addMachine(te, face);
+        else removeMachine(te);
     }
 
     public void checkIfIsReady()
@@ -127,8 +125,9 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
 
     public Direction getBlockFacing()
     {
-        if (direction != null) return direction;
-        return getBlockState().get(BlockGutter.FACING);
+        if (blockFacing != null) return blockFacing;
+        BlockState state = world.getBlockState(pos);
+        return blockFacing = state.getBlock() instanceof BlockGutter ? state.get(BlockGutter.FACING) : Direction.NORTH;
     }
 
     @Nullable
@@ -136,12 +135,12 @@ public class TileEntityGutter extends TileEntityMultiBlocksTube<TileEntityGutter
     public <T> LazyOptional<T> getCapability(final Capability<T> capability, @Nullable final Direction facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == Direction.DOWN)
-            return LazyOptional.of(() -> tank).cast();
+            return LazyOptional.of(() -> getMaster().tank).cast();
         return super.getCapability(capability, facing);
     }
 
     @Override
-    public void read(CompoundNBT tag)
+    public void read(final CompoundNBT tag)
     {
         tank.readFromNBT(tag.getCompound("tank"));
         super.read(tag);

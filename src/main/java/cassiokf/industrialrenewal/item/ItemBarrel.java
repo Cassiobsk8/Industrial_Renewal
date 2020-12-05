@@ -9,16 +9,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ItemBarrel extends ItemBase
 {
@@ -30,20 +31,18 @@ public class ItemBarrel extends ItemBase
     @Override
     public ActionResultType onItemUse(ItemUseContext context)
     {
-        BlockPos pos = context.getPos();
-        ItemStack itemstack = context.getItem();
+        ItemStack itemstack = context.getPlayer().getHeldItemMainhand();
         BlockPos posOffset = context.getPos().offset(context.getFace());
         World worldIn = context.getWorld();
         BlockState state = worldIn.getBlockState(posOffset);
         if (worldIn.isAirBlock(posOffset) || state.getBlock().isReplaceable(state, new BlockItemUseContext(context)))
         {
-            playSound(worldIn, pos, SoundEvents.BLOCK_METAL_PLACE);
+            playSound(worldIn, context.getPos(), SoundEvents.BLOCK_METAL_PLACE);
 
-            BlockState barrelState = BlocksRegistration.BARREL.get().getStateForPlacement(new BlockItemUseContext(context));
-            worldIn.setBlockState(posOffset, barrelState);
-            TileEntityBarrel te = (TileEntityBarrel) worldIn.getTileEntity(posOffset);
-            if (itemstack.getTag() != null && itemstack.getTag().contains("FluidName") && te != null)
-                te.tank.readFromNBT(itemstack.getTag());
+            worldIn.setBlockState(posOffset, BlocksRegistration.BARREL.get().getStateForPlacement(new BlockItemUseContext(context)));
+            TileEntity te = worldIn.getTileEntity(posOffset);
+            if (te instanceof TileEntityBarrel && itemstack.getTag() != null && itemstack.getTag().contains("FluidName"))
+                ((TileEntityBarrel) te).tank.readFromNBT(itemstack.getTag());
             itemstack.shrink(1);
 
             return ActionResultType.SUCCESS;
@@ -51,6 +50,7 @@ public class ItemBarrel extends ItemBase
         return ActionResultType.FAIL;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag)
     {
@@ -61,7 +61,7 @@ public class ItemBarrel extends ItemBase
         }
     }
 
-    private void playSound(World world, BlockPos pos, SoundEvent soundEvent)
+    private static void playSound(World world, BlockPos pos, SoundEvent soundEvent)
     {
         world.playSound(null, pos, soundEvent, SoundCategory.BLOCKS, 1.0F, 1.0F);
     }

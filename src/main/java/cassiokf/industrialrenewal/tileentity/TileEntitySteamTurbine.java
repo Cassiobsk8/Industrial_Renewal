@@ -1,24 +1,21 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.IRSoundHandler;
+import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.FluidsRegistration;
-import cassiokf.industrialrenewal.init.SoundsRegistration;
-import cassiokf.industrialrenewal.tileentity.abstracts.TileEntity3x3MachineBase;
+import cassiokf.industrialrenewal.handlers.IRSoundHandler;
+import cassiokf.industrialrenewal.handlers.SteamBoiler;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.IDynamicSound;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -28,14 +25,34 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-import static cassiokf.industrialrenewal.init.TileRegistration.STEAMTURBINE_TILE;
-
-public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntitySteamTurbine> implements ITickableTileEntity, IDynamicSound
+public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntitySteamTurbine> implements IDynamicSound
 {
+    private final CustomEnergyStorage energyContainer = new CustomEnergyStorage(100000, 10240, 10240)
+    {
+        @Override
+        public boolean canExtract()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean canReceive()
+        {
+            return false;
+        }
+
+        @Override
+        public void onEnergyChange()
+        {
+            TileEntitySteamTurbine.this.sync();
+        }
+    };
+    private static final float volume = IRConfig.Sounds.turbineVolume.get() * IRConfig.Sounds.masterVolumeMult.get();
+
     public CustomFluidTank waterTank = new CustomFluidTank(32000)
     {
         @Override
-        public boolean canFill()
+        public boolean canFill(FluidStack stack)
         {
             return false;
         }
@@ -43,16 +60,22 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         @Override
         public void onContentsChanged()
         {
-            TileEntitySteamTurbine.this.Sync();
+            TileEntitySteamTurbine.this.sync();
         }
     };
-    public CustomFluidTank steamTank = new CustomFluidTank(320000)
+    private final FluidStack waterStack = new FluidStack(IRConfig.getWaterFromSteamFluid(), References.BUCKET_VOLUME);
+
+    private int rotation;
+    private int oldRotation;
+    private static final int maxRotation = 16000;
+    private static final int energyPerTick = IRConfig.Main.steamTurbineEnergyPerTick.get();
+    private static final int steamPerTick = IRConfig.Main.steamTurbineSteamPerTick.get();
+    public final CustomFluidTank steamTank = new CustomFluidTank(IRConfig.Main.steamTurbineSteamPerTick.get())
     {
         @Override
-        public boolean isFluidValid(FluidStack stack)
+        public boolean canFill(FluidStack resource)
         {
-            //TODO MAKE STEAM TAG
-            return stack != null;
+            return fluid != null && fluid.getAmount() > 0 && fluid.getFluid().getRegistryName().equals("steam");
         }
 
         @Override
@@ -62,89 +85,94 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         }
 
         @Override
-        public void onContentsChanged()
+        protected void onContentsChanged()
         {
-            TileEntitySteamTurbine.this.Sync();
+            TileEntitySteamTurbine.this.markDirty();
         }
     };
-    private LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(this::createEnergy);
+    private float steamReceivedNorm = 0f;
 
-    private float volume = IRConfig.MAIN.TurbineVolume.get().floatValue();
-    private int maxRotation = 16000;
-    private int rotation;
-    private int energyPerTick = IRConfig.Main.steamTurbineEnergyPerTick.get();
-    private int oldRotation;
-    private int steamPerTick = IRConfig.Main.steamTurbineSteamPerTick.get();
-
-    public TileEntitySteamTurbine()
+    public TileEntitySteamTurbine(TileEntityType<?> tileEntityTypeIn)
     {
-        super(STEAMTURBINE_TILE.get());
-    }
-
-    private IEnergyStorage createEnergy()
-    {
-        return new CustomEnergyStorage(100000, 0, 10240)
-        {
-            @Override
-            public void onEnergyChange()
-            {
-                TileEntitySteamTurbine.this.Sync();
-            }
-        };
+        super(tileEntityTypeIn);
     }
 
     @Override
-    public void tick()
+    public void onTick()
     {
         if (this.isMaster())
         {
-            if (!world.isRemote)
+            if (!this.world.isRemote)
             {
-                if (this.steamTank.getFluidAmount() > 0)
-                {
-                    FluidStack stack = steamTank.drainInternal(steamPerTick, IFluidHandler.FluidAction.EXECUTE);
-                    float amount = stack != null ? stack.getAmount() : 0f;
-                    FluidStack waterStack = new FluidStack(Fluids.WATER, Math.round(amount / (float) IRConfig.Main.steamBoilerConversionFactor.get()));
-                    waterTank.fillInternal(waterStack, IFluidHandler.FluidAction.EXECUTE);
-                    float factor = amount / (float) steamPerTick;
-                    rotation += (10 * factor);
-                } else rotation -= 4;
+                steamToRotation();
 
-                IEnergyStorage thisEnergy = energyStorage.orElse(null);
-                if (rotation >= 6000 && thisEnergy.getEnergyStored() < thisEnergy.getMaxEnergyStored())
-                {
-                    int energy = Math.min(thisEnergy.getMaxEnergyStored(), thisEnergy.getEnergyStored() + getEnergyProduction());
-                    energyStorage.ifPresent(e -> ((CustomEnergyStorage) e).addEnergy(energy));
-                    rotation -= 4;
-                }
+                generateEnergyBasedOnRotation();
 
-                rotation -= 2;
-                rotation = MathHelper.clamp(rotation, 0, maxRotation);
+                extractEnergy();
 
-
-                Direction facing = getMasterFacing();
-                TileEntity eTE = world.getTileEntity(pos.offset(facing.getOpposite()).down().offset(facing.rotateYCCW(), 2));
-                if (eTE != null && thisEnergy.getEnergyStored() > 0)
-                {
-                    IEnergyStorage upTank = eTE.getCapability(CapabilityEnergy.ENERGY, facing.rotateY()).orElse(null);
-                    thisEnergy.extractEnergy(upTank.receiveEnergy(thisEnergy.extractEnergy(10240, true), false), false);
-                }
-                TileEntity wTE = world.getTileEntity(pos.offset(facing, 2).down());
-                if (wTE != null && waterTank.getFluidAmount() > 0)
-                {
-                    IFluidHandler wTank = wTE.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite()).orElse(null);
-                    waterTank.drain(wTank.fill(waterTank.drain(2000, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
-                }
+                extractWater();
 
                 if (oldRotation != rotation)
                 {
-                    this.Sync();
                     oldRotation = rotation;
+                    this.sync();
                 }
             } else
             {
-                updateSound(getPitch());
+                updateSound();
             }
+        }
+    }
+
+    public void steamToRotation()
+    {
+        FluidStack fluidStack = steamTank.drainInternal(steamPerTick, IFluidHandler.FluidAction.EXECUTE);
+        if (fluidStack == null || fluidStack.getAmount() <= 0)
+        {
+            steamReceivedNorm = 0;
+            if (rotation >= 4) rotation -= 4;
+            return;
+        }
+        int amount = Math.min(fluidStack.getAmount(), steamPerTick);
+        steamReceivedNorm = Utils.normalize(amount, 0, steamPerTick);
+        if ((maxRotation * steamReceivedNorm) > rotation) rotation += (10 * steamReceivedNorm);
+        else if (rotation >= 2) rotation -= 2;
+        waterStack.setAmount(Math.round(((float) amount / (float) IRConfig.Main.steamBoilerConversionFactor.get()) * 0.98f));
+        waterTank.fillInternal(waterStack, IFluidHandler.FluidAction.EXECUTE);
+    }
+
+    private void generateEnergyBasedOnRotation()
+    {
+        if (rotation >= 6000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored())
+        {
+            int energy = getEnergyProduction();
+            energyContainer.receiveInternally(energy, false);
+            rotation -= 6;
+        } else rotation -= 2;
+        rotation = MathHelper.clamp(rotation, 0, maxRotation);
+    }
+
+    private void extractEnergy()
+    {
+        Direction facing = getMasterFacing();
+        TileEntity eTE = world.getTileEntity(pos.offset(facing.getOpposite()).down().offset(facing.rotateYCCW(), 2));
+        if (eTE != null && energyContainer.getEnergyStored() > 0)
+        {
+            IEnergyStorage upTank = eTE.getCapability(CapabilityEnergy.ENERGY, facing.rotateY()).orElse(null);
+            if (upTank != null)
+                energyContainer.extractEnergyInternally(upTank.receiveEnergy(energyContainer.extractEnergyInternally(10240, true), false), false);
+        }
+    }
+
+    private void extractWater()
+    {
+        Direction facing = getMasterFacing();
+        TileEntity wTE = world.getTileEntity(pos.offset(facing, 2).down());
+        if (wTE != null && waterTank.getFluidAmount() > 0)
+        {
+            IFluidHandler wTank = wTE.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite()).orElse(null);
+            if (wTank != null)
+                waterTank.tryPassFluid(2000, wTank);
         }
     }
 
@@ -160,12 +188,12 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         return volume;
     }
 
-    private void updateSound(float pitch)
+    private void updateSound()
     {
         if (!world.isRemote) return;
         if (this.rotation > 0)
         {
-            IRSoundHandler.playRepeatableSound(this, SoundsRegistration.MOTOR_ROTATION.get(), volume, pitch);
+            IRSoundHandler.playRepeatableSound(IRSoundRegister.MOTOR_ROTATION_RESOURCEL, volume, getPitch(), pos);
         } else
         {
             IRSoundHandler.stopTileSound(pos);
@@ -187,7 +215,7 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     private int getEnergyProduction()
     {
         int energy = Math.round(energyPerTick * getRotation());
-        float factor = waterTank.getFluidAmount() == 0 ? 1f : Math.max(0.5f, Math.min(1f, ((float) waterTank.getCapacity() / (float) this.waterTank.getFluidAmount()) - 0.5f));
+        float factor = this.waterTank.getFluidAmount() == 0 ? 1f : Math.max(0.5f, Math.min(1f, ((float) this.waterTank.getCapacity() / (float) this.waterTank.getFluidAmount()) - 0.5f));
         energy = Math.round(energy * factor);
         energy = MathHelper.clamp(energy, 0, energyPerTick);
         return energy;
@@ -195,67 +223,55 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
 
     public String getWaterText()
     {
-        return Blocks.WATER.getNameTextComponent().getFormattedText();
+        return FluidRegistry.WATER.getName();
     }
 
     public String getSteamText()
     {
-        return FluidsRegistration.STEAM_BLOCK.get().getNameTextComponent().getFormattedText();
+        return SteamBoiler.steamName;
     }
-
 
     public String getGenerationText()
     {
-        int energy = (rotation >= 6000 && energyStorage.orElse(null).getEnergyStored() < energyStorage.orElse(null).getMaxEnergyStored()) ? getEnergyProduction() : 0;
+        int energy = (rotation >= 6000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored()) ? getEnergyProduction() : 0;
         return Utils.formatEnergyString(energy) + "/t";
     }
 
     public String getEnergyText()
     {
-        int energy = energyStorage.orElse(null).getEnergyStored();
+        int energy = this.energyContainer.getEnergyStored();
         return Utils.formatEnergyString(energy);
     }
 
     public String getRotationText()
     {
-        return rotation / 10 + " rpm";
+        return (rotation / 10) + " rpm";
     }
 
     public float getEnergyFill() //0 ~ 1
     {
-        float currentAmount = energyStorage.orElse(null).getEnergyStored() / 1000F;
-        float totalCapacity = energyStorage.orElse(null).getMaxEnergyStored() / 1000F;
-        currentAmount = currentAmount / totalCapacity;
-        return currentAmount;
+        return Utils.normalize(energyContainer.getEnergyStored(), 0, energyContainer.getMaxEnergyStored());
     }
 
     private float getRotation()
     {
-        return Utils.normalize(this.rotation, 0, this.maxRotation);
+        return Utils.normalize(this.rotation, 0, maxRotation);
     }
 
     public float getGenerationFill() //0 ~ 180
     {
-        float currentAmount = ((rotation >= 6000 && energyStorage.orElse(null).getEnergyStored() < energyStorage.orElse(null).getMaxEnergyStored()) ? getEnergyProduction() : 0) / 100f;
-        float totalCapacity = energyPerTick / 100f;
-        currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 90f;
+        float currentAmount = ((rotation >= 6000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored()) ? getEnergyProduction() : 0);
+        return Utils.normalize(currentAmount, 0, energyPerTick) * 90f;
     }
 
     public float getWaterFill() //0 ~ 180
     {
-        float currentAmount = waterTank.getFluidAmount() / 1000f;
-        float totalCapacity = waterTank.getCapacity() / 1000f;
-        currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 180f;
+        return Utils.normalize(waterTank.getFluidAmount(), 0, waterTank.getCapacity()) * 180f;
     }
 
     public float getSteamFill() //0 ~ 180
     {
-        float currentAmount = steamTank.getFluidAmount() / 1000f;
-        float totalCapacity = steamTank.getCapacity() / 1000f;
-        currentAmount = currentAmount / totalCapacity;
-        return currentAmount * 180f;
+        return steamReceivedNorm * 180f;
     }
 
     public float getRotationFill() //0 ~ 180
@@ -267,17 +283,11 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     public CompoundNBT write(CompoundNBT compound)
     {
         CompoundNBT waterTag = new CompoundNBT();
-        CompoundNBT steamTag = new CompoundNBT();
         waterTank.writeToNBT(waterTag);
-        steamTank.writeToNBT(steamTag);
         compound.put("water", waterTag);
-        compound.put("steam", steamTag);
-        energyStorage.ifPresent(h ->
-        {
-            CompoundNBT tag = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
-            compound.put("energy", tag);
-        });
+        compound.put("StoredIR", this.energyContainer.serializeNBT());
         compound.putInt("heat", rotation);
+        compound.putFloat("steamOnTick", steamReceivedNorm);
         return super.write(compound);
     }
 
@@ -285,11 +295,10 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
     public void read(CompoundNBT compound)
     {
         CompoundNBT waterTag = compound.getCompound("water");
-        CompoundNBT steamTag = compound.getCompound("steam");
         waterTank.readFromNBT(waterTag);
-        steamTank.readFromNBT(steamTag);
-        energyStorage.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(compound.getCompound("StoredIR")));
-        this.rotation = compound.getInt("heat");
+        energyContainer.deserializeNBT(compound.getCompound("StoredIR"));
+        rotation = compound.getInt("heat");
+        steamReceivedNorm = compound.getFloat("steamOnTick");
         super.read(compound);
     }
 
@@ -302,12 +311,12 @@ public class TileEntitySteamTurbine extends TileEntity3x3MachineBase<TileEntityS
         Direction face = getMasterFacing();
         BlockPos masterPos = masterTE.getPos();
 
-        if (facing == Direction.UP && pos.equals(masterPos.up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (facing == Direction.UP && this.pos.equals(masterPos.up()) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return LazyOptional.of(() -> masterTE.steamTank).cast();
-        if (facing == face && pos.equals(masterPos.down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (facing == face && this.pos.equals(masterPos.down().offset(face)) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return LazyOptional.of(() -> masterTE.waterTank).cast();
-        if (facing == face.rotateYCCW() && pos.equals(masterPos.down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityEnergy.ENERGY)
-            return masterTE.energyStorage.cast();
+        if (facing == face.rotateYCCW() && this.pos.equals(masterPos.down().offset(face.getOpposite()).offset(face.rotateYCCW())) && capability == CapabilityEnergy.ENERGY)
+            return LazyOptional.of(() -> masterTE.energyContainer).cast();
 
         return super.getCapability(capability, facing);
     }
