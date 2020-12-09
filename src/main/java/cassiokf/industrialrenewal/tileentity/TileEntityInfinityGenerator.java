@@ -13,25 +13,20 @@ import javax.annotation.Nullable;
 
 public class TileEntityInfinityGenerator extends TEBase implements ITickable
 {
-    public final VoltsEnergyContainer energyContainer;
-
-    public TileEntityInfinityGenerator()
+    public static final VoltsEnergyContainer energyContainer = new VoltsEnergyContainer(0, 0, 0)
     {
-        this.energyContainer = new VoltsEnergyContainer(0, 0, 0)
+        @Override
+        public boolean canReceive()
         {
-            @Override
-            public boolean canReceive()
-            {
-                return false;
-            }
+            return false;
+        }
 
-            @Override
-            public boolean canExtract()
-            {
-                return false;
-            }
-        };
-    }
+        @Override
+        public boolean canExtract()
+        {
+            return false;
+        }
+    };
 
     @Override
     public void update()
@@ -63,7 +58,7 @@ public class TileEntityInfinityGenerator extends TEBase implements ITickable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
         if (capability == CapabilityEnergy.ENERGY && facing != EnumFacing.DOWN && facing != EnumFacing.UP)
-            return CapabilityEnergy.ENERGY.cast(this.energyContainer);
+            return CapabilityEnergy.ENERGY.cast(energyContainer);
         return super.getCapability(capability, facing);
     }
 }

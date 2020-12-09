@@ -24,19 +24,22 @@ import java.util.Random;
 
 public class BlockFloorLamp extends BlockIndustrialFloor
 {
-    public BlockFloorLamp(String name, CreativeTabs tab) {
+    public BlockFloorLamp(String name, CreativeTabs tab)
+    {
         super(name, tab);
         setSoundType(SoundType.METAL);
         setLightLevel(1.0F);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
         return false;
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+    public Item getItemDropped(IBlockState state, Random par2Random, int par3)
+    {
         return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor)).getItem();
     }
 
@@ -48,7 +51,8 @@ public class BlockFloorLamp extends BlockIndustrialFloor
         int z = pos.getZ();
         ItemStack itemst = new ItemStack(Item.getItemFromBlock(ModBlocks.fluorescent));
         EntityItem entity = new EntityItem(world, x, y, z, itemst);
-        if (!world.isRemote) {
+        if (!world.isRemote)
+        {
             world.spawnEntity(entity);
         }
 
@@ -56,18 +60,21 @@ public class BlockFloorLamp extends BlockIndustrialFloor
 
     @SuppressWarnings("deprecation")
     @Override
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
+    {
         return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor));
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(final int meta) {
+    public IBlockState getStateFromMeta(final int meta)
+    {
         return getDefaultState();
     }
 
     @Override
-    public int getMetaFromState(final IBlockState state) {
+    public int getMetaFromState(final IBlockState state)
+    {
         return 0;
     }
 
@@ -80,7 +87,8 @@ public class BlockFloorLamp extends BlockIndustrialFloor
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 

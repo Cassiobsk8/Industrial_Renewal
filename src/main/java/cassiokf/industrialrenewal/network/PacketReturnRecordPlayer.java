@@ -13,7 +13,8 @@ import net.minecraftforge.fml.relauncher.Side;
 /**
  * SERVER SIDE
  */
-public class PacketReturnRecordPlayer implements IMessage {
+public class PacketReturnRecordPlayer implements IMessage
+{
 
     private BlockPos pos;
     private int dimension;
@@ -21,11 +22,13 @@ public class PacketReturnRecordPlayer implements IMessage {
     private boolean play;
     private boolean messageValid;
 
-    public PacketReturnRecordPlayer() {
+    public PacketReturnRecordPlayer()
+    {
         this.messageValid = false;
     }
 
-    public PacketReturnRecordPlayer(BlockPos pos, int dimension, int playDisk, boolean play) {
+    public PacketReturnRecordPlayer(BlockPos pos, int dimension, int playDisk, boolean play)
+    {
         this.dimension = dimension;
         this.pos = pos;
         this.playDisk = playDisk;
@@ -33,22 +36,27 @@ public class PacketReturnRecordPlayer implements IMessage {
         this.messageValid = true;
     }
 
-    public PacketReturnRecordPlayer(TileEntityRecordPlayer te) {
+    public PacketReturnRecordPlayer(TileEntityRecordPlayer te)
+    {
         this(te.getPos(), te.getWorld().provider.getDimension(), 0, false);
     }
 
-    public PacketReturnRecordPlayer(TileEntityRecordPlayer te, int playDisk) {
+    public PacketReturnRecordPlayer(TileEntityRecordPlayer te, int playDisk)
+    {
         this(te.getPos(), te.getWorld().provider.getDimension(), playDisk, true);
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-        try {
+    public void fromBytes(ByteBuf buf)
+    {
+        try
+        {
             pos = BlockPos.fromLong(buf.readLong());
             dimension = buf.readInt();
             playDisk = buf.readInt();
             play = buf.readBoolean();
-        } catch (IndexOutOfBoundsException ioe) {
+        } catch (IndexOutOfBoundsException ioe)
+        {
             System.out.println(ioe);
             return;
         }
@@ -56,8 +64,10 @@ public class PacketReturnRecordPlayer implements IMessage {
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
-        if (!this.messageValid) {
+    public void toBytes(ByteBuf buf)
+    {
+        if (!this.messageValid)
+        {
             return;
         }
         buf.writeLong(pos.toLong());
@@ -72,16 +82,22 @@ public class PacketReturnRecordPlayer implements IMessage {
         @Override
         public IMessage onMessage(PacketReturnRecordPlayer message, MessageContext ctx)
         {
-            if (!message.messageValid && ctx.side != Side.CLIENT) {
+            if (!message.messageValid && ctx.side != Side.CLIENT)
+            {
                 return null;
             }
             WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension);
             TileEntityRecordPlayer te = (TileEntityRecordPlayer) world.getTileEntity(message.pos);
-            if (te != null) {
-                if (message.play) {
-                    if (message.playDisk <= 3) {
+            if (te != null)
+            {
+                if (message.play)
+                {
+                    if (message.playDisk <= 3)
+                    {
                         te.playDisk(message.playDisk);
-                    } else if (message.playDisk == 5) {
+                    }
+                    else if (message.playDisk == 5)
+                    {
                         te.stop();
                     }
                 }

@@ -8,7 +8,8 @@ import net.minecraft.entity.Entity;
  * ModelPassengerCar - Either Mojang or a mod author
  * Created using Tabula 7.0.0
  */
-public class ModelPassengerCar extends ModelBase {
+public class ModelPassengerCar extends ModelBase
+{
     public ModelRenderer Wheel7;
     public ModelRenderer shape18_2;
     public ModelRenderer Wheel8;
@@ -46,7 +47,8 @@ public class ModelPassengerCar extends ModelBase {
     public ModelRenderer shape35_1;
     public ModelRenderer shape35_2;
 
-    public ModelPassengerCar() {
+    public ModelPassengerCar()
+    {
         this.textureWidth = 128;
         this.textureHeight = 128;
         this.Wheel6 = new ModelRenderer(this, 8, 0);
@@ -168,7 +170,8 @@ public class ModelPassengerCar extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    {
         this.Wheel6.render(f5);
         this.Wheel5.render(f5);
         this.shape31_2.render(f5);
@@ -210,7 +213,8 @@ public class ModelPassengerCar extends ModelBase {
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
+    {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;

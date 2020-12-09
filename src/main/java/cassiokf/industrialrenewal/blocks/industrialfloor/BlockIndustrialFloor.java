@@ -57,12 +57,37 @@ public class BlockIndustrialFloor extends BlockBase
     protected static final AxisAlignedBB C_WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 1.0D, 1.0D);
     protected static final AxisAlignedBB C_EAST_AABB = new AxisAlignedBB(0.9375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    public BlockIndustrialFloor(String name, CreativeTabs tab) {
+    public BlockIndustrialFloor(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setHardness(0.8f);
         setSoundType(SoundType.METAL);
         //setLightOpacity(255);
 
+    }
+
+    private static boolean isValidConnection(final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection)
+    {
+        Block nb = neighbourState.getBlock();
+        return nb instanceof BlockIndustrialFloor
+                || nb instanceof BlockFloorPipe
+                || nb instanceof BlockFloorCable
+                || (nb instanceof BlockDoor && neighbourState.getValue(BlockDoor.FACING).equals(neighbourDirection))
+                || (neighbourDirection.equals(EnumFacing.DOWN) && nb instanceof BlockCatwalkLadder)
+                || (neighbourDirection.equals(EnumFacing.UP) && nb instanceof BlockCatwalkHatch)
+                //start check for horizontal Iladder
+                || ((neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN)
+                && nb instanceof BlockCatwalkLadder && !neighbourState.getValue(BlockCatwalkLadder.ACTIVE))
+                //end
+                ;
+    }
+
+    public static boolean canConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection)
+    {
+        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
+        final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
+
+        return !isValidConnection(neighbourState, worldIn, ownPos, neighbourDirection);
     }
 
     @Override
@@ -114,7 +139,8 @@ public class BlockIndustrialFloor extends BlockBase
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         IProperty[] listedProperties = new IProperty[]{}; // listed properties
         IUnlistedProperty[] unlistedProperties = CONNECTED_PROPERTIES.toArray(new IUnlistedProperty[CONNECTED_PROPERTIES.size()]);
         return new ExtendedBlockState(this, listedProperties, unlistedProperties);
@@ -122,37 +148,15 @@ public class BlockIndustrialFloor extends BlockBase
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(final int meta) {
+    public IBlockState getStateFromMeta(final int meta)
+    {
         return getDefaultState();
     }
 
     @Override
-    public int getMetaFromState(final IBlockState state) {
+    public int getMetaFromState(final IBlockState state)
+    {
         return 0;
-    }
-
-    private static boolean isValidConnection(final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection)
-    {
-        Block nb = neighbourState.getBlock();
-        return nb instanceof BlockIndustrialFloor
-                || nb instanceof BlockFloorPipe
-                || nb instanceof BlockFloorCable
-                || (nb instanceof BlockDoor && neighbourState.getValue(BlockDoor.FACING).equals(neighbourDirection))
-                || (neighbourDirection.equals(EnumFacing.DOWN) && nb instanceof BlockCatwalkLadder)
-                || (neighbourDirection.equals(EnumFacing.UP) && nb instanceof BlockCatwalkHatch)
-                //start check for horizontal Iladder
-                || ((neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN)
-                && nb instanceof BlockCatwalkLadder && !neighbourState.getValue(BlockCatwalkLadder.ACTIVE))
-                //end
-                ;
-    }
-
-    public static boolean canConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection)
-    {
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
-
-        return !isValidConnection(neighbourState, worldIn, ownPos, neighbourDirection);
     }
 
     @Override
@@ -186,6 +190,7 @@ public class BlockIndustrialFloor extends BlockBase
         }
         return false;
     }
+
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
@@ -223,10 +228,6 @@ public class BlockIndustrialFloor extends BlockBase
         {
             world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
             world.setBlockState(pos, ModBlocks.floorLamp.getDefaultState(), 3);
-            if (entity.getHorizontalFacing() == EnumFacing.EAST || entity.getHorizontalFacing() == EnumFacing.WEST)
-            {
-                world.setBlockState(pos.up(), ModBlocks.dummy.getDefaultState(), 3);
-            }
             if (!entity.isCreative())
             {
                 playerStack.shrink(1);
@@ -238,7 +239,8 @@ public class BlockIndustrialFloor extends BlockBase
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 

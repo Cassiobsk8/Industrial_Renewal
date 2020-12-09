@@ -7,9 +7,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
-public class EntityInit {
+public class EntityInit
+{
 
-    public static void registerEntities() {
+    public static void registerEntities()
+    {
         RegisterEntity("cargo_container", EntityCargoContainer.class, References.ENTITY_CARGOCONTAINER_ID, 80);
         RegisterEntity("fluid_container", EntityFluidContainer.class, References.ENTITY_FLUIDCONTAINER_ID, 80);
         RegisterEntity("steam_locomotive", EntitySteamLocomotive.class, References.ENTITY_STEAMLOCOMOTIVE_ID, 80);
@@ -21,7 +23,8 @@ public class EntityInit {
         //RegisterEntity("container_ship", EntityContainerShip.class, References.ENTITY_CONTAINER_SHIP, 80);
     }
 
-    private static void RegisterEntity(String name, Class<? extends Entity> entity, int id, int range) {
+    private static void RegisterEntity(String name, Class<? extends Entity> entity, int id, int range)
+    {
         EntityRegistry.registerModEntity(new ResourceLocation(References.MODID + ":" + name), entity, References.MODID + "." + name, id, IndustrialRenewal.instance, range, 1, true);
     }
 }

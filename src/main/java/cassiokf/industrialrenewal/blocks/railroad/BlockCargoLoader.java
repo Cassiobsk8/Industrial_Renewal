@@ -62,7 +62,8 @@ public class BlockCargoLoader extends BlockHorizontalFacing
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
         if (!worldIn.isRemote && hand.equals(EnumHand.MAIN_HAND))
         {
             if (state.getValue(MASTER))
@@ -72,7 +73,8 @@ public class BlockCargoLoader extends BlockHorizontalFacing
                 {
                     OpenGUI(worldIn, pos, playerIn);
                 }
-            } else
+            }
+            else
             {
                 BlockPos masterPos = getMasterPos(worldIn, pos, state.getValue(FACING));
                 if (masterPos != null)
@@ -98,7 +100,8 @@ public class BlockCargoLoader extends BlockHorizontalFacing
             {
                 worldIn.setBlockToAir(pos1);
             }
-        } else
+        }
+        else
         {
             BlockPos masterPos = getMasterPos(worldIn, pos, facing);
             if (masterPos != null)
@@ -130,7 +133,8 @@ public class BlockCargoLoader extends BlockHorizontalFacing
     }
 
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(MASTER, false);
     }
 

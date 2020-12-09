@@ -30,12 +30,14 @@ import java.util.Random;
 
 public class BlockFloorPipe extends BlockFluidPipe
 {
-    public BlockFloorPipe(String name, CreativeTabs tab) {
+    public BlockFloorPipe(String name, CreativeTabs tab)
+    {
         super(name, tab);
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+    public Item getItemDropped(IBlockState state, Random par2Random, int par3)
+    {
         return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor)).getItem();
     }
 
@@ -67,19 +69,22 @@ public class BlockFloorPipe extends BlockFluidPipe
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
         return false;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
+    {
         return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor));
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean p_185477_7_) {
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean p_185477_7_)
+    {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, state.getCollisionBoundingBox(worldIn, pos));
     }
 

@@ -42,10 +42,21 @@ public class BlockFirstAidKit extends BlockHorizontalFacing
         //setSoundType(SoundType.METAL);
     }
 
+    public static EnumFacing getFaceDirection(IBlockState state)
+    {
+        if (state.getBlock() instanceof BlockFirstAidKit)
+        {
+            return state.getValue(FACING);
+        }
+        return EnumFacing.NORTH;
+    }
+
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         EnumFacing dir = state.getValue(FACING);
-        switch (dir) {
+        switch (dir)
+        {
             default:
             case NORTH:
                 return NORTH_BLOCK_AABB;
@@ -58,31 +69,31 @@ public class BlockFirstAidKit extends BlockHorizontalFacing
         }
     }
 
-    public static EnumFacing getFaceDirection(IBlockState state) {
-        if (state.getBlock() instanceof BlockFirstAidKit) {
-            return state.getValue(FACING);
-        }
-        return EnumFacing.NORTH;
-    }
-
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (world.isRemote) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        if (world.isRemote)
+        {
             return true;
         }
-        if (!player.isSneaking()) {
+        if (!player.isSneaking())
+        {
             ItemStack stack = itemInKit(world, pos);
-            if (stack != null && player.shouldHeal() && !player.isPotionActive(MobEffects.REGENERATION)) {
+            if (stack != null && player.shouldHeal() && !player.isPotionActive(MobEffects.REGENERATION))
+            {
                 player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, IRConfig.MainConfig.Main.medKitEffectDuration, 1, false, false));
                 stack.shrink(1);
             }
-        } else {
+        }
+        else
+        {
             OpenGUI(world, pos, player);
         }
         return true;
     }
 
-    private ItemStack itemInKit(World world, BlockPos pos) {
+    private ItemStack itemInKit(World world, BlockPos pos)
+    {
         TileEntityFirstAidKit te = (TileEntityFirstAidKit) world.getTileEntity(pos);
         if (te == null) return null;
         IItemHandler inventory = te.inventory;
@@ -97,7 +108,8 @@ public class BlockFirstAidKit extends BlockHorizontalFacing
         return null;
     }
 
-    private void OpenGUI(World world, BlockPos pos, EntityPlayer player) {
+    private void OpenGUI(World world, BlockPos pos, EntityPlayer player)
+    {
         player.openGui(IndustrialRenewal.instance, GUIHandler.FIRSTAIDKIT, world, pos.getX(), pos.getY(), pos.getZ());
     }
 
@@ -114,7 +126,8 @@ public class BlockFirstAidKit extends BlockHorizontalFacing
         super.breakBlock(world, pos, state);
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 
@@ -133,7 +146,8 @@ public class BlockFirstAidKit extends BlockHorizontalFacing
 
     @Nullable
     @Override
-    public TileEntityFirstAidKit createTileEntity(World world, IBlockState state) {
+    public TileEntityFirstAidKit createTileEntity(World world, IBlockState state)
+    {
         return new TileEntityFirstAidKit();
     }
 }

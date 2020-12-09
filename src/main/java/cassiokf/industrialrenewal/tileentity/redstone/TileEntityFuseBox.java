@@ -37,60 +37,73 @@ public class TileEntityFuseBox extends TEBase
         if ((oldState.getBlock() != newState.getBlock()))
         {
             TileEntityBoxConnector te = getTE();
-            if (te != null) {
+            if (te != null)
+            {
                 te.setActive(false);
             }
         }
         return (oldState.getBlock() != newState.getBlock());
     }
 
-    public void changeActivate() {
+    public void changeActivate()
+    {
         IBlockState state = this.world.getBlockState(this.pos);
         boolean active = state.getValue(BlockFuseBox.ACTIVE);
         this.world.setBlockState(this.pos, state.withProperty(BlockFuseBox.ACTIVE, !active));
         TileEntityBoxConnector te = getTE();
-        if (te != null) {
+        if (te != null)
+        {
             te.passRedstone();
         }
     }
 
-    public void shockPlayer(EntityPlayer player) {
+    public void shockPlayer(EntityPlayer player)
+    {
         this.world.playSound(null, this.pos, IRSoundRegister.EFFECT_SHOCK, SoundCategory.BLOCKS, 1f * IRConfig.MainConfig.Sounds.masterVolumeMult, 1);
         player.closeScreen();
         player.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 8f);
         player.knockBack(player, 0.4f, this.pos.getX() - player.posX, this.pos.getZ() - player.posZ);
     }
 
-    public boolean getActive() {
+    public boolean getActive()
+    {
         IBlockState state = this.world.getBlockState(this.pos);
         return state.getValue(BlockFuseBox.ACTIVE);
     }
 
-    public ItemStackHandler getInv() {
+    public ItemStackHandler getInv()
+    {
         return this.inventory;
     }
 
-    public int getPowerOut() {
+    public int getPowerOut()
+    {
         TileEntityBoxConnector te = getTE();
-        if (te != null) {
+        if (te != null)
+        {
             return te.getSignalWithAllTheMath(getInPower());
         }
         return getInPower();
     }
 
-    public int getInPower() {
+    public int getInPower()
+    {
         TileEntityBoxConnector te = getTE();
-        if (te != null) {
+        if (te != null)
+        {
             return te.getPowerIn();
         }
         return 0;
     }
 
-    private TileEntityBoxConnector getTE() {
+    private TileEntityBoxConnector getTE()
+    {
         int i = 1;
-        while (i < 64) {
+        while (i < 64)
+        {
             Block block = this.world.getBlockState(this.pos.down(i)).getBlock();
-            if (block instanceof BlockFuseBoxConnector) {
+            if (block instanceof BlockFuseBoxConnector)
+            {
                 TileEntityBoxConnector te = (TileEntityBoxConnector) this.world.getTileEntity(this.pos.down(i));
                 return te;
             }
@@ -100,20 +113,23 @@ public class TileEntityFuseBox extends TEBase
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
         compound.setTag("inventory", this.inventory.serializeNBT());
         return super.writeToNBT(compound);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(NBTTagCompound compound)
+    {
         this.inventory.deserializeNBT(compound.getCompoundTag("inventory"));
         super.readFromNBT(compound);
     }
 
     @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) this.inventory : super.getCapability(capability, facing);
     }
 }

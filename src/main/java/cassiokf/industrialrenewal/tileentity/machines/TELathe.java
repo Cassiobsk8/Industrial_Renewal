@@ -27,19 +27,19 @@ import java.util.List;
 
 public class TELathe extends TileEntityMultiBlockBase<TELathe>
 {
+    private static final int energyPTick = IRConfig.MainConfig.Main.energyPerTickLatheMachine;
+    private static final float volume = 0.2f * IRConfig.MainConfig.Sounds.masterVolumeMult;
     private final VoltsEnergyContainer energyContainer;
     private final ItemStackHandler input;
     private final ItemStackHandler outPut;
-    private ItemStack hold = ItemStack.EMPTY;
     public boolean inProcess = false;
+    private ItemStack hold = ItemStack.EMPTY;
     private boolean oldInProcess;
     private int tick;
     private int processTime;
     private float renderCutterProcess;
     private float oldProcessTime;
     private ItemStack processingItem;
-    private static final int energyPTick = IRConfig.MainConfig.Main.energyPerTickLatheMachine;
-    private static final float volume = 0.2f * IRConfig.MainConfig.Sounds.masterVolumeMult;
     private boolean stopping = false;
     private boolean stopped = true;
     private boolean oldStopping = false;
@@ -99,7 +99,8 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
                     && LatheRecipe.CACHED_RECIPES.containsKey(inputStack.getItem()))
             {
                 getProcessFromInputItem(inputStack);
-            } else if (inProcess)
+            }
+            else if (inProcess)
             {
                 process();
             }
@@ -121,12 +122,14 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             stopped = true;
             oldStopping = false;
             sync();
-        } else if (inProcess)
+        }
+        else if (inProcess)
         {
             stopped = false;
             if (world.isRemote)
                 IRSoundHandler.playRepeatableSound(IRSoundRegister.LATHE_RESOURCEL, volume, 1.0F, pos);
-        } else
+        }
+        else
         {
             if (world.isRemote) IRSoundHandler.stopTileSound(pos);
             stopping = false;

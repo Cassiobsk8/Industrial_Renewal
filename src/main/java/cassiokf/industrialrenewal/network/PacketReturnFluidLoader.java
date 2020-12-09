@@ -9,7 +9,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketReturnFluidLoader implements IMessage {
+public class PacketReturnFluidLoader implements IMessage
+{
 
     private BlockPos pos;
     private int dimension;
@@ -27,18 +28,21 @@ public class PacketReturnFluidLoader implements IMessage {
         this(te.getPos(), te.getWorld().provider.getDimension(), changeMode);
     }
 
-    public PacketReturnFluidLoader() {
+    public PacketReturnFluidLoader()
+    {
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
+    public void toBytes(ByteBuf buf)
+    {
         buf.writeLong(pos.toLong());
         buf.writeInt(dimension);
         buf.writeBoolean(changeMode);
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
+    public void fromBytes(ByteBuf buf)
+    {
         pos = BlockPos.fromLong(buf.readLong());
         dimension = buf.readInt();
         changeMode = buf.readBoolean();
@@ -52,11 +56,14 @@ public class PacketReturnFluidLoader implements IMessage {
         {
             World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension);
             TileEntityFluidLoader te = (TileEntityFluidLoader) world.getTileEntity(message.pos);
-            if (te != null) {
+            if (te != null)
+            {
                 if (message.changeMode) te.changeUnload();
                 else te.setNextWaitEnum();
                 return null;
-            } else {
+            }
+            else
+            {
                 return null;
             }
         }

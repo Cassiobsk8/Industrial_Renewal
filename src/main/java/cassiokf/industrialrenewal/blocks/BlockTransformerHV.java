@@ -73,7 +73,8 @@ public class BlockTransformerHV extends BlockMultiBlockBase<TileEntityTransforme
         if (te instanceof TileEntityTransformerHV && pos.equals(((TileEntityTransformerHV) te).getConnectorPos()))
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, DOWN_AABB);
-        } else
+        }
+        else
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
         }
@@ -86,7 +87,8 @@ public class BlockTransformerHV extends BlockMultiBlockBase<TileEntityTransforme
         if (te instanceof TileEntityTransformerHV && pos.equals(((TileEntityTransformerHV) te).getConnectorPos()))
         {
             return DOWN_AABB;
-        } else
+        }
+        else
         {
             return FULL_BLOCK_AABB;
         }

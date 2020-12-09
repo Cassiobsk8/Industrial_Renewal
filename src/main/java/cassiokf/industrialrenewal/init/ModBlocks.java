@@ -95,7 +95,6 @@ public class ModBlocks
     public static final BlockGutter gutter = new BlockGutter("gutter", References.CREATIVE_IR_TAB);
     public static final BlockLight light = new BlockLight("light", References.CREATIVE_IR_TAB);
     public static final BlockFluorescent fluorescent = new BlockFluorescent("fluorescent", References.CREATIVE_IR_TAB);
-    public static final BlockDummy dummy = new BlockDummy("dummy", References.CREATIVE_IR_TAB);
     public static final BlockCatwalkGate catwalkGate = new BlockCatwalkGate("catwalk_gate", References.CREATIVE_IR_TAB);
     public static final BlockCatwalkHatch hatch = new BlockCatwalkHatch("catwalk_hatch", References.CREATIVE_IR_TAB);
     public static final BlockWindow window = new BlockWindow("window", References.CREATIVE_IR_TAB);
@@ -186,7 +185,8 @@ public class ModBlocks
 
     public static final BlockOreVein veinHematite = new BlockOreVein("orevein_hematite", "oreIron", References.CREAATIVE_IRWIP_TAB);
 
-    public static void register(IForgeRegistry<Block> registry) {
+    public static void register(IForgeRegistry<Block> registry)
+    {
         registry.registerAll(
                 veinHematite,
                 blockHazard,
@@ -318,8 +318,6 @@ public class ModBlocks
                 bufferStopRail,
                 cargoLoader,
                 fluidLoader,
-                //dummys
-                dummy,
                 //Fluids Block
                 barrel,
                 trash,
@@ -398,7 +396,8 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileEntityPortableGenerator.class, portableGenerator.getRegistryName());
     }
 
-    public static void registerItemBlocks(IForgeRegistry<Item> registry) {
+    public static void registerItemBlocks(IForgeRegistry<Item> registry)
+    {
         registry.registerAll(
                 veinHematite.createItemBlock(),
                 blockHazard.createItemBlock(),
@@ -512,7 +511,8 @@ public class ModBlocks
         );
     }
 
-    public static void registerItemModels() {
+    public static void registerItemModels()
+    {
         veinHematite.registerItemModel(Item.getItemFromBlock(veinHematite));
         blockHazard.registerItemModel(Item.getItemFromBlock(blockHazard));
         blockIndFloor.registerItemModel(Item.getItemFromBlock(blockIndFloor));

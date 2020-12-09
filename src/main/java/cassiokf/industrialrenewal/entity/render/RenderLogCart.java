@@ -29,7 +29,8 @@ public class RenderLogCart<T extends EntityLogCart> extends RenderCartsBase<Enti
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityLogCart entity) {
+    protected ResourceLocation getEntityTexture(EntityLogCart entity)
+    {
         return TEXTURES;
     }
 }

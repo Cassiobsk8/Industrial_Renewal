@@ -5,9 +5,11 @@ import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
-public class IndustrialRenewalTab extends CreativeTabs {
+public class IndustrialRenewalTab extends CreativeTabs
+{
 
-    public IndustrialRenewalTab() {
+    public IndustrialRenewalTab()
+    {
         super(References.MODID);
     }
 

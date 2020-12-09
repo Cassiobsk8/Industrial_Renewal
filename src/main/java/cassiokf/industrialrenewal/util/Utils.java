@@ -59,8 +59,10 @@ public class Utils
         boolean isLog = false;
         if (size > 0)
         {
-            for (int i = 0; i < size; i++) {
-                if (oreList.contains(array[i])) {
+            for (int i = 0; i < size; i++)
+            {
+                if (oreList.contains(array[i]))
+                {
                     isLog = true;
                     break;
                 }
@@ -69,19 +71,25 @@ public class Utils
         return isLog;
     }
 
-    public static boolean IsInventoryEmpty(IItemHandler handler) {
-        for (int i = 0; i < handler.getSlots(); i++) {
-            if (!handler.getStackInSlot(i).isEmpty()) {
+    public static boolean IsInventoryEmpty(IItemHandler handler)
+    {
+        for (int i = 0; i < handler.getSlots(); i++)
+        {
+            if (!handler.getStackInSlot(i).isEmpty())
+            {
                 return false;
             }
         }
         return true;
     }
 
-    public static boolean IsInventoryFull(IItemHandler handler) {
+    public static boolean IsInventoryFull(IItemHandler handler)
+    {
         int slotsFull = 0;
-        for (int i = 0; i < handler.getSlots(); i++) {
-            if (!handler.getStackInSlot(i).isEmpty()) {
+        for (int i = 0; i < handler.getSlots(); i++)
+        {
+            if (!handler.getStackInSlot(i).isEmpty())
+            {
                 slotsFull++;
             }
         }
@@ -141,10 +149,12 @@ public class Utils
         if (block instanceof IFluidBlock)
         {
             return new FluidBlockWrapper((IFluidBlock) block, world, pos);
-        } else if (block instanceof BlockLiquid)
+        }
+        else if (block instanceof BlockLiquid)
         {
             return new BlockLiquidWrapper((BlockLiquid) block, world, pos);
-        } else
+        }
+        else
         {
             return new BlockWrapper(block, world, pos);
         }

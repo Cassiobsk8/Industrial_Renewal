@@ -8,13 +8,15 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
 //@SideOnly(Side.CLIENT)
-public class RenderPassengerCar<T extends EntityPassengerCar> extends RenderRotatableBase<EntityPassengerCar> {
+public class RenderPassengerCar<T extends EntityPassengerCar> extends RenderRotatableBase<EntityPassengerCar>
+{
 
     public static final ResourceLocation TEXTURES = new ResourceLocation(References.MODID + ":textures/entities/passenger_car.png");
 
     protected ModelPassengerCar modelMinecart = new ModelPassengerCar();
 
-    public RenderPassengerCar(RenderManager renderManagerIn) {
+    public RenderPassengerCar(RenderManager renderManagerIn)
+    {
         super(renderManagerIn);
     }
 
@@ -25,7 +27,8 @@ public class RenderPassengerCar<T extends EntityPassengerCar> extends RenderRota
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityPassengerCar entity) {
+    protected ResourceLocation getEntityTexture(EntityPassengerCar entity)
+    {
         return TEXTURES;
     }
 }

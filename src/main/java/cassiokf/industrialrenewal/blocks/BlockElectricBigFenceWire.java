@@ -35,16 +35,20 @@ public class BlockElectricBigFenceWire extends BlockBasicElectricFence
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-        if (state.getValue(INDEX) == 0) {
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if (state.getValue(INDEX) == 0)
+        {
             worldIn.setBlockState(pos.up(), state.withProperty(INDEX, 1));
             worldIn.setBlockState(pos.up(2), state.withProperty(INDEX, 2));
         }
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        switch (state.getValue(INDEX)) {
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        switch (state.getValue(INDEX))
+        {
             case 0:
                 if (IsBigFence(worldIn, pos.up())) worldIn.setBlockToAir(pos.up());
                 if (IsBigFence(worldIn, pos.up(2))) worldIn.setBlockToAir(pos.up(2));
@@ -68,40 +72,47 @@ public class BlockElectricBigFenceWire extends BlockBasicElectricFence
         return false;
     }
 
-    private boolean IsBigFence(World world, BlockPos pos) {
+    private boolean IsBigFence(World world, BlockPos pos)
+    {
         return world.getBlockState(pos).getBlock() instanceof BlockElectricBigFenceWire;
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
         return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos)
                 && worldIn.getBlockState(pos.up()).getBlock().isReplaceable(worldIn, pos.up())
                 && worldIn.getBlockState(pos.up(2)).getBlock().isReplaceable(worldIn, pos.up(2));
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         return BASE_AABB;
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, CBASE_AABB);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING, INDEX);
     }
 
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
         boolean crouching = placer.isSneaking();
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(INDEX, crouching ? 2 : 0);
     }
 
     @Override
-    public IBlockState getStateFromMeta(final int meta) {
+    public IBlockState getStateFromMeta(final int meta)
+    {
         int directionIndex = meta;
         if (meta > 3 && meta < 8) directionIndex -= 4;
         if (meta > 7) directionIndex -= 8;
@@ -112,7 +123,8 @@ public class BlockElectricBigFenceWire extends BlockBasicElectricFence
     }
 
     @Override
-    public int getMetaFromState(final IBlockState state) {
+    public int getMetaFromState(final IBlockState state)
+    {
         int i = state.getValue(FACING).getHorizontalIndex();
         if (state.getValue(INDEX) == 1) i += 4;
         if (state.getValue(INDEX) == 2) i += 8;

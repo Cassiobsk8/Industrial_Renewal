@@ -44,7 +44,8 @@ public class BlockFluidLoader extends BlockHorizontalFacing
                 {
                     OpenGUI(worldIn, pos, playerIn);
                 }
-            } else
+            }
+            else
             {
                 TileEntity tileentity = worldIn.getTileEntity(pos.down());
                 if (tileentity instanceof TileEntityFluidLoader)
@@ -76,7 +77,8 @@ public class BlockFluidLoader extends BlockHorizontalFacing
         if (state.getValue(MASTER))
         {
             if (IsLoader(worldIn, pos.up())) worldIn.setBlockToAir(pos.up());
-        } else
+        }
+        else
         {
             if (IsLoader(worldIn, pos.down())) worldIn.setBlockToAir(pos.down());
         }
@@ -103,7 +105,8 @@ public class BlockFluidLoader extends BlockHorizontalFacing
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    {
         return state.withProperty(UNLOAD, isUnload(world, pos, state));
     }
 
@@ -116,12 +119,14 @@ public class BlockFluidLoader extends BlockHorizontalFacing
     }
 
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(MASTER, true);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING, UNLOAD, MASTER);
     }
 

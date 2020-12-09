@@ -10,11 +10,13 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-public class BlockFrame extends BlockBase {
+public class BlockFrame extends BlockBase
+{
 
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    public BlockFrame(String name, CreativeTabs tab) {
+    public BlockFrame(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
@@ -22,34 +24,40 @@ public class BlockFrame extends BlockBase {
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(final int meta) {
+    public IBlockState getStateFromMeta(final int meta)
+    {
         return getDefaultState();
     }
 
     @Override
-    public int getMetaFromState(final IBlockState state) {
+    public int getMetaFromState(final IBlockState state)
+    {
         return 0;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isOpaqueCube(final IBlockState state) {
+    public boolean isOpaqueCube(final IBlockState state)
+    {
         return false;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isFullCube(final IBlockState state) {
+    public boolean isFullCube(final IBlockState state)
+    {
         return true;
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         return BASE_AABB;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 }

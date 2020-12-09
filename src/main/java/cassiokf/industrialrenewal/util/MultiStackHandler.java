@@ -9,13 +9,15 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 
-public class MultiStackHandler extends ItemStackHandler {
+public class MultiStackHandler extends ItemStackHandler
+{
+    private final TileEntity te;
     private int maxStack;
     private boolean sync;
-    private final TileEntity te;
     private int count;
 
-    public MultiStackHandler(int maxStack, boolean sync, TileEntity te) {
+    public MultiStackHandler(int maxStack, boolean sync, TileEntity te)
+    {
         super(1);
         this.maxStack = maxStack;
         this.sync = sync;
@@ -24,7 +26,8 @@ public class MultiStackHandler extends ItemStackHandler {
 
     @Override
     @Nonnull
-    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
+    {
         if (stack.isEmpty())
             return ItemStack.EMPTY;
 
@@ -34,7 +37,8 @@ public class MultiStackHandler extends ItemStackHandler {
 
         int limit = getStackLimit(0, stack);
 
-        if (!existing.isEmpty()) {
+        if (!existing.isEmpty())
+        {
             if (!ItemHandlerHelper.canItemStacksStack(stack, existing))
                 return stack;
 
@@ -46,11 +50,15 @@ public class MultiStackHandler extends ItemStackHandler {
 
         boolean reachedLimit = stack.getCount() > limit;
 
-        if (!simulate) {
-            if (existing.isEmpty()) {
+        if (!simulate)
+        {
+            if (existing.isEmpty())
+            {
                 this.stacks.set(0, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, 1) : stack);
                 count = reachedLimit ? limit : stack.getCount();
-            } else {
+            }
+            else
+            {
                 count += reachedLimit ? limit : stack.getCount();
             }
             onContentsChanged(0);
@@ -61,7 +69,8 @@ public class MultiStackHandler extends ItemStackHandler {
 
     @Override
     @Nonnull
-    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+    public ItemStack extractItem(int slot, int amount, boolean simulate)
+    {
         if (amount == 0)
             return ItemStack.EMPTY;
 
@@ -74,15 +83,20 @@ public class MultiStackHandler extends ItemStackHandler {
 
         int toExtract = Math.min(amount, maxStack);
 
-        if (count <= toExtract) {
-            if (!simulate) {
+        if (count <= toExtract)
+        {
+            if (!simulate)
+            {
                 this.stacks.set(0, ItemStack.EMPTY);
                 count = 0;
                 onContentsChanged(0);
             }
             return existing;
-        } else {
-            if (!simulate) {
+        }
+        else
+        {
+            if (!simulate)
+            {
                 this.stacks.set(0, ItemHandlerHelper.copyStackWithSize(existing, 1));
                 count -= toExtract;
                 onContentsChanged(0);
@@ -93,48 +107,57 @@ public class MultiStackHandler extends ItemStackHandler {
     }
 
     @Override
-    public int getSlotLimit(int slot) {
+    public int getSlotLimit(int slot)
+    {
         return maxStack;
     }
 
-    public int getCount() {
+    public int getCount()
+    {
         return count;
     }
 
-    public void setCount(int value) {
+    public void setCount(int value)
+    {
         count = value;
         onContentsChanged(0);
     }
 
-    public void removeFromCount(int value) {
+    public void removeFromCount(int value)
+    {
         count -= value;
         onContentsChanged(0);
     }
 
-    public void addToCount(int value) {
+    public void addToCount(int value)
+    {
         count += value;
         onContentsChanged(0);
     }
 
-    public void setSlotLimit(int value) {
+    public void setSlotLimit(int value)
+    {
         maxStack = value;
         onContentsChanged(0);
     }
 
     @Override
-    protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
+    protected int getStackLimit(int slot, @Nonnull ItemStack stack)
+    {
         return getSlotLimit(0);
     }
 
     @Override
-    protected void onContentsChanged(int slot) {
+    protected void onContentsChanged(int slot)
+    {
         super.onContentsChanged(slot);
         if (sync && te instanceof ISync) ((ISync) te).sync();
         else te.markDirty();
     }
 
     @Override
-    public NBTTagCompound serializeNBT() {
+    public NBTTagCompound serializeNBT()
+    {
         NBTTagCompound compound = super.serializeNBT();
         compound.setInteger("maxStack", maxStack);
         compound.setBoolean("sync", sync);
@@ -143,7 +166,8 @@ public class MultiStackHandler extends ItemStackHandler {
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
+    public void deserializeNBT(NBTTagCompound nbt)
+    {
         maxStack = nbt.getInteger("maxStack");
         sync = nbt.getBoolean("sync");
         count = nbt.getInteger("count");

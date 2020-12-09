@@ -37,31 +37,6 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
     public double xPos = 0D;
     public double zPos = 0D;
 
-    @Override
-    public abstract void render(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha);
-
-    public void doTheMath(EnumFacing facing, double x, double z, double offset, double sidePlus)
-    {
-        switch (facing)
-        {
-            case SOUTH:
-                xPos = x + (0.5 - sidePlus);
-                zPos = z + (1 - offset);
-                return;
-            case NORTH:
-                xPos = x + (0.5 + sidePlus);
-                zPos = z + offset;
-                return;
-            case EAST:
-                xPos = x + (1 - offset);
-                zPos = z + (0.5 + sidePlus);
-                return;
-            case WEST:
-                xPos = x + offset;
-                zPos = z + (0.5 - sidePlus);
-        }
-    }
-
     public static void renderScreenTexts(EnumFacing facing, double x, double y, double z, String[] text, float spacing, float scale)
     {
         double lY = y;
@@ -115,7 +90,8 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         render3dItem(facing, world, x, y, z, stack, scale, disableLight, true, rotation, rX, rY, rZ, false, false);
     }
 
-    public static void render3dItem(EnumFacing facing, World world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight, boolean applyRotation, float rotation, float rX, float rY, float rZ, boolean rotateHorizontal, boolean rotateVertical) {
+    public static void render3dItem(EnumFacing facing, World world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight, boolean applyRotation, float rotation, float rX, float rY, float rZ, boolean rotateHorizontal, boolean rotateVertical)
+    {
         GlStateManager.enableRescaleNormal();
         GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
         GlStateManager.enableBlend();
@@ -142,7 +118,8 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         GlStateManager.disableBlend();
     }
 
-    public static void render2dItem(EnumFacing facing, World world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight) {
+    public static void render2dItem(EnumFacing facing, World world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight)
+    {
         GlStateManager.enableRescaleNormal();
         GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
         GlStateManager.enableBlend();
@@ -166,7 +143,8 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         GlStateManager.disableBlend();
     }
 
-    public static void renderBarLevel(EnumFacing facing, double x, double y, double z, float fill, float scale) {
+    public static void renderBarLevel(EnumFacing facing, double x, double y, double z, float fill, float scale)
+    {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
         rotateAccordingly(facing);
@@ -214,5 +192,30 @@ public abstract class TESRBase<T extends TileEntity> extends TileEntitySpecialRe
         //shift = shiftOld + (shift - shiftOld) * partialTick
         float r = oldRotation + (rotation - oldRotation) * partialTick;
         return invert ? -r : r;
+    }
+
+    @Override
+    public abstract void render(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha);
+
+    public void doTheMath(EnumFacing facing, double x, double z, double offset, double sidePlus)
+    {
+        switch (facing)
+        {
+            case SOUTH:
+                xPos = x + (0.5 - sidePlus);
+                zPos = z + (1 - offset);
+                return;
+            case NORTH:
+                xPos = x + (0.5 + sidePlus);
+                zPos = z + offset;
+                return;
+            case EAST:
+                xPos = x + (1 - offset);
+                zPos = z + (0.5 + sidePlus);
+                return;
+            case WEST:
+                xPos = x + offset;
+                zPos = z + (0.5 - sidePlus);
+        }
     }
 }

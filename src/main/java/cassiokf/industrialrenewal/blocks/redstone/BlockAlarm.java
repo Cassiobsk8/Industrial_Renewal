@@ -31,7 +31,8 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm>
     private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.5625F, 0.875F, 0.875F, 1);
     private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.4375F, 0.875F, 0.875F, 0);
 
-    public BlockAlarm(String name, CreativeTabs tab) {
+    public BlockAlarm(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setHardness(0.8f);
         //setSoundType(SoundType.METAL);
@@ -40,9 +41,11 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm>
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         EnumFacing dir = state.getValue(FACING);
-        switch (dir) {
+        switch (dir)
+        {
             case NORTH:
                 return NORTH_BLOCK_AABB;
             case SOUTH:
@@ -59,13 +62,15 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm>
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
         //todo make it change sound on right clicked with ScrewDrive
         return false;
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
         if (!(world.isSideSolid(pos.offset(state.getValue(FACING).getOpposite()), state.getValue(FACING))))
         {
             this.dropBlockAsItem(world, pos, world.getBlockState(pos), 0);
@@ -74,44 +79,52 @@ public class BlockAlarm extends BlockTileEntity<TileEntityAlarm>
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING);
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(int meta)
+    {
         return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(IBlockState state)
+    {
         return state.getValue(FACING).getIndex();
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+    {
         return this.getDefaultState().withProperty(FACING, facing);
     }
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 
     @Nullable
     @Override
-    public TileEntityAlarm createTileEntity(World world, IBlockState state) {
+    public TileEntityAlarm createTileEntity(World world, IBlockState state)
+    {
         return new TileEntityAlarm();
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return face == state.getValue(FACING).getOpposite() ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
     }
 }

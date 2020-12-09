@@ -11,21 +11,26 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ButtonBookOverIcon extends GuiButton {
+public class ButtonBookOverIcon extends GuiButton
+{
 
     protected static final ResourceLocation BUTTON_TEXTURE = new ResourceLocation(References.MODID, "textures/gui/buttons.png");
 
-    public ButtonBookOverIcon(int buttonId, int x, int y, String buttonText) {
+    public ButtonBookOverIcon(int buttonId, int x, int y, String buttonText)
+    {
         super(buttonId, x, y, buttonText);
     }
 
-    public ButtonBookOverIcon(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {
+    public ButtonBookOverIcon(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText)
+    {
         super(buttonId, x, y, widthIn, heightIn, buttonText);
     }
 
     @Override
-    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
-        if (this.visible) {
+    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
+    {
+        if (this.visible)
+        {
             FontRenderer fontrenderer = mc.fontRenderer;
             RenderHelper.disableStandardItemLighting();
             RenderHelper.enableGUIStandardItemLighting();

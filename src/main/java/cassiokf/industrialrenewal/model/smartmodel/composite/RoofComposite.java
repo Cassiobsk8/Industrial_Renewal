@@ -18,12 +18,12 @@ import java.util.List;
 
 public class RoofComposite implements IBakedModel
 {
-    private IBakedModel modelCore;
-    private IBakedModel modelDown;
-    private IBakedModel modelWest;
-    private IBakedModel modelEast;
-    private IBakedModel modelNorth;
-    private IBakedModel modelSouth;
+    private final IBakedModel modelCore;
+    private final IBakedModel modelDown;
+    private final IBakedModel modelWest;
+    private final IBakedModel modelEast;
+    private final IBakedModel modelNorth;
+    private final IBakedModel modelSouth;
 
     public RoofComposite(IBakedModel i_modelCore, IBakedModel i_modelDown, IBakedModel i_modelWest, IBakedModel i_modelEast,
                          IBakedModel i_modelNorth, IBakedModel i_modelSouth)

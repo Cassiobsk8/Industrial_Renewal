@@ -41,17 +41,16 @@ import java.util.Random;
 
 public class BlockBulkConveyor extends BlockHorizontalFacing
 {
-    public final EnumBulkConveyorType type;
     public static final PropertyInteger MODE = PropertyInteger.create("mode", 0, 2);
     public static final PropertyBool FRONT = PropertyBool.create("front");
     public static final PropertyBool BACK = PropertyBool.create("back");
-
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 0.5D);
     protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.5D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 0.5D, 1.0D, 1.0D);
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.5D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D);
     private static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 0.625D, 1D);
+    public final EnumBulkConveyorType type;
 
     public BlockBulkConveyor(String name, CreativeTabs tab, EnumBulkConveyorType type)
     {
@@ -106,7 +105,8 @@ public class BlockBulkConveyor extends BlockHorizontalFacing
                     if (!playerIn.isCreative()) heldItem.shrink(1);
                     return true;
                 }
-            } else if (heldItem.getItem().equals(ModItems.screwDrive))
+            }
+            else if (heldItem.getItem().equals(ModItems.screwDrive))
             {
                 if (type.equals(EnumBulkConveyorType.HOPPER))
                 {
@@ -122,7 +122,8 @@ public class BlockBulkConveyor extends BlockHorizontalFacing
                     ItemPowerScrewDrive.playDrillSound(worldIn, pos);
                     return true;
                 }
-            } else if (Block.getBlockFromItem(heldItem.getItem()) instanceof BlockBulkConveyor)
+            }
+            else if (Block.getBlockFromItem(heldItem.getItem()) instanceof BlockBulkConveyor)
             {
                 IBlockState actualState = state.getActualState(worldIn, pos);
                 EnumFacing face = state.getValue(FACING);
@@ -289,7 +290,8 @@ public class BlockBulkConveyor extends BlockHorizontalFacing
                 if (face == EnumFacing.WEST) addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
                 if (face == EnumFacing.EAST) addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
             }
-        } else
+        }
+        else
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
         }

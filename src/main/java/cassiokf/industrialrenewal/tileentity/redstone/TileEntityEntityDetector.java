@@ -26,34 +26,10 @@ public class TileEntityEntityDetector extends TileEntitySync implements ITickabl
     private int tick = 0;
     private entityEnum eEnum = entityEnum.ALL;
 
-    public enum entityEnum
+    private Class<? extends Entity> getEntityToFilter()
     {
-        ALL(0),
-        PLAYERS(1),
-        MOBHOSTIL(2),
-        MOBPASSIVE(3),
-        ITEMS(4),
-        CARTS(5);
-
-        public int intValue;
-
-        entityEnum(int value) {
-            intValue = value;
-        }
-
-        public static entityEnum valueOf(int no) {
-            if (no > entityEnum.values().length - 1) {
-                no = 0;
-            }
-            for (entityEnum l : entityEnum.values()) {
-                if (l.intValue == no) return l;
-            }
-            throw new IllegalArgumentException("entityEnum not found");
-        }
-    }
-
-    private Class<? extends Entity> getEntityToFilter() {
-        switch (eEnum) {
+        switch (eEnum)
+        {
             default:
             case ALL:
                 return Entity.class;
@@ -71,12 +47,14 @@ public class TileEntityEntityDetector extends TileEntitySync implements ITickabl
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+    {
         return (oldState.getBlock() != newState.getBlock());
     }
 
     @Override
-    public void update() {
+    public void update()
+    {
         if (!this.world.isRemote && ((tick % 10) == 0))
         {
             tick = 0;
@@ -85,29 +63,33 @@ public class TileEntityEntityDetector extends TileEntitySync implements ITickabl
         tick++;
     }
 
-    private void changeState(boolean value) {
+    private void changeState(boolean value)
+    {
         IBlockState state = this.world.getBlockState(this.pos).getActualState(this.world, this.pos);
         boolean actualValue = state.getValue(BlockEntityDetector.ACTIVE);
-        if (actualValue != value) {
+        if (actualValue != value)
+        {
             this.world.setBlockState(this.pos, state.withProperty(BlockEntityDetector.ACTIVE, value), 3);
             this.sync();
             world.notifyNeighborsOfStateChange(this.pos.offset(getBlockFacing()), state.getBlock(), true);
         }
     }
 
-    public boolean passRedstone() {
+    public boolean passRedstone()
+    {
         IBlockState state = this.world.getBlockState(this.pos);
         EnumFacing inFace = state.getValue(BlockEntityDetector.FACING);
         return checkEntity(getEntityToFilter(), inFace);
     }
 
-
-    private boolean checkEntity(Class<? extends Entity> entity, EnumFacing facing) {
+    private boolean checkEntity(Class<? extends Entity> entity, EnumFacing facing)
+    {
         int distance = distanceD + 1;
         double posX = this.pos.getX() + 1;
         double posY = this.pos.getY() + 1;
         double posZ = this.pos.getZ() + 1;
-        switch (facing) {
+        switch (facing)
+        {
             case DOWN:
                 posY = posY + distance;
                 break;
@@ -128,45 +110,54 @@ public class TileEntityEntityDetector extends TileEntitySync implements ITickabl
                 break;
         }
         List<? extends Entity> entities = this.world.getEntitiesWithinAABB(entity,
-                new AxisAlignedBB((double) this.pos.getX(), (double) this.pos.getY(), (double) this.pos.getZ(), posX, posY, posZ));
+                new AxisAlignedBB(this.pos.getX(), this.pos.getY(), this.pos.getZ(), posX, posY, posZ));
         return !entities.isEmpty();
     }
 
-    public void setBlockFacing(EnumFacing facing) {
+    public EnumFacing getBlockFacing()
+    {
+        return blockFacing;
+    }
+
+    public void setBlockFacing(EnumFacing facing)
+    {
         blockFacing = facing;
         markDirty();
     }
 
-    public EnumFacing getBlockFacing() {
-        return blockFacing;
-    }
-
-    public entityEnum getEntityEnum() {
+    public entityEnum getEntityEnum()
+    {
         return eEnum;
     }
 
-    public void setNextEntityEnum(boolean value) {
+    public void setNextEntityEnum(boolean value)
+    {
         int old = getEntityEnum().intValue;
-        if (value) {
+        if (value)
+        {
             eEnum = TileEntityEntityDetector.entityEnum.valueOf(old + 1);
         }
         this.sync();
     }
 
-    public void setNextDistance() {
+    public void setNextDistance()
+    {
         distanceD = distanceD + 1;
-        if (distanceD > 8) {
+        if (distanceD > 8)
+        {
             distanceD = 1;
         }
         this.sync();
     }
 
-    public int getDistance() {
+    public int getDistance()
+    {
         return distanceD;
     }
 
     @Override
-    public NBTTagCompound writeToNBT(final NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(final NBTTagCompound tag)
+    {
         tag.setInteger("baseFacing", blockFacing.getIndex());
         tag.setInteger("distance", distanceD);
         tag.setInteger("EnumConfig", this.eEnum.intValue);
@@ -174,10 +165,41 @@ public class TileEntityEntityDetector extends TileEntitySync implements ITickabl
     }
 
     @Override
-    public void readFromNBT(final NBTTagCompound tag) {
+    public void readFromNBT(final NBTTagCompound tag)
+    {
         super.readFromNBT(tag);
         blockFacing = EnumFacing.byIndex(tag.getInteger("baseFacing"));
         distanceD = tag.getInteger("distance");
         eEnum = entityEnum.valueOf(tag.getInteger("EnumConfig"));
+    }
+
+    public enum entityEnum
+    {
+        ALL(0),
+        PLAYERS(1),
+        MOBHOSTIL(2),
+        MOBPASSIVE(3),
+        ITEMS(4),
+        CARTS(5);
+
+        public int intValue;
+
+        entityEnum(int value)
+        {
+            intValue = value;
+        }
+
+        public static entityEnum valueOf(int no)
+        {
+            if (no > entityEnum.values().length - 1)
+            {
+                no = 0;
+            }
+            for (entityEnum l : entityEnum.values())
+            {
+                if (l.intValue == no) return l;
+            }
+            throw new IllegalArgumentException("entityEnum not found");
+        }
     }
 }

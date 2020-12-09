@@ -186,7 +186,8 @@ public class TileEntityCableTray extends TileEntityMultiBlocksTube<TileEntityCab
                 if (instanceOf(te) && !cableTrayList.contains(te))
                 {
                     traversingCables.add((TileEntityCableTray) te);
-                } else if (!instanceOf(te) && te instanceof TileEntityMultiBlocksTube && !connectedCables.contains(te))
+                }
+                else if (!instanceOf(te) && te instanceof TileEntityMultiBlocksTube && !connectedCables.contains(te))
                 {
                     connectedCables.add((TileEntityMultiBlocksTube) te);
                 }

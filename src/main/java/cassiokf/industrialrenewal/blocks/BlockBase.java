@@ -14,11 +14,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 
-public class BlockBase extends Block {
+public class BlockBase extends Block
+{
 
     protected String name;
 
-    public BlockBase(Material material, String name, CreativeTabs tab) {
+    public BlockBase(Material material, String name, CreativeTabs tab)
+    {
         super(material);
 
         this.name = name;

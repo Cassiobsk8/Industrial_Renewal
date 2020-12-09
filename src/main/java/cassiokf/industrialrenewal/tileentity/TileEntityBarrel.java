@@ -26,7 +26,8 @@ public class TileEntityBarrel extends TileEntitySaveContent
         if (this.tank.getFluid() != null)
         {
             return this.tank.getFluid().getLocalizedName() + ": " + this.tank.getFluidAmount() + " mB";
-        } else
+        }
+        else
         {
             return "Empty";
         }

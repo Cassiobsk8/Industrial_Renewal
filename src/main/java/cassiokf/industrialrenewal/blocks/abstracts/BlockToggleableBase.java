@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -73,17 +72,8 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
         state = state.withProperty(ACTIVE, active);
         te.setActive(active);
         world.setBlockState(pos, state, 3);
-        //spawnParticle(world, pos);
         world.notifyNeighborsOfStateChange(pos, this, false);
         return true;
-    }
-
-    public void spawnParticle(World world, BlockPos pos)
-    {
-        int i = pos.getX();
-        int j = pos.getY();
-        int k = pos.getZ();
-        world.spawnParticle(EnumParticleTypes.WATER_DROP, i, j, k, 1.0D, 1.0D, 1.0D);
     }
 
     @Override

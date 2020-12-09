@@ -19,28 +19,33 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
-public class ClientProxy extends CommonProxy {
+public class ClientProxy extends CommonProxy
+{
 
     @Override
-    public void Init() {
+    public void Init()
+    {
         super.Init();
         MinecraftForge.EVENT_BUS.register(IRSoundHandler.class);
     }
 
     @Override
-    public void preInit() {
+    public void preInit()
+    {
         //IRConfig.clientPreInit();
         RenderHandler.registerEntitiesRender();
         RenderHandler.registerCustomMeshesAndStates();
     }
 
     @Override
-    public void registerItemRenderer(Item item, int meta, String id) {
+    public void registerItemRenderer(Item item, int meta, String id)
+    {
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(References.MODID + ":" + id, "inventory"));
     }
 
     @Override
-    public void registerRenderers() {
+    public void registerRenderers()
+    {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirstAidKit.class, new TESRFirstAidKit());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGauge.class, new TESRGauge());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBatteryBank.class, new TESRBatteryBank());

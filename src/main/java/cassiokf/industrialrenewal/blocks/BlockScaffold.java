@@ -27,7 +27,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BlockScaffold extends BlockBase {
+public class BlockScaffold extends BlockBase
+{
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES)
                     .map(facing -> PropertyBool.create(facing.getName()))
@@ -37,7 +38,8 @@ public class BlockScaffold extends BlockBase {
     protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB CBASE_AABB = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 1.0D, 0.9D);
 
-    public BlockScaffold(String name, CreativeTabs tab) {
+    public BlockScaffold(String name, CreativeTabs tab)
+    {
         super(Material.GROUND, name, tab);
         this.setSoundType(SoundType.METAL);
         this.setHardness(0.5f);
@@ -45,25 +47,32 @@ public class BlockScaffold extends BlockBase {
 
     @Override
     @Nullable
-    public String getHarvestTool(IBlockState state) {
+    public String getHarvestTool(IBlockState state)
+    {
         return "pickaxe";
     }
 
     @Override
-    public boolean isLadder(IBlockState state, IBlockAccess world, BlockPos pos, EntityLivingBase entity) {
+    public boolean isLadder(IBlockState state, IBlockAccess world, BlockPos pos, EntityLivingBase entity)
+    {
         return true;
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.scaffold)) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        if (player.inventory.getCurrentItem().getItem() == ItemBlock.getItemFromBlock(ModBlocks.scaffold))
+        {
             int n = 1;
-            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockScaffold) {
+            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockScaffold)
+            {
                 n++;
             }
-            if (world.getBlockState(pos.up(n)).getBlock().isAir(world.getBlockState(pos.up(n)), world, pos.up(n))) {
+            if (world.getBlockState(pos.up(n)).getBlock().isAir(world.getBlockState(pos.up(n)), world, pos.up(n)))
+            {
                 world.setBlockState(pos.up(n), ModBlocks.scaffold.getDefaultState(), 3);
-                if (!player.isCreative()) {
+                if (!player.isCreative())
+                {
                     player.inventory.clearMatchingItems(net.minecraft.item.ItemBlock.getItemFromBlock(ModBlocks.scaffold), 0, 1, null);
                 }
                 return true;
@@ -74,37 +83,45 @@ public class BlockScaffold extends BlockBase {
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-        if (!(world.isSideSolid(pos.offset(EnumFacing.DOWN), EnumFacing.UP, true))) {
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor)
+    {
+        if (!(world.isSideSolid(pos.offset(EnumFacing.DOWN), EnumFacing.UP, true)))
+        {
             this.dropBlockAsItem((World) world, pos, world.getBlockState(pos), 0);
             ((World) world).setBlockToAir(pos);
         }
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        if (!(world.isSideSolid(pos.offset(EnumFacing.DOWN), EnumFacing.UP, true))) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        if (!(world.isSideSolid(pos.offset(EnumFacing.DOWN), EnumFacing.UP, true)))
+        {
             this.dropBlockAsItem(world, pos, world.getBlockState(pos), 0);
             world.setBlockToAir(pos);
         }
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         return BASE_AABB;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        if (!isActualState) {
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    {
+        if (!isActualState)
+        {
             state = state.getActualState(worldIn, pos);
         }
         addCollisionBoxToList(pos, entityBox, collidingBoxes, CBASE_AABB);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
     }
 
@@ -118,13 +135,16 @@ public class BlockScaffold extends BlockBase {
      * @param neighbourDirection The direction of the neighbouring block
      * @return Is the neighbouring block a valid connection?
      */
-    protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+    protected boolean isValidConnection(final IBlockState ownState, final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection)
+    {
         Block nb = neighbourState.getBlock();
         Block nbd = world.getBlockState(ownPos.offset(neighbourDirection).down()).getBlock();
-        if (neighbourDirection == EnumFacing.DOWN) {
+        if (neighbourDirection == EnumFacing.DOWN)
+        {
             return nb.isFullCube(neighbourState);
         }
-        if (neighbourDirection != EnumFacing.UP) {
+        if (neighbourDirection != EnumFacing.UP)
+        {
             return !isConnected(ownState, EnumFacing.UP) && !(nb instanceof BlockScaffold) && !(nbd instanceof BlockScaffold);
         }
         return nb.isFullCube(neighbourState) || nb instanceof BlockScaffold;
@@ -139,7 +159,8 @@ public class BlockScaffold extends BlockBase {
      * @param neighbourDirection The direction of the neighbouring block
      * @return Can this pipe connect?
      */
-    private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+    private boolean canConnectTo(final IBlockState ownState, final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection)
+    {
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
 
@@ -150,53 +171,64 @@ public class BlockScaffold extends BlockBase {
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        for (final EnumFacing facing : EnumFacing.VALUES) {
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    {
+        for (final EnumFacing facing : EnumFacing.VALUES)
+        {
             state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()), canConnectTo(state, world, pos, facing));
         }
         return state;
     }
 
-    public final boolean isConnected(final IBlockState state, final EnumFacing facing) {
+    public final boolean isConnected(final IBlockState state, final EnumFacing facing)
+    {
         return state.getValue(CONNECTED_PROPERTIES.get(facing.getIndex()));
     }
 
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
         return worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(final int meta) {
+    public IBlockState getStateFromMeta(final int meta)
+    {
         return getDefaultState();
     }
 
     @Override
-    public int getMetaFromState(final IBlockState state) {
+    public int getMetaFromState(final IBlockState state)
+    {
         return 0;
     }
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 
     @Deprecated
 
-    public boolean isTopSolid(IBlockState state) {
+    public boolean isTopSolid(IBlockState state)
+    {
         return true;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        if (face == EnumFacing.UP) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        if (face == EnumFacing.UP)
+        {
             return BlockFaceShape.SOLID;
         }
         return BlockFaceShape.UNDEFINED;
@@ -206,7 +238,8 @@ public class BlockScaffold extends BlockBase {
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         super.onEntityCollision(worldIn, pos, state, entityIn);
-        if (entityIn instanceof EntityLivingBase && !((EntityLivingBase) entityIn).isOnLadder() && isLadder(state, worldIn, pos, (EntityLivingBase) entityIn)) {
+        if (entityIn instanceof EntityLivingBase && !((EntityLivingBase) entityIn).isOnLadder() && isLadder(state, worldIn, pos, (EntityLivingBase) entityIn))
+        {
             float f5 = 0.15F;
             if (entityIn.motionX < -f5)
                 entityIn.motionX = -f5;
@@ -221,7 +254,8 @@ public class BlockScaffold extends BlockBase {
             if (entityIn.motionY < -0.15D)
                 entityIn.motionY = -0.15D;
 
-            if (entityIn.motionY < 0 && entityIn instanceof EntityPlayer && entityIn.isSneaking()) {
+            if (entityIn.motionY < 0 && entityIn instanceof EntityPlayer && entityIn.isSneaking())
+            {
                 entityIn.motionY = 0;
                 return;
             }

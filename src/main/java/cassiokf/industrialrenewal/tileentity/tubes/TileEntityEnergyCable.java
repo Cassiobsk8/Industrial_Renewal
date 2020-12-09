@@ -98,20 +98,23 @@ public abstract class TileEntityEnergyCable extends TileEntityMultiBlocksTube<Ti
 
     @Override
     @Nullable
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
         if (capability == CapabilityEnergy.ENERGY)
             return CapabilityEnergy.ENERGY.cast(getMaster().energyContainer);
         return super.getCapability(capability, facing);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(NBTTagCompound compound)
+    {
         averageEnergy = compound.getInteger("energy_average");
         super.readFromNBT(compound);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
         compound.setInteger("energy_average", averageEnergy);
         return super.writeToNBT(compound);
     }

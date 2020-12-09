@@ -18,7 +18,8 @@ public class BlockValvePipeLarge extends BlockToggleableBase<TileEntityValvePipe
 
     @Nullable
     @Override
-    public TileEntityValvePipeLarge createTileEntity(World world, IBlockState state) {
+    public TileEntityValvePipeLarge createTileEntity(World world, IBlockState state)
+    {
         return new TileEntityValvePipeLarge();
     }
 }

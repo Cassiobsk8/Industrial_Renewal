@@ -8,26 +8,28 @@ import net.minecraft.entity.Entity;
  * ModelPlayer - Either Mojang or a mod author
  * Created using Tabula 7.0.0
  */
-public class SafetyBeltModel extends ModelBiped {
-    private ModelRenderer shape15;
-    private ModelRenderer shape16;
-    private ModelRenderer shape17;
-    private ModelRenderer shape18;
-    private ModelRenderer shape19;
-    private ModelRenderer shape21;
-    private ModelRenderer shape20;
-    private ModelRenderer shape22;
-    private ModelRenderer shape23;
-    private ModelRenderer shape24;
-    private ModelRenderer shape25;
-    private ModelRenderer shape26;
-    private ModelRenderer shape27;
-    private ModelRenderer shape28;
-    private ModelRenderer shape29;
-    private ModelRenderer shape30;
-    private ModelRenderer shape31;
+public class SafetyBeltModel extends ModelBiped
+{
+    private final ModelRenderer shape15;
+    private final ModelRenderer shape16;
+    private final ModelRenderer shape17;
+    private final ModelRenderer shape18;
+    private final ModelRenderer shape19;
+    private final ModelRenderer shape21;
+    private final ModelRenderer shape20;
+    private final ModelRenderer shape22;
+    private final ModelRenderer shape23;
+    private final ModelRenderer shape24;
+    private final ModelRenderer shape25;
+    private final ModelRenderer shape26;
+    private final ModelRenderer shape27;
+    private final ModelRenderer shape28;
+    private final ModelRenderer shape29;
+    private final ModelRenderer shape30;
+    private final ModelRenderer shape31;
 
-    public SafetyBeltModel() {
+    public SafetyBeltModel()
+    {
         this.textureWidth = 64;
         this.textureHeight = 64;
         this.shape19 = new ModelRenderer(this, 45, 10);
@@ -95,7 +97,8 @@ public class SafetyBeltModel extends ModelBiped {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    {
         super.render(entity, f, f1, f2, f3, f4, f5);
         setRotationAngles(f, f1, f2, f3, f4, f5, entity);
     }
@@ -103,7 +106,8 @@ public class SafetyBeltModel extends ModelBiped {
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
+    {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;

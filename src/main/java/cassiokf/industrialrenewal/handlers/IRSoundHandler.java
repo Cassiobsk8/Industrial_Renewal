@@ -97,7 +97,8 @@ public class IRSoundHandler
         {
             resultSound = new TileSound(event.getSound(), resultSound.getVolume(), 1.0F, true);
             event.setResultSound(resultSound);
-        } else if (IRSoundRegister.REPEATABLE_SOUNDS.contains(soundLoc.toString()))
+        }
+        else if (IRSoundRegister.REPEATABLE_SOUNDS.contains(soundLoc.toString()))
         {
             ISound s = event.getSound();
             float vol = 0.4f;
@@ -110,7 +111,8 @@ public class IRSoundHandler
             }
             resultSound = new TileSound(s, vol, 1.0F, false);
             event.setResultSound(resultSound);
-        } else
+        }
+        else
         {
             return;
         }
@@ -138,10 +140,10 @@ public class IRSoundHandler
         private final int checkInterval = 1 + ThreadLocalRandom.current().nextInt(8);
 
         private final ISound sound;
+        private final boolean isDynamic;
         private float volume;
         private float pitch;
         private boolean donePlaying = false;
-        private final boolean isDynamic;
 
         TileSound(ISound sound, float volume, float pitch, boolean isDynamic)
         {
@@ -165,7 +167,8 @@ public class IRSoundHandler
                         pitch = ((IDynamicSound) te).getPitch();
                         volume = ((IDynamicSound) te).getVolume();
                     }
-                } else
+                }
+                else
                 {
                     donePlaying = true;
                 }

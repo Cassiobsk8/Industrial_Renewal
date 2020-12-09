@@ -18,11 +18,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class ItemSafetyBelt extends ItemArmor {
+public class ItemSafetyBelt extends ItemArmor
+{
 
     protected String name;
 
-    public ItemSafetyBelt(String name, CreativeTabs tab) {
+    public ItemSafetyBelt(String name, CreativeTabs tab)
+    {
         super(ArmorMaterial.CHAIN, 3, EntityEquipmentSlot.CHEST);
         this.name = name;
         this.setRegistryName(References.MODID, name);
@@ -31,8 +33,10 @@ public class ItemSafetyBelt extends ItemArmor {
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (this.isInCreativeTab(tab)) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    {
+        if (this.isInCreativeTab(tab))
+        {
             ItemStack stack = new ItemStack(this);
             stack.addEnchantment(Enchantment.getEnchantmentByID(2), 4);
             items.add(stack);
@@ -40,7 +44,8 @@ public class ItemSafetyBelt extends ItemArmor {
     }
 
     @Override
-    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
+    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn)
+    {
         stack.addEnchantment(Enchantment.getEnchantmentByID(2), 4);
 
     }
@@ -54,18 +59,21 @@ public class ItemSafetyBelt extends ItemArmor {
 
     @Override
     @Nullable
-    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
+    {
         return "industrialrenewal:textures/armor/safety_belt.png";
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     @Nullable
-    public net.minecraft.client.model.ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default) {
+    public net.minecraft.client.model.ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default)
+    {
         return new SafetyBeltModel();
     }
 
-    public void registerItemModel() {
+    public void registerItemModel()
+    {
         IndustrialRenewal.proxy.registerItemRenderer(this, 0, name);
     }
 

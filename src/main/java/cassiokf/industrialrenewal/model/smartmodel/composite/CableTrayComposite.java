@@ -197,28 +197,32 @@ public class CableTrayComposite implements IBakedModel
         if (isLinkPresent(extendedBlockState, BlockPipeBase.WEST))
         {
             quadsList.addAll(modelWest.getQuads(extendedBlockState, side, rand));
-        } else
+        }
+        else
         {
             quadsList.addAll(model2West.getQuads(extendedBlockState, side, rand));
         }
         if (isLinkPresent(extendedBlockState, BlockPipeBase.EAST))
         {
             quadsList.addAll(modelEast.getQuads(extendedBlockState, side, rand));
-        } else
+        }
+        else
         {
             quadsList.addAll(model2East.getQuads(extendedBlockState, side, rand));
         }
         if (isLinkPresent(extendedBlockState, BlockPipeBase.NORTH))
         {
             quadsList.addAll(modelNorth.getQuads(extendedBlockState, side, rand));
-        } else
+        }
+        else
         {
             quadsList.addAll(model2North.getQuads(extendedBlockState, side, rand));
         }
         if (isLinkPresent(extendedBlockState, BlockPipeBase.SOUTH))
         {
             quadsList.addAll(modelSouth.getQuads(extendedBlockState, side, rand));
-        } else
+        }
+        else
         {
             quadsList.addAll(model2South.getQuads(extendedBlockState, side, rand));
         }

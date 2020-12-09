@@ -18,14 +18,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocksTube> extends TileEntitySync implements ITickable
 {
-    private TE master;
-    private boolean isMaster;
     final public Map<TileEntity, Integer> limitedOutPutMap = new ConcurrentHashMap<>();
     final private Map<TileEntity, EnumFacing> machineContainer = new ConcurrentHashMap<>();
     public int outPut;
+    protected boolean inUse = false;
     int outPutCount;
     boolean firstTick = false;
-    protected boolean inUse = false;
+    private TE master;
+    private boolean isMaster;
     private boolean startBreaking;
 
     @Override
@@ -98,7 +98,8 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                     storage.checkForOutPuts();
                     storage.markDirty();
                 }
-            } else
+            }
+            else
             {
                 for (TileEntityMultiBlocksTube storage : connectedCables)
                 {

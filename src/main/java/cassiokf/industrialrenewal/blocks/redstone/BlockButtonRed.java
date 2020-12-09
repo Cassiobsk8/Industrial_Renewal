@@ -35,13 +35,15 @@ public class BlockButtonRed extends BlockBase
     private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.5625F, 0.875F, 0.875F, 1);
     private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.4375F, 0.875F, 0.875F, 0);
 
-    public BlockButtonRed(String name, CreativeTabs tab) {
+    public BlockButtonRed(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setHardness(0.8f);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
         if (world.isRemote) return true;
         world.setBlockState(pos, state.withProperty(PRESS, !state.getValue(PRESS)));
         world.playSound(null, pos, IRSoundRegister.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1f * IRConfig.MainConfig.Sounds.masterVolumeMult, 1f);
@@ -50,30 +52,36 @@ public class BlockButtonRed extends BlockBase
     }
 
     @Override
-    public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+    public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
         boolean active = !state.getActualState(world, pos).getValue(PRESS);
         return active ? 15 : 0;
     }
 
     @Override
-    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
         return blockState.getWeakPower(blockAccess, pos, side);
     }
 
     @Override
-    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side)
+    {
         return true;
     }
 
     @Override
-    public boolean canProvidePower(IBlockState state) {
+    public boolean canProvidePower(IBlockState state)
+    {
         return true;
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         EnumFacing dir = state.getValue(FACING);
-        switch (dir) {
+        switch (dir)
+        {
             case NORTH:
                 return NORTH_BLOCK_AABB;
             case SOUTH:
@@ -90,21 +98,25 @@ public class BlockButtonRed extends BlockBase
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING, PRESS);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(int meta)
+    {
         return getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta > 6 ? meta - 7 : meta)).withProperty(PRESS, meta > 6);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(IBlockState state)
+    {
         int i;
         i = state.getValue(FACING).getIndex();
-        if (state.getValue(PRESS)) {
+        if (state.getValue(PRESS))
+        {
             i += 7;
         }
         return i;
@@ -112,23 +124,27 @@ public class BlockButtonRed extends BlockBase
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
         return getDefaultState().withProperty(FACING, facing.getOpposite()).withProperty(PRESS, true);
     }
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 }

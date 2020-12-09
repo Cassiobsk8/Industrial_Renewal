@@ -24,7 +24,8 @@ public class BlockSolarPanel extends BlockTileEntity<TileEntitySolarPanelBase>
 {
     protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
 
-    public BlockSolarPanel(String name, CreativeTabs tab) {
+    public BlockSolarPanel(String name, CreativeTabs tab)
+    {
         super(Material.GLASS, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
@@ -41,7 +42,8 @@ public class BlockSolarPanel extends BlockTileEntity<TileEntitySolarPanelBase>
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         return BLOCK_AABB;
     }
 
@@ -54,18 +56,21 @@ public class BlockSolarPanel extends BlockTileEntity<TileEntitySolarPanelBase>
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return face == EnumFacing.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
     }
 }

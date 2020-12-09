@@ -6,9 +6,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class ContainerTender extends ContainerBase {
+public class ContainerTender extends ContainerBase
+{
 
-    public ContainerTender(IInventory playerInv, EntityTenderBase entity) {
+    public ContainerTender(IInventory playerInv, EntityTenderBase entity)
+    {
         IItemHandler inventory = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
 
         this.addSlotToContainer(new FuelSlot(inventory, 0, 62, 21));

@@ -62,7 +62,8 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipe>
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
         if (entity.getHeldItem(EnumHand.MAIN_HAND).getItem() == ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor))
         {
             if (!world.isRemote)
@@ -101,7 +102,8 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipe>
 
     @Nullable
     @Override
-    public TileEntityFluidPipe createTileEntity(World world, IBlockState state) {
+    public TileEntityFluidPipe createTileEntity(World world, IBlockState state)
+    {
         return new TileEntityFluidPipe();
     }
 }

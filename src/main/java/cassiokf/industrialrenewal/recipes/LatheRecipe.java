@@ -46,11 +46,6 @@ public class LatheRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IR
         IndustrialRenewal.LOGGER.info("Loaded " + this.output.getDisplayName() + " Lathe Recipe");
     }
 
-    public int getProcessTime()
-    {
-        return processTime;
-    }
-
     public static void populateLatheRecipes()
     {
         int recipesAmount = 0;
@@ -69,6 +64,11 @@ public class LatheRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IR
         }
 
         IndustrialRenewal.LOGGER.info(TextFormatting.GREEN + References.NAME + " Registered " + recipesAmount + " Recipes for Lathe Machine");
+    }
+
+    public int getProcessTime()
+    {
+        return processTime;
     }
 
     @Override

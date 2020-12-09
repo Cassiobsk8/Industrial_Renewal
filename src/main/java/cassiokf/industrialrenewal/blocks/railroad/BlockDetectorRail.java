@@ -8,11 +8,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 
-public class BlockDetectorRail extends BlockRailDetector {
+public class BlockDetectorRail extends BlockRailDetector
+{
 
     protected String name;
 
-    public BlockDetectorRail(String name, CreativeTabs tab) {
+    public BlockDetectorRail(String name, CreativeTabs tab)
+    {
 
         this.name = name;
         setRegistryName(References.MODID, name);
@@ -24,21 +26,25 @@ public class BlockDetectorRail extends BlockRailDetector {
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 
-    public void registerItemModel(Item itemBlock) {
+    public void registerItemModel(Item itemBlock)
+    {
         IndustrialRenewal.proxy.registerItemRenderer(itemBlock, 0, name);
     }
 
-    public Item createItemBlock() {
+    public Item createItemBlock()
+    {
         return new ItemBlock(this).setRegistryName(getRegistryName());
     }
 }

@@ -18,26 +18,26 @@ import java.util.List;
 
 public class PillarBaseComposite implements IBakedModel
 {
-    private IBakedModel modelCore;
-    private IBakedModel modelMaster;
-    private IBakedModel modelDown;
-    private IBakedModel modelUp;
-    private IBakedModel modelWest;
-    private IBakedModel modelEast;
-    private IBakedModel modelNorth;
-    private IBakedModel modelSouth;
-    private IBakedModel model2Down;
-    private IBakedModel model2Up;
-    private IBakedModel model2West;
-    private IBakedModel model2East;
-    private IBakedModel model2North;
-    private IBakedModel model2South;
-    private IBakedModel model3Down;
-    private IBakedModel model3Up;
-    private IBakedModel model3West;
-    private IBakedModel model3East;
-    private IBakedModel model3North;
-    private IBakedModel model3South;
+    private final IBakedModel modelCore;
+    private final IBakedModel modelMaster;
+    private final IBakedModel modelDown;
+    private final IBakedModel modelUp;
+    private final IBakedModel modelWest;
+    private final IBakedModel modelEast;
+    private final IBakedModel modelNorth;
+    private final IBakedModel modelSouth;
+    private final IBakedModel model2Down;
+    private final IBakedModel model2Up;
+    private final IBakedModel model2West;
+    private final IBakedModel model2East;
+    private final IBakedModel model2North;
+    private final IBakedModel model2South;
+    private final IBakedModel model3Down;
+    private final IBakedModel model3Up;
+    private final IBakedModel model3West;
+    private final IBakedModel model3East;
+    private final IBakedModel model3North;
+    private final IBakedModel model3South;
 
     public PillarBaseComposite(IBakedModel i_modelCore, IBakedModel i_modelMaster, IBakedModel i_modelDown,
                                IBakedModel i_modelUp, IBakedModel i_modelWest,

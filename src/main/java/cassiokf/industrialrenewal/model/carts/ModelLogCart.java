@@ -9,7 +9,8 @@ import net.minecraft.entity.Entity;
  * ModelLogCart - Either Mojang or a mod author
  * Created using Tabula 7.0.0
  */
-public class ModelLogCart extends ModelBase {
+public class ModelLogCart extends ModelBase
+{
     public ModelRenderer Wheel7;
     public ModelRenderer shape18_2;
     public ModelRenderer Wheel8;
@@ -40,7 +41,8 @@ public class ModelLogCart extends ModelBase {
     public ModelRenderer Base1;
     public ModelRenderer shape23_2;
 
-    public ModelLogCart() {
+    public ModelLogCart()
+    {
         this.textureWidth = 128;
         this.textureHeight = 128;
         this.Axis3 = new ModelRenderer(this, 58, 0);
@@ -139,7 +141,8 @@ public class ModelLogCart extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    {
         this.Wheel8.render(f5);
         this.Axis1.render(f5);
         this.TruckBase1.render(f5);
@@ -177,7 +180,8 @@ public class ModelLogCart extends ModelBase {
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
+    {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;

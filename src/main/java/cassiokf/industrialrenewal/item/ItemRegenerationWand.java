@@ -32,12 +32,16 @@ public class ItemRegenerationWand extends ItemBase
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-        if (!worldIn.isRemote) {
-            if (playerIn.isSneaking()) {
+        if (!worldIn.isRemote)
+        {
+            if (playerIn.isSneaking())
+            {
                 ChunkPos cPos = worldIn.getChunk(playerIn.getPosition()).getPos();
                 int n = 0;
-                for (int x = -16; x <= 16; x++) {
-                    for (int z = -16; z <= 16; z++) {
+                for (int x = -16; x <= 16; x++)
+                {
+                    for (int z = -16; z <= 16; z++)
+                    {
                         ItemStack stack = OreGeneration.CHUNKS_VEIN.get(new ChunkPos(cPos.x + x, cPos.z + z));
                         if (stack != null && !stack.isEmpty()) n++;
                     }
@@ -45,11 +49,14 @@ public class ItemRegenerationWand extends ItemBase
                 Utils.sendChatMessage(playerIn, "There is " + n + " Deep Vein in a 16x16 chunks near you");
 
                 int n2 = 0;
-                for (ItemStack stack : OreGeneration.CHUNKS_VEIN.values()) {
+                for (ItemStack stack : OreGeneration.CHUNKS_VEIN.values())
+                {
                     if (stack != null && !stack.isEmpty()) n2++;
                 }
                 Utils.sendChatMessage(playerIn, "Total DeepVein Loaded: " + n2);
-            } else {
+            }
+            else
+            {
                 ItemStack stack = OreGeneration.getChunkVein(worldIn, playerIn.getPosition());
                 String str = stack.getItem().getItemStackDisplayName(stack) + " " + stack.getCount();
                 if (stack.isEmpty()) str = ItemProspectingPan.notFound;

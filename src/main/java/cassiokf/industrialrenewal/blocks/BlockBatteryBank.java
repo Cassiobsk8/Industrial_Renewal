@@ -28,7 +28,8 @@ import java.util.List;
 
 public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBatteryBank>
 {
-    public BlockBatteryBank(String name, CreativeTabs tab) {
+    public BlockBatteryBank(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
     }
 
@@ -86,13 +87,15 @@ public class BlockBatteryBank extends BlockTileEntityConnected<TileEntityBattery
         return BlockRenderLayer.CUTOUT;
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 
     @Nullable
     @Override
-    public TileEntityBatteryBank createTileEntity(World world, IBlockState state) {
+    public TileEntityBatteryBank createTileEntity(World world, IBlockState state)
+    {
         return new TileEntityBatteryBank();
     }
 }

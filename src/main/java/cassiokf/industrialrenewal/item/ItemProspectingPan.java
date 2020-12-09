@@ -20,8 +20,8 @@ import java.util.List;
 
 public class ItemProspectingPan extends ItemBase
 {
-    private static final String found = "Deep vein found size:";
     public static final String notFound = "No deep vein found";
+    private static final String found = "Deep vein found size:";
 
     public ItemProspectingPan(String name, CreativeTabs tab)
     {
@@ -39,16 +39,38 @@ public class ItemProspectingPan extends ItemBase
         });
     }
 
+    public static boolean isEmpty(ItemStack stack)
+    {
+        return stack.getItemDamage() == 0;
+    }
+
+    private static void prospect(World worldIn, EntityPlayer playerIn, ItemStack panStack)
+    {
+        if (worldIn.isRemote) return;
+        panStack.damageItem(1, playerIn);
+        if (panStack.getItemDamage() >= 12)
+        {
+            ItemStack stackV = OreGeneration.getChunkVein(worldIn, playerIn.getPosition());
+
+            boolean hasVein = !stackV.isEmpty();
+            String msg;
+            if (hasVein) msg = stackV.getDisplayName()
+                    + " "
+                    + found
+                    + " "
+                    + stackV.getCount();
+            else msg = notFound;
+
+            Utils.sendChatMessage(playerIn, msg);
+            panStack.setItemDamage(0);
+        }
+    }
+
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add(I18n.format("info.industrialrenewal.prospectingpan.info"));
         super.addInformation(stack, worldIn, tooltip, flagIn);
-    }
-
-    public static boolean isEmpty(ItemStack stack)
-    {
-        return stack.getItemDamage() == 0;
     }
 
     @Override
@@ -80,28 +102,6 @@ public class ItemProspectingPan extends ItemBase
             return new ActionResult<>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
         }
         return super.onItemRightClick(worldIn, playerIn, handIn);
-    }
-
-    private static void prospect(World worldIn, EntityPlayer playerIn, ItemStack panStack)
-    {
-        if (worldIn.isRemote) return;
-        panStack.damageItem(1, playerIn);
-        if (panStack.getItemDamage() >= 12)
-        {
-            ItemStack stackV = OreGeneration.getChunkVein(worldIn, playerIn.getPosition());
-
-            boolean hasVein = !stackV.isEmpty();
-            String msg;
-            if (hasVein) msg = stackV.getDisplayName()
-                    + " "
-                    + found
-                    + " "
-                    + stackV.getCount();
-            else msg = notFound;
-
-            Utils.sendChatMessage(playerIn, msg);
-            panStack.setItemDamage(0);
-        }
     }
 
     @Override

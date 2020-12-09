@@ -15,14 +15,16 @@ import net.minecraftforge.fml.relauncher.Side;
 /*
  * SERVER SIDE
  */
-public class PacketReturnTEStorageChest implements IMessage {
+public class PacketReturnTEStorageChest implements IMessage
+{
     private BlockPos pos;
     private int dimension;
     private int ButtonId;
     private int playerID;
     private boolean messageValid;
 
-    public PacketReturnTEStorageChest() {
+    public PacketReturnTEStorageChest()
+    {
         this.messageValid = false;
     }
 
@@ -58,7 +60,8 @@ public class PacketReturnTEStorageChest implements IMessage {
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
+    public void toBytes(ByteBuf buf)
+    {
         if (!this.messageValid) return;
         buf.writeLong(pos.toLong());
         buf.writeInt(dimension);
@@ -66,14 +69,17 @@ public class PacketReturnTEStorageChest implements IMessage {
         buf.writeInt(ButtonId);
     }
 
-    public static class Handler implements IMessageHandler<PacketReturnTEStorageChest, IMessage> {
+    public static class Handler implements IMessageHandler<PacketReturnTEStorageChest, IMessage>
+    {
 
         @Override
-        public IMessage onMessage(PacketReturnTEStorageChest message, MessageContext ctx) {
+        public IMessage onMessage(PacketReturnTEStorageChest message, MessageContext ctx)
+        {
             if (!message.messageValid && ctx.side != Side.CLIENT) return null;
             WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension);
             TileEntity te = world.getTileEntity(message.pos);
-            if (te instanceof TEStorageChest) {
+            if (te instanceof TEStorageChest)
+            {
                 ((TEStorageChest) te).guiButtonClick(message.ButtonId, (EntityPlayer) world.getEntityByID(message.playerID));
                 return new PacketStorageChest((TEStorageChest) te);
             }

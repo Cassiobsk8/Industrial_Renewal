@@ -22,7 +22,8 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public class GUIHandler implements IGuiHandler {
+public class GUIHandler implements IGuiHandler
+{
 
     public static final int FIRSTAIDKIT = 0;
     public static final int RECORDPLAYER = 1;
@@ -40,23 +41,30 @@ public class GUIHandler implements IGuiHandler {
 
     @Nullable
     @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        if (ID == FIRSTAIDKIT) {
+    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+    {
+        if (ID == FIRSTAIDKIT)
+        {
             return new ContainerFirstAidKit(player.inventory, (TileEntityFirstAidKit) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
         }
-        if (ID == RECORDPLAYER) {
+        if (ID == RECORDPLAYER)
+        {
             return new ContainerRecordPlayer(player.inventory, (TileEntityRecordPlayer) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
         }
-        if (ID == CARGOLOADER) {
+        if (ID == CARGOLOADER)
+        {
             return new ContainerCargoLoader(player.inventory, (TileEntityCargoLoader) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
         }
-        if (ID == STEAMLOCOMOTIVE) {
+        if (ID == STEAMLOCOMOTIVE)
+        {
             return new ContainerSteamLocomotive(player.inventory, (EntitySteamLocomotive) world.getEntityByID(x));
         }
-        if (ID == ENTITYDETECTOR) {
+        if (ID == ENTITYDETECTOR)
+        {
             return new ContainerEntityDetector(player.inventory, (TileEntityEntityDetector) world.getTileEntity(new BlockPos(x, y, z)));
         }
-        if (ID == FUSEBOX) {
+        if (ID == FUSEBOX)
+        {
             return new ContainerFuseBox(player.inventory, (TileEntityFuseBox) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))));
         }
         if (ID == LOGCART)
@@ -71,13 +79,16 @@ public class GUIHandler implements IGuiHandler {
         {
             return new ContainerHopperCart(player.inventory, (EntityHopperCart) world.getEntityByID(x));
         }
-        if (ID == LATHE) {
+        if (ID == LATHE)
+        {
             return new ContainerLatheMachine(player.inventory, (TELathe) world.getTileEntity(new BlockPos(x, y, z)));
         }
-        if (ID == TENDER) {
+        if (ID == TENDER)
+        {
             return new ContainerTender(player.inventory, (EntityTenderBase) world.getEntityByID(x));
         }
-        if (ID == STORAGECHEST) {
+        if (ID == STORAGECHEST)
+        {
             return new ContainerStorageChest(player.inventory, (TEStorageChest) world.getTileEntity(new BlockPos(x, y, z)));
         }
         return null;
@@ -85,26 +96,34 @@ public class GUIHandler implements IGuiHandler {
 
     @Nullable
     @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        if (ID == FIRSTAIDKIT) {
+    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+    {
+        if (ID == FIRSTAIDKIT)
+        {
             return new GUIFirstAidKit(player.inventory, (TileEntityFirstAidKit) world.getTileEntity(new BlockPos(x, y, z)));
         }
-        if (ID == RECORDPLAYER) {
+        if (ID == RECORDPLAYER)
+        {
             return new GUIRecordPlayer(player.inventory, (TileEntityRecordPlayer) world.getTileEntity(new BlockPos(x, y, z)));
         }
-        if (ID == CARGOLOADER) {
+        if (ID == CARGOLOADER)
+        {
             return new GUICargoLoader(player.inventory, (TileEntityCargoLoader) world.getTileEntity(new BlockPos(x, y, z)));
         }
-        if (ID == STEAMLOCOMOTIVE) {
+        if (ID == STEAMLOCOMOTIVE)
+        {
             return new GUISteamLocomotive(player.inventory, (EntitySteamLocomotive) world.getEntityByID(x));
         }
-        if (ID == ENTITYDETECTOR) {
+        if (ID == ENTITYDETECTOR)
+        {
             return new GUIEntityDetector(player.inventory, (TileEntityEntityDetector) world.getTileEntity(new BlockPos(x, y, z)));
         }
-        if (ID == FUSEBOX) {
+        if (ID == FUSEBOX)
+        {
             return new GUIFuseBox(player, player.inventory, (TileEntityFuseBox) world.getTileEntity(new BlockPos(x, y, z)));
         }
-        if (ID == MANUAL) {
+        if (ID == MANUAL)
+        {
             return new GUIManual(world, player);
         }
         if (ID == LOGCART)
@@ -119,13 +138,16 @@ public class GUIHandler implements IGuiHandler {
         {
             return new GUIHopperCart(player.inventory, (EntityHopperCart) world.getEntityByID(x));
         }
-        if (ID == LATHE) {
+        if (ID == LATHE)
+        {
             return new GUILatheMachine(player.inventory, (TELathe) world.getTileEntity(new BlockPos(x, y, z)));
         }
-        if (ID == TENDER) {
+        if (ID == TENDER)
+        {
             return new GUITender(player.inventory, (EntityTenderBase) world.getEntityByID(x));
         }
-        if (ID == STORAGECHEST) {
+        if (ID == STORAGECHEST)
+        {
             return new GUIStorageChest(player.inventory, (TEStorageChest) world.getTileEntity(new BlockPos(x, y, z)));
         }
         return null;

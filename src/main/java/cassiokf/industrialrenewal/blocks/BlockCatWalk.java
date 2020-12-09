@@ -48,19 +48,22 @@ public class BlockCatWalk extends BlockTileEntity<TileEntityCatWalk>
     protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.03125D, 1.5D, 1.0D);
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 1.5D, 1.0D);
 
-    public BlockCatWalk(String name, CreativeTabs tab) {
+    public BlockCatWalk(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
         if (hand == EnumHand.MAIN_HAND)
         {
             Item playerItem = player.getHeldItem(EnumHand.MAIN_HAND).getItem();
@@ -113,40 +116,47 @@ public class BlockCatWalk extends BlockTileEntity<TileEntityCatWalk>
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(final int meta) {
+    public IBlockState getStateFromMeta(final int meta)
+    {
         return getDefaultState();
     }
 
     @Override
-    public int getMetaFromState(final IBlockState state) {
+    public int getMetaFromState(final IBlockState state)
+    {
         return 0;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isOpaqueCube(final IBlockState state) {
+    public boolean isOpaqueCube(final IBlockState state)
+    {
         return false;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isFullCube(final IBlockState state) {
+    public boolean isFullCube(final IBlockState state)
+    {
         return false;
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
         return EnumBlockRenderType.MODEL;
     }
 
-    protected boolean isValidConnection(final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+    protected boolean isValidConnection(final IBlockState neighbourState, final IBlockAccess world, final BlockPos ownPos, final EnumFacing neighbourDirection)
+    {
         TileEntityCatWalk te = (TileEntityCatWalk) world.getTileEntity(ownPos);
         if (te != null && te.isFacingBlackListed(neighbourDirection)) return true;
 
         IBlockState downstate = world.getBlockState(ownPos.offset(neighbourDirection).down());
         Block nb = neighbourState.getBlock();
 
-        if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
+        if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN)
+        {
             return nb instanceof BlockCatWalk
                     || nb instanceof BlockDoor
                     || nb instanceof BlockElectricGate
@@ -159,7 +169,8 @@ public class BlockCatWalk extends BlockTileEntity<TileEntityCatWalk>
                     || (downstate.getBlock() instanceof BlockCatwalkLadder && downstate.getValue(BlockCatwalkLadder.FACING) == neighbourDirection.getOpposite())
                     || (nb instanceof BlockCatwalkLadder && neighbourState.getValue(BlockCatwalkLadder.FACING) == neighbourDirection && !neighbourState.getValue(BlockCatwalkLadder.ACTIVE));
         }
-        if (neighbourDirection == EnumFacing.DOWN) {
+        if (neighbourDirection == EnumFacing.DOWN)
+        {
             return nb instanceof BlockCatwalkLadder
                     || nb instanceof BlockLadder
                     || nb instanceof BlockIndustrialFloor || nb instanceof BlockFloorLamp || nb instanceof BlockFloorCable || nb instanceof BlockFloorPipe
@@ -168,7 +179,8 @@ public class BlockCatWalk extends BlockTileEntity<TileEntityCatWalk>
         return !(neighbourState.getBlock() instanceof BlockEnergyCable);
     }
 
-    private boolean canConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection) {
+    private boolean canConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection)
+    {
         final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
         final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
 
@@ -177,50 +189,62 @@ public class BlockCatWalk extends BlockTileEntity<TileEntityCatWalk>
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        for (final EnumFacing facing : EnumFacing.VALUES) {
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    {
+        for (final EnumFacing facing : EnumFacing.VALUES)
+        {
             state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()),
                     canConnectTo(world, pos, facing));
         }
         return state;
     }
 
-    public final boolean isConnected(final IBlockState state, final EnumFacing facing) {
+    public final boolean isConnected(final IBlockState state, final EnumFacing facing)
+    {
         return state.getValue(CONNECTED_PROPERTIES.get(facing.getIndex()));
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    {
 
-        if (!isActualState) {
+        if (!isActualState)
+        {
             state = state.getActualState(worldIn, pos);
         }
-        if (isConnected(state, EnumFacing.DOWN)) {
+        if (isConnected(state, EnumFacing.DOWN))
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
         }
-        if (isConnected(state, EnumFacing.NORTH)) {
+        if (isConnected(state, EnumFacing.NORTH))
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
         }
-        if (isConnected(state, EnumFacing.SOUTH)) {
+        if (isConnected(state, EnumFacing.SOUTH))
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
         }
-        if (isConnected(state, EnumFacing.WEST)) {
+        if (isConnected(state, EnumFacing.WEST))
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
         }
-        if (isConnected(state, EnumFacing.EAST)) {
+        if (isConnected(state, EnumFacing.EAST))
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
         }
 
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         return RENDER_AABB;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 

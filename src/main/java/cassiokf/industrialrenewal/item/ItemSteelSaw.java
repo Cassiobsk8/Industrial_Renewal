@@ -9,11 +9,13 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemSteelSaw extends ItemOreDict {
+public class ItemSteelSaw extends ItemOreDict
+{
 
-    private static int maxDamage = 64;
+    private static final int maxDamage = 64;
 
-    public ItemSteelSaw(String name, String oreName, CreativeTabs tab) {
+    public ItemSteelSaw(String name, String oreName, CreativeTabs tab)
+    {
         super(name, oreName, tab);
         setMaxDamage(64);
         this.setNoRepair();
@@ -21,14 +23,17 @@ public class ItemSteelSaw extends ItemOreDict {
         setContainerItem(this);
     }
 
-    public static ItemStack copyStack(ItemStack stack, int n) {
+    public static ItemStack copyStack(ItemStack stack, int n)
+    {
         return new ItemStack(stack.getItem(), n, stack.getItemDamage());
     }
 
     @Override
-    public ItemStack getContainerItem(ItemStack stack) {
+    public ItemStack getContainerItem(ItemStack stack)
+    {
         int dmg = stack.getItemDamage();
-        if (dmg == maxDamage) {
+        if (dmg == maxDamage)
+        {
             return new ItemStack(stack.getItem(), 0, maxDamage);
         }
         ItemStack tr = copyStack(stack, 1);
@@ -38,7 +43,8 @@ public class ItemSteelSaw extends ItemOreDict {
 
 
     @Override
-    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag) {
+    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag)
+    {
         list.add(I18n.format("item." + References.MODID + "." + name + ".des0"));
     }
 }

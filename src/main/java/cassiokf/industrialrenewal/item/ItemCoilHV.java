@@ -65,11 +65,13 @@ public class ItemCoilHV extends ItemBase
                             isSecond = true;
                             Utils.sendChatMessage(player, "Connection Start");
                             return EnumActionResult.SUCCESS;
-                        } else
+                        }
+                        else
                         {
                             Utils.sendChatMessage(player, "Connection already in use");
                         }
-                    } else
+                    }
+                    else
                     {
                         int distance = Utils.getDistancePointToPoint(firstConnectionPos, pos);
                         if (teT.getConnectorPos() != firstConnectionPos && teT.canConnect(pos) && distance > 0 && distance <= IRConfig.MainConfig.Main.maxHVWireLength)
@@ -80,7 +82,8 @@ public class ItemCoilHV extends ItemBase
                             Utils.sendChatMessage(player, "Connected Distance: " + distance);
                             itemstack.shrink(1);
                             return EnumActionResult.SUCCESS;
-                        } else
+                        }
+                        else
                         {
                             if (distance > IRConfig.MainConfig.Main.maxHVWireLength)
                                 Utils.sendChatMessage(player, "Far away from each other, Distence: " + distance);
@@ -88,7 +91,8 @@ public class ItemCoilHV extends ItemBase
                             return EnumActionResult.FAIL;
                         }
                     }
-                } else if (te instanceof TileEntityHVConnectorBase)
+                }
+                else if (te instanceof TileEntityHVConnectorBase)
                 {
                     TileEntityHVConnectorBase teT = (TileEntityHVConnectorBase) te;
                     if (!isSecond)
@@ -99,11 +103,13 @@ public class ItemCoilHV extends ItemBase
                             isSecond = true;
                             Utils.sendChatMessage(player, "Connection Start");
                             return EnumActionResult.SUCCESS;
-                        } else
+                        }
+                        else
                         {
                             Utils.sendChatMessage(player, "Connection already in use");
                         }
-                    } else
+                    }
+                    else
                     {
                         int distance = Utils.getDistancePointToPoint(firstConnectionPos, pos);
                         if (teT.getPos() != firstConnectionPos && teT.canConnect() && distance > 0 && distance <= IRConfig.MainConfig.Main.maxHVWireLength)
@@ -114,7 +120,8 @@ public class ItemCoilHV extends ItemBase
                             Utils.sendChatMessage(player, "Connected Distance: " + distance);
                             itemstack.shrink(1);
                             return EnumActionResult.SUCCESS;
-                        } else
+                        }
+                        else
                         {
                             if (distance > IRConfig.MainConfig.Main.maxHVWireLength)
                                 Utils.sendChatMessage(player, "Far away from each other, Distence: " + distance);
@@ -152,7 +159,8 @@ public class ItemCoilHV extends ItemBase
         if (te instanceof IConnectorHV)
         {
             ((IConnectorHV) te).connect(endPos);
-        } else if (te instanceof TileEntityHVConnectorBase)
+        }
+        else if (te instanceof TileEntityHVConnectorBase)
         {
             ((TileEntityHVConnectorBase) te).setConnection(endPos);
         }

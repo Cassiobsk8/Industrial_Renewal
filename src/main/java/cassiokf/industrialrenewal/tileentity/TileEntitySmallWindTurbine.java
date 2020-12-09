@@ -29,7 +29,6 @@ import java.util.Random;
 
 public class TileEntitySmallWindTurbine extends TileEntitySync implements ITickable
 {
-    public static final AxisAlignedBB SMALL_BLADES_AABB = new AxisAlignedBB(-4D, -4D, -4D, 5D, 5D, 5D);
     private final VoltsEnergyContainer energyContainer;
     public ItemStackHandler bladeInv = new ItemStackHandler(1)
     {

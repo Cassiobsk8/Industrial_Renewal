@@ -23,7 +23,8 @@ public abstract class TileEntityBaseLoader extends TileEntitySync
         return waitE;
     }
 
-    public void setWaitEnum(int value) {
+    public void setWaitEnum(int value)
+    {
         waitE = waitEnum.valueOf(value);
     }
 
@@ -47,7 +48,8 @@ public abstract class TileEntityBaseLoader extends TileEntitySync
     public abstract boolean onMinecartPass(EntityMinecart entityMinecart, TileEntityLoaderRail loaderRail);
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
         compound.setInteger("EnumConfig", this.waitE.intValue);
         compound.setBoolean("unload", unload);
         compound.setBoolean("loading", loading);
@@ -56,7 +58,8 @@ public abstract class TileEntityBaseLoader extends TileEntitySync
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(NBTTagCompound compound)
+    {
         waitE = waitEnum.valueOf(compound.getInteger("EnumConfig"));
         unload = compound.getBoolean("unload");
         loading = compound.getBoolean("loading");
@@ -64,7 +67,8 @@ public abstract class TileEntityBaseLoader extends TileEntitySync
         super.readFromNBT(compound);
     }
 
-    public enum waitEnum {
+    public enum waitEnum
+    {
         WAIT_FULL(0),
         WAIT_EMPTY(1),
         NO_ACTIVITY(2),
@@ -72,15 +76,19 @@ public abstract class TileEntityBaseLoader extends TileEntitySync
 
         public int intValue;
 
-        waitEnum(int value) {
+        waitEnum(int value)
+        {
             intValue = value;
         }
 
-        public static waitEnum valueOf(int waitNo) {
-            if (waitNo > waitEnum.values().length - 1) {
+        public static waitEnum valueOf(int waitNo)
+        {
+            if (waitNo > waitEnum.values().length - 1)
+            {
                 waitNo = 0;
             }
-            for (waitEnum l : waitEnum.values()) {
+            for (waitEnum l : waitEnum.values())
+            {
                 if (l.intValue == waitNo) return l;
             }
             throw new IllegalArgumentException("waitEnum not found");

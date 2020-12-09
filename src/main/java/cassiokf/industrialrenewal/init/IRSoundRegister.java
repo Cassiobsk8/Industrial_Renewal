@@ -12,11 +12,6 @@ public class IRSoundRegister
 {
     public static final ObjectSet<String> TICKABLE_SOUNDS = new ObjectOpenHashSet<>();
     public static final ObjectSet<String> REPEATABLE_SOUNDS = new ObjectOpenHashSet<>();
-
-    public static SoundEvent TILEENTITY_TRAINHORN, TILEENTITY_VALVE_CHANGE, TILEENTITY_ALARM, ITEM_DRILL,
-            BLOCK_CATWALKGATE_OPEN, BLOCK_CATWALKGATE_CLOSE, EFFECT_SHOCK, DISC_1, BOOK_FLIP, MOTOR_ROTATION, PUMP_ROTATION,
-            PUMP_START, LATHE, LATHE_STOP, GENERATOR, MINING;
-
     public static final ResourceLocation PUMP_ROTATION_RESOURCEL = new ResourceLocation(References.MODID, "pump_rotation");
     public static final ResourceLocation TILEENTITY_TRAINHORN_RESOURCEL = new ResourceLocation(References.MODID, "railroad.train_horn");
     public static final ResourceLocation TILEENTITY_VALVE_CHANGE_RESOURCEL = new ResourceLocation(References.MODID, "valve");
@@ -33,6 +28,9 @@ public class IRSoundRegister
     public static final ResourceLocation LATHE_STOP_RESOURCEL = new ResourceLocation(References.MODID, "lathe_off");
     public static final ResourceLocation GENERATOR_RESOURCEL = new ResourceLocation(References.MODID, "port_generator");
     public static final ResourceLocation MINING_RESOURCEL = new ResourceLocation(References.MODID, "mining");
+    public static SoundEvent TILEENTITY_TRAINHORN, TILEENTITY_VALVE_CHANGE, TILEENTITY_ALARM, ITEM_DRILL,
+            BLOCK_CATWALKGATE_OPEN, BLOCK_CATWALKGATE_CLOSE, EFFECT_SHOCK, DISC_1, BOOK_FLIP, MOTOR_ROTATION, PUMP_ROTATION,
+            PUMP_START, LATHE, LATHE_STOP, GENERATOR, MINING;
 
     public static void registerSounds()
     {

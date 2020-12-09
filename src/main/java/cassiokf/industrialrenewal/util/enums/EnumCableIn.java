@@ -10,7 +10,7 @@ public enum EnumCableIn
     HV(3);
 
     public static final EnumCableIn[] VALUES = values();
-    private int index;
+    private final int index;
 
     EnumCableIn(int i)
     {

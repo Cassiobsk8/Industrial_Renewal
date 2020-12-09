@@ -9,9 +9,11 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemCartridge extends ItemOreDict {
+public class ItemCartridge extends ItemOreDict
+{
 
-    public ItemCartridge(String name, CreativeTabs tab) {
+    public ItemCartridge(String name, CreativeTabs tab)
+    {
         super(name, "cartridgeRedstone", tab);
     }
 

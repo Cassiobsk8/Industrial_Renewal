@@ -20,6 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class JEICompat implements IModPlugin
 {
     private static final List<ItemStack> blackListedItems = new CopyOnWriteArrayList<ItemStack>();
+
     public static String translateToLocal(String key)
     {
         return I18n.format(key);

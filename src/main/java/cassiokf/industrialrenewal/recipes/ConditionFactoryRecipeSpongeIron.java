@@ -8,9 +8,11 @@ import net.minecraftforge.common.crafting.JsonContext;
 
 import java.util.function.BooleanSupplier;
 
-public class ConditionFactoryRecipeSpongeIron implements IConditionFactory {
+public class ConditionFactoryRecipeSpongeIron implements IConditionFactory
+{
     @Override
-    public BooleanSupplier parse(JsonContext context, JsonObject json) {
+    public BooleanSupplier parse(JsonContext context, JsonObject json)
+    {
         boolean value = JsonUtils.getBoolean(json, "value", true);
         return () -> IRConfig.MainConfig.Recipes.spongeIronRecipeActive == value;
     }

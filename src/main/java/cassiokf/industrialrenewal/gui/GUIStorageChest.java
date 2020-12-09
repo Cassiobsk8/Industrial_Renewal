@@ -11,6 +11,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -46,7 +47,8 @@ public class GUIStorageChest extends GUIBase
         sendToServer(b.id);
     }
 
-    private void sendToServer(int id) {
+    private void sendToServer(int id)
+    {
         te.guiButtonClick(id, null);
         NetworkHandler.INSTANCE.sendToServer(new PacketReturnTEStorageChest(this.te, id, mc.player.getEntityId()));
     }
@@ -57,8 +59,8 @@ public class GUIStorageChest extends GUIBase
         super.initGui();
         int posX1 = ((this.width - this.xSize) / 2);
         int posY1 = ((this.height - this.ySize) / 2);
-        upB = new GuiButton(1, posX1 + 206, posY1 + 15, 10, 18, "▲");
-        downB = new GuiButton(2, posX1 + 206, posY1 + 105, 10, 18, "▼");
+        upB = new GuiButton(1, posX1 + 206, posY1 + 15, 10, 18, I18n.format("gui.industrialrenewal.arrowup"));
+        downB = new GuiButton(2, posX1 + 206, posY1 + 105, 10, 18, I18n.format("gui.industrialrenewal.arrowdown"));
         upB.enabled = false;
         downB.enabled = te.currentLine < te.additionalLines;
         this.buttonList.add(upB);
@@ -217,7 +219,8 @@ public class GUIStorageChest extends GUIBase
         }
     }
 
-    public void scrollPressed(boolean up) {
+    public void scrollPressed(boolean up)
+    {
         if (up && upB.enabled) sendToServer(upB.id);
         else if (!up && downB.enabled) sendToServer(downB.id);
     }

@@ -16,20 +16,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class TEFluidTank extends TEMultiTankBase<TEFluidTank>
 {
-    public final FluidTank inTank = new FluidTank(capacity)
-    {
-        @Override
-        public int fill(FluidStack resource, boolean doFill)
-        {
-            return TEFluidTank.this.getBottomTE().tank.fillInternal(resource, doFill);
-        }
-
-        @Override
-        public boolean canDrain()
-        {
-            return false;
-        }
-    };
+    public static final int capacity = IRConfig.MainConfig.Main.barrelCapacity * 10;
     public final FluidTank tank = new FluidTank(capacity)
     {
         @Override
@@ -50,7 +37,20 @@ public class TEFluidTank extends TEMultiTankBase<TEFluidTank>
             TEFluidTank.this.sync();
         }
     };
-    public static final int capacity = IRConfig.MainConfig.Main.barrelCapacity * 10;
+    public final FluidTank inTank = new FluidTank(capacity)
+    {
+        @Override
+        public int fill(FluidStack resource, boolean doFill)
+        {
+            return TEFluidTank.this.getBottomTE().tank.fillInternal(resource, doFill);
+        }
+
+        @Override
+        public boolean canDrain()
+        {
+            return false;
+        }
+    };
 
     @Override
     public void tick()

@@ -5,14 +5,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class FuseBoxSlot extends SlotItemHandler {
+public class FuseBoxSlot extends SlotItemHandler
+{
 
-    public FuseBoxSlot(IItemHandler inventoryIn, int index, int xPosition, int yPosition) {
+    public FuseBoxSlot(IItemHandler inventoryIn, int index, int xPosition, int yPosition)
+    {
         super(inventoryIn, index, xPosition, yPosition);
     }
 
     @Override
-    public boolean isItemValid(ItemStack itemstack) {
+    public boolean isItemValid(ItemStack itemstack)
+    {
         if (itemstack.isEmpty())
             return false;
         return itemstack.getItem() instanceof ItemCartridge && itemstack.getCount() == 1;
@@ -20,7 +23,8 @@ public class FuseBoxSlot extends SlotItemHandler {
 
 
     @Override
-    public int getSlotStackLimit() {
+    public int getSlotStackLimit()
+    {
         return 1;
     }
 }

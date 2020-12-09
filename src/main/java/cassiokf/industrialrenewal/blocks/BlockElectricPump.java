@@ -38,8 +38,10 @@ public class BlockElectricPump extends BlockHorizontalFacing
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        switch (state.getValue(INDEX)) {
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        switch (state.getValue(INDEX))
+        {
             case 0:
                 if (IsPump(worldIn, pos.offset(state.getValue(FACING))))
                     worldIn.setBlockToAir(pos.offset(state.getValue(FACING)));
@@ -75,7 +77,8 @@ public class BlockElectricPump extends BlockHorizontalFacing
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
         EntityPlayer player = worldIn.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 10D, false);
         if (player == null) return false;
         return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos)
@@ -83,17 +86,20 @@ public class BlockElectricPump extends BlockHorizontalFacing
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING, INDEX);
     }
 
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(INDEX, 0);
     }
 
     @Override
-    public IBlockState getStateFromMeta(final int meta) {
+    public IBlockState getStateFromMeta(final int meta)
+    {
         int directionIndex = meta;
         if (meta > 3) directionIndex -= 4;
         int index = 0;
@@ -102,7 +108,8 @@ public class BlockElectricPump extends BlockHorizontalFacing
     }
 
     @Override
-    public int getMetaFromState(final IBlockState state) {
+    public int getMetaFromState(final IBlockState state)
+    {
         int i = state.getValue(FACING).getHorizontalIndex();
         if (state.getValue(INDEX) == 1) i += 4;
         return i;
@@ -116,7 +123,8 @@ public class BlockElectricPump extends BlockHorizontalFacing
 
     @Nullable
     @Override
-    public TileEntityElectricPump createTileEntity(World world, IBlockState state) {
+    public TileEntityElectricPump createTileEntity(World world, IBlockState state)
+    {
         return new TileEntityElectricPump();
     }
 }

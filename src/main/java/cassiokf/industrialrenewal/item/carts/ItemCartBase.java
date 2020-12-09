@@ -30,7 +30,8 @@ public abstract class ItemCartBase extends ItemBase
         if (!BlockRailBase.isRailBlock(iblockstate))
         {
             return EnumActionResult.FAIL;
-        } else
+        }
+        else
         {
             ItemStack itemstack = player.getHeldItem(hand);
 

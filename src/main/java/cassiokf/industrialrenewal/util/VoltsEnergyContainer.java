@@ -4,28 +4,33 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class VoltsEnergyContainer implements IEnergyStorage, INBTSerializable<NBTTagCompound> {
+public class VoltsEnergyContainer implements IEnergyStorage, INBTSerializable<NBTTagCompound>
+{
     protected int stored;
     protected int capacity;
     protected int input;
     protected int output;
 
-    public VoltsEnergyContainer() {
+    public VoltsEnergyContainer()
+    {
         this(1000, 1000, 1000);
     }
 
-    public VoltsEnergyContainer(int capacity, int input, int output) {
+    public VoltsEnergyContainer(int capacity, int input, int output)
+    {
         this(0, capacity, input, output);
     }
 
-    public VoltsEnergyContainer(int power, int capacity, int input, int output) {
+    public VoltsEnergyContainer(int power, int capacity, int input, int output)
+    {
         this.stored = power;
         this.capacity = capacity;
         this.input = input;
         this.output = output;
     }
 
-    public VoltsEnergyContainer(NBTTagCompound dataTag) {
+    public VoltsEnergyContainer(NBTTagCompound dataTag)
+    {
         this.deserializeNBT(dataTag);
     }
 
@@ -124,11 +129,13 @@ public class VoltsEnergyContainer implements IEnergyStorage, INBTSerializable<NB
     }
 
     @Override
-    public int getMaxEnergyStored() {
+    public int getMaxEnergyStored()
+    {
         return this.capacity;
     }
 
-    public void setMaxEnergyStored(int capacity) {
+    public void setMaxEnergyStored(int capacity)
+    {
         this.capacity = capacity;
 
         if (this.stored > capacity)
@@ -139,29 +146,35 @@ public class VoltsEnergyContainer implements IEnergyStorage, INBTSerializable<NB
     {
     }
 
-    public int getMaxInput() {
+    public int getMaxInput()
+    {
         return this.input;
     }
 
-    public void setMaxInput(int input) {
+    public void setMaxInput(int input)
+    {
         this.input = input;
     }
 
-    public int getMaxOutput() {
+    public int getMaxOutput()
+    {
         return this.output;
     }
 
-    public void setMaxOutput(int output) {
+    public void setMaxOutput(int output)
+    {
         this.output = output;
     }
 
     @Override
-    public boolean canExtract() {
+    public boolean canExtract()
+    {
         return this.getMaxOutput() > 0 && this.stored > 0;
     }
 
     @Override
-    public boolean canReceive() {
+    public boolean canReceive()
+    {
         return this.getMaxInput() > 0;
     }
 }

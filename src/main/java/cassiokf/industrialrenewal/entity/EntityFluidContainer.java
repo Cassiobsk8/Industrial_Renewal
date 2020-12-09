@@ -39,10 +39,12 @@ public class EntityFluidContainer extends EntityFluidBase implements ICoupleCart
     }
 
     @Override
-    public void killMinecart(DamageSource source) {
+    public void killMinecart(DamageSource source)
+    {
         this.setDead();
 
-        if (!source.isExplosion() && this.world.getGameRules().getBoolean("doEntityDrops")) {
+        if (!source.isExplosion() && this.world.getGameRules().getBoolean("doEntityDrops"))
+        {
             this.entityDropItem(new ItemStack(ModItems.fluidContainer, 1), 0.0F);
         }
     }

@@ -6,7 +6,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class ContainerSteamLocomotive extends ContainerBase {
+public class ContainerSteamLocomotive extends ContainerBase
+{
 
     public ContainerSteamLocomotive(IInventory playerInv, EntitySteamLocomotive entity)
     {

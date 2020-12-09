@@ -28,19 +28,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class OreGeneration implements IWorldGenerator
 {
-    public static Map<ChunkPos, ItemStack> CHUNKS_VEIN = new ConcurrentHashMap<>();
-
     public static final List<Item> MINERABLE_ORES = new ArrayList<>();
     public static final List<Item> DEEP_VEIN_ORES = new ArrayList<>();
-
-    @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
-    {
-        if (world.provider.getDimension() == 0)
-        {
-            //generateOverworld(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-        }
-    }
+    public static Map<ChunkPos, ItemStack> CHUNKS_VEIN = new ConcurrentHashMap<>();
 
     private static void generateOverworld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
@@ -144,6 +134,15 @@ public class OreGeneration implements IWorldGenerator
         for (int i = 0; i < t; i++)
         {
             DEEP_VEIN_ORES.add(item);
+        }
+    }
+
+    @Override
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
+    {
+        if (world.provider.getDimension() == 0)
+        {
+            //generateOverworld(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
         }
     }
 }

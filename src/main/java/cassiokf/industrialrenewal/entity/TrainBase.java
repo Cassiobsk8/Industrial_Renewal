@@ -43,7 +43,7 @@ public abstract class TrainBase extends EntityMinecart
 
             if ((this.width > f0 || this.length > f1) && !this.firstUpdate && !this.world.isRemote)
             {
-                this.move(MoverType.SELF, (double) (f0 - this.width), 0.0D, (double) (f1 - this.length));
+                this.move(MoverType.SELF, f0 - this.width, 0.0D, f1 - this.length);
             }
         }
     }

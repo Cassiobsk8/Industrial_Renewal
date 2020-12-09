@@ -19,6 +19,7 @@ import java.util.List;
 
 public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBase> extends TileEntitySync implements ITickable
 {
+    boolean firstTick = false;
     private boolean isMaster;
     private boolean breaking;
     private boolean startBreaking;
@@ -26,7 +27,6 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     private boolean masterChecked = false;
     private boolean faceChecked = false;
     private int faceIndex;
-    boolean firstTick = false;
 
     @Override
     public void update()

@@ -18,13 +18,13 @@ import java.util.List;
 
 public class BigFenceComposite implements IBakedModel
 {
-    private IBakedModel modelCore;
-    private IBakedModel modelDown;
-    private IBakedModel modelUp;
-    private IBakedModel modelWest;
-    private IBakedModel modelEast;
-    private IBakedModel modelNorth;
-    private IBakedModel modelSouth;
+    private final IBakedModel modelCore;
+    private final IBakedModel modelDown;
+    private final IBakedModel modelUp;
+    private final IBakedModel modelWest;
+    private final IBakedModel modelEast;
+    private final IBakedModel modelNorth;
+    private final IBakedModel modelSouth;
 
     public BigFenceComposite(IBakedModel i_modelCore, IBakedModel i_modelDown, IBakedModel i_modelUp, IBakedModel i_modelWest,
                              IBakedModel i_modelEast, IBakedModel i_modelNorth, IBakedModel i_modelSouth)

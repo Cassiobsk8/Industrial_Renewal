@@ -14,28 +14,33 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockBrace extends BlockBase {
+public class BlockBrace extends BlockBase
+{
 
     public static final PropertyEnum<EnumOrientation> FACING = PropertyEnum.create("facing", BlockBrace.EnumOrientation.class);
     protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
 
-    public BlockBrace(String name, CreativeTabs tab) {
+    public BlockBrace(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setHardness(3f);
         setResistance(5f);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING);
     }
 
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(int meta)
+    {
         return this.getDefaultState().withProperty(FACING, BlockBrace.EnumOrientation.byMetadata(meta & 7));
     }
 
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(IBlockState state)
+    {
         int i = 0;
         i = i | state.getValue(FACING).getMetadata();
 
@@ -44,36 +49,42 @@ public class BlockBrace extends BlockBase {
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
         return this.getDefaultState().withProperty(FACING, BlockBrace.EnumOrientation.forFacings(facing, placer.getHorizontalFacing()));
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         return BLOCK_AABB;
     }
 
     @SuppressWarnings("deprecation")
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 
     @SuppressWarnings("deprecation")
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 
     //==================================================================================================================
-    public static enum EnumOrientation implements IStringSerializable {
+    public enum EnumOrientation implements IStringSerializable
+    {
         DOWN_EAST(0, "down_east", EnumFacing.DOWN),
         EAST(1, "east", EnumFacing.EAST),
         WEST(2, "west", EnumFacing.WEST),
@@ -85,8 +96,10 @@ public class BlockBrace extends BlockBase {
 
         private static final BlockBrace.EnumOrientation[] META_LOOKUP = new BlockBrace.EnumOrientation[values().length];
 
-        static {
-            for (BlockBrace.EnumOrientation blockbrace$enumorientation : values()) {
+        static
+        {
+            for (BlockBrace.EnumOrientation blockbrace$enumorientation : values())
+            {
                 META_LOOKUP[blockbrace$enumorientation.getMetadata()] = blockbrace$enumorientation;
             }
         }
@@ -95,25 +108,31 @@ public class BlockBrace extends BlockBase {
         private final String name;
         private final EnumFacing facing;
 
-        private EnumOrientation(int meta, String name, EnumFacing facing) {
+        EnumOrientation(int meta, String name, EnumFacing facing)
+        {
             this.meta = meta;
             this.name = name;
             this.facing = facing;
         }
 
-        public static BlockBrace.EnumOrientation byMetadata(int meta) {
-            if (meta < 0 || meta >= META_LOOKUP.length) {
+        public static BlockBrace.EnumOrientation byMetadata(int meta)
+        {
+            if (meta < 0 || meta >= META_LOOKUP.length)
+            {
                 meta = 0;
             }
 
             return META_LOOKUP[meta];
         }
 
-        public static BlockBrace.EnumOrientation forFacings(EnumFacing clickedSide, EnumFacing entityFacing) {
-            switch (clickedSide) {
+        public static BlockBrace.EnumOrientation forFacings(EnumFacing clickedSide, EnumFacing entityFacing)
+        {
+            switch (clickedSide)
+            {
                 case DOWN:
                 case UP:
-                    switch (entityFacing) {
+                    switch (entityFacing)
+                    {
                         case EAST:
                             return DOWN_EAST;
                         case NORTH:
@@ -140,19 +159,23 @@ public class BlockBrace extends BlockBase {
             }
         }
 
-        public int getMetadata() {
+        public int getMetadata()
+        {
             return this.meta;
         }
 
-        public EnumFacing getFacing() {
+        public EnumFacing getFacing()
+        {
             return this.facing;
         }
 
-        public String toString() {
+        public String toString()
+        {
             return this.name;
         }
 
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }

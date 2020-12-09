@@ -126,7 +126,8 @@ public class TileEntityHighPressurePipe extends TileEntityMultiBlocksTube<TileEn
                     && ((ICompressedFluidCapability) te).canAccept(face.getOpposite(), currentPos))
             {
                 addMachine(te, face);
-            } else removeMachine(te);
+            }
+            else removeMachine(te);
         }
     }
 

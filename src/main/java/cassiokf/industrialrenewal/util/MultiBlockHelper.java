@@ -23,7 +23,8 @@ public class MultiBlockHelper
         if (quantity > 0 && maxReceive > 0)
         {
             list = moveEnergy(machine, maxReceive, maxEnergyCanTransport, simulate);
-        } else
+        }
+        else
         {
             list.add(0);
             list.add(0);
@@ -38,7 +39,8 @@ public class MultiBlockHelper
         if (quantity > 0 && resource != null && resource.amount > 0)
         {
             list = moveFluid(machine, resource, maxFluidCanTransport, doFill);
-        } else
+        }
+        else
         {
             list.add(0);
             list.add(0);

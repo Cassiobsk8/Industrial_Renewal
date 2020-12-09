@@ -40,14 +40,16 @@ public class BlockCatwalkStair extends BlockHorizontalFacing
     protected static final AxisAlignedBB WC_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.03125D, 2.0D, 1.0D);
     protected static final AxisAlignedBB EC_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 2.0D, 1.0D);
 
-    public BlockCatwalkStair(String name, CreativeTabs tab) {
+    public BlockCatwalkStair(String name, CreativeTabs tab)
+    {
         super(name, tab, Material.IRON);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
         if (hand.equals(EnumHand.MAIN_HAND))
         {
             Item playerItem = player.inventory.getCurrentItem().getItem();
@@ -95,7 +97,8 @@ public class BlockCatwalkStair extends BlockHorizontalFacing
         return false;
     }
 
-    private Boolean leftConnected(IBlockState state, IBlockAccess world, BlockPos pos) {
+    private Boolean leftConnected(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
         EnumFacing face = state.getValue(FACING);
         TileEntityCatWalkStair te = (TileEntityCatWalkStair) world.getTileEntity(pos);
         if (te != null && te.isFacingBlackListed(face.rotateYCCW())) return false;
@@ -111,7 +114,8 @@ public class BlockCatwalkStair extends BlockHorizontalFacing
         return true;
     }
 
-    private Boolean rightConnected(IBlockState state, IBlockAccess world, BlockPos pos) {
+    private Boolean rightConnected(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
         EnumFacing face = state.getValue(FACING);
         TileEntityCatWalkStair te = (TileEntityCatWalkStair) world.getTileEntity(pos);
         if (te != null && te.isFacingBlackListed(face.rotateY())) return false;
@@ -128,12 +132,15 @@ public class BlockCatwalkStair extends BlockHorizontalFacing
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    {
         state = state.withProperty(ACTIVE_LEFT, leftConnected(state, world, pos)).withProperty(ACTIVE_RIGHT, rightConnected(state, world, pos));
         return state;
     }
+
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING, ACTIVE_LEFT, ACTIVE_RIGHT);
     }
 
@@ -144,7 +151,8 @@ public class BlockCatwalkStair extends BlockHorizontalFacing
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    {
         IBlockState actualState = getActualState(state, worldIn, pos);
 
         addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
@@ -164,7 +172,8 @@ public class BlockCatwalkStair extends BlockHorizontalFacing
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, EC_AABB);
             }
 
-        } else if (face == EnumFacing.SOUTH)
+        }
+        else if (face == EnumFacing.SOUTH)
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
             if (left)
@@ -175,7 +184,8 @@ public class BlockCatwalkStair extends BlockHorizontalFacing
             {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, WC_AABB);
             }
-        } else if (face == EnumFacing.WEST)
+        }
+        else if (face == EnumFacing.WEST)
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
             if (left)
@@ -186,7 +196,8 @@ public class BlockCatwalkStair extends BlockHorizontalFacing
             {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, NC_AABB);
             }
-        } else if (face == EnumFacing.EAST)
+        }
+        else if (face == EnumFacing.EAST)
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
             if (left)
@@ -200,7 +211,8 @@ public class BlockCatwalkStair extends BlockHorizontalFacing
         }
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 

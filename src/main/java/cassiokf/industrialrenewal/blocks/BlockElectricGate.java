@@ -62,7 +62,8 @@ public class BlockElectricGate extends BlockHorizontalFacing
         if (world.isRemote)
         {
             return true;
-        } else
+        }
+        else
         {
             IBlockState actualState = state.getActualState(world, pos);
             boolean active = !actualState.getValue(ACTIVE);
@@ -79,7 +80,8 @@ public class BlockElectricGate extends BlockHorizontalFacing
             if (!inverted && rightState.getBlock() instanceof BlockElectricGate && rightState.getActualState(world, rightPos).getValue(INVERTED))
             {
                 ((BlockElectricGate) rightState.getBlock()).OpenUpAndDown(world, rightState, rightPos, active);
-            } else if (inverted && leftState.getBlock() instanceof BlockElectricGate && !leftState.getActualState(world, leftPos).getValue(INVERTED))
+            }
+            else if (inverted && leftState.getBlock() instanceof BlockElectricGate && !leftState.getActualState(world, leftPos).getValue(INVERTED))
             {
                 ((BlockElectricGate) leftState.getBlock()).OpenUpAndDown(world, leftState, leftPos, active);
             }
@@ -90,7 +92,8 @@ public class BlockElectricGate extends BlockHorizontalFacing
             if (active)
             {
                 world.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, pitch);
-            } else
+            }
+            else
             {
                 world.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, pitch);
             }
@@ -176,7 +179,8 @@ public class BlockElectricGate extends BlockHorizontalFacing
         if (face == EnumFacing.NORTH || face == EnumFacing.SOUTH)
         {
             return RNORTH_AABB;
-        } else
+        }
+        else
         {
             return RWEST_AABB;
         }
@@ -196,44 +200,53 @@ public class BlockElectricGate extends BlockHorizontalFacing
                 if (inverted)
                 {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, INORTH_AABB);
-                } else
+                }
+                else
                 {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
                 }
-            } else if (face == EnumFacing.SOUTH)
+            }
+            else if (face == EnumFacing.SOUTH)
             {
                 if (inverted)
                 {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, ISOUTH_AABB);
-                } else
+                }
+                else
                 {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
                 }
-            } else if (face == EnumFacing.WEST)
+            }
+            else if (face == EnumFacing.WEST)
             {
                 if (inverted)
                 {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, IWEST_AABB);
-                } else
+                }
+                else
                 {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
                 }
-            } else if (face == EnumFacing.EAST)
+            }
+            else if (face == EnumFacing.EAST)
             {
                 if (inverted)
                 {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, IEAST_AABB);
-                } else
+                }
+                else
                 {
                     addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
                 }
             }
-        } else
+        }
+        else
         {
             if (face == EnumFacing.NORTH || face == EnumFacing.SOUTH)
             {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, CNORTH_AABB);
-            } else if (face == EnumFacing.WEST || face == EnumFacing.EAST)
+            }
+            else if (face == EnumFacing.WEST || face == EnumFacing.EAST)
             {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, CWEST_AABB);
             }

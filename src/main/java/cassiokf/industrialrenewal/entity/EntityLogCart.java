@@ -17,8 +17,8 @@ import net.minecraft.world.World;
 public class EntityLogCart extends EntityInventoryCartBase
 {
 
-    public int invItensCount = 0;
     private static final DataParameter<Integer> COUNT = EntityDataManager.createKey(EntityLogCart.class, DataSerializers.VARINT);
+    public int invItensCount = 0;
 
     public EntityLogCart(World worldIn)
     {
@@ -26,7 +26,8 @@ public class EntityLogCart extends EntityInventoryCartBase
         this.setSize(1.0F, 1.0F);
     }
 
-    public EntityLogCart(World worldIn, double x, double y, double z) {
+    public EntityLogCart(World worldIn, double x, double y, double z)
+    {
         super(worldIn, x, y, z);
     }
 
@@ -65,7 +66,8 @@ public class EntityLogCart extends EntityInventoryCartBase
         for (int i = 0; i < this.inventory.getSlots(); ++i)
         {
             ItemStack itemstack = this.inventory.getStackInSlot(i);
-            if (!itemstack.isEmpty()) {
+            if (!itemstack.isEmpty())
+            {
                 items = items + 1;
             }
         }
@@ -74,18 +76,21 @@ public class EntityLogCart extends EntityInventoryCartBase
     }
 
     @Override
-    public ItemStack getCartItem() {
+    public ItemStack getCartItem()
+    {
         return new ItemStack(ModItems.logCart);
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound compound) {
+    public void writeEntityToNBT(NBTTagCompound compound)
+    {
         super.writeEntityToNBT(compound);
         compound.setTag("inventory", this.inventory.serializeNBT());
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound compound) {
+    public void readEntityFromNBT(NBTTagCompound compound)
+    {
         super.readEntityFromNBT(compound);
         this.inventory.deserializeNBT(compound.getCompoundTag("inventory"));
         this.Sync();

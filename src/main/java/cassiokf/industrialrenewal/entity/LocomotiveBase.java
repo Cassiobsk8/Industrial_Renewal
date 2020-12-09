@@ -1,5 +1,7 @@
 package cassiokf.industrialrenewal.entity;
 
+import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.item.ItemIronPlow;
 import cassiokf.industrialrenewal.util.interfaces.ICoupleCart;
@@ -12,6 +14,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -82,6 +85,11 @@ public abstract class LocomotiveBase extends RotatableBase implements ICoupleCar
         }
         hasPlowItem = temp;
         return hasPlowItem;
+    }
+
+    public void horn()
+    {
+        world.playSound(null, getPosition(), IRSoundRegister.TILEENTITY_TRAINHORN, SoundCategory.NEUTRAL, 2F * IRConfig.MainConfig.Sounds.masterVolumeMult, 1F);
     }
 
     @Override

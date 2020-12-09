@@ -108,7 +108,8 @@ public class BlockChunkLoader extends BlockHorizontalFacing
             final TileEntity tileEntity = worldIn.getTileEntity(pos);
             if (tileEntity instanceof TileEntityChunkLoader)
                 ((TileEntityChunkLoader) tileEntity).expireAllTickets();
-        } else
+        }
+        else
         {
             if (IsLoader(worldIn, pos.down()))
                 worldIn.setBlockToAir(pos.down());

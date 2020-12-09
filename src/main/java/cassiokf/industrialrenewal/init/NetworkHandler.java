@@ -7,11 +7,13 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class NetworkHandler {
+public class NetworkHandler
+{
 
     public static SimpleNetworkWrapper INSTANCE;
 
-    public static void init() {
+    public static void init()
+    {
         INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(References.NETWORKCHANNEL);
         NetworkRegistry.INSTANCE.registerGuiHandler(IndustrialRenewal.instance, new GUIHandler());
 

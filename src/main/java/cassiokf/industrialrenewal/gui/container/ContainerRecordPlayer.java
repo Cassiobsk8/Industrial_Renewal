@@ -6,7 +6,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class ContainerRecordPlayer extends ContainerBase {
+public class ContainerRecordPlayer extends ContainerBase
+{
 
     private final IItemHandler inventory;
 
@@ -14,27 +15,35 @@ public class ContainerRecordPlayer extends ContainerBase {
     {
         this.inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null); //Gets the inventory from our tile entity
 
-        this.addSlotToContainer(new RecordSlot(inventory, 0, 80, 9) {
+        this.addSlotToContainer(new RecordSlot(inventory, 0, 80, 9)
+        {
             @Override
-            public void onSlotChanged() {
+            public void onSlotChanged()
+            {
                 te.markDirty();
             }
         });
-        this.addSlotToContainer(new RecordSlot(inventory, 1, 80, 27) {
+        this.addSlotToContainer(new RecordSlot(inventory, 1, 80, 27)
+        {
             @Override
-            public void onSlotChanged() {
+            public void onSlotChanged()
+            {
                 te.markDirty();
             }
         });
-        this.addSlotToContainer(new RecordSlot(inventory, 2, 80, 45) {
+        this.addSlotToContainer(new RecordSlot(inventory, 2, 80, 45)
+        {
             @Override
-            public void onSlotChanged() {
+            public void onSlotChanged()
+            {
                 te.markDirty();
             }
         });
-        this.addSlotToContainer(new RecordSlot(inventory, 3, 80, 63) {
+        this.addSlotToContainer(new RecordSlot(inventory, 3, 80, 63)
+        {
             @Override
-            public void onSlotChanged() {
+            public void onSlotChanged()
+            {
                 te.markDirty();
             }
         });

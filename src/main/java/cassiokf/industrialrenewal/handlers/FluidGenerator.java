@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidTank;
 
 public class FluidGenerator
 {
+    public static int energyPerTick = IRConfig.MainConfig.Main.portableGeneratorEnergyPerTick;
     private final TileEntitySync attachedTE;
     public final FluidTank tank = new FluidTank(IRConfig.MainConfig.Main.portableGeneratorCapacity)
     {
@@ -20,7 +21,6 @@ public class FluidGenerator
             FluidGenerator.this.sync();
         }
     };
-    public static int energyPerTick = IRConfig.MainConfig.Main.portableGeneratorEnergyPerTick;
     public final VoltsEnergyContainer energyStorage = new VoltsEnergyContainer(128, 128, energyPerTick)
     {
         @Override
@@ -55,8 +55,10 @@ public class FluidGenerator
                 isGenerating = true;
                 energyStorage.receiveInternally(energyPerTick, false);
                 fuelTime--;
-            } else isGenerating = false;
-        } else isGenerating = false;
+            }
+            else isGenerating = false;
+        }
+        else isGenerating = false;
 
         if (isGenerating != oldRunning)
         {

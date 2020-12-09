@@ -30,13 +30,6 @@ import java.util.List;
 public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extends BlockTileEntityConnectedMultiblocks<TE>
 {
 
-    private static float NORTHZ1 = 0.250f;
-    private static float SOUTHZ2 = 0.750f;
-    private static float WESTX1 = 0.250f;
-    private static float EASTX2 = 0.750f;
-    private static float DOWNY1 = 0.250f;
-    private static float UPY2 = 0.750f;
-
     public static final IUnlistedProperty<Boolean> MASTER = new Properties.PropertyAdapter<>(PropertyBool.create("master"));
     public static final IUnlistedProperty<Boolean> CSOUTH = new Properties.PropertyAdapter<>(PropertyBool.create("c_south"));
     public static final IUnlistedProperty<Boolean> CNORTH = new Properties.PropertyAdapter<>(PropertyBool.create("c_north"));
@@ -44,7 +37,6 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
     public static final IUnlistedProperty<Boolean> CWEST = new Properties.PropertyAdapter<>(PropertyBool.create("c_west"));
     public static final IUnlistedProperty<Boolean> CUP = new Properties.PropertyAdapter<>(PropertyBool.create("c_up"));
     public static final IUnlistedProperty<Boolean> CDOWN = new Properties.PropertyAdapter<>(PropertyBool.create("c_down"));
-
     //Pillar use Only
     public static final IUnlistedProperty<Boolean> WSOUTH = new Properties.PropertyAdapter<>(PropertyBool.create("w_south"));
     public static final IUnlistedProperty<Boolean> WNORTH = new Properties.PropertyAdapter<>(PropertyBool.create("w_north"));
@@ -52,15 +44,23 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
     public static final IUnlistedProperty<Boolean> WWEST = new Properties.PropertyAdapter<>(PropertyBool.create("w_west"));
     public static final IUnlistedProperty<Boolean> WUP = new Properties.PropertyAdapter<>(PropertyBool.create("w_up"));
     public static final IUnlistedProperty<Boolean> WDOWN = new Properties.PropertyAdapter<>(PropertyBool.create("w_down"));
+    private static float NORTHZ1 = 0.250f;
+    private static float SOUTHZ2 = 0.750f;
+    private static float WESTX1 = 0.250f;
+    private static float EASTX2 = 0.750f;
+    private static float DOWNY1 = 0.250f;
+    private static float UPY2 = 0.750f;
 
-    public BlockPipeBase(String name, CreativeTabs tab) {
+    public BlockPipeBase(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         IProperty[] listedProperties = new IProperty[]{}; // listed properties
         IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{MASTER, SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN};
         return new ExtendedBlockState(this, listedProperties, unlistedProperties);
@@ -73,29 +73,34 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
     }
 
     @Override
-    public IBlockState getStateFromMeta(final int meta) {
+    public IBlockState getStateFromMeta(final int meta)
+    {
         return getDefaultState();
     }
 
     @Override
-    public int getMetaFromState(final IBlockState state) {
+    public int getMetaFromState(final IBlockState state)
+    {
         return 0;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isOpaqueCube(final IBlockState state) {
+    public boolean isOpaqueCube(final IBlockState state)
+    {
         return false;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isFullCube(final IBlockState state) {
+    public boolean isFullCube(final IBlockState state)
+    {
         return false;
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
         return EnumBlockRenderType.MODEL;
     }
 
@@ -155,42 +160,48 @@ public abstract class BlockPipeBase<TE extends TileEntityMultiBlocksTube> extend
         if (isConnected(worldIn, pos, EnumFacing.NORTH))
         {
             NORTHZ1 = 0.0f;
-        } else
+        }
+        else
         {
             NORTHZ1 = 0.250f;
         }
         if (isConnected(worldIn, pos, EnumFacing.SOUTH))
         {
             SOUTHZ2 = 1.0f;
-        } else
+        }
+        else
         {
             SOUTHZ2 = 0.750f;
         }
         if (isConnected(worldIn, pos, EnumFacing.WEST))
         {
             WESTX1 = 0.0f;
-        } else
+        }
+        else
         {
             WESTX1 = 0.250f;
         }
         if (isConnected(worldIn, pos, EnumFacing.EAST))
         {
             EASTX2 = 1.0f;
-        } else
+        }
+        else
         {
             EASTX2 = 0.750f;
         }
         if (isConnected(worldIn, pos, EnumFacing.DOWN))
         {
             DOWNY1 = 0.0f;
-        } else
+        }
+        else
         {
             DOWNY1 = 0.250f;
         }
         if (isConnected(worldIn, pos, EnumFacing.UP))
         {
             UPY2 = 1.0f;
-        } else
+        }
+        else
         {
             UPY2 = 0.750f;
         }

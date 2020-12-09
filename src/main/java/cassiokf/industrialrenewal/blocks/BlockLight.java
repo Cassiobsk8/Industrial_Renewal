@@ -22,7 +22,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockLight extends BlockBase {
+public class BlockLight extends BlockBase
+{
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.3125D, 0.1875D, 0.0D, 0.6875D, 0.8125D, 0.3125D);
@@ -32,7 +33,8 @@ public class BlockLight extends BlockBase {
     protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.3125D, 0.6875D, 0.1875D, 0.6875D, 1.0D, 0.8125D);
     protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.1875D, 0.6875D, 0.3125D, 0.8125D);
 
-    public BlockLight(String name, CreativeTabs tab) {
+    public BlockLight(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setLightLevel(1.0F);
         setSoundType(SoundType.METAL);
@@ -40,34 +42,43 @@ public class BlockLight extends BlockBase {
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    {
         IBlockState actualState = getActualState(state, worldIn, pos);
         EnumFacing dir = actualState.getValue(FACING);
-        if (dir == EnumFacing.NORTH) {
+        if (dir == EnumFacing.NORTH)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
         }
-        if (dir == EnumFacing.SOUTH) {
+        if (dir == EnumFacing.SOUTH)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
         }
-        if (dir == EnumFacing.EAST) {
+        if (dir == EnumFacing.EAST)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
         }
-        if (dir == EnumFacing.WEST) {
+        if (dir == EnumFacing.WEST)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
         }
-        if (dir == EnumFacing.DOWN) {
+        if (dir == EnumFacing.DOWN)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, DOWN_AABB);
         }
-        if (dir == EnumFacing.UP) {
+        if (dir == EnumFacing.UP)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, UP_AABB);
         }
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         IBlockState actualState = getActualState(state, source, pos);
         EnumFacing dir = actualState.getValue(FACING);
-        switch (dir) {
+        switch (dir)
+        {
             case NORTH:
                 return NORTH_AABB;
             case SOUTH:
@@ -82,42 +93,50 @@ public class BlockLight extends BlockBase {
                 return UP_AABB;
         }
     }
+
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(int meta)
+    {
         return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(IBlockState state)
+    {
         return state.getValue(FACING).getIndex();
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isOpaqueCube(final IBlockState state) {
+    public boolean isOpaqueCube(final IBlockState state)
+    {
         return false;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isFullCube(final IBlockState state) {
+    public boolean isFullCube(final IBlockState state)
+    {
         return false;
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
         return EnumBlockRenderType.MODEL;
     }
 
     @Override
     @Deprecated
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
         return this.getDefaultState().withProperty(FACING, facing.getOpposite());
     }
 
@@ -129,7 +148,8 @@ public class BlockLight extends BlockBase {
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 }

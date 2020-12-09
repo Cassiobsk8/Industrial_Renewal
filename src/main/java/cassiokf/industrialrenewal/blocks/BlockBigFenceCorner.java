@@ -12,7 +12,8 @@ import net.minecraft.world.World;
 
 public class BlockBigFenceCorner extends BlockBigFenceColumn
 {
-    public BlockBigFenceCorner(String name, CreativeTabs tab) {
+    public BlockBigFenceCorner(String name, CreativeTabs tab)
+    {
         super(name, tab);
         setSoundType(SoundType.METAL);
     }
@@ -32,8 +33,10 @@ public class BlockBigFenceCorner extends BlockBigFenceColumn
         if (!down && index == 0) return false;
         if (down && index != 0) return false;
         EnumFacing facing = state.getValue(FACING);
-        for (final EnumFacing face : EnumFacing.HORIZONTALS) {
-            if ((left && face == facing) || (!left && face == facing.rotateY())) {
+        for (final EnumFacing face : EnumFacing.HORIZONTALS)
+        {
+            if ((left && face == facing) || (!left && face == facing.rotateY()))
+            {
                 IBlockState sideState = world.getBlockState(pos.offset(face));
                 Block block = sideState.getBlock();
                 return sideState.isFullBlock() || block instanceof BlockElectricGate || block instanceof BlockBasicElectricFence;

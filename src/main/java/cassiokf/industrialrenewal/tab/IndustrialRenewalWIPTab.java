@@ -5,9 +5,11 @@ import cassiokf.industrialrenewal.init.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
-public class IndustrialRenewalWIPTab extends CreativeTabs {
+public class IndustrialRenewalWIPTab extends CreativeTabs
+{
 
-    public IndustrialRenewalWIPTab() {
+    public IndustrialRenewalWIPTab()
+    {
         super(References.MODID + "wip");
     }
 

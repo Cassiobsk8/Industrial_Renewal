@@ -54,7 +54,8 @@ public class BlockBunkerHatch extends BlockHorizontalFacing
         if (actualState.getValue(OPEN))
         {
             return 0;
-        } else
+        }
+        else
         {
             return 250;
         }
@@ -163,7 +164,8 @@ public class BlockBunkerHatch extends BlockHorizontalFacing
         if (active)
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
-        } else
+        }
+        else
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, RENDER_AABB);
         }

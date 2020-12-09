@@ -38,22 +38,27 @@ public class BlockBigFenceColumn extends BlockBasicElectricFence
     public static final IUnlistedProperty<Boolean> ACTIVE_RIGHT_DOWN = new Properties.PropertyAdapter<>(PropertyBool.create("active_right_down"));
 
 
-    public BlockBigFenceColumn(String name, CreativeTabs tab) {
+    public BlockBigFenceColumn(String name, CreativeTabs tab)
+    {
         super(name, tab);
         setSoundType(SoundType.METAL);
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-        if (state.getValue(INDEX) == 0) {
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if (state.getValue(INDEX) == 0)
+        {
             worldIn.setBlockState(pos.up(), state.withProperty(INDEX, 1));
             worldIn.setBlockState(pos.up(2), state.withProperty(INDEX, 2));
         }
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        switch (state.getValue(INDEX)) {
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        switch (state.getValue(INDEX))
+        {
             case 0:
                 if (IsBigFence(worldIn, pos.up())) worldIn.setBlockToAir(pos.up());
                 if (IsBigFence(worldIn, pos.up(2))) worldIn.setBlockToAir(pos.up(2));
@@ -82,7 +87,8 @@ public class BlockBigFenceColumn extends BlockBasicElectricFence
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
         return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos)
                 && worldIn.getBlockState(pos.up()).getBlock().isReplaceable(worldIn, pos.up())
                 && worldIn.getBlockState(pos.up(2)).getBlock().isReplaceable(worldIn, pos.up(2));
@@ -103,19 +109,22 @@ public class BlockBigFenceColumn extends BlockBasicElectricFence
 
     @Override
     @Deprecated
-    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
         return state.getValue(INDEX) == 2 ? 15 : 0;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(INDEX, 0);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(final int meta) {
+    public IBlockState getStateFromMeta(final int meta)
+    {
         int directionIndex = meta;
         if (meta > 3 && meta < 8) directionIndex -= 4;
         if (meta > 7) directionIndex -= 8;
@@ -126,7 +135,8 @@ public class BlockBigFenceColumn extends BlockBasicElectricFence
     }
 
     @Override
-    public int getMetaFromState(final IBlockState state) {
+    public int getMetaFromState(final IBlockState state)
+    {
         int i = state.getValue(FACING).getHorizontalIndex();
         if (state.getValue(INDEX) == 1) i += 4;
         if (state.getValue(INDEX) == 2) i += 8;
@@ -141,8 +151,10 @@ public class BlockBigFenceColumn extends BlockBasicElectricFence
         if (!down && index == 0) return false;
         if (down && index != 0) return false;
         EnumFacing facing = state.getValue(FACING);
-        for (final EnumFacing face : EnumFacing.HORIZONTALS) {
-            if ((left && face == facing.rotateYCCW()) || (!left && face == facing.rotateY())) {
+        for (final EnumFacing face : EnumFacing.HORIZONTALS)
+        {
+            if ((left && face == facing.rotateYCCW()) || (!left && face == facing.rotateY()))
+            {
                 IBlockState sideState = world.getBlockState(pos.offset(face));
                 Block block = sideState.getBlock();
                 return sideState.isFullBlock() || block instanceof BlockElectricGate || block instanceof BlockBasicElectricFence;

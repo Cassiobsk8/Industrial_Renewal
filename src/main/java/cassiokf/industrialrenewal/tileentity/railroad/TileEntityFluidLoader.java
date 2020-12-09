@@ -18,7 +18,8 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
 
-public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITickable {
+public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITickable
+{
 
     public final FluidTank tank = new FluidTank(16000)
     {
@@ -65,12 +66,14 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
                             tank.drain(handler.fill(tank.drain(maxFlowPerTick, false), true), true);
                     }
                 }
-            } else
+            }
+            else
             {
                 if (loading)
                 {
                     ySlide = Utils.lerp(ySlide, 0.5f, 0.08f);
-                } else
+                }
+                else
                 {
                     ySlide = Utils.lerp(ySlide, 0, 0.04f);
                 }
@@ -151,11 +154,13 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
                     if (waitE == waitEnum.WAIT_EMPTY)
                     {
                         return cartStack != null && cartStack.amount > 0;
-                    } else if (waitE == waitEnum.WAIT_FULL)
+                    }
+                    else if (waitE == waitEnum.WAIT_FULL)
                     {
                         return cartStack == null || cartStack.amount < cartFluidCapacity;
                     }
-                } else
+                }
+                else
                 {
                     if (tank.getFluidAmount() > 0 && (cartStack == null || cartStack.amount < cartFluidCapacity))
                     {
@@ -169,7 +174,8 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
                     if (waitE == waitEnum.WAIT_FULL)
                     {
                         return cartStack == null || cartStack.amount < cartFluidCapacity;
-                    } else if (waitE == waitEnum.WAIT_EMPTY)
+                    }
+                    else if (waitE == waitEnum.WAIT_EMPTY)
                     {
                         return cartStack != null && cartStack.amount > 0;
                     }
@@ -198,7 +204,8 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
         tank.writeToNBT(compound);
         compound.setInteger("capacity", cartFluidCapacity);
         compound.setInteger("cartAmount", cartFluidAmount);
@@ -208,7 +215,8 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(NBTTagCompound compound)
+    {
         tank.readFromNBT(compound);
         cartFluidCapacity = compound.getInteger("capacity");
         cartFluidAmount = compound.getInteger("cartAmount");

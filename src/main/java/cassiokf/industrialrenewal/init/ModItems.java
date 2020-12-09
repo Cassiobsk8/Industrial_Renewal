@@ -149,7 +149,8 @@ public class ModItems
         );
     }
 
-    public static void registerModels() {
+    public static void registerModels()
+    {
         hematiteChunk.registerItemModel();
         prospectingPan.registerItemModel();
         ingotSteel.registerItemModel();
@@ -210,7 +211,8 @@ public class ModItems
         regenerationWand.registerItemModel();
     }
 
-    public static void registerOreDict() {
+    public static void registerOreDict()
+    {
         //oreCopper.initOreDict();
         hematiteChunk.initOreDict();
         ingotSteel.initOreDict();

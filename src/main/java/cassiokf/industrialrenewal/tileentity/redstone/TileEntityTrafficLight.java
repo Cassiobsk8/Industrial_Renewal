@@ -22,14 +22,21 @@ public class TileEntityTrafficLight extends TEBase
             if (power > 3 && power < 10)
             {
                 return 1;
-            } else if (power >= 10) {
+            }
+            else if (power >= 10)
+            {
                 return 2;
             }
-        } else if (state.getValue(BlockTrafficLight.ONWALL) && (this.world.isBlockPowered(offsetPos) || this.world.isBlockPowered(this.pos))) {
+        }
+        else if (state.getValue(BlockTrafficLight.ONWALL) && (this.world.isBlockPowered(offsetPos) || this.world.isBlockPowered(this.pos)))
+        {
             int power = Math.max(this.world.getStrongPower(offsetPos), this.world.getStrongPower(this.pos));
-            if (power > 3 && power < 10) {
+            if (power > 3 && power < 10)
+            {
                 return 1;
-            } else if (power >= 10) {
+            }
+            else if (power >= 10)
+            {
                 return 2;
             }
         }

@@ -19,13 +19,16 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class BlockStorageChest extends BlockMultiTankBase<TEStorageChest> {
-    public BlockStorageChest(String name, CreativeTabs tab) {
+public class BlockStorageChest extends BlockMultiTankBase<TEStorageChest>
+{
+    public BlockStorageChest(String name, CreativeTabs tab)
+    {
         super(name, tab);
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
         if (facing == EnumFacing.UP) return false;
         TileEntity te = worldIn.getTileEntity(pos);
         if (te instanceof TEStorageChest) ((TEStorageChest) te).getMaster().getBottomTE().openGui(playerIn, true);
@@ -33,38 +36,45 @@ public class BlockStorageChest extends BlockMultiTankBase<TEStorageChest> {
     }
 
     @Override
-    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing) {
+    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing)
+    {
         return MachinesUtils.getBlocksIn3x3x2Centered(masterPos, facing);
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
         worldIn.setBlockState(pos.up(), state.withProperty(MASTER, true));
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING, MASTER, DOWN);
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
         boolean isMaster = state.getValue(MASTER);
         return state.withProperty(DOWN, (isMaster ? isBot(worldIn, pos) : 0));
     }
 
     @Override
-    protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, EnumFacing facing) {
+    protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, EnumFacing facing)
+    {
         return pos.up();
     }
 
     @Override
-    public boolean instanceOf(Block block) {
+    public boolean instanceOf(Block block)
+    {
         return block instanceof BlockStorageChest;
     }
 
     @Override
-    public TEStorageChest createTileEntity(World world, IBlockState state) {
+    public TEStorageChest createTileEntity(World world, IBlockState state)
+    {
         return new TEStorageChest();
     }
 }

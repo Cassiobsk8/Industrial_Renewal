@@ -28,7 +28,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockTrafficLight extends BlockTileEntity<TileEntityTrafficLight> {
+public class BlockTrafficLight extends BlockTileEntity<TileEntityTrafficLight>
+{
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool ONWALL = PropertyBool.create("onwall");
@@ -41,7 +42,8 @@ public class BlockTrafficLight extends BlockTileEntity<TileEntityTrafficLight> {
     private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0.125F, 0.5F, 0.75D, 0.875F, 1);
     private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0.125F, 0.5F, 0.75D, 0.875F, 0);
 
-    public BlockTrafficLight(String name, CreativeTabs tab) {
+    public BlockTrafficLight(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
 
         setSoundType(SoundType.METAL);
@@ -50,19 +52,23 @@ public class BlockTrafficLight extends BlockTileEntity<TileEntityTrafficLight> {
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ONWALL, false).withProperty(SIGNAL, 0));
     }
 
-    private int getSignal(IBlockAccess world, BlockPos pos) {
+    private int getSignal(IBlockAccess world, BlockPos pos)
+    {
         TileEntityTrafficLight te = (TileEntityTrafficLight) world.getTileEntity(pos);
         return te.active();
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    {
         return state.withProperty(SIGNAL, getSignal(world, pos));
     }
 
-    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
-        if (side == EnumFacing.UP) {
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
+    {
+        if (side == EnumFacing.UP)
+        {
             return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos.up()).getBlock().isReplaceable(worldIn, pos.up());
         }
         return super.canPlaceBlockAt(worldIn, pos);
@@ -70,34 +76,40 @@ public class BlockTrafficLight extends BlockTileEntity<TileEntityTrafficLight> {
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+    {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(ONWALL, facing != EnumFacing.UP);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING, ONWALL, SIGNAL);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(int meta)
+    {
         return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(ONWALL, (meta & 4) > 0);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(IBlockState state)
+    {
         int i = 0;
         i = i | state.getValue(FACING).getHorizontalIndex();
 
-        if (state.getValue(ONWALL)) {
+        if (state.getValue(ONWALL))
+        {
             i |= 4;
         }
         return i;
     }
 
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    {
         tooltip.add(I18n.format("tile.industrialrenewal.traffic_light.des0"));
         tooltip.add(I18n.format("tile.industrialrenewal.traffic_light.des1"));
         tooltip.add(I18n.format("tile.industrialrenewal.traffic_light.des2"));
@@ -105,9 +117,12 @@ public class BlockTrafficLight extends BlockTileEntity<TileEntityTrafficLight> {
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        if (state.getValue(ONWALL)) {
-            switch (state.getValue(FACING)) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        if (state.getValue(ONWALL))
+        {
+            switch (state.getValue(FACING))
+            {
                 default:
                 case NORTH:
                     return NORTH_BLOCK_AABB;
@@ -119,30 +134,36 @@ public class BlockTrafficLight extends BlockTileEntity<TileEntityTrafficLight> {
                     return WEST_BLOCK_AABB;
             }
 
-        } else {
+        }
+        else
+        {
             return BASE_AABB;
         }
     }
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 
     @Nullable
     @Override
-    public TileEntityTrafficLight createTileEntity(World world, IBlockState state) {
+    public TileEntityTrafficLight createTileEntity(World world, IBlockState state)
+    {
         return new TileEntityTrafficLight();
     }
 }

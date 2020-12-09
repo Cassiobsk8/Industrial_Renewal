@@ -29,7 +29,8 @@ public class RenderCargoContainer<T extends EntityCargoContainer> extends Render
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityCargoContainer entity) {
+    protected ResourceLocation getEntityTexture(EntityCargoContainer entity)
+    {
         return TEXTURES;
     }
 }

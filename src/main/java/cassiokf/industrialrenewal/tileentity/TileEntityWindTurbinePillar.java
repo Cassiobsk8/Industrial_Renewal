@@ -18,33 +18,27 @@ import javax.annotation.Nullable;
 
 public class TileEntityWindTurbinePillar extends TileEntityEnergyCable
 {
-    private final VoltsEnergyContainer dummyEnergyContainer;
+    private static final VoltsEnergyContainer dummyEnergyContainer = new VoltsEnergyContainer(0, 0, 0)
+    {
+        @Override
+        public boolean canReceive()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean canExtract()
+        {
+            return false;
+        }
+    };
 
     private float amount;//For Lerp
-    private final int oldOutPut = -1;
 
     private EnumFacing facing;
 
-    private final EnumFacing[] faces = new EnumFacing[]{EnumFacing.UP, EnumFacing.DOWN};
+    private static final EnumFacing[] faces = new EnumFacing[]{EnumFacing.UP, EnumFacing.DOWN};
     private boolean isBase;
-
-    public TileEntityWindTurbinePillar()
-    {
-        this.dummyEnergyContainer = new VoltsEnergyContainer(0, 0, 0)
-        {
-            @Override
-            public boolean canReceive()
-            {
-                return false;
-            }
-
-            @Override
-            public boolean canExtract()
-            {
-                return false;
-            }
-        };
-    }
 
     @Override
     public int getMaxEnergyToTransport()

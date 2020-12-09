@@ -19,10 +19,8 @@ public class TileEntitySignalIndicator extends TEBase
         if (!state.getValue(BlockSignalIndicator.ONWALL) && (this.world.isBlockPowered(this.pos) || this.world.isBlockPowered(this.pos.down())))
         {
             return true;
-        } else if (state.getValue(BlockSignalIndicator.ONWALL) && (this.world.isBlockPowered(offsetPos) || this.world.isBlockPowered(this.pos)))
-        {
-            return true;
         }
-        return false;
+        else
+            return state.getValue(BlockSignalIndicator.ONWALL) && (this.world.isBlockPowered(offsetPos) || this.world.isBlockPowered(this.pos));
     }
 }

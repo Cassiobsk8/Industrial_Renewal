@@ -6,7 +6,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class BlockOredict extends BlockBase
 {
-    private String oreName;
+    private final String oreName;
 
     public BlockOredict(Material material, String name, String oreName, CreativeTabs tab)
     {

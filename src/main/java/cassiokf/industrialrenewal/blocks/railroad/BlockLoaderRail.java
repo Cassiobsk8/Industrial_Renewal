@@ -22,7 +22,8 @@ import java.util.List;
 
 public class BlockLoaderRail extends BlockRailFacing
 {
-    public BlockLoaderRail(String name, CreativeTabs tab) {
+    public BlockLoaderRail(String name, CreativeTabs tab)
+    {
         super(name, tab);
         setSoundType(SoundType.METAL);
         setDefaultState(blockState.getBaseState()
@@ -31,7 +32,8 @@ public class BlockLoaderRail extends BlockRailFacing
     }
 
     @Override
-    public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos) {
+    public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos)
+    {
         TileEntityLoaderRail te = (TileEntityLoaderRail) world.getTileEntity(pos);
         if (te != null) te.onMinecartPass(cart);
     }
@@ -39,7 +41,8 @@ public class BlockLoaderRail extends BlockRailFacing
     @Nonnull
     @Override
     @Deprecated
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(int meta)
+    {
         EnumRailDirection shape = EnumRailDirection.byMetadata((meta >> 1) & 1);
         EnumFacing facing = EnumFacing.byHorizontalIndex(meta >> 2);
 
@@ -49,7 +52,8 @@ public class BlockLoaderRail extends BlockRailFacing
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(IBlockState state)
+    {
         EnumRailDirection shape = state.getValue(SHAPE);
         EnumFacing facing = state.getValue(FACING);
         int meta = 0;
@@ -60,24 +64,28 @@ public class BlockLoaderRail extends BlockRailFacing
 
     @Nonnull
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, SHAPE, FACING);
     }
 
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    {
         String str = I18n.format("tile.industrialrenewal.loader_rail.info") + " " + ModBlocks.cargoLoader.getLocalizedName();
         tooltip.add(str);
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state) {
+    public boolean hasTileEntity(IBlockState state)
+    {
         return true;
     }
 
     @Nullable
     @Override
-    public TileEntityLoaderRail createTileEntity(World world, IBlockState state) {
+    public TileEntityLoaderRail createTileEntity(World world, IBlockState state)
+    {
         return new TileEntityLoaderRail();
     }
 }

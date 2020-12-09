@@ -31,13 +31,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static net.minecraftforge.fml.common.eventhandler.EventPriority.LOW;
 
 @Mod.EventBusSubscriber(modid = References.MODID)
-public class EventHandler {
+public class EventHandler
+{
     public static final String id = "indr_" + IRConfig.MainConfig.Generation.deepVeinID;
     public static final String deepVeinKeyItem = id + "_id";
     public static final String deepVeinKeyQuantity = id + "_q";
 
     @SubscribeEvent
-    public static void onMinecartUpdate(MinecartUpdateEvent event) {
+    public static void onMinecartUpdate(MinecartUpdateEvent event)
+    {
         EntityMinecart cart = event.getMinecart();
         CouplingHandler.onMinecartTick(cart);
         if (cart instanceof LocomotiveBase) ((LocomotiveBase) cart).onLocomotiveUpdate();
@@ -94,7 +96,8 @@ public class EventHandler {
             if (count == 0) count = 1;
             stack = new ItemStack(Item.getItemById(id));
             stack.setCount(count);
-        } else
+        }
+        else
         {
             stack = OreGeneration.generateNewVein(event.getWorld());
             event.getChunk().markDirty();

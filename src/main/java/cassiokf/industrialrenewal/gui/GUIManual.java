@@ -32,14 +32,13 @@ public class GUIManual extends GuiScreen
     private final int bookImageHeight = 171;
     private final World world;
     private final EntityPlayer player;
-    private int xOffset;
-    private int yOffset;
     private final ArrayList<ItemStack> items = new ArrayList<>();
     private final ArrayList<String> texts = new ArrayList<>();
     private final ArrayList<ItemStack> railroadItems = new ArrayList<>();
     private final ArrayList<ItemStack> redstoneItems = new ArrayList<>();
     private final ArrayList<ItemStack> utilsItems = new ArrayList<>();
-
+    private int xOffset;
+    private int yOffset;
     private int page = 0;
     private ButtonBookOverIcon button1;
     private ButtonBookOverIcon button2;
@@ -188,7 +187,8 @@ public class GUIManual extends GuiScreen
             {
                 currentLine.append(word).append(" ");
                 currentWidth += fontRenderer.getStringWidth(word);
-            } else
+            }
+            else
             {
                 currentLineN++;
                 if (currentLineN > maxLineFirstPage && !changeLine)
@@ -227,7 +227,8 @@ public class GUIManual extends GuiScreen
             if (texts == null || texts.get(items.indexOf(item)) == null)
             {
                 text = item.getDisplayName();
-            } else
+            }
+            else
             {
                 text = texts.get(items.indexOf(item));
             }
@@ -303,7 +304,8 @@ public class GUIManual extends GuiScreen
             if (page <= 10)
             {
                 page = 0;
-            } else
+            }
+            else
             {
                 int x = Math.abs(page);
                 page = (int) Math.floor(x / Math.pow(10, Math.floor(Math.log10(x))));

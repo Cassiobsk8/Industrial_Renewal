@@ -27,7 +27,8 @@ public class BlockFuseBoxConduitExtension extends BlockBase
     private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.375F, 0F, 0.875F, 0.625D, 1F, 1);
     private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.375F, 0F, 0.125F, 0.625D, 1F, 0);
 
-    public BlockFuseBoxConduitExtension(String name, CreativeTabs tab) {
+    public BlockFuseBoxConduitExtension(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
@@ -35,29 +36,35 @@ public class BlockFuseBoxConduitExtension extends BlockBase
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+    {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(int meta)
+    {
         return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(IBlockState state)
+    {
         return state.getValue(FACING).getHorizontalIndex();
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        switch (state.getActualState(source, pos).getValue(FACING)) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch (state.getActualState(source, pos).getValue(FACING))
+        {
             default:
             case NORTH:
                 return NORTH_BLOCK_AABB;
@@ -72,17 +79,20 @@ public class BlockFuseBoxConduitExtension extends BlockBase
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 }

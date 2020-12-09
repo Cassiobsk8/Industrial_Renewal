@@ -33,7 +33,8 @@ public abstract class BlockTileEntityConnectedMultiblocks<TE extends TileEntityM
         {
             TileEntity te = worldIn.getTileEntity(pos);
             if (te instanceof TileEntityMultiBlocksTube) ((TileEntityMultiBlocksTube) te).checkForOutPuts();
-            if (IRConfig.MainConfig.Main.debugMessages) System.out.println("Checking for outputs caused by " + blockIn + " " + fromPos);
+            if (IRConfig.MainConfig.Main.debugMessages)
+                System.out.println("Checking for outputs caused by " + blockIn + " " + fromPos);
         }
     }
 

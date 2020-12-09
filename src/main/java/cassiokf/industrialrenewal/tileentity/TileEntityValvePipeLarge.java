@@ -37,7 +37,7 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
         }
     };
 
-    private final int amountPerTick = 1000;
+    private static final int amountPerTick = 1000;
 
     @Override
     public void update()

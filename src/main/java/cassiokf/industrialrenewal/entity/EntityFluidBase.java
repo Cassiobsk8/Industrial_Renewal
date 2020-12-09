@@ -40,6 +40,11 @@ public abstract class EntityFluidBase extends TrainBase implements IFluidHandler
         this.setSize(1.0F, 1.0F);
     }
 
+    public EntityFluidBase(World worldIn, double x, double y, double z)
+    {
+        super(worldIn, x, y, z);
+    }
+
     @Override
     public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
     {
@@ -48,11 +53,6 @@ public abstract class EntityFluidBase extends TrainBase implements IFluidHandler
             if (world.isRemote) player.swingArm(hand);
         }
         return super.processInitialInteract(player, hand);
-    }
-
-    public EntityFluidBase(World worldIn, double x, double y, double z)
-    {
-        super(worldIn, x, y, z);
     }
 
     @Override

@@ -11,10 +11,10 @@ import java.util.List;
 public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEntityMultiBlockBase<T>
 {
     protected final List<T> machines = new ArrayList<>();
-    private boolean isBottom = false;
-    private boolean isTop = false;
     public T bottomTE = (T) this;
     public T topTE = (T) this;
+    private boolean isBottom = false;
+    private boolean isTop = false;
 
     @Override
     public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
@@ -25,7 +25,8 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
     @Override
     public void onFirstTick()
     {
-        if (isMaster()) {
+        if (isMaster())
+        {
             reachTop();
         }
     }
@@ -56,7 +57,8 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
         if (instanceOf(te))
         {
             bottomTE = (T) ((T) te).passValueDown(1, top);
-        } else
+        }
+        else
         {
             isBottom = true;
             bottomTE = (T) this;
@@ -82,7 +84,8 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
             isBottom = false;
             sync();
             return ((T) te).passValueDown(i + 1, top);
-        } else
+        }
+        else
         {
             isBottom = true;
             topTE = top;
@@ -98,7 +101,8 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
         {
             isTop = false;
             ((TEMultiTankBase<?>) te).reachTop();
-        } else
+        }
+        else
         {
             isTop = true;
             checkSize((T) this);
@@ -115,11 +119,6 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
         return topTE;
     }
 
-    public void setBottom(boolean value)
-    {
-        isBottom = value;
-    }
-
     public void setTop(boolean value)
     {
         isTop = value;
@@ -130,6 +129,11 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
     public boolean isBottom()
     {
         return isBottom;
+    }
+
+    public void setBottom(boolean value)
+    {
+        isBottom = value;
     }
 
     @Override

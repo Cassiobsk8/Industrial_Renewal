@@ -31,7 +31,8 @@ public class CouplingHandler
             {
                 return (EntityMinecart) entity;
             }
-        } else
+        }
+        else
         {
             for (Entity entity : world.loadedEntityList)
             {

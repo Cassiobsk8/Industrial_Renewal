@@ -51,7 +51,8 @@ public abstract class RenderBase<T extends Entity> extends Render<T>
     }
 
     public void renderExtra(T entity, double x, double y, double z, float entityYaw, float partialTicks, float f, float f1, float f2)
-    {}
+    {
+    }
 
     @Override
     public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks)

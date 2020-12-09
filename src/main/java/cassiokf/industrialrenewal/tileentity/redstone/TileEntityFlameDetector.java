@@ -54,41 +54,48 @@ public class TileEntityFlameDetector extends TileEntitySync implements ITickable
         }
     }
 
-    public void setBlockFacing(EnumFacing facing) {
+    public EnumFacing getBlockFacing()
+    {
+        return blockFacing;
+    }
+
+    public void setBlockFacing(EnumFacing facing)
+    {
         blockFacing = facing;
         markDirty();
     }
 
-    public EnumFacing getBlockFacing() {
-        return blockFacing;
-    }
-
     @Override
-    public NBTTagCompound writeToNBT(final NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(final NBTTagCompound tag)
+    {
         tag.setInteger("baseFacing", blockFacing.getIndex());
         return super.writeToNBT(tag);
     }
 
     @Override
-    public void readFromNBT(final NBTTagCompound tag) {
+    public void readFromNBT(final NBTTagCompound tag)
+    {
         super.readFromNBT(tag);
         blockFacing = EnumFacing.byIndex(tag.getInteger("baseFacing"));
     }
 
     @Override
-    public NBTTagCompound getUpdateTag() {
+    public NBTTagCompound getUpdateTag()
+    {
         return writeToNBT(new NBTTagCompound());
     }
 
     @Nullable
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
         return new SPacketUpdateTileEntity(getPos(), 0, getUpdateTag());
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
+    public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt)
+    {
         readFromNBT(pkt.getNbtCompound());
     }
 }

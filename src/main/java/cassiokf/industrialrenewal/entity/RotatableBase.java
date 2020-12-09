@@ -46,7 +46,8 @@ public abstract class RotatableBase extends TrainBase
     }
 
     @Override
-    public void moveMinecartOnRail(BlockPos pos) {
+    public void moveMinecartOnRail(BlockPos pos)
+    {
         super.moveMinecartOnRail(pos);
 
         IBlockState blockState = world.getBlockState(pos);

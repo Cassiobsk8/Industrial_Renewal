@@ -8,7 +8,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IRConfig {
+public class IRConfig
+{
     public static Map<String, Integer> getFuelHash()
     {
         Map<String, Integer> fluidFuel = new HashMap<String, Integer>();

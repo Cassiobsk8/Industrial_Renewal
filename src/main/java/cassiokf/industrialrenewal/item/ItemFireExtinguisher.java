@@ -18,17 +18,20 @@ import net.minecraftforge.fluids.BlockFluidBase;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ItemFireExtinguisher extends ItemBase {
+public class ItemFireExtinguisher extends ItemBase
+{
 
 
-    public ItemFireExtinguisher(String name, CreativeTabs tab) {
+    public ItemFireExtinguisher(String name, CreativeTabs tab)
+    {
         super(name, tab);
 
         this.maxStackSize = 1;
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
         ItemStack itemstack = player.getHeldItem(hand);
         BlockPos posOffset = pos.offset(facing);
         if (player.isSneaking())
@@ -40,7 +43,8 @@ public class ItemFireExtinguisher extends ItemBase {
                 itemstack.shrink(1);
                 return EnumActionResult.SUCCESS;
             }
-        } else if (IRConfig.MainConfig.Main.fireExtinguisherOnNether || player.dimension != DimensionType.NETHER.getId())
+        }
+        else if (IRConfig.MainConfig.Main.fireExtinguisherOnNether || player.dimension != DimensionType.NETHER.getId())
         {
             ArrayList<BlockPos> list = new ArrayList<>();
             add9x9pos(list, pos);
@@ -70,11 +74,13 @@ public class ItemFireExtinguisher extends ItemBase {
         return EnumActionResult.FAIL;
     }
 
-    private void playSound(World world, BlockPos pos, String resourceLocation) {
+    private void playSound(World world, BlockPos pos, String resourceLocation)
+    {
         world.playSound(null, pos, Objects.requireNonNull(SoundEvent.REGISTRY.getObject(new ResourceLocation((resourceLocation)))), SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
-    private void add9x9pos(ArrayList<BlockPos> list, BlockPos initialPos) {
+    private void add9x9pos(ArrayList<BlockPos> list, BlockPos initialPos)
+    {
         list.add(initialPos);
         list.add(initialPos.offset(EnumFacing.NORTH));
         list.add(initialPos.offset(EnumFacing.SOUTH));

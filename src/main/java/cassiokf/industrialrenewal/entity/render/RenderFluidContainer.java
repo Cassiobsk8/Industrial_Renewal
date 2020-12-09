@@ -44,7 +44,8 @@ public class RenderFluidContainer<T extends EntityFluidContainer> extends Render
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityFluidContainer entity) {
+    protected ResourceLocation getEntityTexture(EntityFluidContainer entity)
+    {
         return TEXTURES;
     }
 }

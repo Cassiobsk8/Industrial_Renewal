@@ -22,7 +22,8 @@ public class TileEntityLoaderRail extends TEBase
         if (GetCartInvType(world, pos, state, ecart) == 0)
         {
             BlockRailFacing.propelMinecart(state, ecart);
-        } else
+        }
+        else
         {
             informLoader(state, ecart);
         }
@@ -46,11 +47,13 @@ public class TileEntityLoaderRail extends TEBase
                 ecart.posZ = pos.getZ() + 0.5D;
                 ecart.motionX = 0.0D;
                 ecart.motionZ = 0.0D;
-            } else
+            }
+            else
             {
                 BlockRailFacing.propelMinecart(state, ecart);
             }
-        } else
+        }
+        else
         {
             BlockRailFacing.propelMinecart(state, ecart);
         }
@@ -68,7 +71,8 @@ public class TileEntityLoaderRail extends TEBase
                 && (leftTE instanceof TileEntityCargoLoader || rightTE instanceof TileEntityCargoLoader))
         {
             type = 1;
-        } else if (cart.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)
+        }
+        else if (cart.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)
                 && (leftTE instanceof TileEntityFluidLoader || rightTE instanceof TileEntityFluidLoader))
         {
             type = 2;

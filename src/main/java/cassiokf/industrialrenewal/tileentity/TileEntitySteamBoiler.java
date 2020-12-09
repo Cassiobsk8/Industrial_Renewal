@@ -19,9 +19,9 @@ import javax.annotation.Nullable;
 public class TileEntitySteamBoiler extends TileEntityMultiBlockBase<TileEntitySteamBoiler>
 {
     private int type;
-    private final int solidPerTick = 2;
+    private static final int solidPerTick = 2;
     public final SteamBoiler boiler = new SteamBoiler(this, SteamBoiler.BoilerType.Solid, solidPerTick);
-    private final int fluidPerTick = 1;
+    private static final int fluidPerTick = 1;
 
     @Override
     public void tick()

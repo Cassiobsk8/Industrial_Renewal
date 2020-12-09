@@ -38,6 +38,20 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable>
         this.type = type;
     }
 
+    public static EnumCableIn convertFromType(EnumEnergyCableType type)
+    {
+        switch (type)
+        {
+            default:
+            case LV:
+                return EnumCableIn.LV;
+            case MV:
+                return EnumCableIn.MV;
+            case HV:
+                return EnumCableIn.HV;
+        }
+    }
+
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
     {
@@ -57,20 +71,6 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable>
         }
         tooltip.add(amount + " FE/t");
         super.addInformation(stack, player, tooltip, advanced);
-    }
-
-    public static EnumCableIn convertFromType(EnumEnergyCableType type)
-    {
-        switch (type)
-        {
-            default:
-            case LV:
-                return EnumCableIn.LV;
-            case MV:
-                return EnumCableIn.MV;
-            case HV:
-                return EnumCableIn.HV;
-        }
     }
 
     @Override
@@ -93,7 +93,8 @@ public class BlockEnergyCable extends BlockPipeBase<TileEntityEnergyCable>
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
         ItemStack playerStack = entity.getHeldItem(EnumHand.MAIN_HAND);
         if (playerStack.getItem() == ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor))
         {

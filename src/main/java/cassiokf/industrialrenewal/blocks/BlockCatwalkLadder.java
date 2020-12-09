@@ -41,32 +41,39 @@ public class BlockCatwalkLadder extends BlockHorizontalFacing
     protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.03125D, 1.0D, 1.0D);
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    public BlockCatwalkLadder(String name, CreativeTabs tab) {
+    public BlockCatwalkLadder(String name, CreativeTabs tab)
+    {
         super(name, tab, Material.IRON);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }
 
     @Override
-    public boolean isLadder(IBlockState state, IBlockAccess world, BlockPos pos, EntityLivingBase entity) {
+    public boolean isLadder(IBlockState state, IBlockAccess world, BlockPos pos, EntityLivingBase entity)
+    {
         return true;
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
         Item playerItem = entity.inventory.getCurrentItem().getItem();
-        if (playerItem.equals(ModItems.screwDrive)) {
+        if (playerItem.equals(ModItems.screwDrive))
+        {
             ItemPowerScrewDrive.playDrillSound(world, pos);
             world.setBlockState(pos, state.withProperty(ACTIVE, !state.getValue(ACTIVE)), 3);
             return true;
         }
-        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.iladder)) || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.sladder))) {
+        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.iladder)) || playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.sladder)))
+        {
             BlockPos posOffset = pos.up();
             IBlockState stateOffset = world.getBlockState(posOffset);
-            if (stateOffset.getBlock().isAir(stateOffset, world, posOffset) || stateOffset.getBlock().isReplaceable(world, posOffset)) {
+            if (stateOffset.getBlock().isAir(stateOffset, world, posOffset) || stateOffset.getBlock().isReplaceable(world, posOffset))
+            {
                 EnumFacing direction = state.getValue(FACING);
                 world.setBlockState(posOffset, getBlockFromItem(playerItem).getDefaultState().withProperty(FACING, direction).withProperty(ACTIVE, !OpenIf(world, posOffset)), 3);
-                if (!entity.isCreative()) {
+                if (!entity.isCreative())
+                {
                     entity.inventory.clearMatchingItems(playerItem, 0, 1, null);
                 }
             }
@@ -75,40 +82,47 @@ public class BlockCatwalkLadder extends BlockHorizontalFacing
         return false;
     }
 
-    private boolean downConnection(BlockPos pos, IBlockAccess world) {
+    private boolean downConnection(BlockPos pos, IBlockAccess world)
+    {
         Block downB = world.getBlockState(pos.down()).getBlock();
         return !(downB instanceof BlockLadder || downB instanceof BlockCatwalkLadder || downB instanceof BlockCatwalkHatch
                 || downB instanceof BlockCatwalkStair || downB instanceof BlockStairs || downB instanceof BlockTrapDoor);
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    {
         state = state.withProperty(DOWN, downConnection(pos, world));
         return state;
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING, ACTIVE, DOWN);
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(int meta)
+    {
         return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(ACTIVE, (meta & 4) > 0);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(IBlockState state)
+    {
         int i = 0;
         i = i | state.getValue(FACING).getHorizontalIndex();
 
-        if (state.getValue(ACTIVE)) {
+        if (state.getValue(ACTIVE))
+        {
             i |= 4;
         }
         return i;
     }
 
-    protected boolean OpenIf(final IBlockAccess WorldIn, BlockPos ownPos) {
+    protected boolean OpenIf(final IBlockAccess WorldIn, BlockPos ownPos)
+    {
         final BlockPos downpos = ownPos.down();
         final BlockPos twoDownPos = downpos.down();
         final IBlockState downState = WorldIn.getBlockState(downpos);
@@ -117,13 +131,16 @@ public class BlockCatwalkLadder extends BlockHorizontalFacing
     }
 
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(ACTIVE, !OpenIf(worldIn, pos));
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        switch (state.getValue(FACING)) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch (state.getValue(FACING))
+        {
             case NORTH:
                 return LADDER_SOUTH_AABB;
             case SOUTH:
@@ -137,37 +154,45 @@ public class BlockCatwalkLadder extends BlockHorizontalFacing
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    {
         IBlockState actualState = state.getActualState(worldIn, pos);
         EnumFacing face = actualState.getValue(FACING);
         boolean active = actualState.getValue(ACTIVE);
         boolean down = actualState.getValue(DOWN);
 
-        if (face == EnumFacing.NORTH) {
+        if (face == EnumFacing.NORTH)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, LADDER_SOUTH_AABB);
-            if (active) {
+            if (active)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
             }
         }
-        if (face == EnumFacing.SOUTH) {
+        if (face == EnumFacing.SOUTH)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, LADDER_NORTH_AABB);
-            if (active) {
+            if (active)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
             }
         }
-        if (face == EnumFacing.WEST) {
+        if (face == EnumFacing.WEST)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, LADDER_EAST_AABB);
-            if (active) {
+            if (active)
+            {
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
             }
         }
-        if (face == EnumFacing.EAST) {
+        if (face == EnumFacing.EAST)
+        {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, LADDER_WEST_AABB);
             if (active)
             {

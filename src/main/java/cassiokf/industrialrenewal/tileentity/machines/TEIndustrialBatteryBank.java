@@ -22,6 +22,7 @@ public class TEIndustrialBatteryBank extends TEMultiTankBase<TEIndustrialBattery
 {
     public static final int capacity = IRConfig.MainConfig.Main.lithiumBatteryCapacity;
     private static final int maxTransfer = IRConfig.MainConfig.Main.industrialBatteryBankMaxTransfer;
+    private static final int maxBatteries = 24;
     private final VoltsEnergyContainer energyContainer = new VoltsEnergyContainer(1, maxTransfer, maxTransfer)
     {
         @Override
@@ -42,6 +43,13 @@ public class TEIndustrialBatteryBank extends TEMultiTankBase<TEIndustrialBattery
             TEIndustrialBatteryBank.this.sync();
         }
     };
+    private int input;
+    private int avrIn;
+    private int oldIn;
+    private int outPut;
+    private int avrOut;
+    private int oldOutPut;
+    private int batteries = 0;
     private final VoltsEnergyContainer inEnergy = new VoltsEnergyContainer()
     {
         @Override
@@ -56,15 +64,7 @@ public class TEIndustrialBatteryBank extends TEMultiTankBase<TEIndustrialBattery
             return TEIndustrialBatteryBank.this.getBottomTE().onEnergyIn(maxReceive, simulate);
         }
     };
-    private int input;
-    private int avrIn;
-    private int oldIn;
-    private int outPut;
-    private int avrOut;
-    private int oldOutPut;
-    private int batteries = 0;
     private int tick;
-    private static final int maxBatteries = 24;
 
     public int onEnergyIn(int maxReceive, boolean simulate)
     {

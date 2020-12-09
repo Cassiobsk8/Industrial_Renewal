@@ -41,7 +41,8 @@ public abstract class BlockBasicElectricFence extends BlockBase
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        if (!(entityIn instanceof EntityLivingBase)) {
+        if (!(entityIn instanceof EntityLivingBase))
+        {
             return;
         }
 
@@ -49,19 +50,27 @@ public abstract class BlockBasicElectricFence extends BlockBase
         float damage = (float) IRConfig.MainConfig.Main.electricFenceDamageAmount;
 
         if (mode == 4) return;
-        if (mode == 0 && (entityIn instanceof EntityMob || entityIn instanceof EntityPlayer)) {
+        if (mode == 0 && (entityIn instanceof EntityMob || entityIn instanceof EntityPlayer))
+        {
             float damageR = (entityIn instanceof EntityPlayer) ? 0f : damage;
             DoDamage(worldIn, pos, entityIn, damageR);
-        } else if (mode == 1 && (entityIn instanceof EntityMob || entityIn instanceof EntityPlayer)) {
+        }
+        else if (mode == 1 && (entityIn instanceof EntityMob || entityIn instanceof EntityPlayer))
+        {
             DoDamage(worldIn, pos, entityIn, damage);
-        } else if (mode == 2) {
+        }
+        else if (mode == 2)
+        {
             DoDamage(worldIn, pos, entityIn, 0f);
-        } else if (mode == 3) {
+        }
+        else if (mode == 3)
+        {
             DoDamage(worldIn, pos, entityIn, damage);
         }
     }
 
-    private void DoDamage(World world, BlockPos pos, Entity entityIn, float amount) {
+    private void DoDamage(World world, BlockPos pos, Entity entityIn, float amount)
+    {
         entityIn.attackEntityFrom(DamageSource.LIGHTNING_BOLT, amount);
         float knockback = (float) IRConfig.MainConfig.Main.electricFenceKnockBack;
         if (knockback > 0)
@@ -73,23 +82,27 @@ public abstract class BlockBasicElectricFence extends BlockBase
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isOpaqueCube(final IBlockState state) {
+    public boolean isOpaqueCube(final IBlockState state)
+    {
         return false;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isFullCube(final IBlockState state) {
+    public boolean isFullCube(final IBlockState state)
+    {
         return false;
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
         return EnumBlockRenderType.MODEL;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 

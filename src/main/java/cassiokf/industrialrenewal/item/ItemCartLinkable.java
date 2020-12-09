@@ -34,7 +34,8 @@ public class ItemCartLinkable extends ItemBase
                 CouplingHandler.removeConnection(cart, last);
                 Utils.sendChatMessage(player, "Carts Decoupled");
                 return;
-            } else
+            }
+            else
             {
                 if (CoupleCarts(last, cart))
                 {
@@ -44,7 +45,8 @@ public class ItemCartLinkable extends ItemBase
                 }
             }
             Utils.sendChatMessage(player, "Coupling Fail");
-        } else
+        }
+        else
         {
             linkMap.put(player, cart);
             Utils.sendChatMessage(player, "Coupling Start");

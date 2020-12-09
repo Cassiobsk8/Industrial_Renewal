@@ -41,7 +41,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BlockPillar extends BlockBase {
+public class BlockPillar extends BlockBase
+{
 
     public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
             Stream.of(EnumFacing.VALUES).map(facing -> PropertyBool.create(facing.getName())).collect(Collectors.toList()));
@@ -49,52 +50,21 @@ public class BlockPillar extends BlockBase {
     private static float SOUTHZ2 = 0.750f;
     private static float WESTX1 = 0.250f;
     private static float EASTX2 = 0.750f;
-    private static float DOWNY1 = 0.0f;
-    private static float UPY2 = 1.0f;
+    private static final float DOWNY1 = 0.0f;
+    private static final float UPY2 = 1.0f;
 
-    public BlockPillar(String name, CreativeTabs tab) {
+    public BlockPillar(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public IBlockState getStateFromMeta(final int meta) {
-        return getDefaultState();
-    }
-
-    @Override
-    public int getMetaFromState(final IBlockState state) {
-        return 0;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(final IBlockState state) {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isFullCube(final IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.MODEL;
-    }
-
     private static boolean isValidConnection(IBlockAccess worldIn, BlockPos neightbourPos, final IBlockState neighbourState, final EnumFacing neighbourDirection)
     {
         Block nb = neighbourState.getBlock();
-        if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN) {
+        if (neighbourDirection != EnumFacing.UP && neighbourDirection != EnumFacing.DOWN)
+        {
             return nb instanceof BlockLever
                     || (nb instanceof BlockHVConnectorBase && neighbourState.getValue(BlockHVConnectorBase.FACING) == neighbourDirection.getOpposite())
                     || nb instanceof BlockRedstoneTorch
@@ -117,7 +87,8 @@ public class BlockPillar extends BlockBase {
                     || nb instanceof BlockFloorPipe || nb instanceof BlockFloorCable;
             //end
         }
-        if (neighbourDirection == EnumFacing.DOWN) {
+        if (neighbourDirection == EnumFacing.DOWN)
+        {
             return nb.isFullCube(neighbourState)
                     || nb.isTopSolid(neighbourState);
         }
@@ -131,6 +102,45 @@ public class BlockPillar extends BlockBase {
         final IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
 
         return isValidConnection(worldIn, neighbourPos, neighbourState, neighbourDirection);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, CONNECTED_PROPERTIES.toArray(new IProperty[CONNECTED_PROPERTIES.size()]));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public IBlockState getStateFromMeta(final int meta)
+    {
+        return getDefaultState();
+    }
+
+    @Override
+    public int getMetaFromState(final IBlockState state)
+    {
+        return 0;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isOpaqueCube(final IBlockState state)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isFullCube(final IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
+        return EnumBlockRenderType.MODEL;
     }
 
     @Override
@@ -209,42 +219,59 @@ public class BlockPillar extends BlockBase {
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        for (final EnumFacing facing : EnumFacing.VALUES) {
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    {
+        for (final EnumFacing facing : EnumFacing.VALUES)
+        {
             state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()),
                     canConnectTo(world, pos, facing));
         }
         return state;
     }
 
-    public final boolean isConnected(final IBlockState state, final EnumFacing facing) {
+    public final boolean isConnected(final IBlockState state, final EnumFacing facing)
+    {
         return state.getValue(CONNECTED_PROPERTIES.get(facing.getIndex()));
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        if (!isActualState) {
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    {
+        if (!isActualState)
+        {
             state = state.getActualState(worldIn, pos);
         }
-        if (isConnected(state, EnumFacing.NORTH)) {
+        if (isConnected(state, EnumFacing.NORTH))
+        {
             NORTHZ1 = 0.0f;
-        } else if (!isConnected(state, EnumFacing.NORTH)) {
+        }
+        else if (!isConnected(state, EnumFacing.NORTH))
+        {
             NORTHZ1 = 0.250f;
         }
-        if (isConnected(state, EnumFacing.SOUTH)) {
+        if (isConnected(state, EnumFacing.SOUTH))
+        {
             SOUTHZ2 = 1.0f;
-        } else if (!isConnected(state, EnumFacing.SOUTH)) {
+        }
+        else if (!isConnected(state, EnumFacing.SOUTH))
+        {
             SOUTHZ2 = 0.750f;
         }
-        if (isConnected(state, EnumFacing.WEST)) {
+        if (isConnected(state, EnumFacing.WEST))
+        {
             WESTX1 = 0.0f;
-        } else if (!isConnected(state, EnumFacing.WEST)) {
+        }
+        else if (!isConnected(state, EnumFacing.WEST))
+        {
             WESTX1 = 0.250f;
         }
-        if (isConnected(state, EnumFacing.EAST)) {
+        if (isConnected(state, EnumFacing.EAST))
+        {
             EASTX2 = 1.0f;
-        } else if (!isConnected(state, EnumFacing.EAST)) {
+        }
+        else if (!isConnected(state, EnumFacing.EAST))
+        {
             EASTX2 = 0.750f;
         }
         final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
@@ -252,37 +279,54 @@ public class BlockPillar extends BlockBase {
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         IBlockState actualState = state.getActualState(source, pos);
 
-        if (isConnected(actualState, EnumFacing.NORTH)) {
+        if (isConnected(actualState, EnumFacing.NORTH))
+        {
             NORTHZ1 = 0.0f;
-        } else if (!isConnected(actualState, EnumFacing.NORTH)) {
+        }
+        else if (!isConnected(actualState, EnumFacing.NORTH))
+        {
             NORTHZ1 = 0.250f;
         }
-        if (isConnected(actualState, EnumFacing.SOUTH)) {
+        if (isConnected(actualState, EnumFacing.SOUTH))
+        {
             SOUTHZ2 = 1.0f;
-        } else if (!isConnected(actualState, EnumFacing.SOUTH)) {
+        }
+        else if (!isConnected(actualState, EnumFacing.SOUTH))
+        {
             SOUTHZ2 = 0.750f;
         }
-        if (isConnected(actualState, EnumFacing.WEST)) {
+        if (isConnected(actualState, EnumFacing.WEST))
+        {
             WESTX1 = 0.0f;
-        } else if (!isConnected(actualState, EnumFacing.WEST)) {
+        }
+        else if (!isConnected(actualState, EnumFacing.WEST))
+        {
             WESTX1 = 0.250f;
         }
-        if (isConnected(actualState, EnumFacing.EAST)) {
+        if (isConnected(actualState, EnumFacing.EAST))
+        {
             EASTX2 = 1.0f;
-        } else if (!isConnected(actualState, EnumFacing.EAST)) {
+        }
+        else if (!isConnected(actualState, EnumFacing.EAST))
+        {
             EASTX2 = 0.750f;
         }
         return new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        if (face == EnumFacing.EAST || face == EnumFacing.WEST || face == EnumFacing.NORTH || face == EnumFacing.SOUTH) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        if (face == EnumFacing.EAST || face == EnumFacing.WEST || face == EnumFacing.NORTH || face == EnumFacing.SOUTH)
+        {
             return BlockFaceShape.SOLID;
-        } else {
+        }
+        else
+        {
             return BlockFaceShape.UNDEFINED;
         }
     }

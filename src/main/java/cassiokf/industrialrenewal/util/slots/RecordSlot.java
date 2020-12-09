@@ -5,14 +5,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class RecordSlot extends SlotItemHandler {
+public class RecordSlot extends SlotItemHandler
+{
 
-    public RecordSlot(IItemHandler inventoryIn, int index, int xPosition, int yPosition) {
+    public RecordSlot(IItemHandler inventoryIn, int index, int xPosition, int yPosition)
+    {
         super(inventoryIn, index, xPosition, yPosition);
     }
 
     @Override
-    public boolean isItemValid(ItemStack itemstack) {
+    public boolean isItemValid(ItemStack itemstack)
+    {
         if (itemstack.isEmpty())
             return false;
         return itemstack.getItem() instanceof ItemRecord;
@@ -20,7 +23,8 @@ public class RecordSlot extends SlotItemHandler {
 
 
     @Override
-    public int getSlotStackLimit() {
+    public int getSlotStackLimit()
+    {
         return 1;
     }
 }

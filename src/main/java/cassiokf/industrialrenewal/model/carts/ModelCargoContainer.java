@@ -8,7 +8,8 @@ import net.minecraft.entity.Entity;
  * Cargo Container - CassioKF
  * Created using Tabula 7.0.0
  */
-public class ModelCargoContainer extends ModelBase {
+public class ModelCargoContainer extends ModelBase
+{
     public ModelRenderer Axis1;
     public ModelRenderer Axis2;
     public ModelRenderer Wheel1;
@@ -27,7 +28,8 @@ public class ModelCargoContainer extends ModelBase {
     public ModelRenderer Base1;
     public ModelRenderer shape22;
 
-    public ModelCargoContainer() {
+    public ModelCargoContainer()
+    {
         this.textureWidth = 128;
         this.textureHeight = 128;
         this.Axis1 = new ModelRenderer(this, 0, 0);
@@ -79,7 +81,8 @@ public class ModelCargoContainer extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    {
         this.Axis1.render(f5);
         this.TruckBase1.render(f5);
         this.Wheel8.render(f5);
@@ -102,7 +105,8 @@ public class ModelCargoContainer extends ModelBase {
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
+    {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;

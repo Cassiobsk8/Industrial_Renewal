@@ -57,7 +57,7 @@ public class EntitySteamLocomotive extends LocomotiveBase
     {
         if (tender == null) return;
         FluidTank tenderTank = tender.tank;
-        tenderTank.drain(boiler.waterTank.fill(tenderTank.drain(Fluid.BUCKET_VOLUME, false) , true) , true);
+        tenderTank.drain(boiler.waterTank.fill(tenderTank.drain(Fluid.BUCKET_VOLUME, false), true), true);
         Utils.moveItemsBetweenInventories(tender.inventory, boiler.solidFuelInv);
     }
 
@@ -79,7 +79,8 @@ public class EntitySteamLocomotive extends LocomotiveBase
     }
 
     @Override
-    public ItemStack getCartItem() {
+    public ItemStack getCartItem()
+    {
         return new ItemStack(ModItems.steamLocomotive);
     }
 

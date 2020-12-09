@@ -33,37 +33,44 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
     private static final AxisAlignedBB WEST_EAST_BLOCK_AABB = new AxisAlignedBB(0.375D, 0D, 0D, 0.625D, 0.125D, 1D);
     private static final AxisAlignedBB NORTH_SOUTH_BLOCK_AABB = new AxisAlignedBB(0D, 0D, 0.375D, 1D, 0.125D, 0.625D);
 
-    public BlockFuseBoxConnector(String name, CreativeTabs tab) {
+    public BlockFuseBoxConnector(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
         setHardness(0.8f);
     }
 
     @Override
-    public boolean canProvidePower(IBlockState state) {
+    public boolean canProvidePower(IBlockState state)
+    {
         return true;
     }
 
     @Override
-    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side)
+    {
         return side == state.getValue(FACING).rotateY() || side == state.getValue(FACING).rotateYCCW();
     }
 
     @Override
-    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
         return blockState.getWeakPower(blockAccess, pos, side);
     }
 
     @Override
-    public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+    public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
         TileEntityBoxConnector te = (TileEntityBoxConnector) world.getTileEntity(pos);
         int value = te.passRedstone();
         return state.getValue(FACING).rotateYCCW() == side ? value : 0;
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        if (entity.inventory.getCurrentItem().getItem() == ModItems.screwDrive)
+        {
             rotateBlock(world, pos, state);
             return true;
         }
@@ -79,18 +86,23 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
         }
     }*/
 
-    private void rotateBlock(World world, BlockPos pos, IBlockState state) {
+    private void rotateBlock(World world, BlockPos pos, IBlockState state)
+    {
         EnumFacing newFace = state.getValue(FACING).getOpposite();
         world.setBlockState(pos, state.withProperty(FACING, newFace));
     }
 
-    private int canConnectConduit(IBlockState state, IBlockAccess world, BlockPos pos) {
+    private int canConnectConduit(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
         IBlockState upState = world.getBlockState(pos.up());
-        if (upState.getBlock() instanceof BlockFuseBox || upState.getBlock() instanceof BlockFuseBoxConduitExtension) {
-            if (state.getValue(FACING) == upState.getValue(FACING)) {
+        if (upState.getBlock() instanceof BlockFuseBox || upState.getBlock() instanceof BlockFuseBoxConduitExtension)
+        {
+            if (state.getValue(FACING) == upState.getValue(FACING))
+            {
                 return 1;
             }
-            if (state.getValue(FACING) == upState.getValue(FACING).getOpposite()) {
+            if (state.getValue(FACING) == upState.getValue(FACING).getOpposite())
+            {
                 return 2;
             }
         }
@@ -99,36 +111,43 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
+    public IBlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    {
         state = state.withProperty(UPCONDUIT, canConnectConduit(state, world, pos));
         return state;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+    {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(UPCONDUIT, 0);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING, UPCONDUIT);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(int meta)
+    {
         return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(IBlockState state)
+    {
         return state.getValue(FACING).getHorizontalIndex();
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        switch (state.getActualState(source, pos).getValue(FACING)) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch (state.getActualState(source, pos).getValue(FACING))
+        {
             default:
             case NORTH:
             case SOUTH:
@@ -141,23 +160,27 @@ public class BlockFuseBoxConnector extends BlockTileEntity<TileEntityBoxConnecto
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 
     @Nullable
     @Override
-    public TileEntityBoxConnector createTileEntity(World world, IBlockState state) {
+    public TileEntityBoxConnector createTileEntity(World world, IBlockState state)
+    {
         return new TileEntityBoxConnector();
     }
 }

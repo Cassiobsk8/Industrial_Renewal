@@ -295,4 +295,6 @@ gui.industrialrenewal.fusebox.output=Redstone Out:
 gui.industrialrenewal.fusebox.slots.tooltip=Slots for Redstone Cartridges
 gui.industrialrenewal.button.loader_mode=Loader
 gui.industrialrenewal.button.unloader_mode=Unloader
+gui.industrialrenewal.arrowup=▲
+gui.industrialrenewal.arrowdown=▼
 

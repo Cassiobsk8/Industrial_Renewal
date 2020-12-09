@@ -16,18 +16,23 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemMedKit extends ItemBase {
+public class ItemMedKit extends ItemBase
+{
 
-    public ItemMedKit(String name, CreativeTabs tab) {
+    public ItemMedKit(String name, CreativeTabs tab)
+    {
         super(name, tab);
         maxStackSize = 16;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
+    {
         ItemStack itemstack = player.getHeldItem(hand);
-        if (player.shouldHeal() && !player.isPotionActive(MobEffects.REGENERATION)) {
-            if (!worldIn.isRemote) {
+        if (player.shouldHeal() && !player.isPotionActive(MobEffects.REGENERATION))
+        {
+            if (!worldIn.isRemote)
+            {
                 player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, IRConfig.MainConfig.Main.medKitEffectDuration, 1, false, false));
             }
             itemstack.shrink(1);
@@ -36,7 +41,8 @@ public class ItemMedKit extends ItemBase {
     }
 
     @Override
-    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag) {
+    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag)
+    {
         list.add(I18n.format("item." + References.MODID + "." + name + ".des0"));
     }
 }

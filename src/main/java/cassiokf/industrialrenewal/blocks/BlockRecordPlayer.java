@@ -44,15 +44,18 @@ public class BlockRecordPlayer extends BlockHorizontalFacing
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (!world.isRemote) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        if (!world.isRemote)
+        {
             OpenGUI(world, pos, player);
         }
         return true;
     }
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+    public void breakBlock(World world, BlockPos pos, IBlockState state)
+    {
         TileEntityRecordPlayer te = (TileEntityRecordPlayer) world.getTileEntity(pos);
         assert te != null;
         IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -61,11 +64,13 @@ public class BlockRecordPlayer extends BlockHorizontalFacing
         super.breakBlock(world, pos, state);
     }
 
-    private void OpenGUI(World world, BlockPos pos, EntityPlayer player) {
+    private void OpenGUI(World world, BlockPos pos, EntityPlayer player)
+    {
         player.openGui(IndustrialRenewal.instance, GUIHandler.RECORDPLAYER, world, pos.getX(), pos.getY(), pos.getZ());
     }
 
-    private boolean isDownBlockaNoteBlock(IBlockAccess world, BlockPos pos) {
+    private boolean isDownBlockaNoteBlock(IBlockAccess world, BlockPos pos)
+    {
         return world.getBlockState(pos.down()).getBlock() instanceof BlockNote;
     }
 
@@ -76,17 +81,20 @@ public class BlockRecordPlayer extends BlockHorizontalFacing
     }
 
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(DOWNNOTEBLOCK, isDownBlockaNoteBlock(worldIn, pos));
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING, DOWNNOTEBLOCK);
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         return BASE_AABB;
     }
 
@@ -97,7 +105,8 @@ public class BlockRecordPlayer extends BlockHorizontalFacing
         return BlockRenderLayer.CUTOUT;
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         if (face == EnumFacing.DOWN) return BlockFaceShape.SOLID;
         return BlockFaceShape.UNDEFINED;
     }
@@ -110,7 +119,8 @@ public class BlockRecordPlayer extends BlockHorizontalFacing
 
     @Nullable
     @Override
-    public TileEntityRecordPlayer createTileEntity(World world, IBlockState state) {
+    public TileEntityRecordPlayer createTileEntity(World world, IBlockState state)
+    {
         return new TileEntityRecordPlayer();
     }
 }

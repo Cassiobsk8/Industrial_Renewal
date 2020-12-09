@@ -58,7 +58,8 @@ public class BlockLathe extends BlockMultiBlockBase<TELathe>
     }
 
     @Override
-    protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, EnumFacing facing) {
+    protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, EnumFacing facing)
+    {
         return pos;
     }
 

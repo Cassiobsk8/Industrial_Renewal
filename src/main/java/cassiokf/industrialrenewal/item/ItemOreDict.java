@@ -3,17 +3,20 @@ package cassiokf.industrialrenewal.item;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemOreDict extends ItemBase {
+public class ItemOreDict extends ItemBase
+{
 
-    private String oreName;
+    private final String oreName;
 
-    public ItemOreDict(String name, String oreName, CreativeTabs tab) {
+    public ItemOreDict(String name, String oreName, CreativeTabs tab)
+    {
         super(name, tab);
 
         this.oreName = oreName;
     }
 
-    public void initOreDict() {
+    public void initOreDict()
+    {
         OreDictionary.registerOre(oreName, this);
     }
 

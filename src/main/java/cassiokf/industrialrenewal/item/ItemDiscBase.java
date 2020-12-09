@@ -12,11 +12,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemDiscBase extends ItemRecord {
+public class ItemDiscBase extends ItemRecord
+{
 
     protected String name;
 
-    public ItemDiscBase(String name, CreativeTabs tab, SoundEvent sound) {
+    public ItemDiscBase(String name, CreativeTabs tab, SoundEvent sound)
+    {
         super(name, sound);
         this.name = name;
         this.setRegistryName(References.MODID, name);
@@ -24,27 +26,32 @@ public class ItemDiscBase extends ItemRecord {
         this.setCreativeTab(tab);
     }
 
-    public void initOreDict() {
+    public void initOreDict()
+    {
         OreDictionary.registerOre("record", this);
     }
 
     @Override
-    public EnumRarity getRarity(ItemStack stack) {
+    public EnumRarity getRarity(ItemStack stack)
+    {
         return EnumRarity.EPIC;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public String getRecordNameLocal() {
+    public String getRecordNameLocal()
+    {
         return I18n.format("item." + References.MODID + "." + name + ".des0");
     }
 
-    public void registerItemModel() {
+    public void registerItemModel()
+    {
         IndustrialRenewal.proxy.registerItemRenderer(this, 0, name);
     }
 
     @Override
-    public ItemDiscBase setCreativeTab(CreativeTabs tab) {
+    public ItemDiscBase setCreativeTab(CreativeTabs tab)
+    {
         super.setCreativeTab(tab);
         return this;
     }

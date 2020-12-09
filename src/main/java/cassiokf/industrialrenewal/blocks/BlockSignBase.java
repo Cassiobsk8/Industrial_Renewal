@@ -44,7 +44,8 @@ public class BlockSignBase extends BlockHorizontalFacing
     private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.125D, 0.125D, 0.9375D, 0.875D, 0.875D, 1D);
     private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.125D, 0.125D, 0.0625D, 0.875D, 0.875D, 0D);
 
-    public BlockSignBase(String name, CreativeTabs tab) {
+    public BlockSignBase(String name, CreativeTabs tab)
+    {
         super(name, tab, Material.IRON);
 
         signs.add(this);
@@ -54,14 +55,16 @@ public class BlockSignBase extends BlockHorizontalFacing
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ONWALL, false));
     }
 
-    public void changeSign(World world, BlockPos pos) {
+    public void changeSign(World world, BlockPos pos)
+    {
         Block oldBlock = world.getBlockState(pos).getBlock();
         IBlockState oldState = oldBlock.getActualState(world.getBlockState(pos), world, pos);
         int oldMeta = oldBlock.getMetaFromState(oldState);
         EnumFacing oldFacing = EnumFacing.byHorizontalIndex(oldMeta);
         boolean oldOnWall = oldState.getValue(ONWALL);
         int nextInt = signs.indexOf(oldBlock) + 1;
-        if (nextInt > signs.size() - 1) {
+        if (nextInt > signs.size() - 1)
+        {
             nextInt = 0;
         }
         Block nextBlock = signs.get(nextInt);
@@ -70,45 +73,55 @@ public class BlockSignBase extends BlockHorizontalFacing
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+    public Item getItemDropped(IBlockState state, Random par2Random, int par3)
+    {
         return new ItemStack(Item.getItemFromBlock(ModBlocks.signHV)).getItem();
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
         return new ItemStack(Item.getItemFromBlock(ModBlocks.signHV));
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+    {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(ONWALL, facing != EnumFacing.UP);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         return new BlockStateContainer(this, FACING, ONWALL);
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(int meta)
+    {
         return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(ONWALL, (meta & 4) > 0);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(IBlockState state)
+    {
         int i = 0;
         i = i | state.getValue(FACING).getHorizontalIndex();
 
-        if (state.getValue(ONWALL)) {
+        if (state.getValue(ONWALL))
+        {
             i |= 4;
         }
         return i;
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        if (state.getActualState(source, pos).getValue(ONWALL)) {
-            switch (state.getActualState(source, pos).getValue(FACING)) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        if (state.getActualState(source, pos).getValue(ONWALL))
+        {
+            switch (state.getActualState(source, pos).getValue(FACING))
+            {
                 default:
                 case NORTH:
                     return NORTH_BLOCK_AABB;
@@ -120,17 +133,21 @@ public class BlockSignBase extends BlockHorizontalFacing
                     return WEST_BLOCK_AABB;
             }
 
-        } else {
+        }
+        else
+        {
             return BASE_AABB;
         }
     }
 
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    {
         tooltip.add(I18n.format("tile.industrialrenewal.sign_base.info"));
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
         return BlockFaceShape.UNDEFINED;
     }
 }

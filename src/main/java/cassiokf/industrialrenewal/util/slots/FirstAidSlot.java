@@ -5,16 +5,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class FirstAidSlot extends SlotItemHandler {
+public class FirstAidSlot extends SlotItemHandler
+{
 
-    private ItemStack allowedOnSlot = new ItemStack(ModItems.medkit);
+    private final ItemStack allowedOnSlot = new ItemStack(ModItems.medkit);
 
-    public FirstAidSlot(IItemHandler inventoryIn, int index, int xPosition, int yPosition) {
+    public FirstAidSlot(IItemHandler inventoryIn, int index, int xPosition, int yPosition)
+    {
         super(inventoryIn, index, xPosition, yPosition);
     }
 
     @Override
-    public boolean isItemValid(ItemStack itemstack) {
+    public boolean isItemValid(ItemStack itemstack)
+    {
         if (itemstack.isEmpty())
             return false;
         return itemstack.isItemEqual(allowedOnSlot);
@@ -22,7 +25,8 @@ public class FirstAidSlot extends SlotItemHandler {
 
 
     @Override
-    public int getSlotStackLimit() {
+    public int getSlotStackLimit()
+    {
         return 16;
     }
 }

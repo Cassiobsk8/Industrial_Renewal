@@ -33,12 +33,12 @@ import java.util.List;
 
 public class BlockPillarFluidPipe extends BlockFluidPipe
 {
+    private static final float DOWNY1 = 0.0f;
+    private static final float UPY2 = 1.0f;
     private static float NORTHZ1 = 0.250f;
     private static float SOUTHZ2 = 0.750f;
     private static float WESTX1 = 0.250f;
     private static float EASTX2 = 0.750f;
-    private static float DOWNY1 = 0.0f;
-    private static float UPY2 = 1.0f;
 
     public BlockPillarFluidPipe(String name, CreativeTabs tab)
     {
@@ -201,28 +201,32 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
         if (isConnected(worldIn, pos, state, EnumFacing.NORTH))
         {
             NORTHZ1 = 0.0f;
-        } else
+        }
+        else
         {
             NORTHZ1 = 0.250f;
         }
         if (isConnected(worldIn, pos, state, EnumFacing.SOUTH))
         {
             SOUTHZ2 = 1.0f;
-        } else
+        }
+        else
         {
             SOUTHZ2 = 0.750f;
         }
         if (isConnected(worldIn, pos, state, EnumFacing.WEST))
         {
             WESTX1 = 0.0f;
-        } else
+        }
+        else
         {
             WESTX1 = 0.250f;
         }
         if (isConnected(worldIn, pos, state, EnumFacing.EAST))
         {
             EASTX2 = 1.0f;
-        } else
+        }
+        else
         {
             EASTX2 = 0.750f;
         }
@@ -236,28 +240,32 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
         if (isConnected(worldIn, pos, state, EnumFacing.NORTH))
         {
             NORTHZ1 = 0.0f;
-        } else
+        }
+        else
         {
             NORTHZ1 = 0.250f;
         }
         if (isConnected(worldIn, pos, state, EnumFacing.SOUTH))
         {
             SOUTHZ2 = 1.0f;
-        } else
+        }
+        else
         {
             SOUTHZ2 = 0.750f;
         }
         if (isConnected(worldIn, pos, state, EnumFacing.WEST))
         {
             WESTX1 = 0.0f;
-        } else
+        }
+        else
         {
             WESTX1 = 0.250f;
         }
         if (isConnected(worldIn, pos, state, EnumFacing.EAST))
         {
             EASTX2 = 1.0f;
-        } else
+        }
+        else
         {
             EASTX2 = 0.750f;
         }
@@ -270,7 +278,8 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
         if (face == EnumFacing.EAST || face == EnumFacing.WEST || face == EnumFacing.NORTH || face == EnumFacing.SOUTH)
         {
             return BlockFaceShape.SOLID;
-        } else
+        }
+        else
         {
             return BlockFaceShape.UNDEFINED;
         }

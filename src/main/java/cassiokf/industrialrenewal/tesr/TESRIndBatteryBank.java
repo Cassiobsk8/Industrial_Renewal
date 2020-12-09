@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 public class TESRIndBatteryBank extends TESRBase<TEIndustrialBatteryBank>
 {
     private static final ItemStack lBattery = new ItemStack(ModItems.battery_lithium);
+
     @Override
     public void render(TEIndustrialBatteryBank te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {

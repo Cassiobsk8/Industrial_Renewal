@@ -22,9 +22,8 @@ import javax.annotation.Nonnull;
 
 public class SteamBoiler
 {
-    private final ISync tiedTE;
-    private final int maxHeat = 32000;
     public static final String steamName = "Steam";//I18n.format(FluidInit.STEAM.getUnlocalizedName());
+    private final ISync tiedTE;
     public final FluidTank waterTank = new FluidTank(32000)
     {
         @Override
@@ -65,16 +64,16 @@ public class SteamBoiler
             SteamBoiler.this.tiedTE.sync();
         }
     };
+    private final int maxHeat = 32000;
+    private final FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), Fluid.BUCKET_VOLUME);
     private boolean useSolid;
     private int amountPerTick;
     private int heat;
     private int oldHeat;
-    private int waterPtick = IRConfig.MainConfig.Main.steamBoilerWaterPerTick;
+    private final int waterPtick = IRConfig.MainConfig.Main.steamBoilerWaterPerTick;
     private int fuelTime;
     private String fuelName = "";
     private int maxFuelTime;
-    private int steamGenerated;
-    private final FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), Fluid.BUCKET_VOLUME);
     public final FluidTank fuelTank = new FluidTank(32000)
     {
         @Override
@@ -105,6 +104,7 @@ public class SteamBoiler
             return SteamBoiler.this.updateSolidFuel(stack, simulate);
         }
     };
+    private int steamGenerated;
     private int oldFuelTime;
 
     public SteamBoiler(ISync tiedTE, BoilerType useSolid, int amountPerTick)
@@ -157,7 +157,8 @@ public class SteamBoiler
             steamStack.amount = amount * IRConfig.MainConfig.Main.steamBoilerConversionFactor;
             steamGenerated = steamTank.fillInternal(steamStack, true);
             heat -= 4;
-        } else
+        }
+        else
         {
             steamGenerated = 0;
             heat -= 2;
@@ -254,7 +255,8 @@ public class SteamBoiler
         {
             heat += 8;
             fuelTime -= amountPerTick;
-        } else heat -= 2;
+        }
+        else heat -= 2;
     }
 
     public void coolDown()

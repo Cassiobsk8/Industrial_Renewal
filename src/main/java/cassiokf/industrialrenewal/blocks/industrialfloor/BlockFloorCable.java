@@ -66,7 +66,8 @@ public class BlockFloorCable extends BlockEnergyCable
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+    public Item getItemDropped(IBlockState state, Random par2Random, int par3)
+    {
         return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.blockIndFloor)).getItem();
     }
 
@@ -101,7 +102,8 @@ public class BlockFloorCable extends BlockEnergyCable
 
     @SuppressWarnings("deprecation")
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean p_185477_7_) {
+    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean p_185477_7_)
+    {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, state.getCollisionBoundingBox(worldIn, pos));
     }
 

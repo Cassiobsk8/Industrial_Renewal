@@ -18,7 +18,8 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITickable {
+public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITickable
+{
 
     public final ItemStackHandler inventory = new ItemStackHandler(5)
     {
@@ -84,11 +85,13 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                     if (waitE == waitEnum.WAIT_EMPTY)
                     {
                         return !Utils.IsInventoryEmpty(cartCapability);
-                    } else if (waitE == waitEnum.WAIT_FULL)
+                    }
+                    else if (waitE == waitEnum.WAIT_FULL)
                     {
                         return intUnloadActivity < 10 || !Utils.IsInventoryFull(cartCapability);
                     }
-                } else //From inventory to cart
+                }
+                else //From inventory to cart
                 {
                     if (Utils.moveItemsBetweenInventories(inventory, cartCapability, itemsPerTick))
                     {
@@ -103,7 +106,8 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
                     if (waitE == waitEnum.WAIT_FULL)
                     {
                         return intUnloadActivity < 10 || !Utils.IsInventoryFull(cartCapability);
-                    } else if (waitE == waitEnum.WAIT_EMPTY)
+                    }
+                    else if (waitE == waitEnum.WAIT_EMPTY)
                     {
                         return !Utils.IsInventoryEmpty(cartCapability);
                     }
@@ -168,14 +172,16 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
         compound.setTag("inventory", inventory.serializeNBT());
         compound.setInteger("activity", cartActivity);
         return super.writeToNBT(compound);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(NBTTagCompound compound)
+    {
         this.inventory.deserializeNBT(compound.getCompoundTag("inventory"));
         cartActivity = compound.getInteger("activity");
         super.readFromNBT(compound);
@@ -188,7 +194,8 @@ public class TileEntityCargoLoader extends TileEntityBaseLoader implements ITick
 
     @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
         BlockPos masterPos = getMasterPos();
         if (masterPos == null) return super.getCapability(capability, facing);
         TileEntityCargoLoader te = (TileEntityCargoLoader) world.getTileEntity(masterPos);

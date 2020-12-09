@@ -10,16 +10,19 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 
-public class BlockChimney extends BlockBase {
+public class BlockChimney extends BlockBase
+{
 
-    public BlockChimney(String name, CreativeTabs tab) {
+    public BlockChimney(String name, CreativeTabs tab)
+    {
         super(Material.IRON, name, tab);
         setHardness(0.8f);
         setLightOpacity(255);
     }
 
     @Override
-    public int tickRate(World world) {
+    public int tickRate(World world)
+    {
         return 10;
     }
 
@@ -27,7 +30,8 @@ public class BlockChimney extends BlockBase {
      * todo Arrumar para não ser mais random
      **/
     @Override
-    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random)
+    {
         int i = pos.getX();
         int j = pos.getY();
         int k = pos.getZ();
@@ -44,13 +48,15 @@ public class BlockChimney extends BlockBase {
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 }

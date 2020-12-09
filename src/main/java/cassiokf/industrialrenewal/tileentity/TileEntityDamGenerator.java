@@ -22,30 +22,25 @@ import java.util.List;
 
 public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityDamGenerator> implements IMecanicalEnergy, IDynamicSound
 {
-    public static int maxGeneration = 1024;
-    private final VoltsEnergyContainer energyContainer;
-    private final float volume = IRConfig.MainConfig.Sounds.turbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
+    public static final int maxGeneration = 1024;
+    private static final VoltsEnergyContainer energyContainer = new VoltsEnergyContainer(0, 0, 0)
+    {
+        @Override
+        public boolean canExtract()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean canReceive()
+        {
+            return false;
+        }
+    };
+    private static final float volume = IRConfig.MainConfig.Sounds.turbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
     private int oldGeneration;
     private int generation;
     private int rotation;
-
-    public TileEntityDamGenerator()
-    {
-        this.energyContainer = new VoltsEnergyContainer(0, 0, 0)
-        {
-            @Override
-            public boolean canExtract()
-            {
-                return false;
-            }
-
-            @Override
-            public boolean canReceive()
-            {
-                return false;
-            }
-        };
-    }
 
     @Override
     public void tick()

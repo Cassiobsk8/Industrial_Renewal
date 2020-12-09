@@ -5,9 +5,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerStorageChest extends ContainerBase {
+public class ContainerStorageChest extends ContainerBase
+{
 
-    public ContainerStorageChest(IInventory playerInv, TEStorageChest te) {
+    public ContainerStorageChest(IInventory playerInv, TEStorageChest te)
+    {
         IItemHandler inventory = te.inventory; //Gets the inventory from our tile entity
         int startIndex = te.currentLine * 11;
         int numRows = inventory.getSlots() / 11;

@@ -32,8 +32,8 @@ public class BlockBaseWall extends BlockBase
     private static float SOUTHZ2 = 0.75f;
     private static float WESTX1 = 0.25f;
     private static float EASTX2 = 0.75f;
-    private static float DOWNY1 = 0.0f;
-    private static float UPY2 = 1.0f;
+    private static final float DOWNY1 = 0.0f;
+    private static final float UPY2 = 1.0f;
 
     public BlockBaseWall(String name, CreativeTabs tab)
     {
@@ -50,28 +50,32 @@ public class BlockBaseWall extends BlockBase
         if (isConnected(actualState, NORTH))
         {
             NORTHZ1 = 0.0f;
-        } else
+        }
+        else
         {
             NORTHZ1 = 0.25f;
         }
         if (isConnected(actualState, SOUTH))
         {
             SOUTHZ2 = 1.0f;
-        } else
+        }
+        else
         {
             SOUTHZ2 = 0.75f;
         }
         if (isConnected(actualState, WEST))
         {
             WESTX1 = 0.0f;
-        } else
+        }
+        else
         {
             WESTX1 = 0.25f;
         }
         if (isConnected(actualState, EAST))
         {
             EASTX2 = 1.0f;
-        } else
+        }
+        else
         {
             EASTX2 = 0.75f;
         }
@@ -89,28 +93,32 @@ public class BlockBaseWall extends BlockBase
         if (isConnected(state, NORTH))
         {
             NORTHZ1 = 0.0f;
-        } else
+        }
+        else
         {
             NORTHZ1 = 0.25f;
         }
         if (isConnected(state, SOUTH))
         {
             SOUTHZ2 = 1.0f;
-        } else
+        }
+        else
         {
             SOUTHZ2 = 0.75f;
         }
         if (isConnected(state, WEST))
         {
             WESTX1 = 0.0f;
-        } else
+        }
+        else
         {
             WESTX1 = 0.25f;
         }
         if (isConnected(state, EAST))
         {
             EASTX2 = 1.0f;
-        } else
+        }
+        else
         {
             EASTX2 = 0.75f;
         }

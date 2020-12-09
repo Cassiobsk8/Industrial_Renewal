@@ -18,8 +18,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityTrash extends TEBase
 {
-    private final VoltsEnergyContainer energyContainer;
-    public FluidTank tank = new FluidTank(IRConfig.MainConfig.Main.barrelCapacity)
+    public static final FluidTank tank = new FluidTank(IRConfig.MainConfig.Main.barrelCapacity)
     {
         @Override
         public int fill(FluidStack resource, boolean doFill)
@@ -27,7 +26,7 @@ public class TileEntityTrash extends TEBase
             return resource != null ? resource.amount : 0;
         }
     };
-    public ItemStackHandler inventory = new ItemStackHandler(10)
+    public static final ItemStackHandler inventory = new ItemStackHandler(10)
     {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack)
@@ -42,18 +41,14 @@ public class TileEntityTrash extends TEBase
             return ItemStack.EMPTY;
         }
     };
-
-    public TileEntityTrash()
+    private static final VoltsEnergyContainer energyContainer = new VoltsEnergyContainer(1000000, 1000000, 1000000)
     {
-        this.energyContainer = new VoltsEnergyContainer(1000000, 1000000, 1000000)
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate)
         {
-            @Override
-            public int receiveEnergy(int maxReceive, boolean simulate)
-            {
-                return maxReceive;
-            }
-        };
-    }
+            return maxReceive;
+        }
+    };
 
     @Nullable
     @Override
@@ -61,9 +56,9 @@ public class TileEntityTrash extends TEBase
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
-        if (capability == CapabilityEnergy.ENERGY) return CapabilityEnergy.ENERGY.cast(this.energyContainer);
+        if (capability == CapabilityEnergy.ENERGY) return CapabilityEnergy.ENERGY.cast(energyContainer);
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.inventory);
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
         return super.getCapability(capability, facing);
     }
 }

@@ -27,15 +27,18 @@ public class TileEntityAlarm extends TEBase implements ITickable
     }
 
     @Override
-    public void update() {
+    public void update()
+    {
         long thisTime = System.currentTimeMillis();
-        if ((thisTime - lastTime) >= PERIOD) {
+        if ((thisTime - lastTime) >= PERIOD)
+        {
             lastTime = thisTime;
             playThis();
         }
     }
 
-    public boolean checkPowered() {
+    public boolean checkPowered()
+    {
         boolean powered = world.isBlockPowered(this.getPos())
                 || isPoweredWire(this.getWorld(), this.getPos().add(1, 0, 0))
                 || isPoweredWire(this.getWorld(), this.getPos().add(-1, 0, 0))
@@ -44,7 +47,8 @@ public class TileEntityAlarm extends TEBase implements ITickable
         return powered;
     }
 
-    public void playThis() {
+    public void playThis()
+    {
         if (!world.isRemote && this.checkPowered())
         {
             world.playSound(null, pos, IRSoundRegister.TILEENTITY_ALARM, SoundCategory.BLOCKS, (float) IRConfig.MainConfig.Sounds.alarmVolume * IRConfig.MainConfig.Sounds.masterVolumeMult, 1.0F);
