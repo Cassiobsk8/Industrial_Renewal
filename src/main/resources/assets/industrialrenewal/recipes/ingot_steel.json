@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "blockSteel"
+    }
+  ],
+  "result": {
+    "item": "industrialrenewal:ingot_steel",
+    "count": 9
+  }
+}
