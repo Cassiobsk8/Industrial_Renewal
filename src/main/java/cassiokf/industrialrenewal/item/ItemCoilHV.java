@@ -6,18 +6,19 @@ import cassiokf.industrialrenewal.tileentity.TileEntityTransformerHV;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.IConnectorHV;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
@@ -26,33 +27,37 @@ public class ItemCoilHV extends ItemBase
     private BlockPos firstConnectionPos;
     private boolean isSecond = false;
 
-    public ItemCoilHV(String name, CreativeTabs tab)
+    public ItemCoilHV(Properties properties)
     {
-        super(name, tab);
+        super(properties);
     }
+
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag)
+    public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag)
     {
-        list.add("Long distance energy transport");
+        list.add(new StringTextComponent("Long distance energy transport"));
     }
 
     @Override
-    public EnumActionResult onItemUse(PlayerEntity player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public ActionResultType onItemUse(ItemUseContext context)
     {
-        if (worldIn.isRemote) player.swingArm(hand);
+        PlayerEntity player = context.getPlayer();
+        World worldIn = context.getWorld();
+        if (worldIn.isRemote) player.swingArm(context.getHand());
         else
         {
-            if (hand.equals(EnumHand.MAIN_HAND))
+            if (context.getHand().equals(Hand.MAIN_HAND))
             {
+                BlockPos pos = context.getPos();
                 TileEntity te = worldIn.getTileEntity(pos);
                 if (te == null)
                 {
                     cleanConnection(player);
-                    return EnumActionResult.PASS;
+                    return ActionResultType.PASS;
                 }
-                ItemStack itemstack = player.getHeldItem(hand);
+                ItemStack itemstack = player.getHeldItem(context.getHand());
                 if (te instanceof IConnectorHV)
                 {
                     IConnectorHV teT = (IConnectorHV) te;
@@ -64,7 +69,7 @@ public class ItemCoilHV extends ItemBase
                             firstConnectionPos = teT.getConnectorPos();
                             isSecond = true;
                             Utils.sendChatMessage(player, "Connection Start");
-                            return EnumActionResult.SUCCESS;
+                            return ActionResultType.SUCCESS;
                         } else
                         {
                             Utils.sendChatMessage(player, "Connection already in use");
@@ -72,20 +77,20 @@ public class ItemCoilHV extends ItemBase
                     } else
                     {
                         int distance = Utils.getDistancePointToPoint(firstConnectionPos, pos);
-                        if (teT.getConnectorPos() != firstConnectionPos && teT.canConnect(pos) && distance > 0 && distance <= IRConfig.MainConfig.Main.maxHVWireLength)
+                        if (teT.getConnectorPos() != firstConnectionPos && teT.canConnect(pos) && distance > 0 && distance <= IRConfig.Main.maxHVWireLength.get())
                         {
                             isSecond = false;
                             connectFirst(worldIn, teT.getConnectorPos());
                             teT.connect(firstConnectionPos);
                             Utils.sendChatMessage(player, "Connected Distance: " + distance);
                             itemstack.shrink(1);
-                            return EnumActionResult.SUCCESS;
+                            return ActionResultType.SUCCESS;
                         } else
                         {
-                            if (distance > IRConfig.MainConfig.Main.maxHVWireLength)
+                            if (distance > IRConfig.Main.maxHVWireLength.get())
                                 Utils.sendChatMessage(player, "Far away from each other, Distence: " + distance);
                             cleanConnection(player);
-                            return EnumActionResult.FAIL;
+                            return ActionResultType.FAIL;
                         }
                     }
                 } else if (te instanceof TileEntityHVConnectorBase)
@@ -98,7 +103,7 @@ public class ItemCoilHV extends ItemBase
                             firstConnectionPos = teT.getPos();
                             isSecond = true;
                             Utils.sendChatMessage(player, "Connection Start");
-                            return EnumActionResult.SUCCESS;
+                            return ActionResultType.SUCCESS;
                         } else
                         {
                             Utils.sendChatMessage(player, "Connection already in use");
@@ -106,20 +111,20 @@ public class ItemCoilHV extends ItemBase
                     } else
                     {
                         int distance = Utils.getDistancePointToPoint(firstConnectionPos, pos);
-                        if (teT.getPos() != firstConnectionPos && teT.canConnect() && distance > 0 && distance <= IRConfig.MainConfig.Main.maxHVWireLength)
+                        if (teT.getPos() != firstConnectionPos && teT.canConnect() && distance > 0 && distance <= IRConfig.Main.maxHVWireLength.get())
                         {
                             isSecond = false;
                             connectFirst(worldIn, teT.getPos());
                             teT.setConnection(firstConnectionPos);
                             Utils.sendChatMessage(player, "Connected Distance: " + distance);
                             itemstack.shrink(1);
-                            return EnumActionResult.SUCCESS;
+                            return ActionResultType.SUCCESS;
                         } else
                         {
-                            if (distance > IRConfig.MainConfig.Main.maxHVWireLength)
+                            if (distance > IRConfig.Main.maxHVWireLength.get())
                                 Utils.sendChatMessage(player, "Far away from each other, Distence: " + distance);
                             cleanConnection(player);
-                            return EnumActionResult.FAIL;
+                            return ActionResultType.FAIL;
                         }
                     }
                 }
@@ -129,7 +134,7 @@ public class ItemCoilHV extends ItemBase
                 }
             }
         }
-        return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+        return super.onItemUse(context);
     }
 
     public String getDistanceText(PlayerEntity player)
@@ -137,7 +142,7 @@ public class ItemCoilHV extends ItemBase
         if (!isSecond) return "";
         int distance = Utils.getDistancePointToPoint(firstConnectionPos, player.getPosition());
         String text = "Current Wire Distance: " + distance;
-        return (distance > IRConfig.MainConfig.Main.maxHVWireLength ? TextFormatting.RED : TextFormatting.GREEN) + text;
+        return (distance > IRConfig.Main.maxHVWireLength.get() ? TextFormatting.RED : TextFormatting.GREEN) + text;
     }
 
     private void cleanConnection(PlayerEntity player)

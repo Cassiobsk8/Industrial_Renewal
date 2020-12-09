@@ -1,30 +1,24 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTEHorizontalFacing;
 import cassiokf.industrialrenewal.tileentity.TileEntityTrash;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
 
-public class BlockTrash extends BlockHorizontalFacing
+public class BlockTrash extends BlockTEHorizontalFacing<TileEntityTrash>
 {
-    public BlockTrash(String name, CreativeTabs tab)
+    public BlockTrash()
     {
-        super(name, tab, Material.IRON);
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Nullable
     @Override
-    public TileEntityTrash createTileEntity(World world,  BlockState state)
+    public TileEntityTrash createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityTrash();
     }

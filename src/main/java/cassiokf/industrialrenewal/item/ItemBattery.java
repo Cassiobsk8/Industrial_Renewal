@@ -3,55 +3,53 @@ package cassiokf.industrialrenewal.item;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemBattery extends ItemBase implements ICapabilityProvider
 {
+    private final CustomEnergyStorage container = new CustomEnergyStorage(
+            IRConfig.Main.batteryBankCapacity.get() / 5,
+            IRConfig.Main.batteryBankMaxInput.get() / 5,
+            IRConfig.Main.batteryBankMaxOutput.get() / 5);
 
-    private final CustomEnergyStorage container;
-
-    public ItemBattery(String name, CreativeTabs tab)
+    public ItemBattery(Properties properties)
     {
-        super(name, tab);
-        this.container = new CustomEnergyStorage(IRConfig.MainConfig.Main.batteryBankCapacity / 5, IRConfig.MainConfig.Main.batteryBankMaxInput / 5, IRConfig.MainConfig.Main.batteryBankMaxOutput / 5);
+        super(properties);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        list.add("Energy: " + this.container.getEnergyStored() + " / " + this.container.getMaxEnergyStored());
+        tooltip.add(new StringTextComponent("Energy: " + this.container.getEnergyStored() + " / " + this.container.getMaxEnergyStored()));
     }
 
-    //@Override
-    //public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt)
-    //{
-    //    return this;
-    //}
-
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt)
     {
-        return (capability == CapabilityEnergy.ENERGY);
+        return this;
     }
 
     @Override
     @Nullable
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing)
     {
         if (capability == CapabilityEnergy.ENERGY)
-            return CapabilityEnergy.ENERGY.cast(this.container);
+            return LazyOptional.of(() -> container).cast();
         return null;
     }
 }

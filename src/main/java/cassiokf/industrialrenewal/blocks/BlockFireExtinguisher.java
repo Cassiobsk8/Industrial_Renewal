@@ -1,100 +1,80 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
-import cassiokf.industrialrenewal.init.ModItems;
-import net.minecraft.block.SoundType;
+import cassiokf.industrialrenewal.init.ItemsRegistration;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-
-import java.util.Random;
 
 public class BlockFireExtinguisher extends BlockHorizontalFacing
 {
-    public static final PropertyBool ONWALL = PropertyBool.create("onwall");
+    public static final BooleanProperty ONWALL = BooleanProperty.create("onwall");
 
-    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1D, 0.75D);
+    protected static final VoxelShape BASE_AABB = Block.makeCuboidShape(4, 0, 4, 12, 16, 12);
+    private static final VoxelShape WEST_BLOCK_AABB = Block.makeCuboidShape(0, 0, 4, 8, 16, 12);
+    private static final VoxelShape EAST_BLOCK_AABB = Block.makeCuboidShape(16, 0, 4, 8, 16, 12);
+    private static final VoxelShape SOUTH_BLOCK_AABB = Block.makeCuboidShape(4, 0, 8, 12, 16, 16);
+    private static final VoxelShape NORTH_BLOCK_AABB = Block.makeCuboidShape(4, 0, 0, 12, 16, 8);
 
-    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0F, 0F, 0.25F, 0.5F, 1F, 0.75D);
-    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1F, 0F, 0.25F, 0.5F, 1F, 0.75D);
-    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0F, 0.5F, 0.75D, 1F, 1);
-    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0F, 0.5F, 0.75D, 1F, 0);
-
-    public BlockFireExtinguisher(String name, CreativeTabs tab)
+    public BlockFireExtinguisher()
     {
-        super(name, tab, Material.IRON);
-        setSoundType(SoundType.METAL);
-        setHardness(0.8f);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (player.isBurning()) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
+    {
+        if (player.isBurning())
+        {
             player.extinguish();
-            world.spawnParticle(EnumParticleTypes.WATER_SPLASH, player.getPosition().getX(), player.getPosition().getY() + 1F, player.getPosition().getZ(), 0, 1, 0);
-            world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
-        } else if (player.isSneaking()) {
-            if (player.inventory.addItemStackToInventory(new ItemStack(ModItems.fireExtinguisher, 1))) {
-                world.setBlockToAir(pos);
-                return true;
+            worldIn.addParticle(ParticleTypes.SPLASH, player.getPosition().getX(), player.getPosition().getY() + 1F, player.getPosition().getZ(), 0, 1, 0);
+            worldIn.playSound(null, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        } else if (player.isCrouching())
+        {
+            if (player.inventory.addItemStackToInventory(new ItemStack(ItemsRegistration.FIREEXTINGUISHER.get())))
+            {
+                worldIn.removeBlock(pos, false);
+                return ActionResultType.SUCCESS;
             }
-            return false;
         }
-        return false;
+        return ActionResultType.PASS;
     }
 
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, ONWALL);
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(FACING, ONWALL);
     }
 
     @Override
-    public  BlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(ONWALL, Boolean.valueOf((meta & 4) > 0));
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
+    {
+        return new ItemStack(ItemsRegistration.FIREEXTINGUISHER.get());
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
-        int i = 0;
-        i = i | state.getValue(FACING).getHorizontalIndex();
-
-        if (state.getValue(ONWALL)) {
-            i |= 4;
-        }
-        return i;
-    }
-
-    @Override
-    public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
-        return new ItemStack(ModItems.fireExtinguisher).getItem();
-    }
-
-    @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
-        return new ItemStack(ModItems.fireExtinguisher);
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        if (state.getActualState(source, pos).getValue(ONWALL)) {
-            switch (state.getActualState(source, pos).getValue(FACING)) {
+    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos, boolean collision)
+    {
+        if (state.get(ONWALL))
+        {
+            switch (state.get(FACING))
+            {
                 default:
                 case NORTH:
                     return NORTH_BLOCK_AABB;
@@ -109,9 +89,5 @@ public class BlockFireExtinguisher extends BlockHorizontalFacing
         } else {
             return BASE_AABB;
         }
-    }
-
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
-        return BlockFaceShape.UNDEFINED;
     }
 }

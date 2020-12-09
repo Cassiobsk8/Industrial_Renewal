@@ -2,18 +2,16 @@ package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.blocks.BlockFireExtinguisher;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraft.world.dimension.DimensionType;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -21,33 +19,36 @@ import java.util.Objects;
 public class ItemFireExtinguisher extends ItemBase {
 
 
-    public ItemFireExtinguisher(String name, CreativeTabs tab) {
-        super(name, tab);
-
-        this.maxStackSize = 1;
+    public ItemFireExtinguisher(Properties properties)
+    {
+        super(properties.maxStackSize(1));
     }
 
     @Override
-    public EnumActionResult onItemUse(PlayerEntity player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        ItemStack itemstack = player.getHeldItem(hand);
-        BlockPos posOffset = pos.offset(facing);
+    public ActionResultType onItemUse(ItemUseContext context)
+    {
+        PlayerEntity player = context.getPlayer();
+        World worldIn = context.getWorld();
+        BlockPos pos = context.getPos();
+        ItemStack itemstack = player.getHeldItem(context.getHand());
+        BlockPos posOffset = pos.offset(context.getFace());
         if (player.isSneaking())
         {
             if (worldIn.isAirBlock(posOffset) || worldIn.getBlockState(posOffset).getBlock().isReplaceable(worldIn, posOffset))
             {
                 playSound(worldIn, pos, "block.metal.place");
-                worldIn.setBlockState(posOffset, ModBlocks.fireExtinguisher.getDefaultState().withProperty(BlockFireExtinguisher.FACING, player.getHorizontalFacing()).withProperty(BlockFireExtinguisher.ONWALL, facing != EnumFacing.UP));
+                worldIn.setBlockState(posOffset, BlocksRegistration.FIREEXTINGUISHER.get().getDefaultState().with(BlockFireExtinguisher.FACING, player.getHorizontalFacing()).with(BlockFireExtinguisher.ONWALL, context.getFace() != Direction.UP));
                 itemstack.shrink(1);
-                return EnumActionResult.SUCCESS;
+                return ActionResultType.SUCCESS;
             }
-        } else if (IRConfig.MainConfig.Main.fireExtinguisherOnNether || player.dimension != DimensionType.NETHER.getId())
+        } else if (IRConfig.Main.fireExtinguisherOnNether.get() || player.dimension != DimensionType.THE_NETHER)
         {
             ArrayList<BlockPos> list = new ArrayList<>();
             add9x9pos(list, pos);
             for (BlockPos bpos : list)
             {
                 worldIn.spawnParticle(EnumParticleTypes.WATER_SPLASH, bpos.offset(facing).getX() + 0.5D, bpos.offset(facing).getY() + 0.5D, bpos.offset(facing).getZ() + 0.5D, 0, 1, 0);
-                for (EnumFacing faces : EnumFacing.values())
+                for (Direction faces : Direction.values())
                 {
                      BlockState state = worldIn.getBlockState(bpos);
                     if (worldIn.extinguishFire(player, bpos, faces))
@@ -55,19 +56,19 @@ public class ItemFireExtinguisher extends ItemBase {
                         worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, bpos.getX() + 0.5D, bpos.getY() + 0.5D, bpos.getZ() + 0.5D, 0, 1, 0);
                         playSound(worldIn, pos, "block.fire.extinguish");
                     }
-                    if (state.getMaterial() == Material.LAVA && state.getValue(BlockFluidBase.LEVEL) == 0)
+                    if (state.getMaterial() == Material.LAVA && state.get(BlockFluidBase.LEVEL) == 0)
                     {
                         worldIn.setBlockState(bpos, Blocks.OBSIDIAN.getDefaultState());
                     }
-                    if (state.getMaterial() == Material.LAVA && state.getValue(BlockFluidBase.LEVEL) > 0)
+                    if (state.getMaterial() == Material.LAVA && state.get(BlockFluidBase.LEVEL) > 0)
                     {
                         worldIn.setBlockState(bpos, Blocks.COBBLESTONE.getDefaultState());
                     }
                 }
             }
-            return EnumActionResult.SUCCESS;
+            return ActionResultType.SUCCESS;
         }
-        return EnumActionResult.FAIL;
+        return ActionResultType.FAIL;
     }
 
     private void playSound(World world, BlockPos pos, String resourceLocation) {
@@ -76,13 +77,13 @@ public class ItemFireExtinguisher extends ItemBase {
 
     private void add9x9pos(ArrayList<BlockPos> list, BlockPos initialPos) {
         list.add(initialPos);
-        list.add(initialPos.offset(EnumFacing.NORTH));
-        list.add(initialPos.offset(EnumFacing.SOUTH));
-        list.add(initialPos.offset(EnumFacing.EAST));
-        list.add(initialPos.offset(EnumFacing.EAST).offset(EnumFacing.NORTH));
-        list.add(initialPos.offset(EnumFacing.EAST).offset(EnumFacing.SOUTH));
-        list.add(initialPos.offset(EnumFacing.WEST));
-        list.add(initialPos.offset(EnumFacing.WEST).offset(EnumFacing.NORTH));
-        list.add(initialPos.offset(EnumFacing.WEST).offset(EnumFacing.SOUTH));
+        list.add(initialPos.offset(Direction.NORTH));
+        list.add(initialPos.offset(Direction.SOUTH));
+        list.add(initialPos.offset(Direction.EAST));
+        list.add(initialPos.offset(Direction.EAST).offset(Direction.NORTH));
+        list.add(initialPos.offset(Direction.EAST).offset(Direction.SOUTH));
+        list.add(initialPos.offset(Direction.WEST));
+        list.add(initialPos.offset(Direction.WEST).offset(Direction.NORTH));
+        list.add(initialPos.offset(Direction.WEST).offset(Direction.SOUTH));
     }
 }

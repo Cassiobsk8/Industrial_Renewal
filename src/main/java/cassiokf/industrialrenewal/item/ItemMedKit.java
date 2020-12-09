@@ -4,39 +4,42 @@ import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.config.IRConfig;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 import java.util.List;
 
 public class ItemMedKit extends ItemBase {
 
-    public ItemMedKit(String name, CreativeTabs tab) {
-        super(name, tab);
-        maxStackSize = 16;
+
+    public ItemMedKit(Properties properties)
+    {
+        super(properties.maxStackSize(16));
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
-        if (player.shouldHeal() && !player.isPotionActive(MobEffects.REGENERATION)) {
+        if (player.shouldHeal() && !player.isPotionActive(Effects.REGENERATION)) {
             if (!worldIn.isRemote) {
-                player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, IRConfig.MainConfig.Main.medKitEffectDuration, 1, false, false));
+                player.addPotionEffect(new Effect(Effects.REGENERATION, IRConfig.Main.medKitEffectDuration.get(), 1, false, false));
             }
             itemstack.shrink(1);
         }
-        return new ActionResult<ItemStack>(EnumActionResult.PASS, player.getHeldItem(hand));
+        return new ActionResult<ItemStack>(ActionResultType.PASS, player.getHeldItem(hand));
     }
 
     @Override
-    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag) {
-        list.add(I18n.format("item." + References.MODID + "." + name + ".des0"));
+    public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag)
+    {
+        list.add(new StringTextComponent(I18n.format("item." + References.MODID + "." + name + ".des0")));
     }
 }

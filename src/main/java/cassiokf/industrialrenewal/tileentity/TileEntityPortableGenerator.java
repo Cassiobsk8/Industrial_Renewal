@@ -5,6 +5,7 @@ import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.handlers.FluidGenerator;
 import cassiokf.industrialrenewal.handlers.IRSoundHandler;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySaveContent;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import cassiokf.industrialrenewal.util.Utils;
@@ -52,7 +53,7 @@ public class TileEntityPortableGenerator extends TileEntitySaveContent implement
     {
         if (generator.isGenerating() && !soundStarted)
         {
-            IRSoundHandler.playRepeatableSound(IRSoundRegister.GENERATOR_RESOURCEL, volume, 1.0F, pos);
+            IRSoundHandler.playRepeatableSound(SoundsRegistration.GENERATOR_RESOURCEL, volume, 1.0F, pos);
             soundStarted = true;
         } else if (!generator.isGenerating() && soundStarted)
         {

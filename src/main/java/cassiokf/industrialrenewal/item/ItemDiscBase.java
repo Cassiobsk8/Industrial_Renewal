@@ -1,51 +1,26 @@
 package cassiokf.industrialrenewal.item;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.References;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.MusicDiscItem;
+import net.minecraft.item.Rarity;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemDiscBase extends ItemRecord {
+import java.util.function.Supplier;
 
-    protected String name;
-
-    public ItemDiscBase(String name, CreativeTabs tab, SoundEvent sound) {
-        super(name, sound);
-        this.name = name;
-        this.setRegistryName(References.MODID, name);
-        this.setTranslationKey(References.MODID + "." + name);
-        this.setCreativeTab(tab);
+public class ItemDiscBase extends MusicDiscItem
+{
+    protected ItemDiscBase(int comparatorValueIn, SoundEvent soundIn, Properties builder)
+    {
+        super(comparatorValueIn, soundIn, builder);
     }
 
-    public void initOreDict() {
-        OreDictionary.registerOre("record", this);
+    public ItemDiscBase(int comparatorValue, Supplier<SoundEvent> soundSupplier, Properties builder)
+    {
+        super(comparatorValue, soundSupplier, builder);
     }
 
     @Override
-    public EnumRarity getRarity(ItemStack stack) {
-        return EnumRarity.EPIC;
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public String getRecordNameLocal() {
-        return I18n.format("item." + References.MODID + "." + name + ".des0");
-    }
-
-    public void registerItemModel() {
-        IndustrialRenewal.proxy.registerItemRenderer(this, 0, name);
-    }
-
-    @Override
-    public ItemDiscBase setCreativeTab(CreativeTabs tab) {
-        super.setCreativeTab(tab);
-        return this;
+    public Rarity getRarity(ItemStack stack) {
+        return Rarity.EPIC;
     }
 }

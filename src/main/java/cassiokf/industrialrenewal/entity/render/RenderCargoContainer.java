@@ -6,8 +6,8 @@ import cassiokf.industrialrenewal.model.carts.ModelCargoContainer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderCargoContainer<T extends EntityCargoContainer> extends RenderCartsBase<EntityCargoContainer>

@@ -1,15 +1,16 @@
 package cassiokf.industrialrenewal.item.carts;
 
 import cassiokf.industrialrenewal.entity.EntityPassengerCar;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.MinecartEntity;
+import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.world.World;
 
 public class ItemMineCartPassengerCar extends ItemCartBase
 {
-    public ItemMineCartPassengerCar(String name, CreativeTabs tab)
+
+
+    public ItemMineCartPassengerCar(Properties properties)
     {
-        super(name, tab);
+        super(properties);
     }
 
     @Override

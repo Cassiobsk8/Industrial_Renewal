@@ -2,18 +2,21 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockBunkerHatch;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
 import cassiokf.industrialrenewal.util.MachinesUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
-public class TileEntityBunkerHatch extends TEBase
+public class TileEntityBunkerHatch extends TileEntityMultiBlockBase<TileEntityBunkerHatch>
 {
     private boolean master;
     private boolean breaking;
@@ -44,6 +47,18 @@ public class TileEntityBunkerHatch extends TEBase
         return null;
     }
 
+    @Override
+    public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
+    {
+        return MachinesUtils.getBlocksIn3x1x3Centered(centerPosition);
+    }
+
+    @Override
+    public boolean instanceOf(TileEntity tileEntity)
+    {
+        return tileEntity instanceof TileEntityBunkerHatch;
+    }
+
     public void changeOpen()
     {
         if (!isMaster())
@@ -59,11 +74,11 @@ public class TileEntityBunkerHatch extends TEBase
         changeOpenFromMaster(value);
         if (value)
         {
-            world.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, 1.0F);
+            world.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F * IRConfig.Sounds.masterVolumeMult.get(), 1.0F);
 
         } else
         {
-            world.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, 1.0F);
+            world.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F * IRConfig.Sounds.masterVolumeMult.get(), 1.0F);
         }
     }
 

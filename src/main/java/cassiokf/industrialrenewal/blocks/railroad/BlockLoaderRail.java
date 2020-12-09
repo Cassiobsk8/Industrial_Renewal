@@ -1,20 +1,27 @@
 package cassiokf.industrialrenewal.blocks.railroad;
 
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.tileentity.railroad.TileEntityLoaderRail;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.RailShape;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,62 +29,44 @@ import java.util.List;
 
 public class BlockLoaderRail extends BlockRailFacing
 {
-    public BlockLoaderRail(String name, CreativeTabs tab) {
-        super(name, tab);
-        setSoundType(SoundType.METAL);
-        setDefaultState(blockState.getBaseState()
-                .withProperty(SHAPE, EnumRailDirection.NORTH_SOUTH)
-                .withProperty(FACING, EnumFacing.NORTH));
+    public BlockLoaderRail()
+    {
+        super(Block.Properties.create(Material.IRON));
+        setDefaultState(getDefaultState()
+                .with(SHAPE, RailShape.NORTH_SOUTH)
+                .with(FACING, Direction.NORTH));
     }
 
     @Override
-    public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos) {
-        TileEntityLoaderRail te = (TileEntityLoaderRail) world.getTileEntity(pos);
-        if (te != null) te.onMinecartPass(cart);
-    }
-
-    @Nonnull
-    @Override
-    @Deprecated
-    public  BlockState getStateFromMeta(int meta) {
-        EnumRailDirection shape = EnumRailDirection.byMetadata((meta >> 1) & 1);
-        EnumFacing facing = EnumFacing.byHorizontalIndex(meta >> 2);
-
-        return getDefaultState()
-                .withProperty(SHAPE, shape)
-                .withProperty(FACING, facing);
+    public void onMinecartPass(BlockState state, World world, BlockPos pos, AbstractMinecartEntity cart)
+    {
+        TileEntity te = world.getTileEntity(pos);
+        if (te instanceof TileEntityLoaderRail) ((TileEntityLoaderRail) te).onMinecartPass((MinecartEntity) cart);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
-        EnumRailDirection shape = state.getValue(SHAPE);
-        EnumFacing facing = state.getValue(FACING);
-        int meta = 0;
-        meta |= shape.getMetadata() << 1;
-        meta |= facing.getHorizontalIndex() << 2;
-        return meta;
-    }
-
-    @Nonnull
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, SHAPE, FACING);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
-        String str = I18n.format("tile.industrialrenewal.loader_rail.info") + " " + ModBlocks.cargoLoader.getLocalizedName();
-        tooltip.add(str);
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(SHAPE, FACING);
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state) {
+    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    {
+        String str = I18n.format("tile.industrialrenewal.loader_rail.info") + " " + BlocksRegistration.CARGOLOADER.get().getNameTextComponent().getFormattedText();
+        tooltip.add(new StringTextComponent(str));
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
         return true;
     }
 
     @Nullable
     @Override
-    public TileEntityLoaderRail createTileEntity(World world,  BlockState state) {
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
+    {
         return new TileEntityLoaderRail();
     }
 }

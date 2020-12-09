@@ -1,129 +1,75 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnectedMultiblocks;
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTEHorizontalFacingMultiblocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.tileentity.TileEntityWindTurbinePillar;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nullable;
 
-public class BlockWindTurbinePillar extends BlockTileEntityConnectedMultiblocks<TileEntityWindTurbinePillar>
+public class BlockWindTurbinePillar extends BlockTEHorizontalFacingMultiblocks<TileEntityWindTurbinePillar>
 {
 
-    public BlockWindTurbinePillar(String name, CreativeTabs tab)
+    public BlockWindTurbinePillar()
     {
-        super(Material.IRON, name, tab);
-        setSoundType(SoundType.METAL);
-        setHardness(0.8f);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        return EnumBlockRenderType.MODEL;
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        Item playerItem = player.inventory.getCurrentItem().getItem();
-        Block clickedBlock = state.getBlock();
-        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.turbinePillar)) && clickedBlock.equals(ModBlocks.turbinePillar))
+        ItemStack playerStack = player.getHeldItem(handIn);
+        if (playerStack.getItem().equals(BlocksRegistration.TURBINEPILLAR_ITEM.get()))
         {
             int n = 1;
-            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockWindTurbinePillar)
+            while (worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockWindTurbinePillar)
             {
                 n++;
             }
-            if (world.getBlockState(pos.up(n)).getBlock().isReplaceable(world, pos.up(n)))
+            if (isReplaceable(worldIn, pos.up(n)))
             {
-                world.setBlockState(pos.up(n), getBlockFromItem(playerItem).getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
+                worldIn.setBlockState(pos.up(n), getDefaultState().with(FACING, state.get(FACING)), 3);
                 if (!player.isCreative())
                 {
-                    player.inventory.clearMatchingItems(playerItem, 0, 1, null);
+                    playerStack.shrink(1);
                 }
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
-        return false;
-    }
-
-    private boolean canConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection)
-    {
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final  BlockState neighbourState = worldIn.getBlockState(neighbourPos);
-
-        if (neighbourDirection == EnumFacing.DOWN)
-        {
-            return !(neighbourState.getBlock() instanceof BlockWindTurbinePillar);
-        }
-        TileEntity te = worldIn.getTileEntity(ownPos.offset(neighbourDirection));
-        return te != null && te.hasCapability(CapabilityEnergy.ENERGY, neighbourDirection.getOpposite());
+        return ActionResultType.PASS;
     }
 
     @Override
-    public  BlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
+    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction)
     {
-        if (state instanceof IExtendedBlockState)
+        TileEntity te = world.getTileEntity(pos);
+        if (te instanceof TileEntityWindTurbinePillar)
         {
-            EnumFacing facing = state.getValue(FACING);
-            IExtendedBlockState eState = (IExtendedBlockState) state;
-            boolean down = canConnectTo(world, pos, EnumFacing.DOWN);
-            eState = eState.withProperty(DOWN, down).withProperty(UP, false);
-            if (down)
-                eState = eState.withProperty(SOUTH, canConnectTo(world, pos, facing.getOpposite()))
-                        .withProperty(NORTH, canConnectTo(world, pos, facing))
-                        .withProperty(EAST, canConnectTo(world, pos, facing.rotateY()))
-                        .withProperty(WEST, canConnectTo(world, pos, facing.rotateYCCW()));
-            else
-                eState = eState.withProperty(SOUTH, false)
-                        .withProperty(NORTH, false)
-                        .withProperty(EAST, false)
-                        .withProperty(WEST, false);
-            return eState;
+            BlockState newState = super.rotate(state, world, pos, direction);
+            Direction facing = newState.get(FACING);
+            ((TileEntityWindTurbinePillar) te).setFacing(facing);
+            return newState;
         }
         return state;
     }
 
-    @Override
-    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
-    {
-        TileEntity te = world.getTileEntity(pos);
-        if (te instanceof TileEntityWindTurbinePillar && super.rotateBlock(world, pos, axis))
-        {
-            EnumFacing facing = world.getBlockState(pos).getValue(FACING);
-            ((TileEntityWindTurbinePillar) te).setFacing(facing);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
-
     @Nullable
     @Override
-    public TileEntityWindTurbinePillar createTileEntity(World world,  BlockState state)
+    public TileEntityWindTurbinePillar createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityWindTurbinePillar();
     }

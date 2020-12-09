@@ -92,7 +92,7 @@ public class BlocksRegistration
     public static final RegistryObject<Block> ENERGYLEVEL = BLOCKS.register("energy_level", BlockEnergyLevel::new);
     public static final RegistryObject<Block> EFENCE = BLOCKS.register("electric_fence", BlockElectricFence::new);
     public static final RegistryObject<Block> BIGFENCECOLUMN = BLOCKS.register("fence_big_column", BlockElectricBigFenceColumn::new);
-    public static final RegistryObject<Block> BIGFENCEWIRE = BLOCKS.register("fence_big_wire", BlockElectricBigFenceWire::new);
+    public static final RegistryObject<Block> BIGFENCEWIRE = BLOCKS.register("fence_big_wire", BlockBigFenceWire::new);
     public static final RegistryObject<Block> BIGFENCECORNER = BLOCKS.register("fence_big_corner", BlockElectricBigFenceCorner::new);
     public static final RegistryObject<Block> CONCRETEWALL = BLOCKS.register("wall_concrete", BlockBaseWall::new);
     public static final RegistryObject<Block> EGATE = BLOCKS.register("electric_gate", BlockElectricGate::new);

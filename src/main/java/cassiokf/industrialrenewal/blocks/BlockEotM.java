@@ -1,52 +1,45 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 
 public class BlockEotM extends BlockHorizontalFacing
 {
-    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0D, 0.0625D, 0.1875D, 0.0625D, 0.9375D, 0.8125D);
-    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1D, 0.0625D, 0.1875D, 0.9375D, 0.9375D, 0.8125D);
-    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.1875D, 0.0625D, 0.9375D, 0.8125D, 0.9375D, 1D);
-    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.1875D, 0.0625D, 0.0625D, 0.8125D, 0.9375D, 0D);
+    private static final VoxelShape WEST_BLOCK_AABB = Block.makeCuboidShape(0, 1, 3, 1, 15, 13);
+    private static final VoxelShape EAST_BLOCK_AABB = Block.makeCuboidShape(15, 1, 3, 16, 15, 13);
+    private static final VoxelShape SOUTH_BLOCK_AABB = Block.makeCuboidShape(3, 1, 15, 13, 15, 16);
+    private static final VoxelShape NORTH_BLOCK_AABB = Block.makeCuboidShape(3, 1, 1, 13, 15, 0);
 
-    public BlockEotM(String name, CreativeTabs tab)
+    public BlockEotM()
     {
-        super(name, tab, Material.IRON);
-        setSoundType(SoundType.METAL);
-        setHardness(0.8f);
+        super(Block.Properties.create(Material.WOOD));
     }
 
     @Override
-    public  BlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        EnumFacing face = null;
-        for (EnumFacing face1 : EnumFacing.HORIZONTALS)
+        Direction face;
+        if (Direction.Plane.HORIZONTAL.test(context.getFace()))
         {
-            if (facing.equals(face1))
-            {
-                face = facing.getOpposite();
-            }
+            face = context.getFace().getOpposite();
+        } else
+        {
+            face = context.getPlacementHorizontalFacing();
         }
-        if (face == null) face = placer.getHorizontalFacing();
-
-        return getDefaultState().withProperty(FACING, face);
+        return getDefaultState().with(FACING, face);
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos, boolean collision)
     {
-        switch (state.getActualState(source, pos).getValue(FACING))
+        switch (state.get(FACING))
         {
             default:
             case NORTH:
@@ -58,10 +51,5 @@ public class BlockEotM extends BlockHorizontalFacing
             case WEST:
                 return WEST_BLOCK_AABB;
         }
-    }
-
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
     }
 }

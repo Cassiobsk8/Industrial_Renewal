@@ -3,7 +3,6 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.blocks.BlockGauge;
 import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import cassiokf.industrialrenewal.util.Utils;
-import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;

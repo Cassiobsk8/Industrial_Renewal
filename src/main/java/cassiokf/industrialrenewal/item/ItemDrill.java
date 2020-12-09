@@ -1,42 +1,36 @@
 package cassiokf.industrialrenewal.item;
 
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ItemDrill extends ItemBase
 {
-    private final int maxDamage;
-
-    public ItemDrill(String name, CreativeTabs tab, int maxDamage)
+    public ItemDrill(Item.Properties properties, int maxDamage)
     {
-        super(name, tab);
-        maxStackSize = 1;
-        this.maxDamage = maxDamage;
-        setMaxDamage(maxDamage);
-        setContainerItem(this);
+        super(properties.maxStackSize(1).maxDamage(maxDamage));
     }
 
     @Override
-    public boolean isRepairable()
+    public boolean isRepairable(ItemStack stack)
     {
         return false;
     }
 
     public static ItemStack copyStack(ItemStack stack, int n)
     {
-        return new ItemStack(stack.getItem(), n, stack.getItemDamage());
+        return new ItemStack(stack.getItem(), n, stack.getTag());
     }
 
     @Override
     public ItemStack getContainerItem(ItemStack stack)
     {
-        int dmg = stack.getItemDamage();
-        if (dmg == maxDamage)
+        int dmg = stack.getDamage();
+        if (dmg == getMaxDamage(stack))
         {
-            return new ItemStack(stack.getItem(), 0, maxDamage);
+            return new ItemStack(stack.getItem(), 0, stack.getTag());
         }
         ItemStack tr = copyStack(stack, 1);
-        tr.setItemDamage(dmg + 1);
+        tr.setDamage(dmg + 1);
         return tr;
     }
 }

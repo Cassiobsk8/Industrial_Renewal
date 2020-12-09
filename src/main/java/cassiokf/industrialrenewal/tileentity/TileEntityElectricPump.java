@@ -118,14 +118,14 @@ public class TileEntityElectricPump extends TileEntitySync implements ITickableT
         if (isRunning && !starting)
         {
             if (!world.isRemote)
-                world.playSound(null, pos, IRSoundRegister.PUMP_START, SoundCategory.BLOCKS, volume + 0.5f, 1.0F);
+                world.playSound(null, pos, SoundsRegistration.PUMP_START, SoundCategory.BLOCKS, volume + 0.5f, 1.0F);
             starting = true;
             oldStarting = true;
             sync();
         } else if (isRunning)
         {
             if (world.isRemote)
-                IRSoundHandler.playRepeatableSound(IRSoundRegister.PUMP_ROTATION_RESOURCEL, volume, 1.0F, pos);
+                IRSoundHandler.playRepeatableSound(SoundsRegistration.PUMP_ROTATION_RESOURCEL, volume, 1.0F, pos);
         } else
         {
             if (world.isRemote) IRSoundHandler.stopTileSound(pos);

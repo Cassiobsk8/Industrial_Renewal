@@ -1,11 +1,9 @@
 package cassiokf.industrialrenewal.item;
 
-import net.minecraft.creativetab.CreativeTabs;
-
 public class ItemOre extends ItemOreDict
 {
-    public ItemOre(String name, String oreName, CreativeTabs tab)
+    public ItemOre(Properties properties)
     {
-        super(name, oreName, tab);
+        super(properties);
     }
 }

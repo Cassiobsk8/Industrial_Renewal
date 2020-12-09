@@ -1,36 +1,28 @@
 package cassiokf.industrialrenewal.blocks.abstracts;
 
 import cassiokf.industrialrenewal.blocks.BlockBase;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
 
-public abstract class BlockTileEntity<TE extends TileEntity> extends BlockBase
+public abstract class BlockTileEntity<TE extends TileEntity> extends BlockAbstractNotNormalCube
 {
 
-    public BlockTileEntity(Material material, String name, CreativeTabs tab)
+    public BlockTileEntity(Block.Properties properties)
     {
-        super(material, name, tab);
-    }
-
-    public TE getTileEntity(IBlockAccess world, BlockPos pos)
-    {
-        return (TE) world.getTileEntity(pos);
+        super(properties);
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state) {
+    public boolean hasTileEntity(BlockState state)
+    {
         return true;
     }
 
     @Nullable
     @Override
-    public abstract TE createTileEntity(World world,  BlockState state);
+    public abstract TE createTileEntity(BlockState state, IBlockReader world);
 }

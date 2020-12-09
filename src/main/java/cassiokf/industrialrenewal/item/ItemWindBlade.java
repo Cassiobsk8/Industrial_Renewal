@@ -1,36 +1,33 @@
 package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ItemWindBlade extends ItemBase
 {
-    private static final int maxDamage = IRConfig.MainConfig.Main.ironBladeDurability;
+    private static final int maxDamage = IRConfig.Main.ironBladeDurability.get();
 
-    public ItemWindBlade(String name, CreativeTabs tab)
+    public ItemWindBlade(Item.Properties properties)
     {
-        super(name, tab);
-        setMaxDamage(maxDamage);
-        maxStackSize = 1;
-        setContainerItem(this);
+        super(properties.maxDamage(maxDamage).maxStackSize(1));
     }
 
     public static ItemStack copyStack(ItemStack stack, int n)
     {
-        return new ItemStack(stack.getItem(), n, stack.getItemDamage());
+        return new ItemStack(stack.getItem(), n, stack.getTag());
     }
 
     @Override
     public ItemStack getContainerItem(ItemStack stack)
     {
-        int dmg = stack.getItemDamage();
+        int dmg = stack.getDamage();
         if (dmg == maxDamage)
         {
-            return new ItemStack(stack.getItem(), 0, maxDamage);
+            return new ItemStack(stack.getItem(), 0, stack.getTag());
         }
         ItemStack tr = copyStack(stack, 1);
-        tr.setItemDamage(dmg + 1);
+        tr.setDamage(dmg + 1);
         return tr;
     }
 }

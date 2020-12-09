@@ -1,214 +1,86 @@
 package cassiokf.industrialrenewal.blocks;
 
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractFourConnections;
 import cassiokf.industrialrenewal.blocks.redstone.BlockSignalIndicator;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.pathfinding.PathType;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
-public class BlockBaseWall extends BlockBase
+public class BlockBaseWall extends BlockAbstractFourConnections
 {
-    public static final PropertyBool CORE = PropertyBool.create("core");
-    public static final PropertyBool NORTH = PropertyBool.create("north");
-    public static final PropertyBool SOUTH = PropertyBool.create("south");
-    public static final PropertyBool EAST = PropertyBool.create("east");
-    public static final PropertyBool WEST = PropertyBool.create("west");
+    public static final BooleanProperty CORE = BooleanProperty.create("core");
 
-    private static float NORTHZ1 = 0.25f;
-    private static float SOUTHZ2 = 0.75f;
-    private static float WESTX1 = 0.25f;
-    private static float EASTX2 = 0.75f;
-    private static float DOWNY1 = 0.0f;
-    private static float UPY2 = 1.0f;
-
-    public BlockBaseWall(String name, CreativeTabs tab)
+    public BlockBaseWall()
     {
-        super(Material.ROCK, name, tab);
-        setSoundType(SoundType.STONE);
-        setHardness(2f);
+        super(Block.Properties.create(Material.ROCK), 8, 16, 24);
+        setDefaultState(getDefaultState()
+                .with(CORE, true)
+                .with(NORTH, false)
+                .with(SOUTH, false)
+                .with(EAST, false)
+                .with(WEST, false));
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-         BlockState actualState = state.getActualState(source, pos);
-
-        if (isConnected(actualState, NORTH))
-        {
-            NORTHZ1 = 0.0f;
-        } else
-        {
-            NORTHZ1 = 0.25f;
-        }
-        if (isConnected(actualState, SOUTH))
-        {
-            SOUTHZ2 = 1.0f;
-        } else
-        {
-            SOUTHZ2 = 0.75f;
-        }
-        if (isConnected(actualState, WEST))
-        {
-            WESTX1 = 0.0f;
-        } else
-        {
-            WESTX1 = 0.25f;
-        }
-        if (isConnected(actualState, EAST))
-        {
-            EASTX2 = 1.0f;
-        } else
-        {
-            EASTX2 = 0.75f;
-        }
-        return new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
-    {
-        if (!isActualState)
-        {
-            state = state.getActualState(worldIn, pos);
-        }
-        if (isConnected(state, NORTH))
-        {
-            NORTHZ1 = 0.0f;
-        } else
-        {
-            NORTHZ1 = 0.25f;
-        }
-        if (isConnected(state, SOUTH))
-        {
-            SOUTHZ2 = 1.0f;
-        } else
-        {
-            SOUTHZ2 = 0.75f;
-        }
-        if (isConnected(state, WEST))
-        {
-            WESTX1 = 0.0f;
-        } else
-        {
-            WESTX1 = 0.25f;
-        }
-        if (isConnected(state, EAST))
-        {
-            EASTX2 = 1.0f;
-        } else
-        {
-            EASTX2 = 0.75f;
-        }
-        final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
+        builder.add(CORE, NORTH, SOUTH, EAST, WEST);
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, CORE, NORTH, SOUTH, EAST, WEST);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public  BlockState getStateFromMeta(final int meta)
-    {
-        return getDefaultState();
-    }
-
-    @Override
-    public int getMetaFromState(final  BlockState state)
-    {
-        return 0;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(final  BlockState state)
+    public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type)
     {
         return false;
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isFullCube(final  BlockState state)
+    private boolean shouldRenderCenter(IBlockReader world, BlockPos ownPos)
     {
-        return false;
+        return !((canCenterConnectTo(world, ownPos, Direction.NORTH) && canCenterConnectTo(world, ownPos, Direction.SOUTH) && !canCenterConnectTo(world, ownPos, Direction.EAST) && !canCenterConnectTo(world, ownPos, Direction.WEST))
+                || (!canCenterConnectTo(world, ownPos, Direction.NORTH) && !canCenterConnectTo(world, ownPos, Direction.SOUTH) && canCenterConnectTo(world, ownPos, Direction.EAST) && canCenterConnectTo(world, ownPos, Direction.WEST)));
+    }
+
+    private boolean canCenterConnectTo(final IBlockReader worldIn, final BlockPos ownPos, final Direction neighborDirection)
+    {
+        final BlockPos neighborPos = ownPos.offset(neighborDirection);
+        final BlockState neighborState = worldIn.getBlockState(neighborPos);
+        Block nb = neighborState.getBlock();
+        return nb instanceof BlockBaseWall || neighborState.isSolidSide(worldIn, neighborPos, neighborDirection.getOpposite()) || nb instanceof BlockWindow;
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
+    public boolean canConnectTo(IWorld worldIn, BlockPos currentPos, Direction neighborDirection)
     {
-        return EnumBlockRenderType.MODEL;
-    }
-
-    private boolean shouldRenderCenter(IBlockAccess world, BlockPos ownPos)
-    {
-        return !((canCenterConnectTo(world, ownPos, EnumFacing.NORTH) && canCenterConnectTo(world, ownPos, EnumFacing.SOUTH) && !canCenterConnectTo(world, ownPos, EnumFacing.EAST) && !canCenterConnectTo(world, ownPos, EnumFacing.WEST))
-                || (!canCenterConnectTo(world, ownPos, EnumFacing.NORTH) && !canCenterConnectTo(world, ownPos, EnumFacing.SOUTH) && canCenterConnectTo(world, ownPos, EnumFacing.EAST) && canCenterConnectTo(world, ownPos, EnumFacing.WEST)));
-    }
-
-    private boolean canCenterConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection)
-    {
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final  BlockState neighbourState = worldIn.getBlockState(neighbourPos);
-        Block nb = neighbourState.getBlock();
-        return nb instanceof BlockBaseWall || nb.isFullCube(neighbourState) || nb instanceof BlockWindow;
-    }
-
-    private boolean canConnectTo(final IBlockAccess worldIn, final BlockPos ownPos, final EnumFacing neighbourDirection)
-    {
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final  BlockState neighbourState = worldIn.getBlockState(neighbourPos);
-        Block nb = neighbourState.getBlock();
-        return nb instanceof BlockBaseWall || nb.isFullCube(neighbourState)
+        final BlockPos neighborPos = currentPos.offset(neighborDirection);
+        final BlockState neighborState = worldIn.getBlockState(neighborPos);
+        Block nb = neighborState.getBlock();
+        return nb instanceof BlockBaseWall
+                || neighborState.isSolidSide(worldIn, neighborPos, neighborDirection.getOpposite())
                 || nb instanceof BlockElectricGate
                 || nb instanceof BlockLight
                 || nb instanceof BlockSignalIndicator
                 || nb instanceof BlockWindow;
     }
 
-    @SuppressWarnings("deprecation")
+    @Nullable
     @Override
-    public  BlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        state = state.withProperty(NORTH, canConnectTo(world, pos, EnumFacing.NORTH))
-                .withProperty(SOUTH, canConnectTo(world, pos, EnumFacing.SOUTH))
-                .withProperty(EAST, canConnectTo(world, pos, EnumFacing.EAST))
-                .withProperty(WEST, canConnectTo(world, pos, EnumFacing.WEST))
-                .withProperty(CORE, shouldRenderCenter(world, pos));
-        return state;
-    }
-
-    public final boolean isConnected(final  BlockState state, final PropertyBool property)
-    {
-        return state.getValue(property);
+        return super.getStateForPlacement(context).with(CORE, shouldRenderCenter(context.getWorld(), context.getPos()));
     }
 
     @Override
-    public boolean isTopSolid(IBlockState state)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        return true;
-    }
-
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
+        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos).with(CORE, shouldRenderCenter(worldIn, currentPos));
     }
 }

@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.entity;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
+import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.handlers.SteamBoiler;
 import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.init.ModItems;
@@ -11,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidTank;
 
 public class EntitySteamLocomotive extends LocomotiveBase

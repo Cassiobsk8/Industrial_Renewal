@@ -17,7 +17,7 @@ public class TileEntityLocker extends LockableLootTileEntity
 
     private NonNullList<ItemStack> chestContents = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
 
-    protected TileEntityLocker(TileEntityType<?> typeIn)
+    public TileEntityLocker(TileEntityType<?> typeIn)
     {
         super(typeIn);
     }

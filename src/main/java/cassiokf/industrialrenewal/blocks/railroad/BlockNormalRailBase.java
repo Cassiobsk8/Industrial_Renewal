@@ -1,159 +1,163 @@
 package cassiokf.industrialrenewal.blocks.railroad;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
 import cassiokf.industrialrenewal.util.enums.enumproperty.EnumSnowRail;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRail;
-import net.minecraft.block.BlockSnow;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.RailBlock;
+import net.minecraft.block.SnowBlock;
+import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import net.minecraft.particles.BlockParticleData;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.IProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.server.ServerWorld;
 
-public class BlockNormalRailBase extends BlockRail {
+public class BlockNormalRailBase extends RailBlock
+{
 
-    public static final IProperty<EnumSnowRail> SNOW = PropertyEnum.create("snow", EnumSnowRail.class);
+    public static final IProperty<EnumSnowRail> SNOW = EnumProperty.create("snow", EnumSnowRail.class);
 
     protected String name;
 
-    public BlockNormalRailBase(String name, CreativeTabs tab) {
-        this.name = name;
-        setRegistryName(References.MODID, name);
-        setTranslationKey(References.MODID + "." + name);
-        setHardness(1f);
-        setResistance(15f);
-        //setSoundType(SoundType.METAL);
-        setCreativeTab(tab);
-        this.setDefaultState(blockState.getBaseState().withProperty(SNOW, EnumSnowRail.FALSE));
+    public BlockNormalRailBase(Block.Properties properties)
+    {
+        super(properties.notSolid().doesNotBlockMovement().hardnessAndResistance(1f, 15f));
+        this.setDefaultState(getDefaultState().with(SNOW, EnumSnowRail.FALSE));
     }
 
     @Override
-    public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos) {
-        if (world.getBlockState(pos).getActualState(world, pos).getValue(SNOW) == EnumSnowRail.LAYER2 && isCartRunning(cart)) {
-            spawnSnowParticle(world, cart.posX, cart.posY, cart.posZ);
+    public void onMinecartPass(BlockState state, World world, BlockPos pos, AbstractMinecartEntity cart)
+    {
+        if (world.getBlockState(pos).get(SNOW) == EnumSnowRail.LAYER2 && isCartRunning(cart))
+        {
+            spawnSnowParticle(world, cart.getPosX(), cart.getPosY(), cart.getPosZ());
             if (cart instanceof EntitySteamLocomotive && !world.isRemote)
             {
                 boolean plow = ((EntitySteamLocomotive) cart).hasPlowItem;
-                if (plow) {
+                if (plow)
+                {
                     plowSnow(world, pos);
                 }
             }
         }
     }
 
-    private void spawnSnowParticle(World world, double x, double y, double z) {
+    private void spawnSnowParticle(World world, double x, double y, double z)
+    {
         float f = (float) MathHelper.ceil(1.0F);
         double d0 = Math.min(0.2F + f / 15.0F, 2.5D);
         int i = (int) (150.0D * d0);
-        ((WorldServer) world).spawnParticle(EnumParticleTypes.BLOCK_DUST, x, y, z, i, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, Block.getStateId(Blocks.SNOW.getDefaultState()));
+        ((ServerWorld) world).spawnParticle(new BlockParticleData(ParticleTypes.BLOCK, getDefaultState()), x, y, z, i, 0.0D, 0.0D, 0.0D, 0.15000000596046448D);
     }
 
-    private void plowSnow(World world, BlockPos pos) {
-         BlockState state = world.getBlockState(pos);
+    private void plowSnow(World world, BlockPos pos)
+    {
+        BlockState state = world.getBlockState(pos);
         BlockPos neighbor1;
         BlockPos neighbor2;
-        switch (state.getValue(SHAPE)) {
+        switch (state.get(SHAPE))
+        {
             default:
             case ASCENDING_NORTH:
             case ASCENDING_SOUTH:
             case NORTH_SOUTH:
-                neighbor1 = pos.offset(EnumFacing.WEST);
-                neighbor2 = pos.offset(EnumFacing.EAST);
+                neighbor1 = pos.offset(Direction.WEST);
+                neighbor2 = pos.offset(Direction.EAST);
                 break;
             case ASCENDING_EAST:
             case ASCENDING_WEST:
             case EAST_WEST:
-                neighbor1 = pos.offset(EnumFacing.NORTH);
-                neighbor2 = pos.offset(EnumFacing.SOUTH);
+                neighbor1 = pos.offset(Direction.NORTH);
+                neighbor2 = pos.offset(Direction.SOUTH);
                 break;
             case SOUTH_EAST:
-                neighbor1 = pos.offset(EnumFacing.NORTH);
-                neighbor2 = pos.offset(EnumFacing.WEST);
+                neighbor1 = pos.offset(Direction.NORTH);
+                neighbor2 = pos.offset(Direction.WEST);
                 break;
             case NORTH_EAST:
-                neighbor1 = pos.offset(EnumFacing.WEST);
-                neighbor2 = pos.offset(EnumFacing.SOUTH);
+                neighbor1 = pos.offset(Direction.WEST);
+                neighbor2 = pos.offset(Direction.SOUTH);
                 break;
             case NORTH_WEST:
-                neighbor1 = pos.offset(EnumFacing.EAST);
-                neighbor2 = pos.offset(EnumFacing.SOUTH);
+                neighbor1 = pos.offset(Direction.EAST);
+                neighbor2 = pos.offset(Direction.SOUTH);
                 break;
             case SOUTH_WEST:
-                neighbor1 = pos.offset(EnumFacing.NORTH);
-                neighbor2 = pos.offset(EnumFacing.EAST);
+                neighbor1 = pos.offset(Direction.NORTH);
+                neighbor2 = pos.offset(Direction.EAST);
                 break;
         }
-         BlockState state1 = world.getBlockState(neighbor1);
-         BlockState state2 = world.getBlockState(neighbor2);
+        BlockState state1 = world.getBlockState(neighbor1);
+        BlockState state2 = world.getBlockState(neighbor2);
         Block n1 = state1.getBlock();
         Block n2 = state2.getBlock();
-        if (n1 instanceof BlockSnow && state1.getValue(BlockSnow.LAYERS) > 1) {
+        if (n1 instanceof SnowBlock && state1.get(SnowBlock.LAYERS) > 1)
+        {
             spawnSnowParticle(world, neighbor1.getX(), neighbor1.getY(), neighbor1.getZ());
-            world.setBlockState(neighbor1, state1.withProperty(BlockSnow.LAYERS, 1));
+            world.setBlockState(neighbor1, state1.with(SnowBlock.LAYERS, 1));
         }
-        if (n2 instanceof BlockSnow && state2.getValue(BlockSnow.LAYERS) > 1) {
+        if (n2 instanceof SnowBlock && state2.get(SnowBlock.LAYERS) > 1)
+        {
             spawnSnowParticle(world, neighbor2.getX(), neighbor2.getY(), neighbor2.getZ());
-            world.setBlockState(neighbor2, state2.withProperty(BlockSnow.LAYERS, 1));
+            world.setBlockState(neighbor2, state2.with(SnowBlock.LAYERS, 1));
         }
     }
 
-    private EnumSnowRail checkSnow(IBlockAccess world, BlockPos pos,  BlockState state) {
+    private EnumSnowRail checkSnow(IWorld world, BlockPos pos, BlockState state)
+    {
         BlockPos neighbor1;
         BlockPos neighbor2;
-        switch (state.getValue(SHAPE)) {
+        switch (state.get(SHAPE))
+        {
             default:
             case ASCENDING_NORTH:
             case ASCENDING_SOUTH:
             case NORTH_SOUTH:
-                neighbor1 = pos.offset(EnumFacing.WEST);
-                neighbor2 = pos.offset(EnumFacing.EAST);
+                neighbor1 = pos.offset(Direction.WEST);
+                neighbor2 = pos.offset(Direction.EAST);
                 break;
             case ASCENDING_EAST:
             case ASCENDING_WEST:
             case EAST_WEST:
-                neighbor1 = pos.offset(EnumFacing.NORTH);
-                neighbor2 = pos.offset(EnumFacing.SOUTH);
+                neighbor1 = pos.offset(Direction.NORTH);
+                neighbor2 = pos.offset(Direction.SOUTH);
                 break;
             case SOUTH_EAST:
-                neighbor1 = pos.offset(EnumFacing.NORTH);
-                neighbor2 = pos.offset(EnumFacing.WEST);
+                neighbor1 = pos.offset(Direction.NORTH);
+                neighbor2 = pos.offset(Direction.WEST);
                 break;
             case NORTH_EAST:
-                neighbor1 = pos.offset(EnumFacing.WEST);
-                neighbor2 = pos.offset(EnumFacing.SOUTH);
+                neighbor1 = pos.offset(Direction.WEST);
+                neighbor2 = pos.offset(Direction.SOUTH);
                 break;
             case NORTH_WEST:
-                neighbor1 = pos.offset(EnumFacing.EAST);
-                neighbor2 = pos.offset(EnumFacing.SOUTH);
+                neighbor1 = pos.offset(Direction.EAST);
+                neighbor2 = pos.offset(Direction.SOUTH);
                 break;
             case SOUTH_WEST:
-                neighbor1 = pos.offset(EnumFacing.NORTH);
-                neighbor2 = pos.offset(EnumFacing.EAST);
+                neighbor1 = pos.offset(Direction.NORTH);
+                neighbor2 = pos.offset(Direction.EAST);
                 break;
         }
-         BlockState state1 = world.getBlockState(neighbor1);
-         BlockState state2 = world.getBlockState(neighbor2);
+        BlockState state1 = world.getBlockState(neighbor1);
+        BlockState state2 = world.getBlockState(neighbor2);
         Block n1 = state1.getBlock();
         Block n2 = state2.getBlock();
-        if (n1 instanceof BlockSnow || n2 instanceof BlockSnow) {
-            if ((n1 instanceof BlockSnow && state1.getValue(BlockSnow.LAYERS) >= 2) || (n2 instanceof BlockSnow && state2.getValue(BlockSnow.LAYERS) >= 2)) {
+        if (n1 instanceof SnowBlock || n2 instanceof SnowBlock)
+        {
+            if ((n1 instanceof SnowBlock && state1.get(SnowBlock.LAYERS) >= 2) || (n2 instanceof SnowBlock && state2.get(SnowBlock.LAYERS) >= 2))
+            {
                 return EnumSnowRail.LAYER2;
             }
-            if ((n1 instanceof BlockSnow && state1.getValue(BlockSnow.LAYERS) == 1) || (n2 instanceof BlockSnow && state2.getValue(BlockSnow.LAYERS) == 1)) {
+            if ((n1 instanceof SnowBlock && state1.get(SnowBlock.LAYERS) == 1) || (n2 instanceof SnowBlock && state2.get(SnowBlock.LAYERS) == 1))
+            {
                 return EnumSnowRail.LAYER1;
             }
             return EnumSnowRail.FALSE;
@@ -161,45 +165,29 @@ public class BlockNormalRailBase extends BlockRail {
         return EnumSnowRail.FALSE;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public  BlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        return state.withProperty(SNOW, checkSnow(world, pos, state));
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        return stateIn.with(SNOW, checkSnow(worldIn, currentPos, stateIn));
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, SHAPE, SNOW);
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(SHAPE, SNOW);
     }
 
-    private boolean isCartRunning(EntityMinecart cart) {
-        Double speed = Math.max(Math.abs(cart.motionX), Math.abs(cart.motionZ));
+    private boolean isCartRunning(AbstractMinecartEntity cart)
+    {
+        Double speed = Math.max(Math.abs(cart.getMotion().x), Math.abs(cart.getMotion().z));
         return speed > 0.01D;
     }
 
     @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
-
-    public void registerItemModel(Item itemBlock) {
-        IndustrialRenewal.proxy.registerItemRenderer(itemBlock, 0, name);
-    }
-
-    public Item createItemBlock() {
-        return new ItemBlock(this).setRegistryName(getRegistryName());
-    }
-
-    @Override
-    public float getRailMaxSpeed(World world, net.minecraft.entity.item.EntityMinecart cart, BlockPos pos) {
-        if (world.getBlockState(pos).getActualState(world, pos).getValue(SNOW) == EnumSnowRail.LAYER2) {
+    public float getRailMaxSpeed(BlockState state, World world, BlockPos pos, AbstractMinecartEntity cart)
+    {
+        if (world.getBlockState(pos).get(SNOW) == EnumSnowRail.LAYER2)
+        {
             return 0.2f;
         }
         return 0.4f;

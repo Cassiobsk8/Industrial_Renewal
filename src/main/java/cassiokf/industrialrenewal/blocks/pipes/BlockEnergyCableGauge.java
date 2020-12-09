@@ -1,169 +1,82 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
-import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableGauge;
+import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCable;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableHVGauge;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableLVGauge;
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityEnergyCableMVGauge;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.enums.EnumEnergyCableType;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
 
 public class BlockEnergyCableGauge extends BlockEnergyCable
 {
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
-    public BlockEnergyCableGauge(EnumEnergyCableType type, String name, CreativeTabs tab)
+    public BlockEnergyCableGauge(EnumEnergyCableType type)
     {
-        super(type, name, tab);
-    }
-
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        IProperty[] listedProperties = new IProperty[]{FACING}; // listed properties
-        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{MASTER, SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN};
-        return new ExtendedBlockState(this, listedProperties, unlistedProperties);
+        super(type);
     }
 
     @Override
-    public  BlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        if (state instanceof IExtendedBlockState)
+        builder.add(FACING);
+    }
+
+    @Override
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    {
+        if (player.getHeldItemMainhand().getItem() instanceof ItemPowerScrewDrive)
         {
-            EnumFacing facing = state.getValue(FACING);
-            IExtendedBlockState eState = (IExtendedBlockState) state;
-            return eState.withProperty(MASTER, isMaster(world, pos))
-                    .withProperty(SOUTH, canConnectToPipe(world, pos, facing.getOpposite())).withProperty(NORTH, canConnectToPipe(world, pos, facing))
-                    .withProperty(EAST, canConnectToPipe(world, pos, facing.rotateY())).withProperty(WEST, canConnectToPipe(world, pos, facing.rotateYCCW()))
-                    .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
-                    .withProperty(CSOUTH, canConnectToCapability(world, pos, facing.getOpposite())).withProperty(CNORTH, canConnectToCapability(world, pos, facing))
-                    .withProperty(CEAST, canConnectToCapability(world, pos, facing.rotateY())).withProperty(CWEST, canConnectToCapability(world, pos, facing.rotateYCCW()))
-                    .withProperty(CUP, canConnectToCapability(world, pos, EnumFacing.UP)).withProperty(CDOWN, canConnectToCapability(world, pos, EnumFacing.DOWN));
-        }
-        return state;
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        if (entity.getHeldItemMainhand().getItem() instanceof ItemPowerScrewDrive)
-        {
-            if (!world.isRemote)
+            if (!worldIn.isRemote)
             {
-                Block block;
-                switch (type)
-                {
-                    default:
-                    case LV:
-                        block = ModBlocks.energyCableLV;
-                        break;
-                    case MV:
-                        block = ModBlocks.energyCableMV;
-                        break;
-                    case HV:
-                        block = ModBlocks.energyCableHV;
-                        break;
-                }
-                world.setBlockState(pos, block.getDefaultState(), 3);
-                if (!entity.isCreative())
-                    entity.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(ModBlocks.energyLevel)));
-                ItemPowerScrewDrive.playDrillSound(world, pos);
+                Block block = getBlockFromType();
+                worldIn.setBlockState(pos, block.getDefaultState(), 3);
+                if (!player.isCreative())
+                    player.addItemStackToInventory(new ItemStack(BlocksRegistration.ENERGYLEVEL_ITEM.get()));
+                ItemPowerScrewDrive.playDrillSound(worldIn, pos);
             }
+            return ActionResultType.SUCCESS;
         }
-        return false;
-    }
-
-    @Override
-    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
-    {
-        return false;
-    }
-
-    @Override
-    public ItemStack getItem(World worldIn, BlockPos pos,  BlockState state)
-    {
-        Block block;
-        switch (type)
-        {
-            default:
-            case LV:
-                block = ModBlocks.energyCableLV;
-                break;
-            case MV:
-                block = ModBlocks.energyCableMV;
-                break;
-            case HV:
-                block = ModBlocks.energyCableHV;
-                break;
-        }
-        return new ItemStack(Item.getItemFromBlock(block));
-    }
-
-    @Override
-    public  BlockState getStateFromMeta(int meta)
-    {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(FACING).getHorizontalIndex();
-    }
-
-    @Override
-    public void onPlayerDestroy(World world, BlockPos pos,  BlockState state)
-    {
-        if (!world.isRemote)
-        {
-            ItemStack itemst = new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyLevel));
-            Utils.spawnItemStack(world, pos, itemst);
-            Utils.spawnItemStack(world, pos, getItem(world, pos, state));
-        }
-        super.onPlayerDestroy(world, pos, state);
+        return ActionResultType.PASS;
     }
 
     @Nullable
     @Override
-    public TileEntityEnergyCableGauge createTileEntity(World world,  BlockState state)
+    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
     {
-        switch (type)
-        {
-            default:
-            case LV:
-                return new TileEntityEnergyCableLVGauge();
-            case MV:
-                return new TileEntityEnergyCableMVGauge();
-            case HV:
-                return new TileEntityEnergyCableHVGauge();
-        }
+        return new Direction[0];
     }
 
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    @Override
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    {
+        if (state.getBlock() == newState.getBlock()) return;
+        ItemStack itemst = new ItemStack(BlocksRegistration.ENERGYLEVEL_ITEM.get());
+        if (!worldIn.isRemote) Utils.spawnItemStack(worldIn, pos, itemst);
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
+    }
+
+    @Nullable
+    @Override
+    public TileEntityEnergyCable createTileEntity(BlockState state, IBlockReader world)
     {
         switch (type)
         {

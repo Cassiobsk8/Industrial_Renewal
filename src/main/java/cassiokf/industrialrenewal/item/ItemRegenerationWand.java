@@ -1,36 +1,37 @@
 package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.util.Utils;
-import cassiokf.industrialrenewal.world.generation.OreGeneration;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 import java.util.List;
 
 public class ItemRegenerationWand extends ItemBase
 {
-    public ItemRegenerationWand(String name, CreativeTabs tab)
+
+    public ItemRegenerationWand(Properties properties)
     {
-        super(name, tab);
+        super(properties);
     }
 
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        tooltip.add(I18n.format("info.industrialrenewal.prospectingpan.info") + " (Creative only)");
+        tooltip.add(new StringTextComponent(I18n.format("info.industrialrenewal.prospectingpan.info") + " (Creative only)"));
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, EnumHand handIn)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn)
     {
         if (!worldIn.isRemote) {
             if (playerIn.isSneaking()) {
@@ -51,10 +52,10 @@ public class ItemRegenerationWand extends ItemBase
                 Utils.sendChatMessage(playerIn, "Total DeepVein Loaded: " + n2);
             } else {
                 ItemStack stack = OreGeneration.getChunkVein(worldIn, playerIn.getPosition());
-                String str = stack.getItem().getItemStackDisplayName(stack) + " " + stack.getCount();
+                String str = stack.getItem().getName().getFormattedText() + " " + stack.getCount();
                 if (stack.isEmpty()) str = ItemProspectingPan.notFound;
                 Utils.sendChatMessage(playerIn, str);
-                return new ActionResult<>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
+                return new ActionResult<>(ActionResultType.PASS, playerIn.getHeldItem(handIn));
             }
         }
         return super.onItemRightClick(worldIn, playerIn, handIn);

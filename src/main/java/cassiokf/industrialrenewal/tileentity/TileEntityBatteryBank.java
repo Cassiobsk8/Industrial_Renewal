@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnected;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTEHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySync;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
@@ -99,7 +99,7 @@ public class TileEntityBatteryBank extends TileEntitySync implements ITickableTi
 
     public Direction forceFaceCheck()
     {
-        blockFacing = getBlockState().get(BlockTileEntityConnected.FACING);
+        blockFacing = getBlockState().get(BlockTEHorizontalFacing.FACING);
         return blockFacing;
     }
 

@@ -3,42 +3,38 @@ package cassiokf.industrialrenewal.item;
 import cassiokf.industrialrenewal.References;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemSteelSaw extends ItemOreDict {
-
-    private static int maxDamage = 64;
-
-    public ItemSteelSaw(String name, String oreName, CreativeTabs tab) {
-        super(name, oreName, tab);
-        setMaxDamage(64);
-        this.setNoRepair();
-        maxStackSize = 1;
-        setContainerItem(this);
+public class ItemSteelSaw extends ItemOreDict
+{
+    public ItemSteelSaw(Item.Properties properties) {
+        super(properties.maxDamage(64).setNoRepair().maxStackSize(1));
     }
 
     public static ItemStack copyStack(ItemStack stack, int n) {
-        return new ItemStack(stack.getItem(), n, stack.getItemDamage());
+        return new ItemStack(stack.getItem(), n, stack.getDamage());
     }
 
     @Override
     public ItemStack getContainerItem(ItemStack stack) {
-        int dmg = stack.getItemDamage();
-        if (dmg == maxDamage) {
-            return new ItemStack(stack.getItem(), 0, maxDamage);
+        int dmg = stack.getDamage();
+        if (dmg == getMaxDamage(stack)) {
+            return new ItemStack(stack.getItem(), 0, stack.getTag());
         }
         ItemStack tr = copyStack(stack, 1);
-        tr.setItemDamage(dmg + 1);
+        tr.setDamage(dmg + 1);
         return tr;
     }
 
 
     @Override
-    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag) {
-        list.add(I18n.format("item." + References.MODID + "." + name + ".des0"));
+    public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+        list.add(new StringTextComponent(I18n.format("item." + References.MODID + "." + name + ".des0")));
     }
 }

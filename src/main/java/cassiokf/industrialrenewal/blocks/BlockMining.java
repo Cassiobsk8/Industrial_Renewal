@@ -5,21 +5,24 @@ import cassiokf.industrialrenewal.item.ItemDrill;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityMining;
 import cassiokf.industrialrenewal.util.MachinesUtils;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
@@ -28,88 +31,76 @@ import java.util.List;
 
 public class BlockMining extends BlockMultiBlockBase<TileEntityMining>
 {
-    public BlockMining(String name, CreativeTabs tab)
+    public BlockMining()
     {
-        super(Material.IRON, name, tab);
-        setSoundType(SoundType.METAL);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos,  BlockState state)
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
         TileEntity te = worldIn.getTileEntity(pos);
         if (te instanceof TileEntityMining) ((TileEntityMining) te).dropAllItems();
-        super.breakBlock(worldIn, pos, state);
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
-    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing)
+    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, Direction facing)
     {
         return MachinesUtils.getBlocksIn3x3x3Centered(masterPos);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        TileEntityMining tile = (TileEntityMining) world.getTileEntity(pos);
-        if (tile == null) return false;
+        TileEntityMining tile = (TileEntityMining) worldIn.getTileEntity(pos);
+        if (tile == null) return ActionResultType.PASS;
         IItemHandler itemHandler = tile.getDrillHandler();
-        ItemStack heldItem = player.getHeldItem(hand);
+        ItemStack heldItem = player.getHeldItem(handIn);
         if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemDrill || heldItem.getItem() instanceof ItemPowerScrewDrive))
         {
             if (heldItem.getItem() instanceof ItemDrill && itemHandler.getStackInSlot(0).isEmpty())
             {
-                if (!world.isRemote)
+                if (!worldIn.isRemote)
                 {
-                    itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1, heldItem.getItem().getDamage(heldItem)), false);
+                    itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1, heldItem.getTag()), false);
                     if (!player.isCreative()) heldItem.shrink(1);
                 }
-                return true;
+                return ActionResultType.SUCCESS;
             }
             if (heldItem.getItem() instanceof ItemPowerScrewDrive && !itemHandler.getStackInSlot(0).isEmpty() && !tile.isRunning())
             {
-                if (!world.isRemote)
+                if (!worldIn.isRemote)
                 {
                     player.addItemStackToInventory(itemHandler.extractItem(0, 64, false));
                 }
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
-        return false;
+        return ActionResultType.PASS;
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        tooltip.add(I18n.format("info.industrialrenewal.requires")
-                + ":");
-        tooltip.add(" -" + I18n.format("info.industrialrenewal.drill"));
-        tooltip.add(" -" + Blocks.WATER.getLocalizedName()
+        tooltip.add(new StringTextComponent(I18n.format("info.industrialrenewal.requires")
+                + ":"));
+        tooltip.add(new StringTextComponent(" -" + I18n.format("info.industrialrenewal.drill")));
+        tooltip.add(new StringTextComponent(" -" + Blocks.WATER.getNameTextComponent().getFormattedText()
                 + ": "
                 + TileEntityMining.waterPerTick
-                + " mB/t");
-        tooltip.add(" -" + (TileEntityMining.energyPerTick)
+                + " mB/t"));
+        tooltip.add(new StringTextComponent(" -" + (TileEntityMining.energyPerTick)
                 + " ~ "
                 + TileEntityMining.deepEnergyPerTick
-                + " FE/t");
-        super.addInformation(stack, player, tooltip, advanced);
-    }
-
-    @Override
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING, MASTER);
+                + " FE/t"));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Nullable
     @Override
-    public TileEntityMining createTileEntity(World world,  BlockState state)
+    public TileEntityMining createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityMining();
     }

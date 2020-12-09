@@ -34,7 +34,7 @@ public class TileEntityEnergySwitch extends TileEntityToggleableBase
     public void playSwitchSound()
     {
         float pitch = r.nextFloat() * (1.2f - 0.8f) + 0.8f;
-        this.getWorld().playSound(null, this.getPos(), IRSoundRegister.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1F,
+        this.getWorld().playSound(null, this.getPos(), SoundsRegistration.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1F,
                 pitch);
     }
 

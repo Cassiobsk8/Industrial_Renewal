@@ -180,7 +180,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
         if (!world.isRemote) return;
         if (this.running)
         {
-            IRSoundHandler.playRepeatableSound(IRSoundRegister.MINING_RESOURCEL, volume, 1f, pos);
+            IRSoundHandler.playRepeatableSound(SoundsRegistration.MINING_RESOURCEL, volume, 1f, pos);
         } else
         {
             IRSoundHandler.stopTileSound(pos);

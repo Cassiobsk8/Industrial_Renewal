@@ -1,11 +1,12 @@
 package cassiokf.industrialrenewal.blocks.railroad;
 
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 
 public class BlockNormalRail extends BlockNormalRailBase
 {
-    public BlockNormalRail(String name, CreativeTabs tab)
+    public BlockNormalRail()
     {
-        super(name, tab);
+        super(Block.Properties.create(Material.MISCELLANEOUS));
     }
 }

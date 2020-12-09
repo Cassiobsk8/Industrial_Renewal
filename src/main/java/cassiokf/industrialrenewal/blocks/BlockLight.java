@@ -1,73 +1,37 @@
 package cassiokf.industrialrenewal.blocks;
 
-import net.minecraft.block.SoundType;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractFacing;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
-public class BlockLight extends BlockBase {
+public class BlockLight extends BlockAbstractFacing
+{
+    protected static final VoxelShape NORTH_AABB = makeCuboidShape(5, 3, 0, 11, 13, 5);
+    protected static final VoxelShape SOUTH_AABB = makeCuboidShape(5, 3, 11, 11, 13, 16);
+    protected static final VoxelShape EAST_AABB = makeCuboidShape(11, 3, 5, 16, 13, 11);
+    protected static final VoxelShape WEST_AABB = makeCuboidShape(0, 3, 5, 5, 13, 11);
+    protected static final VoxelShape UP_AABB = makeCuboidShape(5, 11, 3, 11, 16, 13);
+    protected static final VoxelShape DOWN_AABB = makeCuboidShape(5, 0, 3, 11, 5, 13);
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing");
-    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.3125D, 0.1875D, 0.0D, 0.6875D, 0.8125D, 0.3125D);
-    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.3125D, 0.1875D, 0.6875D, 0.6875D, 0.8125D, 1.0);
-    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.6875D, 0.1875D, 0.3125D, 1.0, 0.8125D, 0.6875D);
-    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.1875D, 0.3125D, 0.3125D, 0.8125D, 0.6875D);
-    protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.3125D, 0.6875D, 0.1875D, 0.6875D, 1.0D, 0.8125D);
-    protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.1875D, 0.6875D, 0.3125D, 0.8125D);
-
-    public BlockLight(String name, CreativeTabs tab) {
-        super(Material.IRON, name, tab);
-        setLightLevel(1.0F);
-        setSoundType(SoundType.METAL);
-        setHardness(0.8f);
+    public BlockLight()
+    {
+        super(Block.Properties.create(Material.IRON).lightValue(15));
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-         BlockState actualState = getActualState(state, worldIn, pos);
-        EnumFacing dir = actualState.getValue(FACING);
-        if (dir == EnumFacing.NORTH) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-        }
-        if (dir == EnumFacing.SOUTH) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-        }
-        if (dir == EnumFacing.EAST) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
-        }
-        if (dir == EnumFacing.WEST) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
-        }
-        if (dir == EnumFacing.DOWN) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, DOWN_AABB);
-        }
-        if (dir == EnumFacing.UP) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, UP_AABB);
-        }
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-         BlockState actualState = getActualState(state, source, pos);
-        EnumFacing dir = actualState.getValue(FACING);
-        switch (dir) {
+    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos, boolean collision)
+    {
+        Direction dir = state.get(FACING);
+        switch (dir)
+        {
             case NORTH:
                 return NORTH_AABB;
             case SOUTH:
@@ -81,55 +45,5 @@ public class BlockLight extends BlockBase {
             default:
                 return UP_AABB;
         }
-    }
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public  BlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).getIndex();
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(final  BlockState state) {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isFullCube(final  BlockState state) {
-        return false;
-    }
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.MODEL;
-    }
-
-    @Override
-    @Deprecated
-    public  BlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return this.getDefaultState().withProperty(FACING, facing.getOpposite());
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
-        return BlockFaceShape.UNDEFINED;
     }
 }

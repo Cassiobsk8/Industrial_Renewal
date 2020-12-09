@@ -1,72 +1,64 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTEHorizontalFacing;
 import cassiokf.industrialrenewal.tileentity.TileEntityElectricPump;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
-public class BlockElectricPump extends BlockHorizontalFacing
+public class BlockElectricPump extends BlockTEHorizontalFacing<TileEntityElectricPump>
 {
-    public static final PropertyInteger INDEX = PropertyInteger.create("index", 0, 1);
+    public static final IntegerProperty INDEX = IntegerProperty.create("index", 0, 1);
 
-    public BlockElectricPump(String name, CreativeTabs tab)
+    public BlockElectricPump()
     {
-        super(name, tab, Material.IRON);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos,  BlockState state)
+    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
     {
-        if (state.getValue(INDEX) == 0)
+        if (state.get(INDEX) == 0)
         {
-            worldIn.setBlockState(pos.offset(state.getValue(FACING)), state.withProperty(INDEX, 1));
+            worldIn.setBlockState(pos.offset(state.get(FACING)), state.with(INDEX, 1));
         }
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos,  BlockState state) {
-        switch (state.getValue(INDEX)) {
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    {
+        if (state.getBlock() == newState.getBlock()) return;
+        switch (state.get(INDEX))
+        {
             case 0:
-                if (IsPump(worldIn, pos.offset(state.getValue(FACING))))
-                    worldIn.setBlockToAir(pos.offset(state.getValue(FACING)));
+                if (IsPump(worldIn, pos.offset(state.get(FACING))))
+                    worldIn.removeBlock(pos.offset(state.get(FACING)), false);
                 break;
             case 1:
-                if (IsPump(worldIn, pos.offset(state.getValue(FACING).getOpposite())))
-                    worldIn.setBlockToAir(pos.offset(state.getValue(FACING).getOpposite()));
+                if (IsPump(worldIn, pos.offset(state.get(FACING).getOpposite())))
+                    worldIn.removeBlock(pos.offset(state.get(FACING).getOpposite()), false);
                 break;
         }
-        super.breakBlock(worldIn, pos, state);
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
 
     }
 
+    @Nullable
     @Override
-    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos)
     {
-        tooltip.add(I18n.format("info.industrialrenewal.requires")
-                + ": "
-                + TileEntityElectricPump.energyPerTick
-                + " FE/t");
-        super.addInformation(stack, player, tooltip, advanced);
-    }
-
-    @Override
-    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
-    {
-        return false;
+        return new Direction[0];
     }
 
     private boolean IsPump(World world, BlockPos pos)
@@ -75,48 +67,32 @@ public class BlockElectricPump extends BlockHorizontalFacing
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        PlayerEntity player = worldIn.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 10D, false);
-        if (player == null) return false;
-        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos)
-                && worldIn.getBlockState(pos.offset(player.getHorizontalFacing())).getBlock().isReplaceable(worldIn, pos.offset(player.getHorizontalFacing()));
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, INDEX);
-    }
-
-    @Override
-    public  BlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(INDEX, 0);
-    }
-
-    @Override
-    public  BlockState getStateFromMeta(final int meta) {
-        int directionIndex = meta;
-        if (meta > 3) directionIndex -= 4;
-        int index = 0;
-        if (meta > 3) index = 1;
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(directionIndex)).withProperty(INDEX, index);
-    }
-
-    @Override
-    public int getMetaFromState(final  BlockState state) {
-        int i = state.getValue(FACING).getHorizontalIndex();
-        if (state.getValue(INDEX) == 1) i += 4;
-        return i;
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        return true;
+        PlayerEntity player = worldIn.getDimension().getWorld().getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 10D, false);
+        if (player == null) return false;
+        return worldIn.getBlockState(pos).getMaterial().isReplaceable()
+                && worldIn.getBlockState(pos.offset(player.getHorizontalFacing())).getMaterial().isReplaceable();
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(FACING, INDEX);
+    }
+
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing()).with(INDEX, 0);
     }
 
     @Nullable
     @Override
-    public TileEntityElectricPump createTileEntity(World world,  BlockState state) {
+    public TileEntityElectricPump createTileEntity(BlockState state, IBlockReader world)
+    {
         return new TileEntityElectricPump();
     }
 }

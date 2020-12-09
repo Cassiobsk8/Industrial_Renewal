@@ -1,15 +1,15 @@
 package cassiokf.industrialrenewal.item.carts;
 
 import cassiokf.industrialrenewal.entity.EntityLogCart;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.MinecartEntity;
+import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.world.World;
 
 public class ItemLogCart extends ItemCartBase
 {
-    public ItemLogCart(String name, CreativeTabs tab)
+
+    public ItemLogCart(Properties properties)
     {
-        super(name, tab);
+        super(properties);
     }
 
     @Override

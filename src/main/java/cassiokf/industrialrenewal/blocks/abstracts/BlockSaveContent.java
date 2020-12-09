@@ -6,28 +6,28 @@ import cassiokf.industrialrenewal.tileentity.abstracts.TileEntitySaveContent;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.fluids.FluidUtil;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public abstract class BlockSaveContent extends BlockHorizontalFacing
 {
@@ -37,46 +37,45 @@ public abstract class BlockSaveContent extends BlockHorizontalFacing
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
         if (!worldIn.isRemote)
         {
             TileEntity te = worldIn.getTileEntity(pos);
-            boolean acceptFluid = FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing);
+            boolean acceptFluid = FluidUtil.interactWithFluidHandler(player, handIn, worldIn, pos, hit.getFace());
             if (!acceptFluid && te instanceof TileEntityBarrel)
-                playerIn.sendMessage(new TextComponentString(((TileEntityBarrel) te).GetChatQuantity()));
-            else if (!acceptFluid) doAdditionalFunction(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+                player.sendMessage(new StringTextComponent(((TileEntityBarrel) te).GetChatQuantity()));
+            else if (!acceptFluid) doAdditionalFunction(state, worldIn, pos, player, handIn, hit);
         }
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
         CompoundNBT nbt = stack.getTag();
         if (nbt != null && nbt.contains("FluidName") && nbt.contains("Amount"))
         {
-
-            tooltip.add(nbt.getString("FluidName") + ": " + nbt.getInt("Amount"));
+            tooltip.add(new StringTextComponent(nbt.getString("FluidName") + ": " + nbt.getInt("Amount")));
         }
     }
 
-    public void doAdditionalFunction(World worldIn, BlockPos pos,  BlockState state, PlayerEntity playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public void doAdditionalFunction(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos,  BlockState state, EntityLivingBase placer, ItemStack stack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
         TileEntity te = worldIn.getTileEntity(pos);
-        if (te instanceof TileEntityPortableGenerator && stack.getTagCompound() != null && stack.getTagCompound().hasKey("FluidName"))
+        if (te instanceof TileEntityPortableGenerator && stack.getTag() != null && stack.getTag().contains("FluidName"))
         {
-            ((TileEntityPortableGenerator) te).getTank().readFromNBT(stack.getTagCompound());
+            ((TileEntityPortableGenerator) te).getTank().readFromNBT(stack.getTag());
         }
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos,  BlockState state)
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
         TileEntity te = worldIn.getTileEntity(pos);
         if (te instanceof TileEntitySaveContent)
@@ -84,23 +83,23 @@ public abstract class BlockSaveContent extends BlockHorizontalFacing
             ItemStack itemst = SaveStackContainer((TileEntitySaveContent) te);
             spawnAsEntity(worldIn, pos, itemst);
         }
-        super.breakBlock(worldIn, pos, state);
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
-    public boolean hasComparatorInputOverride(IBlockState state)
+    public boolean hasComparatorInputOverride(BlockState state)
     {
         return true;
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state)
+    public boolean hasTileEntity(BlockState state)
     {
         return true;
     }
 
     @Override
-    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
+    public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos)
     {
         TileEntity te = worldIn.getTileEntity(pos);
         return te instanceof TileEntitySaveContent
@@ -113,12 +112,12 @@ public abstract class BlockSaveContent extends BlockHorizontalFacing
         ItemStack stack = new ItemStack(getItemToDrop());
         if (te != null)
         {
-            CompoundNBT nbt = stack.getTagCompound();
+            CompoundNBT nbt = stack.getTag();
             if (nbt == null) nbt = new CompoundNBT();
             if (te.getTank().getFluid() != null)
             {
                 te.getTank().writeToNBT(nbt);
-                stack.setTagCompound(nbt);
+                stack.setTag(nbt);
             }
         }
         return stack;
@@ -127,13 +126,13 @@ public abstract class BlockSaveContent extends BlockHorizontalFacing
     public abstract Item getItemToDrop();
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder)
     {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         TileEntitySaveContent te = (TileEntitySaveContent) world.getTileEntity(pos);
         return SaveStackContainer(te);

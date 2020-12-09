@@ -3,149 +3,107 @@ package cassiokf.industrialrenewal.blocks.abstracts;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityToggleableBase;
 import cassiokf.industrialrenewal.util.enums.enumproperty.EnumFaceRotation;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.*;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
 public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> extends BlockHorizontalFacing
 {
-    public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
-    public static final IProperty<EnumFaceRotation> FACE_ROTATION = PropertyEnum.create("face_rotation", EnumFaceRotation.class);
-    public static final PropertyBool ACTIVE = PropertyBool.create("active");
-    protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.125D, 0.125D, 0.125D, 0.875D, 0.875D, 0.875D);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing");
+    public static final IProperty<EnumFaceRotation> FACE_ROTATION = EnumProperty.create("face_rotation", EnumFaceRotation.class);
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-    public BlockToggleableBase(String name, CreativeTabs tab)
+    public BlockToggleableBase(Block.Properties properties)
     {
-        super(name, tab, Material.IRON);
-        setHardness(3f);
-        setResistance(5f);
-        this.setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
+        super(properties.hardnessAndResistance(3, 5));
+        this.setDefaultState(getDefaultState().with(ACTIVE, false));
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         boolean flag = worldIn.isBlockPowered(pos);
         TileEntity te = worldIn.getTileEntity(pos);
         if (te instanceof TileEntityToggleableBase && (flag || blockIn.getDefaultState().canProvidePower()) && flag != ((TileEntityToggleableBase) te).powered)
         {
             ((TileEntityToggleableBase) te).setPowered(flag);
-            if (flag != state.getValue(ACTIVE))
+            if (flag != state.get(ACTIVE))
             {
                 ((TileEntityToggleableBase) te).setActive(flag);
-                worldIn.setBlockState(pos, state.withProperty(ACTIVE, flag), 3);
+                worldIn.setBlockState(pos, state.with(ACTIVE, flag), 3);
             }
         }
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return new BlockStateContainer(this, FACING, ACTIVE, FACE_ROTATION);
+        builder.add(FACING, ACTIVE, FACE_ROTATION);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        TileEntityToggleableBase te = (TileEntityToggleableBase) world.getTileEntity(pos);
-        if (te == null) return false;
+        TileEntityToggleableBase te = (TileEntityToggleableBase) worldIn.getTileEntity(pos);
+        if (te == null) return ActionResultType.PASS;
         te.playSwitchSound();
-        boolean active = !state.getValue(ACTIVE);
-        state = state.withProperty(ACTIVE, active);
+        boolean active = !state.get(ACTIVE);
+        state = state.with(ACTIVE, active);
         te.setActive(active);
-        world.setBlockState(pos, state, 3);
-        //spawnParticle(world, pos);
-        world.notifyNeighborsOfStateChange(pos, this, false);
-        return true;
-    }
-
-    public void spawnParticle(World world, BlockPos pos)
-    {
-        int i = pos.getX();
-        int j = pos.getY();
-        int k = pos.getZ();
-        world.spawnParticle(EnumParticleTypes.WATER_DROP, i, j, k, 1.0D, 1.0D, 1.0D);
+        worldIn.setBlockState(pos, state, 3);
+        worldIn.notifyNeighborsOfStateChange(pos, this);
+        return ActionResultType.SUCCESS;
     }
 
     @Override
-    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction)
     {
         rotateFace(world, pos);
-        return true;
+        return state;
     }
 
     @Override
-    public  BlockState getStateFromMeta(int meta)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta & 7)).withProperty(ACTIVE, (meta & 8) > 0);
+        return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing().getOpposite());
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        int i = 0;
-        i = i | state.getValue(FACING).getIndex();
-
-        if (state.getValue(ACTIVE))
-        {
-            i |= 8;
-        }
-
-        return i;
-    }
-
-    @Override
-    public  BlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return BLOCK_AABB;
-    }
-
-    @Override
-    public void onBlockPlacedBy(final World world, final BlockPos pos, final  BlockState state, final EntityLivingBase placer, final ItemStack stack)
-    {
-        final TileEntityToggleableBase tileEntity = getTileEntity(world, pos);
-        setFacing(world, pos, EnumFacing.getDirectionFromEntityLiving(pos, placer));
+        final TileEntityToggleableBase tileEntity = getTileEntity(worldIn, pos);
+        setFacing(worldIn, pos, Direction.getFacingDirections(placer)[0]);
         tileEntity.markDirty();
     }
 
-    public EnumFacing getFacing(final IBlockAccess world, final BlockPos pos)
+    public Direction getFacing(final IWorld world, final BlockPos pos)
     {
         final TileEntityToggleableBase tileEntity = getTileEntity(world, pos);
-        return tileEntity != null ? tileEntity.getFacing() : EnumFacing.SOUTH;
+        return tileEntity != null ? tileEntity.getFacing() : Direction.SOUTH;
     }
 
-    public EnumFaceRotation getFaceRotation(final IBlockAccess world, final BlockPos pos)
+    public EnumFaceRotation getFaceRotation(final IWorld world, final BlockPos pos)
     {
         final TileEntityToggleableBase tileEntity = getTileEntity(world, pos);
         return tileEntity != null ? tileEntity.getFaceRotation() : EnumFaceRotation.UP;
     }
 
-    public void setFacing(final IBlockAccess world, final BlockPos pos, final EnumFacing facing)
+    public void setFacing(final IWorld world, final BlockPos pos, final Direction facing)
     {
         final TileEntityToggleableBase tileEntity = getTileEntity(world, pos);
         if (tileEntity != null)
@@ -154,7 +112,7 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
         }
     }
 
-    public void setFaceRotation(final IBlockAccess world, final BlockPos pos, final EnumFaceRotation faceRotation)
+    public void setFaceRotation(final IWorld world, final BlockPos pos, final EnumFaceRotation faceRotation)
     {
         final TileEntityToggleableBase tileEntity = getTileEntity(world, pos);
         if (tileEntity != null)
@@ -163,36 +121,31 @@ public abstract class BlockToggleableBase<TE extends TileEntityToggleableBase> e
         }
     }
 
-    private TileEntityToggleableBase getTileEntity(IBlockAccess world, BlockPos pos)
+    private TileEntityToggleableBase getTileEntity(IWorld world, BlockPos pos)
     {
         return (TileEntityToggleableBase) world.getTileEntity(pos);
     }
 
     @Override
-    public  BlockState getActualState(final  BlockState state, final IBlockAccess worldIn, final BlockPos pos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        return state.withProperty(FACING, getFacing(worldIn, pos)).withProperty(FACE_ROTATION, getFaceRotation(worldIn, pos)).withProperty(ACTIVE, state.getValue(ACTIVE));
+        return stateIn.with(FACING, getFacing(worldIn, currentPos))
+                .with(FACE_ROTATION, getFaceRotation(worldIn, currentPos));
     }
 
-    public void rotateFace(final World world, final BlockPos pos)
+    public void rotateFace(final IWorld world, final BlockPos pos)
     {
         final EnumFaceRotation faceRotation = getFaceRotation(world, pos);
         setFaceRotation(world, pos, faceRotation.rotateClockwise());
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state)
+    public boolean hasTileEntity(BlockState state)
     {
         return true;
     }
 
     @Nullable
     @Override
-    public abstract TE createTileEntity(World world,  BlockState state);
+    public abstract TE createTileEntity(BlockState state, IBlockReader world);
 }

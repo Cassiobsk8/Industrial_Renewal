@@ -4,56 +4,68 @@ import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiTankBase;
 import cassiokf.industrialrenewal.tileentity.TEStorage;
 import cassiokf.industrialrenewal.util.MachinesUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockStorage extends BlockMultiTankBase<TEStorage> {
-    public BlockStorage(String name, CreativeTabs tab) {
-        super(name, tab);
+public class BlockStorage extends BlockMultiTankBase<TEStorage>
+{
+    public BlockStorage()
+    {
+        super(Block.Properties.create(Material.WOOD));
     }
 
     @Override
-    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing) {
+    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, Direction facing)
+    {
         return MachinesUtils.getBlocksIn3x3x2Centered(masterPos, facing);
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos,  BlockState state, EntityLivingBase placer, ItemStack stack) {
-        worldIn.setBlockState(pos.up(), state.withProperty(MASTER, true));
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    {
+        worldIn.setBlockState(pos.up(), state.with(MASTER, true));
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, MASTER, DOWN);
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(FACING, MASTER, DOWN);
     }
 
     @Override
-    public  BlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        boolean isMaster = state.getValue(MASTER);
-        return state.withProperty(DOWN, (isMaster ? isBot(worldIn, pos) : 0));
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        boolean isMaster = stateIn.get(MASTER);
+        return stateIn.with(DOWN, (isMaster ? isBot(worldIn, currentPos) : 0));
     }
 
     @Override
-    protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, EnumFacing facing) {
+    protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, Direction facing)
+    {
         return pos.up();
     }
 
     @Override
-    public boolean instanceOf(Block block) {
+    public boolean instanceOf(Block block)
+    {
         return block instanceof BlockStorage;
     }
 
+    @Nullable
     @Override
-    public TEStorage createTileEntity(World world,  BlockState state) {
+    public TEStorage createTileEntity(BlockState state, IBlockReader world)
+    {
         return new TEStorage();
     }
 }

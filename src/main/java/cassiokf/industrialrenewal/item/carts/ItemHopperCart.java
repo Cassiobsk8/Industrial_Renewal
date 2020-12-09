@@ -1,15 +1,15 @@
 package cassiokf.industrialrenewal.item.carts;
 
 import cassiokf.industrialrenewal.entity.EntityHopperCart;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.MinecartEntity;
+import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.world.World;
 
 public class ItemHopperCart extends ItemCartBase
 {
-    public ItemHopperCart(String name, CreativeTabs tab)
+
+    public ItemHopperCart(Properties properties)
     {
-        super(name, tab);
+        super(properties);
     }
 
     @Override

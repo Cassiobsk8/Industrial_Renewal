@@ -2,23 +2,25 @@ package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockToggleableBase;
 import cassiokf.industrialrenewal.tileentity.TileEntityValvePipeLarge;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.world.World;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
+import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
 
 public class BlockValvePipeLarge extends BlockToggleableBase<TileEntityValvePipeLarge>
 {
 
-    public BlockValvePipeLarge(String name, CreativeTabs tab)
+    public BlockValvePipeLarge()
     {
-        super(name, tab);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Nullable
     @Override
-    public TileEntityValvePipeLarge createTileEntity(World world,  BlockState state) {
+    public TileEntityValvePipeLarge createTileEntity(BlockState state, IBlockReader world)
+    {
         return new TileEntityValvePipeLarge();
     }
 }

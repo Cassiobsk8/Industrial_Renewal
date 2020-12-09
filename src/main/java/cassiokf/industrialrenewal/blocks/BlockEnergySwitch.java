@@ -2,28 +2,25 @@ package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockToggleableBase;
 import cassiokf.industrialrenewal.tileentity.TileEntityEnergySwitch;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
 public class BlockEnergySwitch extends BlockToggleableBase<TileEntityEnergySwitch>
 {
-    public BlockEnergySwitch(String name, CreativeTabs tab)
+    public BlockEnergySwitch()
     {
-        super(name, tab);
-    }
-
-    @Override
-    public void spawnParticle(World world, BlockPos pos)
-    {
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Nullable
     @Override
-    public TileEntityEnergySwitch createTileEntity(World world,  BlockState state)
+    public TileEntityEnergySwitch createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityEnergySwitch();
     }

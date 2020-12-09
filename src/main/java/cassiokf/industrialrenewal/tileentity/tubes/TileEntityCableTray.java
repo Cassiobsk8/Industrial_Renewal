@@ -9,7 +9,6 @@ import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.enums.EnumCableIn;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;

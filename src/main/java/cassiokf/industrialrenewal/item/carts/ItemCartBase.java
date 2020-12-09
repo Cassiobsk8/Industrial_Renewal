@@ -3,7 +3,7 @@ package cassiokf.industrialrenewal.item.carts;
 import cassiokf.industrialrenewal.item.ItemBase;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.MinecartEntity;
+import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -40,7 +40,7 @@ public abstract class ItemCartBase extends ItemBase
                     d0 = 0.5D;
                 }
 
-                MinecartEntity MinecartEntity = getEntity(context.getWorld(), (double) context.getPos().getX() + 0.5D, (double) context.getPos().getY() + 0.0625D + d0, (double) context.getPos().getZ() + 0.5D);
+                AbstractMinecartEntity MinecartEntity = getEntity(context.getWorld(), (double) context.getPos().getX() + 0.5D, (double) context.getPos().getY() + 0.0625D + d0, (double) context.getPos().getZ() + 0.5D);
 
                 if (itemstack.hasDisplayName())
                 {
@@ -55,5 +55,5 @@ public abstract class ItemCartBase extends ItemBase
         }
     }
 
-    public abstract MinecartEntity getEntity(World world, double x, double y, double z);
+    public abstract AbstractMinecartEntity getEntity(World world, double x, double y, double z);
 }

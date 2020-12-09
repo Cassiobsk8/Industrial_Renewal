@@ -2,12 +2,10 @@ package cassiokf.industrialrenewal.tileentity.tubes;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.util.interfaces.ICompressedFluidCapability;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-
 
 import java.util.Map;
 

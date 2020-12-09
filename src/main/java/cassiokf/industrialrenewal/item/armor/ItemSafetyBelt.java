@@ -1,7 +1,5 @@
 package cassiokf.industrialrenewal.item.armor;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.model.armor.SafetyBeltModel;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.enchantment.Enchantment;

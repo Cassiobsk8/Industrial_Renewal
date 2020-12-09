@@ -1,106 +1,66 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntityConnectedMultiblocks;
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockTEHorizontalFacingMultiblocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.tileentity.TileEntityDamAxis;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.state.IProperty;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockDamAxis extends BlockTileEntityConnectedMultiblocks<TileEntityDamAxis>
+public class BlockDamAxis extends BlockTEHorizontalFacingMultiblocks<TileEntityDamAxis>
 {
-    public BlockDamAxis(String name, CreativeTabs tab)
+    public BlockDamAxis()
     {
-        super(Material.IRON, name, tab);
-        setSoundType(SoundType.METAL);
-        setHardness(0.8f);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-        return EnumBlockRenderType.MODEL;
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, new IProperty[0]);
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
         Item playerItem = player.inventory.getCurrentItem().getItem();
-        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.damAxis)))
+        if (playerItem.equals(BlocksRegistration.DAMAXIS_ITEM.get()))
         {
             int n = 1;
-            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockDamAxis)
+            while (worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockDamAxis)
             {
                 n++;
             }
-            if (world.getBlockState(pos.up(n)).getBlock().isReplaceable(world, pos.up(n)))
+            if (isReplaceable(worldIn, pos.up(n)))
             {
-                world.setBlockState(pos.up(n), getBlockFromItem(playerItem).getDefaultState(), 3);
+                worldIn.setBlockState(pos.up(n), getBlockFromItem(playerItem).getDefaultState(), 3);
                 if (!player.isCreative())
                 {
                     player.inventory.getCurrentItem().shrink(1);
                 }
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
-        return false;
+        return ActionResultType.PASS;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
-
-    @Override
-    public  BlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         return getDefaultState();
-    }
-
-    @Override
-    public  BlockState getStateFromMeta(int meta)
-    {
-        return getDefaultState();
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return 0;
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
     }
 
     @Nullable
     @Override
-    public TileEntityDamAxis createTileEntity(World world,  BlockState state)
+    public TileEntityDamAxis createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityDamAxis();
     }

@@ -1,6 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
-import cassiokf.industrialrenewal.blocks.BlockSmallWindTurbine;
+import cassiokf.industrialrenewal.blocks.BlockWindTurbineSmall;
 import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.item.ItemWindBlade;
@@ -179,7 +179,7 @@ public class TileEntitySmallWindTurbine extends TileEntitySync implements ITicka
     {
         if (blockFacing != null) return blockFacing;
         BlockState state = getBlockState();
-        if (state.getBlock() instanceof BlockSmallWindTurbine)
+        if (state.getBlock() instanceof BlockWindTurbineSmall)
         {
             return blockFacing = state.get(BlockHorizontalFacing.FACING);
         }

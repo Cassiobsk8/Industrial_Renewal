@@ -1,18 +1,19 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.tileentity.tubes.TileEntityHighPressurePipe;
-import cassiokf.industrialrenewal.util.interfaces.ICompressedFluidCapability;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -20,48 +21,27 @@ import java.util.List;
 
 public class BlockHighPressurePipe extends BlockPipeBase<TileEntityHighPressurePipe>
 {
-    public BlockHighPressurePipe(String name, CreativeTabs tab)
+    public BlockHighPressurePipe()
     {
-        super(name, tab);
+        super(Block.Properties.create(Material.IRON), 12, 12);
     }
 
     @Override
-    public boolean canConnectToPipe(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-         BlockState state = worldIn.getBlockState(neighbourPos);
-        Block block = state.getBlock();
-
-        return block instanceof BlockHighPressurePipe;
+        return ActionResultType.PASS;
     }
 
     @Override
-    public boolean canConnectToCapability(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
+    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        BlockPos pos = ownPos.offset(neighbourDirection);
-         BlockState state = worldIn.getBlockState(pos);
-        TileEntity te = worldIn.getTileEntity(pos);
-        return !(state.getBlock() instanceof BlockHighPressurePipe)
-                && te instanceof ICompressedFluidCapability
-                && ((ICompressedFluidCapability) te).canPipeConnect(neighbourDirection.getOpposite(), pos);
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        return false;
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
-    {
-        tooltip.add("Does not transfer normal fluids");
-        super.addInformation(stack, player, tooltip, advanced);
+        tooltip.add(new StringTextComponent("Does not transfer normal fluids"));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Nullable
     @Override
-    public TileEntityHighPressurePipe createTileEntity(World world,  BlockState state)
+    public TileEntityHighPressurePipe createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityHighPressurePipe();
     }

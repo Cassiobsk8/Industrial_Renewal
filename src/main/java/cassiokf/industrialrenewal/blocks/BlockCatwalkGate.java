@@ -1,151 +1,130 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalActivate;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.IRSoundRegister;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockCatwalkGate extends BlockHorizontalFacing
+public class BlockCatwalkGate extends BlockAbstractHorizontalActivate
 {
-    public static final PropertyBool ACTIVE = PropertyBool.create("active");
-    protected static final AxisAlignedBB RNORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0625D);
-    protected static final AxisAlignedBB RSOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.9375D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB RWEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB REAST_AABB = new AxisAlignedBB(0.9375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.5D, 0.03125D);
-    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.96875D, 1.0D, 1.5D, 1.0D);
-    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.03125D, 1.5D, 1.0D);
-    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 1.5D, 1.0D);
-    protected static final AxisAlignedBB FRONT_LEFT_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.125D, 1.5D, 0.125D);
-    protected static final AxisAlignedBB FRONT_RIGHT_AABB = new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.5D, 0.125D);
-    protected static final AxisAlignedBB BACK_LEFT_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.875D, 0.125D, 1.5D, 1.0D);
-    protected static final AxisAlignedBB BACK_RIGHT_AABB = new AxisAlignedBB(0.875D, 0.0D, 0.875D, 1.0D, 1.5D, 1.0D);
+    protected static final VoxelShape RNORTH_AABB = Block.makeCuboidShape(0, 0, 0, 16, 16, 1);
+    protected static final VoxelShape RSOUTH_AABB = Block.makeCuboidShape(0, 0, 15, 16, 16, 16);
+    protected static final VoxelShape RWEST_AABB = Block.makeCuboidShape(0, 0, 0, 1, 16, 16);
+    protected static final VoxelShape REAST_AABB = Block.makeCuboidShape(15, 0, 0, 16, 16, 16);
 
-    public BlockCatwalkGate(String name, CreativeTabs tab) {
-        super(name, tab, Material.IRON);
-        setHardness(0.8f);
+    protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0, 0, 0, 16, 24, 1);
+    protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0, 0, 15, 16, 24, 16);
+    protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(0, 0, 0, 15, 24, 16);
+    protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(15, 0, 0, 16, 24, 16);
+
+    public BlockCatwalkGate()
+    {
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (world.isRemote) {
-            return true;
-        } else {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
+    {
+        if (worldIn.isRemote)
+        {
+            return ActionResultType.SUCCESS;
+        } else
+        {
             Random r = new Random();
             float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
-            if (state.getValue(ACTIVE)) {
-                world.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, pitch);
-            } else {
-                world.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, pitch);
+            if (state.get(ACTIVE))
+            {
+                worldIn.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_CLOSE.get(), SoundCategory.NEUTRAL, 1.0F, pitch);
+            } else
+            {
+                worldIn.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_OPEN.get(), SoundCategory.NEUTRAL, 1.0F, pitch);
             }
 
-            state = state.cycleProperty(ACTIVE);
-            world.setBlockState(pos, state, 3);
-            return true;
+            state = state.cycle(ACTIVE);
+            worldIn.setBlockState(pos, state, 3);
+            return ActionResultType.SUCCESS;
         }
     }
 
-    public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
-        return worldIn.getBlockState(pos).getValue(ACTIVE);
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing().getOpposite()).with(ACTIVE, false);
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        EnumFacing face = state.getValue(FACING);
-        if (face == EnumFacing.NORTH) {
+    public boolean collisionExtendsVertically(BlockState state, IBlockReader world, BlockPos pos, Entity collidingEntity)
+    {
+        return true;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        Direction face = state.get(FACING);
+        if (face == Direction.NORTH)
+        {
             return RNORTH_AABB;
         }
-        if (face == EnumFacing.SOUTH) {
+        if (face == Direction.SOUTH)
+        {
             return RSOUTH_AABB;
         }
-        if (face == EnumFacing.WEST) {
+        if (face == Direction.WEST)
+        {
             return RWEST_AABB;
         }
-        if (face == EnumFacing.EAST) {
+        if (face == Direction.EAST)
+        {
             return REAST_AABB;
         }
         return RNORTH_AABB;
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-         BlockState actualState = getActualState(state, worldIn, pos);
-        Boolean active = actualState.getValue(ACTIVE);
-        if (!active) {
-            EnumFacing face = state.getValue(FACING);
-            if (face == EnumFacing.NORTH) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-            } else if (face == EnumFacing.SOUTH) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-            } else if (face == EnumFacing.WEST) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
-            } else if (face == EnumFacing.EAST) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
-            }
-        } else if (active) {
-            EnumFacing face = state.getValue(FACING);
-            if (face == EnumFacing.NORTH) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, FRONT_LEFT_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, FRONT_RIGHT_AABB);
-            } else if (face == EnumFacing.SOUTH) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, BACK_LEFT_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, BACK_RIGHT_AABB);
-            } else if (face == EnumFacing.WEST) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, FRONT_LEFT_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, BACK_LEFT_AABB);
-            } else if (face == EnumFacing.EAST) {
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, FRONT_RIGHT_AABB);
-                addCollisionBoxToList(pos, entityBox, collidingBoxes, BACK_RIGHT_AABB);
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        Boolean open = state.get(ACTIVE);
+        VoxelShape FINAL_SHAPE = NONE_AABB;
+        Direction face = state.get(FACING);
+        if (!open)
+        {
+            if (face == Direction.NORTH)
+            {
+                FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, NORTH_AABB);
+            } else if (face == Direction.SOUTH)
+            {
+                FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, SOUTH_AABB);
+            } else if (face == Direction.WEST)
+            {
+                FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, WEST_AABB);
+            } else
+            {
+                FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, EAST_AABB);
             }
         }
-
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, ACTIVE);
-    }
-
-    @Override
-    public  BlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3)).withProperty(ACTIVE, (meta & 4) > 0);
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        int i = 0;
-        i = i | state.getValue(FACING).getHorizontalIndex();
-        if (state.getValue(ACTIVE)) {
-            i |= 4;
-        }
-        return i;
-    }
-
-    @Override
-    public  BlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(ACTIVE, false);
-    }
-
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
-        return BlockFaceShape.UNDEFINED;
+        return FINAL_SHAPE;
     }
 }

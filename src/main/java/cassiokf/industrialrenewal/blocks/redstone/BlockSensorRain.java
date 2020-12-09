@@ -2,101 +2,85 @@ package cassiokf.industrialrenewal.blocks.redstone;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntitySensorRain;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
 public class BlockSensorRain extends BlockTileEntity<TileEntitySensorRain>
 {
+    public static final IntegerProperty POWER = IntegerProperty.create("power", 0, 15);
 
-    public static final PropertyInteger POWER = PropertyInteger.create("power", 0, 15);
-    protected static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
+    protected static final VoxelShape BLOCK_AABB = Block.makeCuboidShape(0, 0, 0, 16, 2, 16);
 
-    public BlockSensorRain(String name, CreativeTabs tab) {
-        super(Material.CIRCUITS, name, tab);
+    public BlockSensorRain()
+    {
+        super(Block.Properties.create(Material.IRON));
+        setDefaultState(getDefaultState().with(POWER, 0));
     }
 
     @Override
-    public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return state.getValue(POWER);
+    public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side)
+    {
+        return state.get(POWER);
     }
 
-    public void updatePower(World worldIn, BlockPos pos, int currentStrength) {
-        if (worldIn.isRainingAt(pos) && worldIn.canSeeSky(pos)) {
-             BlockState state = worldIn.getBlockState(pos);
+    public void updatePower(World worldIn, BlockPos pos, int currentStrength)
+    {
+        if (worldIn.isRainingAt(pos.up()) && worldIn.canSeeSky(pos))
+        {
+            BlockState state = worldIn.getBlockState(pos);
             int value = (int) (worldIn.rainingStrength * 15);
-            if (value != currentStrength) {
-                worldIn.setBlockState(pos, state.withProperty(POWER, value), 3);
+            if (value != currentStrength)
+            {
+                worldIn.setBlockState(pos, state.with(POWER, value));
             }
-        } else if (currentStrength != 0) {
-             BlockState state = worldIn.getBlockState(pos);
-            worldIn.setBlockState(pos, state.withProperty(POWER, 0), 3);
+        } else if (currentStrength != 0)
+        {
+            BlockState state = worldIn.getBlockState(pos);
+            worldIn.setBlockState(pos, state.with(POWER, 0));
         }
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, POWER);
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(POWER);
     }
 
     @Override
-    public  BlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(POWER, meta);
+    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
+    {
+        //int i = pos.getX();
+        //int j = pos.getY();
+        //int k = pos.getZ();
+        //worldIn.scheduleUpdate(new BlockPos(i, j, k), this, this.tickRate(world));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(POWER);
-    }
-
-    @Override
-    public void onBlockAdded(World world, BlockPos pos,  BlockState state) {
-        int i = pos.getX();
-        int j = pos.getY();
-        int k = pos.getZ();
-        world.scheduleUpdate(new BlockPos(i, j, k), this, this.tickRate(world));
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
         return BLOCK_AABB;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
-        return BlockFaceShape.UNDEFINED;
-    }
-
-    @Override
-    public boolean canProvidePower(IBlockState state) {
+    public boolean canProvidePower(BlockState state)
+    {
         return true;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(final  BlockState state) {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isFullCube(final  BlockState state) {
-        return false;
     }
 
     @Nullable
     @Override
-    public TileEntitySensorRain createTileEntity(World world,  BlockState state) {
+    public TileEntitySensorRain createTileEntity(BlockState state, IBlockReader world)
+    {
         return new TileEntitySensorRain();
     }
 }

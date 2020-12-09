@@ -1,12 +1,13 @@
 package cassiokf.industrialrenewal.blocks.railroad;
 
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.IRSoundRegister;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.SoundCategory;
@@ -30,21 +31,21 @@ public class BlockRailGate extends BlockNormalRailBase
     public BlockRailGate(String name, CreativeTabs tab)
     {
         super(name, tab);
-        setDefaultState(getDefaultState().withProperty(OPEN, false));
+        setDefaultState(getDefaultState().with(OPEN, false));
     }
 
 
     @Override
-    public boolean canCollideCheck(IBlockState state, boolean hitIfLiquid)
+    public boolean canCollideCheck(BlockState state, boolean hitIfLiquid)
     {
         return super.canCollideCheck(state, hitIfLiquid);
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
+    public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
     {
-        EnumRailDirection direction = state.getValue(SHAPE);
-        if (!state.getValue(OPEN))
+        EnumRailDirection direction = state.get(SHAPE);
+        if (!state.get(OPEN))
         {
             switch (direction)
             {
@@ -60,9 +61,9 @@ public class BlockRailGate extends BlockNormalRailBase
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
-        EnumRailDirection direction = state.getValue(SHAPE);
+        EnumRailDirection direction = state.get(SHAPE);
         switch (direction)
         {
             default:
@@ -76,26 +77,27 @@ public class BlockRailGate extends BlockNormalRailBase
     @Override
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos).getValue(OPEN);
+        return worldIn.getBlockState(pos).get(OPEN);
     }
 
     @Override
-    protected void updateState(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
+    protected void updateState(BlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
-        boolean flag1 = state.getValue(OPEN);
+        boolean flag1 = state.get(OPEN);
         boolean flag2 = worldIn.isBlockPowered(pos);
         if (flag1 != flag2)
         {
-            worldIn.setBlockState(pos, state.withProperty(OPEN, flag2), 3);
+            worldIn.setBlockState(pos, state.with(OPEN, flag2), 3);
             //Sound
             Random r = new Random();
             float pitch = r.nextFloat() * (1.1f - 0.9f) + 0.9f;
             if (flag2)
             {
-                worldIn.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, pitch);
-            } else
+                worldIn.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, pitch);
+            }
+            else
             {
-                worldIn.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, pitch);
+                worldIn.playSound(null, pos, SoundsRegistration.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, pitch);
             }
         }
     }
@@ -119,18 +121,18 @@ public class BlockRailGate extends BlockNormalRailBase
     }
 
     @Override
-    public  BlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.byMetadata(meta & 7)).withProperty(OPEN, (meta & 8) > 0);
+        return this.getDefaultState().with(SHAPE, BlockRailBase.EnumRailDirection.byMetadata(meta & 7)).with(OPEN, (meta & 8) > 0);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         int i = 0;
-        i = i | (state.getValue(SHAPE)).getMetadata();
+        i = i | (state.get(SHAPE)).getMetadata();
 
-        if (state.getValue(OPEN))
+        if (state.get(OPEN))
         {
             i |= 8;
         }

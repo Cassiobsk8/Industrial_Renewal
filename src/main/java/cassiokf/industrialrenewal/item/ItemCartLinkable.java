@@ -7,8 +7,7 @@ import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.enums.EnumCouplingType;
 import cassiokf.industrialrenewal.util.interfaces.ICoupleCart;
 import com.google.common.collect.MapMaker;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.Map;
@@ -17,17 +16,18 @@ import java.util.UUID;
 public class ItemCartLinkable extends ItemBase
 {
     static final UUID NULL_UUID = new UUID(0, 0);
-    private static final Map<PlayerEntity, EntityMinecart> linkMap = new MapMaker().weakKeys().weakValues().makeMap();
+    private static final Map<PlayerEntity, MinecartEntity> linkMap = new MapMaker().weakKeys().weakValues().makeMap();
 
-    public ItemCartLinkable(String name, CreativeTabs tab)
+    public ItemCartLinkable(Properties properties)
     {
-        super(name, tab);
+        super(properties);
     }
 
-    public static void onPlayerUseLinkableItemOnCart(PlayerEntity player, EntityMinecart cart)
+
+    public static void onPlayerUseLinkableItemOnCart(PlayerEntity player, MinecartEntity cart)
     {
-        EntityMinecart last = linkMap.remove(player);
-        if (last != null && last.isEntityAlive())
+        MinecartEntity last = linkMap.remove(player);
+        if (last != null && last.isAlive())
         {
             if (CouplingHandler.isConnected(cart, last))
             {
@@ -39,7 +39,7 @@ public class ItemCartLinkable extends ItemBase
                 if (CoupleCarts(last, cart))
                 {
                     Utils.sendChatMessage(player, "Carts Coupled");
-                    Utils.sendConsoleMessage("player " + player.getDisplayNameString() + " Connected " + last.getName() + " to " + cart.getName());
+                    Utils.sendConsoleMessage("player " + player.getName().getFormattedText() + " Connected " + last.getName() + " to " + cart.getName());
                     return;
                 }
             }
@@ -51,7 +51,7 @@ public class ItemCartLinkable extends ItemBase
         }
     }
 
-    public static boolean CoupleCarts(EntityMinecart cart1, EntityMinecart cart2)
+    public static boolean CoupleCarts(MinecartEntity cart1, MinecartEntity cart2)
     {
         if (canCoupleCarts(cart1, cart2))
         {
@@ -62,7 +62,7 @@ public class ItemCartLinkable extends ItemBase
         return false;
     }
 
-    private static void setConnection(EntityMinecart from, EntityMinecart to)
+    private static void setConnection(MinecartEntity from, MinecartEntity to)
     {
         for (EnumCouplingType link : EnumCouplingType.VALUES)
         {
@@ -72,15 +72,15 @@ public class ItemCartLinkable extends ItemBase
                 {
                     ((LocomotiveBase) to).setTender((EntityTenderBase) from);
                 }
-                UUID id = to.getPersistentID();
-                from.getEntityData().setLong(link.tagMostSigBits, id.getMostSignificantBits());
-                from.getEntityData().setLong(link.tagLeastSigBits, id.getLeastSignificantBits());
+                UUID id = to.getUniqueID();
+                from.getPersistentData().putLong(link.tagMostSigBits, id.getMostSignificantBits());
+                from.getPersistentData().putLong(link.tagLeastSigBits, id.getLeastSignificantBits());
                 return;
             }
         }
     }
 
-    private static boolean canCoupleCarts(EntityMinecart cart1, EntityMinecart cart2)
+    private static boolean canCoupleCarts(MinecartEntity cart1, MinecartEntity cart2)
     {
         if (cart1 == cart2 || (thereIsNoConnectionLeft(cart1) && thereIsNoConnectionLeft(cart2)) || CouplingHandler.isConnected(cart1, cart2))
         {
@@ -89,19 +89,19 @@ public class ItemCartLinkable extends ItemBase
         return cart1.getDistanceSq(cart2) <= getMaxCouplingDistance(cart1, cart2);
     }
 
-    public static boolean thereIsNoConnectionLeft(EntityMinecart cart)
+    public static boolean thereIsNoConnectionLeft(MinecartEntity cart)
     {
         return !hasFreeConnectionIn(cart, EnumCouplingType.COUPLING_1)
                 && !hasFreeConnectionIn(cart, EnumCouplingType.COUPLING_2);
     }
 
-    public static boolean hasFreeConnectionIn(EntityMinecart cart, EnumCouplingType type)
+    public static boolean hasFreeConnectionIn(MinecartEntity cart, EnumCouplingType type)
     {
         UUID cartUUID = CouplingHandler.getConnection(cart, type);
         return cartUUID.equals(NULL_UUID);
     }
 
-    private static float getMaxCouplingDistance(EntityMinecart cart1, EntityMinecart cart2)
+    private static float getMaxCouplingDistance(MinecartEntity cart1, MinecartEntity cart2)
     {
         float defaultDistance = 1.6f;
         float dist = 0;

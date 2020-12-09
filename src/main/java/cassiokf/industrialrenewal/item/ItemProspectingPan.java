@@ -1,38 +1,42 @@
 package cassiokf.industrialrenewal.item;
 
 import cassiokf.industrialrenewal.util.Utils;
-import cassiokf.industrialrenewal.world.generation.OreGeneration;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.IItemPropertyGetter;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public class ItemProspectingPan extends ItemBase
 {
     private static final String found = "Deep vein found size:";
     public static final String notFound = "No deep vein found";
 
-    public ItemProspectingPan(String name, CreativeTabs tab)
+    public ItemProspectingPan(Item.Properties properties)
     {
-        super(name, tab);
-        this.maxStackSize = 1;
-        this.setMaxDamage(13);
-        setContainerItem(this);
+        super(properties.maxStackSize(1).maxDamage(13));
         this.addPropertyOverride(new ResourceLocation("broken"), new IItemPropertyGetter()
         {
             @OnlyIn(Dist.CLIENT)
-            public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
+            public float call(ItemStack stack, @Nullable World worldIn, @Nullable LivingEntity entityIn)
             {
                 return ItemProspectingPan.isEmpty(stack) ? 0.0F : 1.0F;
             }
@@ -40,15 +44,15 @@ public class ItemProspectingPan extends ItemBase
     }
 
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        tooltip.add(I18n.format("info.industrialrenewal.prospectingpan.info"));
+        tooltip.add(new StringTextComponent(I18n.format("info.industrialrenewal.prospectingpan.info")));
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     public static boolean isEmpty(ItemStack stack)
     {
-        return stack.getItemDamage() == 0;
+        return stack.getDamage() == 0;
     }
 
     @Override
@@ -58,26 +62,26 @@ public class ItemProspectingPan extends ItemBase
     }
 
     @Override
-    public EnumActionResult onItemUse(PlayerEntity player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public ActionResultType onItemUse(ItemUseContext context)
     {
-        ItemStack stack = player.getHeldItem(hand);
-        if (worldIn.provider.getDimension() == 0 && stack.getItemDamage() <= 0)
+        ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
+        if (context.getWorld().getDimension().getType() == DimensionType.OVERWORLD && stack.getDamage() <= 0)
         {
-            if (!worldIn.isRemote) stack.setItemDamage(1);
-            return EnumActionResult.SUCCESS;
+            if (!context.getWorld().isRemote) stack.setDamage(1);
+            return ActionResultType.SUCCESS;
         }
-        return EnumActionResult.PASS;
+        return ActionResultType.PASS;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, EnumHand handIn)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn)
     {
         ItemStack stack = playerIn.getHeldItem(handIn);
-        if (worldIn.provider.getDimension() == 0 && stack.getItemDamage() > 0)
+        if (worldIn.getDimension().getType() == DimensionType.OVERWORLD && stack.getDamage() > 0)
         {
             playerIn.swingArm(handIn);
             prospect(worldIn, playerIn, stack);
-            return new ActionResult<>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
+            return new ActionResult<>(ActionResultType.PASS, playerIn.getHeldItem(handIn));
         }
         return super.onItemRightClick(worldIn, playerIn, handIn);
     }
@@ -85,8 +89,8 @@ public class ItemProspectingPan extends ItemBase
     private static void prospect(World worldIn, PlayerEntity playerIn, ItemStack panStack)
     {
         if (worldIn.isRemote) return;
-        panStack.damageItem(1, playerIn);
-        if (panStack.getItemDamage() >= 12)
+        panStack.attemptDamageItem(1,new Random(), (ServerPlayerEntity) playerIn);
+        if (panStack.getDamage() >= 12)
         {
             ItemStack stackV = OreGeneration.getChunkVein(worldIn, playerIn.getPosition());
 
@@ -100,20 +104,20 @@ public class ItemProspectingPan extends ItemBase
             else msg = notFound;
 
             Utils.sendChatMessage(playerIn, msg);
-            panStack.setItemDamage(0);
+            panStack.setDamage(0);
         }
     }
 
     @Override
     public ItemStack getContainerItem(ItemStack stack)
     {
-        int dmg = stack.getItemDamage();
+        int dmg = stack.getDamage();
         if (dmg == getMaxDamage(stack))
         {
-            return new ItemStack(stack.getItem(), 0, getMaxDamage(stack));
+            return new ItemStack(stack.getItem(), 0, stack.getTag());
         }
-        ItemStack tr = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
-        tr.setItemDamage(dmg + 1);
+        ItemStack tr = new ItemStack(stack.getItem(), 1, stack.getTag());
+        tr.setDamage(dmg + 1);
         return tr;
     }
 }

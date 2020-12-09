@@ -1,15 +1,15 @@
 package cassiokf.industrialrenewal.item.carts;
 
 import cassiokf.industrialrenewal.entity.EntityFlatCart;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.MinecartEntity;
+import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.world.World;
 
 public class ItemMineCartFlat extends ItemCartBase
 {
-    public ItemMineCartFlat(String name, CreativeTabs tab)
+
+    public ItemMineCartFlat(Properties properties)
     {
-        super(name, tab);
+        super(properties);
     }
 
     @Override

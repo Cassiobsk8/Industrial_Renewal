@@ -1,37 +1,25 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.blocks.BlockPillar;
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
+import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.enums.EnumEnergyCableType;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.common.property.IUnlistedProperty;
-
-import javax.annotation.Nullable;
-import java.util.List;
+import net.minecraftforge.client.model.data.IModelData;
 
 public class BlockPillarEnergyCable extends BlockEnergyCable
 {
@@ -39,273 +27,132 @@ public class BlockPillarEnergyCable extends BlockEnergyCable
     private static float SOUTHZ2 = 0.750f;
     private static float WESTX1 = 0.250f;
     private static float EASTX2 = 0.750f;
-    private static float DOWNY1 = 0.0f;
-    private static float UPY2 = 1.0f;
+    private static final float DOWNY1 = 0.0f;
+    private static final float UPY2 = 1.0f;
 
-    public BlockPillarEnergyCable(EnumEnergyCableType type, String name, CreativeTabs tab)
+    public BlockPillarEnergyCable(EnumEnergyCableType type)
     {
-        super(type, name, tab);
-        setSoundType(SoundType.METAL);
-        setHardness(0.8f);
+        super(type);
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
+    public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state)
     {
-        IProperty[] listedProperties = new IProperty[]{}; // listed properties
-        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{MASTER, SOUTH, NORTH, EAST, WEST, UP, DOWN, CSOUTH, CNORTH, CEAST, CWEST, CUP, CDOWN, WSOUTH, WNORTH, WEAST, WWEST, WUP, WDOWN};
-        return new ExtendedBlockState(this, listedProperties, unlistedProperties);
-    }
-
-    @Override
-    public void onPlayerDestroy(World worldIn, BlockPos pos,  BlockState state)
-    {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-        Block block;
-        switch (type)
-        {
-            default:
-            case LV:
-                block = ModBlocks.energyCableLV;
-                break;
-            case MV:
-                block = ModBlocks.energyCableMV;
-                break;
-            case HV:
-                block = ModBlocks.energyCableHV;
-                break;
-        }
-        ItemStack itemst = new ItemStack(net.minecraft.item.ItemBlock.getItemFromBlock(block));
-        EntityItem entity = new EntityItem(worldIn, x, y, z, itemst);
-        if (!worldIn.isRemote)
-        {
-            worldIn.spawnEntity(entity);
-        }
+        Block block = getBlockFromType();
+        ItemStack itemst = new ItemStack(block);
+        Utils.spawnItemStack(worldIn.getWorld(), pos, itemst);
         super.onPlayerDestroy(worldIn, pos, state);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public ItemStack getItem(World worldIn, BlockPos pos,  BlockState state)
+    public final boolean isConnected(IBlockReader world, BlockPos pos, final Direction facing)
     {
-        return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.pillar));
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public  BlockState getStateFromMeta(final int meta)
-    {
-        return getDefaultState();
-    }
-
-    @Override
-    public int getMetaFromState(final  BlockState state)
-    {
-        return 0;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(final  BlockState state)
-    {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isFullCube(final  BlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-        return EnumBlockRenderType.MODEL;
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        ItemStack playerStack = player.getHeldItem(EnumHand.MAIN_HAND);
-        Item playerItem = playerStack.getItem();
-        if (playerItem instanceof ItemPowerScrewDrive)
+        TileEntity te = world.getTileEntity(pos);
+        if (te != null)
         {
-            if (!world.isRemote)
-            {
-                world.setBlockState(pos, ModBlocks.pillar.getDefaultState(), 3);
-                if (!player.isCreative())
-                {
-                    Block block;
-                    switch (type)
-                    {
-                        default:
-                        case LV:
-                            block = ModBlocks.energyCableLV;
-                            break;
-                        case MV:
-                            block = ModBlocks.energyCableMV;
-                            break;
-                        case HV:
-                            block = ModBlocks.energyCableHV;
-                            break;
-                    }
-                    player.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(block)));
-                }
-                ItemPowerScrewDrive.playDrillSound(world, pos);
-            }
-            return true;
-        }
-        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.pillar)))
-        {
-            int n = 1;
-            while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable
-                    || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarFluidPipe
-                    || world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar)
-            {
-                n++;
-            }
-            if (world.getBlockState(pos.up(n)).getBlock().isReplaceable(world, pos.up(n)))
-            {
-                if (!world.isRemote)
-                {
-                    world.setBlockState(pos.up(n), Block.getBlockFromItem(playerItem).getDefaultState(), 3);
-                    world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-                    if (!player.isCreative()) playerStack.shrink(1);
-                }
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
-
-    @Override
-    public  BlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        if (state instanceof IExtendedBlockState)
-        {
-            IExtendedBlockState eState = (IExtendedBlockState) state;
-            return eState.withProperty(MASTER, isMaster(world, pos))
-                    .withProperty(SOUTH, canConnectToPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectToPipe(world, pos, EnumFacing.NORTH))
-                    .withProperty(EAST, canConnectToPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectToPipe(world, pos, EnumFacing.WEST))
-                    .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
-                    .withProperty(CSOUTH, canConnectToCapability(world, pos, EnumFacing.SOUTH)).withProperty(CNORTH, canConnectToCapability(world, pos, EnumFacing.NORTH))
-                    .withProperty(CEAST, canConnectToCapability(world, pos, EnumFacing.EAST)).withProperty(CWEST, canConnectToCapability(world, pos, EnumFacing.WEST))
-                    .withProperty(CUP, canConnectToCapability(world, pos, EnumFacing.UP)).withProperty(CDOWN, canConnectToCapability(world, pos, EnumFacing.DOWN))
-                    .withProperty(WSOUTH, BlockPillar.canConnectTo(world, pos, EnumFacing.SOUTH)).withProperty(WNORTH, BlockPillar.canConnectTo(world, pos, EnumFacing.NORTH))
-                    .withProperty(WEAST, BlockPillar.canConnectTo(world, pos, EnumFacing.EAST)).withProperty(WWEST, BlockPillar.canConnectTo(world, pos, EnumFacing.WEST))
-                    .withProperty(WUP, BlockPillar.canConnectTo(world, pos, EnumFacing.UP)).withProperty(WDOWN, BlockPillar.canConnectTo(world, pos, EnumFacing.DOWN));
-        }
-        return state;
-    }
-
-    public final boolean isConnected(IBlockAccess world, BlockPos pos,  BlockState state, final EnumFacing facing)
-    {
-        if (state instanceof IExtendedBlockState)
-        {
-            state = getExtendedState(state, world, pos);
-            IExtendedBlockState eState = (IExtendedBlockState) state;
+            IModelData data = te.getModelData();
             switch (facing)
             {
                 case DOWN:
-                    return eState.getValue(WDOWN);
+                    return data.hasProperty(TETubeBase.WDOWN) && data.getData(TETubeBase.WDOWN);
                 case UP:
-                    return eState.getValue(WUP);
+                    return data.hasProperty(TETubeBase.WUP) && data.getData(TETubeBase.WUP);
                 case NORTH:
-                    return eState.getValue(WNORTH);
+                    return data.hasProperty(TETubeBase.WNORTH) && data.getData(TETubeBase.WNORTH);
                 case SOUTH:
-                    return eState.getValue(WSOUTH);
+                    return data.hasProperty(TETubeBase.WSOUTH) && data.getData(TETubeBase.WSOUTH);
                 case WEST:
-                    return eState.getValue(WWEST);
+                    return data.hasProperty(TETubeBase.WWEST) && data.getData(TETubeBase.WWEST);
                 case EAST:
-                    return eState.getValue(WEAST);
+                    return data.hasProperty(TETubeBase.WEAST) && data.getData(TETubeBase.WEAST);
             }
         }
         return false;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
-        if (isConnected(worldIn, pos, state, EnumFacing.NORTH))
-        {
-            NORTHZ1 = 0.0f;
-        } else if (!isConnected(worldIn, pos, state, EnumFacing.NORTH))
-        {
-            NORTHZ1 = 0.250f;
-        }
-        if (isConnected(worldIn, pos, state, EnumFacing.SOUTH))
-        {
-            SOUTHZ2 = 1.0f;
-        } else if (!isConnected(worldIn, pos, state, EnumFacing.SOUTH))
-        {
-            SOUTHZ2 = 0.750f;
-        }
-        if (isConnected(worldIn, pos, state, EnumFacing.WEST))
-        {
-            WESTX1 = 0.0f;
-        } else if (!isConnected(worldIn, pos, state, EnumFacing.WEST))
-        {
-            WESTX1 = 0.250f;
-        }
-        if (isConnected(worldIn, pos, state, EnumFacing.EAST))
-        {
-            EASTX2 = 1.0f;
-        } else if (!isConnected(worldIn, pos, state, EnumFacing.EAST))
-        {
-            EASTX2 = 0.750f;
-        }
-        final AxisAlignedBB AA_BB = new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
-        Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, AA_BB);
+        return new ItemStack(BlocksRegistration.PILLAR_ITEM.get());
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        if (isConnected(worldIn, pos, state, EnumFacing.NORTH))
+        ItemStack playerStack = player.getHeldItem(handIn);
+        Item playerItem = playerStack.getItem();
+        if (playerItem instanceof ItemPowerScrewDrive)
         {
-            NORTHZ1 = 0.0f;
-        } else if (!isConnected(worldIn, pos, state, EnumFacing.NORTH))
-        {
-            NORTHZ1 = 0.250f;
+            if (!worldIn.isRemote)
+            {
+                worldIn.setBlockState(pos, BlocksRegistration.PILLAR.get().getDefaultState(), 3);
+                if (!player.isCreative())
+                {
+                    Block block = getBlockFromType();
+                    player.addItemStackToInventory(new ItemStack(block));
+                }
+                ItemPowerScrewDrive.playDrillSound(worldIn, pos);
+            }
+            return ActionResultType.SUCCESS;
         }
-        if (isConnected(worldIn, pos, state, EnumFacing.SOUTH))
+        if (playerItem.equals(BlocksRegistration.PILLAR_ITEM.get()))
         {
-            SOUTHZ2 = 1.0f;
-        } else if (!isConnected(worldIn, pos, state, EnumFacing.SOUTH))
-        {
-            SOUTHZ2 = 0.750f;
+            int n = 1;
+            while (worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable
+                    || worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarFluidPipe
+                    || worldIn.getBlockState(pos.up(n)).getBlock() instanceof BlockPillar)
+            {
+                n++;
+            }
+            if (isReplaceable(worldIn, pos.up(n)))
+            {
+                if (!worldIn.isRemote)
+                {
+                    worldIn.setBlockState(pos.up(n), Block.getBlockFromItem(playerItem).getDefaultState(), 3);
+                    worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
+                    if (!player.isCreative()) playerStack.shrink(1);
+                }
+                return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.PASS;
         }
-        if (isConnected(worldIn, pos, state, EnumFacing.WEST))
-        {
-            WESTX1 = 0.0f;
-        } else if (!isConnected(worldIn, pos, state, EnumFacing.WEST))
-        {
-            WESTX1 = 0.250f;
-        }
-        if (isConnected(worldIn, pos, state, EnumFacing.EAST))
-        {
-            EASTX2 = 1.0f;
-        } else if (!isConnected(worldIn, pos, state, EnumFacing.EAST))
-        {
-            EASTX2 = 0.750f;
-        }
-        return new AxisAlignedBB(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
+        return ActionResultType.PASS;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face)
+    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos)
     {
-        if (face == EnumFacing.EAST || face == EnumFacing.WEST || face == EnumFacing.NORTH || face == EnumFacing.SOUTH)
+        if (isConnected(worldIn, pos, Direction.NORTH))
         {
-            return BlockFaceShape.SOLID;
-        } else
-        {
-            return BlockFaceShape.UNDEFINED;
+            NORTHZ1 = 0;
         }
+        else
+        {
+            NORTHZ1 = 4;
+        }
+        if (isConnected(worldIn, pos, Direction.SOUTH))
+        {
+            SOUTHZ2 = 16;
+        }
+        else
+        {
+            SOUTHZ2 = 12;
+        }
+        if (isConnected(worldIn, pos, Direction.WEST))
+        {
+            WESTX1 = 0;
+        }
+        else
+        {
+            WESTX1 = 4;
+        }
+        if (isConnected(worldIn, pos, Direction.EAST))
+        {
+            EASTX2 = 16;
+        }
+        else
+        {
+            EASTX2 = 12;
+        }
+        return Block.makeCuboidShape(WESTX1, DOWNY1, NORTHZ1, EASTX2, UPY2, SOUTHZ2);
     }
 }

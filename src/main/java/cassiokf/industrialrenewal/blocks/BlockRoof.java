@@ -2,58 +2,28 @@ package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.common.property.IUnlistedProperty;
-import net.minecraftforge.common.property.Properties;
-
-import javax.annotation.Nullable;
-import java.util.List;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 
 public class BlockRoof extends BlockHorizontalFacing
 {
-    public static final IUnlistedProperty<Boolean> SOUTH = new Properties.PropertyAdapter<>(PropertyBool.create("south"));
-    public static final IUnlistedProperty<Boolean> NORTH = new Properties.PropertyAdapter<>(PropertyBool.create("north"));
-    public static final IUnlistedProperty<Boolean> EAST = new Properties.PropertyAdapter<>(PropertyBool.create("east"));
-    public static final IUnlistedProperty<Boolean> WEST = new Properties.PropertyAdapter<>(PropertyBool.create("west"));
-    public static final IUnlistedProperty<Boolean> DOWN = new Properties.PropertyAdapter<>(PropertyBool.create("down"));
+    protected static final VoxelShape BASE_AABB = Block.makeCuboidShape(0, 12, 0, 16, 16, 16);
+    protected static final VoxelShape BOT_AABB = Block.makeCuboidShape(0, 0, 0, 16, 14, 16);
 
-    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.75D, 0.0D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB BOT_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
-
-    public BlockRoof(String name, CreativeTabs tab)
+    public BlockRoof()
     {
-        super(name, tab, Material.IRON);
-        setSoundType(SoundType.METAL);
-        setHardness(0.8f);
-        setLightOpacity(255);
-    }
-
-    protected BlockStateContainer createBlockState()
-    {
-        IProperty[] listedProperties = new IProperty[]{FACING}; // listed properties
-        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{SOUTH, NORTH, EAST, WEST, DOWN};
-        return new ExtendedBlockState(this, listedProperties, unlistedProperties);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.MODEL;
+    public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return 255;
     }
 
     private Boolean isEven(BlockPos pos, boolean baseOnX)
@@ -63,73 +33,34 @@ public class BlockRoof extends BlockHorizontalFacing
         return (number % 2) == 0;
     }
 
-    private boolean canConnectTo(final IBlockAccess world, final BlockPos ownPos, final EnumFacing ownFacing, final EnumFacing neighbourDirection)
+    private boolean canConnectTo(final IBlockReader world, final BlockPos ownPos, final Direction ownFacing, final Direction neighborDirection)
     {
-        final BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-        final  BlockState neighbourState = world.getBlockState(neighbourPos);
-        if (neighbourDirection == EnumFacing.DOWN) return neighbourState.isFullCube() || neighbourState.isTopSolid();
+        final BlockPos neighborPos = ownPos.offset(neighborDirection);
+        final BlockState neighborState = world.getBlockState(neighborPos);
+        if (neighborDirection == Direction.DOWN) return neighborState.isSolid();
 
-        if (((neighbourDirection == EnumFacing.EAST || neighbourDirection == EnumFacing.WEST) && (ownFacing == EnumFacing.SOUTH || ownFacing == EnumFacing.NORTH))
-                || ((neighbourDirection == EnumFacing.SOUTH || neighbourDirection == EnumFacing.NORTH) && (ownFacing == EnumFacing.WEST || ownFacing == EnumFacing.EAST)))
+        if (((neighborDirection == Direction.EAST || neighborDirection == Direction.WEST) && (ownFacing == Direction.SOUTH || ownFacing == Direction.NORTH))
+                || ((neighborDirection == Direction.SOUTH || neighborDirection == Direction.NORTH) && (ownFacing == Direction.WEST || ownFacing == Direction.EAST)))
         {
-             BlockState sState = world.getBlockState(ownPos.offset(EnumFacing.SOUTH));
-             BlockState nState = world.getBlockState(ownPos.offset(EnumFacing.NORTH));
+            BlockState sState = world.getBlockState(ownPos.offset(Direction.SOUTH));
+            BlockState nState = world.getBlockState(ownPos.offset(Direction.NORTH));
             Block sBlock = sState.getBlock();
             Block nBlock = nState.getBlock();
-            if ((sBlock instanceof BlockRoof || sBlock instanceof BlockCatwalkLadder || sState.isFullCube()) && (nBlock instanceof BlockRoof || nBlock instanceof BlockCatwalkLadder || nState.isFullCube()))
+            if ((sBlock instanceof BlockRoof || sBlock instanceof BlockCatwalkLadder || sState.isSolid()) && (nBlock instanceof BlockRoof || nBlock instanceof BlockCatwalkLadder || nState.isSolid()))
             {
-                // (block pos is Even) && (neighbour SW)
-                boolean invert = ownFacing == EnumFacing.WEST || ownFacing == EnumFacing.EAST;
-                Block nb = neighbourState.getBlock();
+                // (block pos is Even) && (neighbor SW)
+                boolean invert = ownFacing == Direction.WEST || ownFacing == Direction.EAST;
+                Block nb = neighborState.getBlock();
                 return isEven(ownPos, invert)
-                        && (nb instanceof BlockRoof || neighbourState.isFullCube() || nb instanceof BlockPillar || nb instanceof BlockColumn);
+                        && (nb instanceof BlockRoof || neighborState.isSolid() || nb instanceof BlockPillar || nb instanceof BlockColumn);
             }
         }
         return false;
     }
 
     @Override
-    public  BlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
+    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos, boolean collision)
     {
-        if (state instanceof IExtendedBlockState)
-        {
-            IExtendedBlockState eState = (IExtendedBlockState) state;
-            if (canConnectTo(world, pos, EnumFacing.NORTH, EnumFacing.DOWN)) return eState.withProperty(SOUTH, false)
-                    .withProperty(NORTH, false)
-                    .withProperty(EAST, false)
-                    .withProperty(WEST, false)
-                    .withProperty(DOWN, true);
-
-            EnumFacing facing = state.getValue(FACING);
-            return eState.withProperty(SOUTH, canConnectTo(world, pos, facing, facing.getOpposite()))
-                    .withProperty(NORTH, canConnectTo(world, pos, facing, facing))
-                    .withProperty(EAST, canConnectTo(world, pos, facing, facing.rotateY()))
-                    .withProperty(WEST, canConnectTo(world, pos, facing, facing.rotateYCCW()))
-                    .withProperty(DOWN, false);
-        }
-        return state;
-    }
-
-    @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return BASE_AABB;
-    }
-
-    @Deprecated
-    public boolean isTopSolid(IBlockState state) {
-        return true;
-    }
-
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
-        if (face == EnumFacing.UP) {
-            return BlockFaceShape.SOLID;
-        }
-        return BlockFaceShape.UNDEFINED;
     }
 }

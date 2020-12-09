@@ -5,7 +5,7 @@ import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.tileentity.machines.TEIndustrialBatteryBank;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,7 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -41,7 +41,7 @@ public class BlockIndustrialBatteryBank extends BlockMultiTankBase<TEIndustrialB
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos,  BlockState state, PlayerEntity playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, EnumHand hand, Direction facing, float hitX, float hitY, float hitZ)
     {
         ItemStack stack = playerIn.getHeldItem(hand);
         if (stack.getItem().equals(ModItems.battery_lithium))
@@ -66,7 +66,7 @@ public class BlockIndustrialBatteryBank extends BlockMultiTankBase<TEIndustrialB
     }
 
     @Override
-    public TEIndustrialBatteryBank createTileEntity(World world,  BlockState state)
+    public TEIndustrialBatteryBank createTileEntity(World world, BlockState state)
     {
         return new TEIndustrialBatteryBank();
     }

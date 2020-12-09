@@ -3,63 +3,60 @@ package cassiokf.industrialrenewal.blocks.abstracts;
 import cassiokf.industrialrenewal.tileentity.abstracts.TEMultiTankBase;
 import cassiokf.industrialrenewal.util.MachinesUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public abstract class BlockMultiTankBase<T extends TEMultiTankBase> extends BlockMultiBlockBase<T>
 {
-    public static final PropertyInteger TOP = PropertyInteger.create("top", 0, 2);
-    public static final PropertyInteger DOWN = PropertyInteger.create("bot", 0, 2);
+    public static final IntegerProperty TOP = IntegerProperty.create("top", 0, 2);
+    public static final IntegerProperty DOWN = IntegerProperty.create("bot", 0, 2);
 
-    public BlockMultiTankBase(String name, CreativeTabs tab)
+    public BlockMultiTankBase(Block.Properties properties)
     {
-        super(Material.IRON, name, tab);
-        setSoundType(SoundType.METAL);
+        super(properties);
     }
 
     @Override
-    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing)
+    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, Direction facing)
     {
         return MachinesUtils.getBlocksIn3x3x3Centered(masterPos);
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return new BlockStateContainer(this, FACING, MASTER, TOP, DOWN);
+        builder.add(FACING, MASTER, TOP, DOWN);
     }
 
     @Override
-    public  BlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        boolean isMaster = state.getValue(MASTER);
-        return state.withProperty(TOP, (isMaster ? isTop(worldIn, pos) : 0))
-                .withProperty(DOWN, (isMaster ? isBot(worldIn, pos) : 0));
+        boolean isMaster = stateIn.get(MASTER);
+        return stateIn.with(TOP, (isMaster ? isTop(worldIn, currentPos) : 0))
+                .with(DOWN, (isMaster ? isBot(worldIn, currentPos) : 0));
     }
 
-    private int isTop(IBlockAccess world, BlockPos pos)
+    private int isTop(IWorld world, BlockPos pos)
     {
-        return instanceOf(world.getBlockState(pos.offset(EnumFacing.UP, 2)).getBlock()) ? 2 : 1;
+        return instanceOf(world.getBlockState(pos.offset(Direction.UP, 2)).getBlock()) ? 2 : 1;
     }
 
-    protected int isBot(IBlockAccess world, BlockPos pos) {
-        return instanceOf(world.getBlockState(pos.offset(EnumFacing.DOWN, 2)).getBlock()) ? 2 : 1;
+    protected int isBot(IWorld world, BlockPos pos)
+    {
+        return instanceOf(world.getBlockState(pos.offset(Direction.DOWN, 2)).getBlock()) ? 2 : 1;
     }
 
     public abstract boolean instanceOf(Block block);
 
     @Nullable
     @Override
-    public abstract T createTileEntity(World world,  BlockState state);
+    public abstract T createTileEntity(BlockState state, IBlockReader world);
 }

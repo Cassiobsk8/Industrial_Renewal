@@ -1,17 +1,5 @@
 package cassiokf.industrialrenewal.recipes;
 
-import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.BlocksRegistration;
-import cassiokf.industrialrenewal.init.ItemsRegistration;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 public class ModRecipes
 {
 

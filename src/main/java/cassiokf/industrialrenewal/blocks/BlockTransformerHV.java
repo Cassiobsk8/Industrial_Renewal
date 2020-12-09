@@ -3,115 +3,67 @@ package cassiokf.industrialrenewal.blocks;
 import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
 import cassiokf.industrialrenewal.tileentity.TileEntityTransformerHV;
 import cassiokf.industrialrenewal.util.MachinesUtils;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockTransformerHV extends BlockMultiBlockBase<TileEntityTransformerHV>
 {
-    public static final PropertyInteger OUTPUT = PropertyInteger.create("output", 0, 2);
+    public static final IntegerProperty OUTPUT = IntegerProperty.create("output", 0, 2);
 
-    protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 0.5D, 0.6875D);
+    protected static final VoxelShape DOWN_AABB = makeCuboidShape(5, 0, 5, 11, 8, 11);
 
-    public BlockTransformerHV(String name, CreativeTabs tab)
+    public BlockTransformerHV()
     {
-        super(Material.IRON, name, tab);
-        setSoundType(SoundType.METAL);
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
-    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing)
+    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, Direction facing)
     {
         return MachinesUtils.getBlocksIn3x2x3CenteredPlus1OnTop(masterPos);
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return new BlockStateContainer(this, FACING, MASTER, OUTPUT);
+        builder.add(FACING, MASTER, OUTPUT);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
-    {
-        /*
-        tooltip.add(I18n.format("info.industrialrenewal.requires")
-                + ": "
-                + FluidInit.STEAM.getName()
-                + " "
-                + (IRConfig.MainConfig.Main.steamTurbineSteamPerTick)
-                + " mB/t");
-        tooltip.add(I18n.format("info.industrialrenewal.produces")
-                + ": "
-                + (IRConfig.MainConfig.Main.steamTurbineEnergyPerTick)
-                + " FE/t");
-         */
-        super.addInformation(stack, player, tooltip, advanced);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos, boolean collision)
     {
         TileEntity te = worldIn.getTileEntity(pos);
         if (te instanceof TileEntityTransformerHV && pos.equals(((TileEntityTransformerHV) te).getConnectorPos()))
-        {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, DOWN_AABB);
-        } else
-        {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
-        }
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        TileEntity te = source.getTileEntity(pos);
-        if (te instanceof TileEntityTransformerHV && pos.equals(((TileEntityTransformerHV) te).getConnectorPos()))
-        {
             return DOWN_AABB;
-        } else
-        {
-            return FULL_BLOCK_AABB;
-        }
 
+        return FULL_AABB;
     }
 
     @Override
-    public  BlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        TileEntity te = worldIn.getTileEntity(pos);
+        TileEntity te = worldIn.getTileEntity(currentPos);
         int type;
         if (!(te instanceof TileEntityTransformerHV) || !((TileEntityTransformerHV) te).isMaster()) type = 0;
         else type = (((TileEntityTransformerHV) te).isOutPut) ? 2 : 1;
-        return state.withProperty(OUTPUT, type);
-    }
-
-    @Override
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
+        return stateIn.with(OUTPUT, type);
     }
 
     @Nullable
     @Override
-    public TileEntityTransformerHV createTileEntity(World world,  BlockState state)
+    public TileEntityTransformerHV createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityTransformerHV();
     }

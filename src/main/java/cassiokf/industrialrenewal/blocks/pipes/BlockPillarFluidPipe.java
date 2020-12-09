@@ -1,13 +1,14 @@
 package cassiokf.industrialrenewal.blocks.pipes;
 
 import cassiokf.industrialrenewal.blocks.BlockPillar;
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -16,8 +17,8 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -37,8 +38,8 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
     private static float SOUTHZ2 = 0.750f;
     private static float WESTX1 = 0.250f;
     private static float EASTX2 = 0.750f;
-    private static float DOWNY1 = 0.0f;
-    private static float UPY2 = 1.0f;
+    private static final float DOWNY1 = 0.0f;
+    private static final float UPY2 = 1.0f;
 
     public BlockPillarFluidPipe(String name, CreativeTabs tab)
     {
@@ -56,12 +57,12 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
     }
 
     @Override
-    public void onPlayerDestroy(World worldIn, BlockPos pos,  BlockState state)
+    public void onPlayerDestroy(World worldIn, BlockPos pos, BlockState state)
     {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        ItemStack itemst = new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.fluidPipe));
+        ItemStack itemst = new ItemStack(ItemBlock.getItemFromBlock(BlocksRegistration.fluidPipe));
         EntityItem entity = new EntityItem(worldIn, x, y, z, itemst);
         if (!worldIn.isRemote)
         {
@@ -71,46 +72,46 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
 
     @SuppressWarnings("deprecation")
     @Override
-    public ItemStack getItem(World worldIn, BlockPos pos,  BlockState state)
+    public ItemStack getItem(World worldIn, BlockPos pos, BlockState state)
     {
-        return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.pillar));
+        return new ItemStack(ItemBlock.getItemFromBlock(BlocksRegistration.pillar));
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public  BlockState getStateFromMeta(final int meta)
+    public BlockState getStateFromMeta(final int meta)
     {
         return getDefaultState();
     }
 
     @Override
-    public int getMetaFromState(final  BlockState state)
+    public int getMetaFromState(final BlockState state)
     {
         return 0;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isOpaqueCube(final  BlockState state)
+    public boolean isOpaqueCube(final BlockState state)
     {
         return false;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isFullCube(final  BlockState state)
+    public boolean isFullCube(final BlockState state)
     {
         return false;
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
+    public EnumBlockRenderType getRenderType(BlockState state)
     {
         return EnumBlockRenderType.MODEL;
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, EnumHand hand, Direction side, float hitX, float hitY, float hitZ)
     {
         ItemStack playerStack = player.getHeldItem(EnumHand.MAIN_HAND);
         Item playerItem = playerStack.getItem();
@@ -118,14 +119,14 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
         {
             if (!world.isRemote)
             {
-                world.setBlockState(pos, ModBlocks.pillar.getDefaultState(), 3);
+                world.setBlockState(pos, BlocksRegistration.pillar.getDefaultState(), 3);
                 if (!player.isCreative())
-                    player.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(ModBlocks.fluidPipe)));
+                    player.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(BlocksRegistration.fluidPipe)));
                 ItemPowerScrewDrive.playDrillSound(world, pos);
             }
             return true;
         }
-        if (playerItem.equals(ItemBlock.getItemFromBlock(ModBlocks.pillar)))
+        if (playerItem.equals(ItemBlock.getItemFromBlock(BlocksRegistration.pillar)))
         {
             int n = 1;
             while (world.getBlockState(pos.up(n)).getBlock() instanceof BlockPillarEnergyCable
@@ -150,26 +151,26 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
     }
 
     @Override
-    public  BlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
+    public BlockState getExtendedState(BlockState state, IBlockAccess world, BlockPos pos)
     {
         if (state instanceof IExtendedBlockState)
         {
             IExtendedBlockState eState = (IExtendedBlockState) state;
-            return eState.withProperty(MASTER, isMaster(world, pos))
-                    .withProperty(SOUTH, canConnectToPipe(world, pos, EnumFacing.SOUTH)).withProperty(NORTH, canConnectToPipe(world, pos, EnumFacing.NORTH))
-                    .withProperty(EAST, canConnectToPipe(world, pos, EnumFacing.EAST)).withProperty(WEST, canConnectToPipe(world, pos, EnumFacing.WEST))
-                    .withProperty(UP, canConnectToPipe(world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectToPipe(world, pos, EnumFacing.DOWN))
-                    .withProperty(CSOUTH, canConnectToCapability(world, pos, EnumFacing.SOUTH)).withProperty(CNORTH, canConnectToCapability(world, pos, EnumFacing.NORTH))
-                    .withProperty(CEAST, canConnectToCapability(world, pos, EnumFacing.EAST)).withProperty(CWEST, canConnectToCapability(world, pos, EnumFacing.WEST))
-                    .withProperty(CUP, canConnectToCapability(world, pos, EnumFacing.UP)).withProperty(CDOWN, canConnectToCapability(world, pos, EnumFacing.DOWN))
-                    .withProperty(WSOUTH, BlockPillar.canConnectTo(world, pos, EnumFacing.SOUTH)).withProperty(WNORTH, BlockPillar.canConnectTo(world, pos, EnumFacing.NORTH))
-                    .withProperty(WEAST, BlockPillar.canConnectTo(world, pos, EnumFacing.EAST)).withProperty(WWEST, BlockPillar.canConnectTo(world, pos, EnumFacing.WEST))
-                    .withProperty(WUP, BlockPillar.canConnectTo(world, pos, EnumFacing.UP)).withProperty(WDOWN, BlockPillar.canConnectTo(world, pos, EnumFacing.DOWN));
+            return eState.with(MASTER, isMaster(world, pos))
+                    .with(SOUTH, canConnectToPipe(world, pos, Direction.SOUTH)).with(NORTH, canConnectToPipe(world, pos, Direction.NORTH))
+                    .with(EAST, canConnectToPipe(world, pos, Direction.EAST)).with(WEST, canConnectToPipe(world, pos, Direction.WEST))
+                    .with(UP, canConnectToPipe(world, pos, Direction.UP)).with(DOWN, canConnectToPipe(world, pos, Direction.DOWN))
+                    .with(CSOUTH, canConnectToCapability(world, pos, Direction.SOUTH)).with(CNORTH, canConnectToCapability(world, pos, Direction.NORTH))
+                    .with(CEAST, canConnectToCapability(world, pos, Direction.EAST)).with(CWEST, canConnectToCapability(world, pos, Direction.WEST))
+                    .with(CUP, canConnectToCapability(world, pos, Direction.UP)).with(CDOWN, canConnectToCapability(world, pos, Direction.DOWN))
+                    .with(WSOUTH, BlockPillar.canConnectTo(world, pos, Direction.SOUTH)).with(WNORTH, BlockPillar.canConnectTo(world, pos, Direction.NORTH))
+                    .with(WEAST, BlockPillar.canConnectTo(world, pos, Direction.EAST)).with(WWEST, BlockPillar.canConnectTo(world, pos, Direction.WEST))
+                    .with(WUP, BlockPillar.canConnectTo(world, pos, Direction.UP)).with(WDOWN, BlockPillar.canConnectTo(world, pos, Direction.DOWN));
         }
         return state;
     }
 
-    public final boolean isConnected(IBlockAccess world, BlockPos pos,  BlockState state, final EnumFacing facing)
+    public final boolean isConnected(IBlockAccess world, BlockPos pos, BlockState state, final Direction facing)
     {
         if (state instanceof IExtendedBlockState)
         {
@@ -178,17 +179,17 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
             switch (facing)
             {
                 case DOWN:
-                    return eState.getValue(WDOWN);
+                    return eState.get(WDOWN);
                 case UP:
-                    return eState.getValue(WUP);
+                    return eState.get(WUP);
                 case NORTH:
-                    return eState.getValue(WNORTH);
+                    return eState.get(WNORTH);
                 case SOUTH:
-                    return eState.getValue(WSOUTH);
+                    return eState.get(WSOUTH);
                 case WEST:
-                    return eState.getValue(WWEST);
+                    return eState.get(WWEST);
                 case EAST:
-                    return eState.getValue(WEAST);
+                    return eState.get(WEAST);
             }
         }
         return false;
@@ -196,33 +197,37 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
 
     @SuppressWarnings("deprecation")
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
+    public void addCollisionBoxToList(BlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
     {
-        if (isConnected(worldIn, pos, state, EnumFacing.NORTH))
+        if (isConnected(worldIn, pos, state, Direction.NORTH))
         {
             NORTHZ1 = 0.0f;
-        } else
+        }
+        else
         {
             NORTHZ1 = 0.250f;
         }
-        if (isConnected(worldIn, pos, state, EnumFacing.SOUTH))
+        if (isConnected(worldIn, pos, state, Direction.SOUTH))
         {
             SOUTHZ2 = 1.0f;
-        } else
+        }
+        else
         {
             SOUTHZ2 = 0.750f;
         }
-        if (isConnected(worldIn, pos, state, EnumFacing.WEST))
+        if (isConnected(worldIn, pos, state, Direction.WEST))
         {
             WESTX1 = 0.0f;
-        } else
+        }
+        else
         {
             WESTX1 = 0.250f;
         }
-        if (isConnected(worldIn, pos, state, EnumFacing.EAST))
+        if (isConnected(worldIn, pos, state, Direction.EAST))
         {
             EASTX2 = 1.0f;
-        } else
+        }
+        else
         {
             EASTX2 = 0.750f;
         }
@@ -231,33 +236,37 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        if (isConnected(worldIn, pos, state, EnumFacing.NORTH))
+        if (isConnected(worldIn, pos, state, Direction.NORTH))
         {
             NORTHZ1 = 0.0f;
-        } else
+        }
+        else
         {
             NORTHZ1 = 0.250f;
         }
-        if (isConnected(worldIn, pos, state, EnumFacing.SOUTH))
+        if (isConnected(worldIn, pos, state, Direction.SOUTH))
         {
             SOUTHZ2 = 1.0f;
-        } else
+        }
+        else
         {
             SOUTHZ2 = 0.750f;
         }
-        if (isConnected(worldIn, pos, state, EnumFacing.WEST))
+        if (isConnected(worldIn, pos, state, Direction.WEST))
         {
             WESTX1 = 0.0f;
-        } else
+        }
+        else
         {
             WESTX1 = 0.250f;
         }
-        if (isConnected(worldIn, pos, state, EnumFacing.EAST))
+        if (isConnected(worldIn, pos, state, Direction.EAST))
         {
             EASTX2 = 1.0f;
-        } else
+        }
+        else
         {
             EASTX2 = 0.750f;
         }
@@ -265,12 +274,13 @@ public class BlockPillarFluidPipe extends BlockFluidPipe
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face)
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
     {
-        if (face == EnumFacing.EAST || face == EnumFacing.WEST || face == EnumFacing.NORTH || face == EnumFacing.SOUTH)
+        if (face == Direction.EAST || face == Direction.WEST || face == Direction.NORTH || face == Direction.SOUTH)
         {
             return BlockFaceShape.SOLID;
-        } else
+        }
+        else
         {
             return BlockFaceShape.UNDEFINED;
         }

@@ -87,7 +87,7 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
         if (!world.isRemote) return;
         if (this.generation > 0)
         {
-            IRSoundHandler.playRepeatableSound(IRSoundRegister.MOTOR_ROTATION_RESOURCEL, volume, pitch, pos);
+            IRSoundHandler.playRepeatableSound(SoundsRegistration.MOTOR_ROTATION_RESOURCEL, volume, pitch, pos);
         } else
         {
             IRSoundHandler.stopTileSound(pos);

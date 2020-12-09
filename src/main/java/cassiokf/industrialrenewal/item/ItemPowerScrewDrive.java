@@ -5,112 +5,124 @@ import cassiokf.industrialrenewal.blocks.BlockSignBase;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorCable;
 import cassiokf.industrialrenewal.blocks.industrialfloor.BlockFloorPipe;
 import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.IRSoundRegister;
-import cassiokf.industrialrenewal.init.ModBlocks;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
 import cassiokf.industrialrenewal.tileentity.TileEntityBatteryBank;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
 public class ItemPowerScrewDrive extends ItemBase {
 
-    public ItemPowerScrewDrive(String name, CreativeTabs tab) {
-        super(name, tab);
-        maxStackSize = 1;
+
+    public ItemPowerScrewDrive(Properties properties)
+    {
+        super(properties.maxStackSize(1));
     }
 
     @Override
-    public EnumActionResult onItemUseFirst(PlayerEntity entity, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+    public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context)
+    {
+        BlockPos pos = context.getPos();
+        World world = context.getWorld();
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        if (entity.isSneaking())
+        if (context.getPlayer().isSneaking())
         {
-             BlockState blockState = world.getBlockState(pos);
+            PlayerEntity player = context.getPlayer();
+            BlockState blockState = world.getBlockState(pos);
             Block block = blockState.getBlock();
-            if (block == ModBlocks.fluidPipe || block == ModBlocks.energyCableMV)
+            if (block == BlocksRegistration.FLUIDPIPE.get()
+                    || block == BlocksRegistration.ENERGYCABLEGAUGEMV.get()
+                    || block == BlocksRegistration.ENERGYCABLEGAUGELV.get()
+                    || block == BlocksRegistration.ENERGYCABLEGAUGEHV.get())
             {
-                ItemStack items = new ItemStack(ItemBlock.getItemFromBlock(world.getBlockState(pos).getBlock()), 1);
+                ItemStack items = new ItemStack(world.getBlockState(pos).getBlock().asItem(), 1);
                 playDrillSound(world, pos);
-                if (!world.isRemote && !entity.isCreative())
+                if (!world.isRemote && !player.isCreative())
                 {
-                    entity.inventory.addItemStackToInventory(items);
+                    player.inventory.addItemStackToInventory(items);
                 }
-                world.setBlockToAir(pos);
-                return EnumActionResult.SUCCESS;
+                world.removeBlock(pos, false);
+                return ActionResultType.SUCCESS;
             } else if (block instanceof BlockSignBase)
             {
                 ((BlockSignBase) world.getBlockState(pos).getBlock()).changeSign(world, pos);
                 playDrillSound(world, pos);
-                return EnumActionResult.SUCCESS;
+                return ActionResultType.SUCCESS;
             } else if (block instanceof BlockFloorPipe || block instanceof BlockFloorCable)
             {
                 playDrillSound(world, pos);
-                if (!world.isRemote && !entity.isCreative())
+                if (!world.isRemote && !player.isCreative())
                 {
-                    if (block == ModBlocks.floorPipe)
+                    if (block == BlocksRegistration.FLOORPIPE.get())
                     {
-                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.fluidPipe), 1));
-                    } else if (block == ModBlocks.floorCableMV)
+                        player.inventory.addItemStackToInventory(new ItemStack(BlocksRegistration.FLUIDPIPE_ITEM.get(), 1));
+                    }
+                    else if (block == BlocksRegistration.FLOORCABLEMV.get())
                     {
-                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCableMV), 1));
-                    } else if (block == ModBlocks.floorCableLV)
+                        player.inventory.addItemStackToInventory(new ItemStack(BlocksRegistration.ENERGYCABLEMV_ITEM.get(), 1));
+                    }
+                    else if (block == BlocksRegistration.FLOORCABLELV.get())
                     {
-                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCableLV), 1));
-                    } else if (block == ModBlocks.floorCableHV)
+                        player.inventory.addItemStackToInventory(new ItemStack(BlocksRegistration.ENERGYCABLELV_ITEM.get(), 1));
+                    }
+                    else if (block == BlocksRegistration.FLOORCABLEHV.get())
                     {
-                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.energyCableHV), 1));
-                    } else if (block == ModBlocks.floorLamp)
+                        player.inventory.addItemStackToInventory(new ItemStack(BlocksRegistration.ENERGYCABLEHV_ITEM.get(), 1));
+                    }
+                    else if (block == BlocksRegistration.FLOORLAMP.get())
                     {
-                        entity.inventory.addItemStackToInventory(new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.fluorescent), 1));
+                        player.inventory.addItemStackToInventory(new ItemStack(BlocksRegistration.FLUORESCENT_ITEM.get(), 1));
                     }
                 }
-                world.setBlockState(new BlockPos(x, y, z), ModBlocks.blockIndFloor.getDefaultState(), 3);
-                return EnumActionResult.SUCCESS;
+                world.setBlockState(new BlockPos(x, y, z), BlocksRegistration.INDFLOOR.get().getDefaultState(), 3);
+                return ActionResultType.SUCCESS;
             } else if (world.getTileEntity(pos) instanceof TileEntityBatteryBank)
             {
                 TileEntityBatteryBank te = (TileEntityBatteryBank) world.getTileEntity(pos);
-                if (te != null) te.toggleFacing(side.getOpposite());
+                if (te != null) te.toggleFacing(context.getFace().getOpposite());
                 world.notifyBlockUpdate(pos, blockState, blockState, 3);
                 if (!world.isRemote) playDrillSound(world, pos);
-                return EnumActionResult.SUCCESS;
+                return ActionResultType.SUCCESS;
             }
             //TODO adicionar para remover os gates
         } else
         {
-            if (world.getBlockState(pos).getBlock().rotateBlock(world, pos, EnumFacing.UP))
+            BlockState state = world.getBlockState(pos);
+            if (state.getBlock().rotate(state, world, pos, Rotation.CLOCKWISE_90) != state)
             {
                 playDrillSound(world, pos);
-                return EnumActionResult.SUCCESS;
+                return ActionResultType.SUCCESS;
             }
         }
 
-        return EnumActionResult.PASS;
+        return ActionResultType.PASS;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag) {
-        list.add(I18n.format("item." + References.MODID + "." + name + ".des0"));
+    public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+        list.add(new StringTextComponent(I18n.format("item." + References.MODID + "." + name + ".des0")));
     }
 
     public static void playDrillSound(World world, BlockPos pos)
     {
-        world.playSound(null, pos, IRSoundRegister.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, 1.0F);
+        world.playSound(null, pos, SoundsRegistration.ITEM_DRILL, SoundCategory.BLOCKS, 1.0F * IRConfig.Sounds.masterVolumeMult.get(), 1.0F);
     }
 }

@@ -1,79 +1,83 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.BlockBase;
-import cassiokf.industrialrenewal.config.IRConfig;
-import cassiokf.industrialrenewal.init.IRSoundRegister;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractFacing;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockButtonRed extends BlockBase
+public class BlockButtonRed extends BlockAbstractFacing
 {
+    public static final BooleanProperty PRESS = BooleanProperty.create("press");
 
-    public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
-    public static final PropertyBool PRESS = PropertyBool.create("press");
-    private static final AxisAlignedBB DOWN_BLOCK_AABB = new AxisAlignedBB(0.125F, 0, 0.125F, 0.875F, 0.4375F, 0.875F);
-    private static final AxisAlignedBB UP_BLOCK_AABB = new AxisAlignedBB(0.125F, 1, 0.125F, 0.875F, 0.5625F, 0.875F);
-    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0F, 0.125F, 0.125F, 0.4375F, 0.875F, 0.875F);
-    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1F, 0.125F, 0.125F, 0.5625F, 0.875F, 0.875F);
-    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.5625F, 0.875F, 0.875F, 1);
-    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.125F, 0.125F, 0.4375F, 0.875F, 0.875F, 0);
+    private static final VoxelShape DOWN_BLOCK_AABB = Block.makeCuboidShape(2, 0, 2, 14, 7, 14);
+    private static final VoxelShape UP_BLOCK_AABB = Block.makeCuboidShape(2, 16, 2, 14, 9, 14);
+    private static final VoxelShape WEST_BLOCK_AABB = Block.makeCuboidShape(0, 2, 2, 7, 14, 14);
+    private static final VoxelShape EAST_BLOCK_AABB = Block.makeCuboidShape(16, 2, 2, 9, 14, 14);
+    private static final VoxelShape SOUTH_BLOCK_AABB = Block.makeCuboidShape(2, 2, 9, 14, 14, 16);
+    private static final VoxelShape NORTH_BLOCK_AABB = Block.makeCuboidShape(2, 2, 7, 14, 14, 0);
 
-    public BlockButtonRed(String name, CreativeTabs tab) {
-        super(Material.IRON, name, tab);
-        setHardness(0.8f);
+    public BlockButtonRed()
+    {
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (world.isRemote) return true;
-        world.setBlockState(pos, state.withProperty(PRESS, !state.getValue(PRESS)));
-        world.playSound(null, pos, IRSoundRegister.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1f * IRConfig.MainConfig.Sounds.masterVolumeMult, 1f);
-        world.notifyNeighborsOfStateChange(pos.offset(state.getValue(FACING)), this, true);
-        return true;
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
+    {
+        if (worldIn.isRemote) return ActionResultType.SUCCESS;
+        worldIn.setBlockState(pos, state.with(PRESS, !state.get(PRESS)));
+        worldIn.playSound(null, pos, SoundsRegistration.TILEENTITY_VALVE_CHANGE.get(), SoundCategory.BLOCKS, 1f, 1f);
+        worldIn.notifyNeighborsOfStateChange(pos.offset(state.get(FACING)), this);
+        return ActionResultType.SUCCESS;
     }
 
     @Override
-    public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        boolean active = !state.getActualState(world, pos).getValue(PRESS);
+    public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side)
+    {
+        boolean active = !state.get(PRESS);
         return active ? 15 : 0;
     }
 
     @Override
-    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+    public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
+    {
         return blockState.getWeakPower(blockAccess, pos, side);
     }
 
     @Override
-    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+    public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, @Nullable Direction side)
+    {
         return true;
     }
 
     @Override
-    public boolean canProvidePower(IBlockState state) {
+    public boolean canProvidePower(BlockState state)
+    {
         return true;
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        EnumFacing dir = state.getValue(FACING);
-        switch (dir) {
+    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos, boolean collision)
+    {
+        Direction dir = state.get(FACING);
+        switch (dir)
+        {
             case NORTH:
                 return NORTH_BLOCK_AABB;
             case SOUTH:
@@ -90,45 +94,15 @@ public class BlockButtonRed extends BlockBase
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, PRESS);
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(FACING, PRESS);
     }
 
-    @SuppressWarnings("deprecation")
+    @Nullable
     @Override
-    public  BlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta > 6 ? meta - 7 : meta)).withProperty(PRESS, meta > 6);
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        int i;
-        i = state.getValue(FACING).getIndex();
-        if (state.getValue(PRESS)) {
-            i += 7;
-        }
-        return i;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public  BlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(FACING, facing.getOpposite()).withProperty(PRESS, true);
-    }
-
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
-
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
-        return BlockFaceShape.UNDEFINED;
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return getDefaultState().with(FACING, context.getFace().getOpposite()).with(PRESS, true);
     }
 }

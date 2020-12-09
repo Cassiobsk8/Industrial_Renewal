@@ -2,20 +2,21 @@ package cassiokf.industrialrenewal.blocks.machines;
 
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
-import cassiokf.industrialrenewal.init.GUIHandler;
 import cassiokf.industrialrenewal.tileentity.machines.TELathe;
 import cassiokf.industrialrenewal.util.MachinesUtils;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -23,16 +24,16 @@ import java.util.List;
 
 public class BlockLathe extends BlockMultiBlockBase<TELathe>
 {
-    public BlockLathe(String name, CreativeTabs tab)
+    public BlockLathe(Block.Properties properties)
     {
-        super(Material.IRON, name, tab);
+        super(properties);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos,  BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        if (!world.isRemote) OpenGUI(world, pos, player);
-        return true;
+        if (!worldIn.isRemote) OpenGUI(worldIn, pos, player);
+        return ActionResultType.SUCCESS;
     }
 
     private void OpenGUI(World world, BlockPos pos, PlayerEntity player)
@@ -46,37 +47,32 @@ public class BlockLathe extends BlockMultiBlockBase<TELathe>
     }
 
     @Override
-    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing)
+    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, Direction facing)
     {
         return MachinesUtils.getBlocksIn3x2x2Centered(masterPos, facing);
     }
 
     @Override
-    public  BlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(MASTER, true);
+        return getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing()).with(MASTER, true);
     }
 
     @Override
-    protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, EnumFacing facing) {
+    protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, Direction facing)
+    {
         return pos;
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos,  BlockState state, EntityLivingBase placer, ItemStack stack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
     }
 
     @Nullable
     @Override
-    public TELathe createTileEntity(World world,  BlockState state)
+    public TELathe createTileEntity(BlockState state, IBlockReader world)
     {
         return new TELathe();
-    }
-
-    @Override
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
     }
 }

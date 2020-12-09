@@ -1,93 +1,86 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlockHandRail extends BlockHorizontalFacing
 {
-    public static final PropertyBool DOWN = PropertyBool.create("down");
-    protected static final AxisAlignedBB RNORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0625D);
-    protected static final AxisAlignedBB RSOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.9375D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB RWEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB REAST_AABB = new AxisAlignedBB(0.9375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.5D, 0.03125D);
-    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.96875D, 1.0D, 1.5D, 1.0D);
-    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.03125D, 1.5D, 1.0D);
-    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.96875D, 0.0D, 0.0D, 1.0D, 1.5D, 1.0D);
+    public static final BooleanProperty DOWN = BooleanProperty.create("down");
 
-    public BlockHandRail(String name, CreativeTabs tab) {
-        super(name, tab, Material.IRON);
-        setHardness(0.8f);
-    }
+    protected static final VoxelShape RNORTH_AABB = makeCuboidShape(0, 0, 0, 16, 16, 1);
+    protected static final VoxelShape RSOUTH_AABB = makeCuboidShape(0, 0, 15, 16, 16, 16);
+    protected static final VoxelShape RWEST_AABB = makeCuboidShape(0, 0, 0, 1, 16, 16);
+    protected static final VoxelShape REAST_AABB = makeCuboidShape(15, 0, 0, 16, 16, 16);
 
-    private boolean downConnection(IBlockAccess world, BlockPos pos) {
-         BlockState downState = world.getBlockState(pos.down());
-        return !downState.getBlock().isFullBlock(downState);
-    }
+    protected static final VoxelShape NORTH_AABB = makeCuboidShape(0, 0, 0, 16, 24, 1);
+    protected static final VoxelShape SOUTH_AABB = makeCuboidShape(0, 0, 15, 16, 24, 16);
+    protected static final VoxelShape WEST_AABB = makeCuboidShape(0, 0, 0, 1, 24, 16);
+    protected static final VoxelShape EAST_AABB = makeCuboidShape(15, 0, 0, 16, 24, 16);
 
-    @Override
-    public  BlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        return state.withProperty(DOWN, downConnection(world, pos));
+    //TODO Make HandRail connected like window
+    public BlockHandRail()
+    {
+        super(Block.Properties.create(Material.IRON));
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        EnumFacing face = state.getValue(FACING);
-        if (face == EnumFacing.NORTH) {
-            return RNORTH_AABB;
-        }
-        if (face == EnumFacing.SOUTH) {
-            return RSOUTH_AABB;
-        }
-        if (face == EnumFacing.WEST) {
-            return RWEST_AABB;
-        }
-        if (face == EnumFacing.EAST) {
-            return REAST_AABB;
-        }
-        return RNORTH_AABB;
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(FACING, DOWN);
+    }
+
+    private boolean downConnection(IBlockReader world, BlockPos pos)
+    {
+        BlockState downState = world.getBlockState(pos.down());
+        return !downState.isSolidSide(world, pos.down(), Direction.UP);
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return getDefaultState()
+                .with(FACING, context.getPlayer().getHorizontalFacing().getOpposite())
+                .with(DOWN, downConnection(context.getWorld(), context.getPos()));
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState) {
-        EnumFacing face = state.getValue(FACING);
-        if (face == EnumFacing.NORTH) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-        } else if (face == EnumFacing.SOUTH) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-        } else if (face == EnumFacing.WEST) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
-        } else if (face == EnumFacing.EAST) {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        if (facing.equals(Direction.DOWN)) return stateIn.with(DOWN, downConnection(worldIn, currentPos));
+        return stateIn;
+    }
+
+    @Override
+    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos, boolean collision)
+    {
+        Direction face = state.get(FACING);
+        if (face == Direction.NORTH)
+        {
+            return collision ? NORTH_AABB : RNORTH_AABB;
         }
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, DOWN);
-    }
-
-    @Override
-    public  BlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-    }
-
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
-        return BlockFaceShape.UNDEFINED;
+        if (face == Direction.SOUTH)
+        {
+            return collision ? SOUTH_AABB : RSOUTH_AABB;
+        }
+        if (face == Direction.WEST)
+        {
+            return collision ? WEST_AABB : RWEST_AABB;
+        } else
+        {
+            return collision ? EAST_AABB : REAST_AABB;
+        }
     }
 }

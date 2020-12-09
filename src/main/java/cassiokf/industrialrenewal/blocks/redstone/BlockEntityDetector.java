@@ -1,90 +1,82 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.IndustrialRenewal;
-import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
-import cassiokf.industrialrenewal.init.GUIHandler;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractFacingWithBase;
 import cassiokf.industrialrenewal.tileentity.redstone.TileEntityEntityDetector;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class BlockEntityDetector extends BlockTileEntity<TileEntityEntityDetector>
+public class BlockEntityDetector extends BlockAbstractFacingWithBase
 {
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-    public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing");
-    public static final PropertyBool ACTIVE = PropertyBool.create("active");
-    public static final IProperty<EnumFacing> BASE = PropertyDirection.create("base");
-
-    public BlockEntityDetector(String name, CreativeTabs tab) {
-        super(Material.IRON, name, tab);
-        setHardness(0.8f);
-        //setSoundType(SoundType.METAL);
-        this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.UP));
-
+    public BlockEntityDetector()
+    {
+        super(Block.Properties.create(Material.IRON), 8, 10);
+        this.setDefaultState(this.getDefaultState().with(FACING, Direction.UP));
     }
 
-    public boolean onBlockActivated(World worldIn, BlockPos pos,  BlockState state, PlayerEntity playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
+    {
         if (!worldIn.isRemote)
         {
             TileEntity tileentity = worldIn.getTileEntity(pos);
-            if (tileentity instanceof TileEntityEntityDetector) {
-                OpenGUI(worldIn, pos, playerIn);
+            if (tileentity instanceof TileEntityEntityDetector)
+            {
+                OpenGUI(worldIn, pos, player);
             }
         }
+        return ActionResultType.SUCCESS;
+    }
+
+    private void OpenGUI(World world, BlockPos pos, PlayerEntity player)
+    {
+        //player.openGui(IndustrialRenewal.instance, GUIHandler.ENTITYDETECTOR, world, pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    @Override
+    public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, @Nullable Direction side)
+    {
+        return side != state.get(FACING).getOpposite();
+    }
+
+
+    @Override
+    public boolean canProvidePower(BlockState state)
+    {
         return true;
     }
 
-    private void OpenGUI(World world, BlockPos pos, PlayerEntity player) {
-        player.openGui(IndustrialRenewal.instance, GUIHandler.ENTITYDETECTOR, world, pos.getX(), pos.getY(), pos.getZ());
-    }
-
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    @Override
-    public  BlockState getActualState(IBlockState state, final IBlockAccess world, final BlockPos pos) {
-        TileEntityEntityDetector te = (TileEntityEntityDetector) world.getTileEntity(pos);
-        return state.withProperty(BASE, te.getBlockFacing());
-    }
 
     @Override
-    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
-        return side != state.getValue(FACING).getOpposite();
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean canProvidePower(IBlockState state) {
-        return true;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+    public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
+    {
         return blockState.getWeakPower(blockAccess, pos, side);
     }
 
-    @SuppressWarnings("deprecation")
+
     @Override
-    public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        boolean active = state.getActualState(world, pos).getValue(ACTIVE);
-        if (!active) {
+    public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side)
+    {
+        boolean active = state.get(ACTIVE);
+        if (!active)
+        {
             return 0;
         }
         return 15;
@@ -92,64 +84,29 @@ public class BlockEntityDetector extends BlockTileEntity<TileEntityEntityDetecto
 
     @Nonnull
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, ACTIVE, BASE);
-    }
-
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    @Override
-    public  BlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(FACING, ACTIVE, BASE);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).getIndex();
-    }
-
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    @Override
-    public  BlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        EnumFacing theFace;
-        if (placer.isSneaking()) {
-            theFace = facing.getOpposite();
-        } else {
-            theFace = placer.getHorizontalFacing().getOpposite();
-        }
-        return this.getDefaultState().withProperty(FACING, theFace).withProperty(BASE, facing.getOpposite());
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    {
+        TileEntityEntityDetector te = (TileEntityEntityDetector) worldIn.getTileEntity(pos);
+        Direction facing = state.get(BASE);
+        te.setBlockFacing(facing);
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos,  BlockState state, EntityLivingBase placer, ItemStack stack) {
-        TileEntity te = worldIn.getTileEntity(pos);
-        EnumFacing facing = state.getValue(BASE);
-        if (te instanceof TileEntityEntityDetector) ((TileEntityEntityDetector) te).setBlockFacing(facing);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
-
-    @Nonnull
-    @Override
-    @SuppressWarnings("deprecation")
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face) {
-        return BlockFaceShape.UNDEFINED;
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Nullable
     @Override
-    public TileEntityEntityDetector createTileEntity(World world,  BlockState state) {
+    public TileEntityEntityDetector createTileEntity(BlockState state, IBlockReader world)
+    {
         return new TileEntityEntityDetector();
     }
 }

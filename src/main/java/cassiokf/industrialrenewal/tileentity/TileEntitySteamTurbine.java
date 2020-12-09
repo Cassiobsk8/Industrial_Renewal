@@ -193,7 +193,7 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
         if (!world.isRemote) return;
         if (this.rotation > 0)
         {
-            IRSoundHandler.playRepeatableSound(IRSoundRegister.MOTOR_ROTATION_RESOURCEL, volume, getPitch(), pos);
+            IRSoundHandler.playRepeatableSound(SoundsRegistration.MOTOR_ROTATION_RESOURCEL, volume, getPitch(), pos);
         } else
         {
             IRSoundHandler.stopTileSound(pos);

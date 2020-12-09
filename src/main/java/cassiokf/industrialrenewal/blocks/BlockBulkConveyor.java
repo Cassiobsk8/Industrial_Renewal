@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
-import cassiokf.industrialrenewal.init.ModBlocks;
-import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.init.BlocksRegistration;
+import cassiokf.industrialrenewal.init.ItemsRegistration;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyor;
 import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyorHopper;
@@ -10,31 +10,26 @@ import cassiokf.industrialrenewal.tileentity.TileEntityBulkConveyorInserter;
 import cassiokf.industrialrenewal.util.enums.EnumBulkConveyorType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -43,118 +38,122 @@ import java.util.Random;
 
 public class BlockBulkConveyor extends BlockHorizontalFacing
 {
+    public static final IntegerProperty MODE = IntegerProperty.create("mode", 0, 2);
+    public static final BooleanProperty FRONT = BooleanProperty.create("front");
+    public static final BooleanProperty BACK = BooleanProperty.create("back");
+
+    protected static final VoxelShape BASE_AABB = Block.makeCuboidShape(0, 0, 0, 16, 8, 16);
+    protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0, 8, 0, 16, 16, 8);
+    protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0, 8, 8, 16, 16, 16);
+    protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(0, 8, 0, 8, 16, 16);
+    protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(8, 8, 0, 16, 16, 16);
     public final EnumBulkConveyorType type;
-    public static final PropertyInteger MODE = PropertyInteger.create("mode", 0, 2);
-    public static final PropertyBool FRONT = PropertyBool.create("front");
-    public static final PropertyBool BACK = PropertyBool.create("back");
 
-    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
-    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 0.5D);
-    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.5D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 0.5D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.5D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D);
-    private static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 0.625D, 1D);
-
-    public BlockBulkConveyor(String name, CreativeTabs tab, EnumBulkConveyorType type)
+    public BlockBulkConveyor(EnumBulkConveyorType type)
     {
-        super(name, tab, Material.IRON);
-        setSoundType(SoundType.METAL);
-        setHardness(0.8f);
+        super(Block.Properties.create(Material.IRON));
         this.type = type;
     }
 
     public static double getMotionX(Direction facing)
     {
-        return facing == EnumFacing.EAST ? 0.2 : -0.2;
+        return facing == Direction.EAST ? 0.2 : -0.2;
     }
 
     public static double getMotionZ(Direction facing)
     {
-        return facing == EnumFacing.SOUTH ? 0.2 : -0.2;
+        return facing == Direction.SOUTH ? 0.2 : -0.2;
     }
 
     @Override
     public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
     {
-        if (type.equals(EnumBulkConveyorType.NORMAL) && entityIn instanceof EntityLivingBase)
+        if (type.equals(EnumBulkConveyorType.NORMAL) && entityIn instanceof LivingEntity)
         {
-            EnumFacing facing = worldIn.getBlockState(pos).getValue(FACING);
-            if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) entityIn.motionZ += getMotionZ(facing);
-            else entityIn.motionX += getMotionX(facing);
+            Direction facing = worldIn.getBlockState(pos).get(FACING);
+            if (facing == Direction.NORTH || facing == Direction.SOUTH)
+            {
+                entityIn.addVelocity(0, 0, getMotionZ(facing));
+            } else
+            {
+                entityIn.addVelocity(getMotionX(facing), 0, 0);
+            }
         }
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        ItemStack heldItem = playerIn.getHeldItem(hand);
-        if (!heldItem.isEmpty() && hand.equals(EnumHand.MAIN_HAND))
+        ItemStack heldItem = player.getHeldItem(handIn);
+        if (!heldItem.isEmpty() && handIn.equals(Hand.MAIN_HAND))
         {
             if (type.equals(EnumBulkConveyorType.NORMAL))
             {
-                if (heldItem.getItem().equals(Item.getItemFromBlock(Blocks.HOPPER)))
+                if (heldItem.getItem().equals(Blocks.HOPPER))
                 {
-                    EnumFacing facing1 = state.getValue(FACING);
-                    worldIn.setBlockState(pos, ModBlocks.conveyorVHopper.getDefaultState().withProperty(FACING, facing1), 3);
+                    Direction facing1 = state.get(FACING);
+                    worldIn.setBlockState(pos, BlocksRegistration.CONVEYORVHOPPER.get().getDefaultState().with(FACING, facing1), 3);
                     worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-                    if (!playerIn.isCreative()) heldItem.shrink(1);
-                    return true;
+                    if (!player.isCreative()) heldItem.shrink(1);
+                    return ActionResultType.SUCCESS;
                 }
-                if (heldItem.getItem().equals(Item.getItemFromBlock(Blocks.DISPENSER)))
+                if (heldItem.getItem().equals(Blocks.DISPENSER))
                 {
-                    EnumFacing facing1 = state.getValue(FACING);
-                    worldIn.setBlockState(pos, ModBlocks.conveyorVInserter.getDefaultState().withProperty(FACING, facing1), 3);
+                    Direction facing1 = state.get(FACING);
+                    worldIn.setBlockState(pos, BlocksRegistration.CONVEYORVINSERTER.get().getDefaultState().with(FACING, facing1), 3);
                     worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-                    if (!playerIn.isCreative()) heldItem.shrink(1);
-                    return true;
+                    if (!player.isCreative()) heldItem.shrink(1);
+                    return ActionResultType.SUCCESS;
                 }
-            } else if (heldItem.getItem().equals(ModItems.screwDrive))
+            }
+            else if (heldItem.getItem().equals(ItemsRegistration.SCREWDRIVE.get()))
             {
                 if (type.equals(EnumBulkConveyorType.HOPPER))
                 {
-                    EnumFacing facing1 = state.getValue(FACING);
-                    worldIn.setBlockState(pos, ModBlocks.conveyorV.getDefaultState().withProperty(FACING, facing1), 3);
+                    Direction facing1 = state.get(FACING);
+                    worldIn.setBlockState(pos, BlocksRegistration.CONVEYORV.get().getDefaultState().with(FACING, facing1), 3);
                     ItemPowerScrewDrive.playDrillSound(worldIn, pos);
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
                 if (type.equals(EnumBulkConveyorType.INSERTER))
                 {
-                    EnumFacing facing1 = state.getValue(FACING);
-                    worldIn.setBlockState(pos, ModBlocks.conveyorV.getDefaultState().withProperty(FACING, facing1), 3);
+                    Direction facing1 = state.get(FACING);
+                    worldIn.setBlockState(pos, BlocksRegistration.CONVEYORV.get().getDefaultState().with(FACING, facing1), 3);
                     ItemPowerScrewDrive.playDrillSound(worldIn, pos);
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
-            } else if (Block.getBlockFromItem(heldItem.getItem()) instanceof BlockBulkConveyor)
+            }
+            else if (Block.getBlockFromItem(heldItem.getItem()) instanceof BlockBulkConveyor)
             {
-                 BlockState actualState = state.getActualState(worldIn, pos);
-                EnumFacing face = state.getValue(FACING);
-                int mode = actualState.getValue(MODE);
-                if (mode == 2 && worldIn.getBlockState(pos.offset(face).down()).getBlock().isReplaceable(worldIn, pos))
+                Direction face = state.get(FACING);
+                int mode = state.get(MODE);
+                if (mode == 2 && isReplaceable(worldIn, pos.offset(face).down()))
                 {
                     if (!worldIn.isRemote)
                     {
                         worldIn.setBlockState(pos.offset(face).down(), state, 3);
-                        if (!playerIn.isCreative()) heldItem.shrink(1);
+                        if (!player.isCreative()) heldItem.shrink(1);
                     }
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
-                if (worldIn.getBlockState(pos.offset(face)).getBlock().isReplaceable(worldIn, pos))
+                if (isReplaceable(worldIn, pos.offset(face)))
                 {
                     if (!worldIn.isRemote)
                     {
                         worldIn.setBlockState(pos.offset(face), state, 3);
-                        if (!playerIn.isCreative()) heldItem.shrink(1);
+                        if (!player.isCreative()) heldItem.shrink(1);
                     }
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
             }
         }
-        return false;
+        return ActionResultType.PASS;
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos,  BlockState state)
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
+        if (state.getBlock() == newState.getBlock()) return;
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
         if (tileentity instanceof TileEntityBulkConveyor)
@@ -165,164 +164,138 @@ public class BlockBulkConveyor extends BlockHorizontalFacing
 
         if (!type.equals(EnumBulkConveyorType.NORMAL))
         {
-            int x = pos.getX();
-            int y = pos.getY();
-            int z = pos.getZ();
             ItemStack itemst = type.equals(EnumBulkConveyorType.HOPPER)
-                    ? new ItemStack(Item.getItemFromBlock(Blocks.HOPPER))
-                    : new ItemStack(Item.getItemFromBlock(Blocks.DISPENSER));
-            EntityItem entity = new EntityItem(worldIn, x, y, z, itemst);
+                    ? new ItemStack(Blocks.HOPPER.asItem())
+                    : new ItemStack(Blocks.DISPENSER.asItem());
             if (!worldIn.isRemote)
             {
-                worldIn.spawnEntity(entity);
+                spawnAsEntity(worldIn, pos, itemst);
             }
         }
 
-        super.breakBlock(worldIn, pos, state);
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random par2Random, int par3)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return new ItemStack(ItemBlock.getItemFromBlock(ModBlocks.conveyorV)).getItem();
+        builder.add(FACING, MODE, FRONT, BACK);
     }
 
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING, MODE, FRONT, BACK);
-    }
-
-    private int getMode(IBlockAccess world, BlockPos pos,  BlockState ownState)
+    private int getMode(IBlockReader world, BlockPos pos, BlockState ownState)
     {
         if (type != EnumBulkConveyorType.NORMAL) return 0;
-        EnumFacing facing = ownState.getValue(FACING);
-         BlockState frontState = world.getBlockState(pos.offset(facing));
-         BlockState upState = world.getBlockState(pos.offset(facing).up());
-         BlockState directUpState = world.getBlockState(pos.up());
-         BlockState downState = world.getBlockState(pos.offset(facing).down());
-         BlockState backUpState = world.getBlockState(pos.offset(facing.getOpposite()).up());
-         BlockState backState = world.getBlockState(pos.offset(facing.getOpposite()));
+        Direction facing = ownState.get(FACING);
+        BlockState frontState = world.getBlockState(pos.offset(facing));
+        BlockState upState = world.getBlockState(pos.offset(facing).up());
+        BlockState directUpState = world.getBlockState(pos.up());
+        BlockState downState = world.getBlockState(pos.offset(facing).down());
+        BlockState backUpState = world.getBlockState(pos.offset(facing.getOpposite()).up());
+        BlockState backState = world.getBlockState(pos.offset(facing.getOpposite()));
 
-        //if (frontState.getBlock() instanceof BlockBulkConveyor && frontState.getValue(FACING) == facing) return 0;
-        if ((upState.getBlock() instanceof BlockBulkConveyor && upState.getValue(FACING).equals(facing)) && !(directUpState.getBlock() instanceof BlockBulkConveyor) && !(frontState.getBlock() instanceof BlockBulkConveyor && frontState.getValue(FACING).equals(facing)))
+        //if (frontState.getBlock() instanceof BlockBulkConveyor && frontState.get(FACING) == facing) return 0;
+        if ((upState.getBlock() instanceof BlockBulkConveyor && upState.get(FACING).equals(facing)) && !(directUpState.getBlock() instanceof BlockBulkConveyor) && !(frontState.getBlock() instanceof BlockBulkConveyor && frontState.get(FACING).equals(facing)))
             return 1;
-        if ((downState.getBlock() instanceof BlockBulkConveyor && downState.getValue(FACING).equals(facing)
-                && backUpState.getBlock() instanceof BlockBulkConveyor && backUpState.getValue(FACING).equals(facing))
-                || (!(backState.getBlock() instanceof BlockBulkConveyor && backState.getValue(FACING).equals(facing))
-                && (backUpState.getBlock() instanceof BlockBulkConveyor && backUpState.getValue(FACING).equals(facing))))
+        if ((downState.getBlock() instanceof BlockBulkConveyor && downState.get(FACING).equals(facing)
+                && backUpState.getBlock() instanceof BlockBulkConveyor && backUpState.get(FACING).equals(facing))
+                || (!(backState.getBlock() instanceof BlockBulkConveyor && backState.get(FACING).equals(facing))
+                && (backUpState.getBlock() instanceof BlockBulkConveyor && backUpState.get(FACING).equals(facing))))
             return 2;
         return 0;
     }
 
-    private boolean getFront(IBlockAccess world, BlockPos pos,  BlockState ownState, final int mode)
+    private boolean getFront(IBlockReader world, BlockPos pos, BlockState ownState, final int mode)
     {
         if (type.equals(EnumBulkConveyorType.INSERTER)) return false;
 
-        EnumFacing facing = ownState.getValue(FACING);
-         BlockState frontState = world.getBlockState(pos.offset(ownState.getValue(FACING)));
-         BlockState downState = world.getBlockState(pos.offset(facing).down());
+        Direction facing = ownState.get(FACING);
+        BlockState frontState = world.getBlockState(pos.offset(ownState.get(FACING)));
+        BlockState downState = world.getBlockState(pos.offset(facing).down());
 
         if (mode == 0)
-            return !(frontState.getBlock() instanceof BlockBulkConveyor) || (!(frontState.getBlock() instanceof BlockBulkConveyor && frontState.getValue(FACING).equals(facing)) && downState.getBlock() instanceof BlockBulkConveyor);
+            return !(frontState.getBlock() instanceof BlockBulkConveyor) || (!(frontState.getBlock() instanceof BlockBulkConveyor && frontState.get(FACING).equals(facing)) && downState.getBlock() instanceof BlockBulkConveyor);
         if (mode == 1) return false;
         if (mode == 2)
             return !(frontState.getBlock() instanceof BlockBulkConveyor) && !(downState.getBlock() instanceof BlockBulkConveyor);
         return false;
     }
 
-    private boolean getBack(IBlockAccess world, BlockPos pos,  BlockState ownState, final int mode)
+    private boolean getBack(IBlockReader world, BlockPos pos, BlockState ownState, final int mode)
     {
-        EnumFacing facing = ownState.getValue(FACING);
-         BlockState backState = world.getBlockState(pos.offset(facing.getOpposite()));
-         BlockState downState = world.getBlockState(pos.offset(facing.getOpposite()).down());
+        Direction facing = ownState.get(FACING);
+        BlockState backState = world.getBlockState(pos.offset(facing.getOpposite()));
+        BlockState downState = world.getBlockState(pos.offset(facing.getOpposite()).down());
 
         if (mode == 0)
-            return !(backState.getBlock() instanceof BlockBulkConveyor && backState.getValue(FACING).equals(facing)) && !(downState.getBlock() instanceof BlockBulkConveyor && downState.getValue(FACING).equals(facing));
+            return !(backState.getBlock() instanceof BlockBulkConveyor && backState.get(FACING).equals(facing)) && !(downState.getBlock() instanceof BlockBulkConveyor && downState.get(FACING).equals(facing));
         if (mode == 1)
-            return !(downState.getBlock() instanceof BlockBulkConveyor && downState.getValue(FACING).equals(facing)) && !(backState.getBlock() instanceof BlockBulkConveyor && backState.getValue(FACING).equals(facing));
+            return !(downState.getBlock() instanceof BlockBulkConveyor && downState.get(FACING).equals(facing)) && !(backState.getBlock() instanceof BlockBulkConveyor && backState.get(FACING).equals(facing));
         if (mode == 2) return false;
         return false;
     }
 
     @Override
-    public  BlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        int mode = getMode(worldIn, pos, state);
-        boolean front = getFront(worldIn, pos, state, mode);
-        boolean back = getBack(worldIn, pos, state, mode);
-        return state.withProperty(MODE, mode).withProperty(FRONT, front).withProperty(BACK, back);
+        int mode = getMode(worldIn, currentPos, stateIn);
+        boolean front = getFront(worldIn, currentPos, stateIn, mode);
+        boolean back = getBack(worldIn, currentPos, stateIn, mode);
+        return stateIn.with(MODE, mode).with(FRONT, front).with(BACK, back);
     }
 
     @Override
-    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
+    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction)
     {
         TileEntity te = world.getTileEntity(pos);
-        if (te instanceof TileEntityBulkConveyor && super.rotateBlock(world, pos, axis))
+        if (te instanceof TileEntityBulkConveyor && type.equals(EnumBulkConveyorType.NORMAL))
         {
-            EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+            Direction facing = world.getBlockState(pos).get(FACING);
             ((TileEntityBulkConveyor) te).setFacing(facing);
-            return true;
+            return state.with(FACING, state.get(FACING).rotateY());
         }
-        return false;
+        return state;
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos, boolean collision)
     {
-        if (type == EnumBulkConveyorType.NORMAL) return BLOCK_AABB;
-        return FULL_BLOCK_AABB;
-    }
-
-    @Override
-    public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
-    {
-         BlockState actualState = getActualState(state, worldIn, pos);
-        EnumFacing face = actualState.getValue(FACING);
-        int mode = actualState.getValue(MODE);
+        VoxelShape FINAL_SHAPE = NONE_AABB;
+        Direction face = state.get(FACING);
+        int mode = state.get(MODE);
         boolean ramp = mode == 1 || mode == 2;
         if (type == EnumBulkConveyorType.NORMAL)
         {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, BASE_AABB);
+            FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, BASE_AABB);
             if (ramp)
             {
-                if (face == EnumFacing.NORTH) addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-                if (face == EnumFacing.SOUTH) addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-                if (face == EnumFacing.WEST) addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
-                if (face == EnumFacing.EAST) addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
+                switch (face)
+                {
+                    case NORTH:
+                        FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, NORTH_AABB);
+                    case SOUTH:
+                        FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, SOUTH_AABB);
+                    case WEST:
+                        FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, WEST_AABB);
+                    case EAST:
+                        FINAL_SHAPE = VoxelShapes.or(FINAL_SHAPE, EAST_AABB);
+                }
             }
         } else
         {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+            FINAL_SHAPE = FULL_AABB;
         }
+        return FINAL_SHAPE;
     }
 
     @Override
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
-    {
-        return side == EnumFacing.DOWN;
-    }
-
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn,  BlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
-
-    @Override
-    public ItemStack getItem(World worldIn, BlockPos pos,  BlockState state)
-    {
-        return new ItemStack(Item.getItemFromBlock(ModBlocks.conveyorV));
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state)
+    public boolean hasTileEntity(BlockState state)
     {
         return true;
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(World world,  BlockState state)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         if (type == EnumBulkConveyorType.NORMAL) return new TileEntityBulkConveyor();
         if (type == EnumBulkConveyorType.HOPPER) return new TileEntityBulkConveyorHopper();

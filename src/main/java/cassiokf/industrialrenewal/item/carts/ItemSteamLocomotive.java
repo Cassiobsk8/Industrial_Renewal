@@ -1,15 +1,15 @@
 package cassiokf.industrialrenewal.item.carts;
 
 import cassiokf.industrialrenewal.entity.EntitySteamLocomotive;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.MinecartEntity;
+import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.world.World;
 
 public class ItemSteamLocomotive extends ItemCartBase
 {
-    public ItemSteamLocomotive(String name, CreativeTabs tab)
+
+    public ItemSteamLocomotive(Properties properties)
     {
-        super(name, tab);
+        super(properties);
     }
 
     @Override

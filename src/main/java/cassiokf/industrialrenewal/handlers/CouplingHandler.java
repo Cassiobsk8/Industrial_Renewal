@@ -6,7 +6,6 @@ import cassiokf.industrialrenewal.util.enums.EnumCouplingType;
 import cassiokf.industrialrenewal.util.interfaces.ICoupleCart;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.minecart.MinecartEntity;
-import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;

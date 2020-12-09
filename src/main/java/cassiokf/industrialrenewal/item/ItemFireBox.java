@@ -1,15 +1,14 @@
 package cassiokf.industrialrenewal.item;
 
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 
 public class ItemFireBox extends ItemBase
 {
-
     public int type;
 
-    public ItemFireBox(String name, int type, CreativeTabs tab)
+    public ItemFireBox(Item.Properties properties, int type)
     {
-        super(name, tab);
+        super(properties);
         this.type = type;
     }
 }
