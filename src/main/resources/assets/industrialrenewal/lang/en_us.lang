@@ -143,6 +143,7 @@ tile.industrialrenewal.steam.name=Steam
 tile.industrialrenewal.trash.name=Trash Bin
 tile.industrialrenewal.eotm.name=Employee of the Month Award
 tile.industrialrenewal.eotm_andrboot.name=Employee of the Month (andrboot)
+tile.industrialrenewal.eotm_ic2exp.name=Employee of the Month (ic2exp)
 tile.industrialrenewal.bunkbed.name=Bunk Bed
 tile.industrialrenewal.bunker_hatch.name=Bunker Hatch
 tile.industrialrenewal.small_wind_turbine_pillar.name=Wind Turbine Pillar
