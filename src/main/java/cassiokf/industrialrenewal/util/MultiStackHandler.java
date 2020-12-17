@@ -24,6 +24,16 @@ public class MultiStackHandler extends ItemStackHandler
         this.te = te;
     }
 
+    public ItemStack insertItem(@Nonnull ItemStack stack)
+    {
+        return insertItem(0, stack, false);
+    }
+
+    public ItemStack insertItem(@Nonnull ItemStack stack, boolean simulate)
+    {
+        return insertItem(0, stack, simulate);
+    }
+
     @Override
     @Nonnull
     public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
@@ -65,6 +75,16 @@ public class MultiStackHandler extends ItemStackHandler
         }
 
         return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
+    }
+
+    public ItemStack extractItem(int amount)
+    {
+        return extractItem(0, amount, false);
+    }
+
+    public ItemStack extractItem(int amount, boolean simulate)
+    {
+        return extractItem(0, amount, simulate);
     }
 
     @Override

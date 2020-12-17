@@ -291,7 +291,7 @@ public class IRConfig
             public int deepVeinMaxOre = 8000;
 
             @Config.RequiresMcRestart
-            @Config.Comment("CAUTION: change this will cause DeepOreVeins to ReGenerate (Default: 'indr_dv')")
+            @Config.Comment("CAUTION: change this will cause DeepOreVeins to ReGenerate (Default: 'dv')")
             public String deepVeinID = "dv";
 
             @Config.Comment("Ores to generate in Deep Vein (Oredict/id name and spawn chance)")

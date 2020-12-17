@@ -4,10 +4,12 @@ import cassiokf.industrialrenewal.tileentity.abstracts.TEMultiTankBase;
 import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.MultiStackHandler;
 import cassiokf.industrialrenewal.util.Utils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -18,6 +20,28 @@ public class TEStorage extends TEMultiTankBase<TEStorage>
 {
     private static final int capacity = 4096;
     private final MultiStackHandler inventory = new MultiStackHandler(capacity, true, this);
+
+    public boolean onActivated(EntityPlayer playerIn, EnumHand hand, EnumFacing facing)
+    {
+        ItemStack stack = playerIn.getHeldItem(hand);
+        if (stack.isEmpty() && inventory.getCount() > 0 && playerIn.isSneaking())
+        {
+            ItemStack itemsIn = inventory.extractItem(inventory.getStackInSlot(0).getMaxStackSize());
+            if (!itemsIn.isEmpty())
+            {
+                return playerIn.addItemStackToInventory(itemsIn);
+            }
+            return false;
+        }
+        if (!stack.isEmpty() && (inventory.getCount() == 0 || (stack.getItem().equals(inventory.getStackInSlot(0).getItem()))))
+        {
+            ItemStack stack1 = inventory.insertItem(stack);
+            int count = stack.getCount() - stack1.getCount();
+            if (!playerIn.isCreative() && count > 0) stack.shrink(count);
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
