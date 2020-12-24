@@ -274,6 +274,13 @@ public class IRConfig
             public int miningDeepEnergyPerTick = 1024;
             @Config.Comment("Mining drill cooldown time between mining (default 120)")
             public int miningCooldown = 120;
+
+            @Config.Comment("Steel Drill max damage (default 400)")
+            public int steelDrillMaxDamage = 400;
+            @Config.Comment("Diamond Drill max damage (default 2000)")
+            public int diamondDrillMaxDamage = 2000;
+            @Config.Comment("DeepVein Drill max damage (default 12000)")
+            public int deepVeinDrillMaxDamage = 12000;
         }
 
         public static class SubCategoryGen

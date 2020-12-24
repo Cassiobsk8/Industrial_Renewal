@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.init;
 
 import cassiokf.industrialrenewal.References;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.item.*;
 import cassiokf.industrialrenewal.item.armor.ItemSafetyBelt;
 import cassiokf.industrialrenewal.item.armor.ItemSafetyHelmet;
@@ -75,9 +76,9 @@ public class ModItems
     public static final ItemFireBox fireBoxFluid = new ItemFireBox("firebox_fluid", 2, References.CREATIVE_IR_TAB);
 
     public static final ItemWindBlade windBlade = new ItemWindBlade("small_wind_blade", References.CREATIVE_IR_TAB);
-    public static final ItemDrill drillSteel = new ItemDrill("drill_steel", References.CREATIVE_IR_TAB, 400);
-    public static final ItemDrill drillDiamond = new ItemDrill("drill_diamond", References.CREATIVE_IR_TAB, 2000);
-    public static final ItemDrill drillDeep = new ItemDrill("drill_deep", References.CREATIVE_IR_TAB, 12000);
+    public static final ItemDrill drillSteel = new ItemDrill("drill_steel", References.CREATIVE_IR_TAB, IRConfig.MainConfig.Main.steelDrillMaxDamage);
+    public static final ItemDrill drillDiamond = new ItemDrill("drill_diamond", References.CREATIVE_IR_TAB, IRConfig.MainConfig.Main.diamondDrillMaxDamage);
+    public static final ItemDrill drillDeep = new ItemDrill("drill_deep", References.CREATIVE_IR_TAB, IRConfig.MainConfig.Main.deepVeinDrillMaxDamage);
 
     public static final ItemProspectingPan prospectingPan = new ItemProspectingPan("prospecting_pan", References.CREATIVE_IR_TAB);
     public static final ItemOre hematiteChunk = new ItemOre("chunk_hematite", "oreIron", References.CREATIVE_IR_TAB);
