@@ -134,14 +134,13 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
                 if (canCheck && canRun())
                 {
                     if (getOreSize() > 0) running = true;
-                    else depleted = true;
 
                     if (running)
                     {
-                        size = getOreSize();
                         consumeEnergy();
                         if (drillHeat < (waterTank.getFluidAmount() >= waterPerTick ? 9400 : 17300)) drillHeat += 20;
                         mineOre();
+                        size = getOreSize();
                     } else
                     {
                         size = 0;
@@ -153,7 +152,6 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
                     size = getOreSize();
                     drillHeat -= 30;
                     running = false;
-                    depleted = false;
                     currentTick = 0;
                 }
 
@@ -196,8 +194,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
     public void checkDeepMine()
     {
         isDeepMine = drillInv.getStackInSlot(0).getItem() == ModItems.drillDeep;
-        if (canCheckOre()) size = getOreSize();
-        else size = 0;
+        depleted = false;
         sync();
     }
 
@@ -283,12 +280,12 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
 
     private void getOres()
     {
-        int old = size;
         if (isDeepMine())
         {
             vein = OreGeneration.getChunkVein(world, pos);
             size = vein.getCount();
-            if (old != size) sync();
+            depleted = size == 0;
+            sync();
             return;
         }
         Chunk chunk = world.getChunk(pos);
@@ -310,7 +307,8 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
             }
         }
         size = ores.size();
-        if (old != size) sync();
+        depleted = size == 0;
+        sync();
     }
 
     private void doAnimation()
@@ -361,7 +359,8 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
 
     private boolean canCheckOre()
     {
-        return energyContainer.getEnergyStored() >= (isDeepMine() ? deepEnergyPerTick : energyPerTick)
+        return !depleted
+                && energyContainer.getEnergyStored() >= (isDeepMine() ? deepEnergyPerTick : energyPerTick)
                 && !drillInv.getStackInSlot(0).isEmpty();
     }
 
@@ -406,8 +405,8 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
 
     public String[] getScreenTexts()
     {
-        List<String> texts = new ArrayList<>();
         if (energyContainer.getEnergyStored() <= 0) return EMPTY_ARRAY;
+        List<String> texts = new ArrayList<>();
         texts.add("Mining Drill Status: " + (running ? "Running" : TextFormatting.RED + " Stoped"));
         texts.add("Mining Drill Mode: " + TextFormatting.BLUE + (isDeepMine ? "Deep Mine" : "Surface Mine"));
         texts.add("Vein Size: " + (depleted ? "Depleted" : size));
@@ -466,6 +465,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
         compound.setTag("StoredIR", this.energyContainer.serializeNBT());
         compound.setInteger("heat", drillHeat);
         compound.setBoolean("running", running);
+        compound.setBoolean("depleted", depleted);
         compound.setBoolean("deep", isDeepMine);
         compound.setInteger("vsize", size);
         return super.writeToNBT(compound);
@@ -479,6 +479,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
         this.energyContainer.deserializeNBT(compound.getCompoundTag("StoredIR"));
         this.drillHeat = compound.getInteger("heat");
         this.running = compound.getBoolean("running");
+        this.depleted = compound.getBoolean("depleted");
         this.isDeepMine = compound.getBoolean("deep");
         this.size = compound.getInteger("vsize");
         super.readFromNBT(compound);

@@ -28,10 +28,12 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     private boolean faceChecked = false;
     private int faceIndex;
     protected final List<TE> machineTEList = new ArrayList<>();
+    protected boolean isMachineAssembled = false;
 
     @Override
     public void update()
     {
+        if (!isMachineAssembled) return;
         if (!firstTick)
         {
             firstTick = true;
@@ -119,7 +121,7 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
         }
     }
 
-    private void startList()
+    public void startList()
     {
         if (machineTEList.isEmpty())
         {
@@ -127,8 +129,19 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
             for (BlockPos currentPos : getListOfBlockPositions(pos))
             {
                 TileEntity te = world.getTileEntity(currentPos);
-                if (instanceOf(te)) machineTEList.add((TE) te);
+                if (instanceOf(te))
+                    machineTEList.add((TE) te);
             }
+        }
+
+        for (TE te : machineTEList)
+        {
+            if (te != this)
+            {
+                te.machineTEList.clear();
+                te.machineTEList.addAll(machineTEList);
+            }
+            te.isMachineAssembled = true;
         }
     }
 
@@ -181,6 +194,7 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     {
         compound.setBoolean("master", this.isMaster());
         compound.setBoolean("checked", this.masterChecked);
+        compound.setBoolean("ready", isMachineAssembled);
         return super.writeToNBT(compound);
     }
 
@@ -189,6 +203,7 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     {
         this.isMaster = compound.getBoolean("master");
         this.masterChecked = compound.getBoolean("checked");
+        this.isMachineAssembled = compound.getBoolean("ready");
         super.readFromNBT(compound);
     }
 
