@@ -5,14 +5,11 @@ import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -94,17 +91,6 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
         }
     }
 
-    public void setBlockList(List<BlockPos> list)
-    {
-        machineTEList.clear();
-        for (BlockPos currentPos : list)
-        {
-            TileEntity te = world.getTileEntity(currentPos);
-            if (instanceOf(te)) machineTEList.add((TE) te);
-        }
-        this.markDirty();
-    }
-
     @Override
     public void sync()
     {
@@ -133,16 +119,19 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
         }
     }
 
-    @Deprecated // For old save compatibility
     private void startList()
     {
         if (machineTEList.isEmpty())
         {
-            setBlockList(getListOfBlockPositions(pos));
+            machineTEList.clear();
+            for (BlockPos currentPos : getListOfBlockPositions(pos))
+            {
+                TileEntity te = world.getTileEntity(currentPos);
+                if (instanceOf(te)) machineTEList.add((TE) te);
+            }
         }
     }
 
-    @Deprecated // For old save compatibility
     public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
     {
         return MachinesUtils.getBlocksIn3x3x3Centered(centerPosition);
@@ -153,17 +142,13 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     public EnumFacing getMasterFacing()
     {
         if (faceChecked) return EnumFacing.byIndex(faceIndex);
-        if (getMaster() == null)
-        {
-            return getBlockFace();
-        }
-        EnumFacing facing = getMaster().getBlockFace();
+        EnumFacing facing = getMaster().forceBlockFaceCheck();
         faceChecked = true;
         faceIndex = facing.getIndex();
         return facing;
     }
 
-    public EnumFacing getBlockFace()
+    protected EnumFacing forceBlockFaceCheck()
     {
         IBlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof BlockMultiBlockBase)
@@ -196,16 +181,6 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     {
         compound.setBoolean("master", this.isMaster());
         compound.setBoolean("checked", this.masterChecked);
-        NBTTagList list = new NBTTagList();
-        for (TE te : machineTEList)
-        {
-            if (te != null)
-            {
-                NBTTagCompound tag = NBTUtil.createPosTag(te.getPos());
-                list.appendTag(tag);
-            }
-        }
-        compound.setTag("list", list);
         return super.writeToNBT(compound);
     }
 
@@ -214,17 +189,6 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     {
         this.isMaster = compound.getBoolean("master");
         this.masterChecked = compound.getBoolean("checked");
-        NBTTagList list = compound.getTagList("list", Constants.NBT.TAG_LIST);
-        machineTEList.clear();
-        if (!list.isEmpty())
-        {
-            for (int i = 0; i < list.tagCount(); i++)
-            {
-                NBTTagCompound tag = list.getCompoundTagAt(i);
-                TileEntity te = world.getTileEntity(NBTUtil.getPosFromTag(tag));
-                if (instanceOf(te)) machineTEList.add((TE) te);
-            }
-        }
         super.readFromNBT(compound);
     }
 
