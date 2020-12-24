@@ -3,122 +3,55 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.blocks.BlockBunkerHatch;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.IRSoundRegister;
-import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
+import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
 import cassiokf.industrialrenewal.util.MachinesUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
-public class TileEntityBunkerHatch extends TEBase
+public class TileEntityBunkerHatch extends TileEntityMultiBlockBase<TileEntityBunkerHatch>
 {
-    private boolean master;
-    private boolean breaking;
-    private TileEntityBunkerHatch masterTE;
-    private boolean masterChecked = false;
-
-    public TileEntityBunkerHatch getMaster()
-    {
-        List<BlockPos> list = MachinesUtils.getBlocksIn3x1x3Centered(this.pos);
-        for (BlockPos currentPos : list)
-        {
-            if (world.getTileEntity(currentPos) instanceof TileEntityBunkerHatch)
-            {
-                TileEntityBunkerHatch te = (TileEntityBunkerHatch) world.getTileEntity(currentPos);
-                if (te != null && te.isMaster())
-                {
-                    return te;
-                }
-            }
-        }
-        world.setBlockToAir(pos);
-        world.removeTileEntity(pos);
-        return null;
-    }
-
     public void changeOpen()
     {
+        if (world.isRemote) return;
         if (!isMaster())
         {
-            if (getMaster() != null)
-            {
-                getMaster().changeOpen();
-            }
+            getMaster().changeOpen();
             return;
         }
         IBlockState state = world.getBlockState(pos);
         boolean value = !state.getValue(BlockBunkerHatch.OPEN);
         changeOpenFromMaster(value);
         if (value)
-        {
-            world.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, 1.0F);
-
-        } else
-        {
-            world.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, 1.0F * IRConfig.MainConfig.Sounds.masterVolumeMult, 1.0F);
-        }
-    }
-
-    @Override
-    public void onBlockBreak()
-    {
-        if (!this.isMaster())
-        {
-            if (getMaster() != null)
-            {
-                getMaster().onBlockBreak();
-            }
-            return;
-        }
-        if (!breaking)
-        {
-            breaking = true;
-            List<BlockPos> list = MachinesUtils.getBlocksIn3x1x3Centered(this.pos);
-            for (BlockPos currentPos : list)
-            {
-                Block block = world.getBlockState(currentPos).getBlock();
-                if (block instanceof BlockBunkerHatch) world.setBlockToAir(currentPos);
-            }
-        }
+            world.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_CLOSE, SoundCategory.NEUTRAL, IRConfig.MainConfig.Sounds.masterVolumeMult, 1.0F);
+        else
+            world.playSound(null, pos, IRSoundRegister.BLOCK_CATWALKGATE_OPEN, SoundCategory.NEUTRAL, IRConfig.MainConfig.Sounds.masterVolumeMult, 1.0F);
     }
 
     public void changeOpenFromMaster(boolean value)
     {
-        List<BlockPos> list = MachinesUtils.getBlocksIn3x1x3Centered(this.pos);
-        for (BlockPos currentPos : list)
+        for (TileEntityBunkerHatch te : machineTEList)
         {
-            IBlockState state = world.getBlockState(currentPos);
+            IBlockState state = world.getBlockState(te.getPos());
             if (state.getBlock() instanceof BlockBunkerHatch)
             {
-                world.setBlockState(currentPos, state.withProperty(BlockBunkerHatch.OPEN, value));
+                world.setBlockState(te.getPos(), state.withProperty(BlockBunkerHatch.OPEN, value));
             }
         }
     }
 
-    public boolean isMaster()//tesr uses this
+    @Override
+    public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
     {
-        if (masterChecked) return this.master;
-
-        IBlockState state = this.world.getBlockState(this.pos);
-        if (!(state.getBlock() instanceof BlockBunkerHatch)) this.master = false;
-        else this.master = state.getValue(BlockBunkerHatch.MASTER);
-        return this.master;
+        return MachinesUtils.getBlocksIn3x1x3Centered(centerPosition);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public boolean instanceOf(TileEntity tileEntity)
     {
-        compound.setBoolean("master", this.isMaster());
-        return super.writeToNBT(compound);
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound compound)
-    {
-        this.master = compound.getBoolean("master");
-        super.readFromNBT(compound);
+        return tileEntity instanceof TileEntityBunkerHatch;
     }
 }

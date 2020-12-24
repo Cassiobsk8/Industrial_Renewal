@@ -3,23 +3,26 @@ package cassiokf.industrialrenewal.tileentity.abstracts;
 import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
 import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBase> extends TileEntitySync implements ITickable
 {
-    boolean firstTick = false;
+    protected boolean firstTick = false;
     private boolean isMaster;
     private boolean breaking;
     private boolean startBreaking;
@@ -27,6 +30,7 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     private boolean masterChecked = false;
     private boolean faceChecked = false;
     private int faceIndex;
+    protected final List<TE> machineTEList = new ArrayList<>();
 
     @Override
     public void update()
@@ -35,7 +39,11 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
         {
             firstTick = true;
             isMaster();
-            if (isMaster()) this.setMaster();
+            if (isMaster())
+            {
+                startList();
+                this.setMaster();
+            }
             onFirstTick();
         }
         tick();
@@ -54,16 +62,12 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
         if (isMaster) return (TE) this;
         if (masterTE == null || masterTE.isInvalid())
         {
-            List<BlockPos> list = MachinesUtils.getBlocksIn3x3x3Centered(this.pos);
-            for (BlockPos currentPos : list)
+            for (TE te : machineTEList)
             {
-                TileEntity te = world.getTileEntity(currentPos);
-                if (te instanceof TileEntityMultiBlockBase
-                        && ((TileEntityMultiBlockBase) te).isMaster()
-                        && instanceOf(te))
+                if (te != null && te.isMaster())
                 {
-                    setMaster((TE) te);
-                    ((TE) te).setMaster();
+                    setMaster(te);
+                    te.setMaster();
                     return masterTE;
                 }
             }
@@ -81,15 +85,24 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     public void setMaster()
     {
         if (!isMaster()) return;
-        List<BlockPos> list = getListOfBlockPositions(pos);
+        for (TE te : machineTEList)
+        {
+            if (instanceOf(te))
+            {
+                te.setMaster(this);
+            }
+        }
+    }
+
+    public void setBlockList(List<BlockPos> list)
+    {
+        machineTEList.clear();
         for (BlockPos currentPos : list)
         {
             TileEntity te = world.getTileEntity(currentPos);
-            if (te instanceof TileEntityMultiBlockBase && instanceOf(te))
-            {
-                ((TileEntityMultiBlockBase) te).setMaster(this);
-            }
+            if (instanceOf(te)) machineTEList.add((TE) te);
         }
+        this.markDirty();
     }
 
     @Override
@@ -113,15 +126,23 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
         {
             breaking = true;
             onMasterBreak();
-            List<BlockPos> list = getListOfBlockPositions(pos);
-            for (BlockPos currentPos : list)
+            for (TE te : machineTEList)
             {
-                Block block = world.getBlockState(currentPos).getBlock();
-                if (block instanceof BlockMultiBlockBase) world.setBlockToAir(currentPos);
+                if (te != null) world.setBlockToAir(te.getPos());
             }
         }
     }
 
+    @Deprecated // For old save compatibility
+    private void startList()
+    {
+        if (machineTEList.isEmpty())
+        {
+            setBlockList(getListOfBlockPositions(pos));
+        }
+    }
+
+    @Deprecated // For old save compatibility
     public List<BlockPos> getListOfBlockPositions(BlockPos centerPosition)
     {
         return MachinesUtils.getBlocksIn3x3x3Centered(centerPosition);
@@ -175,6 +196,16 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     {
         compound.setBoolean("master", this.isMaster());
         compound.setBoolean("checked", this.masterChecked);
+        NBTTagList list = new NBTTagList();
+        for (TE te : machineTEList)
+        {
+            if (te != null)
+            {
+                NBTTagCompound tag = NBTUtil.createPosTag(te.getPos());
+                list.appendTag(tag);
+            }
+        }
+        compound.setTag("list", list);
         return super.writeToNBT(compound);
     }
 
@@ -183,6 +214,17 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     {
         this.isMaster = compound.getBoolean("master");
         this.masterChecked = compound.getBoolean("checked");
+        NBTTagList list = compound.getTagList("list", Constants.NBT.TAG_LIST);
+        machineTEList.clear();
+        if (!list.isEmpty())
+        {
+            for (int i = 0; i < list.tagCount(); i++)
+            {
+                NBTTagCompound tag = list.getCompoundTagAt(i);
+                TileEntity te = world.getTileEntity(NBTUtil.getPosFromTag(tag));
+                if (instanceOf(te)) machineTEList.add((TE) te);
+            }
+        }
         super.readFromNBT(compound);
     }
 

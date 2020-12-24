@@ -236,7 +236,7 @@ render.industrialrenewal.k=K
 render.industrialrenewal.f=°F
 
 #Info
-tile.industrialrenewal.crossing_rail.info=Make the carts honk when they pass
+tile.industrialrenewal.crossing_rail.info=Make the Locomotives honk when they pass
 tile.industrialrenewal.loader_rail.info=Use in conjunction with
 tile.industrialrenewal.sign_base.info=Shift + Right Click with Powered Screwdrive to change
 info.industrialrenewal.produces=Produces

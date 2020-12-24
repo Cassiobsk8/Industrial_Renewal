@@ -32,7 +32,7 @@ public abstract class BlockMultiBlockBase<TE extends TileEntityMultiBlockBase> e
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        worldIn.setBlockState(pos.offset(state.getValue(FACING)).up(), state.withProperty(MASTER, true));
+        worldIn.setBlockState(getMasterPosBasedOnPlace(pos, state.getValue(FACING)), state.withProperty(MASTER, true));
     }
 
     @Override
@@ -42,10 +42,18 @@ public abstract class BlockMultiBlockBase<TE extends TileEntityMultiBlockBase> e
         {
             EnumFacing facing = state.getValue(FACING);
             List<BlockPos> posList = getMachineBlockPosList(pos, facing);
+            BlockPos masterPos = null;
             for (BlockPos currentPos : posList)
             {
                 if (!currentPos.equals(pos))
                     worldIn.setBlockState(currentPos, state.withProperty(MASTER, false));
+                else masterPos = currentPos;
+            }
+
+            if (masterPos != null)
+            {
+                TileEntity te = worldIn.getTileEntity(masterPos);
+                if (te instanceof TileEntityMultiBlockBase) ((TileEntityMultiBlockBase<?>) te).setBlockList(posList);
             }
         }
     }

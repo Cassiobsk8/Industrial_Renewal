@@ -1,7 +1,8 @@
 package cassiokf.industrialrenewal.blocks;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
 import cassiokf.industrialrenewal.tileentity.TileEntityBunkerHatch;
+import cassiokf.industrialrenewal.util.MachinesUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -23,24 +24,22 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockBunkerHatch extends BlockHorizontalFacing
+public class BlockBunkerHatch extends BlockMultiBlockBase<TileEntityBunkerHatch>
 {
-    public static final PropertyBool MASTER = PropertyBool.create("master");
     public static final PropertyBool OPEN = PropertyBool.create("open");
-
-    protected static final AxisAlignedBB RENDER_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
     public BlockBunkerHatch(String name, CreativeTabs tab)
     {
-        super(name, tab, Material.IRON);
+        super(Material.IRON, name, tab);
         setSoundType(SoundType.METAL);
+        setDefaultState(getDefaultState().withProperty(OPEN, false));
     }
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile != null && tile instanceof TileEntityBunkerHatch)
+        if (tile instanceof TileEntityBunkerHatch)
         {
             ((TileEntityBunkerHatch) tile).changeOpen();
         }
@@ -62,12 +61,6 @@ public class BlockBunkerHatch extends BlockHorizontalFacing
     }
 
     @Override
-    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
-    {
-        return false;
-    }
-
-    @Override
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
     {
         return worldIn.getBlockState(pos).getValue(OPEN);
@@ -80,50 +73,21 @@ public class BlockBunkerHatch extends BlockHorizontalFacing
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, EnumFacing facing)
     {
-        if (state.getValue(MASTER))
-        {
-            for (int z = -1; z < 2; z++)
-            {
-                for (int x = -1; x < 2; x++)
-                {
-                    BlockPos currentPos = new BlockPos(pos.getX() + x, pos.getY(), pos.getZ() + z);
-                    if (z != 0 || x != 0)
-                        worldIn.setBlockState(currentPos, state.withProperty(MASTER, false));
-                }
-            }
-        }
+        return pos.offset(facing);
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    public List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing)
     {
-        EntityPlayer player = worldIn.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 10D, false);
-        if (player == null) return false;
-        for (int z = 0; z < 3; z++)
-        {
-            for (int x = -1; x < 2; x++)
-            {
-                EnumFacing facing = player.getHorizontalFacing();
-                BlockPos currentPos = new BlockPos(pos.offset(facing, z).offset(facing.rotateY(), x));
-                IBlockState state = worldIn.getBlockState(currentPos);
-                if (!state.getBlock().isReplaceable(worldIn, currentPos)) return false;
-            }
-        }
-        return true;
+        return MachinesUtils.getBlocksIn3x1x3Centered(masterPos);
     }
 
     @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACING, MASTER, OPEN);
-    }
-
-    @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(MASTER, false).withProperty(OPEN, false);
     }
 
     @Override
@@ -151,12 +115,6 @@ public class BlockBunkerHatch extends BlockHorizontalFacing
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return RENDER_AABB;
-    }
-
-    @Override
     public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, @Nullable final Entity entityIn, final boolean isActualState)
     {
         IBlockState actualState = getActualState(state, worldIn, pos);
@@ -167,14 +125,8 @@ public class BlockBunkerHatch extends BlockHorizontalFacing
         }
         else
         {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, RENDER_AABB);
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
         }
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
     }
 
     @Nullable
