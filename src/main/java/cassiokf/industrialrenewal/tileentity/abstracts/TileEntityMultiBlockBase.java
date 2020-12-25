@@ -48,6 +48,12 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
         tick();
     }
 
+    @Override
+    public void onLoad()
+    {
+        if (!isMachineAssembled && isMaster()) startList();
+    }
+
     public void tick()
     {
     }
@@ -142,6 +148,7 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
                 te.machineTEList.addAll(machineTEList);
             }
             te.isMachineAssembled = true;
+            te.sync();
         }
     }
 
