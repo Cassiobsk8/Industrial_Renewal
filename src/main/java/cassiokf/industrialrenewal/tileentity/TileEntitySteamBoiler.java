@@ -24,14 +24,15 @@ public class TileEntitySteamBoiler extends TileEntityMultiBlockBase<TileEntitySt
     private static final int fluidPerTick = 1;
 
     @Override
-    public void tick()
+    public void onTick()
     {
         if (this.isMaster() && !this.world.isRemote)
         {
             if (this.type > 0)
             {
                 boiler.onTick();
-            } else
+            }
+            else
             {
                 boiler.outPutSteam();
                 boiler.coolDown();

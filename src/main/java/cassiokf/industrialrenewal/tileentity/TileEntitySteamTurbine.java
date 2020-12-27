@@ -93,7 +93,7 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
     private float steamReceivedNorm = 0f;
 
     @Override
-    public void tick()
+    public void onTick()
     {
         if (this.isMaster())
         {

@@ -88,7 +88,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
     }
 
     @Override
-    public void tick()
+    public void onTick()
     {
         if (isMaster())
         {

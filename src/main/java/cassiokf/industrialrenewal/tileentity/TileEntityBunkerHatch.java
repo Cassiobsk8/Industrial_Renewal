@@ -33,12 +33,13 @@ public class TileEntityBunkerHatch extends TileEntityMultiBlockBase<TileEntityBu
 
     public void changeOpenFromMaster(boolean value)
     {
-        for (TileEntityBunkerHatch te : machineTEList)
+        List<BlockPos> list = MachinesUtils.getBlocksIn3x1x3Centered(pos);
+        for (BlockPos currentPos : list)
         {
-            IBlockState state = world.getBlockState(te.getPos());
+            IBlockState state = world.getBlockState(currentPos);
             if (state.getBlock() instanceof BlockBunkerHatch)
             {
-                world.setBlockState(te.getPos(), state.withProperty(BlockBunkerHatch.OPEN, value));
+                world.setBlockState(currentPos, state.withProperty(BlockBunkerHatch.OPEN, value));
             }
         }
     }

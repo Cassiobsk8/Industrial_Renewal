@@ -55,10 +55,8 @@ public class BlockFluidPipe extends BlockPipeBase<TileEntityFluidPipe>
     public boolean canConnectToCapability(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection)
     {
         BlockPos pos = ownPos.offset(neighbourDirection);
-        IBlockState state = worldIn.getBlockState(pos);
         TileEntity te = worldIn.getTileEntity(pos);
-        return !(state.getBlock() instanceof BlockFluidPipe) && !(state.getBlock() instanceof BlockFluidPipeGauge)
-                && te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, neighbourDirection.getOpposite());
+        return te != null && !(te instanceof TileEntityFluidPipe) && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, neighbourDirection.getOpposite());
     }
 
     @Override

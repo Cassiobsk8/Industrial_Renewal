@@ -42,21 +42,10 @@ public abstract class BlockMultiBlockBase<TE extends TileEntityMultiBlockBase> e
         {
             EnumFacing facing = state.getValue(FACING);
             List<BlockPos> posList = getMachineBlockPosList(pos, facing);
-            BlockPos masterPos = null;
             for (BlockPos currentPos : posList)
             {
                 if (!currentPos.equals(pos))
                     worldIn.setBlockState(currentPos, state.withProperty(MASTER, false));
-                else masterPos = currentPos;
-            }
-
-            if (masterPos != null)
-            {
-                TileEntity te = worldIn.getTileEntity(masterPos);
-                if (te instanceof TileEntityMultiBlockBase)
-                {
-                    ((TileEntityMultiBlockBase<?>) te).startList();
-                }
             }
         }
     }

@@ -43,7 +43,7 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
     private int rotation;
 
     @Override
-    public void tick()
+    public void onTick()
     {
         if (isMaster())
         {

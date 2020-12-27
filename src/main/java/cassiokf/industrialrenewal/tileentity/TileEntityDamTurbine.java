@@ -32,7 +32,7 @@ public class TileEntityDamTurbine extends TileEntityMultiBlockBase<TileEntityDam
     }
 
     @Override
-    public void tick()
+    public void onTick()
     {
         if (isMaster())
         {
@@ -40,7 +40,8 @@ public class TileEntityDamTurbine extends TileEntityMultiBlockBase<TileEntityDam
             {
                 doRotation();
                 passRotationUp();
-            } else
+            }
+            else
             {
                 updateSound(getPitch());
             }

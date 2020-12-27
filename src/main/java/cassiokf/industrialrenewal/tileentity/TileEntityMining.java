@@ -122,7 +122,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
     private int particleTick;
 
     @Override
-    public void tick()
+    public void onTick()
     {
         if (this.isMaster())
         {

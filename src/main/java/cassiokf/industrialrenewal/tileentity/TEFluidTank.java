@@ -53,7 +53,7 @@ public class TEFluidTank extends TEMultiTankBase<TEFluidTank>
     };
 
     @Override
-    public void tick()
+    public void onTick()
     {
         if (!world.isRemote && isMaster() && isBottom())
         {

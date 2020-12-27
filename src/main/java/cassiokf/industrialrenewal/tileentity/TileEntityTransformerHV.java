@@ -101,7 +101,7 @@ public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntity
     }
 
     @Override
-    public void tick()
+    public void onTick()
     {
         if (!world.isRemote && isMaster())
         {
@@ -138,7 +138,7 @@ public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntity
 
     private void checkIfNeedsNetworkRefresh()
     {
-        if (isConnected() && isMaster())
+        if (isMaster() && isConnected())
         {
             TileEntity te = world.getTileEntity(cableConnectionPos);
             if (te instanceof IConnectorHV)
@@ -147,7 +147,8 @@ public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntity
                 {
                     setOtherSideTransformer((IConnectorHV) te);
                     ((IConnectorHV) te).setOtherSideTransformer(this);
-                } else
+                }
+                else
                 {
                     setOtherSideTransformer(null);
                     ((IConnectorHV) te).setOtherSideTransformer(null);

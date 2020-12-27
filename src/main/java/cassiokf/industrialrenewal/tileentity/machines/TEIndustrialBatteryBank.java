@@ -94,7 +94,7 @@ public class TEIndustrialBatteryBank extends TEMultiTankBase<TEIndustrialBattery
     }
 
     @Override
-    public void tick()
+    public void onTick()
     {
         if (!world.isRemote && isMaster() && isBottom())
         {

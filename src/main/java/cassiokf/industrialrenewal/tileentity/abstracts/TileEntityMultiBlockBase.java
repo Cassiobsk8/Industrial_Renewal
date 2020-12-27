@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.tileentity.abstracts;
 import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
 import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -14,12 +15,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBase> extends TileEntitySync implements ITickable
 {
-    protected boolean firstTick = false;
+    boolean firstTick = false;
     private boolean isMaster;
     private boolean breaking;
     private boolean startBreaking;
@@ -27,34 +27,21 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     private boolean masterChecked = false;
     private boolean faceChecked = false;
     private int faceIndex;
-    protected final List<TE> machineTEList = new ArrayList<>();
-    protected boolean isMachineAssembled = false;
 
     @Override
     public void update()
     {
-        if (!isMachineAssembled) return;
         if (!firstTick)
         {
             firstTick = true;
             isMaster();
-            if (isMaster())
-            {
-                startList();
-                this.setMaster();
-            }
+            if (isMaster()) this.setMaster();
             onFirstTick();
         }
-        tick();
+        onTick();
     }
 
-    @Override
-    public void onLoad()
-    {
-        if (!isMachineAssembled && isMaster()) startList();
-    }
-
-    public void tick()
+    public void onTick()
     {
     }
 
@@ -67,12 +54,16 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
         if (isMaster) return (TE) this;
         if (masterTE == null || masterTE.isInvalid())
         {
-            for (TE te : machineTEList)
+            List<BlockPos> list = MachinesUtils.getBlocksIn3x3x3Centered(this.pos);
+            for (BlockPos currentPos : list)
             {
-                if (te != null && te.isMaster())
+                TileEntity te = world.getTileEntity(currentPos);
+                if (te instanceof TileEntityMultiBlockBase
+                        && ((TileEntityMultiBlockBase) te).isMaster()
+                        && instanceOf(te))
                 {
-                    setMaster(te);
-                    te.setMaster();
+                    setMaster((TE) te);
+                    ((TE) te).setMaster();
                     return masterTE;
                 }
             }
@@ -90,11 +81,13 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     public void setMaster()
     {
         if (!isMaster()) return;
-        for (TE te : machineTEList)
+        List<BlockPos> list = getListOfBlockPositions(pos);
+        for (BlockPos currentPos : list)
         {
-            if (instanceOf(te))
+            TileEntity te = world.getTileEntity(currentPos);
+            if (te instanceof TileEntityMultiBlockBase && instanceOf(te))
             {
-                te.setMaster(this);
+                ((TileEntityMultiBlockBase) te).setMaster(this);
             }
         }
     }
@@ -110,7 +103,7 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
         startBreaking = true;
         if (!this.isMaster())
         {
-            if (getMaster() != null && getMaster() != this)
+            if (getMaster() != this)
             {
                 getMaster().breakMultiBlocks();
             }
@@ -120,35 +113,12 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
         {
             breaking = true;
             onMasterBreak();
-            for (TE te : machineTEList)
+            List<BlockPos> list = getListOfBlockPositions(pos);
+            for (BlockPos currentPos : list)
             {
-                if (te != null) world.setBlockToAir(te.getPos());
+                Block block = world.getBlockState(currentPos).getBlock();
+                if (block instanceof BlockMultiBlockBase) world.setBlockToAir(currentPos);
             }
-        }
-    }
-
-    public void startList()
-    {
-        if (machineTEList.isEmpty())
-        {
-            machineTEList.clear();
-            for (BlockPos currentPos : getListOfBlockPositions(pos))
-            {
-                TileEntity te = world.getTileEntity(currentPos);
-                if (instanceOf(te))
-                    machineTEList.add((TE) te);
-            }
-        }
-
-        for (TE te : machineTEList)
-        {
-            if (te != this)
-            {
-                te.machineTEList.clear();
-                te.machineTEList.addAll(machineTEList);
-            }
-            te.isMachineAssembled = true;
-            te.sync();
         }
     }
 
@@ -162,13 +132,13 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     public EnumFacing getMasterFacing()
     {
         if (faceChecked) return EnumFacing.byIndex(faceIndex);
-        EnumFacing facing = getMaster().forceBlockFaceCheck();
+        EnumFacing facing = getBlockFace();
         faceChecked = true;
         faceIndex = facing.getIndex();
         return facing;
     }
 
-    protected EnumFacing forceBlockFaceCheck()
+    public EnumFacing getBlockFace()
     {
         IBlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof BlockMultiBlockBase)
@@ -201,7 +171,6 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     {
         compound.setBoolean("master", this.isMaster());
         compound.setBoolean("checked", this.masterChecked);
-        compound.setBoolean("ready", isMachineAssembled);
         return super.writeToNBT(compound);
     }
 
@@ -210,7 +179,6 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     {
         this.isMaster = compound.getBoolean("master");
         this.masterChecked = compound.getBoolean("checked");
-        this.isMachineAssembled = compound.getBoolean("ready");
         super.readFromNBT(compound);
     }
 
