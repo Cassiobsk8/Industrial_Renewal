@@ -142,6 +142,9 @@ public class IRConfig
             @Config.LangKey("gui.config.barrel_capacity.name")
             public int barrelCapacity = 64000;
 
+            @Config.Comment("The capacity of the Fluid Tank (Default 1000000)")
+            public int fluidTankCapacity = 1000000;
+
             @Config.Comment("The capacity of the Portable Generator (Default 16000)")
             public int portableGeneratorCapacity = 16000;
 

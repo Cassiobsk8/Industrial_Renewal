@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class TEFluidTank extends TEMultiTankBase<TEFluidTank>
 {
-    public static final int capacity = IRConfig.MainConfig.Main.barrelCapacity * 10;
+    public static final int capacity = IRConfig.MainConfig.Main.fluidTankCapacity;
     public final FluidTank tank = new FluidTank(capacity)
     {
         @Override
