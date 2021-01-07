@@ -146,7 +146,7 @@ public class GUIStorageChest extends GUIBase
     {
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
-        int progress = (int) ((te.additionalLines > 0 ? Utils.normalize(te.currentLine, 0, te.additionalLines) : 0) * 55);
+        int progress = (int) ((te.additionalLines > 0 ? Utils.normalizeClamped(te.currentLine, 0, te.additionalLines) : 0) * 55);
         this.drawTexturedModalRect(this.guiLeft + 207, this.guiTop + 34 + progress, 221, 0, 8, 15);
 
         searchField.setEnabled(true);

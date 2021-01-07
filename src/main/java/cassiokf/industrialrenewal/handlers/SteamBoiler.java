@@ -151,7 +151,7 @@ public class SteamBoiler
     {
         if (heat >= 10000 && waterTank.getFluidAmount() >= waterPtick && steamTank.getFluidAmount() < steamTank.getCapacity())
         {
-            float factor = Utils.normalize(heat, 10000, maxHeat);
+            float factor = Utils.normalizeClamped(heat, 10000, maxHeat);
             int amount = Math.round(waterPtick * factor);
             waterTank.drainInternal(amount, true);
             steamStack.amount = amount * IRConfig.MainConfig.Main.steamBoilerConversionFactor;
@@ -281,7 +281,7 @@ public class SteamBoiler
         if (fuel > 0)
         {
             int amount = Math.min(Fluid.BUCKET_VOLUME, resource.amount);
-            float norm = Utils.normalize(amount, 0, Fluid.BUCKET_VOLUME);
+            float norm = Utils.normalizeClamped(amount, 0, Fluid.BUCKET_VOLUME);
             if (doFill)
             {
                 fuelTime = (int) (fuel * norm);
@@ -355,23 +355,23 @@ public class SteamBoiler
 
     public float getFuelFill() //0 ~ 180
     {
-        return Utils.normalize(fuelTime, 0, maxFuelTime) * 180f;
+        return Utils.normalizeClamped(fuelTime, 0, maxFuelTime) * 180f;
     }
 
     public float GetWaterFill() //0 ~ 180
     {
-        return Utils.normalize(waterTank.getFluidAmount(), 0, waterTank.getCapacity()) * 180f;
+        return Utils.normalizeClamped(waterTank.getFluidAmount(), 0, waterTank.getCapacity()) * 180f;
     }
 
     public float GetSteamFill() //0 ~ 180
     {
         int maxValue = IRConfig.MainConfig.Main.steamBoilerWaterPerTick * IRConfig.MainConfig.Main.steamBoilerConversionFactor;
-        return Utils.normalize(steamGenerated, 0, maxValue) * 180f;
+        return Utils.normalizeClamped(steamGenerated, 0, maxValue) * 180f;
     }
 
     public float getHeatFill() //0 ~ 140
     {
-        return Utils.normalize(getHeat(), 0, getMaxHeat()) * 140f;
+        return Utils.normalizeClamped(getHeat(), 0, getMaxHeat()) * 140f;
     }
 
     public enum BoilerType

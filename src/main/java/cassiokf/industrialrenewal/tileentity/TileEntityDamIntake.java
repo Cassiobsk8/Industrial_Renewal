@@ -203,7 +203,7 @@ public class TileEntityDamIntake extends TEHorizontalDirection implements ITicka
             if (f < 10) failWaters.add(wall.offset(getBlockFacing(), f));
             waterAmount += f - 1;
         }
-        waterAmount = (int) (Utils.normalize(waterAmount, 0, 1430) * Fluid.BUCKET_VOLUME);
+        waterAmount = (int) (Utils.normalizeClamped(waterAmount, 0, 1430) * Fluid.BUCKET_VOLUME);
     }
 
     private void searchForConcrete(EnumFacing facing)

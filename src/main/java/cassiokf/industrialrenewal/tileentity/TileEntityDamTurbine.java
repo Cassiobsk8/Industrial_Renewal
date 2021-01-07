@@ -79,7 +79,7 @@ public class TileEntityDamTurbine extends TileEntityMultiBlockBase<TileEntityDam
 
     private void doRotation()
     {
-        float norm = Utils.normalize(passedFluid, 0, Fluid.BUCKET_VOLUME);
+        float norm = Utils.normalizeClamped(passedFluid, 0, Fluid.BUCKET_VOLUME);
         if (hasFlow)
         {
             float max = (6000 * norm);
@@ -170,7 +170,7 @@ public class TileEntityDamTurbine extends TileEntityMultiBlockBase<TileEntityDam
 
     private float getNormalizedRotation()
     {
-        return Utils.normalize(rotation, 0, 6000);
+        return Utils.normalizeClamped(rotation, 0, 6000);
     }
 
     @Override

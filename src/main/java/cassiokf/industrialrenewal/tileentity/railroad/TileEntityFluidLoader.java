@@ -113,14 +113,14 @@ public class TileEntityFluidLoader extends TileEntityBaseLoader implements ITick
         if (cartActivity <= 0) return 0;
         float currentAmount = cartFluidAmount;
         float totalCapacity = cartFluidCapacity;
-        return Utils.normalize(currentAmount, 0, totalCapacity) * 180f;
+        return Utils.normalizeClamped(currentAmount, 0, totalCapacity) * 180f;
     }
 
     public float getTankFluidAngle()
     {
         float currentAmount = tank.getFluidAmount();
         float totalCapacity = tank.getCapacity();
-        return Utils.normalize(currentAmount, 0, totalCapacity) * 180f;
+        return Utils.normalizeClamped(currentAmount, 0, totalCapacity) * 180f;
     }
 
     @Override

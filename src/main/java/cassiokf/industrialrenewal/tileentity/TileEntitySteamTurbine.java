@@ -129,7 +129,7 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
             return;
         }
         int amount = Math.min(fluidStack.amount, steamPerTick);
-        steamReceivedNorm = Utils.normalize(amount, 0, steamPerTick);
+        steamReceivedNorm = Utils.normalizeClamped(amount, 0, steamPerTick);
         if ((maxRotation * steamReceivedNorm) > rotation) rotation += (10 * steamReceivedNorm);
         else if (rotation >= 2) rotation -= 2;
         waterStack.amount = Math.round(((float) amount / (float) IRConfig.MainConfig.Main.steamBoilerConversionFactor) * 0.98f);
@@ -244,23 +244,23 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
 
     public float getEnergyFill() //0 ~ 1
     {
-        return Utils.normalize(energyContainer.getEnergyStored(), 0, energyContainer.getMaxEnergyStored());
+        return Utils.normalizeClamped(energyContainer.getEnergyStored(), 0, energyContainer.getMaxEnergyStored());
     }
 
     private float getRotation()
     {
-        return Utils.normalize(this.rotation, 0, maxRotation);
+        return Utils.normalizeClamped(this.rotation, 0, maxRotation);
     }
 
     public float getGenerationFill() //0 ~ 180
     {
         float currentAmount = ((rotation >= 6000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored()) ? getEnergyProduction() : 0);
-        return Utils.normalize(currentAmount, 0, energyPerTick) * 90f;
+        return Utils.normalizeClamped(currentAmount, 0, energyPerTick) * 90f;
     }
 
     public float getWaterFill() //0 ~ 180
     {
-        return Utils.normalize(waterTank.getFluidAmount(), 0, waterTank.getCapacity()) * 180f;
+        return Utils.normalizeClamped(waterTank.getFluidAmount(), 0, waterTank.getCapacity()) * 180f;
     }
 
     public float getSteamFill() //0 ~ 180

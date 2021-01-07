@@ -100,7 +100,7 @@ public class TEFluidTank extends TEMultiTankBase<TEFluidTank>
 
     public float getFluidAngle()
     {
-        return Utils.normalize(tank.getFluidAmount(), 0, tank.getCapacity()) * 180f;
+        return Utils.normalizeClamped(tank.getFluidAmount(), 0, tank.getCapacity()) * 180f;
     }
 
     private BlockPos getOutPos()

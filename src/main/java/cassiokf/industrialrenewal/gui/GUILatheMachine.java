@@ -29,7 +29,7 @@ public class GUILatheMachine extends GUIBase
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
         IEnergyStorage energyStorage = te.getEnergyStorage();
-        int energyFill = (int) (Utils.normalize(energyStorage.getEnergyStored(), 0, energyStorage.getMaxEnergyStored()) * 69);
+        int energyFill = (int) (Utils.normalizeClamped(energyStorage.getEnergyStored(), 0, energyStorage.getMaxEnergyStored()) * 69);
         this.drawTexturedModalRect(this.guiLeft + 8, (this.guiTop + 78) - energyFill, 176, 0, 16, energyFill);
 
         int progress = (int) (te.getNormalizedProcess() * 43);

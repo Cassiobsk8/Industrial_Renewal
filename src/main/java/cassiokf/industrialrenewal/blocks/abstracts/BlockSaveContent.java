@@ -101,7 +101,7 @@ public abstract class BlockSaveContent extends BlockHorizontalFacing
     {
         TileEntity te = worldIn.getTileEntity(pos);
         return te instanceof TileEntitySaveContent
-                ? (int) (Utils.normalize(((TileEntitySaveContent) te).getTank().getFluidAmount(), 0, ((TileEntitySaveContent) te).getTank().getCapacity()) * 15)
+                ? (int) (Utils.normalizeClamped(((TileEntitySaveContent) te).getTank().getFluidAmount(), 0, ((TileEntitySaveContent) te).getTank().getCapacity()) * 15)
                 : 0;
     }
 

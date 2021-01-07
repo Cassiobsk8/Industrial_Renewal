@@ -71,7 +71,7 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
             }
             if (frontTick < tickSpeed) frontTick++;
             oldFrontTick = rFrontTick;
-            rFrontTick = Utils.normalize((float) frontTick, 0, (float) tickSpeed);
+            rFrontTick = Utils.normalizeClamped((float) frontTick, 0, (float) tickSpeed);
             if (moved) return;
         } else
         {
@@ -87,7 +87,7 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
             }
             if (middleTick < tickSpeed) middleTick++;
             oldMiddleTick = rMiddleTick;
-            rMiddleTick = Utils.normalize((float) middleTick, 0, (float) tickSpeed);
+            rMiddleTick = Utils.normalizeClamped((float) middleTick, 0, (float) tickSpeed);
             if (moved) return;
         }
         //BACK
@@ -99,7 +99,7 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
             }
             if (backTick < tickSpeed) backTick++;
             oldBackTick = rBackTick;
-            rBackTick = Utils.normalize((float) backTick, 0, (float) tickSpeed);
+            rBackTick = Utils.normalizeClamped((float) backTick, 0, (float) tickSpeed);
         }
     }
 

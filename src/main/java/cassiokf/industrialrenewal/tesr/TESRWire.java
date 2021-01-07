@@ -54,15 +54,15 @@ public class TESRWire extends TESRBase<TileEntityHVConnectorBase>
         {
             if (!sameLevel || j < (i / 2) + 1)
             {
-                float f = Utils.normalize(c.getRed(), 0, 255);
-                float f1 = Utils.normalize(c.getGreen(), 0, 255);
-                float f2 = Utils.normalize(c.getBlue(), 0, 255);
+                float f = Utils.normalizeClamped(c.getRed(), 0, 255);
+                float f1 = Utils.normalizeClamped(c.getGreen(), 0, 255);
+                float f2 = Utils.normalizeClamped(c.getBlue(), 0, 255);
 
                 if (j % 2 == 0)
                 {
-                    f = Utils.normalize(c2.getRed(), 0, 255);
-                    f1 = Utils.normalize(c2.getGreen(), 0, 255);
-                    f2 = Utils.normalize(c2.getBlue(), 0, 255);
+                    f = Utils.normalizeClamped(c2.getRed(), 0, 255);
+                    f1 = Utils.normalizeClamped(c2.getGreen(), 0, 255);
+                    f2 = Utils.normalizeClamped(c2.getBlue(), 0, 255);
                 }
 
                 float f3 = (float) j / 24.0F;
@@ -83,15 +83,15 @@ public class TESRWire extends TESRBase<TileEntityHVConnectorBase>
         {
             if (!sameLevel || k < (i / 2) + 1)
             {
-                float f4 = Utils.normalize(c.getRed(), 0, 255);
-                float f5 = Utils.normalize(c.getGreen(), 0, 255);
-                float f6 = Utils.normalize(c.getBlue(), 0, 255);
+                float f4 = Utils.normalizeClamped(c.getRed(), 0, 255);
+                float f5 = Utils.normalizeClamped(c.getGreen(), 0, 255);
+                float f6 = Utils.normalizeClamped(c.getBlue(), 0, 255);
 
                 if (k % 2 == 0)
                 {
-                    f4 = Utils.normalize(c2.getRed(), 0, 255);
-                    f5 = Utils.normalize(c2.getGreen(), 0, 255);
-                    f6 = Utils.normalize(c2.getBlue(), 0, 255);
+                    f4 = Utils.normalizeClamped(c2.getRed(), 0, 255);
+                    f5 = Utils.normalizeClamped(c2.getGreen(), 0, 255);
+                    f6 = Utils.normalizeClamped(c2.getBlue(), 0, 255);
                 }
 
                 float f7 = (float) k / 24.0F;

@@ -87,7 +87,7 @@ public class FluidGenerator
         if (fuel > 0)
         {
             int amount = Math.min(Fluid.BUCKET_VOLUME, resource.amount);
-            float norm = Utils.normalize(amount, 0, Fluid.BUCKET_VOLUME);
+            float norm = Utils.normalizeClamped(amount, 0, Fluid.BUCKET_VOLUME);
 
             fuelTime = (int) (fuel * norm) * 4;
             tank.drainInternal(amount, true);

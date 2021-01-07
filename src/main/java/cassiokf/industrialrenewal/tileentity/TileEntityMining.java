@@ -422,17 +422,17 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
 
     public float getWaterFill() //0 ~ 180
     {
-        return Utils.normalize(this.waterTank.getFluidAmount(), 0, this.waterTank.getCapacity()) * 180f;
+        return Utils.normalizeClamped(this.waterTank.getFluidAmount(), 0, this.waterTank.getCapacity()) * 180f;
     }
 
     public float getEnergyFill() //0 ~ 180
     {
-        return Utils.normalize(this.energyContainer.getEnergyStored(), 0, this.energyContainer.getMaxEnergyStored());
+        return Utils.normalizeClamped(this.energyContainer.getEnergyStored(), 0, this.energyContainer.getMaxEnergyStored());
     }
 
     public float getHeatFill() //0 ~ 180
     {
-        return Utils.normalize(drillHeat, 0, maxHeat) * 180f;
+        return Utils.normalizeClamped(drillHeat, 0, maxHeat) * 180f;
     }
 
     public boolean hasDrill()

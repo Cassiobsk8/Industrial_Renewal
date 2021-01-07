@@ -49,7 +49,7 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
         {
             if (!world.isRemote)
             {
-                generation = (int) (Utils.normalize(rotation, 0, 6000) * maxGeneration);
+                generation = (int) (Utils.normalizeClamped(rotation, 0, 6000) * maxGeneration);
                 if (generation > 0)
                 {
                     TileEntity te = world.getTileEntity(pos.up(2));
@@ -97,7 +97,7 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
     @Override
     public float getPitch()
     {
-        return Utils.normalize(generation, 0, maxGeneration) * 1.4f;
+        return Utils.normalizeClamped(generation, 0, maxGeneration) * 1.4f;
     }
 
     @Override
@@ -165,6 +165,6 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
 
     public float getGenerationFill()
     {
-        return Utils.normalize(generation, 0, maxGeneration) * 90;
+        return Utils.normalizeClamped(generation, 0, maxGeneration) * 90;
     }
 }
