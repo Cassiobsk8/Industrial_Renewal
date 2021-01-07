@@ -35,14 +35,15 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
     public void onMasterBreak()
     {
         if (world.isRemote) return;
+        this.invalidate();
         TileEntity upTE = world.getTileEntity(pos.up(3));
-        if (instanceOf(upTE))
+        if (instanceOf(upTE) && !upTE.isInvalid())
         {
             ((T) upTE).setBottom(true);
-            ((T) upTE).sync();
+            ((T) upTE).reachTop();
         }
         TileEntity downTE = world.getTileEntity(pos.down(3));
-        if (instanceOf(downTE))
+        if (instanceOf(downTE) && !downTE.isInvalid())
         {
             ((T) downTE).setTop(true);
             ((T) downTE).sync();
@@ -54,7 +55,7 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
         TileEntity te = world.getTileEntity(pos.down(3));
         top.machines.clear();
         top.machines.add(this);
-        if (instanceOf(te))
+        if (instanceOf(te) && !te.isInvalid())
         {
             bottomTE = (T) ((T) te).passValueDown(1, top);
         }
@@ -79,7 +80,7 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
     {
         top.machines.add(this);
         TileEntity te = world.getTileEntity(pos.down(3));
-        if (instanceOf(te))
+        if (instanceOf(te) && !te.isInvalid())
         {
             isBottom = false;
             sync();
@@ -97,7 +98,7 @@ public abstract class TEMultiTankBase<T extends TEMultiTankBase> extends TileEnt
     public void reachTop()
     {
         TileEntity te = world.getTileEntity(pos.up(3));
-        if (instanceOf(te))
+        if (instanceOf(te) && !te.isInvalid())
         {
             isTop = false;
             ((TEMultiTankBase<?>) te).reachTop();
