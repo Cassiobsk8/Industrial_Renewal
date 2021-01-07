@@ -65,7 +65,7 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
 
     private void hopperToConveyor()
     {
-        if (!hopperInv.getStackInSlot(0).isEmpty())
+        if (!hopperInv.getStackInSlot(0).isEmpty() && inventory.getStackInSlot(1).isEmpty())
         {
             ItemStack stack = hopperInv.getStackInSlot(0).copy();
             ItemStack stack1 = inventory.insertItem(1, stack, false);
