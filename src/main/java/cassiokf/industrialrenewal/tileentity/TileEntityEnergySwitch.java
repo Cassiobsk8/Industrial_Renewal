@@ -8,33 +8,49 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class TileEntityEnergySwitch extends TileEntityToggleableBase
 {
-    private final VoltsEnergyContainer dummyEnergy;
-    private final Random r = new Random();
-
-    public TileEntityEnergySwitch()
+    private static final VoltsEnergyContainer dummyEnergy = new VoltsEnergyContainer(0, 0, 0)
     {
-        this.dummyEnergy = new VoltsEnergyContainer(0, 0, 0)
+        @Override
+        public boolean canReceive()
         {
-            @Override
-            public boolean canReceive()
-            {
-                return false;
-            }
-        };
-    }
+            return false;
+        }
+    };
+
+    private final VoltsEnergyContainer energyContainer = new VoltsEnergyContainer(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE)
+    {
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate)
+        {
+            return TileEntityEnergySwitch.this.passEnergyOut(maxReceive, simulate);
+        }
+    };
 
     @Override
     public void playSwitchSound()
     {
-        float pitch = r.nextFloat() * (1.2f - 0.8f) + 0.8f;
+        float pitch = rand.nextFloat() * (1.2f - 0.8f) + 0.8f;
         this.getWorld().playSound(null, this.getPos(), IRSoundRegister.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1F,
                 pitch);
+    }
+
+    public int passEnergyOut(int maxReceive, boolean simulate)
+    {
+        if (!active) return 0;
+        EnumFacing faceToFill = getOutPutFace();
+        TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
+        if (active && teOut != null)
+        {
+            IEnergyStorage storage = teOut.getCapability(CapabilityEnergy.ENERGY, faceToFill.getOpposite());
+            if (storage != null) return storage.receiveEnergy(maxReceive, simulate);
+        }
+        return 0;
     }
 
     @Nullable
@@ -48,16 +64,10 @@ public class TileEntityEnergySwitch extends TileEntityToggleableBase
             if (facing == faceToFill)
             {
                 return CapabilityEnergy.ENERGY.cast(dummyEnergy);
-            } else if (facing == faceToFill.getOpposite())
+            }
+            else if (facing == faceToFill.getOpposite())
             {
-                TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
-                if (active && teOut != null && teOut.hasCapability(CapabilityEnergy.ENERGY, faceToFill.getOpposite()))
-                {
-                    return CapabilityEnergy.ENERGY.cast(teOut.getCapability(CapabilityEnergy.ENERGY, faceToFill.getOpposite()));
-                } else
-                {
-                    return CapabilityEnergy.ENERGY.cast(dummyEnergy);
-                }
+                return CapabilityEnergy.ENERGY.cast(energyContainer);
             }
         }
         return super.getCapability(capability, facing);

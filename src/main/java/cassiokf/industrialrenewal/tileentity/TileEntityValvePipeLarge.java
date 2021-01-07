@@ -2,7 +2,6 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.init.IRSoundRegister;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityToggleableBase;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -31,13 +30,11 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
     public final FluidTank tank = new FluidTank(2000)
     {
         @Override
-        protected void onContentsChanged()
+        public int fill(FluidStack resource, boolean doFill)
         {
-            TileEntityValvePipeLarge.this.markDirty();
+            return TileEntityValvePipeLarge.this.passFluidOut(resource, doFill);
         }
     };
-
-    private static final int amountPerTick = 1000;
 
     @Override
     public void update()
@@ -45,29 +42,30 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
         if (this.hasWorld() && !world.isRemote && active)
         {
             EnumFacing faceToFill = getOutPutFace();
-            TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
             TileEntity teIn = world.getTileEntity(pos.offset(faceToFill.getOpposite()));
 
-            boolean hasFluidInternally = tank.getFluidAmount() > 0;
-
-            if (teOut != null
-                    && (hasFluidInternally
-                    || (teIn != null && teIn.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill)))
-                    && teOut.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-                    faceToFill.getOpposite()))
+            if (teIn != null)
             {
-                IFluidHandler inTank = hasFluidInternally
-                        ? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank)
-                        : teIn.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill);
-                IFluidHandler outTank = teOut.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-                        faceToFill.getOpposite());
-                if (inTank != null && outTank != null)
+                IFluidHandler inTank = teIn.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill);
+                if (inTank != null)
                 {
-                    FluidStack amountCanFill = inTank.drain(amountPerTick, false);
-                    if (amountCanFill != null) inTank.drain(outTank.fill(amountCanFill, true), true);
+                    inTank.drain(tank.fill(inTank.drain(Integer.MAX_VALUE, false), true), true);
                 }
             }
         }
+    }
+
+    public int passFluidOut(FluidStack resource, boolean doFill)
+    {
+        if (!active) return 0;
+        EnumFacing faceToFill = getOutPutFace();
+        TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
+        if (active && teOut != null)
+        {
+            IFluidHandler storage = teOut.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill.getOpposite());
+            if (storage != null) return storage.fill(resource, doFill);
+        }
+        return 0;
     }
 
     @Override
@@ -77,20 +75,6 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
         float pitch = r.nextFloat() * (1.2f - 0.8f) + 0.8f;
         this.getWorld().playSound(null, this.getPos(), IRSoundRegister.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1F,
                 pitch);
-    }
-
-    @Override
-    public void readFromNBT(final NBTTagCompound tag)
-    {
-        tank.readFromNBT(tag);
-        super.readFromNBT(tag);
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(final NBTTagCompound tag)
-    {
-        tank.writeToNBT(tag);
-        return super.writeToNBT(tag);
     }
 
     @Nullable
