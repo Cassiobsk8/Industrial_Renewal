@@ -218,6 +218,9 @@ public class IRConfig
             @Config.Comment("How much Energy the Steam Turbine will produce at full speed (Default 512)")
             public int steamTurbineEnergyPerTick = 512;
 
+            @Config.Comment("How much Energy the Dam Generator will produce at full speed (Default 1024)")
+            public int damGeneratorEnergyPerTick = 1024;
+
             @Config.Comment("If player can use fire extinguisher on nether lava (Default true)")
             @Config.LangKey("gui.config.nether_extinguisher.name")
             public boolean fireExtinguisherOnNether = true;

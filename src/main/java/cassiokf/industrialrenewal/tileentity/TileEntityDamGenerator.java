@@ -22,7 +22,7 @@ import java.util.List;
 
 public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityDamGenerator> implements IMecanicalEnergy, IDynamicSound
 {
-    public static final int maxGeneration = 1024;
+    public static final int maxGeneration = IRConfig.MainConfig.Main.damGeneratorEnergyPerTick;
     private static final VoltsEnergyContainer energyContainer = new VoltsEnergyContainer(0, 0, 0)
     {
         @Override
