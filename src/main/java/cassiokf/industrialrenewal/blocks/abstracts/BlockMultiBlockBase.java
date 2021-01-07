@@ -27,6 +27,8 @@ public abstract class BlockMultiBlockBase<TE extends TileEntityMultiBlockBase> e
     {
         super(name, tab, material);
         setSoundType(SoundType.METAL);
+        setHardness(12);
+        setResistance(25);
     }
 
     @Override

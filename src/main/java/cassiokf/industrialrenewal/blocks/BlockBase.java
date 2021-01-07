@@ -28,8 +28,8 @@ public class BlockBase extends Block
         setRegistryName(References.MODID, name);
         setTranslationKey(References.MODID + "." + name);
         setCreativeTab(tab);
-        setHardness(2f);
-        setResistance(5f);
+        setHardness(5f);
+        setResistance(12f);
     }
 
     @Override
