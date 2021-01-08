@@ -62,12 +62,6 @@ public class BlockStorage extends BlockMultiTankBase<TEStorage>
     }
 
     @Override
-    protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, EnumFacing facing)
-    {
-        return pos.up();
-    }
-
-    @Override
     public boolean instanceOf(Block block)
     {
         return block instanceof BlockStorage;

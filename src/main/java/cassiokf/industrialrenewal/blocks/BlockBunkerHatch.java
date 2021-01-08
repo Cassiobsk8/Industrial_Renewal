@@ -75,7 +75,7 @@ public class BlockBunkerHatch extends BlockMultiBlockBase<TileEntityBunkerHatch>
     @Override
     protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, EnumFacing facing)
     {
-        return pos.offset(facing);
+        return pos;
     }
 
     @Override

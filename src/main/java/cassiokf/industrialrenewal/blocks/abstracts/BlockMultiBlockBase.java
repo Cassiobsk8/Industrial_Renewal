@@ -79,7 +79,7 @@ public abstract class BlockMultiBlockBase<TE extends TileEntityMultiBlockBase> e
 
     protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, EnumFacing facing)
     {
-        return pos.offset(facing).up();
+        return pos.up();
     }
 
     public abstract List<BlockPos> getMachineBlockPosList(BlockPos masterPos, EnumFacing facing);
