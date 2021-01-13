@@ -143,6 +143,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
 
     private void process()
     {
+        if (energyContainer.getEnergyStored() < energyPTick) return;
         energyContainer.extractEnergy(energyPTick, false);
         tick++;
         if (tick >= processTime)
@@ -165,7 +166,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             if (result != null
                     && !result.isEmpty()
                     && outPut.insertItem(0, result, true).isEmpty()
-                    && energyContainer.getEnergyStored() >= (energyPTick * recipe.getProcessTime()))
+                    && energyContainer.getEnergyStored() >= energyPTick)
             {
                 processTime = recipe.getProcessTime();
                 inProcess = true;
