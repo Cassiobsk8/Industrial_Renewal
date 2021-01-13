@@ -64,8 +64,8 @@ public class MultiStackHandler extends ItemStackHandler
         {
             if (existing.isEmpty())
             {
-                this.stacks.set(0, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, 1) : stack);
-                count = reachedLimit ? limit : stack.getCount();
+                this.stacks.set(0, ItemHandlerHelper.copyStackWithSize(stack, 1));
+                count = Math.min(limit, stack.getCount());
             }
             else
             {

@@ -26,18 +26,24 @@ public class TEStorage extends TEMultiTankBase<TEStorage>
         ItemStack stack = playerIn.getHeldItem(hand);
         if (stack.isEmpty() && inventory.getCount() > 0 && playerIn.isSneaking())
         {
-            ItemStack itemsIn = inventory.extractItem(inventory.getStackInSlot(0).getMaxStackSize());
-            if (!itemsIn.isEmpty())
+            if (!world.isRemote)
             {
-                return playerIn.addItemStackToInventory(itemsIn);
+                ItemStack itemsIn = inventory.extractItem(inventory.getStackInSlot(0).getMaxStackSize());
+                if (!itemsIn.isEmpty())
+                {
+                    playerIn.addItemStackToInventory(itemsIn);
+                }
             }
-            return false;
+            return true;
         }
         if (!stack.isEmpty() && (inventory.getCount() == 0 || (stack.getItem().equals(inventory.getStackInSlot(0).getItem()))))
         {
-            ItemStack stack1 = inventory.insertItem(stack);
-            int count = stack.getCount() - stack1.getCount();
-            if (!playerIn.isCreative() && count > 0) stack.shrink(count);
+            if (!world.isRemote)
+            {
+                ItemStack stack1 = inventory.insertItem(stack);
+                int count = stack.getCount() - stack1.getCount();
+                if (!playerIn.isCreative() && count > 0) stack.shrink(count);
+            }
             return true;
         }
         return false;
