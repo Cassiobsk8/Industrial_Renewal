@@ -105,23 +105,22 @@ public class MultiStackHandler extends ItemStackHandler
 
         if (count <= toExtract)
         {
+            int toRemove = count;
             if (!simulate)
             {
                 this.stacks.set(0, ItemStack.EMPTY);
                 count = 0;
                 onContentsChanged(0);
             }
-            return existing;
+            return ItemHandlerHelper.copyStackWithSize(existing, toRemove);
         }
         else
         {
             if (!simulate)
             {
-                this.stacks.set(0, ItemHandlerHelper.copyStackWithSize(existing, 1));
                 count -= toExtract;
                 onContentsChanged(0);
             }
-
             return ItemHandlerHelper.copyStackWithSize(existing, toExtract);
         }
     }
