@@ -214,9 +214,9 @@ public class IRConfig
             @Config.Comment("The factor steam will be generated 1 Water : 5 Steam ex: 76 water/tick * 5 is 380 steam/tick per boiler (Default 5)")
             @Config.LangKey("gui.config.steam_factor.name")
             public int steamBoilerConversionFactor = 5;
-			
-	    @Config.Comment("How many solid fuel ticks should be used for one firebox tick, ex: coal with 1600 / 2 is 800 ticks in the boiler (Default 2)")
-	    public int solidFuelperFireboxTick = 2;
+
+            @Config.Comment("How many solid fuel ticks should be used for one firebox tick, ex: coal with 1600 / 2 is 800 ticks in the boiler (Default 2)")
+            public int solidFuelPerFireboxTick = 2;
 
             @Config.Comment("How much steam the Steam Turbine need to rotate (Default 250)")
             public int steamTurbineSteamPerTick = 250;

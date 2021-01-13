@@ -1,11 +1,11 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockSteamBoiler;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.handlers.SteamBoiler;
 import cassiokf.industrialrenewal.init.ModItems;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
 import cassiokf.industrialrenewal.util.Utils;
-import cassiokf.industrialrenewal.config.IRConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 public class TileEntitySteamBoiler extends TileEntityMultiBlockBase<TileEntitySteamBoiler>
 {
     private int type;
-    private static final int solidPerTick = IRConfig.MainConfig.Main.solidFuelperFireboxTick;
+    private static final int solidPerTick = IRConfig.MainConfig.Main.solidFuelPerFireboxTick;
     public final SteamBoiler boiler = new SteamBoiler(this, SteamBoiler.BoilerType.Solid, solidPerTick);
     private static final int fluidPerTick = 1;
 
