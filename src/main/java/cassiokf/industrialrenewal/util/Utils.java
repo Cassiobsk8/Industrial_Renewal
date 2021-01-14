@@ -233,7 +233,7 @@ public class Utils
 
     public static float normalizeClamped(float value, float min, float max)
     {
-        return MathHelper.clamp((value - min) / (max - min), min, max);
+        return MathHelper.clamp(0, (value - min), (max - min)) / (max - min);
     }
 
     public static int getDistancePointToPoint(BlockPos pos1, BlockPos pos2)
