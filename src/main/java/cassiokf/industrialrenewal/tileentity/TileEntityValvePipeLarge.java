@@ -57,11 +57,10 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
 
     public int passFluidOut(FluidStack resource, boolean doFill)
     {
-        if (!active) return 0;
+        if (!active || resource == null || resource.amount <= 0) return 0;
         EnumFacing faceToFill = getOutPutFace();
         TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
-        if (active && teOut != null)
-        {
+        if (teOut != null) {
             IFluidHandler storage = teOut.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill.getOpposite());
             if (storage != null) return storage.fill(resource, doFill);
         }
