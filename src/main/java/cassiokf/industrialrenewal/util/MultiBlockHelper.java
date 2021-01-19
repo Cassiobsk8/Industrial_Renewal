@@ -120,9 +120,9 @@ public class MultiBlockHelper
         int canAccept = 0;
         for (TileEntity te : mapPosSet.keySet())
         {
-            if (!mapPosSet.containsKey(te)) continue;
             if (te != null)
             {
+                if (!mapPosSet.containsKey(te)) continue;
                 EnumFacing face = mapPosSet.get(te).getOpposite();
                 IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
                 if (tankStorage != null
@@ -149,15 +149,13 @@ public class MultiBlockHelper
         int realMaxOutput = maxEnergyCanTransport;
         for (TileEntity te : mapPosSet.keySet())
         {
-            EnumFacing face = mapPosSet.get(te).getOpposite();
-            if (te != null)
-            {
+            if (te != null) {
+                if (!mapPosSet.containsKey(te)) continue;
+                EnumFacing face = mapPosSet.get(te).getOpposite();
                 IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
-                if (energyStorage != null && energyStorage.canReceive())
-                {
+                if (energyStorage != null && energyStorage.canReceive()) {
                     realMaxOutput = machine.getLimitedValueForOutPut(realMaxOutput, maxEnergyCanTransport, te, true);
-                    if (realMaxOutput > 0)
-                    {
+                    if (realMaxOutput > 0) {
                         int energy = energyStorage.receiveEnergy(realMaxOutput, true);
                         if (energy > 0) canAccept++;
                     }
