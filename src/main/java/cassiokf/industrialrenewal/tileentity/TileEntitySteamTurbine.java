@@ -119,31 +119,35 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
         }
     }
 
-    public void steamToRotation()
-    {
-        FluidStack fluidStack = steamTank.drainInternal(steamPerTick, true);
-        if (fluidStack == null || fluidStack.amount <= 0)
-        {
-            steamReceivedNorm = 0;
-            if (rotation >= 4) rotation -= 4;
+    public void steamToRotation() {
+        int torqueSum;
+        int steamAmount;
+
+        if(rotation > 15990) {
+            steamAmount = Utils.roundtoInteger(steamPerTick * ((16000-rotation) / 10)); //Throttle Governing of Steam Turbine
+        } else steamAmount = steamPerTick;
+
+        FluidStack fluidStack = steamTank.drainInternal(steamAmount, true);
+
+        if(fluidStack == null) {
             return;
         }
-        int amount = Math.min(fluidStack.amount, steamPerTick);
-        steamReceivedNorm = Utils.normalizeClamped(amount, 0, steamPerTick);
-        if ((maxRotation * steamReceivedNorm) > rotation) rotation += (10 * steamReceivedNorm);
-        else if (rotation >= 2) rotation -= 2;
-        waterStack.amount = Math.round(((float) amount / (float) IRConfig.MainConfig.Main.steamBoilerConversionFactor) * 0.98f);
+
+        steamReceivedNorm = Utils.normalizeClamped(fluidStack.amount, 0, steamPerTick);
+        torqueSum = (int) (steamReceivedNorm * 10);
+        waterStack.amount = Utils.roundtoInteger((fluidStack.amount / IRConfig.MainConfig.Main.steamBoilerConversionFactor) * 0.98f);
         waterTank.fillInternal(waterStack, true);
+        rotation += torqueSum;
     }
 
     private void generateEnergyBasedOnRotation()
     {
-        if (rotation >= 6000 && this.energyContainer.getEnergyStored() < this.energyContainer.getMaxEnergyStored())
-        {
+        if (rotation >= 6000) {
             int energy = getEnergyProduction();
             energyContainer.receiveInternally(energy, false);
-            rotation -= 6;
-        } else rotation -= 2;
+            load(energy);
+        }
+        rotationDecay();
         rotation = MathHelper.clamp(rotation, 0, maxRotation);
     }
 
@@ -209,10 +213,33 @@ public class TileEntitySteamTurbine extends TileEntityMultiBlockBase<TileEntityS
     private int getEnergyProduction()
     {
         int energy = Math.round(energyPerTick * getRotation());
+        int remainingEnergy = this.energyContainer.getMaxEnergyStored() - this.energyContainer.getEnergyStored();
         float factor = this.waterTank.getFluidAmount() == 0 ? 1f : Math.max(0.5f, Math.min(1f, ((float) this.waterTank.getCapacity() / (float) this.waterTank.getFluidAmount()) - 0.5f));
-        energy = Math.round(energy * factor);
+        energy = Utils.roundtoInteger(energy * factor);
+        if (remainingEnergy < energy){ //Throttles the current when the buffer starts to be full
+            energy = remainingEnergy;
+        }
         energy = MathHelper.clamp(energy, 0, energyPerTick);
         return energy;
+    }
+
+    private void load(int load) //Slows down the steam turbine depending on the applied load
+    {
+        int torque;
+        float loadFactor = Utils.normalizeClamped(load, 0,  energyPerTick);
+        if(loadFactor > 0f){
+            torque = (int) (1 + loadFactor * 6);
+        }
+        else torque = 0;
+        rotation -= torque;
+    }
+
+    private void rotationDecay()
+    {
+        int decay;
+        if(rotation < 6000) decay = 3;
+        else decay = (int) (1 + getRotation() * 2);
+        rotation -= decay;
     }
 
     public String getWaterText()
