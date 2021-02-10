@@ -236,6 +236,15 @@ public class Utils
         return MathHelper.clamp((value - min), 0, (max - min)) / (max - min);
     }
 
+    public static int roundtoInteger(double d){ //Universal rounding algorithm that returns an integer, eliminates rounding issues caused by variable casting.
+        double dAbs = Math.abs(d);
+        int i = (int) dAbs;
+        double result = dAbs - (double) i;
+
+        if(result < 0.5) return d < 0 ? -i : i;
+        else return d < 0 ? -(i + 1) : i + 1;
+    }
+
     public static int getDistancePointToPoint(BlockPos pos1, BlockPos pos2)
     {
         int deltaX = pos1.getX() - pos2.getX();
