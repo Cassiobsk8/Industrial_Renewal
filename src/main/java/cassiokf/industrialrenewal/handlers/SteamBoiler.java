@@ -365,8 +365,8 @@ public class SteamBoiler
 
     public float GetSteamFill() //0 ~ 180
     {
-        int maxValue = IRConfig.MainConfig.Main.steamBoilerWaterPerTick * IRConfig.MainConfig.Main.steamBoilerConversionFactor;
-        return Utils.normalizeClamped(steamGenerated, 0, maxValue) * 180f;
+        if(steamGenerated == 0 && steamTank.getFluidAmount() == 0) return 0f; //When the boiler generates no steam, "no pressure".
+        else return 45f + Utils.normalizeClamped(steamTank.getFluidAmount(), 0, steamTank.getCapacity()) * 135f; //Yellow zone when the boiler at least generates some steam, "steam pressure" goes up when the steam tank fills up.
     }
 
     public float getHeatFill() //0 ~ 140
