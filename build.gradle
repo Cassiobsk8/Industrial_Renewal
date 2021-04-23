@@ -1,8 +1,7 @@
 buildscript {
     repositories {
-        maven { url = 'https://sizableshrimp.me/maven' }
-        mavenCentral()
-        maven { url = 'https://maven.minecraftforge.net/' }
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
