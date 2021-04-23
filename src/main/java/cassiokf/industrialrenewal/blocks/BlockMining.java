@@ -22,7 +22,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
-import cassiokf.industrialrenewal.handlers.IRSoundHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -41,7 +40,6 @@ public class BlockMining extends BlockMultiBlockBase<TileEntityMining>
         TileEntity te = worldIn.getTileEntity(pos);
         if (te instanceof TileEntityMining) ((TileEntityMining) te).dropAllItems();
         super.breakBlock(worldIn, pos, state);
-        IRSoundHandler.stopTileSound(pos);
     }
 
     @Override
