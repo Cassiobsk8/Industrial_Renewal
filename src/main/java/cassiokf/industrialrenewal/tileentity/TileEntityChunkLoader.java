@@ -5,6 +5,7 @@ import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.handlers.ChunkManagerCallback;
 import cassiokf.industrialrenewal.tileentity.abstracts.TEBase;
 import com.google.common.collect.Lists;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
@@ -179,7 +180,9 @@ public class TileEntityChunkLoader extends TEBase implements ITickable
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
-        compound.setBoolean("master", world.getBlockState(pos).getValue(BlockChunkLoader.MASTER));
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof BlockChunkLoader)
+            compound.setBoolean("master", state.getValue(BlockChunkLoader.MASTER));
         compound.setLong("expireTime", expireTime);
         return compound;
     }
