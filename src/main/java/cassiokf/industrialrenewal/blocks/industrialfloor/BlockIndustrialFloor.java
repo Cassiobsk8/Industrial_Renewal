@@ -7,6 +7,7 @@ import cassiokf.industrialrenewal.init.BlocksRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,6 +36,11 @@ public class BlockIndustrialFloor extends BlockBase
         super(properties);
     }
 
+    public BlockIndustrialFloor()
+    {
+        super(Block.Properties.create(Material.IRON));
+    }
+
     private static boolean isValidConnection(final BlockState neighbourState, final Direction neighbourDirection)
     {
         Block nb = neighbourState.getBlock();
@@ -60,7 +66,7 @@ public class BlockIndustrialFloor extends BlockBase
     }
 
     @Override
-    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos)
+    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos, boolean collision)
     {
         VoxelShape FINAL_SHAPE = NONE_AABB;
         if (isConnected(state, UP))

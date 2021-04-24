@@ -65,12 +65,6 @@ public class BlockStorageChest extends BlockMultiTankBase<TEStorageChest>
     }
 
     @Override
-    protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, Direction facing)
-    {
-        return pos.up();
-    }
-
-    @Override
     public boolean instanceOf(Block block)
     {
         return block instanceof BlockStorageChest;

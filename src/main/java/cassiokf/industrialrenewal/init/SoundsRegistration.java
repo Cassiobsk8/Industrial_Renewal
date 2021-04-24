@@ -18,7 +18,7 @@ public class SoundsRegistration
     public static final ObjectSet<String> TICKABLE_SOUNDS = new ObjectOpenHashSet<>();
     public static final ObjectSet<String> REPEATABLE_SOUNDS = new ObjectOpenHashSet<>();
 
-    private static final DeferredRegister<SoundEvent> SOUNDS = new DeferredRegister<>(ForgeRegistries.SOUND_EVENTS, MODID);
+    private static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
     public static final RegistryObject<SoundEvent> TILEENTITY_TRAINHORN = createSoundEvent("railroad.train_horn", EnumSoundType.NORMAL);
     public static final RegistryObject<SoundEvent> TILEENTITY_VALVE_CHANGE = createSoundEvent("valve", EnumSoundType.NORMAL);
     public static final RegistryObject<SoundEvent> TILEENTITY_ALARM = createSoundEvent("modern_alarm", EnumSoundType.NORMAL);

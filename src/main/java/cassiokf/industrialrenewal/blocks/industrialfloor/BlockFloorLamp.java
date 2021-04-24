@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal.blocks.industrialfloor;
 import cassiokf.industrialrenewal.init.BlocksRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
@@ -16,11 +17,10 @@ import net.minecraft.world.World;
 
 public class BlockFloorLamp extends BlockIndustrialFloor
 {
-    public BlockFloorLamp(Block.Properties properties)
+    public BlockFloorLamp()
     {
-        super(properties.lightValue(1));
+        super(Block.Properties.create(Material.IRON).lightValue(1));
     }
-
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)

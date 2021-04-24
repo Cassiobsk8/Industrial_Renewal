@@ -52,7 +52,7 @@ public class TEFluidTank extends TEMultiTankBase<TEFluidTank>
             TEFluidTank.this.sync();
         }
     };
-    public static final int capacity = IRConfig.Main.barrelCapacity.get() * 10;
+    public static final int capacity = IRConfig.Main.fluidTankCapacity.get();
 
     public TEFluidTank(TileEntityType<?> tileEntityTypeIn)
     {
@@ -107,7 +107,7 @@ public class TEFluidTank extends TEMultiTankBase<TEFluidTank>
 
     public float getFluidAngle()
     {
-        return Utils.normalize(tank.getFluidAmount(), 0, tank.getCapacity()) * 180f;
+        return Utils.normalizeClamped(tank.getFluidAmount(), 0, tank.getCapacity()) * 180f;
     }
 
     private BlockPos getOutPos()

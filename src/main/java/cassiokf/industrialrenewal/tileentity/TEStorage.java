@@ -4,12 +4,16 @@ import cassiokf.industrialrenewal.tileentity.abstracts.TEMultiTankBase;
 import cassiokf.industrialrenewal.util.MachinesUtils;
 import cassiokf.industrialrenewal.util.MultiStackHandler;
 import cassiokf.industrialrenewal.util.Utils;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -23,6 +27,34 @@ public class TEStorage extends TEMultiTankBase<TEStorage> {
     public TEStorage(TileEntityType<?> tileEntityTypeIn)
     {
         super(tileEntityTypeIn);
+    }
+
+    public ActionResultType onActivated(PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
+    {
+        ItemStack stack = playerIn.getHeldItem(hand);
+        if (stack.isEmpty() && inventory.getCount() > 0 && playerIn.isSneaking())
+        {
+            if (!world.isRemote)
+            {
+                ItemStack itemsIn = inventory.extractItem(inventory.getStackInSlot(0).getMaxStackSize());
+                if (!itemsIn.isEmpty())
+                {
+                    playerIn.addItemStackToInventory(itemsIn);
+                }
+            }
+            return ActionResultType.SUCCESS;
+        }
+        if (!stack.isEmpty() && (inventory.getCount() == 0 || (stack.getItem().equals(inventory.getStackInSlot(0).getItem()))))
+        {
+            if (!world.isRemote)
+            {
+                ItemStack stack1 = inventory.insertItem(stack);
+                int count = stack.getCount() - stack1.getCount();
+                if (!playerIn.isCreative() && count > 0) stack.shrink(count);
+            }
+            return ActionResultType.SUCCESS;
+        }
+        return ActionResultType.PASS;
     }
 
     @Override

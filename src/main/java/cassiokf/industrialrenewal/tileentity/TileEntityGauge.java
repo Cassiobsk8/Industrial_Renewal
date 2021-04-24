@@ -60,7 +60,7 @@ public class TileEntityGauge extends TEBase
     {
         if (getTankStorage() != null && getTankStorage().getTanks() > 0 && !getTankStorage().getFluidInTank(0).isEmpty())
         {
-            return Utils.normalize(getTankStorage().getFluidInTank(0).getAmount(), 0, getTankStorage().getTankCapacity(0)) * 180f;
+            return Utils.normalizeClamped(getTankStorage().getFluidInTank(0).getAmount(), 0, getTankStorage().getTankCapacity(0)) * 180f;
         }
         return 0;
     }

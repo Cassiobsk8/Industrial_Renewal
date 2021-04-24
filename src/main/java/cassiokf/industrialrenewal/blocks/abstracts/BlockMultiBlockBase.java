@@ -26,13 +26,13 @@ public abstract class BlockMultiBlockBase<TE extends TileEntityMultiBlockBase> e
 
     public BlockMultiBlockBase(Block.Properties properties)
     {
-        super(properties.sound(SoundType.METAL));
+        super(properties.sound(SoundType.METAL).hardnessAndResistance(12,30));
     }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
-        worldIn.setBlockState(pos.offset(state.get(FACING)).up(), state.with(MASTER, true));
+        worldIn.setBlockState(getMasterPosBasedOnPlace(pos, state.get(FACING)), state.with(MASTER, true));
     }
 
     @Override
@@ -79,7 +79,7 @@ public abstract class BlockMultiBlockBase<TE extends TileEntityMultiBlockBase> e
 
     protected BlockPos getMasterPosBasedOnPlace(BlockPos pos, Direction facing)
     {
-        return pos.offset(facing).up();
+        return pos.up();
     }
 
     public abstract List<BlockPos> getMachineBlockPosList(BlockPos masterPos, Direction facing);

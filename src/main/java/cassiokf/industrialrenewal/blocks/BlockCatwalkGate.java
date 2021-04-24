@@ -1,7 +1,6 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockAbstractHorizontalActivate;
-import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.SoundsRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -13,26 +12,18 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
 
 public class BlockCatwalkGate extends BlockAbstractHorizontalActivate
 {
-    protected static final VoxelShape RNORTH_AABB = Block.makeCuboidShape(0, 0, 0, 16, 16, 1);
-    protected static final VoxelShape RSOUTH_AABB = Block.makeCuboidShape(0, 0, 15, 16, 16, 16);
-    protected static final VoxelShape RWEST_AABB = Block.makeCuboidShape(0, 0, 0, 1, 16, 16);
-    protected static final VoxelShape REAST_AABB = Block.makeCuboidShape(15, 0, 0, 16, 16, 16);
-
     protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0, 0, 0, 16, 24, 1);
     protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0, 0, 15, 16, 24, 16);
     protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(0, 0, 0, 15, 24, 16);
@@ -81,30 +72,7 @@ public class BlockCatwalkGate extends BlockAbstractHorizontalActivate
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        Direction face = state.get(FACING);
-        if (face == Direction.NORTH)
-        {
-            return RNORTH_AABB;
-        }
-        if (face == Direction.SOUTH)
-        {
-            return RSOUTH_AABB;
-        }
-        if (face == Direction.WEST)
-        {
-            return RWEST_AABB;
-        }
-        if (face == Direction.EAST)
-        {
-            return REAST_AABB;
-        }
-        return RNORTH_AABB;
-    }
-
-    @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos, boolean collision)
     {
         Boolean open = state.get(ACTIVE);
         VoxelShape FINAL_SHAPE = NONE_AABB;

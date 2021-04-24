@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityToggleableBase;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import net.minecraft.tileentity.TileEntity;
@@ -9,9 +10,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class TileEntityEnergySwitch extends TileEntityToggleableBase
 {
@@ -23,18 +24,39 @@ public class TileEntityEnergySwitch extends TileEntityToggleableBase
             return false;
         }
     };
-    private static final Random r = new Random();
+
+    private final CustomEnergyStorage energyContainer = new CustomEnergyStorage(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE)
+    {
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate)
+        {
+            return TileEntityEnergySwitch.this.passEnergyOut(maxReceive, simulate);
+        }
+    };
 
     public TileEntityEnergySwitch(TileEntityType<?> tileEntityTypeIn)
     {
         super(tileEntityTypeIn);
     }
 
+    public int passEnergyOut(int maxReceive, boolean simulate)
+    {
+        if (!active) return 0;
+        Direction faceToFill = getOutPutFace();
+        TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
+        if (active && teOut != null)
+        {
+            IEnergyStorage storage = teOut.getCapability(CapabilityEnergy.ENERGY, faceToFill.getOpposite()).orElse(null);
+            if (storage != null) return storage.receiveEnergy(maxReceive, simulate);
+        }
+        return 0;
+    }
+
     @Override
     public void playSwitchSound()
     {
-        float pitch = r.nextFloat() * (1.2f - 0.8f) + 0.8f;
-        this.getWorld().playSound(null, this.getPos(), SoundsRegistration.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1F,
+        float pitch = rand.nextFloat() * (1.2f - 0.8f) + 0.8f;
+        this.getWorld().playSound(null, this.getPos(), SoundsRegistration.TILEENTITY_VALVE_CHANGE.get(), SoundCategory.BLOCKS, 1F,
                 pitch);
     }
 
@@ -51,14 +73,7 @@ public class TileEntityEnergySwitch extends TileEntityToggleableBase
                 return LazyOptional.of(() -> dummyEnergy).cast();
             } else if (facing == faceToFill.getOpposite())
             {
-                TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
-                if (active && teOut != null && teOut.getCapability(CapabilityEnergy.ENERGY, faceToFill.getOpposite()).orElse(null) != null)
-                {
-                    return LazyOptional.of(() -> teOut.getCapability(CapabilityEnergy.ENERGY, faceToFill.getOpposite())).cast();
-                } else
-                {
-                    return LazyOptional.of(() -> dummyEnergy).cast();
-                }
+                return LazyOptional.of(() -> energyContainer).cast();
             }
         }
         return super.getCapability(capability, facing);

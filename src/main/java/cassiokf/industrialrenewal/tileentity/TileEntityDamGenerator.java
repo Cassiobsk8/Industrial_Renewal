@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.handlers.IRSoundHandler;
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
 import cassiokf.industrialrenewal.util.CustomEnergyStorage;
 import cassiokf.industrialrenewal.util.MachinesUtils;
@@ -23,7 +24,7 @@ import java.util.List;
 
 public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityDamGenerator> implements IMecanicalEnergy, IDynamicSound
 {
-    public static final int maxGeneration = 1024;
+    public static final int maxGeneration = IRConfig.Main.damGeneratorEnergyPerTick.get();
     private static final CustomEnergyStorage energyContainer = new CustomEnergyStorage(0, 0, 0)
     {
         @Override
@@ -38,7 +39,7 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
             return false;
         }
     };
-    private static final float volume = IRConfig.Sounds.turbineVolume.get() * IRConfig.Sounds.masterVolumeMult.get();
+    private static final float volume = IRConfig.Main.turbineVolume.get().floatValue() * IRConfig.Main.masterVolumeMult.get().floatValue();
     private int oldGeneration;
     private int generation;
     private int rotation;
@@ -55,7 +56,7 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
         {
             if (!world.isRemote)
             {
-                generation = (int) (Utils.normalize(rotation, 0, 6000) * maxGeneration);
+                generation = (int) (Utils.normalizeClamped(rotation, 0, 6000) * maxGeneration);
                 if (generation > 0)
                 {
                     TileEntity te = world.getTileEntity(pos.up(2));
@@ -103,7 +104,7 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
     @Override
     public float getPitch()
     {
-        return Utils.normalize(generation, 0, maxGeneration) * 1.4f;
+        return Utils.normalizeClamped(generation, 0, maxGeneration) * 1.4f;
     }
 
     @Override
@@ -171,6 +172,6 @@ public class TileEntityDamGenerator extends TileEntityMultiBlockBase<TileEntityD
 
     public float getGenerationFill()
     {
-        return Utils.normalize(generation, 0, maxGeneration) * 90;
+        return Utils.normalizeClamped(generation, 0, maxGeneration) * 90;
     }
 }

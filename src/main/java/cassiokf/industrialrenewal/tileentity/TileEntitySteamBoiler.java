@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.tileentity;
 
 import cassiokf.industrialrenewal.blocks.BlockSteamBoiler;
+import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.handlers.SteamBoiler;
 import cassiokf.industrialrenewal.init.ItemsRegistration;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityMultiBlockBase;
@@ -21,7 +22,7 @@ import javax.annotation.Nullable;
 public class TileEntitySteamBoiler extends TileEntityMultiBlockBase<TileEntitySteamBoiler>
 {
     private int type;
-    private static final int solidPerTick = 2;
+    private static final int solidPerTick = IRConfig.Main.solidFuelPerFireboxTick.get();
     public final SteamBoiler boiler = new SteamBoiler(this, SteamBoiler.BoilerType.Solid, solidPerTick);
     private static final int fluidPerTick = 1;
 

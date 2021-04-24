@@ -198,12 +198,12 @@ public class TEIndustrialBatteryBank extends TEMultiTankBase<TEIndustrialBattery
 
     public float getBatteryFill()
     {
-        return Utils.normalize(energyContainer.getEnergyStored(), 0, energyContainer.getMaxEnergyStored());
+        return Utils.normalizeClamped(energyContainer.getEnergyStored(), 0, energyContainer.getMaxEnergyStored());
     }
 
     public float getOutPutAngle()
     {
-        return Utils.normalize(avrOut, 0, 10240) * 90;
+        return Utils.normalizeClamped(avrOut, 0, 10240) * 90;
     }
 
     public String getOutPutText()
@@ -213,7 +213,7 @@ public class TEIndustrialBatteryBank extends TEMultiTankBase<TEIndustrialBattery
 
     public float getInPutAngle()
     {
-        return Utils.normalize(avrIn, 0, 10240) * 90;
+        return Utils.normalizeClamped(avrIn, 0, 10240) * 90;
     }
 
     public String getInPutText()

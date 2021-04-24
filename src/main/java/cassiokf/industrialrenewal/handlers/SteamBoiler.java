@@ -2,6 +2,7 @@ package cassiokf.industrialrenewal.handlers;
 
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.config.IRConfig;
+import cassiokf.industrialrenewal.init.FluidsRegistration;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
 import cassiokf.industrialrenewal.util.CustomItemStackHandler;
 import cassiokf.industrialrenewal.util.Utils;
@@ -30,7 +31,7 @@ public class SteamBoiler
         @Override
         public boolean canFill(FluidStack fluid)
         {
-            return fluid != null && IRConfig.waterTypesContains(fluid.getFluid().getName());
+            return fluid != null && IRConfig.waterTypesContains(fluid.getFluid().getRegistryName());
         }
 
         @Override
@@ -74,13 +75,13 @@ public class SteamBoiler
     private String fuelName = "";
     private int maxFuelTime;
     private int steamGenerated;
-    private final FluidStack steamStack = new FluidStack(FluidRegistry.getFluid("steam"), References.BUCKET_VOLUME);
+    private final FluidStack steamStack = new FluidStack(FluidsRegistration.STEAM.get(), References.BUCKET_VOLUME);
     public final CustomFluidTank fuelTank = new CustomFluidTank(32000)
     {
         @Override
         public boolean canFill(FluidStack fluid)
         {
-            return fluid != null && IRConfig.Main.fluidFuel.containsKey(fluid.getFluid().getName());
+            return fluid != null && IRConfig.Main.fluidFuel.get().containsKey(fluid.getFluid().getRegistryName().getPath());
         }
 
         @Override
@@ -151,7 +152,7 @@ public class SteamBoiler
     {
         if (heat >= 10000 && waterTank.getFluidAmount() >= waterPtick && steamTank.getFluidAmount() < steamTank.getCapacity())
         {
-            float factor = Utils.normalize(heat, 10000, maxHeat);
+            float factor = Utils.normalizeClamped(heat, 10000, maxHeat);
             int amount = Math.round(waterPtick * factor);
             waterTank.drainInternal(amount, IFluidHandler.FluidAction.EXECUTE);
             steamStack.setAmount(amount * IRConfig.Main.steamBoilerConversionFactor.get());
@@ -275,11 +276,11 @@ public class SteamBoiler
     {
         if (useSolid) return 0;
         if (fuelTime > 0) return 0;
-        int fuel = IRConfig.Main.fluidFuel.get(resource.getFluid().getName()) != null ? IRConfig.Main.fluidFuel.get(resource.getFluid().getName()) : 0;
+        int fuel = IRConfig.Main.fluidFuel.get().get(resource.getFluid().getRegistryName().getPath()) != null ? IRConfig.Main.fluidFuel.get().get(resource.getFluid().getRegistryName().getPath()) : 0;
         if (fuel > 0)
         {
             int amount = Math.min(References.BUCKET_VOLUME, resource.getAmount());
-            float norm = Utils.normalize(amount, 0, References.BUCKET_VOLUME);
+            float norm = Utils.normalizeClamped(amount, 0, References.BUCKET_VOLUME);
             if (action.execute())
             {
                 fuelTime = (int) (fuel * norm);
@@ -353,23 +354,23 @@ public class SteamBoiler
 
     public float getFuelFill() //0 ~ 180
     {
-        return Utils.normalize(fuelTime, 0, maxFuelTime) * 180f;
+        return Utils.normalizeClamped(fuelTime, 0, maxFuelTime) * 180f;
     }
 
     public float GetWaterFill() //0 ~ 180
     {
-        return Utils.normalize(waterTank.getFluidAmount(), 0, waterTank.getCapacity()) * 180f;
+        return Utils.normalizeClamped(waterTank.getFluidAmount(), 0, waterTank.getCapacity()) * 180f;
     }
 
     public float GetSteamFill() //0 ~ 180
     {
         int maxValue = IRConfig.Main.steamBoilerWaterPerTick.get() * IRConfig.Main.steamBoilerConversionFactor.get();
-        return Utils.normalize(steamGenerated, 0, maxValue) * 180f;
+        return Utils.normalizeClamped(steamGenerated, 0, maxValue) * 180f;
     }
 
     public float getHeatFill() //0 ~ 140
     {
-        return Utils.normalize(getHeat(), 0, getMaxHeat()) * 140f;
+        return Utils.normalizeClamped(getHeat(), 0, getMaxHeat()) * 140f;
     }
 
     public enum BoilerType

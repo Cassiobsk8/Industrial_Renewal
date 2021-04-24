@@ -112,14 +112,14 @@ public class TileEntityWindTurbinePillar extends TileEntityEnergyCable
 
     public float getGenerationForGauge()
     {
-        float currentAmount = Utils.normalize(getMaster().averageEnergy, 0, 128);
+        float currentAmount = Utils.normalizeClamped(getMaster().averageEnergy, 0, 128);
         amount = Utils.lerp(amount, currentAmount, 0.1f);
         return Math.min(amount, 1) * 90f;
     }
 
     public float getPotentialValue()
     {
-        float currentAmount = Utils.normalize(getMaster().potentialEnergy, 0, 128);
+        float currentAmount = Utils.normalizeClamped(getMaster().potentialEnergy, 0, 128);
         return currentAmount * 90f;
     }
 

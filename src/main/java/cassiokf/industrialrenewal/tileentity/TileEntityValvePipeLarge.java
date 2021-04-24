@@ -1,8 +1,8 @@
 package cassiokf.industrialrenewal.tileentity;
 
+import cassiokf.industrialrenewal.init.SoundsRegistration;
 import cassiokf.industrialrenewal.tileentity.abstracts.TileEntityToggleableBase;
 import cassiokf.industrialrenewal.util.CustomFluidTank;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -31,13 +31,11 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
     public final CustomFluidTank tank = new CustomFluidTank(2000)
     {
         @Override
-        protected void onContentsChanged()
+        public int fill(FluidStack resource, FluidAction action)
         {
-            TileEntityValvePipeLarge.this.markDirty();
+            return TileEntityValvePipeLarge.this.passFluidOut(resource, action);
         }
     };
-
-    private static final int amountPerTick = 1000;
 
     public TileEntityValvePipeLarge(TileEntityType<?> tileEntityTypeIn)
     {
@@ -50,47 +48,38 @@ public class TileEntityValvePipeLarge extends TileEntityToggleableBase implement
         if (this.hasWorld() && !world.isRemote && active)
         {
             Direction faceToFill = getOutPutFace();
-            TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
             TileEntity teIn = world.getTileEntity(pos.offset(faceToFill.getOpposite()));
 
-            boolean hasFluidInternally = tank.getFluidAmount() > 0;
-
-            if (teOut != null && (hasFluidInternally || (teIn != null)))
+            if (teIn != null)
             {
-                IFluidHandler inTank = hasFluidInternally
-                        ? tank
-                        : teIn.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill).orElse(null);
-                IFluidHandler outTank = teOut.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-                        faceToFill.getOpposite()).orElse(null);
-                if (inTank != null && outTank != null)
+                IFluidHandler inTank = teIn.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill).orElse(null);
+                if (inTank != null)
                 {
-                    FluidStack amountCanFill = inTank.drain(amountPerTick, IFluidHandler.FluidAction.SIMULATE);
-                    if (amountCanFill != null) inTank.drain(outTank.fill(amountCanFill, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
+                    inTank.drain(tank.fill(inTank.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
                 }
             }
         }
+    }
+
+    public int passFluidOut(FluidStack resource, IFluidHandler.FluidAction action)
+    {
+        if (!active || resource == null || resource.amount <= 0) return 0;
+        Direction faceToFill = getOutPutFace();
+        TileEntity teOut = world.getTileEntity(pos.offset(faceToFill));
+        if (teOut != null)
+        {
+            IFluidHandler storage = teOut.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, faceToFill.getOpposite()).orElse(null);
+            if (storage != null) return storage.fill(resource, action);
+        }
+        return 0;
     }
 
     @Override
     public void playSwitchSound()
     {
         float pitch = rand.nextFloat() * (1.2f - 0.8f) + 0.8f;
-        this.getWorld().playSound(null, this.getPos(), SoundsRegistration.TILEENTITY_VALVE_CHANGE, SoundCategory.BLOCKS, 1F,
+        this.getWorld().playSound(null, this.getPos(), SoundsRegistration.TILEENTITY_VALVE_CHANGE.get(), SoundCategory.BLOCKS, 1F,
                 pitch);
-    }
-
-    @Override
-    public void read(final CompoundNBT tag)
-    {
-        tank.readFromNBT(tag);
-        super.read(tag);
-    }
-
-    @Override
-    public CompoundNBT write(final CompoundNBT tag)
-    {
-        tank.writeToNBT(tag);
-        return super.write(tag);
     }
 
     @Nullable

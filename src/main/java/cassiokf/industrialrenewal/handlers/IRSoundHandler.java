@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.handlers;
 
 import cassiokf.industrialrenewal.init.SoundsRegistration;
+import cassiokf.industrialrenewal.util.TileTickableSound;
 import cassiokf.industrialrenewal.util.interfaces.IDynamicSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
@@ -10,7 +11,9 @@ import net.minecraft.client.audio.SoundEventAccessor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
@@ -26,9 +29,9 @@ import java.util.concurrent.ThreadLocalRandom;
 @OnlyIn(Dist.CLIENT)
 public class IRSoundHandler
 {
-    private static final Minecraft mc = Minecraft.getInstance();
+    private static Minecraft mc = Minecraft.getInstance();
 
-    private static final Map<Long, ISound> soundMap = new HashMap<>();
+    private static Map<Long, ISound> soundMap = new HashMap<>();
 
     public static boolean isSoundPlaying(BlockPos pos)
     {
@@ -36,33 +39,22 @@ public class IRSoundHandler
     }
 
     /* ------------------------------- Sound handling from Mekanism devs ------------------------------- */
-    public static ISound playRepeatableSound(ResourceLocation soundLoc, float volume, float pitch, BlockPos pos)
+    public static ISound playRepeatableSound(TileEntity tile, SoundEvent soundIn, float volume, float pitch)
     {
         // First, check to see if there's already a sound playing at the desired location
-        ISound s = soundMap.get(pos.toLong());
+        ISound s = soundMap.get(tile.getPos().toLong());
         if (s == null || !mc.getSoundHandler().isPlaying(s))
         {
             // No sound playing, start one up - we assume that tile sounds will play until explicitly stopped
-            s = new PositionedSoundRecord(soundLoc, SoundCategory.BLOCKS, volume, pitch, true, 0,
-                    ISound.AttenuationType.LINEAR, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f)
-            {
-                @Override
-                public float getVolume()
-                {
-                    if (this.sound == null)
-                    {
-                        this.createAccessor(mc.getSoundHandler());
-                    }
-                    return super.getVolume();
-                }
-            };
+            s = new TileTickableSound(tile, soundIn, SoundCategory.BLOCKS, volume, pitch, true, 0,
+                    ISound.AttenuationType.LINEAR);
 
             // Start the sound
             playSound(s);
 
             // N.B. By the time playSound returns, our expectation is that our wrapping-detector handler has fired
             // and dealt with any muting interceptions and, CRITICALLY, updated the soundMap with the final ISound.
-            s = soundMap.get(pos.toLong());
+            s = soundMap.get(tile.getPos().toLong());
         }
 
         return s;
@@ -77,6 +69,11 @@ public class IRSoundHandler
             mc.getSoundHandler().stop(s);
             soundMap.remove(posKey);
         }
+    }
+
+    public static void playSound(World world, SoundEvent soundEvent, float volume, float pitch, BlockPos pos)
+    {
+        world.playSound(null, pos, soundEvent, SoundCategory.BLOCKS, volume, pitch);
     }
 
     public static void playSound(ISound sound)
@@ -102,16 +99,7 @@ public class IRSoundHandler
             event.setResultSound(resultSound);
         } else if (SoundsRegistration.REPEATABLE_SOUNDS.contains(soundLoc.toString()))
         {
-            ISound s = event.getSound();
-            float vol = 0.4f;
-            try
-            {
-                vol = resultSound.getVolume();
-            } catch (Exception e)
-            {
-                //Because Galacticraft
-            }
-            resultSound = new TileSound(s, vol, 1.0F, false);
+            resultSound = new TileSound(event.getSound(), resultSound.getVolume(), 1.0F, false);
             event.setResultSound(resultSound);
         } else
         {
@@ -134,17 +122,17 @@ public class IRSoundHandler
 
     private static class TileSound implements ITickableSound
     {
-        private final Minecraft mc = Minecraft.getInstance();
+        private Minecraft mc = Minecraft.getInstance();
         // Choose an interval between 60-80 ticks (3-4 seconds) to check for muffling changes. We do this
         // to ensure that not every tile sound tries to run on the same tick and thus create
         // uneven spikes of CPU usage
-        private final int checkInterval = 1 + ThreadLocalRandom.current().nextInt(8);
+        private int checkInterval = 1 + ThreadLocalRandom.current().nextInt(8);
 
-        private final ISound sound;
+        private ISound sound;
         private float volume;
         private float pitch;
         private boolean donePlaying = false;
-        private final boolean isDynamic;
+        private boolean isDynamic;
 
         TileSound(ISound sound, float volume, float pitch, boolean isDynamic)
         {
@@ -208,12 +196,6 @@ public class IRSoundHandler
         }
 
         @Override
-        public boolean isGlobal()
-        {
-            return true;
-        }
-
-        @Override
         public @Nonnull
         Sound getSound()
         {
@@ -231,6 +213,12 @@ public class IRSoundHandler
         public boolean canRepeat()
         {
             return sound.canRepeat();
+        }
+
+        @Override
+        public boolean isGlobal()
+        {
+            return false;
         }
 
         @Override

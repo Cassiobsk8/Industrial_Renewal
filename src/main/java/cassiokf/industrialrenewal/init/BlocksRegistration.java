@@ -9,8 +9,8 @@ import cassiokf.industrialrenewal.blocks.industrialfloor.BlockIndustrialFloor;
 import cassiokf.industrialrenewal.blocks.pipes.*;
 import cassiokf.industrialrenewal.blocks.railroad.*;
 import cassiokf.industrialrenewal.blocks.redstone.*;
-import cassiokf.industrialrenewal.enums.EnumBulkConveyorType;
-import cassiokf.industrialrenewal.enums.EnumEnergyCableType;
+import cassiokf.industrialrenewal.util.enums.EnumBulkConveyorType;
+import cassiokf.industrialrenewal.util.enums.EnumEnergyCableType;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -23,7 +23,7 @@ import static cassiokf.industrialrenewal.References.MODID;
 
 public class BlocksRegistration
 {
-    private static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, MODID);
+    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
 
     public static final RegistryObject<Block> HAZARD_BLOCK = BLOCKS.register("block_hazard", BlockNormalCube::new);
     public static final RegistryObject<Block> HAZARD_CAUTION = BLOCKS.register("caution_hazard", BlockNormalCube::new);
@@ -56,7 +56,7 @@ public class BlocksRegistration
     public static final RegistryObject<Block> PILLARFLUIDPIPE = BLOCKS.register("iron_pillar_pipe", BlockPillarFluidPipe::new);
     public static final RegistryObject<Block> FLOORPIPE = BLOCKS.register("floor_pipe", BlockFloorPipe::new);
     public static final RegistryObject<Block> FLOORLAMP = BLOCKS.register("floor_lamp", BlockFloorLamp::new);
-    public static final RegistryObject<Block> HVISOLATOR = BLOCKS.register("isolator_hv", BlockHVIsolator::new);
+    public static final RegistryObject<Block> HVISOLATOR = BLOCKS.register("isolator_hv", BlockHVConnectorBase::new);
     public static final RegistryObject<Block> ALARM = BLOCKS.register("alarm", BlockAlarm::new);
     public static final RegistryObject<Block> RECORDPLAYER = BLOCKS.register("record_player", BlockRecordPlayer::new);
     public static final RegistryObject<Block> CATWALK = BLOCKS.register("catwalk", BlockCatWalk::new);
@@ -91,9 +91,9 @@ public class BlocksRegistration
     public static final RegistryObject<Block> GAUGE = BLOCKS.register("fluid_gauge", BlockGauge::new);
     public static final RegistryObject<Block> ENERGYLEVEL = BLOCKS.register("energy_level", BlockEnergyLevel::new);
     public static final RegistryObject<Block> EFENCE = BLOCKS.register("electric_fence", BlockElectricFence::new);
-    public static final RegistryObject<Block> BIGFENCECOLUMN = BLOCKS.register("fence_big_column", BlockElectricBigFenceColumn::new);
+    public static final RegistryObject<Block> BIGFENCECOLUMN = BLOCKS.register("fence_big_column", BlockBigFenceColumn::new);
     public static final RegistryObject<Block> BIGFENCEWIRE = BLOCKS.register("fence_big_wire", BlockBigFenceWire::new);
-    public static final RegistryObject<Block> BIGFENCECORNER = BLOCKS.register("fence_big_corner", BlockElectricBigFenceCorner::new);
+    public static final RegistryObject<Block> BIGFENCECORNER = BLOCKS.register("fence_big_corner", BlockBigFenceCorner::new);
     public static final RegistryObject<Block> CONCRETEWALL = BLOCKS.register("wall_concrete", BlockBaseWall::new);
     public static final RegistryObject<Block> EGATE = BLOCKS.register("electric_gate", BlockElectricGate::new);
     public static final RegistryObject<Block> RAZORWIRE = BLOCKS.register("razor_wire", BlockRazorWire::new);
@@ -139,7 +139,7 @@ public class BlocksRegistration
     public static final RegistryObject<Block> VEINHEMATITE = BLOCKS.register("orevein_hematite", BlockOreVein::new);
 
 
-    private static final DeferredRegister<Item> BLOCK_ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, MODID);
+    private static final DeferredRegister<Item> BLOCK_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 
     //public static final RegistryObject<Block> BLOCK = BLOCKS.register("chunk_loader", BlockChunkLoader::new);
     //===================

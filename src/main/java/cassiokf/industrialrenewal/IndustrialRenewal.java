@@ -3,6 +3,7 @@ package cassiokf.industrialrenewal;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.entity.EntitiesRegistration;
 import cassiokf.industrialrenewal.handlers.EventHandler;
+import cassiokf.industrialrenewal.handlers.IRSoundHandler;
 import cassiokf.industrialrenewal.init.*;
 import cassiokf.industrialrenewal.model.ModelLoaderCustom;
 import net.minecraft.client.renderer.RenderType;

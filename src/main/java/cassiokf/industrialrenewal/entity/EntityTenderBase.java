@@ -4,26 +4,28 @@ import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.References;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.GUIHandler;
-import cassiokf.industrialrenewal.init.ModItems;
+import cassiokf.industrialrenewal.init.ItemsRegistration;
+import cassiokf.industrialrenewal.util.CustomFluidTank;
 import cassiokf.industrialrenewal.util.Utils;
 import cassiokf.industrialrenewal.util.interfaces.ICoupleCart;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.tileentity.FurnaceTileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -33,7 +35,7 @@ import javax.annotation.Nonnull;
 
 public class EntityTenderBase extends RotatableBase implements ICoupleCart, IInventory
 {
-    private static final DataParameter<NBTTagCompound> TANK = EntityDataManager.createKey(EntityFluidBase.class, DataSerializers.COMPOUND_TAG);
+    private static final DataParameter<CompoundNBT> TANK = EntityDataManager.createKey(EntityFluidBase.class, DataSerializers.COMPOUND_TAG);
 
     public final ItemStackHandler inventory = new ItemStackHandler(6)
     {
@@ -41,15 +43,15 @@ public class EntityTenderBase extends RotatableBase implements ICoupleCart, IInv
         public boolean isItemValid(int slot, @Nonnull ItemStack stack)
         {
             if (stack.isEmpty()) return false;
-            return TileEntityFurnace.isItemFuel(stack);
+            return FurnaceTileEntity.isFuel(stack);
         }
     };
-    public final FluidTank tank = new FluidTank(64 * References.BUCKET_VOLUME)
+    public final CustomFluidTank tank = new CustomFluidTank(64 * References.BUCKET_VOLUME)
     {
         @Override
-        public boolean canFillFluidType(FluidStack fluid)
+        public boolean canFill(FluidStack resource)
         {
-            return fluid != null && IRConfig.waterTypesContains(fluid.getFluid().getName());
+            return resource != null && IRConfig.waterTypesContains(resource.getFluid().getRegistryName());
         }
 
         @Override
@@ -70,29 +72,29 @@ public class EntityTenderBase extends RotatableBase implements ICoupleCart, IInv
     }
 
     @Override
-    public boolean processInitialInteract(PlayerEntity player, EnumHand hand)
+    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vec3d vec, Hand hand)
     {
         if (FluidUtil.interactWithFluidHandler(player, hand, tank))
         {
             if (world.isRemote) player.swingArm(hand);
-            return true;
+            return ActionResultType.SUCCESS;
         }
         if (!player.isSneaking())
         {
             if (!this.world.isRemote)
                 player.openGui(IndustrialRenewal.instance, GUIHandler.TENDER, this.world, this.getEntityId(), 0, 0);
-            return true;
+            return ActionResultType.SUCCESS;
         }
-        return super.processInitialInteract(player, hand);
+        return super.applyPlayerInteraction(player, vec, hand);
     }
 
     @Override
     public void killMinecart(DamageSource source)
     {
-        this.setDead();
+        this.remove();
         if (!source.isExplosion() && this.world.getGameRules().getBoolean("doEntityDrops"))
         {
-            this.entityDropItem(new ItemStack(ModItems.tender, 1), 0.0F);
+            this.entityDropItem(new ItemStack(ItemsRegistration.TENDER.get(), 1), 0.0F);
         }
     }
 
@@ -105,25 +107,17 @@ public class EntityTenderBase extends RotatableBase implements ICoupleCart, IInv
     @Override
     public ItemStack getCartItem()
     {
-        return new ItemStack(ModItems.tender);
+        return new ItemStack(ItemsRegistration.TENDER.get());
     }
 
     @Override
-    public float getFixedDistance(EntityMinecart cart)
+    public float getFixedDistance(MinecartEntity cart)
     {
         return 0.6f;
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-    {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
-                || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-                || super.hasCapability(capability, facing);
-    }
-
-    @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
@@ -133,21 +127,21 @@ public class EntityTenderBase extends RotatableBase implements ICoupleCart, IInv
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound compound)
+    protected void writeAdditional(CompoundNBT compound)
     {
-        super.writeEntityToNBT(compound);
-        compound.setTag("inventory", this.inventory.serializeNBT());
-        compound.setTag("tank", this.tank.writeToNBT(new CompoundNBT()));
-        compound.setTag("tankD", this.dataManager.get(TANK));
+        super.writeAdditional(compound);
+        compound.put("inventory", this.inventory.serializeNBT());
+        compound.put("tank", this.tank.writeToNBT(new CompoundNBT()));
+        compound.put("tankD", this.dataManager.get(TANK));
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound compound)
+    protected void readAdditional(CompoundNBT compound)
     {
-        super.readEntityFromNBT(compound);
-        this.inventory.deserializeNBT(compound.getCompoundTag("inventory"));
-        this.tank.readFromNBT(compound.getCompoundTag("tank"));
-        this.dataManager.set(TANK, compound.getCompoundTag("tankD"));
+        super.readAdditional(compound);
+        this.inventory.deserializeNBT(compound.getCompound("inventory"));
+        this.tank.readFromNBT(compound.getCompound("tank"));
+        this.dataManager.set(TANK, compound.getCompound("tankD"));
     }
 
     public void Sync()

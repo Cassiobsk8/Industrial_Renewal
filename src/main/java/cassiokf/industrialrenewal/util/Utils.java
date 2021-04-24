@@ -188,9 +188,9 @@ public class Utils
         return text;
     }
 
-    public static float normalize(float value, float min, float max)
+    public static float normalizeClamped(float value, float min, float max)
     {
-        return (value - min) / (max - min);
+        return MathHelper.clamp((value - min), 0, (max - min)) / (max - min);
     }
 
     public static int getDistancePointToPoint(BlockPos pos1, BlockPos pos2)

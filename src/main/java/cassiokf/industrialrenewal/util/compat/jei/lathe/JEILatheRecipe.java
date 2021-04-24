@@ -39,7 +39,7 @@ public class JEILatheRecipe implements IRecipeWrapper
         int time = LatheRecipe.CACHED_RECIPES.get(input.get(0).getItem()).getProcessTime();
         String string = JEICompat.translateToLocalFormated("gui.jei.category.energyneeded")
                 + " "
-                + time * IRConfig.MainConfig.Main.energyPerTickLatheMachine
+                + time * IRConfig.Main.energyPerTickLatheMachine.get()
                 + " FE";
         FontRenderer renderer = minecraft.fontRenderer;
         renderer.drawString(string, 22, 64, Color.GRAY.getRGB());

@@ -16,7 +16,7 @@ import static cassiokf.industrialrenewal.References.MODID;
 
 public class TileRegistration
 {
-    private static final DeferredRegister<TileEntityType<?>> TILES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, MODID);
+    private static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MODID);
     public static final RegistryObject<TileEntityType<TileEntityOreVein>> VEINHEMATITE_TILE = TILES.register("orevein_hematite", () -> TileEntityType.Builder.create(TileEntityOreVein::new, BlocksRegistration.VEINHEMATITE.get()).build(null));
     public static final RegistryObject<TileEntityType<TileEntityEnergySwitch>> ENERGYSWITCH_TILE = TILES.register("energy_switch", () -> TileEntityType.Builder.create(TileEntityEnergySwitch::new, BlocksRegistration.ENERGYSWITCH.get()).build(null));
     public static final RegistryObject<TileEntityType<TileEntityValvePipeLarge>> VALVELARGE_TILE = TILES.register("valve_pipe_large", () -> TileEntityType.Builder.create(TileEntityValvePipeLarge::new, BlocksRegistration.VALVELARGE.get()).build(null));

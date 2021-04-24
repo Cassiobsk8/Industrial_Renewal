@@ -22,9 +22,20 @@ public class MultiStackHandler extends ItemStackHandler {
         this.te = te;
     }
 
+    public ItemStack insertItem(@Nonnull ItemStack stack)
+    {
+        return insertItem(0, stack, false);
+    }
+
+    public ItemStack insertItem(@Nonnull ItemStack stack, boolean simulate)
+    {
+        return insertItem(0, stack, simulate);
+    }
+
     @Override
     @Nonnull
-    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
+    {
         if (stack.isEmpty())
             return ItemStack.EMPTY;
 
@@ -34,7 +45,8 @@ public class MultiStackHandler extends ItemStackHandler {
 
         int limit = getStackLimit(0, stack);
 
-        if (!existing.isEmpty()) {
+        if (!existing.isEmpty())
+        {
             if (!ItemHandlerHelper.canItemStacksStack(stack, existing))
                 return stack;
 
@@ -46,11 +58,15 @@ public class MultiStackHandler extends ItemStackHandler {
 
         boolean reachedLimit = stack.getCount() > limit;
 
-        if (!simulate) {
-            if (existing.isEmpty()) {
-                this.stacks.set(0, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, 1) : stack);
-                count = reachedLimit ? limit : stack.getCount();
-            } else {
+        if (!simulate)
+        {
+            if (existing.isEmpty())
+            {
+                this.stacks.set(0, ItemHandlerHelper.copyStackWithSize(stack, 1));
+                count = Math.min(limit, stack.getCount());
+            }
+            else
+            {
                 count += reachedLimit ? limit : stack.getCount();
             }
             onContentsChanged(0);
@@ -59,9 +75,20 @@ public class MultiStackHandler extends ItemStackHandler {
         return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
     }
 
+    public ItemStack extractItem(int amount)
+    {
+        return extractItem(0, amount, false);
+    }
+
+    public ItemStack extractItem(int amount, boolean simulate)
+    {
+        return extractItem(0, amount, simulate);
+    }
+
     @Override
     @Nonnull
-    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+    public ItemStack extractItem(int slot, int amount, boolean simulate)
+    {
         if (amount == 0)
             return ItemStack.EMPTY;
 
@@ -74,20 +101,24 @@ public class MultiStackHandler extends ItemStackHandler {
 
         int toExtract = Math.min(amount, maxStack);
 
-        if (count <= toExtract) {
-            if (!simulate) {
+        if (count <= toExtract)
+        {
+            int toRemove = count;
+            if (!simulate)
+            {
                 this.stacks.set(0, ItemStack.EMPTY);
                 count = 0;
                 onContentsChanged(0);
             }
-            return existing;
-        } else {
-            if (!simulate) {
-                this.stacks.set(0, ItemHandlerHelper.copyStackWithSize(existing, 1));
+            return ItemHandlerHelper.copyStackWithSize(existing, toRemove);
+        }
+        else
+        {
+            if (!simulate)
+            {
                 count -= toExtract;
                 onContentsChanged(0);
             }
-
             return ItemHandlerHelper.copyStackWithSize(existing, toExtract);
         }
     }

@@ -105,7 +105,7 @@ public class TileEntityBatteryBank extends TileEntitySync implements ITickableTi
 
     public float getBatteryFill()
     {
-        return Utils.normalize(container.getEnergyStored(), 0, container.getMaxEnergyStored());
+        return Utils.normalizeClamped(container.getEnergyStored(), 0, container.getMaxEnergyStored());
     }
 
     @Override

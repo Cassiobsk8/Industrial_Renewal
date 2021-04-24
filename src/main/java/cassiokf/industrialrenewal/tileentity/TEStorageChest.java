@@ -67,6 +67,7 @@ public class TEStorageChest extends TEMultiTankBase<TEStorageChest>
 
     public void openGui(PlayerEntity player, boolean resetLine)
     {
+        if (this.isRemoved()) return;
         if (resetLine)
         {
             currentLine = 0;

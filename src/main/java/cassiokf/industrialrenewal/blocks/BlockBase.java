@@ -35,7 +35,7 @@ public class BlockBase extends Block
         super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
-    public boolean isReplaceable(IWorldReader world, BlockPos pos)
+    public static boolean isReplaceable(IWorldReader world, BlockPos pos)
     {
         BlockState state = world.getBlockState(pos);
         return state.getMaterial().isReplaceable();

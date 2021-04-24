@@ -12,21 +12,12 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
 {
-    public ItemStackHandler hopperInv = new ItemStackHandler(1)
-    {
-        @Override
-        protected void onContentsChanged(int slot)
-        {
-            TileEntityBulkConveyorHopper.this.markDirty();
-        }
-    };
     private int tick2;
 
     public TileEntityBulkConveyorHopper(TileEntityType<?> tileEntityTypeIn)
@@ -44,7 +35,6 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
             {
                 tick2 = 0;
                 if (!getInvAbove()) getEntityItemAbove();
-                hopperToConveyor();
             }
             tick2++;
         }
@@ -52,7 +42,7 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
 
     private boolean getInvAbove()
     {
-        if (hopperInv.getStackInSlot(0).isEmpty())
+        if (inventory.getStackInSlot(backNumber).isEmpty())
         {
             TileEntity te = world.getTileEntity(pos.up());
             if (te != null)
@@ -61,7 +51,7 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
                 if (itemHandler != null)
                 {
                     int itemsPerTick = 8;
-                    if (Utils.moveItemsBetweenInventories(itemHandler, hopperInv, itemsPerTick)) markDirty();
+                    if (Utils.moveItemsBetweenInventories(itemHandler, inventory, itemsPerTick)) markDirty();
                     return true;
                 }
             }
@@ -69,37 +59,20 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
         return false;
     }
 
-    private void hopperToConveyor()
-    {
-        if (!hopperInv.getStackInSlot(0).isEmpty())
-        {
-            ItemStack stack = hopperInv.getStackInSlot(0).copy();
-            ItemStack stack1 = inventory.insertItem(1, stack, false);
-            hopperInv.getStackInSlot(0).shrink(stack.getCount() - stack1.getCount());
-        }
-    }
-
     private void getEntityItemAbove()
     {
-        if (hopperInv.getStackInSlot(0).isEmpty())
+        if (inventory.getStackInSlot(backNumber).isEmpty())
         {
-            List<Entity> list = world.getEntitiesWithinAABB(ItemEntity.class, new AxisAlignedBB(pos.up().getX(), pos.up().getY(), pos.up().getZ(), pos.up().getX() + 2D, pos.up().getY() + 1D, pos.up().getZ() + 1D), EntitySelectors.IS_ALIVE);
+            List<Entity> list = world.getEntitiesWithinAABB(ItemEntity.class, new AxisAlignedBB(pos.up().getX(), pos.up().getY(), pos.up().getZ(), pos.up().getX() + 2D, pos.up().getY() + 1D, pos.up().getZ() + 1D), Entity::isAlive);
             if (!list.isEmpty() && list.get(0) instanceof ItemEntity)
             {
                 ItemEntity entityItem = (ItemEntity) list.get(0);
                 ItemStack stack = entityItem.getItem().copy();
-                ItemStack stack1 = hopperInv.insertItem(0, stack, false);
+                ItemStack stack1 = inventory.insertItem(backNumber, stack, false);
                 if (stack1.isEmpty()) entityItem.remove();
                 else entityItem.setItem(stack1);
             }
         }
-    }
-
-    @Override
-    public void dropInventory()
-    {
-        Utils.dropInventoryItems(world, pos, hopperInv);
-        super.dropInventory();
     }
 
     @Nullable
@@ -107,7 +80,7 @@ public class TileEntityBulkConveyorHopper extends TileEntityBulkConveyor
     public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing)
     {
         if (capability.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) && facing != Direction.DOWN)
-            return LazyOptional.of(() -> hopperInv).cast();
+            return LazyOptional.of(() -> inventory).cast();
         return super.getCapability(capability, facing);
     }
 }

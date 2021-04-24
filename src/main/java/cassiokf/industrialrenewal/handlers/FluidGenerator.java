@@ -82,11 +82,11 @@ public class FluidGenerator
         FluidStack resource = tank.getFluid();
         if (resource == null || resource.getAmount() <= 0) return;
 
-        int fuel = IRConfig.Main.fluidFuel.get(resource.getFluid().getName()) != null ? IRConfig.Main.fluidFuel.get(resource.getFluid().getName()) : 0;
+        int fuel = IRConfig.Main.fluidFuel.get().get(resource.getFluid().getRegistryName().getPath()) != null ? IRConfig.Main.fluidFuel.get().get(resource.getFluid().getRegistryName().getPath()) : 0;
         if (fuel > 0)
         {
             int amount = Math.min(References.BUCKET_VOLUME, resource.getAmount());
-            float norm = Utils.normalize(amount, 0, References.BUCKET_VOLUME);
+            float norm = Utils.normalizeClamped(amount, 0, References.BUCKET_VOLUME);
 
             fuelTime = (int) (fuel * norm) * 4;
             tank.drainInternal(amount, IFluidHandler.FluidAction.EXECUTE);

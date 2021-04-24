@@ -143,7 +143,7 @@ public class TileEntityPortableGenerator extends TileEntitySaveContent implement
 
     public float getTankFill()
     {
-        return Utils.normalize(getTank().getFluidAmount(), 0, getTank().getCapacity()) * 180f;
+        return Utils.normalizeClamped(getTank().getFluidAmount(), 0, getTank().getCapacity()) * 180f;
     }
 
     public String getTankText()
@@ -153,7 +153,7 @@ public class TileEntityPortableGenerator extends TileEntitySaveContent implement
 
     public float getEnergyFill()
     {
-        return Utils.normalize(generator.isGenerating() ? FluidGenerator.energyPerTick : 0, 0, 128) * 90;
+        return Utils.normalizeClamped(generator.isGenerating() ? FluidGenerator.energyPerTick : 0, 0, 128) * 90;
     }
 
     public String getEnergyText()

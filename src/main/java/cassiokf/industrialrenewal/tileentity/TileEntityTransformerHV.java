@@ -178,7 +178,7 @@ public class TileEntityTransformerHV extends TileEntityMultiBlockBase<TileEntity
 
     public float getGenerationFill() //0 ~ 90
     {
-        return Utils.normalize(averageEnergy, 0, energyContainer.getMaxOutput()) * 90f;
+        return Utils.normalizeClamped(averageEnergy, 0, energyContainer.getMaxOutput()) * 90f;
     }
 
     @Override

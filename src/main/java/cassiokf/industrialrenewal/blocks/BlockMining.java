@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
+import cassiokf.industrialrenewal.handlers.IRSoundHandler;
 import cassiokf.industrialrenewal.item.ItemDrill;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityMining;
@@ -13,7 +14,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -43,6 +43,7 @@ public class BlockMining extends BlockMultiBlockBase<TileEntityMining>
         TileEntity te = worldIn.getTileEntity(pos);
         if (te instanceof TileEntityMining) ((TileEntityMining) te).dropAllItems();
         super.onReplaced(state, worldIn, pos, newState, isMoving);
+        IRSoundHandler.stopTileSound(pos);
     }
 
     @Override

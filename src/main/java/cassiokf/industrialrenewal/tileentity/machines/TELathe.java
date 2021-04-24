@@ -105,7 +105,7 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
             }
             if (!inProcess && !oldInProcess) stopping = true;
             oldInProcess = inProcess;
-            renderCutterProcess = processTime > 0 ? Utils.normalize(tick, 0, processTime) * 0.8f : 0;
+            renderCutterProcess = processTime > 0 ? Utils.normalizeClamped(tick, 0, processTime) * 0.8f : 0;
             tryOutPutItem();
             handleSound();
         }

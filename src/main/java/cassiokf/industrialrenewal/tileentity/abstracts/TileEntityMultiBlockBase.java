@@ -27,7 +27,7 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     private boolean masterChecked = false;
     private boolean faceChecked = false;
     private int faceIndex;
-    boolean firstTick = false;
+    protected boolean firstTick = false;
 
     public TileEntityMultiBlockBase(TileEntityType<?> tileEntityTypeIn)
     {
@@ -138,17 +138,13 @@ public abstract class TileEntityMultiBlockBase<TE extends TileEntityMultiBlockBa
     public Direction getMasterFacing()
     {
         if (faceChecked) return Direction.byIndex(faceIndex);
-        if (getMaster() == null)
-        {
-            return getBlockFace();
-        }
-        Direction facing = getMaster().getBlockFace();
+        Direction facing = forceBlockFaceCheck();
         faceChecked = true;
         faceIndex = facing.getIndex();
         return facing;
     }
 
-    public Direction getBlockFace()
+    public Direction forceBlockFaceCheck()
     {
         BlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof BlockMultiBlockBase)

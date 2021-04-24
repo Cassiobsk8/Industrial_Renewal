@@ -1,27 +1,23 @@
 package cassiokf.industrialrenewal.blocks.redstone;
 
-import cassiokf.industrialrenewal.blocks.abstracts.BlockTileEntity;
-import cassiokf.industrialrenewal.tileentity.redstone.TileEntityTrafficLight;
+import cassiokf.industrialrenewal.blocks.abstracts.BlockHorizontalFacing;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -29,96 +25,94 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockTrafficLight extends BlockTileEntity<TileEntityTrafficLight>
+public class BlockTrafficLight extends BlockHorizontalFacing
 {
-
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty ONWALL = BooleanProperty.create("onwall");
     public static final IntegerProperty SIGNAL = IntegerProperty.create("signal", 0, 2);
 
-    protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.875D, 0.75D);
+    protected static final VoxelShape BASE_AABB = Block.makeCuboidShape(4, 0, 4, 12, 30, 12);
+    private static final VoxelShape WEST_BLOCK_AABB = Block.makeCuboidShape(0, 2, 4, 8, 14, 12);
+    private static final VoxelShape EAST_BLOCK_AABB = Block.makeCuboidShape(8, 2, 4, 16, 14, 12);
+    private static final VoxelShape SOUTH_BLOCK_AABB = Block.makeCuboidShape(4, 2, 8, 12, 14, 16);
+    private static final VoxelShape NORTH_BLOCK_AABB = Block.makeCuboidShape(4, 2, 0, 12, 14, 8);
 
-    private static final AxisAlignedBB WEST_BLOCK_AABB = new AxisAlignedBB(0F, 0.125F, 0.25F, 0.5F, 0.875F, 0.75D);
-    private static final AxisAlignedBB EAST_BLOCK_AABB = new AxisAlignedBB(1F, 0.125F, 0.25F, 0.5F, 0.875F, 0.75D);
-    private static final AxisAlignedBB SOUTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0.125F, 0.5F, 0.75D, 0.875F, 1);
-    private static final AxisAlignedBB NORTH_BLOCK_AABB = new AxisAlignedBB(0.25F, 0.125F, 0.5F, 0.75D, 0.875F, 0);
-
-    public BlockTrafficLight(String name, CreativeTabs tab)
+    public BlockTrafficLight()
     {
-        super(Material.IRON, name, tab);
-
-        setSoundType(SoundType.METAL);
-        setHardness(0.8f);
-        this.lightValue = 7;
-        this.setDefaultState(this.blockState.getBaseState().with(FACING, Direction.NORTH).with(ONWALL, false).with(SIGNAL, 0));
+        super(Block.Properties.create(Material.IRON).lightValue(7));
+        this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(ONWALL, false).with(SIGNAL, 0));
     }
 
-    private int getSignal(IBlockAccess world, BlockPos pos)
+    private int getSignal(IWorld world, BlockPos pos, BlockState state)
     {
-        TileEntityTrafficLight te = (TileEntityTrafficLight) world.getTileEntity(pos);
-        return te.active();
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public BlockState getActualState(BlockState state, final IBlockAccess world, final BlockPos pos)
-    {
-        return state.with(SIGNAL, getSignal(world, pos));
-    }
-
-    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, Direction side)
-    {
-        if (side == Direction.UP)
+        World worldIn = world.getWorld();
+        BlockPos offsetPos = pos.offset(state.get(BlockTrafficLight.FACING));
+        boolean onWall = state.get(ONWALL);
+        if (!onWall && (worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.down())))
         {
-            return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos.up()).getBlock().isReplaceable(worldIn, pos.up());
-        }
-        return super.canPlaceBlockAt(worldIn, pos);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-    {
-        return this.getDefaultState().with(FACING, placer.getHorizontalFacing()).with(ONWALL, facing != Direction.UP);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING, ONWALL, SIGNAL);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public BlockState getStateFromMeta(int meta)
-    {
-        return getDefaultState().with(FACING, Direction.byHorizontalIndex(meta & 3)).with(ONWALL, (meta & 4) > 0);
-    }
-
-    @Override
-    public int getMetaFromState(BlockState state)
-    {
-        int i = 0;
-        i = i | state.get(FACING).getHorizontalIndex();
-
-        if (state.get(ONWALL))
+            int power = Math.max(worldIn.getRedstonePowerFromNeighbors(pos), worldIn.getRedstonePowerFromNeighbors(pos.down()));
+            if (power > 3 && power < 10)
+            {
+                return 1;
+            } else if (power >= 10)
+            {
+                return 2;
+            }
+        } else if (onWall && (worldIn.isBlockPowered(offsetPos) || worldIn.isBlockPowered(pos)))
         {
-            i |= 4;
+            int power = Math.max(worldIn.getStrongPower(offsetPos), worldIn.getStrongPower(pos));
+            if (power > 3 && power < 10)
+            {
+                return 1;
+            } else if (power >= 10)
+            {
+                return 2;
+            }
         }
-        return i;
+        return 0;
+    }
+
+    @Override
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
+        worldIn.setBlockState(pos, state.with(SIGNAL, getSignal(worldIn, pos, state)));
+    }
+
+    @Override
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        return stateIn.with(SIGNAL, getSignal(worldIn, currentPos, stateIn));
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        Direction facing = context.getPlacementHorizontalFacing();
+        if (Direction.Plane.HORIZONTAL.test(context.getFace()))
+            facing = context.getFace().getOpposite();
+        BlockState state = getDefaultState()
+                .with(FACING, facing)
+                .with(ONWALL, context.getFace() != Direction.UP);
+        return state.with(SIGNAL, getSignal(context.getWorld(), context.getPos(), state));
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(FACING, ONWALL, SIGNAL);
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced)
+    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        tooltip.add(I18n.format("tile.industrialrenewal.traffic_light.des0"));
-        tooltip.add(I18n.format("tile.industrialrenewal.traffic_light.des1"));
-        tooltip.add(I18n.format("tile.industrialrenewal.traffic_light.des2"));
-        tooltip.add(I18n.format("tile.industrialrenewal.traffic_light.des3"));
+        tooltip.add(new StringTextComponent(I18n.format("block.industrialrenewal.traffic_light.des0")));
+        tooltip.add(new StringTextComponent(I18n.format("block.industrialrenewal.traffic_light.des1")));
+        tooltip.add(new StringTextComponent(I18n.format("block.industrialrenewal.traffic_light.des2")));
+        tooltip.add(new StringTextComponent(I18n.format("block.industrialrenewal.traffic_light.des3")));
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    protected VoxelShape getVoxelShape(BlockState state, IBlockReader worldIn, BlockPos pos, boolean collision)
     {
         if (state.get(ONWALL))
         {
@@ -135,36 +129,8 @@ public class BlockTrafficLight extends BlockTileEntity<TileEntityTrafficLight>
                     return WEST_BLOCK_AABB;
             }
 
-        }
-        else
-        {
+        } else {
             return BASE_AABB;
         }
-    }
-
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
-
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
-
-    @Nullable
-    @Override
-    public TileEntityTrafficLight createTileEntity(World world, BlockState state)
-    {
-        return new TileEntityTrafficLight();
     }
 }

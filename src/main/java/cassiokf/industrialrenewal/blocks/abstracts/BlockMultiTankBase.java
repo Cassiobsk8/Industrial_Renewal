@@ -46,12 +46,16 @@ public abstract class BlockMultiTankBase<T extends TEMultiTankBase> extends Bloc
 
     private int isTop(IWorld world, BlockPos pos)
     {
-        return instanceOf(world.getBlockState(pos.offset(Direction.UP, 2)).getBlock()) ? 2 : 1;
+        BlockState state = world.getBlockState(pos.offset(Direction.UP, 3));
+        boolean thereIsOnTop = instanceOf(state.getBlock()) && state.get(MASTER);
+        return thereIsOnTop ? 2 : 1;
     }
 
     protected int isBot(IWorld world, BlockPos pos)
     {
-        return instanceOf(world.getBlockState(pos.offset(Direction.DOWN, 2)).getBlock()) ? 2 : 1;
+        BlockState state = world.getBlockState(pos.offset(Direction.DOWN, 3));
+        boolean thereIsOnBottom = instanceOf(state.getBlock()) && state.get(MASTER);
+        return thereIsOnBottom ? 2 : 1;
     }
 
     public abstract boolean instanceOf(Block block);

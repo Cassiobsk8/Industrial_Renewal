@@ -18,9 +18,9 @@ import static cassiokf.industrialrenewal.References.MODID;
 
 public class FluidsRegistration
 {
-    public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, MODID);
-    public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, MODID);
-    public static final DeferredRegister<Fluid> FLUIDS = new DeferredRegister<>(ForgeRegistries.FLUIDS, MODID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, MODID);
     public static final RegistryObject<FlowingFluid> STEAM = FLUIDS.register("steam", FluidSteam.Source::new);
     public static final RegistryObject<FlowingFluid> STEAM_FLOWING = FLUIDS.register("flowing_steam", FluidSteam.Flowing::new);
     public static final RegistryObject<BlockSteam> STEAM_BLOCK = BLOCKS.register("steam_block", BlockSteam::new);

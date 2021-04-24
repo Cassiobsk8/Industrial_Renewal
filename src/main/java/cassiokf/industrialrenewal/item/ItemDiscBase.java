@@ -9,14 +9,14 @@ import java.util.function.Supplier;
 
 public class ItemDiscBase extends MusicDiscItem
 {
-    protected ItemDiscBase(int comparatorValueIn, SoundEvent soundIn, Properties builder)
+    protected ItemDiscBase(Properties builder, SoundEvent soundIn)
     {
-        super(comparatorValueIn, soundIn, builder);
+        super(0, soundIn, builder);
     }
 
-    public ItemDiscBase(int comparatorValue, Supplier<SoundEvent> soundSupplier, Properties builder)
+    public ItemDiscBase(Properties builder, Supplier<SoundEvent> soundSupplier)
     {
-        super(comparatorValue, soundSupplier, builder);
+        super(0, soundSupplier, builder);
     }
 
     @Override
