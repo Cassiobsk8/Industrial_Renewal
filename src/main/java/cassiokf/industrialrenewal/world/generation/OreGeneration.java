@@ -99,6 +99,7 @@ public class OreGeneration implements IWorldGenerator
         int i = 0;
         for (String str : map.keySet())
         {
+            String oreName = "";
             if (OreDictionary.doesOreNameExist(str))
             {
                 List<ItemStack> list = OreDictionary.getOres(str);
@@ -111,6 +112,8 @@ public class OreGeneration implements IWorldGenerator
                 if (str.equals("oreIron")) stack = new ItemStack(ModBlocks.veinHematite);
                 if (!stack.isEmpty() && !DEEP_VEIN_ORES.contains(stack.getItem()))
                 {
+                    oreName = stack.getDisplayName() + " by oredict 1 from " + list.size() + " found";
+                    if (list.size() > 1) oreName += " list: " + list;
                     placeItemXTimes(stack.getItem(), map.get(str));
                     i++;
                 }
@@ -120,17 +123,20 @@ public class OreGeneration implements IWorldGenerator
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(str));
                 if (item != null && !DEEP_VEIN_ORES.contains(item) && item != Items.AIR)
                 {
+                    ItemStack stack = new ItemStack(item);
+                    oreName = stack.getDisplayName() + " by Item: (" + item.getRegistryName() + ")";
                     placeItemXTimes(item, map.get(str));
                     i++;
                 }
             }
+            if (!oreName.equals(""))
+                IndustrialRenewal.LOGGER.info(TextFormatting.YELLOW + References.NAME + " Mapped config: " + str + " into: " + oreName);
         }
-        IndustrialRenewal.LOGGER.info(TextFormatting.GREEN + References.NAME + " Registered " + i + " DeepVein Variants");
+        IndustrialRenewal.LOGGER.info(TextFormatting.GREEN + References.NAME + " Registered in total " + i + " DeepVein Variants");
     }
 
     private static void placeItemXTimes(Item item, int t)
     {
-        IndustrialRenewal.LOGGER.info(TextFormatting.YELLOW + References.NAME + " Registered " + item.getRegistryName());
         for (int i = 0; i < t; i++)
         {
             DEEP_VEIN_ORES.add(item);
