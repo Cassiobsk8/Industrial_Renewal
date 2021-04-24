@@ -17,6 +17,8 @@ public class BigFenceInnerIModel extends BigFenceCornerIModel implements IModel
     public static final ModelResourceLocation MODEL_CORE_I = new ModelResourceLocation("industrialrenewal:fence_big/fence_big_corner_inner_core");
     public static final ModelResourceLocation LEFT_TOP = new ModelResourceLocation("industrialrenewal:fence_big/fence_big_side_top_f_i");
     public static final ModelResourceLocation RIGHT_TOP = new ModelResourceLocation("industrialrenewal:fence_big/fence_big_side_top_i");
+    public static final ModelResourceLocation LEFT_BOT = new ModelResourceLocation("industrialrenewal:fence_big/fence_big_side_down_f_i");
+    public static final ModelResourceLocation RIGHT_BOT = new ModelResourceLocation("industrialrenewal:fence_big/fence_big_side_down_r_i");
 
     @Override
     public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter)
@@ -32,10 +34,10 @@ public class BigFenceInnerIModel extends BigFenceCornerIModel implements IModel
             subComponent = ModelLoaderRegistry.getModel(ACTIVE_RIGHT);
             IBakedModel bakedModelUp = subComponent.bake(state, format, bakedTextureGetter);
 
-            subComponent = ModelLoaderRegistry.getModel(ACTIVE_LEFT_DOWN);
+            subComponent = ModelLoaderRegistry.getModel(LEFT_BOT);
             IBakedModel bakedModelWest = subComponent.bake(state, format, bakedTextureGetter);
 
-            subComponent = ModelLoaderRegistry.getModel(ACTIVE_RIGHT_DOWN);
+            subComponent = ModelLoaderRegistry.getModel(RIGHT_BOT);
             IBakedModel bakedModelEast = subComponent.bake(state, format, bakedTextureGetter);
 
             subComponent = ModelLoaderRegistry.getModel(LEFT_TOP);
