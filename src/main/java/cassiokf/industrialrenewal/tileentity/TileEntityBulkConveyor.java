@@ -290,7 +290,15 @@ public class TileEntityBulkConveyor extends TileEntitySync implements ITickable
 
     public void dropInventory()
     {
-        Utils.dropInventoryItems(world, pos, inventory);
+        for (int i = 0; i < 3; ++i)
+        {
+            ItemStack itemstack = inventory.getStackInSlot(i);
+
+            if (!itemstack.isEmpty())
+            {
+                Utils.spawnItemStack(world, pos, itemstack);
+            }
+        }
     }
 
     public int getMode()
