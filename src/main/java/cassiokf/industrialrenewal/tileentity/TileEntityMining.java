@@ -220,7 +220,6 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
         if (currentTick >= getMaxCooldown())
         {
             ItemStack stack;
-            int fortune = getFortune();
             if (isDeepMine())
             {
                 currentTick = 0;
@@ -235,6 +234,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
                 Block block = ore.state.getBlock();
                 if (world.getBlockState(ore.pos).getBlock() != ore.state.getBlock()) return;
                 currentTick = 0;
+                int fortune = getFortune();
                 int quantity = block.quantityDroppedWithBonus(fortune, world.rand);
                 Item item = block.getItemDropped(ore.state, world.rand, fortune);
                 stack = new ItemStack(item, quantity, block.damageDropped(ore.state));

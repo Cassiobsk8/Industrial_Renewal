@@ -5,7 +5,9 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class IRConfig
@@ -59,6 +61,22 @@ public class IRConfig
         list.put("oreDiamond", 1);
 
         return list;
+    }
+
+    public static String[] getBlackListMiningBlocks()
+    {
+        List<String> list = new ArrayList<>();
+        //list.add("oreGold");
+        return list.toArray(new String[0]);
+    }
+
+    public static boolean isOreBlacklisted(String ore)
+    {
+        for (String name : MainConfig.Main.miningBlacklist)
+        {
+            if (name.equals(ore)) return true;
+        }
+        return false;
     }
 
     public static String[] waterTypesInit()
@@ -283,6 +301,8 @@ public class IRConfig
             public int miningDeepEnergyPerTick = 1024;
             @Config.Comment("Mining drill cooldown time between mining (default 120)")
             public int miningCooldown = 120;
+            @Config.Comment("Blacklist blocks for Mining drill")
+            public String[] miningBlacklist = getBlackListMiningBlocks();
 
             @Config.Comment("Steel Drill max damage (default 400)")
             public int steelDrillMaxDamage = 400;

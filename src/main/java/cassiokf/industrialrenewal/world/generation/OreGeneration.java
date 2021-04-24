@@ -43,18 +43,24 @@ public class OreGeneration implements IWorldGenerator
     public static void init()
     {
         final List<String> names = new ArrayList<>();
+        final List<String> wListedNames = new ArrayList<>();
         for (String name : OreDictionary.getOreNames())
         {
-            if (name.startsWith("ore")) names.add(name);
+            if (name.startsWith("ore") && !IRConfig.isOreBlacklisted(name)) names.add(name);
         }
         for (String name : names)
         {
             NonNullList<ItemStack> ores = OreDictionary.getOres(name);
             for (ItemStack ore : ores)
             {
-                if (!ore.isEmpty()) MINERABLE_ORES.add(ore.getItem());
+                if (!ore.isEmpty() && !MINERABLE_ORES.contains(ore.getItem()))
+                {
+                    MINERABLE_ORES.add(ore.getItem());
+                    wListedNames.add(ore.getDisplayName());
+                }
             }
         }
+        IndustrialRenewal.LOGGER.info(TextFormatting.GREEN + References.NAME + " Minerable ore list: " + wListedNames);
         populateDeepVeinOres();
     }
 
@@ -105,7 +111,7 @@ public class OreGeneration implements IWorldGenerator
                 List<ItemStack> list = OreDictionary.getOres(str);
                 if (list.isEmpty())
                 {
-                    IndustrialRenewal.LOGGER.warn(TextFormatting.RED + "Oredict not found for: " + str + " , this ore will not be generate in Deep Veins");
+                    IndustrialRenewal.LOGGER.warn(TextFormatting.YELLOW + "Oredict not found for: " + str + " , this ore will not be generate in Deep Veins");
                     continue;
                 }
                 ItemStack stack = list.get(0).copy();
@@ -127,10 +133,11 @@ public class OreGeneration implements IWorldGenerator
                     oreName = stack.getDisplayName() + " by Item: (" + item.getRegistryName() + ")";
                     placeItemXTimes(item, map.get(str));
                     i++;
-                }
+                } else if (item == null || item == Items.AIR)
+                    IndustrialRenewal.LOGGER.warn(TextFormatting.YELLOW + "Item not found for: " + str + " , this ore will not be generate in Deep Veins");
             }
             if (!oreName.equals(""))
-                IndustrialRenewal.LOGGER.info(TextFormatting.YELLOW + References.NAME + " Mapped config: " + str + " into: " + oreName);
+                IndustrialRenewal.LOGGER.info(TextFormatting.GREEN + References.NAME + " Mapped config: " + str + " into: " + oreName);
         }
         IndustrialRenewal.LOGGER.info(TextFormatting.GREEN + References.NAME + " Registered in total " + i + " DeepVein Variants");
     }
