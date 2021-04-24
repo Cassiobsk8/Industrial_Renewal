@@ -19,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
@@ -110,6 +111,7 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
     private boolean isDeepMine = false;
 
     private final Stack<OreMining> ores = new Stack<>();
+    private final NonNullList<ItemStack> tempStack = NonNullList.create();
     private ItemStack vein = ItemStack.EMPTY;
     private int size;
 
@@ -219,28 +221,31 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
     {
         if (currentTick >= getMaxCooldown())
         {
-            ItemStack stack;
             if (isDeepMine())
             {
                 currentTick = 0;
 
-                stack = vein.copy();
-                stack.setCount(1);
+                ItemStack s = vein.copy();
+                s.setCount(1);
+                tempStack.add(s);
                 vein.shrink(1);
             } else
             {
                 if (ores.isEmpty()) return;
                 OreMining ore = ores.pop();
-                Block block = ore.state.getBlock();
                 if (world.getBlockState(ore.pos).getBlock() != ore.state.getBlock()) return;
                 currentTick = 0;
                 int fortune = getFortune();
-                int quantity = block.quantityDroppedWithBonus(fortune, world.rand);
-                Item item = block.getItemDropped(ore.state, world.rand, fortune);
-                stack = new ItemStack(item, quantity, block.damageDropped(ore.state));
+                Block block = ore.state.getBlock();
+                block.getDrops(tempStack, world, ore.pos, ore.state, fortune);
                 world.setBlockState(ore.pos, Blocks.COBBLESTONE.getDefaultState());
             }
-            internalInv.insertItem(0, stack, false);
+            ItemStack s = tempStack.get(0);
+            if (!s.isEmpty() && internalInv.isItemValid(0, s))
+            {
+                internalInv.insertItem(0, s, false);
+                tempStack.remove(s);
+            }
             damageDrill();
         } else currentTick++;
     }
@@ -257,6 +262,16 @@ public class TileEntityMining extends TileEntityMultiBlockBase<TileEntityMining>
 
     private void outputOrSpawn()
     {
+        if (!tempStack.isEmpty())
+        {
+            ItemStack s = tempStack.get(0);
+            if (!s.isEmpty() && internalInv.isItemValid(0, s))
+            {
+                internalInv.insertItem(0, s, false);
+                tempStack.remove(s);
+            }
+            return;
+        }
         if (internalInv.getStackInSlot(0).isEmpty()) return;
 
         BlockPos outPos = pos.offset(getMasterFacing(), 2).down();
