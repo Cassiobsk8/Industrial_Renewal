@@ -56,6 +56,19 @@ public class BlockBunkBed extends BlockBed
         }
     }
 
+    @Nullable
+    @Override
+    public BlockPos getBedSpawnPosition(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityPlayer player)
+    {
+        Block down = world.getBlockState(pos.down()).getBlock();
+        if (down instanceof BlockBunkBed)
+        {
+            state = world.getBlockState(pos.down());
+            return down.getBedSpawnPosition(state, world, pos.down(), player);
+        }
+        return super.getBedSpawnPosition(state, world, pos, player);
+    }
+
     @Override
     public boolean isBed(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable Entity player)
     {
