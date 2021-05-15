@@ -33,8 +33,7 @@
       }
     },
     "inventory": {
-      "model": "industrialrenewal:bunker_hatch_closed",
-      "y": 180
+      "model": "industrialrenewal:bunker_hatch_closed"
     }
   }
 }

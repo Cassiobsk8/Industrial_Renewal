@@ -24,6 +24,16 @@ public class MultiStackHandler extends ItemStackHandler
         this.te = te;
     }
 
+    @Override
+    @Nonnull
+    public ItemStack getStackInSlot(int slot)
+    {
+        validateSlotIndex(slot);
+        ItemStack stack = this.stacks.get(slot);
+        stack.setCount(count);
+        return stack;
+    }
+
     public ItemStack insertItem(@Nonnull ItemStack stack)
     {
         return insertItem(0, stack, false);
