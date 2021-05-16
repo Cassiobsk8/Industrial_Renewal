@@ -1,5 +1,6 @@
 package cassiokf.industrialrenewal.util.compat.crafttweaker;
 
+import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.recipes.LatheRecipe;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
@@ -68,7 +69,7 @@ public class LatheMachineCT
             {
                 LatheRecipe.CACHED_RECIPES.put(stack.getItem(), recipe);
             }
-            System.out.println("Added New Recipe " + recipe);
+            IndustrialRenewal.LOGGER.info("Added New Recipe via CraftTweaker: " + recipe.getInput().get(0).getDisplayName() + " to: " + recipe.getRecipeOutput().getDisplayName() + " from variants: " + item);
         }
 
         @Override

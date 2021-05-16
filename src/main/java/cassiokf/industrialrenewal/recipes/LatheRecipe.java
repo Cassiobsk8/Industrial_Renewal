@@ -63,7 +63,7 @@ public class LatheRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IR
             }
         }
 
-        IndustrialRenewal.LOGGER.info(TextFormatting.GREEN + References.NAME + " Registered " + recipesAmount + " Recipes for Lathe Machine");
+        IndustrialRenewal.LOGGER.info(TextFormatting.GREEN + References.NAME + " Registered " + recipesAmount + " Recipes for Lathe Machine via json");
     }
 
     public int getProcessTime()
