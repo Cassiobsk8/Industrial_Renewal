@@ -1,6 +1,7 @@
 package cassiokf.industrialrenewal.blocks;
 
 import cassiokf.industrialrenewal.blocks.abstracts.BlockMultiBlockBase;
+import cassiokf.industrialrenewal.handlers.IRSoundHandler;
 import cassiokf.industrialrenewal.item.ItemDrill;
 import cassiokf.industrialrenewal.item.ItemPowerScrewDrive;
 import cassiokf.industrialrenewal.tileentity.TileEntityMining;
@@ -22,7 +23,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
-import cassiokf.industrialrenewal.handlers.IRSoundHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -40,8 +40,8 @@ public class BlockMining extends BlockMultiBlockBase<TileEntityMining>
     {
         TileEntity te = worldIn.getTileEntity(pos);
         if (te instanceof TileEntityMining) ((TileEntityMining) te).dropAllItems();
+        if (worldIn.isRemote) IRSoundHandler.stopTileSound(pos);
         super.breakBlock(worldIn, pos, state);
-        IRSoundHandler.stopTileSound(pos);
     }
 
     @Override
