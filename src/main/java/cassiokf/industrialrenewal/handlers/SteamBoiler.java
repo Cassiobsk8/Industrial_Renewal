@@ -256,6 +256,10 @@ public class SteamBoiler
             heat += 8;
             fuelTime -= amountPerTick;
         }
+		else if (fuelTime < amountPerTick && fuelTime > 0)
+		{
+			resetFuelTime();
+		}
         else heat -= 2;
     }
 
