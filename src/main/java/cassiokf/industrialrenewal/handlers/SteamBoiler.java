@@ -231,7 +231,7 @@ public class SteamBoiler
 
     private ItemStack updateSolidFuel(ItemStack stack, boolean simulate)
     {
-        if (!useSolid || fuelTime > 0) return stack;
+        if (!useSolid || fuelTime >= amountPerTick) return stack;
         int fuel = TileEntityFurnace.getItemBurnTime(stack);
         if (fuel > 0)
         {
@@ -256,6 +256,10 @@ public class SteamBoiler
             heat += 8;
             fuelTime -= amountPerTick;
         }
+		else if (fuelTime < amountPerTick && fuelTime > 0)
+		{
+			resetFuelTime();
+		}
         else heat -= 2;
     }
 
