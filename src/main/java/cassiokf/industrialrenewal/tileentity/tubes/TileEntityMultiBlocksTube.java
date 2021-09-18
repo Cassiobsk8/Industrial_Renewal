@@ -22,10 +22,10 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
     final private Map<TileEntity, EnumFacing> machineContainer = new ConcurrentHashMap<>();
     public int outPut;
     protected boolean inUse = false;
-    int outPutCount;
+    public int outPutCount;
     boolean firstTick = false;
-    private TE master;
-    private boolean isMaster;
+    TE master;
+    boolean isMaster;
     private boolean startBreaking;
 
     @Override
@@ -103,8 +103,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
             {
                 for (TileEntityMultiBlocksTube storage : connectedCables)
                 {
-                    if (!canBeMaster(storage)) continue;
-                    else if (!canBeMaster(master) && canBeMaster(storage))
+                    if (!canBeMaster(master) && canBeMaster(storage))
                     {
                         master = (TE) storage;
                         break;
@@ -119,8 +118,13 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                     storage.markDirty();
                 }
             }
+            afterInit();
             sync();
         }
+    }
+
+    public void afterInit()
+    {
     }
 
     public int getLimitedValueForOutPut(int value, int maxTransferAmount, TileEntity storage, boolean simulate)
@@ -185,15 +189,21 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
         return master;
     }
 
-    public void setMaster(TE master)
+    public void setMaster(TE nMaster)
     {
         boolean wasMaster = isMaster;
-        this.master = master;
-        isMaster = master == this;
+        TE oldMaster = this.master;
+        this.master = nMaster;
+        isMaster = nMaster == this;
         if (wasMaster != isMaster)
         {
             final IBlockState state = world.getBlockState(pos);
             world.notifyBlockUpdate(pos, state, state, 2);
+        }
+        if (oldMaster != null)
+        {
+            oldMaster.master = nMaster;
+            if (oldMaster != nMaster) oldMaster.isMaster = false;
         }
         if (!isMaster) machineContainer.clear();
     }
