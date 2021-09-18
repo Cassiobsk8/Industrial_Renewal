@@ -3,8 +3,6 @@ package cassiokf.industrialrenewal.tileentity;
 import cassiokf.industrialrenewal.IndustrialRenewal;
 import cassiokf.industrialrenewal.config.IRConfig;
 import cassiokf.industrialrenewal.init.GUIHandler;
-import cassiokf.industrialrenewal.init.NetworkHandler;
-import cassiokf.industrialrenewal.network.PacketStorageChest;
 import cassiokf.industrialrenewal.tileentity.abstracts.TEMultiTankBase;
 import cassiokf.industrialrenewal.util.InventoryHandler;
 import cassiokf.industrialrenewal.util.MachinesUtils;
@@ -91,7 +89,7 @@ public class TEStorageChest extends TEMultiTankBase<TEStorageChest>
         additionalLines = (newCapacity / 11) - 6;
         currentLine = 0;
         inventory.setInvSize(newCapacity);
-        NetworkHandler.INSTANCE.sendToAll(new PacketStorageChest(this));
+        //NetworkHandler.INSTANCE.sendToAll(new PacketStorageChest(this));
         markDirty();
     }
 
