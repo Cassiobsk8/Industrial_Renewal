@@ -203,8 +203,8 @@ public class IRConfig
             @Config.Comment("The Max Output and Input of the HV Energy cable per connector (Default 10240)")
             public int maxHVEnergyCableTransferAmount = 10240;
 
-            @Config.Comment("The Max Output and Input of the HV Transformer (Default 10240)")
-            public int maxHVTransformerTransferAmount = 10240;
+            @Config.Comment("The Max Output and Input of the HV Transformer (Default 102400)")
+            public int maxHVTransformerTransferAmount = 102400;
 
             @Config.Comment("The Max Length of the HV Wire (Default 64)")
             public int maxHVWireLength = 64;

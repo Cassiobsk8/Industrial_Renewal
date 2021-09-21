@@ -126,7 +126,6 @@ public class TileEntityWindTurbinePillar extends TileEntityMultiBlocksTube<TileE
         //potentialEnergy = 0;
         if (!world.isRemote && isBase)
         {
-            getMaster().getMachineContainers().clear();
             for (EnumFacing face : EnumFacing.HORIZONTALS)
             {
                 BlockPos currentPos = pos.offset(face);

@@ -91,6 +91,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
             master.getMachineContainers().clear();
             if (canBeMaster(master))
             {
+                master.clearMachine();
                 for (TileEntityMultiBlocksTube storage : connectedCables)
                 {
                     if (!canBeMaster(storage)) continue;
@@ -110,6 +111,7 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
                     }
                 }
                 if (!canBeMaster(master)) return;
+                master.clearMachine();
                 for (TileEntityMultiBlocksTube storage : connectedCables)
                 {
                     if (!canBeMaster(storage)) continue;
@@ -222,6 +224,11 @@ public abstract class TileEntityMultiBlocksTube<TE extends TileEntityMultiBlocks
             return;
         }
         machineContainer.put(machine, face);
+    }
+
+    public void clearMachine()
+    {
+        machineContainer.clear();
     }
 
     public void removeMachine(TileEntity machine)

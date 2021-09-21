@@ -55,10 +55,11 @@ public class MultiBlockHelper
         list.add(0);
         list.add(0);
         final Map<TileEntity, EnumFacing> mapPosSet = machine.getMachineContainers();
-        int validOutputs = getFluidMaxOutPutCount(resource, machine, maxFluidCanTransport, mapPosSet);
-        if (validOutputs == 0) return list;
-        list.add(1, validOutputs);
-        FluidStack realMaxOutput = new FluidStack(resource.getFluid(), Math.min(resource.amount / validOutputs, maxFluidCanTransport));
+        if (mapPosSet == null || mapPosSet.isEmpty()) return list;
+        int validOutputs = 0;
+        int leftOutput = mapPosSet.size();
+        int leftFluid = resource.amount;
+        FluidStack realMaxOutput = new FluidStack(resource.getFluid(), Math.min(resource.amount, maxFluidCanTransport));
         int out = 0;
         for (TileEntity te : mapPosSet.keySet())
         {
@@ -66,21 +67,23 @@ public class MultiBlockHelper
             {
                 EnumFacing face = mapPosSet.get(te).getOpposite();
                 IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
-                if (tankStorage != null
-                        && tankStorage.getTankProperties() != null
-                        && tankStorage.getTankProperties().length > 0
+                if (tankStorage != null && tankStorage.getTankProperties() != null && tankStorage.getTankProperties().length > 0
                         && tankStorage.getTankProperties()[0].canFill())
                 {
-                    realMaxOutput.amount = machine.getLimitedValueForOutPut(realMaxOutput.amount, maxFluidCanTransport, te, !doFill);
+                    realMaxOutput.amount = machine.getLimitedValueForOutPut(leftFluid / leftOutput, maxFluidCanTransport, te, !doFill);
                     if (realMaxOutput.amount > 0)
                     {
                         int fluid = tankStorage.fill(realMaxOutput, doFill);
                         out += fluid;
+                        if (doFill) leftFluid -= out;
+                        validOutputs++;
                     }
                 }
             }
+            leftOutput--;
         }
         list.add(0, out);
+        list.add(1, validOutputs);
         return list;
     }
 
@@ -91,77 +94,33 @@ public class MultiBlockHelper
         list.add(0);
         final Map<TileEntity, EnumFacing> mapPosSet = machine.getMachineContainers();
         if (mapPosSet == null || mapPosSet.isEmpty()) return list;
-        int validOutputs = getEnergyMaxOutPutCount(machine, maxEnergyCanTransport, mapPosSet);
-        if (validOutputs == 0) return list;
-        list.add(1, validOutputs);
-        int realMaxOutput = Math.min(amount / validOutputs, maxEnergyCanTransport);
+        int validOutputs = 0;
+        int realMaxOutput;
         int out = 0;
+        int leftOutput = mapPosSet.size();
+        int leftEnergy = amount;
         for (TileEntity te : mapPosSet.keySet())
         {
-            if (te == null || mapPosSet.get(te) == null) continue;
-            EnumFacing face = mapPosSet.get(te).getOpposite();
-            IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
-            if (energyStorage != null && energyStorage.canReceive())
+            if (te != null && mapPosSet.get(te) != null)
             {
-                realMaxOutput = machine.getLimitedValueForOutPut(realMaxOutput, maxEnergyCanTransport, te, simulate);
-                if (realMaxOutput > 0)
-                {
-                    int energy = energyStorage.receiveEnergy(realMaxOutput, simulate);
-                    out += energy;
-                }
-            }
-        }
-        list.add(0, out);
-        return list;
-    }
-
-    public static int getFluidMaxOutPutCount(FluidStack resource, TileEntityMultiBlocksTube machine, int maxFluidCanTransport, Map<TileEntity, EnumFacing> mapPosSet)
-    {
-        int canAccept = 0;
-        for (TileEntity te : mapPosSet.keySet())
-        {
-            if (te != null)
-            {
-                if (!mapPosSet.containsKey(te)) continue;
-                EnumFacing face = mapPosSet.get(te).getOpposite();
-                IFluidHandler tankStorage = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
-                if (tankStorage != null
-                        && tankStorage.getTankProperties() != null
-                        && tankStorage.getTankProperties().length > 0
-                        && tankStorage.getTankProperties()[0].canFill())
-                {
-                    FluidStack realMaxOutput = resource.copy();
-                    realMaxOutput.amount = machine.getLimitedValueForOutPut(realMaxOutput.amount, maxFluidCanTransport, te, true);
-                    if (realMaxOutput.amount > 0)
-                    {
-                        int fluid = tankStorage.fill(realMaxOutput, false);
-                        if (fluid > 0) canAccept++;
-                    }
-                }
-            }
-        }
-        return canAccept;
-    }
-
-    private static int getEnergyMaxOutPutCount(TileEntityMultiBlocksTube machine, int maxEnergyCanTransport, Map<TileEntity, EnumFacing> mapPosSet)
-    {
-        int canAccept = 0;
-        int realMaxOutput = maxEnergyCanTransport;
-        for (TileEntity te : mapPosSet.keySet())
-        {
-            if (te != null) {
-                if (!mapPosSet.containsKey(te)) continue;
                 EnumFacing face = mapPosSet.get(te).getOpposite();
                 IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, face);
-                if (energyStorage != null && energyStorage.canReceive()) {
-                    realMaxOutput = machine.getLimitedValueForOutPut(realMaxOutput, maxEnergyCanTransport, te, true);
-                    if (realMaxOutput > 0) {
-                        int energy = energyStorage.receiveEnergy(realMaxOutput, true);
-                        if (energy > 0) canAccept++;
+                if (energyStorage != null && energyStorage.canReceive())
+                {
+                    realMaxOutput = machine.getLimitedValueForOutPut(leftEnergy / leftOutput, maxEnergyCanTransport, te, simulate);
+                    if (realMaxOutput > 0)
+                    {
+                        int energy = energyStorage.receiveEnergy(realMaxOutput, simulate);
+                        if (!simulate) leftEnergy -= out;
+                        out += energy;
+                        validOutputs++;
                     }
                 }
             }
+            leftOutput--;
         }
-        return canAccept;
+        list.add(0, out);
+        list.add(1, validOutputs);
+        return list;
     }
 }
