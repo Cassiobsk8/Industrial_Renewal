@@ -1,13 +1,14 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "industrialrenewal:blocks/anvil_base",
-    "particle": "industrialrenewal:blocks/anvil_base",
-    "2_0": "industrialrenewal:blocks/fuse_box",
-    "3_0": "industrialrenewal:blocks/energy_level",
-    "3_3": "industrialrenewal:blocks/traffic_light",
-    "1_4_0": "industrialrenewal:blocks/energy_meter_10240"
+    "0": "industrialrenewal:block/anvil_base",
+    "particle": "industrialrenewal:block/anvil_base",
+    "2_0": "industrialrenewal:block/fuse_box",
+    "3_0": "industrialrenewal:block/energy_level",
+    "3_3": "industrialrenewal:block/traffic_light",
+    "1_4_0": "industrialrenewal:block/energy_meter_10240"
   },
+  "render_type": "minecraft:cutout",
   "elements": [
     {
       "from": [

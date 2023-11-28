@@ -1,9 +1,9 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "1": "industrialrenewal:blocks/battery_pack",
-    "2": "industrialrenewal:blocks/pipe",
-    "particle": "industrialrenewal:blocks/battery_pack"
+    "1": "industrialrenewal:block/battery_pack",
+    "2": "industrialrenewal:block/pipe",
+    "particle": "industrialrenewal:block/battery_pack"
   },
   "elements": [
     {

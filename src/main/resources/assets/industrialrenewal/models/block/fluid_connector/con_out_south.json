@@ -1,10 +1,10 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "1": "industrialrenewal:blocks/hopper_inside",
-    "2": "industrialrenewal:blocks/anvil_base",
-    "4": "industrialrenewal:blocks/fluid_pipe",
-    "1_3": "industrialrenewal:blocks/rust"
+    "1": "industrialrenewal:block/hopper_inside",
+    "2": "industrialrenewal:block/anvil_base",
+    "4": "industrialrenewal:block/fluid_pipe",
+    "1_3": "industrialrenewal:block/rust"
   },
   "elements": [
     {

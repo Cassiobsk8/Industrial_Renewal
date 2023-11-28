@@ -1,0 +1,13 @@
+{
+  "type": "industrialrenewal:lathe",
+  "process_time": 200,
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  ],
+  "output": {
+    "item": "industrialrenewal:stick_iron",
+    "count": 4
+  }
+}

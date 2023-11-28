@@ -1,15 +1,15 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "1": "blocks/furnace_front_off",
-    "2": "blocks/furnace_side",
-    "3": "industrialrenewal:blocks/pipe",
-    "4": "industrialrenewal:blocks/barrel_front_fuel",
-    "5": "industrialrenewal:blocks/anvil_base",
-    "6": "industrialrenewal:blocks/pipe_blue",
-    "10": "industrialrenewal:blocks/fuse_box",
-    "11": "industrialrenewal:blocks/hopper_inside",
-    "particle": "industrialrenewal:blocks/pipe"
+    "1": "block/furnace_front",
+    "2": "block/furnace_side",
+    "3": "industrialrenewal:block/pipe",
+    "4": "industrialrenewal:block/barrel_front_fuel",
+    "5": "block/anvil",
+    "6": "industrialrenewal:block/pipe_blue",
+    "10": "industrialrenewal:block/fuse_box",
+    "11": "industrialrenewal:block/hopper_inside",
+    "particle": "industrialrenewal:block/pipe"
   },
   "elements": [
     {

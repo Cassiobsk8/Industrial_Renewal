@@ -1,10 +1,10 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "industrialrenewal:blocks/metal",
-    "1": "industrialrenewal:blocks/rust",
-    "2": "blocks/anvil_base",
-    "particle": "industrialrenewal:blocks/rust"
+    "0": "industrialrenewal:block/metal",
+    "1": "industrialrenewal:block/rust",
+    "2": "industrialrenewal:block/anvil_base",
+    "particle": "industrialrenewal:block/rust"
   },
   "elements": [
     {

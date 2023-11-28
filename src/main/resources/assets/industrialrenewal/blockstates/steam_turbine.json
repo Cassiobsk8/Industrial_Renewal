@@ -1,33 +1,43 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/pipe"
-    }
-  },
-  "variants": {
-    "master": {
-      "true": {
-        "model": "industrialrenewal:steam_turbine"
+  "multipart": [
+    {
+      "when": {
+        "facing": "north",
+        "master": "true"
       },
-      "false": {
-        "model": "industrialrenewal:dummy"
+      "apply": {
+        "model": "industrialrenewal:block/steam_turbine"
       }
     },
-    "facing": {
-      "north": {},
-      "south": {
+    {
+      "when": {
+        "facing": "south",
+        "master": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/steam_turbine",
         "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
       }
     },
-    "inventory": {
-      "model": "industrialrenewal:steam_turbine"
+    {
+      "when": {
+        "facing": "east",
+        "master": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/steam_turbine",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "master": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/steam_turbine",
+        "y": 270
+      }
     }
-  }
+  ]
 }

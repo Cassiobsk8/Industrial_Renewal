@@ -1,22 +1,190 @@
 {
-  "forge_marker": 1,
-  "variants": {
-    "normal": {
-      "model": "industrialrenewal:smartmodel/pipe_energy_hv"
-    },
-    "inventory": [
-      {
-        "model": "industrialrenewal:pipe_energy_hv/cable_center",
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:pipe_energy/cable_side"
-          },
-          "pipe_south": {
-            "model": "industrialrenewal:pipe_energy/cable_side",
-            "y": 180
-          }
-        }
+  "multipart": [
+    {
+      "apply": {
+        "model": "industrialrenewal:block/pipe_energy_hv/cable_center"
       }
-    ]
-  }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_energy_hv/cable_side",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_energy_hv/cable_side",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_energy_hv/cable_side",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_energy_hv/cable_side",
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_energy_hv/cable_side",
+        "x": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_energy_hv/cable_side",
+        "x": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "east": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "uvlock": false,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "uvlock": false,
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "uvlock": false,
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "upfloor": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side_up",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "down": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side_down",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "c_north": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_energy_hv/cable_side_cap",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "c_east": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_energy_hv/cable_side_cap",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "c_south": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_energy_hv/cable_side_cap",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "c_west": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_energy_hv/cable_side_cap",
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "c_up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_energy_hv/cable_side_cap",
+        "x": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "c_down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/pipe_energy_hv/cable_side_cap",
+        "x": 90,
+        "uvlock": false
+      }
+    }
+  ]
 }

@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "1": "blocks/anvil_base",
-    "2": "industrialrenewal:blocks/block_hazard"
+    "1": "industrialrenewal:block/anvil_base",
+    "2": "industrialrenewal:block/block_hazard"
   },
   "elements": [
     {

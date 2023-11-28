@@ -1,14 +1,14 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "blocks/anvil_base",
-    "1": "industrialrenewal:blocks/pipe",
-    "2": "industrialrenewal:blocks/block_hazard",
-    "3": "industrialrenewal:blocks/rail_loader",
-    "1_0": "industrialrenewal:blocks/patreon/eotm",
-    "particle": "industrialrenewal:blocks/patreon/eotm",
-    "1_1": "industrialrenewal:blocks/patreon/eotm_face",
-    "1_2": "industrialrenewal:blocks/patreon/eotm_name"
+    "0": "block/anvil_base",
+    "1": "industrialrenewal:block/pipe",
+    "2": "industrialrenewal:block/block_hazard",
+    "3": "industrialrenewal:block/rail_loader",
+    "1_0": "industrialrenewal:block/patreon/eotm",
+    "particle": "industrialrenewal:block/patreon/eotm",
+    "1_1": "industrialrenewal:block/patreon/eotm_face",
+    "1_2": "industrialrenewal:block/patreon/eotm_name"
   },
   "elements": [
     {

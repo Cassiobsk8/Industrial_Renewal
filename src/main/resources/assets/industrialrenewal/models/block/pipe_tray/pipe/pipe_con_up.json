@@ -1,7 +1,7 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "1_0": "industrialrenewal:blocks/fluid_pipe"
+    "1_0": "industrialrenewal:block/fluid_pipe"
   },
   "elements": [
     {

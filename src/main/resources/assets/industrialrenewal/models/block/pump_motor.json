@@ -1,9 +1,10 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "industrialrenewal:blocks/pipe_blue",
-    "1": "industrialrenewal:blocks/pipe",
-    "3": "industrialrenewal:blocks/anvil_base"
+    "0": "industrialrenewal:block/pipe_blue",
+    "1": "industrialrenewal:block/pipe",
+    "3": "industrialrenewal:block/anvil_base",
+    "particle": "industrialrenewal:block/pipe_blue"
   },
   "elements": [
     {

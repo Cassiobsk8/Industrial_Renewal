@@ -1,0 +1,285 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "facing": "north",
+        "mode": "0"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "mode": "0"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "mode": "0"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "mode": "0"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "mode": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_up"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "mode": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_up",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "mode": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_up",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "mode": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_up",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "mode": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_down"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "mode": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_down",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "mode": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_down",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "mode": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_down",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "front": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_front"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "front": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_front",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "front": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_front",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "front": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_front",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "back": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_back"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "back": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_back",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "back": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_back",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "back": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/basic/conveyor_back",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "mode": "0",
+        "type": "hopper"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/conveyor_hopper"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "mode": "0",
+        "type": "hopper"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/conveyor_hopper",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "mode": "0",
+        "type": "hopper"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/conveyor_hopper",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "mode": "0",
+        "type": "hopper"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/conveyor_hopper",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "mode": "0",
+        "type": "inserter"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/conveyor_inserter"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "mode": "0",
+        "type": "inserter"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/conveyor_inserter",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "mode": "0",
+        "type": "inserter"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/conveyor_inserter",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "mode": "0",
+        "type": "inserter"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor/conveyor_inserter",
+        "y": 270
+      }
+    }
+  ]
+}

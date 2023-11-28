@@ -1,34 +1,12 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/pipe"
-    }
-  },
   "variants": {
-    "normal": {
-      "model": "industrialrenewal:smartmodel/turbine_pillar"
-    },
-    "facing": {
-      "north": {
-        "model": "industrialrenewal:smartmodel/turbine_pillar"
-      },
-      "south": {
-        "model": "industrialrenewal:smartmodel/turbine_pillar",
-        "y": 180
-      },
-      "east": {
-        "model": "industrialrenewal:smartmodel/turbine_pillar",
-        "y": 90
-      },
-      "west": {
-        "model": "industrialrenewal:smartmodel/turbine_pillar",
-        "y": -90
-      }
-    },
-    "inventory": {
-      "model": "industrialrenewal:small_wind_turbine_pillar",
-      "transform": "forge:default-block"
-    }
+    "facing=north,base=false": {"model": "industrialrenewal:block/small_wind_turbine_pillar"},
+    "facing=south,base=false": {"model": "industrialrenewal:block/small_wind_turbine_pillar", "y": 180},
+    "facing=east,base=false": {"model": "industrialrenewal:block/small_wind_turbine_pillar", "y": 90},
+    "facing=west,base=false": {"model": "industrialrenewal:block/small_wind_turbine_pillar", "y": -90},
+    "facing=north,base=true": {"model": "industrialrenewal:block/small_wind_turbine_pillar_base"},
+    "facing=south,base=true": {"model": "industrialrenewal:block/small_wind_turbine_pillar_base", "y": 180},
+    "facing=east,base=true": {"model": "industrialrenewal:block/small_wind_turbine_pillar_base", "y": 90},
+    "facing=west,base=true": {"model": "industrialrenewal:block/small_wind_turbine_pillar_base", "y": -90}
   }
 }

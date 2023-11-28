@@ -1,0 +1,13 @@
+{
+  "type": "industrialrenewal:lathe",
+  "process_time": 160,
+  "ingredients": [
+    {
+      "tag": "forge:ingots/steel"
+    }
+  ],
+  "output": {
+    "item": "industrialrenewal:stick_steel",
+    "count": 4
+  }
+}

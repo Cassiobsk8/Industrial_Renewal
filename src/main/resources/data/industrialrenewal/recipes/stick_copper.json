@@ -1,0 +1,13 @@
+{
+  "type": "industrialrenewal:lathe",
+  "process_time": 120,
+  "ingredients": [
+    {
+      "item": "minecraft:copper_ingot"
+    }
+  ],
+  "output": {
+    "item": "industrialrenewal:stick_copper",
+    "count": 4
+  }
+}

@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "3": "industrialrenewal:blocks/data_cable",
-    "particle": "industrialrenewal:blocks/cable_hv"
+    "3": "industrialrenewal:block/data_cable",
+    "particle": "industrialrenewal:block/cable_hv"
   },
   "elements": [
     {

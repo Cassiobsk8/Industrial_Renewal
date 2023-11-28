@@ -1,7 +1,7 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "industrialrenewal:blocks/wind_turbine"
+    "0": "industrialrenewal:block/wind_turbine"
   },
   "elements": [
     {

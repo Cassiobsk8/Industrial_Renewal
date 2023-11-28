@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "industrialrenewal:items/panel/indicator",
-    "particle": "industrialrenewal:items/panel/indicator"
+    "0": "industrialrenewal:item/panel/indicator",
+    "particle": "industrialrenewal:item/panel/indicator"
   },
   "elements": [
     {

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "industrialrenewal:scaffold",
+    "industrialrenewal:catwalk_ladder",
+    "industrialrenewal:catwalk_ladder_steel"
+  ]
+}

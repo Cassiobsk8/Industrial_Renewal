@@ -1,10 +1,10 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "industrialrenewal:blocks/concrete",
-    "1": "industrialrenewal:blocks/anvil_base",
-    "2": "industrialrenewal:blocks/pipe_red",
-    "particle": "industrialrenewal:blocks/concrete"
+    "0": "industrialrenewal:block/concrete",
+    "1": "industrialrenewal:block/anvil_base",
+    "2": "industrialrenewal:block/pipe_red",
+    "particle": "industrialrenewal:block/concrete"
   },
   "elements": [
     {

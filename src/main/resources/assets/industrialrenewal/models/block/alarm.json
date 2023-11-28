@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench - CassioKF",
 	"textures": {
-		"0": "blocks/noteblock",
-		"1": "industrialrenewal:blocks/anvil_base",
-		"particle": "industrialrenewal:blocks/anvil_base"
+		"0": "block/noteblock",
+		"1": "industrialrenewal:block/anvil_base",
+		"particle": "industrialrenewal:block/anvil_base"
 	},
 	"elements": [
 		{

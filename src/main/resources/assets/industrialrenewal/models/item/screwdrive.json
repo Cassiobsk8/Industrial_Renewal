@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "industrialrenewal:blocks/powered_screwdrive",
-    "particle": "industrialrenewal:blocks/powered_screwdrive"
+    "0": "industrialrenewal:block/powered_screwdrive",
+    "particle": "industrialrenewal:block/powered_screwdrive"
   },
   "elements": [
     {

@@ -1,14 +1,14 @@
 {
 	"credit": "Made with Blockbench - CassioKF",
 	"textures": {
-		"0": "industrialrenewal:blocks/concrete",
-		"1": "industrialrenewal:blocks/metal",
-		"2": "industrialrenewal:blocks/glass",
-		"3": "industrialrenewal:blocks/dangerhv",
-		"4": "industrialrenewal:blocks/anvil_base",
-		"5": "industrialrenewal:blocks/rust",
-		"2_1_1": "industrialrenewal:blocks/pipe",
-		"particle": "blocks/concrete_brown"
+		"0": "industrialrenewal:block/concrete",
+		"1": "industrialrenewal:block/metal",
+		"2": "industrialrenewal:block/glass",
+		"3": "industrialrenewal:block/dangerhv",
+		"4": "industrialrenewal:block/anvil_base",
+		"5": "industrialrenewal:block/rust",
+		"2_1_1": "industrialrenewal:block/pipe",
+		"particle": "block/concrete_brown"
 	},
 	"elements": [
 		{

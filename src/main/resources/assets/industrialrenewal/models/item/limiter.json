@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "industrialrenewal:items/pointer_limit"
+    "layer0": "industrialrenewal:item/pointer_limit"
   }
 }

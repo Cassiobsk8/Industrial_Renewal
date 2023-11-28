@@ -1,11 +1,11 @@
 {
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "textures": {
-    "0": "industrialrenewal:blocks/pipe",
-    "1": "blocks/anvil_base",
-    "2": "blocks/glass_red",
-    "3": "industrialrenewal:blocks/dangerhv",
-    "4": "blocks/redstone_block"
+    "0": "industrialrenewal:block/pipe",
+    "1": "industrialrenewal:block/anvil_base",
+    "2": "block/red_stained_glass",
+    "3": "industrialrenewal:block/dangerhv",
+    "4": "block/redstone_block"
   },
   "display": {
     "gui": {

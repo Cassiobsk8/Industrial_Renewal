@@ -1,90 +1,60 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:scaffold_base",
-    "textures": {
-      "particle": "industrialrenewal:blocks/pipe"
+  "multipart": [
+    {
+      "apply": {
+        "model": "industrialrenewal:block/scaffold_base"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/scaffold_side"
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/scaffold_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/scaffold_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/scaffold_side",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/scaffold_up"
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/scaffold_down"
+      }
     }
-  },
-  "variants": {
-    "down": {
-      "true": {
-        "submodel": {
-          "pipe_down": {
-            "model": "industrialrenewal:scaffold_down",
-            "uvlock": true
-          }
-        }
-      },
-      "false": {}
-    },
-    "up": {
-      "true": {},
-      "false": {
-        "submodel": {
-          "pipe_up": {
-            "model": "industrialrenewal:scaffold_up",
-            "uvlock": true
-          }
-        }
-      }
-    },
-    "north": {
-      "true": {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:scaffold_side",
-            "uvlock": true
-          }
-        }
-      },
-      "false": {}
-    },
-    "south": {
-      "true": {
-        "submodel": {
-          "pipe_south": {
-            "model": "industrialrenewal:scaffold_side",
-            "y": 180,
-            "uvlock": true
-          }
-        }
-      },
-      "false": {}
-    },
-    "east": {
-      "true": {
-        "submodel": {
-          "pipe_east": {
-            "model": "industrialrenewal:scaffold_side",
-            "y": 90,
-            "uvlock": true
-          }
-        }
-      },
-      "false": {}
-    },
-    "west": {
-      "true": {
-        "submodel": {
-          "pipe_west": {
-            "model": "industrialrenewal:scaffold_side",
-            "y": -90,
-            "uvlock": true
-          }
-        }
-      },
-      "false": {}
-    },
-    "inventory": [
-      {
-        "submodel": {
-          "pipe_north": {
-            "model": "industrialrenewal:scaffold_up",
-            "uvlock": true
-          }
-        }
-      }
-    ]
-  }
+  ]
 }

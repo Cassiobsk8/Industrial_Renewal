@@ -1,55 +1,117 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:catwalk_stair",
-    "textures": {
-      "particle": "industrialrenewal:blocks/pipe"
-    }
-  },
-  "variants": {
-    "facing": {
-      "north": {},
-      "west": {
-        "y": -90
+  "multipart": [
+    {
+      "when": {
+        "facing": "north"
       },
-      "south": {
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_stair"
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_stair",
         "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
       },
-      "east": {
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_stair",
         "y": 90
       }
     },
-    "active_left": {
-      "true": {
-        "submodel": {
-          "left": {
-            "model": "industrialrenewal:catwalk_stair10"
-          }
-        }
+    {
+      "when": {
+        "facing": "west"
       },
-      "false": {}
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_stair",
+        "y": 270
+      }
     },
-    "active_right": {
-      "true": {
-        "submodel": {
-          "right": {
-            "model": "industrialrenewal:catwalk_stair01"
-          }
-        }
+    {
+      "when": {
+        "facing": "north",
+        "active_left": "true"
       },
-      "false": {}
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_stair10"
+      }
     },
-    "inventory": {
-      "model": "industrialrenewal:catwalk_stair",
-      "y": 180,
-      "submodel": {
-        "right": {
-          "model": "industrialrenewal:catwalk_stair01"
-        },
-        "left": {
-          "model": "industrialrenewal:catwalk_stair10"
-        }
+    {
+      "when": {
+        "facing": "south",
+        "active_left": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_stair10",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "active_left": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_stair10",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "active_left": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_stair10",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "active_right": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_stair01"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "active_right": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_stair01",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "active_right": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_stair01",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "active_right": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/catwalk_stair01",
+        "y": 270
       }
     }
-  }
+  ]
 }

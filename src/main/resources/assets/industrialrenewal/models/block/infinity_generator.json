@@ -1,14 +1,14 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "industrialrenewal:blocks/solar_panels",
-    "1": "industrialrenewal:blocks/metal_white",
-    "2": "industrialrenewal:blocks/anvil_base",
-    "3": "industrialrenewal:blocks/pipe",
-    "1_1": "industrialrenewal:blocks/battery_pack",
-    "2_2": "industrialrenewal:blocks/glass",
-    "particle": "industrialrenewal:blocks/fluid_pipe",
-    "3_3": "industrialrenewal:blocks/fluid_pipe"
+    "0": "industrialrenewal:block/solar_panels",
+    "1": "industrialrenewal:block/metal_white",
+    "2": "industrialrenewal:block/anvil_base",
+    "3": "industrialrenewal:block/pipe",
+    "1_1": "industrialrenewal:block/battery_pack",
+    "2_2": "industrialrenewal:block/glass",
+    "particle": "industrialrenewal:block/fluid_pipe",
+    "3_3": "industrialrenewal:block/fluid_pipe"
   },
   "elements": [
     {

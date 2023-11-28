@@ -1,34 +1,12 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
   "variants": {
-    "frame": {
-      "true": {
-        "model": "industrialrenewal:fluid_barrel_framed"
-      },
-      "false": {
-        "model": "industrialrenewal:fluid_barrel"
-      }
-    },
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
-      }
-    },
-    "inventory": {
-      "model": "industrialrenewal:fluid_barrel",
-      "y": 180
-    }
+    "facing=north,frame=true": {"model": "industrialrenewal:block/fluid_barrel_framed"},
+    "facing=south,frame=true": {"model": "industrialrenewal:block/fluid_barrel_framed", "y":  180},
+    "facing=west,frame=true": {"model": "industrialrenewal:block/fluid_barrel_framed", "y": 270},
+    "facing=east,frame=true": {"model": "industrialrenewal:block/fluid_barrel_framed", "y": 90},
+    "facing=north,frame=false": {"model": "industrialrenewal:block/fluid_barrel"},
+    "facing=south,frame=false": {"model": "industrialrenewal:block/fluid_barrel", "y":  180},
+    "facing=west,frame=false": {"model": "industrialrenewal:block/fluid_barrel", "y": 270},
+    "facing=east,frame=false": {"model": "industrialrenewal:block/fluid_barrel", "y": 90}
   }
 }

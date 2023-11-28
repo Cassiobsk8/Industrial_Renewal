@@ -1,0 +1,6 @@
+{
+  "name": "IR Manual",
+  "landing_text": "Thank you for playing with the mod. This mod is a port of Industrial Renewal version 1.12.2 by CassioKF. Ported by StarsPath for version 1.16.5. $(br)Join $(l:https://discord.gg/UPSUcXZn)Discord$() $(br)Report $(l:https://github.com/StarsPath/IndustrialRenewal_1.16.5-Port/issues)Issues$()",
+  "version": 1,
+  "book_texture": "patchouli:textures/gui/book_gray.png"
+}

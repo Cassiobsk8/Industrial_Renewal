@@ -1,8 +1,8 @@
 {
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "textures": {
-    "0": "blocks/rail_normal",
-    "1": "industrialrenewal:blocks/buffer_stop_rail"
+    "0": "block/rail_normal",
+    "1": "industrialrenewal:block/buffer_stop_rail"
   },
   "display": {
     "gui": {

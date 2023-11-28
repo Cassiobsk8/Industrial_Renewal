@@ -1,56 +1,43 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/pipe"
-    }
-  },
-  "variants": {
-    "master": {
-      "true": {
-        "model": "industrialrenewal:storage/master_chest"
+  "multipart": [
+    {
+      "when": {
+        "facing": "north",
+        "master": "true"
       },
-      "false": {
-        "model": "industrialrenewal:dummy"
+      "apply": {
+        "model": "industrialrenewal:block//storage/master_chest"
       }
     },
-    "facing": {
-      "north": {},
-      "south": {
+    {
+      "when": {
+        "facing": "south",
+        "master": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block//storage/master_chest",
         "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "master": "true"
       },
-      "east": {
+      "apply": {
+        "model": "industrialrenewal:block//storage/master_chest",
         "y": 90
-      },
-      "west": {
-        "y": -90
       }
     },
-    "bot": {
-      "0": {
-        "submodel": {
-          "bot": {
-            "model": "industrialrenewal:dummy"
-          }
-        }
+    {
+      "when": {
+        "facing": "west",
+        "master": "true"
       },
-      "1": {
-        "submodel": {
-          "bot": {
-            "model": "industrialrenewal:dummy"
-          }
-        }
-      },
-      "2": {
-        "submodel": {
-          "bot": {
-            "model": "industrialrenewal:dummy"
-          }
-        }
+      "apply": {
+        "model": "industrialrenewal:block/storage/master_chest",
+        "y": 270
       }
-    },
-    "inventory": {
-      "model": "industrialrenewal:storage/master_chest"
     }
-  }
+  ]
 }

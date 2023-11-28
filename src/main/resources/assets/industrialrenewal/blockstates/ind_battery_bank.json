@@ -1,79 +1,235 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/pipe"
+  "multipart": [
+    {
+      "when": {
+        "facing": "north",
+        "master": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/master",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "master": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/master",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "master": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/master",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "master": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/master",
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "master": "true",
+        "base": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/bot_true",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "master": "true",
+        "base": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/bot_true",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "master": "true",
+        "base": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/bot_true",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "master": "true",
+        "base": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/bot_true",
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "master": "true",
+        "base": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/bot_false",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "master": "true",
+        "base": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/bot_false",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "master": "true",
+        "base": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/bot_false",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "master": "true",
+        "base": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/bot_false",
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "master": "true",
+        "top": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/top_true",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "master": "true",
+        "top": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/top_true",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "master": "true",
+        "top": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/top_true",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "master": "true",
+        "top": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/top_true",
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "master": "true",
+        "top": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/top_false",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "master": "true",
+        "top": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/top_false",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "master": "true",
+        "top": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/top_false",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "master": "true",
+        "top": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery/top_false",
+        "y": 270,
+        "uvlock": false
+      }
     }
-  },
-  "variants": {
-    "master": {
-      "true": {
-        "model": "industrialrenewal:battery/master"
-      },
-      "false": {
-        "model": "industrialrenewal:dummy"
-      }
-    },
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
-      }
-    },
-    "top": {
-      "0": {
-        "submodel": {
-          "top": {
-            "model": "industrialrenewal:dummy"
-          }
-        }
-      },
-      "1": {
-        "submodel": {
-          "top": {
-            "model": "industrialrenewal:battery/top_true"
-          }
-        }
-      },
-      "2": {
-        "submodel": {
-          "top": {
-            "model": "industrialrenewal:battery/top_false"
-          }
-        }
-      }
-    },
-    "bot": {
-      "0": {
-        "submodel": {
-          "bot": {
-            "model": "industrialrenewal:dummy"
-          }
-        }
-      },
-      "1": {
-        "submodel": {
-          "bot": {
-            "model": "industrialrenewal:battery/bot_true"
-          }
-        }
-      },
-      "2": {
-        "submodel": {
-          "bot": {
-            "model": "industrialrenewal:battery/bot_false"
-          }
-        }
-      }
-    },
-    "inventory": {
-      "model": "industrialrenewal:battery/ind_battery_item"
-    }
-  }
+  ]
 }

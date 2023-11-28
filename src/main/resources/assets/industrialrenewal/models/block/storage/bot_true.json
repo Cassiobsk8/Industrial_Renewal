@@ -1,9 +1,9 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "5": "blocks/planks_big_oak",
-    "6": "industrialrenewal:blocks/fuse_box",
-    "particle": "industrialrenewal:blocks/anvil_base"
+    "5": "block/planks_big_oak",
+    "6": "industrialrenewal:block/fuse_box",
+    "particle": "industrialrenewal:block/anvil_base"
   },
   "elements": [
     {

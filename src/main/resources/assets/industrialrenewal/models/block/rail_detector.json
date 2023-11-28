@@ -1,8 +1,8 @@
 {
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "textures": {
-    "0": "blocks/rail_normal",
-    "1": "blocks/rail_detector"
+    "0": "block/rail_normal",
+    "1": "block/rail_detector"
   },
   "display": {
     "gui": {

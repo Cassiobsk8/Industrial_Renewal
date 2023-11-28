@@ -1,9 +1,9 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "4": "industrialrenewal:blocks/rust",
-    "13": "industrialrenewal:blocks/anvil_base",
-    "2_1": "industrialrenewal:blocks/metal"
+    "4": "industrialrenewal:block/rust",
+    "13": "industrialrenewal:block/anvil_base",
+    "2_1": "industrialrenewal:block/metal"
   },
   "elements": [
     {

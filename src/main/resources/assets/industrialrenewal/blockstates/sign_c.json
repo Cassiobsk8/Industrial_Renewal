@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "particle": "industrialrenewal:blocks/signs/sign_c"
+      "particle": "industrialrenewal:block/signs/sign_c"
     }
   },
   "variants": {

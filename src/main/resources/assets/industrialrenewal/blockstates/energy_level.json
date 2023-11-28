@@ -1,98 +1,105 @@
 {
-  "forge_marker": 1,
-  "variants": {
-    "facing": {
-      "north": {
-        "submodel": {
-          "master": {
-            "model": "industrialrenewal:energy_level"
-          }
-        }
+  "multipart": [
+    {
+      "when": {
+        "gauge": "north"
       },
-      "west": {
-        "submodel": {
-          "master": {
-            "model": "industrialrenewal:energy_level",
-            "y": -90
-          }
-        }
-      },
-      "south": {
-        "submodel": {
-          "master": {
-            "model": "industrialrenewal:energy_level",
-            "y": 180
-          }
-        }
-      },
-      "east": {
-        "submodel": {
-          "master": {
-            "model": "industrialrenewal:energy_level",
-            "y": 90
-          }
-        }
+      "apply": {
+        "model": "industrialrenewal:block/energy_level",
+        "uvlock": false
       }
     },
-    "base": {
-      "up": {
-        "submodel": {
-          "base": {
-            "model": "industrialrenewal:fluid_gauge_base",
-            "x": 180
-          }
-        }
+    {
+      "when": {
+        "gauge": "south"
       },
-      "down": {
-        "submodel": {
-          "base": {
-            "model": "industrialrenewal:fluid_gauge_base"
-          }
-        }
-      },
-      "north": {
-        "submodel": {
-          "base": {
-            "model": "industrialrenewal:fluid_gauge_base",
-            "x": 90,
-            "y": 180
-          }
-        }
-      },
-      "south": {
-        "submodel": {
-          "base": {
-            "model": "industrialrenewal:fluid_gauge_base",
-            "x": 90
-          }
-        }
-      },
-      "east": {
-        "submodel": {
-          "base": {
-            "model": "industrialrenewal:fluid_gauge_base",
-            "x": 90,
-            "y": -90
-          }
-        }
-      },
-      "west": {
-        "submodel": {
-          "base": {
-            "model": "industrialrenewal:fluid_gauge_base",
-            "x": 90,
-            "y": 90
-          }
-        }
+      "apply": {
+        "model": "industrialrenewal:block/energy_level",
+        "y": 180,
+        "uvlock": false
       }
     },
-    "inventory": {
-      "model": "industrialrenewal:energy_level",
-      "submodel": {
-        "base1": {
-          "model": "industrialrenewal:fluid_gauge_base"
-        }
+    {
+      "when": {
+        "gauge": "east"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/energy_level",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "gauge": "west"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/energy_level",
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge_base",
+        "x": 90,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge_base",
+        "x": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge_base",
+        "x": 90,
+        "y": -90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge_base",
+        "x": 90,
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "up"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge_base",
+        "x": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "down"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_gauge_base",
+        "uvlock": false
       }
     }
-  }
+  ]
 }

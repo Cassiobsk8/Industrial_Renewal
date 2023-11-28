@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "industrialrenewal:items/manual",
-    "particle": "industrialrenewal:items/manual"
+    "0": "industrialrenewal:item/manual",
+    "particle": "industrialrenewal:item/manual"
   },
   "elements": [
     {

@@ -1,13 +1,13 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "industrialrenewal:blocks/anvil_base",
-    "1": "blocks/planks_spruce",
-    "2": "industrialrenewal:blocks/pipe",
-    "3": "blocks/planks_birch",
-    "4": "blocks/planks_oak",
-    "5": "blocks/planks_big_oak",
-    "particle": "industrialrenewal:blocks/anvil_base"
+    "0": "industrialrenewal:block/anvil_base",
+    "1": "block/planks_spruce",
+    "2": "industrialrenewal:block/pipe",
+    "3": "block/planks_birch",
+    "4": "block/planks_oak",
+    "5": "block/planks_big_oak",
+    "particle": "industrialrenewal:block/anvil_base"
   },
   "elements": [
     {

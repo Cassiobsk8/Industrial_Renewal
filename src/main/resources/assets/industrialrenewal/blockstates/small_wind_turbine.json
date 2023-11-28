@@ -1,26 +1,8 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "industrialrenewal:small_wind_turbine",
-    "textures": {
-      "particle": "industrialrenewal:blocks/wind_turbine"
-    }
-  },
   "variants": {
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
-      }
-    },
-    "inventory": {
-      "model": "industrialrenewal:small_wind_turbine"
-    }
+    "facing=north": {"model": "industrialrenewal:block/small_wind_turbine"},
+    "facing=south": {"model": "industrialrenewal:block/small_wind_turbine", "y": 180},
+    "facing=west": {"model": "industrialrenewal:block/small_wind_turbine", "y": 270},
+    "facing=east": {"model": "industrialrenewal:block/small_wind_turbine", "y": 90}
   }
 }

@@ -1,8 +1,9 @@
 {
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "textures": {
-    "0": "industrialrenewal:blocks/solar_panels",
-    "1": "industrialrenewal:blocks/metal_white"
+    "0": "industrialrenewal:block/solar_panels",
+    "1": "industrialrenewal:block/metal_white",
+    "particle": "industrialrenewal:block/solar_panels"
   },
   "display": {
     "gui": {

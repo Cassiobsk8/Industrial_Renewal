@@ -1,33 +1,103 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "industrialrenewal:blocks/battery_pack"
-    }
-  },
-  "variants": {
-    "normal": {
-      "model": "industrialrenewal:smartmodel/battery_bank"
-    },
-    "facing": {
-      "north": {
-        "model": "industrialrenewal:smartmodel/battery_bank"
+  "multipart": [
+    {
+      "when": {
+        "facing": "north"
       },
-      "south": {
-        "model": "industrialrenewal:smartmodel/battery_bank",
-        "y": 180
-      },
-      "east": {
-        "model": "industrialrenewal:smartmodel/battery_bank",
-        "y": 90
-      },
-      "west": {
-        "model": "industrialrenewal:smartmodel/battery_bank",
-        "y": -90
+      "apply": {
+        "model": "industrialrenewal:block/battery_bank",
+        "uvlock": false
       }
     },
-    "inventory": {
-      "model": "industrialrenewal:battery_bank"
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery_bank",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery_bank",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/battery_bank",
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "north_out": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/energy_connector/con_out_north",
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "south_out": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/energy_connector/con_out_north",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "east_out": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/energy_connector/con_out_north",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "west_out": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/energy_connector/con_out_north",
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "up_out": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/energy_connector/con_out_north",
+        "x": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "down_out": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/energy_connector/con_out_north",
+        "x": 90,
+        "uvlock": false
+      }
     }
-  }
+  ]
 }

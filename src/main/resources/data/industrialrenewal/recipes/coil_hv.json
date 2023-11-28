@@ -1,0 +1,13 @@
+{
+  "type": "industrialrenewal:lathe",
+  "process_time": 200,
+  "ingredients": [
+    {
+      "tag": "forge:rods/gold"
+    }
+  ],
+  "output": {
+    "item": "industrialrenewal:coil_hv",
+    "count": 1
+  }
+}

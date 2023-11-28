@@ -1,9 +1,9 @@
 {
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "textures": {
-    "0": "industrialrenewal:blocks/pipe",
-    "1": "blocks/anvil_base",
-    "2": "industrialrenewal:blocks/traffic_light"
+    "0": "industrialrenewal:block/pipe",
+    "1": "block/anvil_base",
+    "2": "industrialrenewal:block/traffic_light"
   },
   "display": {
     "gui": {

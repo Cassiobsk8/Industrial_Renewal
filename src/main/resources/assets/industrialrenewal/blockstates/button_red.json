@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "particle": "industrialrenewal:blocks/red_button"
+      "particle": "industrialrenewal:block/red_button"
     }
   },
   "variants": {

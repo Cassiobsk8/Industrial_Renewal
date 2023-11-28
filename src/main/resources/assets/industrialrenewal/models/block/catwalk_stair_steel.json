@@ -1,8 +1,10 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "industrialrenewal:blocks/metal",
-    "1": "industrialrenewal:blocks/galvanized_metal"
+    "0": "industrialrenewal:block/metal",
+    "1": "industrialrenewal:block/galvanized_metal",
+    "particle": "industrialrenewal:block/anvil_base"
+
   },
   "elements": [
     {

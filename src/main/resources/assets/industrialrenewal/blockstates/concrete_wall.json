@@ -1,0 +1,55 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "core": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/concrete_wall_post"
+      }
+    },
+    {
+      "when": {
+        "core": "false"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/concrete_wall_side_tall"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/concrete_wall_side"
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/concrete_wall_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/concrete_wall_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/concrete_wall_side",
+        "y": 270
+      }
+    }
+  ]
+}

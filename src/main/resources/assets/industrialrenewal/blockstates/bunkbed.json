@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "particle": "industrialrenewal:blocks/pipe_blue"
+      "particle": "industrialrenewal:block/pipe_blue"
     }
   },
   "variants": {

@@ -1,13 +1,13 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "1": "industrialrenewal:blocks/pipe",
-    "3": "industrialrenewal:blocks/traffic_light",
-    "particle": "industrialrenewal:blocks/pipe",
-    "3_0": "industrialrenewal:blocks/anvil_base",
-    "4_1": "industrialrenewal:blocks/hopper_inside",
-    "1_3": "industrialrenewal:blocks/rust",
-    "7_0": "industrialrenewal:blocks/fluid_pipe"
+    "1": "industrialrenewal:block/pipe",
+    "3": "industrialrenewal:block/traffic_light",
+    "particle": "industrialrenewal:block/pipe",
+    "3_0": "industrialrenewal:block/anvil_base",
+    "4_1": "industrialrenewal:block/hopper_inside",
+    "1_3": "industrialrenewal:block/rust",
+    "7_0": "industrialrenewal:block/fluid_pipe"
   },
   "elements": [
     {

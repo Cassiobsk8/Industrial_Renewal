@@ -1,0 +1,131 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "industrialrenewal:block/large_fluid_pipe/large_fluid_pipe_center"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/large_fluid_pipe/large_fluid_pipe_side",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/large_fluid_pipe/large_fluid_pipe_side",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/large_fluid_pipe/large_fluid_pipe_side",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/large_fluid_pipe/large_fluid_pipe_side",
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/large_fluid_pipe/large_fluid_pipe_side",
+        "x": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/large_fluid_pipe/large_fluid_pipe_side",
+        "x": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "east": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "uvlock": false,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "uvlock": false,
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "uvlock": false,
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "upfloor": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side_up",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "down": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side_down",
+        "uvlock": false
+      }
+    }
+  ]
+}

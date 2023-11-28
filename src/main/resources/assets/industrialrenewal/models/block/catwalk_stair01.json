@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"2": "industrialrenewal:blocks/block_hazard"
+		"2": "industrialrenewal:block/block_hazard"
 	},
 	"elements": [
 		{

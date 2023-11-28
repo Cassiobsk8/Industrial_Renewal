@@ -1,40 +1,29 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
   "variants": {
-    "facing": {
-      "down": {
-        "model": "industrialrenewal:hv/hv_isolator"
-      },
-      "up": {
-        "model": "industrialrenewal:hv/hv_isolator",
-        "x": -180
-      },
-      "north": {
-        "model": "industrialrenewal:hv/hv_isolator",
-        "x": -90
-      },
-      "south": {
-        "model": "industrialrenewal:hv/hv_isolator",
-        "x": 90
-      },
-      "east": {
-        "model": "industrialrenewal:hv/hv_isolator",
-        "x": -90,
-        "y": 90
-      },
-      "west": {
-        "model": "industrialrenewal:hv/hv_isolator",
-        "x": -90,
-        "y": -90
-      }
+    "facing=down": {
+      "model": "industrialrenewal:block/hv/hv_isolator"
     },
-    "inventory": {
-      "model": "industrialrenewal:hv/hv_isolator"
+    "facing=up": {
+      "model": "industrialrenewal:block/hv/hv_isolator",
+      "x": -180
+    },
+    "facing=north": {
+      "model": "industrialrenewal:block/hv/hv_isolator",
+      "x": -90
+    },
+    "facing=south": {
+      "model": "industrialrenewal:block/hv/hv_isolator",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "industrialrenewal:block/hv/hv_isolator",
+      "x": -90,
+      "y": 90
+    },
+    "facing=west": {
+      "model": "industrialrenewal:block/hv/hv_isolator",
+      "x": -90,
+      "y": -90
     }
   }
 }

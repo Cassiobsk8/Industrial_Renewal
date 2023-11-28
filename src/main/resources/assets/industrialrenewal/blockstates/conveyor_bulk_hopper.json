@@ -1,57 +1,199 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
-  "variants": {
-    "mode": {
-      "0": {
-        "model": "industrialrenewal:conveyorv_hopper"
+  "multipart": [
+    {
+      "when": {
+        "facing": "north",
+        "mode": "0"
       },
-      "1": {
-        "model": "industrialrenewal:conveyor_up"
-      },
-      "2": {
-        "model": "industrialrenewal:conveyor_down"
+      "apply": {
+        "model": "industrialrenewal:block/conveyorv_hopper"
       }
     },
-    "facing": {
-      "north": {},
-      "south": {
+    {
+      "when": {
+        "facing": "south",
+        "mode": "0"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyorv_hopper",
         "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
       }
     },
-    "front": {
-      "true": {
-        "submodel": {
-          "front": {
-            "model": "industrialrenewal:conveyor_front"
-          }
-        }
+    {
+      "when": {
+        "facing": "east",
+        "mode": "0"
       },
-      "false": {}
+      "apply": {
+        "model": "industrialrenewal:block/conveyorv_hopper",
+        "y": 90
+      }
     },
-    "back": {
-      "true": {
-        "submodel": {
-          "back": {
-            "model": "industrialrenewal:conveyor_back"
-          }
-        }
+    {
+      "when": {
+        "facing": "west",
+        "mode": "0"
       },
-      "false": {}
+      "apply": {
+        "model": "industrialrenewal:block/conveyorv_hopper",
+        "y": 270
+      }
     },
-    "inventory": {
-      "model": "industrialrenewal:conveyor",
-      "y": 180
+    {
+      "when": {
+        "facing": "north",
+        "mode": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_up"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "mode": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_up",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "mode": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_up",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "mode": "1"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_up",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "mode": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_down"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "mode": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_down",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "mode": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_down",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "mode": "2"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_down",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "front": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_front"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "front": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_front",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "front": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_front",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "front": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_front",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "back": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_back"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "back": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_back",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "back": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_back",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "back": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/conveyor_back",
+        "y": 270
+      }
     }
-  }
+  ]
 }

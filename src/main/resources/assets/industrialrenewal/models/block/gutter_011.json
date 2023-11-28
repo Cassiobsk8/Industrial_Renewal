@@ -1,7 +1,7 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "industrialrenewal:blocks/metal_white"
+    "0": "industrialrenewal:block/metal_white"
   },
   "elements": [
     {

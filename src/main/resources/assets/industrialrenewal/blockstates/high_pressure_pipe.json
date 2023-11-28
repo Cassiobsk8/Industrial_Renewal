@@ -1,13 +1,131 @@
 {
-  "forge_marker": 1,
-  "variants": {
-    "normal": {
-      "model": "industrialrenewal:smartmodel/high_pressure_pipe"
-    },
-    "inventory": [
-      {
-        "model": "industrialrenewal:press_pipe/pressurized_tube_item"
+  "multipart": [
+    {
+      "apply": {
+        "model": "industrialrenewal:block/press_pipe/pressurized_tube_core"
       }
-    ]
-  }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/press_pipe/con2_north",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/press_pipe/con2_north",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/press_pipe/con2_north",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/press_pipe/con2_north",
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/press_pipe/con2_north",
+        "x": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/press_pipe/con2_north",
+        "x": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "east": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "uvlock": false,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "uvlock": false,
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side",
+        "uvlock": false,
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "upfloor": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side_up",
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "down": "false",
+        "floor": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/ind_floor/floor_side_down",
+        "uvlock": false
+      }
+    }
+  ]
 }

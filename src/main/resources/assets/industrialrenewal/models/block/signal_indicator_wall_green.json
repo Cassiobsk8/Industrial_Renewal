@@ -1,9 +1,9 @@
 {
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "textures": {
-    "0": "blocks/anvil_base",
-    "1": "blocks/concrete_lime",
-    "2": "blocks/glass_lime"
+    "0": "block/anvil_base",
+    "1": "block/concrete_lime",
+    "2": "block/glass_lime"
   },
   "display": {
     "gui": {

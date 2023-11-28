@@ -1,10 +1,10 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
     "textures": {
-        "0": "industrialrenewal:blocks/rail_loader",
-        "1": "blocks/rail_normal",
-        "2": "blocks/anvil_base",
-        "3": "blocks/hopper_inside"
+        "0": "industrialrenewal:block/rail_loader",
+        "1": "block/rail_normal",
+        "2": "block/anvil_base",
+        "3": "block/hopper_inside"
     },
     "display": {
         "gui": {

@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "industrialrenewal:blocks/wrench",
-    "particle": "industrialrenewal:blocks/wrench"
+    "0": "industrialrenewal:block/wrench",
+    "particle": "industrialrenewal:block/wrench"
   },
   "elements": [
     {

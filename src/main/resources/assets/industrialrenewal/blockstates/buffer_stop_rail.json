@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "particle": "industrialrenewal:blocks/buffer_stop_rail"
+      "particle": "industrialrenewal:block/buffer_stop_rail"
     }
   },
   "variants": {

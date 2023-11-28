@@ -1,11 +1,11 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "industrialrenewal:blocks/anvil_base",
-    "1": "industrialrenewal:blocks/battery_pack_l",
-    "particle": "industrialrenewal:blocks/anvil_base",
-    "2_0": "industrialrenewal:blocks/fuse_box",
-    "4_0": "industrialrenewal:blocks/signs/sign_hv"
+    "0": "industrialrenewal:block/anvil_base",
+    "1": "industrialrenewal:block/battery_pack_l",
+    "particle": "industrialrenewal:block/anvil_base",
+    "2_0": "industrialrenewal:block/fuse_box",
+    "4_0": "industrialrenewal:block/signs/sign_hv"
   },
   "elements": [
     {

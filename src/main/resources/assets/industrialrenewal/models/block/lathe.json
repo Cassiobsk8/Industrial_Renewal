@@ -1,17 +1,17 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "industrialrenewal:blocks/anvil_base",
-    "1": "industrialrenewal:blocks/pipe_white",
-    "2": "industrialrenewal:blocks/screen",
-    "3": "industrialrenewal:blocks/entity_detector",
-    "4": "industrialrenewal:blocks/galvanized_metal",
-    "7": "industrialrenewal:blocks/glass",
-    "8": "industrialrenewal:blocks/hopper_inside",
-    "9": "industrialrenewal:blocks/fluid_pipe",
-    "1_1": "industrialrenewal:blocks/pipe",
-    "particle": "industrialrenewal:blocks/pipe_blue",
-    "1_3": "industrialrenewal:blocks/pipe_blue"
+    "0": "industrialrenewal:block/anvil_base",
+    "1": "industrialrenewal:block/pipe_white",
+    "2": "industrialrenewal:block/screen",
+    "3": "industrialrenewal:block/entity_detector",
+    "4": "industrialrenewal:block/galvanized_metal",
+    "7": "industrialrenewal:block/glass",
+    "8": "industrialrenewal:block/hopper_inside",
+    "9": "industrialrenewal:block/fluid_pipe",
+    "1_1": "industrialrenewal:block/pipe",
+    "particle": "industrialrenewal:block/pipe_blue",
+    "1_3": "industrialrenewal:block/pipe_blue"
   },
   "elements": [
     {

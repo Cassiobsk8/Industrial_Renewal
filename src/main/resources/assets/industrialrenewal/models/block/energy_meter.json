@@ -1,9 +1,9 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "industrialrenewal:blocks/energy_meter",
-    "1": "industrialrenewal:blocks/anvil_base",
-    "2": "industrialrenewal:blocks/traffic_light"
+    "0": "industrialrenewal:block/energy_meter",
+    "1": "industrialrenewal:block/anvil_base",
+    "2": "industrialrenewal:block/traffic_light"
   },
   "elements": [
     {

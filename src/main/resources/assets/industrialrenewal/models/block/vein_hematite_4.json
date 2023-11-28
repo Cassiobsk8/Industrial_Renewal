@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "industrialrenewal:blocks/vein_hematite",
-    "particle": "industrialrenewal:blocks/vein_hematite"
+    "0": "industrialrenewal:block/vein_hematite",
+    "particle": "industrialrenewal:block/vein_hematite"
   },
   "elements": [
     {

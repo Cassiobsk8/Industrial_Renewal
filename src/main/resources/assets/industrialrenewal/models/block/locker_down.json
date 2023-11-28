@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "industrialrenewal:blocks/locker",
-    "particle": "industrialrenewal:blocks/locker"
+    "0": "industrialrenewal:block/locker",
+    "particle": "industrialrenewal:block/locker"
   },
   "elements": [
     {

@@ -1,9 +1,9 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "blocks/planks_oak",
-    "1": "industrialrenewal:blocks/coil",
-    "particle": "blocks/planks_oak"
+    "0": "block/oak_planks",
+    "1": "industrialrenewal:block/coil",
+    "particle": "block/oak_planks"
   },
   "elements": [
     {

@@ -1,50 +1,43 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "blocks/anvil_base"
-    }
-  },
-  "variants": {
-    "master": {
-      "true": {
-        "model": "industrialrenewal:fluid_loader"
+  "multipart": [
+    {
+      "when": {
+        "facing": "north",
+        "master": "true"
       },
-      "false": {
-        "model": "industrialrenewal:dummy"
+      "apply": {
+        "model": "industrialrenewal:block/fluid_loader"
       }
     },
-    "facing": {
-      "north": {},
-      "south": {
+    {
+      "when": {
+        "facing": "south",
+        "master": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_loader",
         "y": 180
-      },
-      "east": {
-        "y": 90
-      },
-      "west": {
-        "y": -90
       }
     },
-    "unload": {
-      "2": {
-        "submodel": {
-          "master": {
-            "model": "industrialrenewal:fluid_connector/con_out_south"
-          }
-        }
+    {
+      "when": {
+        "facing": "east",
+        "master": "true"
       },
-      "1": {
-        "submodel": {
-          "master": {
-            "model": "industrialrenewal:fluid_connector/con_in_south"
-          }
-        }
-      },
-      "0": {}
+      "apply": {
+        "model": "industrialrenewal:block/fluid_loader",
+        "y": 90
+      }
     },
-    "inventory": {
-      "model": "industrialrenewal:fluid_loader"
+    {
+      "when": {
+        "facing": "west",
+        "master": "true"
+      },
+      "apply": {
+        "model": "industrialrenewal:block/fluid_loader",
+        "y": 270
+      }
     }
-  }
+  ]
 }

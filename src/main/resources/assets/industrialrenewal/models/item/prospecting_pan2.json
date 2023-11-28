@@ -1,9 +1,9 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "0": "blocks/planks_spruce",
-    "1": "industrialrenewal:blocks/mesh",
-    "particle": "blocks/planks_spruce"
+    "0": "block/spruce_planks",
+    "1": "industrialrenewal:block/mesh",
+    "particle": "block/spruce_planks"
   },
   "elements": [
     {

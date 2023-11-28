@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "industrialrenewal:items/hematite"
+    "layer0": "industrialrenewal:item/hematite"
   }
 }

@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "particle": "industrialrenewal:blocks/metal_white"
+      "particle": "industrialrenewal:block/metal_white"
     }
   },
   "variants": {

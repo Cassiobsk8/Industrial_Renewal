@@ -1,9 +1,11 @@
 {
   "credit": "Made with Blockbench - CassioKF",
   "textures": {
-    "1": "industrialrenewal:blocks/hopper_inside",
-    "2": "industrialrenewal:blocks/anvil_base",
-    "5": "industrialrenewal:blocks/pipe_blue"
+    "1": "industrialrenewal:block/hopper_inside",
+    "2": "industrialrenewal:block/anvil_base",
+    "5": "industrialrenewal:block/pipe_blue",
+    "particle": "industrialrenewal:block/anvil_base"
+
   },
   "elements": [
     {

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "industrialrenewal:items/instant_noodle"
+    "layer0": "industrialrenewal:item/instant_noodle"
   }
 }

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/iron"
+    },
+    "B": {
+      "item": "minecraft:white_dye"
+    },
+    "Y": {
+      "item": "minecraft:red_dye"
+    }
+  },
+  "pattern": [
+    "###",
+    "Y B",
+    "###"
+  ],
+  "result": {
+    "count": 16,
+    "item": "industrialrenewal:fire_hazard"
+  },
+  "show_notification": true
+}

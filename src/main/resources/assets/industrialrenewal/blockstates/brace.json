@@ -1,50 +1,142 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "blocks/anvil_base"
+  "multipart": [
+    {
+      "when": {
+        "OR": [
+          {
+            "north": true,
+            "facing": "north|west|south|east"
+          },
+          {
+            "facing": "north"
+          }
+        ]
+      },
+      "apply": {
+        "model": "industrialrenewal:block/brace"
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "west": true,
+            "facing": "north|west|south|east"
+          },
+          {
+            "facing": "west"
+          }
+        ]
+      },
+      "apply": {
+        "model": "industrialrenewal:block/brace",
+        "y": -90
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "south": true,
+            "facing": "north|west|south|east"
+          },
+          {
+            "facing": "south"
+          }
+        ]
+      },
+      "apply": {
+        "model": "industrialrenewal:block/brace",
+        "y":180
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "east": true,
+            "facing": "north|west|south|east"
+          },
+          {
+            "facing": "east"
+          }
+        ]
+      },
+      "apply": {
+        "model": "industrialrenewal:block/brace",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "north": true,
+            "facing": "down_north|down_west|down_south|down_east"
+          },
+          {
+            "facing": "down_north"
+          }
+        ]
+      },
+      "apply": {
+        "model": "industrialrenewal:block/brace",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "west": true,
+            "facing": "down_north|down_west|down_south|down_east"
+          },
+          {
+            "facing": "down_west"
+          }
+        ]
+      },
+      "apply": {
+        "model": "industrialrenewal:block/brace",
+        "y": -90,
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "south": true,
+            "facing": "down_north|down_west|down_south|down_east"
+          },
+          {
+            "facing": "down_south"
+          }
+        ]
+      },
+      "apply": {
+        "model": "industrialrenewal:block/brace",
+        "y":180,
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "east": true,
+            "facing": "down_north|down_west|down_south|down_east"
+          },
+          {
+            "facing": "down_east"
+          }
+        ]
+      },
+      "apply": {
+        "model": "industrialrenewal:block/brace",
+        "y": 90,
+        "x": 180
+      }
     }
-  },
-  "variants": {
-    "normal": {
-      "model": "industrialrenewal:brace"
-    },
-    "facing=north": {
-      "model": "industrialrenewal:brace"
-    },
-    "facing=west": {
-      "model": "industrialrenewal:brace",
-      "y": -90
-    },
-    "facing=south": {
-      "model": "industrialrenewal:brace",
-      "y": 180
-    },
-    "facing=east": {
-      "model": "industrialrenewal:brace",
-      "y": 90
-    },
-    "facing=down_north": {
-      "model": "industrialrenewal:brace",
-      "x": 180
-    },
-    "facing=down_west": {
-      "model": "industrialrenewal:brace",
-      "x": 180,
-      "y": -90
-    },
-    "facing=down_south": {
-      "model": "industrialrenewal:brace",
-      "x": 180,
-      "y": 180
-    },
-    "facing=down_east": {
-      "model": "industrialrenewal:brace",
-      "x": 180,
-      "y": 90
-    },
-    "inventory": {
-      "model": "industrialrenewal:brace"
-    }
-  }
+  ]
 }

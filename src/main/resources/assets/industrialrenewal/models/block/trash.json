@@ -1,9 +1,9 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "industrialrenewal:blocks/sensor_rain",
-    "1": "industrialrenewal:blocks/trash",
-    "particle": "industrialrenewal:blocks/sensor_rain"
+    "0": "industrialrenewal:block/sensor_rain",
+    "1": "industrialrenewal:block/trash",
+    "particle": "industrialrenewal:block/sensor_rain"
   },
   "elements": [
     {

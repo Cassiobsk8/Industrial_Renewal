@@ -1,9 +1,9 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "industrialrenewal:blocks/pipe",
+    "0": "industrialrenewal:block/pipe",
     "1": "entity/bed/red",
-    "particle": "industrialrenewal:blocks/pipe"
+    "particle": "industrialrenewal:block/pipe"
   },
   "elements": [
     {

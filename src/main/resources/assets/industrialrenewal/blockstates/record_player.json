@@ -3,7 +3,7 @@
   "defaults": {
     "model": "industrialrenewal:record_player",
     "textures": {
-      "particle": "industrialrenewal:blocks/record_player"
+      "particle": "industrialrenewal:block/record_player"
     }
   },
   "variants": {

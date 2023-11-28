@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "A": {
+      "tag": "forge:rods/iron"
+    },
+    "B": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "pattern": [
+    "ABA",
+    " B ",
+    "ABA"
+  ],
+  "result": {
+    "count": 6,
+    "item": "industrialrenewal:frame"
+  },
+  "show_notification": true
+}

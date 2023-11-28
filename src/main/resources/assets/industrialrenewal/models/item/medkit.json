@@ -5,8 +5,8 @@
     32
   ],
   "textures": {
-    "0": "industrialrenewal:items/medkit2",
-    "particle": "industrialrenewal:items/medkit2"
+    "0": "industrialrenewal:item/medkit2",
+    "particle": "industrialrenewal:item/medkit2"
   },
   "elements": [
     {

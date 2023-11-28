@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "industrialrenewal:blocks/red_button",
-    "particle": "industrialrenewal:blocks/red_button"
+    "0": "industrialrenewal:block/red_button",
+    "particle": "industrialrenewal:block/red_button"
   },
   "elements": [
     {
