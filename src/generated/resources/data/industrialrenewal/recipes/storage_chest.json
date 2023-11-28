@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "industrialrenewal:scaffold"
+    },
+    "A": {
+      "tag": "forge:chests"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "AAA",
+    "# #"
+  ],
+  "result": {
+    "item": "industrialrenewal:storage_chest"
+  },
+  "show_notification": true
+}

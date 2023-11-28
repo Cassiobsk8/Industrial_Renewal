@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:dusts/redstone"
+    },
+    "A": {
+      "tag": "forge:nuggets/iron"
+    },
+    "B": {
+      "item": "minecraft:gold_nugget"
+    },
+    "C": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "D": {
+      "tag": "forge:ingots/iron"
+    },
+    "E": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "pattern": [
+    "A#B",
+    "A#B",
+    "DCE"
+  ],
+  "result": {
+    "item": "industrialrenewal:battery"
+  },
+  "show_notification": true
+}

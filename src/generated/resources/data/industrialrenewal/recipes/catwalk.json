@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:iron_bars"
+    },
+    "B": {
+      "tag": "forge:rods/iron"
+    }
+  },
+  "pattern": [
+    "B B",
+    "AAA"
+  ],
+  "result": {
+    "count": 6,
+    "item": "industrialrenewal:catwalk"
+  },
+  "show_notification": true
+}

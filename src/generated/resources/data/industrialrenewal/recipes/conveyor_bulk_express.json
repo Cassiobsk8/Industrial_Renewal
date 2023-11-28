@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:leather"
+    },
+    "C": {
+      "item": "industrialrenewal:motor"
+    },
+    "D": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "CCC",
+    "DDD"
+  ],
+  "result": {
+    "count": 8,
+    "item": "industrialrenewal:conveyor_bulk_express"
+  },
+  "show_notification": true
+}

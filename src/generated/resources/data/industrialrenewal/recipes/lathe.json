@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:ingots/iron"
+    },
+    "B": {
+      "item": "industrialrenewal:motor"
+    },
+    "C": {
+      "tag": "forge:ingots/steel"
+    },
+    "D": {
+      "item": "industrialrenewal:battery_bank"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "BCC",
+    "ADA"
+  ],
+  "result": {
+    "item": "industrialrenewal:lathe"
+  },
+  "show_notification": true
+}

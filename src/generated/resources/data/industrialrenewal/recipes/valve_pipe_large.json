@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:lever"
+    },
+    "B": {
+      "item": "industrialrenewal:high_pressure_pipe"
+    },
+    "C": {
+      "item": "minecraft:iron_trapdoor"
+    }
+  },
+  "pattern": [
+    " A ",
+    "BCB",
+    " A "
+  ],
+  "result": {
+    "item": "industrialrenewal:valve_pipe_large"
+  },
+  "show_notification": true
+}

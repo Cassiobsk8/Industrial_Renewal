@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:glass_pane"
+    },
+    "A": {
+      "tag": "forge:dusts/redstone"
+    },
+    "X": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "pattern": [
+    "#X#",
+    "AAA",
+    "#X#"
+  ],
+  "result": {
+    "count": 6,
+    "item": "industrialrenewal:energy_cable_hv"
+  },
+  "show_notification": true
+}

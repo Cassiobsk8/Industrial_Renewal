@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:rods/iron"
+    },
+    "B": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "ABA",
+    "A A",
+    "A A"
+  ],
+  "result": {
+    "count": 12,
+    "item": "industrialrenewal:scaffold"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:rods/iron"
+    },
+    "B": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "pattern": [
+    "ABA",
+    "ABA"
+  ],
+  "result": {
+    "count": 2,
+    "item": "industrialrenewal:catwalk_gate"
+  },
+  "show_notification": true
+}

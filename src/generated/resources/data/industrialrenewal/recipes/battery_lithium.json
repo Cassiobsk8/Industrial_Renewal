@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    "A": {
+      "tag": "forge:rods/copper"
+    },
+    "B": {
+      "tag": "forge:rods/gold"
+    },
+    "C": {
+      "item": "minecraft:lapis_block"
+    },
+    "D": {
+      "tag": "forge:ingots/copper"
+    },
+    "E": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "pattern": [
+    "A#B",
+    "D#E",
+    "DCE"
+  ],
+  "result": {
+    "item": "industrialrenewal:battery_lithium"
+  },
+  "show_notification": true
+}

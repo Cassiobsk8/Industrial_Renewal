@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:iron_bars"
+    },
+    "B": {
+      "tag": "forge:rods/steel"
+    }
+  },
+  "pattern": [
+    "ABB",
+    " AB",
+    "  A"
+  ],
+  "result": {
+    "count": 6,
+    "item": "industrialrenewal:catwalk_stair_steel"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:rods/steel"
+    },
+    "A": {
+      "item": "industrialrenewal:barrel"
+    },
+    "B": {
+      "item": "industrialrenewal:fluid_pipe"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "AAA",
+    "#B#"
+  ],
+  "result": {
+    "item": "industrialrenewal:fluid_tank"
+  },
+  "show_notification": true
+}

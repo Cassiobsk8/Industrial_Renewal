@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "industrialrenewal:fluid_pipe"
+    },
+    "B": {
+      "item": "industrialrenewal:barrel"
+    },
+    "C": {
+      "tag": "forge:dusts/redstone"
+    },
+    "D": {
+      "item": "industrialrenewal:frame"
+    }
+  },
+  "pattern": [
+    "ABA",
+    "CBC",
+    "DDD"
+  ],
+  "result": {
+    "item": "industrialrenewal:steam_boiler"
+  },
+  "show_notification": true
+}

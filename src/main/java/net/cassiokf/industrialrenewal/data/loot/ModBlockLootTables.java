@@ -1,6 +1,7 @@
 package net.cassiokf.industrialrenewal.data.loot;
 
 import net.cassiokf.industrialrenewal.init.ModBlocks;
+import net.cassiokf.industrialrenewal.init.ModFluids;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
@@ -99,6 +100,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         
         dropSelf(ModBlocks.ENERGY_LEVEL.get());
         dropSelf(ModBlocks.FLUID_GAUGE.get());
+        dropSelf(ModFluids.STEAM_BLOCK.get());
 
         //super.addTables();
     }

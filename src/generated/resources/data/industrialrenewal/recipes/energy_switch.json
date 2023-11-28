@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:lever"
+    },
+    "B": {
+      "item": "industrialrenewal:energy_cable_hv"
+    },
+    "C": {
+      "tag": "forge:storage_blocks/redstone"
+    }
+  },
+  "pattern": [
+    " A ",
+    "BCB",
+    " A "
+  ],
+  "result": {
+    "item": "industrialrenewal:energy_switch"
+  },
+  "show_notification": true
+}

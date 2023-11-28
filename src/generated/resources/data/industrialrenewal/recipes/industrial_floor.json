@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:iron_bars"
+    },
+    "B": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "   ",
+    "BBB"
+  ],
+  "result": {
+    "count": 6,
+    "item": "industrialrenewal:industrial_floor"
+  },
+  "show_notification": true
+}

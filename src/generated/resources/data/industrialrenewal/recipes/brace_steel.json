@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:ingots/steel"
+    },
+    "B": {
+      "tag": "forge:rods/steel"
+    }
+  },
+  "pattern": [
+    "AB ",
+    "BAB",
+    " BA"
+  ],
+  "result": {
+    "count": 16,
+    "item": "industrialrenewal:brace_steel"
+  },
+  "show_notification": true
+}

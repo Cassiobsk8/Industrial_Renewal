@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-29T20:00:04.6450022	Loot Tables
+// 1.20.1	2023-11-28T12:52:11.9183004	Loot Tables
 bd4ebdceebe8e41c5309fd9694c35cdaa44edf78 data/industrialrenewal/loot_tables/blocks/aisle_hazard.json
 e683416b3f4200944c092f307c57f3a9ff19f16f data/industrialrenewal/loot_tables/blocks/barrel.json
 e54e86f6fa0ff1b2f7b7e65b2ec4d584fb3b6f5f data/industrialrenewal/loot_tables/blocks/battery_bank.json
@@ -64,6 +64,7 @@ a89df7e2fa5800e5a30ee13fa13f5fcaf5878b6a data/industrialrenewal/loot_tables/bloc
 08c0c46f84cd8b77356003315ba4d9d56d5b8f2f data/industrialrenewal/loot_tables/blocks/small_wind_turbine_pillar.json
 8b77457d4ed8424b0eca718b3e7c5659ad9cc401 data/industrialrenewal/loot_tables/blocks/solar_panel.json
 19bccabf054756a9c7441b8965b61fac77a3c264 data/industrialrenewal/loot_tables/blocks/solar_panel_frame.json
+73382d9a7d5b15aaafcd909ada4db839ec7a8ac9 data/industrialrenewal/loot_tables/blocks/steam.json
 fa3ca696129eaadddc1c7eb27e7c8d42c24cb6b1 data/industrialrenewal/loot_tables/blocks/steam_boiler.json
 0974a6f932ff9efdfda7a4f34a6337d7a29aa19a data/industrialrenewal/loot_tables/blocks/steam_turbine.json
 87fe8dbf520d418503c871ef03d9d1279a20431f data/industrialrenewal/loot_tables/blocks/storage_chest.json

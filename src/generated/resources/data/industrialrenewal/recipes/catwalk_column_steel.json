@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:rods/steel"
+    },
+    "B": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "BBB",
+    "AAA"
+  ],
+  "result": {
+    "count": 16,
+    "item": "industrialrenewal:catwalk_column_steel"
+  },
+  "show_notification": true
+}

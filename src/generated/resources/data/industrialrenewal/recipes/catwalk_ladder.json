@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:rods/iron"
+    },
+    "B": {
+      "item": "minecraft:ladder"
+    }
+  },
+  "pattern": [
+    "A A",
+    "ABA",
+    "A A"
+  ],
+  "result": {
+    "count": 6,
+    "item": "industrialrenewal:catwalk_ladder"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:rods/iron"
+    },
+    "B": {
+      "item": "minecraft:glowstone"
+    },
+    "C": {
+      "tag": "forge:glass_panes"
+    }
+  },
+  "pattern": [
+    " A ",
+    "CBC"
+  ],
+  "result": {
+    "count": 4,
+    "item": "industrialrenewal:fluorescent"
+  },
+  "show_notification": true
+}

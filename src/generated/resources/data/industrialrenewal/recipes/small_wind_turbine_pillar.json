@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/iron"
+    },
+    "A": {
+      "item": "industrialrenewal:energy_cable_lv"
+    }
+  },
+  "pattern": [
+    "#A#",
+    "#A#",
+    "#A#"
+  ],
+  "result": {
+    "count": 6,
+    "item": "industrialrenewal:small_wind_turbine_pillar"
+  },
+  "show_notification": true
+}

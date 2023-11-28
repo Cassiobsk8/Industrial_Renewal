@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "industrialrenewal:frame"
+    },
+    "B": {
+      "item": "industrialrenewal:motor"
+    },
+    "C": {
+      "item": "industrialrenewal:battery_lithium"
+    },
+    "D": {
+      "item": "industrialrenewal:electric_pump"
+    },
+    "E": {
+      "item": "minecraft:hopper"
+    },
+    "F": {
+      "item": "industrialrenewal:barrel"
+    }
+  },
+  "pattern": [
+    "ABA",
+    "CDE",
+    "AFA"
+  ],
+  "result": {
+    "item": "industrialrenewal:mining"
+  },
+  "show_notification": true
+}
