@@ -25,6 +25,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static net.minecraft.item.ItemStack.areItemStacksEqual;
+
 public class TELathe extends TileEntityMultiBlockBase<TELathe>
 {
     private static final int energyPTick = IRConfig.MainConfig.Main.energyPerTickLatheMachine;
@@ -159,7 +161,19 @@ public class TELathe extends TileEntityMultiBlockBase<TELathe>
 
     private void getProcessFromInputItem(ItemStack inputStack)
     {
-        LatheRecipe recipe = LatheRecipe.CACHED_RECIPES.get(inputStack.getItem());
+        LatheRecipe recipe = null;
+		List<LatheRecipe> recipes = LatheRecipe.LATHE_RECIPES;
+        for (LatheRecipe entry : recipes)
+        {
+            List<ItemStack> stacksinputs = entry.getInput();
+            for (ItemStack ie : stacksinputs)
+			{
+				if (areItemStacksEqual(ie, inputStack)) {
+					recipe = entry;
+					break;
+				}
+			}
+        }
         if (recipe != null)
         {
             ItemStack result = recipe.getRecipeOutput();
