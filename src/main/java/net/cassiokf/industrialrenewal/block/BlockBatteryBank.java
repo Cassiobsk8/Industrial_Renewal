@@ -3,8 +3,13 @@ package net.cassiokf.industrialrenewal.block;
 import net.cassiokf.industrialrenewal.block.abstracts.BlockAbstractHorizontalFacing;
 import net.cassiokf.industrialrenewal.blockentity.BlockEntityBatteryBank;
 import net.cassiokf.industrialrenewal.init.ModBlockEntity;
+import net.cassiokf.industrialrenewal.item.ItemScrewdriver;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -15,6 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockBatteryBank extends BlockAbstractHorizontalFacing implements EntityBlock {
@@ -50,6 +56,22 @@ public class BlockBatteryBank extends BlockAbstractHorizontalFacing implements E
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(NORTH_OUTPUT, SOUTH_OUTPUT, EAST_OUTPUT, WEST_OUTPUT, UP_OUTPUT, DOWN_OUTPUT);
+    }
+    
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        ItemStack heldItem = pPlayer.getItemInHand(pHand);
+        if (pHand.equals(InteractionHand.MAIN_HAND) && heldItem.getItem() instanceof ItemScrewdriver) {
+            BlockEntityBatteryBank tile = (BlockEntityBatteryBank) pLevel.getBlockEntity(pPos);
+            if (tile != null) {
+                Direction side = pHit.getDirection();
+                boolean change = tile.toggleFacing(side);
+                pState = pState.setValue(toggleOutput(side), change);
+                pLevel.setBlockAndUpdate(pPos, pState);
+                if (pLevel.isClientSide()) ItemScrewdriver.playSound(pLevel, pPos);
+            }
+        }
+        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }
     
     public BooleanProperty toggleOutput(Direction facing){

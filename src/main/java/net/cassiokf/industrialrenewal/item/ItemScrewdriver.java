@@ -1,5 +1,8 @@
 package net.cassiokf.industrialrenewal.item;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+
 public class ItemScrewdriver extends IRBaseItem{
 
     public ItemScrewdriver() {
@@ -8,5 +11,9 @@ public class ItemScrewdriver extends IRBaseItem{
 
     public ItemScrewdriver(Properties props) {
         super(props);
+    }
+    
+    public static void playSound(Level pLevel, BlockPos pPos) {
+        //TODO
     }
 }
