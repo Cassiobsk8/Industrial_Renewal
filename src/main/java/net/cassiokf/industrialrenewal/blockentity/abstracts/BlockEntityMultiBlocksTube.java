@@ -26,7 +26,7 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
     private TE master;
     private boolean isMaster;
     public boolean firstTick;
-    boolean inUse = false;
+    public boolean inUse = false;
 
     public BlockEntityMultiBlocksTube(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state)
     {
