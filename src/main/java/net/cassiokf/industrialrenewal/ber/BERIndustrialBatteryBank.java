@@ -69,8 +69,8 @@ public class BERIndustrialBatteryBank extends BERBase<BlockEntityIndustrialBatte
                 float off = offset;
                 for (int zb = 0; zb < 3; zb++)
                 {
-                    doTheMath(facing, x, z, off, 0.26f);
-                    render3dItem(matrixStack, combinedLightIn, combinedOverlayIn, renderTypeBuffer, facing, world, xPos, y - yOff, zPos, lBattery, 2.88f, false, true, -90, 1, 0, 0, false, true);
+                    doTheMath(facing, x, z, off, -0.28f);
+                    render3dItem(matrixStack, combinedLightIn, combinedOverlayIn, renderTypeBuffer, facing, world, xPos, y - yOff, zPos, lBattery, 1.72f, false, true, -90, 1, 0, 0, false, true);
                     off -= spacing;
                     quantity--;
                     if (quantity == 0) return;
@@ -84,8 +84,8 @@ public class BERIndustrialBatteryBank extends BERBase<BlockEntityIndustrialBatte
                 float off = offset;
                 for (int zb = 0; zb < 3; zb++)
                 {
-                    doTheMath(facing, x, z, off, -0.26f);
-                    render3dItem(matrixStack, combinedLightIn, combinedOverlayIn, renderTypeBuffer, facing, world, xPos, y - yOff, zPos, lBattery, 2.88f, false, true, 90, 1, 0, 0, false, true);
+                    doTheMath(facing, x, z, off, 0.28f);
+                    render3dItem(matrixStack, combinedLightIn, combinedOverlayIn, renderTypeBuffer, facing, world, xPos, y - yOff, zPos, lBattery, 1.72f, false, true, 90, 1, 0, 0, false, true);
                     off -= spacing;
                     quantity--;
                     if (quantity == 0) return;

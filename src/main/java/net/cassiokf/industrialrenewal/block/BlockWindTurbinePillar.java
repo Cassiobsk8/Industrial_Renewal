@@ -5,6 +5,10 @@ import net.cassiokf.industrialrenewal.blockentity.BlockEntityWindTurbinePillar;
 import net.cassiokf.industrialrenewal.init.ModBlockEntity;
 import net.cassiokf.industrialrenewal.init.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -15,6 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntityWindTurbinePillar> implements EntityBlock {
@@ -30,18 +35,24 @@ public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntit
         registerDefaultState(defaultBlockState().setValue(BASE, false));
     }
     
-    @Override
-    public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
-        if(!context.getPlayer().isCrouching())
-            return context.getItemInHand().getItem() == this.asItem();
-        return super.canBeReplaced(state, context);
-    }
-
 //    @Override
-//    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
-//        Item playerItem = player.getMainHandItem().getItem();
-//        Block clickedBlock = state.getBlock();
-//        //industrialrenewal.LOGGER.info("TRYING TO PLACE PILLAR ON TOP " + playerItem + Item.byBlock(ModBlocks.TURBINE_PILLAR.get()));
+//    public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
+//        if(!context.getPlayer().isCrouching())
+//            return context.getItemInHand().getItem() == this.asItem();
+//        return super.canBeReplaced(state, context);
+//    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
+        Item playerItem = player.getMainHandItem().getItem();
+        Block clickedBlock = state.getBlock();
+        BlockEntityWindTurbinePillar te = (BlockEntityWindTurbinePillar) worldIn.getBlockEntity(pos);
+        if (te != null) {
+            te.getIsBase();
+            worldIn.setBlockAndUpdate(pos, state);
+            return InteractionResult.SUCCESS;
+        }
+        //industrialrenewal.LOGGER.info("TRYING TO PLACE PILLAR ON TOP " + playerItem + Item.byBlock(ModBlocks.TURBINE_PILLAR.get()));
 //        if (playerItem.equals(Item.byBlock(ModBlocks.TURBINE_PILLAR.get())) && clickedBlock.equals(ModBlocks.TURBINE_PILLAR.get()))
 //        {
 //            //industrialrenewal.LOGGER.info("READING PILLAR HEIGHT");
@@ -65,8 +76,8 @@ public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntit
 //            }
 //            //industrialrenewal.LOGGER.info("PLACEMENT FAILED");
 //        }
-//        return super.use(state, worldIn, pos, player, handIn, hitResult);
-//    }
+        return super.use(state, worldIn, pos, player, handIn, hitResult);
+    }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
@@ -85,13 +96,13 @@ public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntit
 
     @Override
     public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if(!worldIn.isClientSide() && fromPos.equals(pos.below())) {
-            boolean value = !(worldIn.getBlockEntity(pos.below()) instanceof BlockEntityWindTurbinePillar);
-
-            state = state.setValue(BASE, value);
-            worldIn.setBlockAndUpdate(pos, state);
-        }
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
+//        if(!worldIn.isClientSide() && fromPos.equals(pos.below())) {
+//            boolean value = !(worldIn.getBlockEntity(pos.below()) instanceof BlockEntityWindTurbinePillar);
+//
+//            state = state.setValue(BASE, value);
+//            worldIn.setBlockAndUpdate(pos, state);
+//        }
+//        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
     }
     
     @org.jetbrains.annotations.Nullable
@@ -103,6 +114,6 @@ public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntit
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return level.isClientSide? null : ($0, $1, $2, blockEntity) -> ((BlockEntityWindTurbinePillar)blockEntity).tick();
+        return ($0, $1, $2, blockEntity) -> ((BlockEntityWindTurbinePillar)blockEntity).tick();
     }
 }

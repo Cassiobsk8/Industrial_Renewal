@@ -21,7 +21,7 @@ public class BERWindTurbinePillar extends BERBase<BlockEntityWindTurbinePillar> 
             Direction facing = blockEntity.getBlockFacing();
             doTheMath(facing, x, z, 0.78, 0);
             renderText(stack, buffer, facing, xPos, y + 0.72, zPos, blockEntity.getText(), 0.006F);
-            doTheMath(facing, x, z, 0.78, 0.1f);
+            doTheMath(facing, x, z, 0.78, 0.11f);
             renderPointer(stack, lighting(blockEntity), combinedOverlay, buffer, blockEntity.getLevel(), facing, xPos, y + 0.845, zPos, blockEntity.getGenerationforGauge(), pointerLong, 0.38F);
             renderPointer(stack, lighting(blockEntity), combinedOverlay, buffer, blockEntity.getLevel(), facing, xPos, y + 0.845, zPos, blockEntity.getPotentialValue(), limiter, 0.57F);
         }

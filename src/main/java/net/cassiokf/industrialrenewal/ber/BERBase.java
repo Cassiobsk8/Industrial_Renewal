@@ -3,7 +3,6 @@ package net.cassiokf.industrialrenewal.ber;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.cassiokf.industrialrenewal.init.ModItems;
-import net.cassiokf.industrialrenewal.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -14,10 +13,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -40,7 +41,6 @@ public abstract class BERBase<T extends BlockEntity> implements BlockEntityRende
     public static final ItemStack switch_off = new ItemStack(ModItems.switch_off.get());
     public static final ItemStack push_button = new ItemStack(ModItems.push_button.get());
     public static final ItemStack label_5 = new ItemStack(ModItems.label_5.get());
-
 
     public double xPos = 0D;
     public double zPos = 0D;
@@ -158,36 +158,41 @@ public abstract class BERBase<T extends BlockEntity> implements BlockEntityRende
 
     public static void render3dItem(PoseStack matrixStack, int combinedLightIn, int combinedOverlayIn, MultiBufferSource buffetIn, Direction facing, Level world, double x, double y, double z, ItemStack stack, float scale, boolean disableLight, boolean applyRotation, float rotation, float rX, float rY, float rZ, boolean rotateHorizontal, boolean rotateVertical)
     {
+        ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
         matrixStack.pushPose();
         matrixStack.translate(x, y, z);
-
-        rotateAccordingly(facing, matrixStack);
+        
         matrixStack.scale(scale, scale, scale);
-
+        rotateAccordingly(facing, matrixStack);
+        
         if (rotateHorizontal) matrixStack.mulPose(new Quaternionf(Axis.XP.rotationDegrees(90)));
         if (rotateVertical) matrixStack.mulPose(Axis.YP.rotationDegrees(90));
-        if (applyRotation) matrixStack.mulPose(Axis.XP.rotationDegrees(rotation * rX));
-        if (applyRotation) matrixStack.mulPose(Axis.YP.rotationDegrees(rotation * rY));
-        if (applyRotation) matrixStack.mulPose(Axis.ZP.rotationDegrees(rotation * rZ));
-        
-        ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
+        if (applyRotation) {
+            matrixStack.mulPose(Axis.XP.rotationDegrees(rotation * rX));
+            matrixStack.mulPose(Axis.YP.rotationDegrees(rotation * rY));
+            matrixStack.mulPose(Axis.ZP.rotationDegrees(rotation * rZ));
+        }
 
         BakedModel model = renderer.getModel(stack, world, null, 0);
-        model = ForgeHooksClient.handleCameraTransforms(matrixStack, model, ItemDisplayContext.GROUND, false);
+        model = ForgeHooksClient.handleCameraTransforms(matrixStack, model, ItemDisplayContext.NONE, false);
 
 //        Utils.debug("", combinedLightIn);
-        renderer.render(stack, ItemDisplayContext.GROUND, true, matrixStack, buffetIn, combinedLightIn, OverlayTexture.NO_OVERLAY, model);
-//        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.GROUND, combinedLightIn, OverlayTexture.NO_OVERLAY, matrixStack, buffetIn, 1);
+        if (applyRotation) {
+            renderer.render(stack, ItemDisplayContext.GROUND, true, matrixStack, buffetIn, combinedLightIn, OverlayTexture.NO_OVERLAY, model);
+        }
+        else {
+            renderer.renderStatic(stack, ItemDisplayContext.FIXED, combinedLightIn, OverlayTexture.NO_OVERLAY, matrixStack, buffetIn, world, 1);
+        }
 
         matrixStack.popPose();
     }
 
-//    public static float smoothAnimation(float rotation, float oldRotation, float partialTick, boolean invert)
-//    {
-//        //shift = shiftOld + (shift - shiftOld) * partialTick
-//        float r = oldRotation + (rotation - oldRotation) * partialTick;
-//        return invert ? -r : r;
-//    }
+    public static float smoothAnimation(float rotation, float oldRotation, float partialTick, boolean invert)
+    {
+        //shift = shiftOld + (shift - shiftOld) * partialTick
+        float r = oldRotation + (rotation - oldRotation) * partialTick;
+        return invert ? -r : r;
+    }
 
     public static void rotateAccordingly(Direction facing, PoseStack poseStack)
     {
@@ -210,7 +215,11 @@ public abstract class BERBase<T extends BlockEntity> implements BlockEntityRende
     }
 
     public static int lighting(BlockEntity blockEntity){
-//        return LightTexture.FULL_BRIGHT;
-        return Utils.getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos());
+        Level level = blockEntity.getLevel();
+        BlockPos pos = blockEntity.getBlockPos();
+        assert level != null;
+        int bLight = level.getBrightness(LightLayer.BLOCK, pos);
+        int sLight = level.getBrightness(LightLayer.SKY, pos);
+        return LightTexture.pack(bLight, sLight);
     }
 }

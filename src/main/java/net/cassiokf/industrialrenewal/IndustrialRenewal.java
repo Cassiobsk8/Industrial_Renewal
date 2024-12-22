@@ -85,6 +85,7 @@ public class IndustrialRenewal {
             event.registerBlockEntityRenderer(ModBlockEntity.STEAM_TURBINE_TILE.get(), BERSteamTurbine::new);
             event.registerBlockEntityRenderer(ModBlockEntity.MINER_TILE.get(), BERMining::new);
             event.registerBlockEntityRenderer(ModBlockEntity.TURBINE_PILLAR_TILE.get(), BERWindTurbinePillar::new);
+            event.registerBlockEntityRenderer(ModBlockEntity.WIND_TURBINE_TILE.get(), BERWindTurbineHead::new);
         }
     }
 }

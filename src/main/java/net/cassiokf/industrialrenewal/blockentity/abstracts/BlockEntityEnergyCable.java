@@ -52,8 +52,7 @@ public abstract class BlockEntityEnergyCable extends BlockEntityMultiBlocksTube<
     
     
     @Override
-    public void tick() {
-        super.tick();
+    public void doTick() {
         if (level != null && !level.isClientSide && isMaster()) {
             if (tick >= 10)
             {

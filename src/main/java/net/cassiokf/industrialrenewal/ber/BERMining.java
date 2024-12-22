@@ -1,7 +1,7 @@
 package net.cassiokf.industrialrenewal.ber;
 
-import net.cassiokf.industrialrenewal.blockentity.BlockEntityMiner;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.cassiokf.industrialrenewal.blockentity.BlockEntityMiner;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
@@ -25,7 +25,7 @@ public class BERMining extends BERBase<BlockEntityMiner>{
             Direction facing = blockEntity.getMasterFacing();
             if (blockEntity.hasDrill())
             {
-                render3dItem(stack, lighting(blockEntity), combinedOverlay, buffer, facing, blockEntity.getLevel(), x + 0.5, y - 3.1f - blockEntity.getSlide(), z + 0.5, blockEntity.getDrill(), 24.0f, false, blockEntity.getRotation(), 0, 1, 0);
+                render3dItem(stack, lighting(blockEntity), combinedOverlay, buffer, facing, blockEntity.getLevel(), x + 0.5, y - 0.8f - blockEntity.getSlide(), z + 0.5, blockEntity.getDrill(), 5.0f, false, blockEntity.getRotation(), 0, 1, 0);
             }
 
             //Screen

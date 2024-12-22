@@ -19,7 +19,7 @@ public abstract class BlockEntitySyncable extends BlockEntity {
     
     public void sync() {
         if(level == null) return;
-        if (!level.isClientSide)
+        if (!level.isClientSide())
         {
             final BlockState state = getBlockState();
             level.sendBlockUpdated(worldPosition, state, state, Block.UPDATE_ALL);
@@ -41,7 +41,7 @@ public abstract class BlockEntitySyncable extends BlockEntity {
     @NotNull
     public CompoundTag getUpdateTag() {
 //        return super.getUpdateTag();
-        return serializeNBT();
+        return saveWithoutMetadata();
     }
 
     @Override

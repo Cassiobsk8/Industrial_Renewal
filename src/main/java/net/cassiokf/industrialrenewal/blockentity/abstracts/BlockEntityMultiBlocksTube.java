@@ -27,6 +27,7 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
     private boolean isMaster;
     public boolean firstTick;
     public boolean inUse = false;
+    private boolean startBreaking;
 
     public BlockEntityMultiBlocksTube(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state)
     {
@@ -38,12 +39,17 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
         if (!firstTick && this.hasLevel())
         {
             firstTick = true;
+            beforeInitialize();
             initializeMultiblockIfNecessary(true);
             onFirstLoad();
         }
         limitedOutPutMap.clear();
-//        if (this.hasLevel() && !isRemoved()) doTick();
+        if (this.hasLevel() && !isRemoved()) doTick();
     }
+    
+    public void beforeInitialize() {}
+    
+    public void doTick() {}
 
     public void onFirstLoad()
     {
@@ -143,6 +149,18 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
     public TE getMaster()
     {
         initializeMultiblockIfNecessary();
+        if (master != null && !master.isMaster()) sync();
+        if (master == null)
+        {
+            if (!level.isClientSide() && !startBreaking)
+            {
+//                Utils.sendConsoleMessage("MultiBlock Pipe: " + this.getClass().toString() + " has no Master at " + pos);
+//                Utils.sendConsoleMessage(" Break this pipe and try replace it, If this does not work, report the problem:");
+//                Utils.sendConsoleMessage("https://github.com/Cassiobsk8/Industrial_Renewal/issues/new?template=bug_report.md");
+                
+            }
+            return (TE) this;
+        }
         return master;
     }
 
@@ -196,7 +214,7 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
     
     public void removeReceiver(BlockEntity machine)
     {
-        if (isRemoved() || machine == null) return;
+        if (startBreaking || isRemoved() || machine == null) return;
         if (!isMaster())
         {
             getMaster().removeReceiver(machine);
@@ -209,7 +227,12 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
     {
         return receiversContainer;
     }
-
+    
+    public void startBreaking()
+    {
+        startBreaking = true;
+    }
+    
     @Override
     public void setRemoved()
     {
@@ -223,6 +246,7 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
 
     public void breakBlock(){
         if(level == null) return;
+        startBreaking = true;
 //        Utils.debug("BREAK BLOCK");
         super.setRemoved();
         if (master != null) master.getMaster();

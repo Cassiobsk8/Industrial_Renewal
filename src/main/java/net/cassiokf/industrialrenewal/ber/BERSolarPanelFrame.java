@@ -23,8 +23,8 @@ public class BERSolarPanelFrame extends BERBase<BlockEntitySolarPanelFrame>{
         if (blockEntity!=null && blockEntity.hasPanel())
         {
             Direction facing = blockEntity.getBlockFacing();
-            doTheMath(facing, x, z, -0.75, 0);
-            render3dItem(stack, lighting(blockEntity), combinedOverlay, buffer, facing, blockEntity.getLevel(), xPos, y - 2.30f, zPos, blockEntity.getPanel(), 16, false, 22.5f, 1, 0, 0);
+            doTheMath(facing, x, z, 0.38, 0);
+            render3dItem(stack, lighting(blockEntity), combinedOverlay, buffer, facing, blockEntity.getLevel(), xPos, y + 0.50f, zPos, blockEntity.getPanel(), 4, false, 22.5f, 1, 0, 0);
         }
         super.render(blockEntity, partialTick, stack, buffer, combinedOverlay, packedLight);
     }

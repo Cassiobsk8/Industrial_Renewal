@@ -38,9 +38,8 @@ public abstract class BlockEntityFluidPipeBase<T extends BlockEntityFluidPipeBas
     }.setBlockEntity(this);
     private final LazyOptional tankHandler = LazyOptional.of(this::getTank);
     
-    
-    public void tick() {
-        super.tick();
+    @Override
+    public void doTick() {
         if (!level.isClientSide && isMaster()) {
             if (tick >= 10) {
                 tick = 0;

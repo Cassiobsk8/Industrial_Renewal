@@ -68,10 +68,17 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
     }
     
     @Override
-    public void tick() {
+    public void beforeInitialize()
+    {
+        getIsBase();
+        sync();
+    }
+    
+    @Override
+    public void doTick() {
         if (level == null || level.isClientSide()) return;
         if (isMaster()) {
-            if (getTurbinePos() != null && isBase) {
+            if (isBase) {
                 if (tick % 10 == 0) {
                     tick = 0;
                     averageEnergy = outPut / 10;
@@ -80,9 +87,6 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
                         oldPotential = potentialEnergy;
                         oldEnergy = averageEnergy;
                         this.sync();
-                    }
-                    if (!(level.getBlockEntity(turbinePos) instanceof BlockEntityWindTurbineHead)) {
-                        forceNewTurbinePos();
                     }
                 }
                 tick++;
@@ -115,14 +119,9 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
                 BlockEntity te = level.getBlockEntity(currentPos);
                 boolean hasMachine = !(state.getBlock() instanceof BlockWindTurbinePillar) && te != null && te.getCapability(ForgeCapabilities.ENERGY, face.getOpposite()).isPresent();
                 
-                //                if(te == null)
-                //                    return;
-                //                IEnergyStorage energyStorage = te.getCapability(ForgeCapabilities.ENERGY, face.getOpposite()).orElse(null);
-                //                if (hasMachine && energyStorage != null && energyStorage.canReceive())
-                
                 if (hasMachine && te.getCapability(ForgeCapabilities.ENERGY, face.getOpposite()).orElse(null).canReceive())
                     if (!isMasterInvalid()) getMaster().addReceiver(te, face);
-                    else if (!isMasterInvalid()) getMaster().removeReceiver(te);
+                else if (te != null && !isMasterInvalid()) getMaster().removeReceiver(te);
             }
         }
         this.sync();
@@ -151,14 +150,23 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
     }
     
     public float getGenerationforGauge() {
-        float currentAmount = Utils.normalizeClamped(getMaster().averageEnergy, 0, 128);
-        amount = Utils.lerp(amount, currentAmount, 0.1f);
-        return Math.min(amount, 1) * 90f;
+        try {
+            float currentAmount = Utils.normalizeClamped(getMaster().averageEnergy, 0, 128);
+            amount = Utils.lerp(amount, currentAmount, 0.1f);
+            return Math.min(amount, 1) * 90f;
+        }
+        catch (Exception e) {
+            return 0;
+        }
     }
     
     public float getPotentialValue() {
-        float currentAmount = Utils.normalizeClamped(getMaster().potentialEnergy, 0, 128);
-        return currentAmount * 90f;
+        try {
+            float currentAmount = Utils.normalizeClamped(getMaster().potentialEnergy, 0, 128);
+            return currentAmount * 90f;
+        } catch (Exception e) {
+            return 0;
+        }
     }
     
     public int getEnergyGenerated() {
@@ -178,7 +186,8 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
     public boolean getIsBase() {
         if (level == null) return false;
         BlockState state = level.getBlockState(worldPosition.below());
-        return !(state.getBlock() instanceof BlockWindTurbinePillar);
+        isBase = !(state.getBlock() instanceof BlockWindTurbinePillar);
+        return isBase;
     }
     
     @Override

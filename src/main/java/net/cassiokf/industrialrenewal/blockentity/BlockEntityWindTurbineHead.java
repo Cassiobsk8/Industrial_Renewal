@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -24,12 +25,11 @@ import net.minecraftforge.items.IItemHandler;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-//import net.cassiokf.industrialrenewal.util.capability.CustomEnergyStorage;
-
 public class BlockEntityWindTurbineHead extends BlockEntitySyncable {
 
 
     private float rotation;
+    private float oldRotation = -1f;
     private int energyGenerated;
 
     public static final int energyGeneration = 128;
@@ -43,14 +43,7 @@ public class BlockEntityWindTurbineHead extends BlockEntitySyncable {
         super(ModBlockEntity.WIND_TURBINE_TILE.get(), pos, state);
     }
 
-    private final CustomEnergyStorage energyStorage = new CustomEnergyStorage(energyCapacity, energyTransfer, energyTransfer)
-    {
-        @Override
-        public void onEnergyChange()
-        {
-            BlockEntityWindTurbineHead.this.sync();
-        }
-    };
+    private final CustomEnergyStorage energyStorage = new CustomEnergyStorage(energyCapacity, energyTransfer, energyTransfer).setBlockEntity(this).noReceive().noExtraction();
 
     public LazyOptional<IItemHandler> bladeInv = LazyOptional.of(this::createHandler);
     private LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(()->energyStorage);
@@ -89,16 +82,13 @@ public class BlockEntityWindTurbineHead extends BlockEntitySyncable {
 
     public void tick() {
         if(level == null) return;
-        if (!level.isClientSide)
+        if (!level.isClientSide())
         {
             //Generate Energy
-            IEnergyStorage thisEnergy = energyStorageHandler.orElse(null);
-            if(!energyStorageHandler.isPresent())
-                return;
             if (hasBlade())
             {
                 int energyGen = Math.round(energyGeneration * getEfficiency());
-                energyGenerated = thisEnergy.receiveEnergy(energyGen, false);
+                energyGenerated = energyStorage.receiveEnergy(energyGen, false);
                 if (++tickToDamage >= 1200 && energyGen > 0)
                 {
                     tickToDamage = 0;
@@ -115,7 +105,7 @@ public class BlockEntityWindTurbineHead extends BlockEntitySyncable {
                 energyGenerated = 0;
             }
             //OutPut Energy
-            if (thisEnergy.getEnergyStored() > 0)
+            if (energyStorage.getEnergyStored() > 0)
             {
                 BlockEntity te = level.getBlockEntity(worldPosition.below());
                 if (te != null)
@@ -123,15 +113,23 @@ public class BlockEntityWindTurbineHead extends BlockEntitySyncable {
                     IEnergyStorage downE = te.getCapability(ForgeCapabilities.ENERGY, Direction.UP).orElse(null);
                     if (downE != null && downE.canReceive())
                     {
-                        thisEnergy.extractEnergy(downE.receiveEnergy(thisEnergy.extractEnergy(1024, true), false), false);
+                        energyStorage.extractEnergy(downE.receiveEnergy(energyStorage.extractEnergy(1024, true), false), false);
                         this.setChanged();
                     }
                 }
             }
         }
         else{
-            rotation += 2.5f * getEfficiency();
-            if (rotation > 360) rotation = 0;
+            if (hasBlade())
+            {
+                oldRotation = rotation;
+                rotation += 6f * Math.max(0.1f, getEfficiency());
+                if (rotation >= 360f)
+                {
+                    rotation -= 360f;
+                    oldRotation -= 360f;
+                }
+            }
         }
     }
 
@@ -143,7 +141,12 @@ public class BlockEntityWindTurbineHead extends BlockEntitySyncable {
     public float getRotation()
     {
 //        Utils.debug("getrotation===========", -rotation);
-        return -rotation;
+        return rotation;
+    }
+    
+    public float getOldRotation()
+    {
+        return oldRotation;
     }
 
     public boolean hasBlade()
@@ -172,7 +175,7 @@ public class BlockEntityWindTurbineHead extends BlockEntitySyncable {
 
         float heightModifier;
         float posMin = -2040f;
-        if (worldPosition.getY() - 62 <= 0) heightModifier = 0;
+        if (worldPosition.getY() - 62 <= 0) heightModifier = 0.1f;
         else heightModifier = (worldPosition.getY() - posMin) / (255 - posMin);
         heightModifier = Mth.clamp(heightModifier, 0, 1);
 
@@ -191,14 +194,13 @@ public class BlockEntityWindTurbineHead extends BlockEntitySyncable {
 //    }
 
 
-//    @Override
-//    @Nullable
-//    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing)
-//    {
-//        if (capability == ForgeCapabilities.ENERGY && facing == Direction.DOWN)
-//            return energyStorage.cast();
-//        return super.getCapability(capability, facing);
-//    }
+    @Override
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing)
+    {
+        if (capability == ForgeCapabilities.ENERGY && facing == Direction.DOWN)
+            return energyStorageHandler.cast();
+        return super.getCapability(capability, facing);
+    }
 
 
     @Override

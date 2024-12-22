@@ -14,9 +14,4 @@ public class BlockEntityFluidPipe extends BlockEntityFluidPipeBase<BlockEntityFl
     public void tick(){
         super.tick();
     }
-
-//    public TileEntityFluidPipe(TileEntityType<?> tileEntityTypeIn) {
-//        super(tileEntityTypeIn);
-//    }
-
 }
