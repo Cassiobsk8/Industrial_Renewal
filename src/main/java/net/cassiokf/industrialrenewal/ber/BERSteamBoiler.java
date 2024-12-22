@@ -52,7 +52,7 @@ public class BERSteamBoiler extends BERBase<BlockEntitySteamBoiler>{
             if (blockEntity.getIntType() > 0 && blockEntity.getBoiler().canRun())
             {
                 doTheMath(facing, x, z, 1.9, 0);
-                render3dItem(stack, lighting(blockEntity), combinedOverlay, buffer, facing, blockEntity.getLevel(), xPos, y - 0.98, zPos, fire, 2.5f, true);
+                render3dItem(stack, lighting(blockEntity), combinedOverlay, buffer, facing, blockEntity.getLevel(), xPos, y - 0.50, zPos, fire, 0.8f, true);
             }
         }
         super.render(blockEntity, partialTick, stack, buffer, combinedOverlay, packedLight);
