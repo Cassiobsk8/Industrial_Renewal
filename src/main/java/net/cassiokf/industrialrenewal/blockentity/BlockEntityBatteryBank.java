@@ -134,7 +134,7 @@ public class BlockEntityBatteryBank extends BlockEntitySyncable {
 //                compoundTag.put("energy", ((INBTSerializable<CompoundTag>) h).serializeNBT()));
         compoundTag.putInt("energy", energyStorage.getEnergyStored());
         final int[] enabledFacingIndices = outPutFacings.stream()
-                .mapToInt(Direction::get2DDataValue)
+                .mapToInt(Direction::get3DDataValue)
                 .toArray();
 
         compoundTag.putIntArray("OutputFacings", enabledFacingIndices);
