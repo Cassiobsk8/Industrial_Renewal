@@ -27,14 +27,12 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class BlockEntityDamIntake extends BlockEntitySyncable {
     
-    private static final Map<BlockPos, BlockPos> WALLS = new HashMap<>();
+    //private static final Map<BlockPos, BlockPos> WALLS = new HashMap<>();
     
     public BlockEntityDamIntake(BlockPos pos, BlockState state) {
         super(ModBlockEntity.DAM_INTAKE.get(), pos, state);
@@ -223,9 +221,8 @@ public class BlockEntityDamIntake extends BlockEntitySyncable {
                         : (new BlockPos(pos.getX(), pos.getY() + y, pos.getZ() + x));
                 
                 BlockState state = level.getBlockState(cPos);
-                if ((state.getBlock().equals(ModBlocks.CONCRETE.get()) || Utils.isSamePosition(cPos, pos))
-                        && !WALLS.containsKey(cPos)) {
-                    WALLS.put(cPos, pos);
+                if ((state.getBlock().equals(ModBlocks.CONCRETE.get()) || Utils.isSamePosition(cPos, pos))) {
+//                    WALLS.put(cPos, pos);
                     connectedWalls.add(cPos);
                 } else {
                     failBlocks.add(cPos);
@@ -236,9 +233,9 @@ public class BlockEntityDamIntake extends BlockEntitySyncable {
     }
     
     private void cleanWallCached() {
-        for (BlockPos wall : connectedWalls) {
-            WALLS.remove(wall);
-        }
+//        for (BlockPos wall : connectedWalls) {
+//            WALLS.remove(wall);
+//        }
         connectedWalls.clear();
     }
     

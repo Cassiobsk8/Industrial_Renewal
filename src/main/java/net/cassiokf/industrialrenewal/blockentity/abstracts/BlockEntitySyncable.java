@@ -46,6 +46,7 @@ public abstract class BlockEntitySyncable extends BlockEntity {
 
     @Override
     public void handleUpdateTag(CompoundTag tag) {
+        if (tag == null) return;
         super.handleUpdateTag(tag);
         load(tag);
     }

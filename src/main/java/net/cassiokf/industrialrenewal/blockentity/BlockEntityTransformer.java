@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class BlockEntityTransformer extends BlockEntity3x2x3MachineBase<BlockEntityTransformer> {
     
-    private final int MAX_CAPACITY = 1000;
+    private final int MAX_CAPACITY = 10000;
     private final int TRANSFER_SPEED = 10000;
     private int tick = 0;
     private int averageEnergy = 0;
