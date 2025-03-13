@@ -27,7 +27,7 @@ public class BlockBarrel extends BlockSaveContent implements EntityBlock {
     public static final BooleanProperty FRAME = BooleanProperty.create("frame");
     
     public BlockBarrel() {
-        super(metalBasicProperties.strength(1f));
+        super(metalBasicProperties.strength(1f).noLootTable());
         registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(FRAME, false));
     }
     

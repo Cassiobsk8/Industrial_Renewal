@@ -42,7 +42,7 @@ public class BlockBatteryBank extends BlockAbstractHorizontalFacing implements E
     }
 
     public BlockBatteryBank() {
-        super(metalBasicProperties.strength(1f).noOcclusion().sound(SoundType.METAL));
+        super(metalBasicProperties.strength(1f).noOcclusion().sound(SoundType.METAL).noLootTable());
         registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH)
                 .setValue(NORTH_OUTPUT, false)
                 .setValue(SOUTH_OUTPUT, false)

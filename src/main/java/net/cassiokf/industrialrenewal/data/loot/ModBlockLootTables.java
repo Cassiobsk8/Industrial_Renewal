@@ -83,8 +83,8 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.ENERGY_SWITCH.get());
         
         //TODO: CANNOT DROP ITSELF
-        dropSelf(ModBlocks.BATTERY_BANK.get());
-        dropSelf(ModBlocks.BARREL.get());
+        //dropSelf(ModBlocks.BATTERY_BANK.get());
+        //dropSelf(ModBlocks.BARREL.get());
         dropSelf(ModBlocks.ELECTRIC_PUMP.get());
         dropSelf(ModBlocks.STEAM_BOILER.get());
         dropSelf(ModBlocks.STEAM_TURBINE.get());
