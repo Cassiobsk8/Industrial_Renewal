@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -54,17 +55,17 @@ public class BlockConveyor extends BlockAbstractHorizontalFacing implements Enti
     protected static final VoxelShape EAST_AABB = Block.box(8, 8, 0, 16, 16, 16);
 
     public BlockConveyor(EnumConveyorType type) {
-        super(metalBasicProperties);
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK));
         registerDefaultState(defaultBlockState().setValue(TYPE, type));
     }
 
     public BlockConveyor(EnumConveyorTier tier) {
-        super(metalBasicProperties.strength(1f));
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f));
         registerDefaultState(defaultBlockState().setValue(TIER, tier));
     }
 
     public BlockConveyor(EnumConveyorType type, EnumConveyorTier tier) {
-        super(metalBasicProperties);
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK));
         registerDefaultState(defaultBlockState().setValue(TYPE, type).setValue(TIER, tier));
     }
 

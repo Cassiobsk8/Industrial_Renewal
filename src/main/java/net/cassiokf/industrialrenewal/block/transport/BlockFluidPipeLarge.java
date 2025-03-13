@@ -7,10 +7,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 public class BlockFluidPipeLarge extends BlockPipeBase<BlockEntityFluidPipeLarge> implements EntityBlock {
 
     public BlockFluidPipeLarge() {
-        super(metalBasicProperties, 6, 6);
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 6, 6);
     }
 
     @Override

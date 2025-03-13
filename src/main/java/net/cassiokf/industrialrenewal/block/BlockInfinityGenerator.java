@@ -6,17 +6,19 @@ import net.cassiokf.industrialrenewal.blockentity.BlockEntityInfinityGenerator;
 import net.cassiokf.industrialrenewal.init.ModBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockInfinityGenerator extends BlockAbstractNotFullCube implements EntityBlock {
     public BlockInfinityGenerator()
     {
-        super(metalBasicProperties);
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK));
     }
     
     @Nullable

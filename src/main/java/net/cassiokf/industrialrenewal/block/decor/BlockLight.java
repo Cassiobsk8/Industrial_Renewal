@@ -6,6 +6,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -21,7 +23,7 @@ public class BlockLight extends BlockAbstractFacing {
     protected static final VoxelShape DOWN_AABB = Block.box(5, 0, 3, 11, 5, 13);
 
     public BlockLight() {
-        super(metalBasicProperties.strength(0.8f).lightLevel((blockState)->15));
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f).lightLevel((blockState)->15));
     }
     
     @Override

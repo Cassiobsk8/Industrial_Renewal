@@ -14,10 +14,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.LadderBlock;
-import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
@@ -43,7 +41,7 @@ public class BlockCatwalk extends BlockAbstractSixWayConnections {
 
     public BlockCatwalk()
     {
-        super(metalBasicProperties.speedFactor(1.2f).strength(1f), 16, 2);
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).speedFactor(1.2f).strength(1f), 16, 2);
     }
 
 

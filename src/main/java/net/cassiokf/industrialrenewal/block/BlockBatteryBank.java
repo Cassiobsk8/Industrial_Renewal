@@ -12,11 +12,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -42,7 +44,7 @@ public class BlockBatteryBank extends BlockAbstractHorizontalFacing implements E
     }
 
     public BlockBatteryBank() {
-        super(metalBasicProperties.strength(1f).noOcclusion().sound(SoundType.METAL).noLootTable());
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f).noOcclusion().sound(SoundType.METAL).noLootTable());
         registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH)
                 .setValue(NORTH_OUTPUT, false)
                 .setValue(SOUTH_OUTPUT, false)

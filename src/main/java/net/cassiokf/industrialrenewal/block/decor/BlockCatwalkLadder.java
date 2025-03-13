@@ -13,10 +13,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LadderBlock;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -47,7 +45,7 @@ public class BlockCatwalkLadder extends BlockAbstractHorizontalFacingWithActivat
 
     public BlockCatwalkLadder()
     {
-        super(metalBasicProperties.strength(1f));
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f));
         registerDefaultState(defaultBlockState().setValue(DOWN, false).setValue(ACTIVE, true));
     }
 

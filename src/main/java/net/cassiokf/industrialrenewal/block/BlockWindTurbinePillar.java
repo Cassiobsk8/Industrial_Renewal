@@ -12,10 +12,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -31,7 +33,7 @@ public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntit
     }
 
     public BlockWindTurbinePillar() {
-        super(metalBasicProperties.strength(0.8f).noOcclusion());
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f).noOcclusion());
         registerDefaultState(defaultBlockState().setValue(BASE, false));
     }
     

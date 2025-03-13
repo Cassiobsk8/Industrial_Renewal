@@ -6,8 +6,10 @@ import net.cassiokf.industrialrenewal.init.ModBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,7 +20,7 @@ public class BlockTrash extends BlockAbstractHorizontalFacing implements EntityB
     }
 
     public BlockTrash() {
-        super(metalBasicProperties.strength(2f));
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(2f));
         registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
     }
 

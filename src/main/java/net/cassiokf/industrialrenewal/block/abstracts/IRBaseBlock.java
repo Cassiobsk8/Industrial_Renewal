@@ -9,14 +9,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class IRBaseBlock extends Block {
     
-    public static final Properties metalBasicProperties = BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK);
-    public static final Properties stoneBasicProperties = BlockBehaviour.Properties.copy(Blocks.STONE);
-    
-    
     public static final VoxelShape NULL_SHAPE = Block.box(0, 0, 0, 0, 0, 0);
     protected static final VoxelShape FULL_SHAPE = Block.box(0, 0, 0, 16, 16, 16);
     public IRBaseBlock(){
-        super(metalBasicProperties);
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK));
     }
     
     public IRBaseBlock(Properties properties) {

@@ -6,12 +6,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockFluorescent extends BlockAbstractSixWayConnections {
     public BlockFluorescent()
     {
-        super(metalBasicProperties.strength(0.8f).lightLevel((blockState)->15), 8, 6);
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f).lightLevel((blockState)->15), 8, 6);
     }
     
     @Override

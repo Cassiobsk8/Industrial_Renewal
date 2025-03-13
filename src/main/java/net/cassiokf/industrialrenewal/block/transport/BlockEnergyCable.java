@@ -14,11 +14,13 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.Nullable;
@@ -30,8 +32,8 @@ public class BlockEnergyCable extends BlockPipeBase<BlockEntityEnergyCable> impl
     public EnumEnergyCableType type;
 
     public BlockEnergyCable(EnumEnergyCableType type){
-        super(metalBasicProperties.strength(0.8f)
-                .sound(SoundType.METAL).noOcclusion(), 4, 4);
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f)
+                .sound(SoundType.METAL), 4, 4);
         this.type = type;
     }
 

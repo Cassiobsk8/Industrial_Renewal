@@ -17,6 +17,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -55,7 +57,7 @@ public class BlockCatwalkStair extends BlockAbstractHorizontalFacing {
 
     public BlockCatwalkStair()
     {
-        super(metalBasicProperties.strength(1f));
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f));
     }
 
     @Override

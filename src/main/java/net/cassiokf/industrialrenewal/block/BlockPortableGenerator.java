@@ -11,16 +11,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
-
-import static net.cassiokf.industrialrenewal.block.abstracts.IRBaseBlock.metalBasicProperties;
 
 public class BlockPortableGenerator extends BlockSaveContent implements EntityBlock {
 
@@ -30,7 +30,7 @@ public class BlockPortableGenerator extends BlockSaveContent implements EntityBl
     }
 
     public BlockPortableGenerator() {
-        super(metalBasicProperties.strength(2f));
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(2f));
         registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
     }
 

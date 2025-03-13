@@ -7,11 +7,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -30,7 +32,7 @@ public class BlockSolarPanel extends IRBaseBlock implements EntityBlock {
     }
 
     public BlockSolarPanel() {
-        super(metalBasicProperties.sound(SoundType.GLASS).strength(2f).noOcclusion());
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).sound(SoundType.GLASS).strength(2f).noOcclusion());
     }
 
     protected static final AABB BLOCK_AABB = new AABB(0.0, 0.0, 0.0, 1.0, 0.125, 1.0);

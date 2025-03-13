@@ -7,8 +7,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -23,7 +25,7 @@ public class BlockFluidGauge extends BlockAbstractFacing implements EntityBlock
     public static final DirectionProperty GAUGE = DirectionProperty.create("gauge", Direction.Plane.HORIZONTAL);
     
     public BlockFluidGauge() {
-        super(metalBasicProperties.strength(0.8f));
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f));
     }
     
     @Override

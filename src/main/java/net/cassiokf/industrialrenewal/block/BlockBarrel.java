@@ -11,8 +11,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -20,14 +22,12 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 
-import static net.cassiokf.industrialrenewal.block.abstracts.IRBaseBlock.metalBasicProperties;
-
 public class BlockBarrel extends BlockSaveContent implements EntityBlock {
 
     public static final BooleanProperty FRAME = BooleanProperty.create("frame");
     
     public BlockBarrel() {
-        super(metalBasicProperties.strength(1f).noLootTable());
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f).noLootTable());
         registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(FRAME, false));
     }
     

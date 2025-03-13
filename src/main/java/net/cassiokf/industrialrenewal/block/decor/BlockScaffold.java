@@ -12,6 +12,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -24,7 +26,7 @@ public class BlockScaffold extends BlockAbstractSixWayConnections {
     protected static final VoxelShape CBASE_AABB = Block.box(1, 0, 1, 15, 16, 15);
 
     public BlockScaffold() {
-        super(metalBasicProperties.strength(0.8f), 16, 16);
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f), 16, 16);
     }
 
     @Override

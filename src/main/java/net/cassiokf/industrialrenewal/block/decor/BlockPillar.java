@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
@@ -16,7 +17,7 @@ public class BlockPillar extends BlockAbstractSixWayConnections {
 
     public BlockPillar()
     {
-        super(metalBasicProperties.strength(1f), 8, 16);
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f), 8, 16);
     }
 
     @Override

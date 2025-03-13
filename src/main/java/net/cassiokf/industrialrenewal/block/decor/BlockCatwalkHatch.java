@@ -8,6 +8,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -28,7 +30,7 @@ public class BlockCatwalkHatch extends BlockAbstractHorizontalFacingWithActivati
 
     public BlockCatwalkHatch()
     {
-        super(metalBasicProperties.strength(1f));
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f));
     }
 
     @Override

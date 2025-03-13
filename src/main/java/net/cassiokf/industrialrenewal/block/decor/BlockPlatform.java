@@ -15,6 +15,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
@@ -35,7 +37,7 @@ public class BlockPlatform extends BlockAbstractSixWayConnections {
 
     public BlockPlatform()
     {
-        super(metalBasicProperties.noOcclusion().strength(1f), 16, 16);
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().strength(1f), 16, 16);
     }
 
     @Override

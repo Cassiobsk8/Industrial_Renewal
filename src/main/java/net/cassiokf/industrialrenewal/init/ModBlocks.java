@@ -11,14 +11,14 @@ import net.cassiokf.industrialrenewal.util.enums.EnumEnergyCableType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
-
-import static net.cassiokf.industrialrenewal.block.abstracts.IRBaseBlock.metalBasicProperties;
 
 public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS =
@@ -117,7 +117,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> SOLAR_PANEL = registerBlock("solar_panel", BlockSolarPanel::new);
     
     public static final RegistryObject<BlockSolarPanelFrame> SPANEL_FRAME = registerBlock("solar_panel_frame",
-            () -> new BlockSolarPanelFrame(metalBasicProperties.strength(1f).noOcclusion()));
+            () -> new BlockSolarPanelFrame(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f).noOcclusion()));
     
     public static final RegistryObject<Block> BATTERY_BANK = registerBlock("battery_bank", BlockBatteryBank::new);
     
@@ -141,29 +141,29 @@ public class ModBlocks {
     public static final RegistryObject<BlockBarrel> BARREL = registerBlock("barrel", BlockBarrel::new);
     
     public static final RegistryObject<BlockEnergySwitch> ENERGY_SWITCH = registerBlock("energy_switch",
-            ()-> new BlockEnergySwitch(metalBasicProperties.strength(0.8f)
+            ()-> new BlockEnergySwitch(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f)
                     .noOcclusion()));
     public static final RegistryObject<BlockFluidValve> FLUID_VALVE = registerBlock("valve_pipe_large",
-            ()-> new BlockFluidValve(metalBasicProperties.strength(0.8f)
+            ()-> new BlockFluidValve(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f)
                     .noOcclusion()));
     
     public static final RegistryObject<BlockElectricPump> ELECTRIC_PUMP = registerBlock("electric_pump",
-            ()-> new BlockElectricPump(metalBasicProperties.strength(1f)));
+            ()-> new BlockElectricPump(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f)));
     
     public static final RegistryObject<BlockTrash> TRASH = registerBlock("trash",
-            () -> new BlockTrash(metalBasicProperties.strength(1f)
+            () -> new BlockTrash(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f)
                     .noOcclusion()));
     
     public static final RegistryObject<BlockWindTurbinePillar> TURBINE_PILLAR = registerBlock("small_wind_turbine_pillar",
-            () -> new BlockWindTurbinePillar(metalBasicProperties.strength(0.8f)
+            () -> new BlockWindTurbinePillar(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f)
                     .noOcclusion()));
     
     public static final RegistryObject<BlockWindTurbineHead> WIND_TURBINE = registerBlock("small_wind_turbine",
-            () -> new BlockWindTurbineHead(metalBasicProperties.strength(0.8f)
+            () -> new BlockWindTurbineHead(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f)
                     .noOcclusion()));
     
     public static final RegistryObject<BlockPortableGenerator> PORTABLE_GENERATOR = registerBlock("portable_generator",
-            () -> new BlockPortableGenerator(metalBasicProperties.strength(1f)
+            () -> new BlockPortableGenerator(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f)
                     .noOcclusion()));
     
     
@@ -178,35 +178,35 @@ public class ModBlocks {
     
     
     public static final RegistryObject<BlockSteamBoiler> STEAM_BOILER = registerBlock("steam_boiler",
-            ()-> new BlockSteamBoiler(metalBasicProperties.strength(1f)
+            ()-> new BlockSteamBoiler(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f)
                     .noOcclusion()));
     
     public static final RegistryObject<BlockSteamTurbine> STEAM_TURBINE = registerBlock("steam_turbine",
-            ()-> new BlockSteamTurbine(metalBasicProperties.strength(1f)
+            ()-> new BlockSteamTurbine(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f)
                     .noOcclusion()));
     
     
     public static final RegistryObject<BlockMiner> MINER = registerBlock("mining",
-            ()-> new BlockMiner(metalBasicProperties.strength(1f)
+            ()-> new BlockMiner(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f)
                     .noOcclusion()));
     
     public static final RegistryObject<BlockIndustrialBatteryBank> INDUSTRIAL_BATTERY_BANK = registerBlock("ind_battery_bank",
-            ()-> new BlockIndustrialBatteryBank(metalBasicProperties.strength(1f)
+            ()-> new BlockIndustrialBatteryBank(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f)
                     .noOcclusion()));
     
     
     public static final RegistryObject<BlockFluidTank> FLUID_TANK = registerBlock("fluid_tank",
-            ()-> new BlockFluidTank(metalBasicProperties.strength(1f)
+            ()-> new BlockFluidTank(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f)
                     .noOcclusion()));
     
     
     public static final RegistryObject<BlockStorageChest> STORAGE_CHEST = registerBlock("storage_chest",
-            ()-> new BlockStorageChest(metalBasicProperties.strength(0.8f)
+            ()-> new BlockStorageChest(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f)
                     .noOcclusion()));
     
     
     public static final RegistryObject<BlockLathe> LATHE = registerBlock("lathe",
-            ()-> new BlockLathe(metalBasicProperties.strength(1f)
+            ()-> new BlockLathe(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f)
                     .noOcclusion()));
     
     public static final RegistryObject<BlockDamIntake> DAM_INTAKE = registerBlock("dam_intake",
@@ -216,21 +216,21 @@ public class ModBlocks {
             BlockDamOutlet::new);
     
     public static final RegistryObject<BlockDamTurbine> DAM_TURBINE = registerBlock("dam_turbine",
-            ()-> new BlockDamTurbine(metalBasicProperties.strength(1f).noOcclusion()));
+            ()-> new BlockDamTurbine(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f).noOcclusion()));
     
     public static final RegistryObject<BlockRotationalShaft> ROTATIONAL_SHAFT = registerBlock("dam_axis",
             BlockRotationalShaft::new);
     
     public static final RegistryObject<BlockDamGenerator> DAM_GENERATOR = registerBlock("dam_generator",
-            ()-> new BlockDamGenerator(metalBasicProperties.strength(1f).noOcclusion()));
+            ()-> new BlockDamGenerator(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f).noOcclusion()));
     
     
     
     public static final RegistryObject<BlockTransformer> TRANSFORMER = registerBlock("transformer_hv",
-            ()-> new BlockTransformer(metalBasicProperties.strength(1f).noOcclusion()));
+            ()-> new BlockTransformer(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f).noOcclusion()));
     
     public static final RegistryObject<BlockHVIsolator> HV_ISOLATOR = registerBlock("isolator_hv",
-            ()-> new BlockHVIsolator(metalBasicProperties.strength(0.8f).noOcclusion()));
+            ()-> new BlockHVIsolator(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f).noOcclusion()));
     
     public static final RegistryObject<BlockInfinityGenerator> INFINITY_GENERATOR =
             registerBlock("infinity_generator", BlockInfinityGenerator::new);

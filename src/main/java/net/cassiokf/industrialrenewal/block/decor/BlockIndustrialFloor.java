@@ -13,7 +13,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -35,7 +37,7 @@ public class BlockIndustrialFloor extends BlockAbstractSixWayConnections {
 
     public static final BooleanProperty LIGHT = BooleanProperty.create("light");
     public BlockIndustrialFloor() {
-        super(metalBasicProperties.strength(1f), 16, 16);
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f), 16, 16);
     }
 
     @Override
