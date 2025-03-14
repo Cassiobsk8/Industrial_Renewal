@@ -196,13 +196,13 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(consumer);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ENERGYCABLE_LV.get(), 6)
-                .define('#', Tags.Items.INGOTS_IRON)
+                .define('#', Tags.Items.INGOTS_COPPER)
                 .define('A', Tags.Items.DUSTS_REDSTONE)
                 .define('X', Items.GLASS_PANE)
-                .pattern("#X#")
-                .pattern("AAA")
-                .pattern("#X#")
-                .unlockedBy("has_item", has(Items.IRON_INGOT))
+                .pattern("AXA")
+                .pattern("###")
+                .pattern("AXA")
+                .unlockedBy("has_item", has(Items.COPPER_INGOT))
                 .save(consumer);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ENERGYCABLE_MV.get(), 6)
