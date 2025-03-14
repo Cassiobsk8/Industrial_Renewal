@@ -28,6 +28,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     TagKey<Item> IRON_ROD = ItemTags.create(new ResourceLocation("forge:rods/iron"));
     TagKey<Item> COPPER_ROD = ItemTags.create(new ResourceLocation("forge:rods/copper"));
     TagKey<Item> GOLD_ROD = ItemTags.create(new ResourceLocation("forge:rods/gold"));
+    public static final List<ItemLike> SPONGE_IRON_LIST = List.of(ModItems.SPONGE_IRON.get());
 
     public ModRecipeProvider(PackOutput packOutput) {
         super(packOutput);
@@ -426,6 +427,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern(" B ")
                 .pattern("ABA")
                 .pattern("C C")
+                .unlockedBy("has_item", has(Items.IRON_INGOT))
+                .save(consumer);
+        
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SPONGE_IRON.get(), 2)
+                .define('A', Items.IRON_INGOT)
+                .define('B', Items.COAL)
+                .pattern("AB ")
+                .pattern("BA ")
                 .unlockedBy("has_item", has(Items.IRON_INGOT))
                 .save(consumer);
 
@@ -955,8 +964,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern(" A ")
                 .unlockedBy("has_item", has(ModBlocks.ENERGYCABLE_HV.get()))
                 .save(consumer);
+        
+        oreBlasting(consumer, SPONGE_IRON_LIST, RecipeCategory.MISC, ModItems.INGOT_STEEL.get(), 0.25f, 100, "spongeiron");
+        oreSmelting(consumer, SPONGE_IRON_LIST, RecipeCategory.MISC, ModItems.INGOT_STEEL.get(), 0.25f, 200, "spongeiron");
     }
-    
     
     protected static void oreSmelting(Consumer<FinishedRecipe> pFinishedRecipeConsumer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTIme, String pGroup) {
         oreCooking(pFinishedRecipeConsumer, RecipeSerializer.SMELTING_RECIPE, pIngredients, pCategory, pResult, pExperience, pCookingTIme, pGroup, "_from_smelting");

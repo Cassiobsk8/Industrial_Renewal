@@ -26,6 +26,7 @@ public class ModItems {
     public static final RegistryObject<Item> STICK_GOLD = registerItem("stick_gold", IRBaseItem::new);
     
     public static final RegistryObject<Item> SMALL_MOTOR = registerItem("motor", IRBaseItem::new);
+    public static final RegistryObject<Item> SPONGE_IRON = registerItem("sponge_iron", IRBaseItem::new);
     
     public static final RegistryObject<Item> WIND_BLADE = registerItem("small_wind_blade", ()->
             new ItemWindBlade(new Item.Properties().durability(48 * 60)));
