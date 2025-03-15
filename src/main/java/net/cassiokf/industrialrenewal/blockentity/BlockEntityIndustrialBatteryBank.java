@@ -31,7 +31,7 @@ public class BlockEntityIndustrialBatteryBank extends BlockEntityTowerBase<Block
     private static final int maxBatteries = 24;
     
     private final CustomEnergyStorage customDummyStorage = new CustomEnergyStorage(0, 0, 0);
-    private CustomEnergyStorage customEnergyStorage = new CustomEnergyStorage(0, maxTransfer, maxTransfer) {
+    private final CustomEnergyStorage customEnergyStorage = new CustomEnergyStorage(0, maxTransfer, maxTransfer) {
         @Override
         public void onEnergyChange() {
             sync();
@@ -71,7 +71,6 @@ public class BlockEntityIndustrialBatteryBank extends BlockEntityTowerBase<Block
     public boolean instanceOf(BlockEntity tileEntity) {
         return tileEntity instanceof BlockEntityIndustrialBatteryBank;
     }
-    
     
     public int onEnergyIn(int received, boolean simulate) {
         if (level == null) return 0;
@@ -188,25 +187,9 @@ public class BlockEntityIndustrialBatteryBank extends BlockEntityTowerBase<Block
         }
     }
     
-    public int getInput() {
-        if (getTop() == null) return 0;
-        return getTop().input;
-    }
-    
     public int getSumMaxEnergy() {
-        //int max = 0;
         if (tower == null || tower.isEmpty()) return 0;
-        
-        int max = tower.stream().map(te -> (te.customEnergyStorage.getMaxEnergyStored())).reduce(0, Integer::sum);
-        return max;
-    }
-    
-    public int getSumCurrentEnergy() {
-        //int current = 0;
-        if (tower == null || tower.isEmpty()) return 0;
-        
-        int current = tower.stream().map(te -> (te.customEnergyStorage.getEnergyStored())).reduce(0, Integer::sum);
-        return current;
+        return tower.stream().mapToInt(BlockEntityIndustrialBatteryBank::getRealCapacity).sum();
     }
     
     public int getRealCapacity() {
@@ -218,12 +201,10 @@ public class BlockEntityIndustrialBatteryBank extends BlockEntityTowerBase<Block
     }
     
     public String getEnergyText() {
-        //return Utils.formatEnergyString(customEnergyStorage.getEnergyStored()).replace(" FE", "") + " / " + Utils.formatEnergyString(customEnergyStorage.getMaxEnergyStored());
         return Utils.formatEnergyString(customEnergyStorage.getEnergyStored()).replace(" FE", "") + " / " + Utils.formatEnergyString(customEnergyStorage.getMaxEnergyStored());
     }
     
     public float getBatteryFill() {
-        //return Utils.normalizeClamped(customEnergyStorage.getEnergyStored(), 0, customEnergyStorage.getMaxEnergyStored());
         return Utils.normalizeClamped(customEnergyStorage.getEnergyStored(), 0, customEnergyStorage.getMaxEnergyStored());
     }
     
@@ -250,11 +231,6 @@ public class BlockEntityIndustrialBatteryBank extends BlockEntityTowerBase<Block
     public String getOutPutIndicatorText() {
         return "Output";
     }
-    
-    public Boolean isFull() {
-        return customEnergyStorage.getEnergyStored() >= customEnergyStorage.getMaxEnergyStored();
-    }
-    
     
     @Nonnull
     @Override
