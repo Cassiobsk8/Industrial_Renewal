@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityEnergyCableHV extends BlockEntityEnergyCable {
 
-    public static final int MAX_ENERGY = 10240;
+    public static int MAX_ENERGY = 10240;
     
     public BlockEntityEnergyCableHV(BlockPos pos, BlockState state){
         super(ModBlockEntity.ENERGYCABLE_HV_TILE.get(), pos, state);
