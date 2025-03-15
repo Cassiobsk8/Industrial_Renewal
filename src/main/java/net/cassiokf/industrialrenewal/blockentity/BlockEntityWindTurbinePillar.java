@@ -60,7 +60,7 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
         if (inUse) return 0; // to prevent stackOverflow (IE)
         inUse = true;
         if (!simulate) potentialEnergy = maxReceive;
-        CapResult result = PipeUtils.moveEnergy(this, maxReceive, energyStorage.getMaxEnergyStored(), simulate, level);
+        CapResult result = PipeUtils.moveEnergy(this, maxReceive, energyStorage.getMaxEnergyStored(), simulate);
         if (!simulate) outPut += result.getOutPut();
         outPutCount = result.getValidReceivers();
         inUse = false;

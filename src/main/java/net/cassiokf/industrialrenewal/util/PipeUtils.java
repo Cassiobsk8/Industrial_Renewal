@@ -14,12 +14,11 @@ import java.util.Map;
 
 public class PipeUtils {
     
-    public static CapResult moveEnergy(BlockEntityMultiBlocksTube machine, int maxReceive, int maxEnergyCanTransport, boolean simulate, Level level) {
+    public static CapResult moveEnergy(BlockEntityMultiBlocksTube machine, int maxReceive, int maxEnergyCanTransport, boolean simulate) {
         CapResult result = new CapResult(0, 0);
         
-        int quantity = machine.getReceiversContainers().size();
-        if (quantity > 0 && maxReceive > 0) {
-            result = moveEnergy(machine, maxReceive, maxEnergyCanTransport, simulate);
+        if (maxReceive > 0 && !machine.getReceiversContainers().isEmpty()) {
+            result = doMoveEnergy(machine, maxReceive, maxEnergyCanTransport, simulate);
         }
         
         return result;
@@ -35,63 +34,74 @@ public class PipeUtils {
     }
     
     
-    private static CapResult moveEnergy(BlockEntityMultiBlocksTube machine, int amount, int maxEnergyCanTransport, boolean simulate) {
-        CapResult result = new CapResult(0, 0);
+    private static CapResult doMoveEnergy(BlockEntityMultiBlocksTube machine, int amount, int maxEnergyCanTransport, boolean simulate) {
+        if (machine == null) return new CapResult(0, 0);
         
-        final Map<BlockEntity, Direction> mapPosSet = machine.getReceiversContainers();
-        if (mapPosSet == null || mapPosSet.isEmpty()) return result;
-        int validOutputs = 0;
-        int realMaxOutput;
-        int out = 0;
-        int leftOutput = mapPosSet.size();
+        Map<BlockEntity, Direction> mapPosSet = machine.getReceiversContainers();
+        if (mapPosSet == null || mapPosSet.isEmpty()) return new CapResult(0, 0);
+    
         int leftEnergy = amount;
-        for (BlockEntity te : mapPosSet.keySet()) {
+        int out = 0;
+        int validOutputs = 0;
+    
+        for (Map.Entry<BlockEntity, Direction> entry : mapPosSet.entrySet()) {
+            BlockEntity te = entry.getKey();
             if (te != null && !te.isRemoved()) {
-                Direction face = mapPosSet.get(te).getOpposite();
+                Direction face = entry.getValue().getOpposite();
                 IEnergyStorage energyStorage = te.getCapability(ForgeCapabilities.ENERGY, face).orElse(null);
                 if (energyStorage != null && energyStorage.canReceive()) {
-                    realMaxOutput = machine.getLimitedValueForOutPut(leftEnergy / leftOutput, maxEnergyCanTransport, te, simulate);
+                    int realMaxOutput = machine.getLimitedValueForOutPut(leftEnergy / mapPosSet.size(), maxEnergyCanTransport, te, simulate);
                     if (realMaxOutput > 0) {
                         int energy = energyStorage.receiveEnergy(realMaxOutput, simulate);
-                        if (!simulate) leftEnergy -= out;
+                        if (!simulate) leftEnergy -= energy;
                         out += energy;
                         validOutputs++;
                     }
                 }
             }
-            leftOutput--;
         }
-        result.setOutPut(out);
-        result.setValidReceivers(validOutputs);
-        return result;
+    
+        return new CapResult(out, validOutputs);
     }
     
     private static CapResult moveFluid(BlockEntityMultiBlocksTube machine, FluidStack resource, int maxFluidCanTransport, IFluidHandler.FluidAction action) {
+        if (machine == null || resource == null || resource.getAmount() <= 0) {
+            return new CapResult(0, 0);
+        }
+    
         CapResult result = new CapResult(0, 0);
-        
         final Map<BlockEntity, Direction> mapPosSet = machine.getReceiversContainers();
-        if (mapPosSet == null || mapPosSet.isEmpty()) return result;
+        if (mapPosSet == null || mapPosSet.isEmpty()) {
+            return result;
+        }
+    
         int validOutputs = 0;
         int leftOutput = mapPosSet.size();
         int leftFluid = resource.getAmount();
         int out = 0;
-        for (BlockEntity te : mapPosSet.keySet()) {
+    
+        for (Map.Entry<BlockEntity, Direction> entry : mapPosSet.entrySet()) {
+            BlockEntity te = entry.getKey();
             if (te != null && !te.isRemoved()) {
-                Direction face = mapPosSet.get(te).getOpposite();
+                Direction face = entry.getValue().getOpposite();
                 IFluidHandler tankStorage = te.getCapability(ForgeCapabilities.FLUID_HANDLER, face).orElse(null);
                 if (tankStorage != null) {
-                    FluidStack realMaxOutput = new FluidStack(resource.getFluid(), Math.min(resource.getAmount(), maxFluidCanTransport));
+                    int realMaxOutputAmount = Math.min(resource.getAmount(), maxFluidCanTransport);
+                    FluidStack realMaxOutput = new FluidStack(resource.getFluid(), realMaxOutputAmount);
                     realMaxOutput.setAmount(machine.getLimitedValueForOutPut(leftFluid / leftOutput, maxFluidCanTransport, te, action.equals(IFluidHandler.FluidAction.SIMULATE)));
                     if (realMaxOutput.getAmount() > 0) {
                         int fluid = tankStorage.fill(realMaxOutput, action);
                         out += fluid;
-                        if (action.equals(IFluidHandler.FluidAction.EXECUTE)) leftFluid -= out;
+                        if (action.equals(IFluidHandler.FluidAction.EXECUTE)) {
+                            leftFluid -= fluid;
+                        }
                         validOutputs++;
                     }
                 }
             }
             leftOutput--;
         }
+    
         result.setOutPut(out);
         result.setValidReceivers(validOutputs);
         return result;

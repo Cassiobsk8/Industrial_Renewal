@@ -43,7 +43,7 @@ public abstract class BlockConnectedMultiblocks<TE extends BlockEntityMultiBlock
         BlockEntity te = pLevel.getBlockEntity(pPos);
         if (te instanceof BlockEntityMultiBlocksTube)
         {
-            ((BlockEntityMultiBlocksTube) te).startBreaking();
+            ((BlockEntityMultiBlocksTube) te).breakBlock();
             for (Direction face : Direction.values())
             {
                 BlockEntity tile = pLevel.getBlockEntity(pPos.relative(face));

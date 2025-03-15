@@ -4,6 +4,7 @@ import net.cassiokf.industrialrenewal.block.BlockSolarPanel;
 import net.cassiokf.industrialrenewal.block.BlockSolarPanelFrame;
 import net.cassiokf.industrialrenewal.blockentity.abstracts.BlockEntityMultiBlocksTube;
 import net.cassiokf.industrialrenewal.init.ModBlockEntity;
+import net.cassiokf.industrialrenewal.util.Utils;
 import net.cassiokf.industrialrenewal.util.capability.CustomEnergyStorage;
 import net.cassiokf.industrialrenewal.util.capability.CustomItemStackHandler;
 import net.minecraft.core.BlockPos;
@@ -42,7 +43,7 @@ public class BlockEntitySolarPanelFrame extends BlockEntityMultiBlocksTube<Block
         super(ModBlockEntity.SOLAR_PANEL_FRAME.get(), pos, state);
     }
     
-    private IItemHandler createHandler() {
+    private CustomItemStackHandler createHandler() {
         return new CustomItemStackHandler(1) {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
@@ -64,8 +65,8 @@ public class BlockEntitySolarPanelFrame extends BlockEntityMultiBlocksTube<Block
         }
     };
     
-    public LazyOptional<IItemHandler> panelInv = LazyOptional.of(this::createHandler);
-    private LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyStorage);
+    public final LazyOptional<CustomItemStackHandler> panelInv = LazyOptional.of(this::createHandler);
+    private final LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyStorage);
     
     @Override
     public boolean instanceOf(BlockEntity te) {
@@ -73,9 +74,8 @@ public class BlockEntitySolarPanelFrame extends BlockEntityMultiBlocksTube<Block
     }
     
     @Override
-    public void tick() {
-        if (DECORATIVE) return;
-        super.tick();
+    public void doTick() {
+        if (DECORATIVE) return;;
         if (level == null) return;
         if (!level.isClientSide) {
             if (isMaster()) {
@@ -117,11 +117,8 @@ public class BlockEntitySolarPanelFrame extends BlockEntityMultiBlocksTube<Block
         //        if (level.canSeeSky(worldPosition.relative(Direction.UP))
         //                && level.getBrightness(LightType.SKY, worldPosition) > 0 && (thisEnergy.getEnergyStored() < thisEnergy.getMaxEnergyStored()))
         if ((thisEnergy.getEnergyStored() < thisEnergy.getMaxEnergyStored())) {
-            int result = thisEnergy.getEnergyStored() + Math.round((BlockEntitySolarPanel.getGeneration(level, worldPosition) * panelReady.size()) * getMultiplier());
-            if (result > thisEnergy.getMaxEnergyStored()) {
-                result = thisEnergy.getMaxEnergyStored();
-            }
-            //Utils.debug("reusult", result);
+            int result = Math.round((BlockEntitySolarPanel.getGeneration(level, worldPosition) * panelReady.size()) * getMultiplier());
+            //Utils.debug("result", result);
             final int energy = result;
             energyStorageHandler.ifPresent(e -> ((CustomEnergyStorage) e).addEnergy(energy));
         }
@@ -130,6 +127,7 @@ public class BlockEntitySolarPanelFrame extends BlockEntityMultiBlocksTube<Block
     @Override
     public void checkForOutPuts(BlockPos pos) {
         if (level == null) return;
+        getPanelReadySet().clear();
         if (level.isClientSide) return;
         for (Direction face : Direction.values()) {
             Direction facing = getBlockFacing();
@@ -149,7 +147,7 @@ public class BlockEntitySolarPanelFrame extends BlockEntityMultiBlocksTube<Block
             } else {
                 if (!isMasterInvalid()) {
                     getMaster().removeReceiver(te);
-                    getMaster().getPanelReadySet().remove(this);
+                    //getMaster().getPanelReadySet().remove(this);
                 }
             }
         }
@@ -193,8 +191,8 @@ public class BlockEntitySolarPanelFrame extends BlockEntityMultiBlocksTube<Block
     
     @Override
     public void setRemoved() {
-        //        getMaster().getPanelReadySet().remove(worldPosition);
-        //        Utils.dropInventoryItems(level, worldPosition, panelInv.orElse(null));
+        //getMaster().getPanelReadySet().remove(worldPosition);
+        Utils.dropInventoryItems(level, worldPosition, panelInv.orElse(null));
         super.setRemoved();
     }
     
