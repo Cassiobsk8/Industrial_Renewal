@@ -2,6 +2,9 @@ package net.cassiokf.industrialrenewal.block.transport;
 
 import net.cassiokf.industrialrenewal.block.abstracts.BlockPipeBase;
 import net.cassiokf.industrialrenewal.blockentity.abstracts.BlockEntityEnergyCable;
+import net.cassiokf.industrialrenewal.blockentity.transport.BlockEntityEnergyCableHV;
+import net.cassiokf.industrialrenewal.blockentity.transport.BlockEntityEnergyCableLV;
+import net.cassiokf.industrialrenewal.blockentity.transport.BlockEntityEnergyCableMV;
 import net.cassiokf.industrialrenewal.init.ModBlockEntity;
 import net.cassiokf.industrialrenewal.util.enums.EnumCableIn;
 import net.cassiokf.industrialrenewal.util.enums.EnumEnergyCableType;
@@ -32,7 +35,7 @@ public class BlockEnergyCable extends BlockPipeBase<BlockEntityEnergyCable> impl
     public EnumEnergyCableType type;
 
     public BlockEnergyCable(EnumEnergyCableType type){
-        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f)
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1.0f)
                 .sound(SoundType.METAL), 4, 4);
         this.type = type;
     }
@@ -58,13 +61,13 @@ public class BlockEnergyCable extends BlockPipeBase<BlockEntityEnergyCable> impl
         {
             default:
             case LV:
-                amount = 256;
+                amount = BlockEntityEnergyCableLV.MAX_ENERGY;
                 break;
             case MV:
-                amount = 1024;
+                amount = BlockEntityEnergyCableMV.MAX_ENERGY;
                 break;
             case HV:
-                amount = 4096;
+                amount = BlockEntityEnergyCableHV.MAX_ENERGY;
                 break;
         }
         tooltip.add(Component.literal(amount + " FE/t"));
