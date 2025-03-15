@@ -16,7 +16,7 @@ public class IRBaseBlock extends Block {
     }
     
     public IRBaseBlock(Properties properties) {
-        super(properties);
+        super(properties.forceSolidOn());
     }
 
     protected BlockState getInitDefaultState()

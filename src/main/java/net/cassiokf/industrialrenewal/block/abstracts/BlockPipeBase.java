@@ -49,7 +49,7 @@ public abstract class BlockPipeBase<TE extends BlockEntityMultiBlocksTube> exten
 
     public BlockPipeBase(Block.Properties property, float nodeWidth, float nodeHeight)
     {
-        super(property.strength(0.8f));
+        super(property);
         this.nodeWidth = nodeWidth;
         this.nodeHeight = nodeHeight;
         registerDefaultState(this.defaultBlockState()
@@ -205,27 +205,25 @@ public abstract class BlockPipeBase<TE extends BlockEntityMultiBlocksTube> exten
     }
 
     public BooleanProperty directionToBooleanProp(Direction d){
-        switch (d){
-            case UP: return UP;
-            case DOWN: return DOWN;
-            default:
-            case NORTH: return NORTH;
-            case EAST: return EAST;
-            case WEST: return WEST;
-            case SOUTH: return SOUTH;
-        }
+        return switch (d) {
+            case UP -> UP;
+            case DOWN -> DOWN;
+            default -> NORTH;
+            case EAST -> EAST;
+            case WEST -> WEST;
+            case SOUTH -> SOUTH;
+        };
     }
     
     public BooleanProperty directionToBooleanPropCap(Direction d){
-        switch (d){
-            case UP: return CUP;
-            case DOWN: return CDOWN;
-            default:
-            case NORTH: return CNORTH;
-            case EAST: return CEAST;
-            case WEST: return CWEST;
-            case SOUTH: return CSOUTH;
-        }
+        return switch (d) {
+            case UP -> CUP;
+            case DOWN -> CDOWN;
+            default -> CNORTH;
+            case EAST -> CEAST;
+            case WEST -> CWEST;
+            case SOUTH -> CSOUTH;
+        };
     }
 
     public abstract boolean canConnectToPipe(BlockGetter world, BlockPos pos, Direction facing);

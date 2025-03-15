@@ -19,7 +19,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -35,41 +34,26 @@ public class BlockEnergyCable extends BlockPipeBase<BlockEntityEnergyCable> impl
     public EnumEnergyCableType type;
 
     public BlockEnergyCable(EnumEnergyCableType type){
-        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1.0f)
-                .sound(SoundType.METAL), 4, 4);
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1.0f), 4, 4);
         this.type = type;
     }
 
     public static EnumCableIn convertFromType(EnumEnergyCableType type)
     {
-        switch (type)
-        {
-            default:
-            case LV:
-                return EnumCableIn.LV;
-            case MV:
-                return EnumCableIn.MV;
-            case HV:
-                return EnumCableIn.HV;
-        }
+        return switch (type) {
+            default -> EnumCableIn.LV;
+            case MV -> EnumCableIn.MV;
+            case HV -> EnumCableIn.HV;
+        };
     }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
-        int amount;
-        switch (type)
-        {
-            default:
-            case LV:
-                amount = BlockEntityEnergyCableLV.MAX_ENERGY;
-                break;
-            case MV:
-                amount = BlockEntityEnergyCableMV.MAX_ENERGY;
-                break;
-            case HV:
-                amount = BlockEntityEnergyCableHV.MAX_ENERGY;
-                break;
-        }
+        int amount = switch (type) {
+            default -> BlockEntityEnergyCableLV.MAX_ENERGY;
+            case MV -> BlockEntityEnergyCableMV.MAX_ENERGY;
+            case HV -> BlockEntityEnergyCableHV.MAX_ENERGY;
+        };
         tooltip.add(Component.literal(amount + " FE/t"));
         super.appendHoverText(stack, world, tooltip, flag);
     }
@@ -77,7 +61,6 @@ public class BlockEnergyCable extends BlockPipeBase<BlockEntityEnergyCable> impl
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         return getState(context.getLevel(), context.getClickedPos(), defaultBlockState());
-
     }
 
     @Override
@@ -109,18 +92,16 @@ public class BlockEnergyCable extends BlockPipeBase<BlockEntityEnergyCable> impl
                 .setValue(CSOUTH, canConnectToCapability(world, pos, Direction.SOUTH))
                 .setValue(CEAST, canConnectToCapability(world, pos, Direction.EAST))
                 .setValue(CWEST, canConnectToCapability(world, pos, Direction.WEST));
-        
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        switch (type){
-            case LV : return ModBlockEntity.ENERGYCABLE_LV_TILE.get().create(pos, state);
-            case MV : return ModBlockEntity.ENERGYCABLE_MV_TILE.get().create(pos, state);
-            case HV : return ModBlockEntity.ENERGYCABLE_HV_TILE.get().create(pos, state);
-        }
-        return null;
+        return switch (type) {
+            case LV -> ModBlockEntity.ENERGYCABLE_LV_TILE.get().create(pos, state);
+            case MV -> ModBlockEntity.ENERGYCABLE_MV_TILE.get().create(pos, state);
+            case HV -> ModBlockEntity.ENERGYCABLE_HV_TILE.get().create(pos, state);
+        };
     }
 
     @Nullable

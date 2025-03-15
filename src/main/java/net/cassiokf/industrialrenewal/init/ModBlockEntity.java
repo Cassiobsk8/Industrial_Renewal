@@ -17,6 +17,7 @@ public class ModBlockEntity {
 
     public static DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, IndustrialRenewal.MODID);
+    
     public static RegistryObject<BlockEntityType<BlockEntityTransformer>> TRANSFORMER_TILE =
             BLOCK_ENTITIES.register("transformer_tile", ()-> BlockEntityType.Builder.of(
                     BlockEntityTransformer::new, ModBlocks.TRANSFORMER.get()).build(null));

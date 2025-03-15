@@ -45,16 +45,6 @@ public class BlockSolarPanel extends IRBaseBlock implements EntityBlock {
             Block.box(15.5, 0, 0.5, 16, 1.2, 15.5)
     ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR));
 
-    @Deprecated
-    public boolean isOpaqueCube(final BlockState state) {
-        return false;
-    }
-
-    @Deprecated
-    public boolean isFullCube(final BlockState state) {
-        return false;
-    }
-
     @Override
     public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
         return SHAPE.orElse(null);
