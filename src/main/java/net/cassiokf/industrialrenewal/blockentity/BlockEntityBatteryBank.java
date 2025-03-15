@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -23,19 +22,14 @@ import java.util.Set;
 
 public class BlockEntityBatteryBank extends BlockEntitySyncable {
 
-    public int CONFIG_CAPACITY = 1000000;
+    public static final int CONFIG_CAPACITY = 1000000;
+    public static final int MAX_TRANSFER = 1000;
 
     private final Set<Direction> outPutFacings = new HashSet<>();
 
-    private final CustomEnergyStorage energyStorage = new CustomEnergyStorage(CONFIG_CAPACITY){
-        @Override
-        public void onEnergyChange() {
-            super.onEnergyChange();
-            sync();
-        }
-    };
+    private final CustomEnergyStorage energyStorage = new CustomEnergyStorage(CONFIG_CAPACITY, MAX_TRANSFER, MAX_TRANSFER).setBlockEntity(this);
 
-    private final CustomEnergyStorage dummyStorage = new CustomEnergyStorage(0);
+    private final CustomEnergyStorage dummyStorage = new CustomEnergyStorage(0).noExtraction().noReceive();
 
     private final LazyOptional<CustomEnergyStorage> energyStorageHandler = LazyOptional.of(()->energyStorage);
 
@@ -48,27 +42,22 @@ public class BlockEntityBatteryBank extends BlockEntitySyncable {
         super(ModBlockEntity.BATTERY_BANK.get(), pos, state);
     }
 
-    public BlockEntityBatteryBank(BlockEntityType<?> p_155228_, BlockPos p_155229_, BlockState p_155230_) {
-        super(p_155228_, p_155229_, p_155230_);
-    }
-
     public void tick(){
-        if(level == null) return;
-        if (this.hasLevel() && !level.isClientSide)
-        {
-            for (Direction face : outPutFacings)
-            {
+        if (level == null || level.isClientSide) return;
+    
+        for (Direction face : outPutFacings) {
                 BlockEntity te = level.getBlockEntity(worldPosition.relative(face));
-                if (te != null)
-                {
-                    IEnergyStorage thisStorage = energyStorageHandler.orElse(null);
-                    IEnergyStorage eStorage = te.getCapability(ForgeCapabilities.ENERGY, face.getOpposite()).orElse(null);
-                    if (thisStorage != null && eStorage != null && eStorage.canReceive())
-                    {
-                        thisStorage.extractEnergy(eStorage.receiveEnergy(thisStorage.extractEnergy(CONFIG_CAPACITY/100, true), false), false);
-                    }
+            if (te == null) continue;
+    
+            energyStorageHandler.ifPresent(thisStorage -> {
+                te.getCapability(ForgeCapabilities.ENERGY, face.getOpposite()).ifPresent(eStorage -> {
+                    if (eStorage.canReceive()) {
+                        int energyExtracted = thisStorage.extractEnergy(MAX_TRANSFER, true);
+                        int energyReceived = eStorage.receiveEnergy(energyExtracted, false);
+                        thisStorage.extractEnergy(energyReceived, false);
                 }
-            }
+                });
+            });
         }
     }
 
