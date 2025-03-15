@@ -190,10 +190,11 @@ public class BlockEntitySolarPanelFrame extends BlockEntityMultiBlocksTube<Block
     }
     
     @Override
-    public void setRemoved() {
+    public void breakBlock() {
         //getMaster().getPanelReadySet().remove(worldPosition);
-        Utils.dropInventoryItems(level, worldPosition, panelInv.orElse(null));
-        super.setRemoved();
+        if (!panelInv.orElse(null).getStackInSlot(0).isEmpty())
+            Utils.dropInventoryItems(level, worldPosition, panelInv.orElse(null));
+        super.breakBlock();
     }
     
     @Override
