@@ -1,6 +1,6 @@
 package net.cassiokf.industrialrenewal.util.capability;
 
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.cassiokf.industrialrenewal.blockentity.abstracts.BlockEntitySyncable;
 import net.minecraftforge.energy.EnergyStorage;
 
 public class CustomEnergyStorage extends EnergyStorage {
@@ -8,7 +8,7 @@ public class CustomEnergyStorage extends EnergyStorage {
     private boolean canExtract = true;
     private boolean canReceive = true;
     
-    private BlockEntity blockEntity;
+    private BlockEntitySyncable blockEntity;
     
     public CustomEnergyStorage(int capacity)
     {
@@ -25,7 +25,7 @@ public class CustomEnergyStorage extends EnergyStorage {
         super(capacity, maxReceive, maxExtract, passEnergy);
     }
     
-    public CustomEnergyStorage setBlockEntity(BlockEntity entity) {
+    public CustomEnergyStorage setBlockEntity(BlockEntitySyncable entity) {
         this.blockEntity = entity;
         return this;
     }
@@ -48,8 +48,9 @@ public class CustomEnergyStorage extends EnergyStorage {
 
     public void onEnergyChange()
     {
-        if(blockEntity!= null)
-            blockEntity.setChanged();
+        if(blockEntity!= null) {
+            blockEntity.sync();
+        }
     }
     
     @Override

@@ -59,18 +59,18 @@ public class BlockEntityMiner extends BlockEntity3x3x3MachineBase<BlockEntityMin
     private final LazyOptional<IItemHandler> drillInv = LazyOptional.of(this::createHandler);
     private final LazyOptional<IItemHandler> internalInv = LazyOptional.of(this::createInternalHandler);
 
-    private int maxHeat = 18000;
+    private static final int maxHeat = 18000;
     private int drillHeat;
     private int oldDrillHeat;
-    private int waterPerTick = 10;
-    private int energyPerTick = 768;
-    private int deepEnergyPerTick = 1024;
+    private static final int waterPerTick = 10;
+    private static final int energyPerTick = 768;
+    private static final int deepEnergyPerTick = 1024;
     private static final int cooldown = 120;
     private static final int damageAmount = 1;
 
-    private CustomEnergyStorage energyStorage = new CustomEnergyStorage(fluidEnergyCapacity, fluidEnergyReceive, energyPerTick)
+    private final CustomEnergyStorage energyStorage = new CustomEnergyStorage(fluidEnergyCapacity, fluidEnergyReceive, energyPerTick).setBlockEntity(this)
         .setBlockEntity(this);
-    private LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(()->energyStorage);
+    private final LazyOptional<CustomEnergyStorage> energyStorageHandler = LazyOptional.of(()->energyStorage);
 
     private int currentTick = 0;
     private boolean depleted = false;
@@ -81,7 +81,7 @@ public class BlockEntityMiner extends BlockEntity3x3x3MachineBase<BlockEntityMin
     //private Set<BlockPos> oresPos;
     private final Stack<OreMining> ores = new Stack<>();
     private final NonNullList<ItemStack> tempStack = NonNullList.create();
-    private ItemStack vein = ItemStack.EMPTY;
+    private final ItemStack vein = ItemStack.EMPTY;
     private int size;
 
     //Client only

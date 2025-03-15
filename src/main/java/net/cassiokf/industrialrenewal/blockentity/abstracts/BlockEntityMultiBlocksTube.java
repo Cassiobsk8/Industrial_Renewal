@@ -248,7 +248,7 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
         if(level == null) return;
         startBreaking = true;
 //        Utils.debug("BREAK BLOCK");
-        super.setRemoved();
+        setRemoved();
         if (master != null) master.getMaster();
         else if (!isMaster) getMaster();
         for (Direction d : Direction.values())
