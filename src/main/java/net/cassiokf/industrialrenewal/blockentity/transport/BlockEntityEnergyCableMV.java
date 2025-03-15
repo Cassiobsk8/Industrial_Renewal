@@ -4,6 +4,7 @@ import net.cassiokf.industrialrenewal.blockentity.abstracts.BlockEntityEnergyCab
 import net.cassiokf.industrialrenewal.init.ModBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityEnergyCableMV extends BlockEntityEnergyCable {
@@ -12,6 +13,10 @@ public class BlockEntityEnergyCableMV extends BlockEntityEnergyCable {
     
     public BlockEntityEnergyCableMV(BlockPos pos, BlockState state){
         super(ModBlockEntity.ENERGYCABLE_MV_TILE.get(), pos, state);
+    }
+    
+    public BlockEntityEnergyCableMV(BlockEntityType<?> tileEntityType, BlockPos pos, BlockState state){
+        super(tileEntityType, pos, state);
     }
 
     @Override

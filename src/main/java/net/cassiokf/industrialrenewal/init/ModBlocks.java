@@ -131,6 +131,15 @@ public class ModBlocks {
     public static final RegistryObject<BlockEnergyCable> ENERGYCABLE_HV = registerBlock("energy_cable_hv",
             () -> new BlockEnergyCable(EnumEnergyCableType.HV));
     
+    public static final RegistryObject<BlockEnergyCableMeter> ENERGYCABLE_LV_METER = registerBlock("energy_cable_gauge_lv",
+            () -> new BlockEnergyCableMeter(EnumEnergyCableType.LV), false);
+    
+    public static final RegistryObject<BlockEnergyCableMeter> ENERGYCABLE_MV_METER = registerBlock("energy_cable_gauge_mv",
+            () -> new BlockEnergyCableMeter(EnumEnergyCableType.MV), false);
+
+    public static final RegistryObject<BlockEnergyCableMeter> ENERGYCABLE_HV_METER = registerBlock("energy_cable_gauge_hv",
+            () -> new BlockEnergyCableMeter(EnumEnergyCableType.HV), false);
+    
     
     public static final RegistryObject<BlockFluidPipe> FLUID_PIPE = registerBlock("fluid_pipe", BlockFluidPipe::new);
     

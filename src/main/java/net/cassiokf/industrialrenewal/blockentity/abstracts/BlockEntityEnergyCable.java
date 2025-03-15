@@ -2,6 +2,7 @@ package net.cassiokf.industrialrenewal.blockentity.abstracts;
 
 import net.cassiokf.industrialrenewal.obj.CapResult;
 import net.cassiokf.industrialrenewal.util.PipeUtils;
+import net.cassiokf.industrialrenewal.util.Utils;
 import net.cassiokf.industrialrenewal.util.capability.CustomEnergyStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -113,6 +114,18 @@ public abstract class BlockEntityEnergyCable extends BlockEntityMultiBlocksTube<
     }
     
     public abstract int getMaxEnergyToTransport();
+    
+    public String GetText() {
+        return Utils.formatEnergyString(getMaster().averageEnergy);
+    }
+    
+    public float getOutPutAngle() {
+        return Utils.normalizeClamped(getMaster().averageEnergy, 0, getMaxEnergyToTransport()) * 90;
+    }
+    
+    public Direction getBlockFacing() {
+        return Direction.NORTH;
+    }
     
     @Override
     @NotNull

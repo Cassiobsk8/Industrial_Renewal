@@ -86,6 +86,10 @@ public class IndustrialRenewal {
             event.registerBlockEntityRenderer(ModBlockEntity.MINER_TILE.get(), BERMining::new);
             event.registerBlockEntityRenderer(ModBlockEntity.TURBINE_PILLAR_TILE.get(), BERWindTurbinePillar::new);
             event.registerBlockEntityRenderer(ModBlockEntity.WIND_TURBINE_TILE.get(), BERWindTurbineHead::new);
+            event.registerBlockEntityRenderer(ModBlockEntity.ENERGYCABLE_LV_METER_TILE.get(), BEREnergyCableMeter::new);
+            event.registerBlockEntityRenderer(ModBlockEntity.ENERGYCABLE_MV_METER_TILE.get(), BEREnergyCableMeter::new);
+            event.registerBlockEntityRenderer(ModBlockEntity.ENERGYCABLE_HV_METER_TILE.get(), BEREnergyCableMeter::new);
+            Utils.sendConsoleMessage("Industrial Renewal == Done Registering BlockEntityRenderer");
         }
     }
 }

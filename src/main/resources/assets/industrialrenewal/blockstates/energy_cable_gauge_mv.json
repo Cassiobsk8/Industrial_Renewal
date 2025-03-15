@@ -2,7 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_center"
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_center"
       }
     },
     {
@@ -10,7 +10,7 @@
         "facing": "north"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_meter",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_meter",
         "uvlock": false
       }
     },
@@ -19,7 +19,7 @@
         "facing": "south"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_meter",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_meter",
         "y": 180,
         "uvlock": false
       }
@@ -29,7 +29,7 @@
         "facing": "east"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_meter",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_meter",
         "y": 90,
         "uvlock": false
       }
@@ -39,7 +39,7 @@
         "facing": "west"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_meter",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_meter",
         "y": 270,
         "uvlock": false
       }
@@ -49,7 +49,7 @@
         "north": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_side",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_side",
         "uvlock": false
       }
     },
@@ -58,7 +58,7 @@
         "east": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_side",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_side",
         "y": 90,
         "uvlock": false
       }
@@ -68,7 +68,7 @@
         "south": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_side",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_side",
         "y": 180,
         "uvlock": false
       }
@@ -78,7 +78,7 @@
         "west": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_side",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_side",
         "y": 270,
         "uvlock": false
       }
@@ -88,7 +88,7 @@
         "up": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_side",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_side",
         "x": 270,
         "uvlock": false
       }
@@ -98,7 +98,7 @@
         "down": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_side",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_side",
         "x": 90,
         "uvlock": false
       }
@@ -171,7 +171,7 @@
         "c_north": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_side_cap",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_side_cap",
         "uvlock": false
       }
     },
@@ -180,7 +180,7 @@
         "c_east": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_side_cap",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_side_cap",
         "y": 90,
         "uvlock": false
       }
@@ -190,7 +190,7 @@
         "c_south": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_side_cap",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_side_cap",
         "y": 180,
         "uvlock": false
       }
@@ -200,7 +200,7 @@
         "c_west": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_side_cap",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_side_cap",
         "y": 270,
         "uvlock": false
       }
@@ -210,7 +210,7 @@
         "c_up": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_side_cap",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_side_cap",
         "x": 270,
         "uvlock": false
       }
@@ -220,7 +220,7 @@
         "c_down": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block/pipe_energy_lv/cable_side_cap",
+        "model": "industrialrenewal:block/pipe_energy_mv/cable_side_cap",
         "x": 90,
         "uvlock": false
       }

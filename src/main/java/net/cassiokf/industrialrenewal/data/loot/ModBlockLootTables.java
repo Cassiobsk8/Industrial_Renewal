@@ -32,6 +32,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.ENERGYCABLE_HV.get());
         dropSelf(ModBlocks.ENERGYCABLE_MV.get());
         dropSelf(ModBlocks.ENERGYCABLE_LV.get());
+        dropSelf(ModBlocks.ENERGYCABLE_LV_METER.get());
         dropSelf(ModBlocks.TRASH.get());
         dropSelf(ModBlocks.TURBINE_PILLAR.get());
         dropSelf(ModBlocks.WIND_TURBINE.get());

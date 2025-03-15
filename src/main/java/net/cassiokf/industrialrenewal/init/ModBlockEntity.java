@@ -39,7 +39,19 @@ public class ModBlockEntity {
             BLOCK_ENTITIES.register("battery_bank_tile", ()-> BlockEntityType.Builder.of(
                     BlockEntityBatteryBank::new, ModBlocks.BATTERY_BANK.get()
             ).build(null));
+    
+    public static RegistryObject<BlockEntityType<BlockEntityEnergyCableLVMeter>> ENERGYCABLE_LV_METER_TILE =
+            BLOCK_ENTITIES.register("energycable_lv_meter_tile", ()-> BlockEntityType.Builder.of(
+                    BlockEntityEnergyCableLVMeter::new, ModBlocks.ENERGYCABLE_LV_METER.get()).build(null));
+    
+    public static RegistryObject<BlockEntityType<BlockEntityEnergyCableMVMeter>> ENERGYCABLE_MV_METER_TILE =
+            BLOCK_ENTITIES.register("energycable_mv_meter_tile", ()-> BlockEntityType.Builder.of(
+                    BlockEntityEnergyCableMVMeter::new, ModBlocks.ENERGYCABLE_MV_METER.get()).build(null));
 
+    public static RegistryObject<BlockEntityType<BlockEntityEnergyCableHVMeter>> ENERGYCABLE_HV_METER_TILE =
+            BLOCK_ENTITIES.register("energycable_hv_meter_tile", ()-> BlockEntityType.Builder.of(
+                    BlockEntityEnergyCableHVMeter::new, ModBlocks.ENERGYCABLE_HV_METER.get()).build(null));
+    
     public static RegistryObject<BlockEntityType<BlockEntityEnergyCableLV>> ENERGYCABLE_LV_TILE =
             BLOCK_ENTITIES.register("energycable_lv_tile", ()-> BlockEntityType.Builder.of(
                     BlockEntityEnergyCableLV::new, ModBlocks.ENERGYCABLE_LV.get()).build(null));

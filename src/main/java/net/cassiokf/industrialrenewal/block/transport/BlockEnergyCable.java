@@ -6,11 +6,16 @@ import net.cassiokf.industrialrenewal.blockentity.transport.BlockEntityEnergyCab
 import net.cassiokf.industrialrenewal.blockentity.transport.BlockEntityEnergyCableLV;
 import net.cassiokf.industrialrenewal.blockentity.transport.BlockEntityEnergyCableMV;
 import net.cassiokf.industrialrenewal.init.ModBlockEntity;
+import net.cassiokf.industrialrenewal.init.ModBlocks;
+import net.cassiokf.industrialrenewal.item.ItemScrewdriver;
 import net.cassiokf.industrialrenewal.util.enums.EnumCableIn;
 import net.cassiokf.industrialrenewal.util.enums.EnumEnergyCableType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -24,6 +29,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,18 +47,37 @@ public class BlockEnergyCable extends BlockPipeBase<BlockEntityEnergyCable> impl
     public static EnumCableIn convertFromType(EnumEnergyCableType type)
     {
         return switch (type) {
-            default -> EnumCableIn.LV;
             case MV -> EnumCableIn.MV;
             case HV -> EnumCableIn.HV;
+            default -> EnumCableIn.LV;
         };
     }
-
+    
+    @Override
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
+        if (player.getItemInHand(handIn).getItem() == ModBlocks.ENERGY_LEVEL.get().asItem()) {
+            if (!worldIn.isClientSide) {
+                BlockEnergyCableMeter block = switch (type) {
+                    case MV -> ModBlocks.ENERGYCABLE_MV_METER.get();
+                    case HV -> ModBlocks.ENERGYCABLE_HV_METER.get();
+                    default -> ModBlocks.ENERGYCABLE_LV_METER.get();
+                };
+                worldIn.setBlockAndUpdate(pos, block.getState(worldIn, pos, block.defaultBlockState()).setValue(BlockEnergyCableMeter.FACING, player.getDirection()));
+                ItemScrewdriver.playSound(worldIn, pos);
+                if (!player.isCreative())
+                    player.getItemInHand(handIn).shrink(1);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return super.use(state, worldIn, pos, player, handIn, hitResult);
+    }
+    
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
         int amount = switch (type) {
-            default -> BlockEntityEnergyCableLV.MAX_ENERGY;
             case MV -> BlockEntityEnergyCableMV.MAX_ENERGY;
             case HV -> BlockEntityEnergyCableHV.MAX_ENERGY;
+            default -> BlockEntityEnergyCableLV.MAX_ENERGY;
         };
         tooltip.add(Component.literal(amount + " FE/t"));
         super.appendHoverText(stack, world, tooltip, flag);
