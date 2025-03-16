@@ -47,7 +47,7 @@ public class BlockEntityDamIntake extends BlockEntitySyncable {
     private boolean firstTick = false;
     
     
-    public CustomPressureFluidTank tank = new CustomPressureFluidTank(0) {
+    public final CustomPressureFluidTank tank = new CustomPressureFluidTank(0) {
         
         @Override
         public boolean canDrain() {
@@ -65,7 +65,7 @@ public class BlockEntityDamIntake extends BlockEntitySyncable {
         }
     };
     
-    public LazyOptional<CustomFluidTank> tankHandler = LazyOptional.of(() -> tank);
+    public final LazyOptional<CustomFluidTank> tankHandler = LazyOptional.of(() -> tank);
     
     private static final int WIDTH = 13;
     private static final int HEIGHT = 11;
@@ -114,7 +114,7 @@ public class BlockEntityDamIntake extends BlockEntitySyncable {
         if (level == null || level.isClientSide()) return true;
         cleanWallCached();
         initializeMultiblockIfNecessary(true);
-        int percentage = waterAmount / 10;
+        int percentage = waterAmount / 100;
         boolean done = false;
         if (percentage < 100 && failWaters.size() > 0 && player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == Items.WATER_BUCKET) {
             if (tryFillDam(player)) done = true;
