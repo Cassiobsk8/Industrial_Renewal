@@ -5,8 +5,8 @@ import net.cassiokf.industrialrenewal.blockentity.abstracts.BlockEntitySyncable;
 import net.cassiokf.industrialrenewal.init.ModBlockEntity;
 import net.cassiokf.industrialrenewal.init.ModBlocks;
 import net.cassiokf.industrialrenewal.util.Utils;
-import net.cassiokf.industrialrenewal.util.capability.CustomCompressedFluidTank;
 import net.cassiokf.industrialrenewal.util.capability.CustomFluidTank;
+import net.cassiokf.industrialrenewal.util.capability.CustomPressureFluidTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -47,7 +47,7 @@ public class BlockEntityDamIntake extends BlockEntitySyncable {
     private boolean firstTick = false;
     
     
-    public CustomCompressedFluidTank tank = new CustomCompressedFluidTank(0) {
+    public CustomPressureFluidTank tank = new CustomPressureFluidTank(0) {
         
         @Override
         public boolean canDrain() {
@@ -67,12 +67,12 @@ public class BlockEntityDamIntake extends BlockEntitySyncable {
     
     public LazyOptional<CustomFluidTank> tankHandler = LazyOptional.of(() -> tank);
     
-    private final int WIDTH = 13;
-    private final int HEIGHT = 11;
-    private final int DEPTH = 10;
-    private final int MAX_WATER = WIDTH * HEIGHT * DEPTH;
+    private static final int WIDTH = 13;
+    private static final int HEIGHT = 11;
+    private static final int DEPTH = 10;
+    private static final int MAX_WATER = WIDTH * HEIGHT * DEPTH;
     // 40 buckets per tick; max 160 min 8
-    public final int MAX_WATER_PRODUCTION = 1000;
+    public static int MAX_WATER_PRODUCTION = 10000;
     public int currentProduction = 0;
     public int tick = 0;
     
@@ -96,7 +96,7 @@ public class BlockEntityDamIntake extends BlockEntitySyncable {
         if (tileBehind != null) {
             IFluidHandler f = tileBehind.getCapability(ForgeCapabilities.FLUID_HANDLER, getFacing()).orElse(null);
             if (f != null) {
-                if (f instanceof CustomCompressedFluidTank c) {
+                if (f instanceof CustomPressureFluidTank c) {
                     c.receiveCompressedFluid(waterAmount, worldPosition.getY(), IFluidHandler.FluidAction.EXECUTE);
                     return;
                 }

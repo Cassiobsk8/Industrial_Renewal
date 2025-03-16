@@ -3,7 +3,7 @@ package net.cassiokf.industrialrenewal.blockentity.dam;
 import net.cassiokf.industrialrenewal.block.abstracts.BlockAbstractHorizontalFacing;
 import net.cassiokf.industrialrenewal.blockentity.abstracts.BlockEntitySyncable;
 import net.cassiokf.industrialrenewal.init.ModBlockEntity;
-import net.cassiokf.industrialrenewal.util.capability.CustomCompressedFluidTank;
+import net.cassiokf.industrialrenewal.util.capability.CustomPressureFluidTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Blocks;
@@ -17,13 +17,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BlockEntityDamOutlet extends BlockEntitySyncable {
-    public static final int MAX_PROCESSING = 1000;
+    public static final int MAX_PROCESSING = 10000;
     private boolean hasFlow = false;
-    private boolean removed = false;
+    private boolean removed = true;
     private Direction blockFacing;
     private int tick;
     
-    private final CustomCompressedFluidTank tank = new CustomCompressedFluidTank(MAX_PROCESSING) {
+    private final CustomPressureFluidTank tank = new CustomPressureFluidTank(MAX_PROCESSING) {
         @Override
         public int receiveCompressedFluid(int amount, int y, FluidAction action) {
             return passCompressedFluid(amount, y, action);
@@ -53,12 +53,12 @@ public class BlockEntityDamOutlet extends BlockEntitySyncable {
                 if (hasFlow) {
                     if (removed && !state.getFluidState().isSource() && !state.getBlock().equals(Blocks.WATER)) {
                         BlockState waterState = Blocks.WATER.defaultBlockState();
-                        level.setBlock(worldPosition.relative(getBlockFacing()), waterState, 3);
+                        level.setBlockAndUpdate(worldPosition.relative(getBlockFacing()), waterState);
                         removed = false;
                     }
                 } else {
                     if (!removed && (state.getFluidState().isSource() || state.getBlock().equals(Blocks.WATER))) {
-                        level.setBlock(worldPosition.relative(getBlockFacing()), Blocks.AIR.defaultBlockState(), 3);
+                        level.setBlockAndUpdate(worldPosition.relative(getBlockFacing()), Blocks.AIR.defaultBlockState());
                         removed = true;
                     }
                 }

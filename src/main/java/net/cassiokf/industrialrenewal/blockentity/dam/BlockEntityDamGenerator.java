@@ -18,25 +18,15 @@ import javax.annotation.Nullable;
 
 public class BlockEntityDamGenerator extends BlockEntity3x3x3MachineBase<BlockEntityDamGenerator> {
 
-    private final int energyCapacity = 10240;
-    public CustomEnergyStorage energyStorage = new CustomEnergyStorage(energyCapacity){
-        @Override
-        public void onEnergyChange() {
-            BlockEntityDamGenerator.this.sync();
-        }
-        
-        @Override
-        public boolean canReceive() {
-            return false;
-        }
-    };
-    public LazyOptional<CustomEnergyStorage> energyHandler = LazyOptional.of(()-> energyStorage);
+    private static int energyCapacity = 10240;
+    public CustomEnergyStorage energyStorage = new CustomEnergyStorage(energyCapacity).setBlockEntity(this).noReceive();
+    public final LazyOptional<CustomEnergyStorage> energyHandler = LazyOptional.of(()-> energyStorage);
     private int oldGeneration;
     private int generation;
     private int rotation;
 
-    public static final int maxGeneration = 1024;//IRConfig.MainConfig.Main.damGeneratorEnergyPerTick;
-    public static final int transferRate = 1024;
+    public static int maxGeneration = 1024;//IRConfig.MainConfig.Main.damGeneratorEnergyPerTick;
+    public static int transferRate = 1024;
 
 
     public BlockEntityDamGenerator(BlockPos pos, BlockState state) {

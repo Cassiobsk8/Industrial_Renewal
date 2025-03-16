@@ -6,25 +6,25 @@ import net.minecraftforge.fluids.FluidStack;
 import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
-public class CustomCompressedFluidTank extends CustomFluidTank
+public class CustomPressureFluidTank extends CustomFluidTank
 {
-    public CustomCompressedFluidTank()
+    public CustomPressureFluidTank()
     {
         super(0);
     }
     
-    public CustomCompressedFluidTank(int capacity)
+    public CustomPressureFluidTank(int capacity)
     {
         super(capacity);
     }
 
-    public CustomCompressedFluidTank(int capacity, Predicate<FluidStack> validator)
+    public CustomPressureFluidTank(int capacity, Predicate<FluidStack> validator)
     {
         super(capacity, validator);
     }
     
     @Override
-    public CustomCompressedFluidTank setBlockEntity(BlockEntitySyncable entity) {
+    public CustomPressureFluidTank setBlockEntity(BlockEntitySyncable entity) {
         blockEntity = entity;
         return this;
     }

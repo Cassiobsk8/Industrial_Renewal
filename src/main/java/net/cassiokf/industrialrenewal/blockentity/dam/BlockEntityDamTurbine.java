@@ -5,8 +5,8 @@ import net.cassiokf.industrialrenewal.block.dam.BlockRotationalShaft;
 import net.cassiokf.industrialrenewal.blockentity.abstracts.BlockEntity3x3x3MachineBase;
 import net.cassiokf.industrialrenewal.init.ModBlockEntity;
 import net.cassiokf.industrialrenewal.util.Utils;
-import net.cassiokf.industrialrenewal.util.capability.CustomCompressedFluidTank;
 import net.cassiokf.industrialrenewal.util.capability.CustomFluidTank;
+import net.cassiokf.industrialrenewal.util.capability.CustomPressureFluidTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -23,17 +23,17 @@ import javax.annotation.Nullable;
 
 public class BlockEntityDamTurbine extends BlockEntity3x3x3MachineBase<BlockEntityDamTurbine> {
     
-    public static final int MAX_PROCESSING = 1000;
-    public static final int MAX_EFFICIENCY = 1000;
+    public static int MAX_PROCESSING = 1000;
+    public static int MAX_EFFICIENCY = 10000;
     
-    public CustomCompressedFluidTank inTank = new CustomCompressedFluidTank() {
+    public final CustomPressureFluidTank inTank = new CustomPressureFluidTank() {
         @Override
         public int receiveCompressedFluid(int amount, int y, FluidAction action) {
             return passCompressedFluid(amount, y, action);
         }
     };
     
-    public CustomFluidTank dummyTank = new CustomFluidTank(0);
+    public final CustomFluidTank dummyTank = new CustomFluidTank(0);
     
     private float oldRotation;
     private float rotation;
@@ -42,8 +42,8 @@ public class BlockEntityDamTurbine extends BlockEntity3x3x3MachineBase<BlockEnti
     private boolean hasFlow = false;
     
     
-    public LazyOptional<CustomFluidTank> inTankHandler = LazyOptional.of(() -> inTank);
-    public LazyOptional<CustomFluidTank> dummyHandler = LazyOptional.of(() -> dummyTank);
+    public final LazyOptional<CustomPressureFluidTank> inTankHandler = LazyOptional.of(() -> inTank);
+    public final LazyOptional<CustomFluidTank> dummyHandler = LazyOptional.of(() -> dummyTank);
     
     
     public BlockEntityDamTurbine(BlockPos pos, BlockState state) {
@@ -91,7 +91,7 @@ public class BlockEntityDamTurbine extends BlockEntity3x3x3MachineBase<BlockEnti
         BlockEntity te = level.getBlockEntity(outPutPos);
         if (te != null) {
             IFluidHandler tank = te.getCapability(ForgeCapabilities.FLUID_HANDLER, masterFace.getClockWise()).orElse(null);
-            if (tank != null && tank instanceof CustomCompressedFluidTank cc) {
+            if (tank != null && tank instanceof CustomPressureFluidTank cc) {
                 realAmount = cc.receiveCompressedFluid(amount, worldPosition.getY(), action);
             }
         }

@@ -19,6 +19,7 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
 {
     public final Map<BlockEntity, Integer> limitedOutPutMap = new ConcurrentHashMap<>();
     private final Map<BlockEntity, Direction> receiversContainer = new ConcurrentHashMap<>();
+    private final Map<BlockEntity, Direction> receiversPressurizedContainer = new ConcurrentHashMap<>();
     public int outPut;
     public int oldOutPut = -1;
     public int outPutCount;
@@ -27,7 +28,7 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
     public boolean isMaster;
     public boolean firstTick;
     public boolean inUse = false;
-    private boolean startBreaking;
+    protected boolean startBreaking;
 
     public BlockEntityMultiBlocksTube(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state)
     {
@@ -89,6 +90,7 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
             }
             master.getReceivers().clear();
             master.getReceiversContainers().clear();
+            master.getReceiversPressurizedContainer().clear();
             if (canBeMaster(master))
             {
                 for (BlockEntityMultiBlocksTube storage : connectedCables)
@@ -200,10 +202,22 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
         return receiversContainer;
     }
     
+    public Map<BlockEntity, Direction> getReceiversPressurizedContainer()
+    {
+        return receiversPressurizedContainer;
+    }
+    
     public void cleanReceiversContainer() {
         Set<BlockEntity> toRemove = receiversContainer.keySet().stream().filter(BlockEntity::isRemoved).collect(Collectors.toSet());
         for (BlockEntity be : toRemove) {
             receiversContainer.remove(be);
+        }
+    }
+    
+    public void cleanReceiversPressurizedContainer() {
+        Set<BlockEntity> toRemove = receiversPressurizedContainer.keySet().stream().filter(BlockEntity::isRemoved).collect(Collectors.toSet());
+        for (BlockEntity be : toRemove) {
+            receiversPressurizedContainer.remove(be);
         }
     }
     
@@ -233,6 +247,29 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
     public Map<BlockEntity, Direction> getReceivers()
     {
         return receiversContainer;
+    }
+    
+    public void addReceiverPressurized(BlockEntity machine, Direction face)
+    {
+        if (machine == null) return;
+        if (!isMaster())
+        {
+            getMaster().addReceiver(machine, face);
+            return;
+        }
+        if (machine.getLevel().isClientSide() || receiversPressurizedContainer.containsKey(machine)) return;
+        receiversPressurizedContainer.put(machine, face);
+    }
+    
+    public void removeReceiverPressurized(BlockEntity machine)
+    {
+        if (startBreaking || isRemoved() || machine == null) return;
+        if (!isMaster())
+        {
+            getMaster().removeReceiver(machine);
+            return;
+        }
+        receiversPressurizedContainer.remove(machine);
     }
     
     public void startBreaking()
