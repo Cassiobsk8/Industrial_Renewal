@@ -57,6 +57,7 @@ public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntit
                 }
                 return InteractionResult.SUCCESS;
             }
+            return InteractionResult.CONSUME;
         }
         return InteractionResult.PASS;
     }
