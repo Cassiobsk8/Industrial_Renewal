@@ -17,14 +17,14 @@ import java.util.stream.Collectors;
 
 public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBlocksTube<?>> extends BETubeBase
 {
-    final public Map<BlockEntity, Integer> limitedOutPutMap = new ConcurrentHashMap<>();
-    final private Map<BlockEntity, Direction> receiversContainer = new ConcurrentHashMap<>();
+    public final Map<BlockEntity, Integer> limitedOutPutMap = new ConcurrentHashMap<>();
+    private final Map<BlockEntity, Direction> receiversContainer = new ConcurrentHashMap<>();
     public int outPut;
     public int oldOutPut = -1;
     public int outPutCount;
     int oldOutPutCount = -1;
-    private TE master;
-    private boolean isMaster;
+    public TE master;
+    public boolean isMaster;
     public boolean firstTick;
     public boolean inUse = false;
     private boolean startBreaking;
@@ -66,8 +66,8 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
         if ((isMasterInvalid() && !this.isRemoved()) || forceInit)
         {
             //industrialrenewal.LOGGER.info("TRYING TO INIT MULTIBLOCK, Forced: "+forceInit);
-            List<BlockEntityMultiBlocksTube<?>> connectedCables = new CopyOnWriteArrayList<>();
-            Stack<BlockEntityMultiBlocksTube<?>> traversingCables = new Stack<>();
+            final List<BlockEntityMultiBlocksTube<?>> connectedCables = new CopyOnWriteArrayList<>();
+            final Stack<BlockEntityMultiBlocksTube<?>> traversingCables = new Stack<>();
             TE master = (TE) this;
             traversingCables.add(this);
             while (!traversingCables.isEmpty())
@@ -122,7 +122,7 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
         return false;
     }
 
-    private boolean canBeMaster(BlockEntity te)
+    public boolean canBeMaster(BlockEntity te)
     {
         return te != null;// && !(te instanceof TileEntityCableTray);
     }
@@ -164,14 +164,21 @@ public abstract class BlockEntityMultiBlocksTube<TE extends BlockEntityMultiBloc
         return master;
     }
 
-    public void setMaster(TE master)
-    {
-        this.master = master;
-        isMaster = master == this;
+    public void setMaster(TE nMaster) {
+        boolean wasMaster = isMaster;
+        BlockEntityMultiBlocksTube oldMaster = this.master;
+        this.master = nMaster;
+        isMaster = nMaster == this;
+        if (wasMaster != isMaster) {
+            sync();
+        }
+        if (oldMaster != null) {
+            oldMaster.master = nMaster;
+            if (oldMaster != nMaster) oldMaster.isMaster = false;
+        }
         if (!isMaster) {
             receiversContainer.clear();
         }
-//        requestModelRefresh();
     }
     
     public int getLimitedValueForOutPut(int value, int maxTransferAmount, BlockEntity storage, boolean simulate)

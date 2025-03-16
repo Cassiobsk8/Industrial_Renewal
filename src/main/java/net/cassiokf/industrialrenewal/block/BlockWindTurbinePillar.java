@@ -36,49 +36,32 @@ public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntit
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f).noOcclusion());
         registerDefaultState(defaultBlockState().setValue(BASE, false));
     }
-    
-//    @Override
-//    public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
-//        if(!context.getPlayer().isCrouching())
-//            return context.getItemInHand().getItem() == this.asItem();
-//        return super.canBeReplaced(state, context);
-//    }
 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
         Item playerItem = player.getMainHandItem().getItem();
         Block clickedBlock = state.getBlock();
-        BlockEntityWindTurbinePillar te = (BlockEntityWindTurbinePillar) worldIn.getBlockEntity(pos);
-        if (te != null) {
-            te.getIsBase();
-            worldIn.setBlockAndUpdate(pos, state);
-            return InteractionResult.SUCCESS;
-        }
         //industrialrenewal.LOGGER.info("TRYING TO PLACE PILLAR ON TOP " + playerItem + Item.byBlock(ModBlocks.TURBINE_PILLAR.get()));
-//        if (playerItem.equals(Item.byBlock(ModBlocks.TURBINE_PILLAR.get())) && clickedBlock.equals(ModBlocks.TURBINE_PILLAR.get()))
-//        {
-//            //industrialrenewal.LOGGER.info("READING PILLAR HEIGHT");
-//            int n = 1;
-//            while (worldIn.getBlockState(pos.above(n)).getBlock() instanceof BlockWindTurbinePillar)
-//            {
-//                n++;
-//            }
-//
-//            if (worldIn.getBlockState(pos.above(n)).canBeReplaced())
-//            {
-//                //industrialrenewal.LOGGER.info("PLACED");
-//                BlockState aboveState = state.setValue(FACING, state.getValue(FACING)).setValue(BASE, false);
-//                if (!worldIn.isClientSide()) worldIn.setBlockAndUpdate(pos.above(n), aboveState);
-//                if (!player.isCreative())
-//                {
-//                    player.getMainHandItem().shrink(1);
-//                    //player.inventory.clearMatchingItems(playerItem, 0, 1, null);
-//                }
-//                return InteractionResult.SUCCESS;
-//            }
-//            //industrialrenewal.LOGGER.info("PLACEMENT FAILED");
-//        }
-        return super.use(state, worldIn, pos, player, handIn, hitResult);
+        if (playerItem.equals(ModBlocks.TURBINE_PILLAR.get().asItem()) && clickedBlock.equals(ModBlocks.TURBINE_PILLAR.get())) {
+            //industrialrenewal.LOGGER.info("READING PILLAR HEIGHT");
+            int n = 1;
+            while (worldIn.getBlockState(pos.above(n)).getBlock() instanceof BlockWindTurbinePillar) {
+                n++;
+            }
+
+            if (worldIn.getBlockState(pos.above(n)).canBeReplaced()) {
+                //industrialrenewal.LOGGER.info("PLACED");
+                BlockState aboveState = state.setValue(FACING, state.getValue(FACING)).setValue(BASE, false);
+                if (!worldIn.isClientSide()) worldIn.setBlockAndUpdate(pos.above(n), aboveState);
+                if (!player.isCreative()) {
+                    player.getMainHandItem().shrink(1);
+                    //player.inventory.clearMatchingItems(playerItem, 0, 1, null);
+                }
+                return InteractionResult.SUCCESS;
+            }
+            //industrialrenewal.LOGGER.info("PLACEMENT FAILED");
+        }
+        return InteractionResult.PASS;
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -104,7 +87,7 @@ public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntit
 //            state = state.setValue(BASE, value);
 //            worldIn.setBlockAndUpdate(pos, state);
 //        }
-//        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
     }
     
     @org.jetbrains.annotations.Nullable
