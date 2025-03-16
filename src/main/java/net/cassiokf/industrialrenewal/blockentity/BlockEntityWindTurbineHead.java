@@ -25,8 +25,6 @@ import net.minecraftforge.items.IItemHandler;
 import javax.annotation.Nonnull;
 
 public class BlockEntityWindTurbineHead extends BlockEntitySyncable {
-    
-    
     private float rotation;
     private float oldRotation = -1f;
     private int energyGenerated;
@@ -53,7 +51,6 @@ public class BlockEntityWindTurbineHead extends BlockEntitySyncable {
             @Override
             protected void onContentsChanged(int slot) {
                 BlockEntityWindTurbineHead.this.sync();
-                //level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
             }
         };
     }
@@ -125,7 +122,6 @@ public class BlockEntityWindTurbineHead extends BlockEntitySyncable {
     }
     
     public float getRotation() {
-        //        Utils.debug("getrotation===========", -rotation);
         return rotation;
     }
     

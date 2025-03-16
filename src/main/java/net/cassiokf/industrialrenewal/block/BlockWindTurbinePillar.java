@@ -5,6 +5,8 @@ import net.cassiokf.industrialrenewal.blockentity.BlockEntityWindTurbinePillar;
 import net.cassiokf.industrialrenewal.init.ModBlockEntity;
 import net.cassiokf.industrialrenewal.init.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -41,25 +43,20 @@ public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntit
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
         Item playerItem = player.getMainHandItem().getItem();
         Block clickedBlock = state.getBlock();
-        //industrialrenewal.LOGGER.info("TRYING TO PLACE PILLAR ON TOP " + playerItem + Item.byBlock(ModBlocks.TURBINE_PILLAR.get()));
         if (playerItem.equals(ModBlocks.TURBINE_PILLAR.get().asItem()) && clickedBlock.equals(ModBlocks.TURBINE_PILLAR.get())) {
-            //industrialrenewal.LOGGER.info("READING PILLAR HEIGHT");
             int n = 1;
             while (worldIn.getBlockState(pos.above(n)).getBlock() instanceof BlockWindTurbinePillar) {
                 n++;
             }
-
             if (worldIn.getBlockState(pos.above(n)).canBeReplaced()) {
-                //industrialrenewal.LOGGER.info("PLACED");
                 BlockState aboveState = state.setValue(FACING, state.getValue(FACING)).setValue(BASE, false);
+                worldIn.playSound(player, pos, SoundEvents.STONE_PLACE, SoundSource.BLOCKS);
                 if (!worldIn.isClientSide()) worldIn.setBlockAndUpdate(pos.above(n), aboveState);
                 if (!player.isCreative()) {
                     player.getMainHandItem().shrink(1);
-                    //player.inventory.clearMatchingItems(playerItem, 0, 1, null);
                 }
                 return InteractionResult.SUCCESS;
             }
-            //industrialrenewal.LOGGER.info("PLACEMENT FAILED");
         }
         return InteractionResult.PASS;
     }
@@ -74,19 +71,17 @@ public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntit
         BlockPos pos = context.getClickedPos();
         Level level = context.getLevel();
         boolean value = !level.getBlockState(pos.below()).getBlock().equals(ModBlocks.TURBINE_PILLAR.get());
-        //Utils.debug("Block Below", value);
-
         return super.getStateForPlacement(context).setValue(BASE, value);
     }
 
     @Override
     public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-//        if(!worldIn.isClientSide() && fromPos.equals(pos.below())) {
-//            boolean value = !(worldIn.getBlockEntity(pos.below()) instanceof BlockEntityWindTurbinePillar);
-//
-//            state = state.setValue(BASE, value);
-//            worldIn.setBlockAndUpdate(pos, state);
-//        }
+        if(!worldIn.isClientSide() && fromPos.equals(pos.below())) {
+            boolean value = !(worldIn.getBlockEntity(pos.below()) instanceof BlockEntityWindTurbinePillar);
+
+            state = state.setValue(BASE, value);
+            worldIn.setBlockAndUpdate(pos, state);
+        }
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
     }
     

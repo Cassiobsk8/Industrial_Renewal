@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<BlockEntityWindTurbinePillar> implements ICapabilityProvider {
     
     private static final Direction[] FACES_TO_CHECK = new Direction[]{Direction.UP, Direction.DOWN};
-    private final CustomEnergyStorage energyStorage = new CustomEnergyStorage(1024, 1024, 1024) {
+    private static final LazyOptional<IEnergyStorage> dummyEnergy = LazyOptional.of(BlockEntityWindTurbinePillar::createEnergyDummy);    private final CustomEnergyStorage energyStorage = new CustomEnergyStorage(1024, 1024, 1024) {
         @Override
         public void onEnergyChange() {
             BlockEntityWindTurbinePillar.this.setChanged();
@@ -35,9 +35,7 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
             return BlockEntityWindTurbinePillar.this.onEnergyReceived(maxReceive, simulate);
         }
     };
-    private final LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyStorage);
-    private static final LazyOptional<IEnergyStorage> dummyEnergy = LazyOptional.of(BlockEntityWindTurbinePillar::createEnergyDummy);
-    private int potentialEnergy;
+    private int potentialEnergy;    private final LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyStorage);
     private int oldPotential = -1;
     private int averageEnergy;
     private int oldEnergy;
@@ -49,7 +47,7 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
     public BlockEntityWindTurbinePillar(BlockPos pos, BlockState state) {
         super(ModBlockEntity.TURBINE_PILLAR_TILE.get(), pos, state);
     }
-    
+
     private static IEnergyStorage createEnergyDummy() {
         return new CustomEnergyStorage(0, 0, 0).noReceive().noExtraction();
     }
@@ -68,8 +66,7 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
     }
     
     @Override
-    public void beforeInitialize()
-    {
+    public void beforeInitialize() {
         getIsBase();
         sync();
     }
@@ -99,7 +96,6 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
         return FACES_TO_CHECK;
     }
     
-    
     @Override
     public boolean instanceOf(BlockEntity te) {
         return te instanceof BlockEntityWindTurbinePillar;
@@ -119,18 +115,15 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
                 boolean hasMachine = !(state.getBlock() instanceof BlockWindTurbinePillar) && te != null && te.getCapability(ForgeCapabilities.ENERGY, face.getOpposite()).isPresent();
                 
                 if (hasMachine && te.getCapability(ForgeCapabilities.ENERGY, face.getOpposite()).orElse(null).canReceive())
-                    if (!isMasterInvalid())
-                        getMaster().addReceiver(te, face);
-                else if (te != null && !isMasterInvalid())
-                    getMaster().removeReceiver(te);
+                    if (!isMasterInvalid()) getMaster().addReceiver(te, face);
+                    else if (te != null && !isMasterInvalid()) getMaster().removeReceiver(te);
             }
         }
         this.sync();
     }
     
     @Override
-    public void onFirstLoad()
-    {
+    public void onFirstLoad() {
         if (getIsBase() && getMaster() != this) setMaster(this);
     }
     
@@ -138,7 +131,6 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
         if (turbinePos != null) return turbinePos;
         return forceNewTurbinePos();
     }
-    
     
     private BlockPos forceNewTurbinePos() {
         if (level == null) return turbinePos;
@@ -161,8 +153,7 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
             float currentAmount = Utils.normalizeClamped(getMaster().averageEnergy, 0, 128);
             amount = Utils.lerp(amount, currentAmount, 0.1f);
             return Math.min(amount, 1) * 90f;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return 0;
         }
     }
@@ -204,8 +195,7 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
         
         if (capability == ForgeCapabilities.ENERGY && (facing == Direction.UP))
             return getMaster().energyStorageHandler.cast();
-        if (capability == ForgeCapabilities.ENERGY && (isBase()))
-            return dummyEnergy.cast();
+        if (capability == ForgeCapabilities.ENERGY && (isBase())) return dummyEnergy.cast();
         return super.getCapability(capability, facing);
     }
     
@@ -223,17 +213,5 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
         compound.putInt("potential", potentialEnergy);
         super.saveAdditional(compound);
     }
-    
-//    private boolean canConnectTo(final Direction neighborDirection) {
-//        if (level == null) return false;
-//        final BlockPos neighborPos = worldPosition.relative(neighborDirection);
-//        final BlockState neighborState = level.getBlockState(neighborPos);
-//
-//        if (neighborDirection == Direction.DOWN) {
-//            return !(neighborState.getBlock() instanceof BlockWindTurbinePillar);
-//        }
-//        BlockEntity te = level.getBlockEntity(neighborPos);
-//        return te != null && te.getCapability(ForgeCapabilities.ENERGY, neighborDirection.getOpposite()).isPresent();
-//    }
 }
 
