@@ -143,6 +143,8 @@ public class ModBlocks {
     
     public static final RegistryObject<BlockFluidPipe> FLUID_PIPE = registerBlock("fluid_pipe", BlockFluidPipe::new);
     
+    public static final RegistryObject<BlockFluidPipeGauge> FLUID_PIPE_GAUGE = registerBlock("fluid_pipe_gauge", BlockFluidPipeGauge::new,false);
+    
     public static final RegistryObject<BlockFluidPipeLarge> FLUID_PIPE_LARGE = registerBlock("fluid_pipe_large", BlockFluidPipeLarge::new);
     
     public static final RegistryObject<BlockHighPressureFluidPipe> HIGH_PRESSURE_PIPE = registerBlock("high_pressure_pipe", BlockHighPressureFluidPipe::new);

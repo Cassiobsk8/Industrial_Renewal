@@ -89,6 +89,7 @@ public class IndustrialRenewal {
             event.registerBlockEntityRenderer(ModBlockEntity.ENERGYCABLE_LV_METER_TILE.get(), BEREnergyCableMeter::new);
             event.registerBlockEntityRenderer(ModBlockEntity.ENERGYCABLE_MV_METER_TILE.get(), BEREnergyCableMeter::new);
             event.registerBlockEntityRenderer(ModBlockEntity.ENERGYCABLE_HV_METER_TILE.get(), BEREnergyCableMeter::new);
+            event.registerBlockEntityRenderer(ModBlockEntity.FLUIDPIPE_GAUGE_TILE.get(), BERFluidPipeGauge::new);
             Utils.sendConsoleMessage("Industrial Renewal == Done Registering BlockEntityRenderer");
         }
     }

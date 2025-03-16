@@ -89,20 +89,21 @@ public class BlockEntityHighPressureFluidPipe extends BlockEntityFluidPipeBase<B
     
     @Override
     public void checkForOutPuts(BlockPos bPos) {
-        if (level == null) return;
-        if (!level.isClientSide) {
-            for (Direction face : Direction.values()) {
-                BlockPos currentPos = worldPosition.relative(face);
-                BlockEntity te = level.getBlockEntity(currentPos);
-                boolean hasMachine = te != null && !(te instanceof BlockEntityFluidPipeBase);
-                IFluidHandler fh = te != null ? te.getCapability(ForgeCapabilities.FLUID_HANDLER, face.getOpposite()).orElse(null) : null;
-                boolean canReceive = fh instanceof CustomCompressedFluidTank cf && cf.canPassCompressedFluid();
-                if (hasMachine && canReceive) {
-                    if (!isMasterInvalid()) getMaster().addReceiver(te, face);
-                } else if (!isMasterInvalid()) getMaster().removeReceiver(te);
-            }
-            getMaster().cleanReceiversContainer();
-        }
+//        if (level == null) return;
+//        if (!level.isClientSide) {
+//            for (Direction face : Direction.values()) {
+//                BlockPos currentPos = worldPosition.relative(face);
+//                BlockEntity te = level.getBlockEntity(currentPos);
+//                boolean hasMachine = te != null && !(te instanceof BlockEntityFluidPipeBase);
+//                IFluidHandler fh = te != null ? te.getCapability(ForgeCapabilities.FLUID_HANDLER, face.getOpposite()).orElse(null) : null;
+//                boolean canReceive = fh instanceof CustomCompressedFluidTank cf && cf.canPassCompressedFluid();
+//                if (hasMachine && canReceive) {
+//                    if (!isMasterInvalid()) getMaster().addReceiver(te, face);
+//                }
+//                //else if (!isMasterInvalid()) getMaster().removeReceiver(te);
+//            }
+//            getMaster().cleanReceiversContainer();
+//        }
     }
     
     @Override

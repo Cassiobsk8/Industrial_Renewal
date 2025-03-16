@@ -2,8 +2,13 @@ package net.cassiokf.industrialrenewal.block.transport;
 
 import net.cassiokf.industrialrenewal.block.abstracts.BlockPipeBase;
 import net.cassiokf.industrialrenewal.blockentity.transport.BlockEntityFluidPipe;
+import net.cassiokf.industrialrenewal.init.ModBlocks;
+import net.cassiokf.industrialrenewal.item.ItemScrewdriver;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -15,6 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +34,22 @@ public class BlockFluidPipe extends BlockPipeBase<BlockEntityFluidPipe> implemen
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         return getState(context.getLevel(), context.getClickedPos(), defaultBlockState());
     }
-
+    
+    @Override
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
+        if (player.getItemInHand(handIn).getItem() == ModBlocks.FLUID_GAUGE.get().asItem()) {
+            if (!worldIn.isClientSide) {
+                BlockFluidPipeGauge block = ModBlocks.FLUID_PIPE_GAUGE.get();
+                worldIn.setBlockAndUpdate(pos, block.getState(worldIn, pos, block.defaultBlockState()).setValue(BlockFluidPipeGauge.FACING, player.getDirection()));
+                ItemScrewdriver.playSound(worldIn, pos);
+                if (!player.isCreative())
+                    player.getItemInHand(handIn).shrink(1);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return super.use(state, worldIn, pos, player, handIn, hitResult);
+    }
+    
     public BlockState getState(Level world, BlockPos pos, BlockState oldState){
         return oldState
                 .setValue(UP, canConnectToPipe(world, pos, Direction.UP))

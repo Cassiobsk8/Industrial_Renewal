@@ -68,6 +68,14 @@ public class Utils {
         return text;
     }
     
+    public static String formatFluidAmountString(int amount) {
+        String text = amount + " mB";
+        if (amount >= 10000 && amount < 1000000) text = form.format((float) amount / 1000) + " B";
+        else if (amount >= 1000000 && amount < 1000000000) text = form.format((float) amount / 1000000) + " KB";
+        else if (amount >= 1000000000) text = form.format((float) amount / 1000000000) + " BB";
+        return text;
+    }
+    
     public static float normalizeClamped(float value, float min, float max) {
         //industrialrenewal.LOGGER.info("normClamp "+ value + " / " + max);
         return Mth.clamp((value - min), min, (max - min)) / (max - min);

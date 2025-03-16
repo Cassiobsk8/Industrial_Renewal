@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class BlockEntityFluidPipeBase<T extends BlockEntityFluidPipeBase<?>> extends BlockEntityMultiBlocksTube<T> implements ICapabilityProvider {
     //TODO: add to config
-    private int maxOutput = 1000;
+    private int maxOutput;
     private int oldFluid;
     private int tick;
     public int averageFluid;
@@ -36,7 +36,7 @@ public abstract class BlockEntityFluidPipeBase<T extends BlockEntityFluidPipeBas
             return onFluidReceived(resource, action);
         }
     }.setBlockEntity(this);
-    private final LazyOptional tankHandler = LazyOptional.of(this::getTank);
+    private final LazyOptional<CustomFluidTank> tankHandler = LazyOptional.of(this::getTank);
     
     @Override
     public void doTick() {
