@@ -34,7 +34,7 @@ public class Utils {
     public static boolean debugMsg = false;
     private static final Random RANDOM = new Random();
     private static final DecimalFormat form = new DecimalFormat("0.0");
-    private static final DecimalFormat preciseForm = new DecimalFormat("0.00");
+    private static final DecimalFormat preciseForm = new DecimalFormat("0.000");
     
     public static final Direction[] VALUES = Direction.values();
     public static final Direction[] BY_HORIZONTAL_INDEX = Arrays.stream(VALUES).filter((direction) -> direction.getAxis().isHorizontal()).sorted(Comparator.comparingInt(Direction::get2DDataValue)).toArray(Direction[]::new);

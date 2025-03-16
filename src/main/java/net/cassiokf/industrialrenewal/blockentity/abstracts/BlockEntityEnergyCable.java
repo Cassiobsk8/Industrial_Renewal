@@ -116,7 +116,7 @@ public abstract class BlockEntityEnergyCable extends BlockEntityMultiBlocksTube<
     public abstract int getMaxEnergyToTransport();
     
     public String GetText() {
-        return Utils.formatEnergyString(getMaster().averageEnergy);
+        return Utils.formatPreciseEnergyString(getMaster().averageEnergy);
     }
     
     public float getOutPutAngle() {
