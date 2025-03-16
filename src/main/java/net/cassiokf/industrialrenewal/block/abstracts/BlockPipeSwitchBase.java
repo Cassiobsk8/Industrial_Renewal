@@ -38,14 +38,15 @@ public abstract class BlockPipeSwitchBase extends IRBaseBlock{
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult p_225533_6_) {
         
         if(handIn == InteractionHand.MAIN_HAND && player.getMainHandItem().getItem() instanceof ItemScrewdriver){
-            if (worldIn.isClientSide()) return super.use(state, worldIn, pos, player, handIn, p_225533_6_);
-            state = state.cycle(HANDLE_FACING);
-            worldIn.setBlockAndUpdate(pos, state);
+            if (!worldIn.isClientSide()) {
+                state = state.cycle(HANDLE_FACING);
+                worldIn.setBlockAndUpdate(pos, state);
+            }
             return InteractionResult.SUCCESS;
         }
         if(handIn == InteractionHand.MAIN_HAND){
-            if (worldIn.isClientSide()) return super.use(state, worldIn, pos, player, handIn, p_225533_6_);
-            worldIn.setBlockAndUpdate(pos, state.setValue(ON_OFF, !state.getValue(ON_OFF)));
+            if (!worldIn.isClientSide())
+                worldIn.setBlockAndUpdate(pos, state.setValue(ON_OFF, !state.getValue(ON_OFF)));
             return InteractionResult.SUCCESS;
         }
         return super.use(state, worldIn, pos, player, handIn, p_225533_6_);

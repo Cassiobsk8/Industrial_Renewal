@@ -24,7 +24,7 @@ public class BlockEntityFluidValve extends BlockEntitySyncable {
     }
     
     private final CustomFluidTank dummyTank = new CustomFluidTank(0);
-    private final CustomFluidTank fluidTank = new CustomFluidTank(0) {
+    private final CustomFluidTank fluidTank = new CustomFluidTank(10000) {
         @Override
         public int fill(FluidStack resource, FluidAction action) {
             if (resource.isEmpty() || !BlockEntityFluidValve.this.isOpen()) return 0;
