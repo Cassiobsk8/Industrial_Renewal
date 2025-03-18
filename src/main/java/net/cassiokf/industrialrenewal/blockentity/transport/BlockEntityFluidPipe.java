@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityFluidPipe extends BlockEntityFluidPipeBase<BlockEntityFluidPipe> {
     public static int MAX_TRANSFER = 1000;
+    
     public BlockEntityFluidPipe(BlockPos pos, BlockState state) {
         super(ModBlockEntity.FLUIDPIPE_TILE.get(), pos, state, MAX_TRANSFER);
     }

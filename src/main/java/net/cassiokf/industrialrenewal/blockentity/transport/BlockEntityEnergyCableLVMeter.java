@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class BlockEntityEnergyCableLVMeter extends BlockEntityEnergyCableLV {
     private Direction blockFacing;
     
-    public BlockEntityEnergyCableLVMeter(BlockPos pos, BlockState state){
+    public BlockEntityEnergyCableLVMeter(BlockPos pos, BlockState state) {
         super(ModBlockEntity.ENERGYCABLE_LV_METER_TILE.get(), pos, state);
     }
     

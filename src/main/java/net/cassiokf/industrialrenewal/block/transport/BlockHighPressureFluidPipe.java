@@ -18,40 +18,34 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockHighPressureFluidPipe extends BlockPipeBase<BlockEntityHighPressureFluidPipe> implements EntityBlock {
-    public BlockHighPressureFluidPipe()  {
+    public BlockHighPressureFluidPipe() {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 8, 8);
     }
-
+    
     @Override
     public @org.jetbrains.annotations.Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         return getState(context.getLevel(), context.getClickedPos(), defaultBlockState());
     }
-
-//    @Override
-//    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-//        if(!worldIn.isClientSide){
-//            for(Direction direction : Direction.values()){
-//                if(canConnectTo(worldIn, pos, direction)){
-//                    worldIn.setBlock(pos, worldIn.getBlockState(pos).setValue(directionToBooleanProp(direction), true), Constants.BlockFlags.DEFAULT);
-//                }
-//                else{
-//                    worldIn.setBlock(pos, worldIn.getBlockState(pos).setValue(directionToBooleanProp(direction), false), Constants.BlockFlags.DEFAULT);
-//                }
-//            }
-//        }
-//        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
-//    }
-
-    public BlockState getState(Level world, BlockPos pos, BlockState oldState){
-        return oldState
-                .setValue(UP, canConnectToPipe(world, pos, Direction.UP))
-                .setValue(DOWN, canConnectToPipe(world, pos, Direction.DOWN))
-                .setValue(NORTH, canConnectToPipe(world, pos, Direction.NORTH))
-                .setValue(SOUTH, canConnectToPipe(world, pos, Direction.SOUTH))
-                .setValue(EAST, canConnectToPipe(world, pos, Direction.EAST))
-                .setValue(WEST, canConnectToPipe(world, pos, Direction.WEST));
+    
+    //    @Override
+    //    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+    //        if(!worldIn.isClientSide){
+    //            for(Direction direction : Direction.values()){
+    //                if(canConnectTo(worldIn, pos, direction)){
+    //                    worldIn.setBlock(pos, worldIn.getBlockState(pos).setValue(directionToBooleanProp(direction), true), Constants.BlockFlags.DEFAULT);
+    //                }
+    //                else{
+    //                    worldIn.setBlock(pos, worldIn.getBlockState(pos).setValue(directionToBooleanProp(direction), false), Constants.BlockFlags.DEFAULT);
+    //                }
+    //            }
+    //        }
+    //        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
+    //    }
+    
+    public BlockState getState(Level world, BlockPos pos, BlockState oldState) {
+        return oldState.setValue(UP, canConnectToPipe(world, pos, Direction.UP)).setValue(DOWN, canConnectToPipe(world, pos, Direction.DOWN)).setValue(NORTH, canConnectToPipe(world, pos, Direction.NORTH)).setValue(SOUTH, canConnectToPipe(world, pos, Direction.SOUTH)).setValue(EAST, canConnectToPipe(world, pos, Direction.EAST)).setValue(WEST, canConnectToPipe(world, pos, Direction.WEST));
     }
-
+    
     @Override
     public boolean canConnectToPipe(BlockGetter world, BlockPos pos, Direction facing) {
         BlockEntity te = world.getBlockEntity(pos.relative(facing));
@@ -68,10 +62,10 @@ public class BlockHighPressureFluidPipe extends BlockPipeBase<BlockEntityHighPre
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new BlockEntityHighPressureFluidPipe(pos, state);
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return level.isClientSide? null : ($0, $1, $2, blockEntity) -> ((BlockEntityHighPressureFluidPipe)blockEntity).tick();
+        return level.isClientSide ? null : ($0, $1, $2, blockEntity) -> ((BlockEntityHighPressureFluidPipe) blockEntity).tick();
     }
 }

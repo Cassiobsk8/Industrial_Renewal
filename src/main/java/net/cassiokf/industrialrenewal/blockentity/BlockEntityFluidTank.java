@@ -20,77 +20,71 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 public class BlockEntityFluidTank extends BlockEntityTowerBase<BlockEntityFluidTank> {
-
-
+    
+    
     public static final int CAPACITY = 1000000;
-    private CustomFluidTank tank = new CustomFluidTank(CAPACITY){
+    private static final int MAX_TRANSFER = 1000;
+    private final CustomFluidTank tank = new CustomFluidTank(CAPACITY) {
         @Override
         public void onFluidChange() {
             sync();
             super.onFluidChange();
         }
     };
-    private LazyOptional<FluidTank> tankHandler = LazyOptional.of(()->tank);
-    private static final int MAX_TRANSFER = 1000;
-
+    private final LazyOptional<FluidTank> tankHandler = LazyOptional.of(() -> tank);
     private boolean firstLoad = false;
     private int tick = 0;
-
+    
     private int maxCapcity = 0;
     private int sumCurrent = 0;
-
-    public BlockEntityFluidTank(BlockPos pos, BlockState state){
-        super( ModBlockEntity.FLUID_TANK_TILE.get(), pos, state);
+    
+    public BlockEntityFluidTank(BlockPos pos, BlockState state) {
+        super(ModBlockEntity.FLUID_TANK_TILE.get(), pos, state);
     }
-
+    
     @Override
     public void onLoad() {
         super.onLoad();
     }
-
-    public void setFirstLoad(){
-        if(level == null) return;
-        if(!level.isClientSide && isMaster()){
-            if(isBase()){
-                if (tower == null || tower.isEmpty())
-                    loadTower();
-            }
-            else
-                this.tower = getBase().tower;
+    
+    public void setFirstLoad() {
+        if (level == null) return;
+        if (!level.isClientSide && isMaster()) {
+            if (isBase()) {
+                if (tower == null || tower.isEmpty()) loadTower();
+            } else this.tower = getBase().tower;
         }
     }
-
+    
     @Override
     public boolean instanceOf(BlockEntity tileEntity) {
         return tileEntity instanceof BlockEntityFluidTank;
     }
-
+    
     @Override
-    public void loadTower(){
+    public void loadTower() {
         BlockEntityFluidTank chunk = this;
         tower = new ArrayList<>();
-        while(chunk != null){
-            if(!tower.contains(chunk))
-                tower.add(chunk);
+        while (chunk != null) {
+            if (!tower.contains(chunk)) tower.add(chunk);
             chunk = chunk.getAbove();
         }
     }
-
+    
     @Override
     public void invalidateCaps() {
         tankHandler.invalidate();
         super.invalidateCaps();
     }
-
+    
     public void tick() {
-        if(level == null) return;
-        if (!level.isClientSide && isMaster())
-        {
+        if (level == null) return;
+        if (!level.isClientSide && isMaster()) {
             if (!firstLoad) {
                 firstLoad = true;
                 setFirstLoad();
             }
-            if(isBase()){
+            if (isBase()) {
                 if (tank.getFluidAmount() > 0) {
                     BlockEntity te = level.getBlockEntity(worldPosition.below().relative(getMasterFacing().getOpposite(), 2));
                     if (te != null) {
@@ -100,11 +94,10 @@ public class BlockEntityFluidTank extends BlockEntityTowerBase<BlockEntityFluidT
                         }
                     }
                 }
-            }
-            else if(isTop()){
+            } else if (isTop()) {
                 passFluidDown();
             }
-            if(tick >= 5){
+            if (tick >= 5) {
                 tick = 0;
                 //Utils.debug("tank", worldPosition, tank.getFluidAmount());
                 maxCapcity = getSumMaxFluid();
@@ -114,79 +107,72 @@ public class BlockEntityFluidTank extends BlockEntityTowerBase<BlockEntityFluidT
             tick++;
         }
     }
-
-    public void passFluidDown(){
-        if(getBase().tower != null && !getBase().tower.isEmpty()) {
-            for(BlockEntityTowerBase<BlockEntityFluidTank> TE : getBase().tower){
+    
+    public void passFluidDown() {
+        if (getBase().tower != null && !getBase().tower.isEmpty()) {
+            for (BlockEntityTowerBase<BlockEntityFluidTank> TE : getBase().tower) {
                 //Utils.debug("TE", TE);
-                if(TE instanceof BlockEntityFluidTank bankTE){
-
+                if (TE instanceof BlockEntityFluidTank bankTE) {
+                    
                     //Utils.debug("condition 3", bankTE, !bankTE.isFull());
-                    if(!bankTE.isFull() && bankTE != this) {
+                    if (!bankTE.isFull() && bankTE != this) {
                         //Utils.debug("condition 3", bankTE);
                         this.tank.drainInternal(bankTE.tank.fill(this.tank.drainInternal(MAX_TRANSFER, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
                         break;
-                    }
-                    else continue;
+                    } else continue;
                 }
             }
         }
     }
-
-    public boolean isFull(){
+    
+    public boolean isFull() {
         return tank.getFluidAmount() >= tank.getCapacity();
     }
-
-    public int getSumMaxFluid(){
+    
+    public int getSumMaxFluid() {
         //int max = 0;
-        if(tower == null || tower.isEmpty())
-            return 0;
-
-        int max = tower.stream().map(te -> (((BlockEntityFluidTank) te).tank.getCapacity())).reduce(0, Integer::sum);
+        if (tower == null || tower.isEmpty()) return 0;
+        
+        int max = tower.stream().map(te -> (te.tank.getCapacity())).reduce(0, Integer::sum);
         return max;
     }
-
-    public int getSumCurrentFluid(){
+    
+    public int getSumCurrentFluid() {
         //int current = 0;
-        if(tower == null || tower.isEmpty())
-            return 0;
-
-        int current = tower.stream().map(te -> (((BlockEntityFluidTank) te).tank.getFluidAmount())).reduce(0, Integer::sum);
+        if (tower == null || tower.isEmpty()) return 0;
+        
+        int current = tower.stream().map(te -> (te.tank.getFluidAmount())).reduce(0, Integer::sum);
         return current;
     }
-
-    public String getFluidName()
-    {
+    
+    public String getFluidName() {
         String name = tank.getFluidAmount() > 0 ? tank.getFluid().getDisplayName().getString() : "Empty";
         return name + ": " + Utils.formatEnergyString((sumCurrent / 1000)).replace("FE", "B") + " / " + Utils.formatEnergyString((maxCapcity / 1000)).replace("FE", "B");
     }
-
-    public float getFluidAngle()
-    {
+    
+    public float getFluidAngle() {
         return Utils.normalizeClamped(sumCurrent, 0, maxCapcity) * 180f;
     }
-
-
+    
+    
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         Direction downFace = getMasterFacing().getOpposite();
         BlockEntityFluidTank master = getMaster();
-
-        if (side == null)
-            return super.getCapability(cap, side);
-
-        if (cap == ForgeCapabilities.FLUID_HANDLER)
-        {
+        
+        if (side == null) return super.getCapability(cap, side);
+        
+        if (cap == ForgeCapabilities.FLUID_HANDLER) {
             if (side == downFace && this.worldPosition.equals(master.worldPosition.below().relative(downFace)))
                 return getMaster().tankHandler.cast();
             if (side == Direction.UP && this.worldPosition.equals(master.worldPosition.above()))
                 return getMaster().tankHandler.cast();
         }
-
+        
         return super.getCapability(cap, side);
     }
-
+    
     @Override
     protected void saveAdditional(CompoundTag compoundTag) {
         compoundTag.putInt("max", maxCapcity);
@@ -194,7 +180,7 @@ public class BlockEntityFluidTank extends BlockEntityTowerBase<BlockEntityFluidT
         tank.writeToNBT(compoundTag);
         super.saveAdditional(compoundTag);
     }
-
+    
     @Override
     public void load(CompoundTag compoundTag) {
         maxCapcity = compoundTag.getInt("max");

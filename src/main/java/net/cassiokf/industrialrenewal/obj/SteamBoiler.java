@@ -22,58 +22,50 @@ import org.jetbrains.annotations.NotNull;
 
 public class SteamBoiler {
     public static final String steamName = "Steam";//I18n.format(FluidInit.STEAM.getUnlocalizedName());
+    public static final FluidStack steamStack = new FluidStack(ModFluids.STEAM.get(), Utils.BUCKET_VOLUME);
+    private static final int maxHeat = 32000;
+    private static final int waterPtick = 76;//IRConfig.MainConfig.Main.steamBoilerWaterPerTick;
     private final BlockEntitySyncable tiedTE;
-    private final CustomFluidTank waterTank = new CustomFluidTank(32000)
-    {
+    private final CustomFluidTank waterTank = new CustomFluidTank(32000) {
         @Override
         public boolean isFluidValid(FluidStack stack) {
             return stack != null;// && IRConfig.waterTypesContains(fluid.getFluid().getName());
         }
         
         @Override
-        public boolean canDrain()
-        {
+        public boolean canDrain() {
             return false;
         }
         
         @Override
-        public void onContentsChanged()
-        {
+        public void onContentsChanged() {
             SteamBoiler.this.tiedTE.sync();
         }
     };
-    private final CustomFluidTank steamTank = new CustomFluidTank(320000)
-    {
+    private final CustomFluidTank steamTank = new CustomFluidTank(320000) {
         @Override
-        public boolean canFill()
-        {
+        public boolean canFill() {
             return false;
         }
         
         @Override
-        public boolean canDrain()
-        {
+        public boolean canDrain() {
             return false;
         }
         
         @Override
-        public void onContentsChanged()
-        {
+        public void onContentsChanged() {
             SteamBoiler.this.tiedTE.sync();
         }
     };
-    private static final int maxHeat = 32000;
-    public static final FluidStack steamStack = new FluidStack(ModFluids.STEAM.get(), Utils.BUCKET_VOLUME);
     private boolean useSolid;
     private int amountPerTick;
     private int heat;
     private int oldHeat;
-    private static final int waterPtick = 76;//IRConfig.MainConfig.Main.steamBoilerWaterPerTick;
     private int fuelTime;
     private String fuelName = "";
     private int maxFuelTime;
-    private final CustomFluidTank fuelTank = new CustomFluidTank(32000)
-    {
+    private final CustomFluidTank fuelTank = new CustomFluidTank(32000) {
         @Override
         public boolean isFluidValid(FluidStack stack) {
             return stack != null;// && IRConfig.MainConfig.Main.fluidFuel.containsKey(fluid.getFluid().getName());
@@ -84,24 +76,30 @@ public class SteamBoiler {
             return SteamBoiler.this.updateLiquidFuel(resource, action);
         }
     };
-//    private final CustomItemStackHandler solidFuelInv = new CustomItemStackHandler(1)
-//    {
-//        @Override
-//        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-//            if (stack.isEmpty()) return false;
-//            return FurnaceBlockEntity.isFuel(stack);
-//        }
-//
-//        @Override
-//        public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-//            return SteamBoiler.this.updateSolidFuel(stack, simulate);
-//        }
-//    };
+    //    private final CustomItemStackHandler solidFuelInv = new CustomItemStackHandler(1)
+    //    {
+    //        @Override
+    //        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+    //            if (stack.isEmpty()) return false;
+    //            return FurnaceBlockEntity.isFuel(stack);
+    //        }
+    //
+    //        @Override
+    //        public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+    //            return SteamBoiler.this.updateSolidFuel(stack, simulate);
+    //        }
+    //    };
     public LazyOptional<IItemHandler> solidFuelInv = LazyOptional.of(this::createFuelInv);
-    private IItemHandler createFuelInv()
-    {
-        return new CustomItemStackHandler(1)
-        {
+    private int steamGenerated;
+    private int oldFuelTime;
+    public SteamBoiler(BlockEntitySyncable tiedTE, BoilerType useSolid, int amountPerTick) {
+        this.tiedTE = tiedTE;
+        this.useSolid = useSolid == BoilerType.Solid;
+        this.amountPerTick = amountPerTick;
+    }
+    
+    private IItemHandler createFuelInv() {
+        return new CustomItemStackHandler(1) {
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if (stack.isEmpty()) return false;
@@ -114,28 +112,17 @@ public class SteamBoiler {
             }
         }.setBlockEntity(tiedTE);
     }
-    private int steamGenerated;
-    private int oldFuelTime;
     
-    public SteamBoiler(BlockEntitySyncable tiedTE, BoilerType useSolid, int amountPerTick)
-    {
-        this.tiedTE = tiedTE;
-        this.useSolid = useSolid == BoilerType.Solid;
-        this.amountPerTick = amountPerTick;
-    }
-    
-    public boolean canRun(){
+    public boolean canRun() {
         return (fuelTime >= amountPerTick && !waterTank.isEmpty());
     }
     
-    public SteamBoiler setWaterTankCapacity(int amount)
-    {
+    public SteamBoiler setWaterTankCapacity(int amount) {
         waterTank.setCapacity(amount);
         return this;
     }
     
-    public void onTick()
-    {
+    public void onTick() {
         if (tiedTE.getLevel().isClientSide()) return;
         
         updateHeat();
@@ -148,13 +135,11 @@ public class SteamBoiler {
         outPutSteam();
         
         //IF no heat turn steam to water
-        if (this.steamTank.getFluidAmount() > 0 && heat < 9000)
-        {
+        if (this.steamTank.getFluidAmount() > 0 && heat < 9000) {
             steamTank.drainInternal(10, IFluidHandler.FluidAction.EXECUTE);
         }
         
-        if (oldHeat != heat || fuelTime != oldFuelTime)
-        {
+        if (oldHeat != heat || fuelTime != oldFuelTime) {
             oldHeat = heat;
             oldFuelTime = fuelTime;
             tiedTE.sync();
@@ -181,31 +166,25 @@ public class SteamBoiler {
         return (CustomItemStackHandler) solidFuelInv.orElse(null);
     }
     
-    private void generateSteam()
-    {
-        if (heat >= 10000 && waterTank.getFluidAmount() >= waterPtick && steamTank.getFluidAmount() < steamTank.getCapacity())
-        {
+    private void generateSteam() {
+        if (heat >= 10000 && waterTank.getFluidAmount() >= waterPtick && steamTank.getFluidAmount() < steamTank.getCapacity()) {
             float factor = Utils.normalizeClamped(heat, 10000, maxHeat);
             int amount = Math.round(waterPtick * factor);
             waterTank.drainInternal(amount, IFluidHandler.FluidAction.EXECUTE);
             steamStack.setAmount(amount * 5);
             steamGenerated = steamTank.fillInternal(steamStack, IFluidHandler.FluidAction.EXECUTE);
             heat -= 4;
-        }
-        else
-        {
+        } else {
             steamGenerated = 0;
             heat -= 2;
         }
     }
     
-    public void outPutSteam()
-    {
+    public void outPutSteam() {
         if (tiedTE.getLevel().isClientSide() || steamTank.getFluidAmount() <= 0) return;
         BlockPos pos = tiedTE.getBlockPos().above(2); //TODO this needs to change
         BlockEntity tileEntity = tiedTE.getLevel().getBlockEntity(pos);
-        if (tileEntity != null && tileEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN).isPresent())
-        {
+        if (tileEntity != null && tileEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN).isPresent()) {
             IFluidHandler upTank = tileEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN).orElse(null);
             if (upTank != null)
                 steamTank.drainInternal(upTank.fill(steamTank.drainInternal(10000, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
@@ -213,10 +192,8 @@ public class SteamBoiler {
         
     }
     
-    public void setType(BoilerType type, int amountPerTick)
-    {
-        switch (type)
-        {
+    public void setType(BoilerType type, int amountPerTick) {
+        switch (type) {
             case Solid:
                 useSolid = true;
                 break;
@@ -228,49 +205,39 @@ public class SteamBoiler {
         resetFuelTime();
     }
     
-    public int getFuelTime()
-    {
+    public int getFuelTime() {
         return fuelTime;
     }
     
-    public int getMaxFuelTime()
-    {
+    public int getMaxFuelTime() {
         return maxFuelTime;
     }
     
-    public String getFuelName()
-    {
+    public String getFuelName() {
         return fuelName;
     }
     
-    public int getHeat()
-    {
+    public int getHeat() {
         return heat;
     }
     
-    public int getMaxHeat()
-    {
+    public int getMaxHeat() {
         return maxHeat;
     }
     
-    public int getWaterTankAmount()
-    {
+    public int getWaterTankAmount() {
         return waterTank.getFluidAmount();
     }
     
-    public void dropItemsOnGround(BlockPos pos)
-    {
+    public void dropItemsOnGround(BlockPos pos) {
         Utils.dropInventoryItems(tiedTE.getLevel(), pos, getSolidFuelInv());
     }
     
-    private ItemStack updateSolidFuel(ItemStack stack, boolean simulate)
-    {
+    private ItemStack updateSolidFuel(ItemStack stack, boolean simulate) {
         if (!useSolid || fuelTime >= amountPerTick) return stack;
         int fuel = net.minecraftforge.common.ForgeHooks.getBurnTime(stack, RecipeType.BLASTING);
-        if (fuel > 0)
-        {
-            if (!simulate)
-            {
+        if (fuel > 0) {
+            if (!simulate) {
                 fuelTime = fuel;
                 maxFuelTime = fuelTime;
                 fuelName = stack.getDisplayName().getString();
@@ -283,45 +250,34 @@ public class SteamBoiler {
         return stack;
     }
     
-    private void updateHeat()
-    {
-        if (fuelTime >= amountPerTick)
-        {
+    private void updateHeat() {
+        if (fuelTime >= amountPerTick) {
             heat += 8;
             fuelTime -= amountPerTick;
-        }
-        else if (fuelTime > 0)
-        {
+        } else if (fuelTime > 0) {
             resetFuelTime();
-        }
-        else heat -= 2;
+        } else heat -= 2;
     }
     
-    public void coolDown()
-    {
+    public void coolDown() {
         if (tiedTE.getLevel().isClientSide()) return;
-        if (this.steamTank.getFluidAmount() > 0 && heat < 9000)
-        {
+        if (this.steamTank.getFluidAmount() > 0 && heat < 9000) {
             this.steamTank.drainInternal(10, IFluidHandler.FluidAction.EXECUTE);
         }
-        if (heat > 2420)
-        {
+        if (heat > 2420) {
             heat -= 6;
             tiedTE.sync();
         }
     }
     
-    private int updateLiquidFuel(FluidStack resource, IFluidHandler.FluidAction action)
-    {
+    private int updateLiquidFuel(FluidStack resource, IFluidHandler.FluidAction action) {
         if (useSolid) return 0;
         if (fuelTime > 0) return 0;
         int fuel = 1000;//IRConfig.MainConfig.Main.fluidFuel.get(resource.getFluid().getFluidType().getDescription()) != null ? IRConfig.MainConfig.Main.fluidFuel.get(resource.getFluid().getFluidType().getDescription()) : 0;
-        if (fuel > 0)
-        {
+        if (fuel > 0) {
             int amount = Math.min(Utils.BUCKET_VOLUME, resource.getAmount());
             float norm = Utils.normalizeClamped(amount, 0, Utils.BUCKET_VOLUME);
-            if (action.equals(IFluidHandler.FluidAction.EXECUTE))
-            {
+            if (action.equals(IFluidHandler.FluidAction.EXECUTE)) {
                 fuelTime = (int) (fuel * norm);
                 maxFuelTime = fuelTime;
                 fuelName = resource.getDisplayName().getString();
@@ -331,15 +287,12 @@ public class SteamBoiler {
         return 0;
     }
     
-    public void resetFuelTime()
-    {
+    public void resetFuelTime() {
         fuelTime = 0;
     }
     
     
-    
-    public void saveBoiler(CompoundTag compound)
-    {
+    public void saveBoiler(CompoundTag compound) {
         CompoundTag newTag = new CompoundTag();
         newTag.putInt("fuelTime", fuelTime);
         newTag.putInt("maxFuelTime", maxFuelTime);
@@ -353,8 +306,7 @@ public class SteamBoiler {
         compound.put("boiler", newTag);
     }
     
-    public void loadBoiler(CompoundTag compound)
-    {
+    public void loadBoiler(CompoundTag compound) {
         CompoundTag nbt = compound.getCompound("boiler");
         fuelTime = nbt.getInt("fuelTime");
         maxFuelTime = nbt.getInt("maxFuelTime");
@@ -367,24 +319,20 @@ public class SteamBoiler {
         waterTank.readFromNBT(nbt.getCompound("water"));
     }
     
-    public boolean isBurning()
-    {
+    public boolean isBurning() {
         return fuelTime > 0;
     }
     
     //FOR RENDER
-    public String getWaterText()
-    {
+    public String getWaterText() {
         return Utils.WATER_NAME;
     }
     
-    public String getSteamText()
-    {
+    public String getSteamText() {
         return steamName;
     }
     
-    public String getFuelText()
-    {
+    public String getFuelText() {
         //return fuelTime > 0 ? fuelName : "No Fuel";
         if (useSolid) {
             IItemHandler handler = solidFuelInv.orElse(null);
@@ -397,9 +345,8 @@ public class SteamBoiler {
         //return "NULL Fuel";
     }
     
-    public String getHeatText()
-    {
-        return (int)Utils.getConvertedTemperature(heat / 100F) + " " + Utils.getTemperatureUnit();
+    public String getHeatText() {
+        return (int) Utils.getConvertedTemperature(heat / 100F) + " " + Utils.getTemperatureUnit();
     }
     
     public float getFuelFill() //0 ~ 180
@@ -414,8 +361,10 @@ public class SteamBoiler {
     
     public float GetSteamFill() //0 ~ 180
     {
-        if(steamGenerated == 0 && steamTank.getFluidAmount() == 0) return 0f; //When the boiler generates no steam, "no pressure".
-        else return 45f + Utils.normalizeClamped(steamTank.getFluidAmount(), 0, steamTank.getCapacity()) * 135f; //Yellow zone when the boiler at least generates some steam, "steam pressure" goes up when the steam tank fills up.
+        if (steamGenerated == 0 && steamTank.getFluidAmount() == 0)
+            return 0f; //When the boiler generates no steam, "no pressure".
+        else
+            return 45f + Utils.normalizeClamped(steamTank.getFluidAmount(), 0, steamTank.getCapacity()) * 135f; //Yellow zone when the boiler at least generates some steam, "steam pressure" goes up when the steam tank fills up.
     }
     
     public float getHeatFill() //0 ~ 140
@@ -423,9 +372,7 @@ public class SteamBoiler {
         return Utils.normalizeClamped(getHeat(), 0, getMaxHeat()) * 140f;
     }
     
-    public enum BoilerType
-    {
-        Solid,
-        Liquid
+    public enum BoilerType {
+        Solid, Liquid
     }
 }

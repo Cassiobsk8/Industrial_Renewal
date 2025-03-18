@@ -21,15 +21,14 @@ public class BlockLathe extends Block3x2x2Base<BlockEntityLathe> implements Enti
     public BlockLathe(Properties properties) {
         super(properties);
     }
-
+    
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
-        if(!worldIn.isClientSide)
-        {
+        if (!worldIn.isClientSide) {
             BlockEntityLathe latheMaster = ((BlockEntityLathe) worldIn.getBlockEntity(pos)).getMaster();
             BlockPos masterPos = latheMaster.getBlockPos();
-
-            if(latheMaster != null) {
+            
+            if (latheMaster != null) {
                 //NetworkHooks.openGui(((ServerPlayer)player), latheMaster, masterPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
@@ -37,16 +36,16 @@ public class BlockLathe extends Block3x2x2Base<BlockEntityLathe> implements Enti
         }
         return InteractionResult.sidedSuccess(worldIn.isClientSide());
     }
-
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return ModBlockEntity.LATHE_TILE.get().create(pos, state);
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return ($0, $1, $2, blockEntity) -> ((BlockEntityLathe)blockEntity).tick();
+        return ($0, $1, $2, blockEntity) -> ((BlockEntityLathe) blockEntity).tick();
     }
 }

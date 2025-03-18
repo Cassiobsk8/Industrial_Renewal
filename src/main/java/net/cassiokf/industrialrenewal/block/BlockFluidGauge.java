@@ -18,9 +18,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 
-public class BlockFluidGauge extends BlockAbstractFacing implements EntityBlock
-{
-    public static final VoxelShape GAUGE_SHAPE = Block.box(4,1,4,12,12,12);
+public class BlockFluidGauge extends BlockAbstractFacing implements EntityBlock {
+    public static final VoxelShape GAUGE_SHAPE = Block.box(4, 1, 4, 12, 12, 12);
     
     public static final DirectionProperty GAUGE = DirectionProperty.create("gauge", Direction.Plane.HORIZONTAL);
     
@@ -45,8 +44,7 @@ public class BlockFluidGauge extends BlockAbstractFacing implements EntityBlock
     public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
         super.onNeighborChange(state, level, pos, neighbor);
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof BlockEntityFluidGauge befg
-                && neighbor.asLong() == pos.relative(state.getValue(FACING)).asLong()) {
+        if (be instanceof BlockEntityFluidGauge befg && neighbor.asLong() == pos.relative(state.getValue(FACING)).asLong()) {
             befg.forceCheck();
         }
     }

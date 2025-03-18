@@ -19,10 +19,6 @@ import javax.annotation.Nullable;
 public class BlockEntityDamOutlet extends BlockEntitySyncable {
     public static final int MAX_PROCESSING = 10000;
     private boolean hasFlow = false;
-    private boolean removed = true;
-    private Direction blockFacing;
-    private int tick;
-    
     private final CustomPressureFluidTank tank = new CustomPressureFluidTank(MAX_PROCESSING) {
         @Override
         public int receiveCompressedFluid(int amount, int y, FluidAction action) {
@@ -39,6 +35,9 @@ public class BlockEntityDamOutlet extends BlockEntitySyncable {
             return false;
         }
     };
+    private boolean removed = true;
+    private Direction blockFacing;
+    private int tick;
     
     public BlockEntityDamOutlet(BlockPos pos, BlockState state) {
         super(ModBlockEntity.DAM_OUTLET.get(), pos, state);
@@ -64,7 +63,7 @@ public class BlockEntityDamOutlet extends BlockEntitySyncable {
                 }
                 hasFlow = false;
             }
-            tick ++;
+            tick++;
         }
     }
     

@@ -27,7 +27,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.STEELBLOCK.get());
         dropSelf(ModBlocks.FRAME.get());
         //            dropSelf(ModBlocks.CONCRETEWALL.get());
-//        //            dropSelf(ModBlocks.LOCKER.get());
+        //        //            dropSelf(ModBlocks.LOCKER.get());
         dropSelf(ModBlocks.SOLAR_PANEL.get());
         dropSelf(ModBlocks.ENERGYCABLE_HV.get());
         dropSelf(ModBlocks.ENERGYCABLE_MV.get());
@@ -39,7 +39,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.PORTABLE_GENERATOR.get());
         dropSelf(ModBlocks.FLUID_PIPE.get());
         dropSelf(ModBlocks.FLUID_PIPE_LARGE.get());
-
+        
         dropSelf(ModBlocks.BRACE.get());
         dropSelf(ModBlocks.BRACE_STEEL.get());
         dropSelf(ModBlocks.RAZOR_WIRE.get());
@@ -63,7 +63,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.COLUMN_STEEL.get());
         dropSelf(ModBlocks.PILLAR.get());
         dropSelf(ModBlocks.PILLAR_STEEL.get());
-//        //
+        //        //
         dropSelf(ModBlocks.LIGHT.get());
         dropSelf(ModBlocks.FLUORESCENT.get());
         dropSelf(ModBlocks.DAM_OUTLET.get());
@@ -75,10 +75,10 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.CONVEYOR_EXPRESS.get());
         //            dropSelf(ModBlocks.CONVEYOR_INSERTER.get());
         //            dropSelf(ModBlocks.CONVEYOR_HOPPER.get());
-//        dropSelf(ModBlocks.BOOSTER_RAIL.get());
+        //        dropSelf(ModBlocks.BOOSTER_RAIL.get());
         dropSelf(ModBlocks.INDUSTRIAL_FLOOR.get());
         dropSelf(ModBlocks.SPANEL_FRAME.get());
-
+        
         dropSelf(ModBlocks.HV_ISOLATOR.get());
         dropSelf(ModBlocks.FLUID_VALVE.get());
         dropSelf(ModBlocks.ENERGY_SWITCH.get());
@@ -102,10 +102,10 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.ENERGY_LEVEL.get());
         dropSelf(ModBlocks.FLUID_GAUGE.get());
         dropSelf(ModFluids.STEAM_BLOCK.get());
-
+        
         //super.addTables();
     }
-
+    
     @Override
     protected Iterable<Block> getKnownBlocks() {
         return ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator;

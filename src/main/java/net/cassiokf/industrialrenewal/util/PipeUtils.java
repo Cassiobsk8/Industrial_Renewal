@@ -44,7 +44,7 @@ public class PipeUtils {
         int validOutputs = 0;
         
         Set<CapPercentage> percentageMap = getEnergyDistributionPercentage(machine, amount, maxEnergyCanTransport);
-    
+        
         for (CapPercentage entry : percentageMap) {
             float percentage = entry.getPercentage();
             IEnergyStorage energyStorage = entry.getEnergyStorage();
@@ -57,7 +57,7 @@ public class PipeUtils {
                 validOutputs++;
             }
         }
-    
+        
         return new CapResult(out, validOutputs);
     }
     
@@ -121,7 +121,7 @@ public class PipeUtils {
         return new CapResult(out, validOutputs);
     }
     
-    private static Set<CapPercentage> getFluidDistributionPercentage(final BlockEntityMultiBlocksTube machine,  final FluidStack resource, final int maxFluidCanTransport) {
+    private static Set<CapPercentage> getFluidDistributionPercentage(final BlockEntityMultiBlocksTube machine, final FluidStack resource, final int maxFluidCanTransport) {
         int validOutputs = 0;
         int totalFluidUsed = 0;
         Map<BlockEntity, Direction> mapPosSet = machine.getReceiversContainers();

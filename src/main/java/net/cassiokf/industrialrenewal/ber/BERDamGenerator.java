@@ -6,16 +6,15 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 
-public class BERDamGenerator extends BERBase<BlockEntityDamGenerator>{
-
+public class BERDamGenerator extends BERBase<BlockEntityDamGenerator> {
+    
     public BERDamGenerator(BlockEntityRendererProvider.Context context) {
         super(context);
     }
-
+    
     @Override
     public void render(BlockEntityDamGenerator blockEntity, float partialTick, PoseStack stack, MultiBufferSource buffer, int combinedOverlay, int packedLight) {
-        if (blockEntity!=null && blockEntity.isMaster())
-        {
+        if (blockEntity != null && blockEntity.isMaster()) {
             double x = 0, y = 0, z = 0;
             Direction facing = blockEntity.getMasterFacing();
             //GENERATION

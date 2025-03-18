@@ -24,7 +24,8 @@ import javax.annotation.Nullable;
 public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<BlockEntityWindTurbinePillar> implements ICapabilityProvider {
     
     private static final Direction[] FACES_TO_CHECK = new Direction[]{Direction.UP, Direction.DOWN};
-    private static final LazyOptional<IEnergyStorage> dummyEnergy = LazyOptional.of(BlockEntityWindTurbinePillar::createEnergyDummy);    private final CustomEnergyStorage energyStorage = new CustomEnergyStorage(1024, 1024, 1024) {
+    private static final LazyOptional<IEnergyStorage> dummyEnergy = LazyOptional.of(BlockEntityWindTurbinePillar::createEnergyDummy);
+    private int potentialEnergy;    private final CustomEnergyStorage energyStorage = new CustomEnergyStorage(1024, 1024, 1024) {
         @Override
         public void onEnergyChange() {
             BlockEntityWindTurbinePillar.this.setChanged();
@@ -35,15 +36,13 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
             return BlockEntityWindTurbinePillar.this.onEnergyReceived(maxReceive, simulate);
         }
     };
-    private int potentialEnergy;    private final LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyStorage);
     private int oldPotential = -1;
-    private int averageEnergy;
+    private int averageEnergy;    private final LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyStorage);
     private int oldEnergy;
     private float amount;//For Lerp
     private int tick;
     private BlockPos turbinePos;
     private boolean isBase;
-    
     public BlockEntityWindTurbinePillar(BlockPos pos, BlockState state) {
         super(ModBlockEntity.TURBINE_PILLAR_TILE.get(), pos, state);
     }
@@ -213,5 +212,9 @@ public class BlockEntityWindTurbinePillar extends BlockEntityMultiBlocksTube<Blo
         compound.putInt("potential", potentialEnergy);
         super.saveAdditional(compound);
     }
+    
+
+    
+
 }
 

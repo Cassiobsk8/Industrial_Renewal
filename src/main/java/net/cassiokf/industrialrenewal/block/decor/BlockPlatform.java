@@ -28,49 +28,43 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 
 public class BlockPlatform extends BlockAbstractSixWayConnections {
-
+    
     protected static final VoxelShape BASE_AABB = Block.box(0, 0.0D, 0, 16, 16, 16);
     protected static final VoxelShape NORTH_AABB = Block.box(0, 16, 0, 16, 32, 0.5D);
     protected static final VoxelShape SOUTH_AABB = Block.box(0, 16, 15.5D, 16, 32, 16);
     protected static final VoxelShape WEST_AABB = Block.box(0, 16, 0.0D, 0.03125D, 32, 16);
     protected static final VoxelShape EAST_AABB = Block.box(15.5D, 16, 0, 16, 32, 16);
-
-    public BlockPlatform()
-    {
+    
+    public BlockPlatform() {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().strength(1f), 16, 16);
     }
-
+    
     @Override
     public boolean canBeReplaced(BlockState blockState, BlockPlaceContext context) {
-        if(!context.getPlayer().isCrouching())
-            return context.getItemInHand().getItem() == this.asItem();
+        if (!context.getPlayer().isCrouching()) return context.getItemInHand().getItem() == this.asItem();
         return super.canBeReplaced(blockState, context);
     }
-
+    
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState state = defaultBlockState();
-        for (Direction direction : Direction.values())
-        {
+        for (Direction direction : Direction.values()) {
             state = state.setValue(getPropertyBasedOnDirection(direction), canConnectTo(context.getLevel(), context.getClickedPos(), direction));
         }
         return state;
     }
-
+    
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
-    {
-        if(!worldIn.isClientSide){
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        if (!worldIn.isClientSide) {
             if (handIn == InteractionHand.MAIN_HAND) {
                 Item playerItem = player.getMainHandItem().getItem();
                 if (playerItem.equals(ModItems.SCREW_DRIVER.get())) {
                     Vec3 hitQuad = hit.getLocation().subtract(Vec3.atCenterOf(pos));
-                    if (hit.getDirection() == Direction.UP)
-                        state = state.cycle(quadToDir(hitQuad));
-                    else
-                        state = state.cycle(getBooleanProperty(hit.getDirection()));
-
+                    if (hit.getDirection() == Direction.UP) state = state.cycle(quadToDir(hitQuad));
+                    else state = state.cycle(getBooleanProperty(hit.getDirection()));
+                    
                     worldIn.setBlock(pos, state, 2);
                     return InteractionResult.SUCCESS;
                 }
@@ -78,31 +72,33 @@ public class BlockPlatform extends BlockAbstractSixWayConnections {
         }
         return InteractionResult.PASS;
     }
-
-    public BooleanProperty getBooleanProperty(Direction face){
-        switch (face){
+    
+    public BooleanProperty getBooleanProperty(Direction face) {
+        switch (face) {
             default:
-            case NORTH: return NORTH;
-            case SOUTH: return SOUTH;
-            case EAST: return EAST;
-            case WEST: return WEST;
-            case UP: return UP;
-            case DOWN: return DOWN;
+            case NORTH:
+                return NORTH;
+            case SOUTH:
+                return SOUTH;
+            case EAST:
+                return EAST;
+            case WEST:
+                return WEST;
+            case UP:
+                return UP;
+            case DOWN:
+                return DOWN;
         }
     }
-
-    public BooleanProperty quadToDir(Vec3 vector3d){
-        if(vector3d.z > vector3d.x && vector3d.z > -vector3d.x)
-            return SOUTH;
-        if(vector3d.z < vector3d.x && vector3d.z < -vector3d.x)
-            return NORTH;
-        if(vector3d.z > vector3d.x && vector3d.z < -vector3d.x)
-            return WEST;
-        if(vector3d.z < vector3d.x && vector3d.z > -vector3d.x)
-            return EAST;
+    
+    public BooleanProperty quadToDir(Vec3 vector3d) {
+        if (vector3d.z > vector3d.x && vector3d.z > -vector3d.x) return SOUTH;
+        if (vector3d.z < vector3d.x && vector3d.z < -vector3d.x) return NORTH;
+        if (vector3d.z > vector3d.x && vector3d.z < -vector3d.x) return WEST;
+        if (vector3d.z < vector3d.x && vector3d.z > -vector3d.x) return EAST;
         return NORTH;
     }
-
+    
     @Override
     public boolean canConnectTo(Level worldIn, BlockPos currentPos, Direction neighborDirection) {
         BlockPos neighborPos = currentPos.relative(neighborDirection);
@@ -110,69 +106,50 @@ public class BlockPlatform extends BlockAbstractSixWayConnections {
         Block nb = neighborState.getBlock();
         BlockState ub = worldIn.getBlockState(currentPos.above());
         BlockState nub = worldIn.getBlockState(neighborPos.above());
-        if (neighborDirection != Direction.UP && neighborDirection != Direction.DOWN)
-        {
-            return nb instanceof BlockPlatform
-                    || neighborState.isFaceSturdy(worldIn, neighborPos, neighborDirection.getOpposite())
-                    || nb instanceof BaseRailBlock
-                    || (nb instanceof BlockCatwalkStair && neighborState.getValue(BlockCatwalkStair.FACING) == neighborDirection.getOpposite())
-                    || (ub.getBlock() instanceof BlockCatwalkGate && neighborDirection == worldIn.getBlockState(currentPos.above()).getValue(BlockCatwalkGate.FACING))
-                    || (nub.getBlock() instanceof BlockCatwalkStair && worldIn.getBlockState(neighborPos.above()).getValue(BlockCatwalkStair.FACING) == neighborDirection);
+        if (neighborDirection != Direction.UP && neighborDirection != Direction.DOWN) {
+            return nb instanceof BlockPlatform || neighborState.isFaceSturdy(worldIn, neighborPos, neighborDirection.getOpposite()) || nb instanceof BaseRailBlock || (nb instanceof BlockCatwalkStair && neighborState.getValue(BlockCatwalkStair.FACING) == neighborDirection.getOpposite()) || (ub.getBlock() instanceof BlockCatwalkGate && neighborDirection == worldIn.getBlockState(currentPos.above()).getValue(BlockCatwalkGate.FACING)) || (nub.getBlock() instanceof BlockCatwalkStair && worldIn.getBlockState(neighborPos.above()).getValue(BlockCatwalkStair.FACING) == neighborDirection);
         }
-        if (neighborDirection == Direction.DOWN)
-        {
+        if (neighborDirection == Direction.DOWN) {
             return Block.canSupportRigidBlock(worldIn, neighborPos)//neighborState.isSolid()
                     //|| nb instanceof BlockBrace
-                    || nb instanceof BlockPlatform
-                    || nb instanceof BlockPillar
-                    || nb instanceof BlockColumn;
+                    || nb instanceof BlockPlatform || nb instanceof BlockPillar || nb instanceof BlockColumn;
         }
-        return neighborState.isFaceSturdy(worldIn, neighborPos, neighborDirection.getOpposite())
-                || nb instanceof BlockPlatform
-                || nb instanceof BlockPillar;
+        return neighborState.isFaceSturdy(worldIn, neighborPos, neighborDirection.getOpposite()) || nb instanceof BlockPlatform || nb instanceof BlockPillar;
     }
+    
     @Override
-    public boolean collisionExtendsVertically(BlockState state, BlockGetter world, BlockPos pos, Entity collidingEntity)
-    {
+    public boolean collisionExtendsVertically(BlockState state, BlockGetter world, BlockPos pos, Entity collidingEntity) {
         return true;
     }
-
+    
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
-    {
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return Block.box(0, 0, 0, 16, 16, 16);
     }
-
+    
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
-    {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         VoxelShape finalShape = BASE_AABB;
-        if (!isConnected(state, UP))
-        {
-            if (!isConnected(state, NORTH))
-            {
+        if (!isConnected(state, UP)) {
+            if (!isConnected(state, NORTH)) {
                 finalShape = Shapes.or(finalShape, NORTH_AABB);
             }
-            if (!isConnected(state, SOUTH))
-            {
+            if (!isConnected(state, SOUTH)) {
                 finalShape = Shapes.or(finalShape, SOUTH_AABB);
             }
-            if (!isConnected(state, WEST))
-            {
+            if (!isConnected(state, WEST)) {
                 finalShape = Shapes.or(finalShape, WEST_AABB);
             }
-            if (!isConnected(state, EAST))
-            {
+            if (!isConnected(state, EAST)) {
                 finalShape = Shapes.or(finalShape, EAST_AABB);
             }
         }
         return finalShape;
     }
-
+    
     @Override
     public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos neighbor, boolean flag) {
-        for (Direction face : Direction.values())
-        {
+        for (Direction face : Direction.values()) {
             state = state.setValue(getPropertyBasedOnDirection(face), canConnectTo(world, pos, face));
         }
         world.setBlock(pos, state, 2);

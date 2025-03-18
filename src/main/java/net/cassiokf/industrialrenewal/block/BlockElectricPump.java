@@ -25,38 +25,36 @@ import org.jetbrains.annotations.Nullable;
 public class BlockElectricPump extends BlockAbstractHorizontalFacing implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final IntegerProperty INDEX = IntegerProperty.create("index", 0, 1);
-
+    
     public BlockElectricPump(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH).setValue(INDEX, 1));
     }
-
+    
     @Override
     public @org.jetbrains.annotations.Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         Level world = context.getLevel();
         BlockPos pos = context.getClickedPos();
-        if(world.getBlockState(pos.relative(context.getHorizontalDirection())).canBeReplaced())
-            return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection())
-                    .setValue(INDEX, 0);
+        if (world.getBlockState(pos.relative(context.getHorizontalDirection())).canBeReplaced())
+            return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection()).setValue(INDEX, 0);
         return null;
-//        return super.getStateForPlacement(context);
+        //        return super.getStateForPlacement(context);
     }
-
+    
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, @org.jetbrains.annotations.Nullable LivingEntity livingEntity, ItemStack itemStack) {
         super.setPlacedBy(world, pos, state, livingEntity, itemStack);
         if (state.getValue(INDEX) == 0)
             world.setBlockAndUpdate(pos.relative(state.getValue(FACING)), state.setValue(INDEX, 1));
     }
-
+    
     @Override
     public void destroy(LevelAccessor world, BlockPos pos, BlockState state) {
         if (world.isClientSide()) {
             super.destroy(world, pos, state);
             return;
         }
-        switch (state.getValue(INDEX))
-        {
+        switch (state.getValue(INDEX)) {
             case 0:
                 if (IsPump(world, pos.relative(state.getValue(FACING))))
                     world.removeBlock(pos.relative(state.getValue(FACING)), false);
@@ -69,27 +67,26 @@ public class BlockElectricPump extends BlockAbstractHorizontalFacing implements 
         popResource((Level) world, pos, new ItemStack(this.asItem()));
         super.destroy(world, pos, state);
     }
-
-    private boolean IsPump(LevelAccessor world, BlockPos pos)
-    {
+    
+    private boolean IsPump(LevelAccessor world, BlockPos pos) {
         return world.getBlockState(pos).getBlock() instanceof BlockElectricPump;
     }
-
+    
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(INDEX);
     }
-
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return ModBlockEntity.ELECTRIC_PUMP_TILE.get().create(pos, state);
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return level.isClientSide? null : ($0, $1, $2, blockEntity) -> ((BlockEntityElectricPump)blockEntity).tick();
+        return level.isClientSide ? null : ($0, $1, $2, blockEntity) -> ((BlockEntityElectricPump) blockEntity).tick();
     }
 }

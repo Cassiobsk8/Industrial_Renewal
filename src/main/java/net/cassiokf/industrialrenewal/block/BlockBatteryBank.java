@@ -26,7 +26,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockBatteryBank extends BlockAbstractHorizontalFacing implements EntityBlock {
-
+    
     public static BooleanProperty NORTH_OUTPUT = BooleanProperty.create("north_out");
     public static BooleanProperty SOUTH_OUTPUT = BooleanProperty.create("south_out");
     public static BooleanProperty EAST_OUTPUT = BooleanProperty.create("east_out");
@@ -34,26 +34,20 @@ public class BlockBatteryBank extends BlockAbstractHorizontalFacing implements E
     public static BooleanProperty UP_OUTPUT = BooleanProperty.create("up_out");
     public static BooleanProperty DOWN_OUTPUT = BooleanProperty.create("down_out");
     
+    public BlockBatteryBank(Properties props) {
+        super(props.noOcclusion());
+    }
+    
+    public BlockBatteryBank() {
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f).noOcclusion().sound(SoundType.METAL).noLootTable());
+        registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(NORTH_OUTPUT, false).setValue(SOUTH_OUTPUT, false).setValue(EAST_OUTPUT, false).setValue(WEST_OUTPUT, false).setValue(UP_OUTPUT, false).setValue(DOWN_OUTPUT, false));
+    }
+    
     @Override
     public Object getRenderPropertiesInternal() {
         return super.getRenderPropertiesInternal();
     }
     
-    public BlockBatteryBank(Properties props) {
-        super(props.noOcclusion());
-    }
-
-    public BlockBatteryBank() {
-        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f).noOcclusion().sound(SoundType.METAL).noLootTable());
-        registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH)
-                .setValue(NORTH_OUTPUT, false)
-                .setValue(SOUTH_OUTPUT, false)
-                .setValue(EAST_OUTPUT, false)
-                .setValue(WEST_OUTPUT, false)
-                .setValue(UP_OUTPUT, false)
-                .setValue(DOWN_OUTPUT, false));
-    }
-
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
@@ -76,27 +70,33 @@ public class BlockBatteryBank extends BlockAbstractHorizontalFacing implements E
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }
     
-    public BooleanProperty toggleOutput(Direction facing){
-        switch (facing){
-            case NORTH: return NORTH_OUTPUT;
-            case SOUTH: return SOUTH_OUTPUT;
-            case EAST: return EAST_OUTPUT;
-            case WEST: return WEST_OUTPUT;
-            case UP: return UP_OUTPUT;
-            case DOWN: return DOWN_OUTPUT;
+    public BooleanProperty toggleOutput(Direction facing) {
+        switch (facing) {
+            case NORTH:
+                return NORTH_OUTPUT;
+            case SOUTH:
+                return SOUTH_OUTPUT;
+            case EAST:
+                return EAST_OUTPUT;
+            case WEST:
+                return WEST_OUTPUT;
+            case UP:
+                return UP_OUTPUT;
+            case DOWN:
+                return DOWN_OUTPUT;
         }
         return NORTH_OUTPUT;
     }
-
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return ModBlockEntity.BATTERY_BANK.get().create(pos, state);
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide? null : ($0, $1, $2, blockEntity) -> ((BlockEntityBatteryBank)blockEntity).tick();
+        return level.isClientSide ? null : ($0, $1, $2, blockEntity) -> ((BlockEntityBatteryBank) blockEntity).tick();
     }
 }

@@ -34,19 +34,12 @@ public class BlockEntityDamIntake extends BlockEntitySyncable {
     
     //private static final Map<BlockPos, BlockPos> WALLS = new HashMap<>();
     
-    public BlockEntityDamIntake(BlockPos pos, BlockState state) {
-        super(ModBlockEntity.DAM_INTAKE.get(), pos, state);
-    }
-    
-    private final List<BlockPos> connectedWalls = new CopyOnWriteArrayList<>();
-    private final List<BlockPos> failBlocks = new CopyOnWriteArrayList<>();
-    private final List<BlockPos> failWaters = new CopyOnWriteArrayList<>();
-    private int waterAmount = -1;
-    private BlockPos neighborPos = null;
-    private int concreteAmount;
-    private boolean firstTick = false;
-    
-    
+    private static final int WIDTH = 13;
+    private static final int HEIGHT = 11;
+    private static final int DEPTH = 10;
+    private static final int MAX_WATER = WIDTH * HEIGHT * DEPTH;
+    // 40 buckets per tick; max 160 min 8
+    public static int MAX_WATER_PRODUCTION = 10000;
     public final CustomPressureFluidTank tank = new CustomPressureFluidTank(0) {
         
         @Override
@@ -64,17 +57,19 @@ public class BlockEntityDamIntake extends BlockEntitySyncable {
             return false;
         }
     };
-    
     public final LazyOptional<CustomFluidTank> tankHandler = LazyOptional.of(() -> tank);
-    
-    private static final int WIDTH = 13;
-    private static final int HEIGHT = 11;
-    private static final int DEPTH = 10;
-    private static final int MAX_WATER = WIDTH * HEIGHT * DEPTH;
-    // 40 buckets per tick; max 160 min 8
-    public static int MAX_WATER_PRODUCTION = 10000;
+    private final List<BlockPos> connectedWalls = new CopyOnWriteArrayList<>();
+    private final List<BlockPos> failBlocks = new CopyOnWriteArrayList<>();
+    private final List<BlockPos> failWaters = new CopyOnWriteArrayList<>();
     public int currentProduction = 0;
     public int tick = 0;
+    private int waterAmount = -1;
+    private BlockPos neighborPos = null;
+    private int concreteAmount;
+    private boolean firstTick = false;
+    public BlockEntityDamIntake(BlockPos pos, BlockState state) {
+        super(ModBlockEntity.DAM_INTAKE.get(), pos, state);
+    }
     
     public void tick() {
         if (level == null) return;
@@ -200,9 +195,7 @@ public class BlockEntityDamIntake extends BlockEntitySyncable {
         waterAmount = 0;
         for (BlockPos wall : connectedWalls) {
             int f = 1;
-            while (level.getBlockState(wall.relative(facing, f)).getBlock().equals(Blocks.WATER)
-                    && level.getBlockState(wall.relative(facing, f)).getFluidState().isSource()
-                    && f <= 10) {
+            while (level.getBlockState(wall.relative(facing, f)).getBlock().equals(Blocks.WATER) && level.getBlockState(wall.relative(facing, f)).getFluidState().isSource() && f <= 10) {
                 f++;
             }
             if (f < 10) failWaters.add(wall.relative(getFacing(), f));
@@ -216,13 +209,11 @@ public class BlockEntityDamIntake extends BlockEntitySyncable {
         failBlocks.clear();
         for (int x = -6; x <= 6; x++) {
             for (int y = 0; y <= 10; y++) {
-                BlockPos cPos = (facing == Direction.NORTH || facing == Direction.SOUTH)
-                        ? (new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ()))
-                        : (new BlockPos(pos.getX(), pos.getY() + y, pos.getZ() + x));
+                BlockPos cPos = (facing == Direction.NORTH || facing == Direction.SOUTH) ? (new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ())) : (new BlockPos(pos.getX(), pos.getY() + y, pos.getZ() + x));
                 
                 BlockState state = level.getBlockState(cPos);
                 if ((state.getBlock().equals(ModBlocks.CONCRETE.get()) || Utils.isSamePosition(cPos, pos))) {
-//                    WALLS.put(cPos, pos);
+                    //                    WALLS.put(cPos, pos);
                     connectedWalls.add(cPos);
                 } else {
                     failBlocks.add(cPos);
@@ -233,9 +224,9 @@ public class BlockEntityDamIntake extends BlockEntitySyncable {
     }
     
     private void cleanWallCached() {
-//        for (BlockPos wall : connectedWalls) {
-//            WALLS.remove(wall);
-//        }
+        //        for (BlockPos wall : connectedWalls) {
+        //            WALLS.remove(wall);
+        //        }
         connectedWalls.clear();
     }
     

@@ -18,62 +18,56 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BlockEntityTrash extends BlockEntitySyncable {
-
-    public BlockEntityTrash(BlockPos pos, BlockState state){
-        super(ModBlockEntity.TRASH_TILE.get(), pos, state);
-    }
-
-
-    public static final FluidTank tank = new FluidTank(64000){
+    
+    public static final FluidTank tank = new FluidTank(64000) {
         @Override
         public int fill(FluidStack resource, FluidAction action) {
             //return super.fill(resource, action);
-            return resource != null? resource.getAmount(): 0;
+            return resource != null ? resource.getAmount() : 0;
         }
     };
-
-    public static final ItemStackHandler inventory = new ItemStackHandler(10){
+    public static final ItemStackHandler inventory = new ItemStackHandler(10) {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
             return true;
         }
-
+        
         @Nonnull
         @Override
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
             return ItemStack.EMPTY;
         }
     };
-
-    public static final CustomEnergyStorage energyContainer = new CustomEnergyStorage(1000000, 1000000, 1000000){
+    public static final CustomEnergyStorage energyContainer = new CustomEnergyStorage(1000000, 1000000, 1000000) {
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate) {
             return maxReceive;
         }
     };
-
+    
+    public BlockEntityTrash(BlockPos pos, BlockState state) {
+        super(ModBlockEntity.TRASH_TILE.get(), pos, state);
+    }
+    
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        LazyOptional.of(()->tank).invalidate();
-        LazyOptional.of(()->energyContainer).invalidate();
-        LazyOptional.of(()->inventory).invalidate();
+        LazyOptional.of(() -> tank).invalidate();
+        LazyOptional.of(() -> energyContainer).invalidate();
+        LazyOptional.of(() -> inventory).invalidate();
     }
-
+    
     @Override
     public void setRemoved() {
         super.setRemoved();
     }
-
+    
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.FLUID_HANDLER)
-            return LazyOptional.of(()->tank).cast();
-        if (cap == ForgeCapabilities.ENERGY)
-            return LazyOptional.of(()->energyContainer).cast();
-        if (cap == ForgeCapabilities.ITEM_HANDLER)
-            return LazyOptional.of(()->inventory).cast();
+        if (cap == ForgeCapabilities.FLUID_HANDLER) return LazyOptional.of(() -> tank).cast();
+        if (cap == ForgeCapabilities.ENERGY) return LazyOptional.of(() -> energyContainer).cast();
+        if (cap == ForgeCapabilities.ITEM_HANDLER) return LazyOptional.of(() -> inventory).cast();
         return super.getCapability(cap, side);
     }
 }

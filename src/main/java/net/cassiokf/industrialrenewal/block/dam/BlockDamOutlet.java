@@ -16,19 +16,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockDamOutlet extends BlockAbstractHorizontalFacing implements EntityBlock {
-    public BlockDamOutlet()  {
+    public BlockDamOutlet() {
         super(BlockBehaviour.Properties.copy(Blocks.STONE).strength(1f));
     }
-
+    
     @org.jetbrains.annotations.Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return ModBlockEntity.DAM_OUTLET.get().create(pos, state);
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return ($0, $1, $2, blockEntity) -> ((BlockEntityDamOutlet)blockEntity).tick();
+        return ($0, $1, $2, blockEntity) -> ((BlockEntityDamOutlet) blockEntity).tick();
     }
 }

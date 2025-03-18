@@ -18,26 +18,20 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockFluidPipeLarge extends BlockPipeBase<BlockEntityFluidPipeLarge> implements EntityBlock {
-
+    
     public BlockFluidPipeLarge() {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 6, 6);
     }
-
+    
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         return getState(context.getLevel(), context.getClickedPos(), defaultBlockState());
     }
-
-    public BlockState getState(Level world, BlockPos pos, BlockState oldState){
-        return oldState
-                .setValue(UP, canConnectToPipe(world, pos, Direction.UP))
-                .setValue(DOWN, canConnectToPipe(world, pos, Direction.DOWN))
-                .setValue(NORTH, canConnectToPipe(world, pos, Direction.NORTH))
-                .setValue(SOUTH, canConnectToPipe(world, pos, Direction.SOUTH))
-                .setValue(EAST, canConnectToPipe(world, pos, Direction.EAST))
-                .setValue(WEST, canConnectToPipe(world, pos, Direction.WEST));
+    
+    public BlockState getState(Level world, BlockPos pos, BlockState oldState) {
+        return oldState.setValue(UP, canConnectToPipe(world, pos, Direction.UP)).setValue(DOWN, canConnectToPipe(world, pos, Direction.DOWN)).setValue(NORTH, canConnectToPipe(world, pos, Direction.NORTH)).setValue(SOUTH, canConnectToPipe(world, pos, Direction.SOUTH)).setValue(EAST, canConnectToPipe(world, pos, Direction.EAST)).setValue(WEST, canConnectToPipe(world, pos, Direction.WEST));
     }
-
+    
     @Override
     public boolean canConnectToPipe(BlockGetter world, BlockPos pos, Direction facing) {
         BlockEntity te = world.getBlockEntity(pos.relative(facing));
@@ -54,10 +48,10 @@ public class BlockFluidPipeLarge extends BlockPipeBase<BlockEntityFluidPipeLarge
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new BlockEntityFluidPipeLarge(pos, state);
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide? null : ($0, $1, $2, blockEntity) -> ((BlockEntityFluidPipeLarge)blockEntity).tick();
+        return level.isClientSide ? null : ($0, $1, $2, blockEntity) -> ((BlockEntityFluidPipeLarge) blockEntity).tick();
     }
 }

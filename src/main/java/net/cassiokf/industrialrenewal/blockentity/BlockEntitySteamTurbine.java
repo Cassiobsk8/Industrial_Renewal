@@ -24,28 +24,26 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 public class BlockEntitySteamTurbine extends BlockEntity3x3x3MachineBase<BlockEntitySteamTurbine> {
-    private final CustomEnergyStorage energyContainer = new CustomEnergyStorage(100000, 10240, 10240).setBlockEntity(this).noExtraction().noReceive();
-    //    private static final float volume = IRConfig.MainConfig.Sounds.turbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
-    private final LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(()->energyContainer);
-    private final CustomFluidTank waterTank = new CustomFluidTank(32000).setBlockEntity(this).noFill();
-    private final FluidStack waterStack = new FluidStack(Fluids.WATER, Utils.BUCKET_VOLUME);
-    
-    private int rotation;
-    private int oldRotation;
     private static final int maxRotation = 16000;
     private static final int energyPerTick = 512;//IRConfig.MainConfig.Main.steamTurbineEnergyPerTick;
     private static final int steamPerTick = 250;//IRConfig.MainConfig.Main.steamTurbineSteamPerTick;
-    private final CustomFluidTank steamTank = new CustomFluidTank(steamPerTick*2) {
+    private final CustomEnergyStorage energyContainer = new CustomEnergyStorage(100000, 10240, 10240).setBlockEntity(this).noExtraction().noReceive();
+    //    private static final float volume = IRConfig.MainConfig.Sounds.turbineVolume * IRConfig.MainConfig.Sounds.masterVolumeMult;
+    private final LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyContainer);
+    private final CustomFluidTank waterTank = new CustomFluidTank(32000).setBlockEntity(this).noFill();
+    private final FluidStack waterStack = new FluidStack(Fluids.WATER, Utils.BUCKET_VOLUME);
+    private final CustomFluidTank steamTank = new CustomFluidTank(steamPerTick * 2) {
         @Override
         public boolean isFluidValid(FluidStack stack) {
             //TODO MAKE STEAM TAG
             return stack != null && stack.getFluid().defaultFluidState().is(ModTags.Fluids.STEAM_TAG);
         }
     }.setBlockEntity(this).noDrain();
+    private int rotation;
+    private int oldRotation;
     private float steamReceivedNorm = 0f;
     
-    public BlockEntitySteamTurbine(BlockPos pos, BlockState state)
-    {
+    public BlockEntitySteamTurbine(BlockPos pos, BlockState state) {
         super(ModBlockEntity.STEAM_TURBINE_TILE.get(), pos, state);
     }
     
@@ -65,7 +63,7 @@ public class BlockEntitySteamTurbine extends BlockEntity3x3x3MachineBase<BlockEn
                     this.sync();
                 }
             } else {
-//                updateSound();
+                //                updateSound();
             }
         }
     }
@@ -116,32 +114,33 @@ public class BlockEntitySteamTurbine extends BlockEntity3x3x3MachineBase<BlockEn
         BlockEntity wTE = level.getBlockEntity(worldPosition.relative(facing, 2).below());
         if (wTE != null && waterTank.getFluidAmount() > 0) {
             IFluidHandler wTank = wTE.getCapability(ForgeCapabilities.FLUID_HANDLER, facing.getOpposite()).orElse(null);
-            if (wTank != null) waterTank.drain(wTank.fill(waterTank.drain(2000, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
+            if (wTank != null)
+                waterTank.drain(wTank.fill(waterTank.drain(2000, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
         }
     }
     
-//    @Override
-//    public float getPitch() {
-//        return Math.max(getRotation(), 0.1F);
-//    }
+    //    @Override
+    //    public float getPitch() {
+    //        return Math.max(getRotation(), 0.1F);
+    //    }
     
-//    @Override
-//    public float getVolume() {
-//        return volume;
-//    }
+    //    @Override
+    //    public float getVolume() {
+    //        return volume;
+    //    }
     
-//    private void updateSound() {
-//        if (!world.isRemote) return;
-//        if (this.rotation > 0) {
-//            IRSoundHandler.playRepeatableSound(IRSoundRegister.MOTOR_ROTATION_RESOURCEL, volume, getPitch(), pos);
-//        } else {
-//            IRSoundHandler.stopTileSound(pos);
-//        }
-//    }
+    //    private void updateSound() {
+    //        if (!world.isRemote) return;
+    //        if (this.rotation > 0) {
+    //            IRSoundHandler.playRepeatableSound(IRSoundRegister.MOTOR_ROTATION_RESOURCEL, volume, getPitch(), pos);
+    //        } else {
+    //            IRSoundHandler.stopTileSound(pos);
+    //        }
+    //    }
     
     @Override
     public void onMasterBreak() {
-//        if (world.isRemote) IRSoundHandler.stopTileSound(pos);
+        //        if (world.isRemote) IRSoundHandler.stopTileSound(pos);
     }
     
     @Override
@@ -258,18 +257,13 @@ public class BlockEntitySteamTurbine extends BlockEntity3x3x3MachineBase<BlockEn
         Direction face = getMasterFacing();
         BlockPos masterPos = masterTE.getBlockPos();
         
-        if (facing == null)
-            return super.getCapability(capability, facing);
+        if (facing == null) return super.getCapability(capability, facing);
         
-        if (facing == Direction.UP && worldPosition.equals(masterPos.above())
-                && capability == ForgeCapabilities.FLUID_HANDLER)
+        if (facing == Direction.UP && worldPosition.equals(masterPos.above()) && capability == ForgeCapabilities.FLUID_HANDLER)
             return LazyOptional.of(() -> masterTE.steamTank).cast();
-        if (facing == face && worldPosition.equals(masterPos.below().relative(face))
-                && capability == ForgeCapabilities.FLUID_HANDLER)
+        if (facing == face && worldPosition.equals(masterPos.below().relative(face)) && capability == ForgeCapabilities.FLUID_HANDLER)
             return LazyOptional.of(() -> masterTE.waterTank).cast();
-        if (facing == face.getCounterClockWise()
-                && worldPosition.equals(masterPos.below().relative(face.getOpposite()).relative(face.getCounterClockWise()))
-                && capability == ForgeCapabilities.ENERGY)
+        if (facing == face.getCounterClockWise() && worldPosition.equals(masterPos.below().relative(face.getOpposite()).relative(face.getCounterClockWise())) && capability == ForgeCapabilities.ENERGY)
             return masterTE.energyStorageHandler.cast();
         
         return super.getCapability(capability, facing);

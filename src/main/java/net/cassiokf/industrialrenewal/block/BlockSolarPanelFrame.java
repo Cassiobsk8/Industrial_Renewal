@@ -22,60 +22,55 @@ import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockSolarPanelFrame extends BlockConnectedMultiblocks<BlockEntitySolarPanelFrame> implements EntityBlock {
-
+    
     public BlockSolarPanelFrame(Properties properties) {
         super(properties);
     }
-
+    
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
         BlockEntitySolarPanelFrame tile = (BlockEntitySolarPanelFrame) worldIn.getBlockEntity(pos);
         IItemHandler itemHandler = tile.getPanelHandler();
         ItemStack heldItem = player.getItemInHand(handIn);
-        if (!heldItem.isEmpty() && (Block.byItem(heldItem.getItem()) instanceof BlockSolarPanel || heldItem.getItem() instanceof ItemScrewdriver))
-        {
-            if (Block.byItem(heldItem.getItem()) instanceof BlockSolarPanel && itemHandler.getStackInSlot(0).isEmpty())
-            {
-                if (!worldIn.isClientSide)
-                {
+        if (!heldItem.isEmpty() && (Block.byItem(heldItem.getItem()) instanceof BlockSolarPanel || heldItem.getItem() instanceof ItemScrewdriver)) {
+            if (Block.byItem(heldItem.getItem()) instanceof BlockSolarPanel && itemHandler.getStackInSlot(0).isEmpty()) {
+                if (!worldIn.isClientSide) {
                     itemHandler.insertItem(0, new ItemStack(heldItem.getItem(), 1), false);
                     if (!player.isCreative()) heldItem.shrink(1);
                 }
                 return InteractionResult.SUCCESS;
             }
-            if (heldItem.getItem() instanceof ItemScrewdriver && !itemHandler.getStackInSlot(0).isEmpty())
-            {
-                if (!worldIn.isClientSide)
-                {
+            if (heldItem.getItem() instanceof ItemScrewdriver && !itemHandler.getStackInSlot(0).isEmpty()) {
+                if (!worldIn.isClientSide) {
                     ItemStack panel = itemHandler.extractItem(0, 1, false);
                     if (!player.isCreative()) player.addItem(panel);
                 }
                 return InteractionResult.SUCCESS;
             }
         }
-
+        
         return super.use(state, worldIn, pos, player, handIn, hitResult);
     }
-
+    
     @Override
     public boolean propagatesSkylightDown(BlockState p_49928_, BlockGetter p_49929_, BlockPos p_49930_) {
         return false;
     }
-
+    
     @Override
     public float getShadeBrightness(BlockState p_60472_, BlockGetter p_60473_, BlockPos p_60474_) {
         return 1.0f;
     }
-
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return ModBlockEntity.SOLAR_PANEL_FRAME.get().create(pos, state);
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return level.isClientSide? null : ($0, $1, $2, blockEntity) -> ((BlockEntitySolarPanelFrame)blockEntity).tick();
+        return level.isClientSide ? null : ($0, $1, $2, blockEntity) -> ((BlockEntitySolarPanelFrame) blockEntity).tick();
     }
 }

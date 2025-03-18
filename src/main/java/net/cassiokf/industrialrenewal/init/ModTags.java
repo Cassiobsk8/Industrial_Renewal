@@ -7,8 +7,8 @@ import net.minecraft.world.level.material.Fluid;
 
 public class ModTags {
     public static class Blocks {
-    
-//        private static TagKey<Block> TEST = BlockTags.create(new ResourceLocation("forge:steam"));
+        
+        //        private static TagKey<Block> TEST = BlockTags.create(new ResourceLocation("forge:steam"));
     }
     
     public static class Items {

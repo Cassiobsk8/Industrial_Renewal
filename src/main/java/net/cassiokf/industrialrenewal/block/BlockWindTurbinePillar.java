@@ -28,17 +28,17 @@ import org.jetbrains.annotations.Nullable;
 
 public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntityWindTurbinePillar> implements EntityBlock {
     public static final BooleanProperty BASE = BooleanProperty.create("base");
-
+    
     public BlockWindTurbinePillar(Properties props) {
         super(props);
         registerDefaultState(defaultBlockState().setValue(BASE, false));
     }
-
+    
     public BlockWindTurbinePillar() {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(0.8f).noOcclusion());
         registerDefaultState(defaultBlockState().setValue(BASE, false));
     }
-
+    
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
         Item playerItem = player.getMainHandItem().getItem();
@@ -61,12 +61,12 @@ public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntit
         }
         return InteractionResult.PASS;
     }
-
+    
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(BASE);
     }
-
+    
     @Override
     public @org.jetbrains.annotations.Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockPos pos = context.getClickedPos();
@@ -74,12 +74,12 @@ public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntit
         boolean value = !level.getBlockState(pos.below()).getBlock().equals(ModBlocks.TURBINE_PILLAR.get());
         return super.getStateForPlacement(context).setValue(BASE, value);
     }
-
+    
     @Override
     public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if(!worldIn.isClientSide() && fromPos.equals(pos.below())) {
+        if (!worldIn.isClientSide() && fromPos.equals(pos.below())) {
             boolean value = !(worldIn.getBlockEntity(pos.below()) instanceof BlockEntityWindTurbinePillar);
-
+            
             state = state.setValue(BASE, value);
             worldIn.setBlockAndUpdate(pos, state);
         }
@@ -91,10 +91,10 @@ public class BlockWindTurbinePillar extends BlockConnectedMultiblocks<BlockEntit
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return ModBlockEntity.TURBINE_PILLAR_TILE.get().create(pos, state);
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return ($0, $1, $2, blockEntity) -> ((BlockEntityWindTurbinePillar)blockEntity).tick();
+        return ($0, $1, $2, blockEntity) -> ((BlockEntityWindTurbinePillar) blockEntity).tick();
     }
 }

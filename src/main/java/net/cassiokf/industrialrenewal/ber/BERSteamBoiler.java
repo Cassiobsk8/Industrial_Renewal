@@ -11,22 +11,21 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BERSteamBoiler extends BERBase<BlockEntitySteamBoiler>{
-
+public class BERSteamBoiler extends BERBase<BlockEntitySteamBoiler> {
+    
     private static final ItemStack fire = new ItemStack(ModItems.fire.get());
-
+    
     public BERSteamBoiler(BlockEntityRendererProvider.Context context) {
         super(context);
     }
-
+    
     @Override
     public void render(BlockEntitySteamBoiler blockEntity, float partialTick, PoseStack stack, MultiBufferSource buffer, int combinedOverlay, int packedLight) {
         int x = 0;
         int z = 0;
         int y = 0;
-
-        if (blockEntity!= null && blockEntity.isMaster())
-        {
+        
+        if (blockEntity != null && blockEntity.isMaster()) {
             Direction facing = blockEntity.getMasterFacing();
             //WATER
             doTheMath(facing, x, z, 1.9, -0.69);
@@ -49,8 +48,7 @@ public class BERSteamBoiler extends BERBase<BlockEntitySteamBoiler>{
             renderText(stack, buffer, facing, xPos, y + 0.93, zPos, blockEntity.getBoiler().getHeatText(), 0.01F);
             renderPointer(stack, lighting(blockEntity), combinedOverlay, buffer, blockEntity.getLevel(), facing, xPos, y + 1.19, zPos, blockEntity.getBoiler().getHeatFill(), pointer, 0.3F);
             //Fire
-            if (blockEntity.getIntType() > 0 && blockEntity.getBoiler().canRun())
-            {
+            if (blockEntity.getIntType() > 0 && blockEntity.getBoiler().canRun()) {
                 doTheMath(facing, x, z, 1.9, 0);
                 render3dItem(stack, lighting(blockEntity), combinedOverlay, buffer, facing, blockEntity.getLevel(), xPos, y - 0.50, zPos, fire, 0.8f, true);
             }

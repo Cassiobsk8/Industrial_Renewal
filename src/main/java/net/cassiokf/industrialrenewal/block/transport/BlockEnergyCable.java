@@ -36,16 +36,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class BlockEnergyCable extends BlockPipeBase<BlockEntityEnergyCable> implements EntityBlock {
-
+    
     public EnumEnergyCableType type;
-
-    public BlockEnergyCable(EnumEnergyCableType type){
+    
+    public BlockEnergyCable(EnumEnergyCableType type) {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1.0f), 4, 4);
         this.type = type;
     }
-
-    public static EnumCableIn convertFromType(EnumEnergyCableType type)
-    {
+    
+    public static EnumCableIn convertFromType(EnumEnergyCableType type) {
         return switch (type) {
             case MV -> EnumCableIn.MV;
             case HV -> EnumCableIn.HV;
@@ -64,8 +63,7 @@ public class BlockEnergyCable extends BlockPipeBase<BlockEntityEnergyCable> impl
                 };
                 worldIn.setBlockAndUpdate(pos, block.getState(worldIn, pos, block.defaultBlockState()).setValue(BlockEnergyCableMeter.FACING, player.getDirection()));
                 ItemScrewdriver.playSound(worldIn, pos);
-                if (!player.isCreative())
-                    player.getItemInHand(handIn).shrink(1);
+                if (!player.isCreative()) player.getItemInHand(handIn).shrink(1);
             }
             return InteractionResult.SUCCESS;
         }
@@ -82,12 +80,12 @@ public class BlockEnergyCable extends BlockPipeBase<BlockEntityEnergyCable> impl
         tooltip.add(Component.literal(amount + " FE/t"));
         super.appendHoverText(stack, world, tooltip, flag);
     }
-
+    
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         return getState(context.getLevel(), context.getClickedPos(), defaultBlockState());
     }
-
+    
     @Override
     public boolean canConnectToPipe(BlockGetter world, BlockPos pos, Direction facing) {
         Block block = world.getBlockState(pos.relative(facing)).getBlock();
@@ -98,27 +96,13 @@ public class BlockEnergyCable extends BlockPipeBase<BlockEntityEnergyCable> impl
     public boolean canConnectToCapability(BlockGetter world, BlockPos pos, Direction facing) {
         BlockEntity te = world.getBlockEntity(pos.relative(facing));
         Block block = world.getBlockState(pos.relative(facing)).getBlock();
-        return (te != null
-                && !(block instanceof BlockEnergyCable)
-                && te.getCapability(ForgeCapabilities.ENERGY, facing.getOpposite()).isPresent());
+        return (te != null && !(block instanceof BlockEnergyCable) && te.getCapability(ForgeCapabilities.ENERGY, facing.getOpposite()).isPresent());
     }
     
-    public BlockState getState(Level world, BlockPos pos, BlockState oldState){
-        return oldState
-                .setValue(UP, canConnectToPipe(world, pos, Direction.UP))
-                .setValue(DOWN, canConnectToPipe(world, pos, Direction.DOWN))
-                .setValue(NORTH, canConnectToPipe(world, pos, Direction.NORTH))
-                .setValue(SOUTH, canConnectToPipe(world, pos, Direction.SOUTH))
-                .setValue(EAST, canConnectToPipe(world, pos, Direction.EAST))
-                .setValue(WEST, canConnectToPipe(world, pos, Direction.WEST))
-                .setValue(CUP, canConnectToCapability(world, pos, Direction.UP))
-                .setValue(CDOWN, canConnectToCapability(world, pos, Direction.DOWN))
-                .setValue(CNORTH, canConnectToCapability(world, pos, Direction.NORTH))
-                .setValue(CSOUTH, canConnectToCapability(world, pos, Direction.SOUTH))
-                .setValue(CEAST, canConnectToCapability(world, pos, Direction.EAST))
-                .setValue(CWEST, canConnectToCapability(world, pos, Direction.WEST));
+    public BlockState getState(Level world, BlockPos pos, BlockState oldState) {
+        return oldState.setValue(UP, canConnectToPipe(world, pos, Direction.UP)).setValue(DOWN, canConnectToPipe(world, pos, Direction.DOWN)).setValue(NORTH, canConnectToPipe(world, pos, Direction.NORTH)).setValue(SOUTH, canConnectToPipe(world, pos, Direction.SOUTH)).setValue(EAST, canConnectToPipe(world, pos, Direction.EAST)).setValue(WEST, canConnectToPipe(world, pos, Direction.WEST)).setValue(CUP, canConnectToCapability(world, pos, Direction.UP)).setValue(CDOWN, canConnectToCapability(world, pos, Direction.DOWN)).setValue(CNORTH, canConnectToCapability(world, pos, Direction.NORTH)).setValue(CSOUTH, canConnectToCapability(world, pos, Direction.SOUTH)).setValue(CEAST, canConnectToCapability(world, pos, Direction.EAST)).setValue(CWEST, canConnectToCapability(world, pos, Direction.WEST));
     }
-
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
@@ -128,10 +112,10 @@ public class BlockEnergyCable extends BlockPipeBase<BlockEntityEnergyCable> impl
             case HV -> ModBlockEntity.ENERGYCABLE_HV_TILE.get().create(pos, state);
         };
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return level.isClientSide? null : ($0, $1, $2, blockEntity) -> ((BlockEntityEnergyCable)blockEntity).tick();
+        return level.isClientSide ? null : ($0, $1, $2, blockEntity) -> ((BlockEntityEnergyCable) blockEntity).tick();
     }
 }

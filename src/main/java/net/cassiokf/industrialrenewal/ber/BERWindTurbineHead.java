@@ -20,8 +20,7 @@ public class BERWindTurbineHead extends BERBase<BlockEntityWindTurbineHead> {
     public void render(BlockEntityWindTurbineHead blockEntity, float partialTick, PoseStack stack, MultiBufferSource buffer, int combinedOverlay, int packedLight) {
         double x = 0, y = 0, z = 0;
         
-        if (blockEntity.hasBlade())
-        {
+        if (blockEntity.hasBlade()) {
             Direction facing = blockEntity.getBlockFacing();
             doTheMath(facing, x, z, 0, 0);
             float rotation = smoothAnimation(blockEntity.getRotation(), blockEntity.getOldRotation(), partialTick, true);

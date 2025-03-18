@@ -16,8 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockInfinityGenerator extends BlockAbstractNotFullCube implements EntityBlock {
-    public BlockInfinityGenerator()
-    {
+    public BlockInfinityGenerator() {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK));
     }
     
@@ -30,6 +29,6 @@ public class BlockInfinityGenerator extends BlockAbstractNotFullCube implements 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return pLevel.isClientSide ? null : ($0, $1, $2, blockEntity) -> ((BlockEntityInfinityGenerator)blockEntity).tick();
+        return pLevel.isClientSide ? null : ($0, $1, $2, blockEntity) -> ((BlockEntityInfinityGenerator) blockEntity).tick();
     }
 }

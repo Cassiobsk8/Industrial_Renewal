@@ -17,9 +17,8 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class BlockEnergyLevel extends BlockAbstractFacing implements EntityBlock
-{
-    public static final VoxelShape GAUGE_SHAPE = Block.box(4,1,4,12,15,12);
+public class BlockEnergyLevel extends BlockAbstractFacing implements EntityBlock {
+    public static final VoxelShape GAUGE_SHAPE = Block.box(4, 1, 4, 12, 15, 12);
     
     public static final DirectionProperty GAUGE = DirectionProperty.create("gauge", Direction.Plane.HORIZONTAL);
     
@@ -45,8 +44,7 @@ public class BlockEnergyLevel extends BlockAbstractFacing implements EntityBlock
         super.onNeighborChange(state, level, pos, neighbor);
         BlockEntity be = level.getBlockEntity(pos);
         
-        if (be instanceof BlockEntityEnergyLevel beel
-                && neighbor.asLong() == pos.relative(state.getValue(FACING)).asLong()) {
+        if (be instanceof BlockEntityEnergyLevel beel && neighbor.asLong() == pos.relative(state.getValue(FACING)).asLong()) {
             beel.forceCheck();
         }
     }

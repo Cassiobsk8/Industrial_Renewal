@@ -31,7 +31,7 @@ public class BlockEntityIndustrialBatteryBank extends BlockEntityTowerBase<Block
     private static final int maxBatteries = 24;
     
     private final CustomEnergyStorage customDummyStorage = new CustomEnergyStorage(0, 0, 0);
-    private final CustomEnergyStorage customEnergyStorage = new CustomEnergyStorage(0, maxTransfer, maxTransfer) {
+    private final LazyOptional<IEnergyStorage> dummyStorage = LazyOptional.of(() -> customDummyStorage);    private final CustomEnergyStorage customEnergyStorage = new CustomEnergyStorage(0, maxTransfer, maxTransfer) {
         @Override
         public void onEnergyChange() {
             sync();
@@ -48,25 +48,20 @@ public class BlockEntityIndustrialBatteryBank extends BlockEntityTowerBase<Block
             return false;
         }
     };
-    
-    private final LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(() -> customEnergyStorage);
-    private final LazyOptional<IEnergyStorage> dummyStorage = LazyOptional.of(() -> customDummyStorage);
-    
-    public int input;
+    public int input;    private final LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(() -> customEnergyStorage);
+    public boolean firstLoad = false;
     private int avrIn;
     private int oldIn;
     private int outPut;
     private int avrOut;
     private int oldOutPut;
     private int batteries = 0;
-    
     private int tick;
-    public boolean firstLoad = false;
     
     public BlockEntityIndustrialBatteryBank(BlockPos pos, BlockState state) {
         super(ModBlockEntity.INDUSTRIAL_BATTERY_TILE.get(), pos, state);
     }
-    
+
     @Override
     public boolean instanceOf(BlockEntity tileEntity) {
         return tileEntity instanceof BlockEntityIndustrialBatteryBank;
@@ -90,7 +85,7 @@ public class BlockEntityIndustrialBatteryBank extends BlockEntityTowerBase<Block
         if (level == null) return 0;
         BlockPos masterPos = masterTE.getBlockPos();
         Direction face = getMasterFacing();
-        BlockPos outPos = masterPos.relative(face.getClockWise()).above(2 + (tower != null ? (tower.size()-1) : 0) * 3);
+        BlockPos outPos = masterPos.relative(face.getClockWise()).above(2 + (tower != null ? (tower.size() - 1) : 0) * 3);
         BlockEntity te = level.getBlockEntity(outPos);
         
         int out = 0;
@@ -162,7 +157,7 @@ public class BlockEntityIndustrialBatteryBank extends BlockEntityTowerBase<Block
     
     public void tick() {
         if (level != null && !level.isClientSide && isMaster() && isBase()) {
-            if(!firstLoad){
+            if (!firstLoad) {
                 firstLoad = true;
                 setFirstLoad();
             }
@@ -280,4 +275,8 @@ public class BlockEntityIndustrialBatteryBank extends BlockEntityTowerBase<Block
     public AABB getRenderBoundingBox() {
         return INFINITE_EXTENT_AABB;
     }
+    
+
+    
+
 }

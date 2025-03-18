@@ -8,8 +8,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockFrame extends IRBaseBlock {
-    public BlockFrame()
-    {
+    public BlockFrame() {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion());
     }
     

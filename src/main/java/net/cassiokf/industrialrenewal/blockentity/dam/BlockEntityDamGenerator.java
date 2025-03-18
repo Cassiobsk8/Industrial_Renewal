@@ -17,28 +17,26 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BlockEntityDamGenerator extends BlockEntity3x3x3MachineBase<BlockEntityDamGenerator> {
-
-    private static int energyCapacity = 10240;
+    
+    public static int maxGeneration = 1024;//IRConfig.MainConfig.Main.damGeneratorEnergyPerTick;
+    public static int transferRate = 1024;
+    private static final int energyCapacity = 10240;
     public CustomEnergyStorage energyStorage = new CustomEnergyStorage(energyCapacity).setBlockEntity(this).noReceive();
-    public final LazyOptional<CustomEnergyStorage> energyHandler = LazyOptional.of(()-> energyStorage);
+    public final LazyOptional<CustomEnergyStorage> energyHandler = LazyOptional.of(() -> energyStorage);
     private int oldGeneration;
     private int generation;
     private int rotation;
-
-    public static int maxGeneration = 1024;//IRConfig.MainConfig.Main.damGeneratorEnergyPerTick;
-    public static int transferRate = 1024;
-
-
+    
+    
     public BlockEntityDamGenerator(BlockPos pos, BlockState state) {
         super(ModBlockEntity.DAM_GENERATOR.get(), pos, state);
     }
-
+    
     public void tick() {
-        if(!level.isClientSide && isMaster()){
+        if (!level.isClientSide && isMaster()) {
             chargeInternalBattery();
             passEnergyOut();
-            if (generation != oldGeneration)
-            {
+            if (generation != oldGeneration) {
                 oldGeneration = generation;
                 sync();
             }
@@ -48,42 +46,37 @@ public class BlockEntityDamGenerator extends BlockEntity3x3x3MachineBase<BlockEn
     
     public void chargeInternalBattery() {
         generation = (int) (Utils.normalizeClamped(rotation, 0, BlockEntityDamTurbine.MAX_PROCESSING) * maxGeneration);
-        if (generation > 0)
-            generation = energyStorage.addEnergy(generation, false);
+        if (generation > 0) generation = energyStorage.addEnergy(generation, false);
         else generation = 0;
     }
     
     public void passEnergyOut() {
         BlockEntity te = level.getBlockEntity(worldPosition.above(2));
-        if (te != null)
-        {
+        if (te != null) {
             te.getCapability(ForgeCapabilities.ENERGY, Direction.DOWN).ifPresent(iEnergyStorage -> {
                 int amount = iEnergyStorage.receiveEnergy(transferRate, true);
                 iEnergyStorage.receiveEnergy(energyStorage.subtractEnergy(amount, false), false);
             });
         }
     }
-
-    public void updateRotation(int newRotation){
-        if(rotation != newRotation)
-            rotation = newRotation;
+    
+    public void updateRotation(int newRotation) {
+        if (rotation != newRotation) rotation = newRotation;
     }
-
-    public String getGenerationText()
-    {
+    
+    public String getGenerationText() {
         return Utils.formatEnergyString(generation) + "/t";
     }
-
-    public float getGenerationFill()
-    {
+    
+    public float getGenerationFill() {
         return Utils.normalizeClamped(generation, 0, maxGeneration) * 90;
     }
-
+    
     @Override
     public boolean instanceOf(BlockEntity tileEntity) {
         return tileEntity instanceof BlockEntityDamGenerator;
     }
-
+    
     @Override
     protected void saveAdditional(CompoundTag compoundTag) {
         compoundTag.putInt("energy", energyStorage.getEnergyStored());
@@ -91,7 +84,7 @@ public class BlockEntityDamGenerator extends BlockEntity3x3x3MachineBase<BlockEn
         compoundTag.putInt("generation", generation);
         super.saveAdditional(compoundTag);
     }
-
+    
     @Override
     public void load(CompoundTag compoundTag) {
         energyStorage.setEnergy(compoundTag.getInt("energy"));
@@ -99,16 +92,14 @@ public class BlockEntityDamGenerator extends BlockEntity3x3x3MachineBase<BlockEn
         generation = compoundTag.getInt("generation");
         super.load(compoundTag);
     }
-
+    
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         BlockEntityDamGenerator masterTE = getMaster();
         if (masterTE == null || side == null) return super.getCapability(cap, side);
-
-        if(cap == ForgeCapabilities.ENERGY &&
-                side == Direction.UP &&
-                worldPosition.equals(masterTE.getBlockPos().above()))
+        
+        if (cap == ForgeCapabilities.ENERGY && side == Direction.UP && worldPosition.equals(masterTE.getBlockPos().above()))
             return getMaster().energyHandler.cast();
         return super.getCapability(cap, side);
     }

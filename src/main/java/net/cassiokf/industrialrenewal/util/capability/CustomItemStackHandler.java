@@ -6,7 +6,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class CustomItemStackHandler extends ItemStackHandler {
     private BlockEntity blockEntity;
     
-    public CustomItemStackHandler(int size){
+    public CustomItemStackHandler(int size) {
         super(size);
     }
     
@@ -18,7 +18,6 @@ public class CustomItemStackHandler extends ItemStackHandler {
     @Override
     protected void onContentsChanged(int slot) {
         super.onContentsChanged(slot);
-        if(blockEntity!= null)
-            blockEntity.setChanged();
+        if (blockEntity != null) blockEntity.setChanged();
     }
 }

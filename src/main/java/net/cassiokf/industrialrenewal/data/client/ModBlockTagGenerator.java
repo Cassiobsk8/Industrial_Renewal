@@ -25,10 +25,10 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         
         addAllPickAxe(ModBlocks.BLOCKS);
         
-//        this.tag(ModTags.Blocks.TESTETAG)
-//                .add(ModBlocks.STEELBLOCK.get()).addTag(Tags.Blocks.STORAGE_BLOCKS_IRON);
-//        this.tag(BlockTags.NEEDS_IRON_TOOL)
-//                .add(ModBlocks.STEELBLOCK.get());
+        //        this.tag(ModTags.Blocks.TESTETAG)
+        //                .add(ModBlocks.STEELBLOCK.get()).addTag(Tags.Blocks.STORAGE_BLOCKS_IRON);
+        //        this.tag(BlockTags.NEEDS_IRON_TOOL)
+        //                .add(ModBlocks.STEELBLOCK.get());
     }
     
     private void addAllPickAxe(DeferredRegister<Block> BLOCKS) {

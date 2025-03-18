@@ -17,56 +17,24 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockEntitySolarPanel extends BlockEntity {
-
-    private boolean DECORATIVE = false;
+    
+    private final IEnergyStorage energyStorage = new EnergyStorage(0);
+    private final boolean DECORATIVE = false;
     private int tick = 0;
     private int energyCanGenerate;
-
-    private final IEnergyStorage energyStorage = new EnergyStorage(0);
-    private LazyOptional<IEnergyStorage> energyHandler = LazyOptional.of(()->energyStorage);
-    public BlockEntitySolarPanel(BlockPos pos, BlockState state){
+    private final LazyOptional<IEnergyStorage> energyHandler = LazyOptional.of(() -> energyStorage);
+    
+    public BlockEntitySolarPanel(BlockPos pos, BlockState state) {
         super(ModBlockEntity.SOLAR_PANEL.get(), pos, state);
     }
-
-    public void tick(){
-        if(level == null) return;
-        if(level.isClientSide || DECORATIVE){
-            return;
-        }
-
-        if(tick >= 20){
-            tick = 0;
-            getEnergyFromSun();
-        }
-        tick++;
-        moveEnergyOut(energyCanGenerate, false);
-    }
-
-    private void moveEnergyOut(int energy, boolean simulate)
-    {
-        if(level == null) return;
-        for(Direction direction : Direction.values()){
-            BlockEntity te = level.getBlockEntity(worldPosition.relative(direction));
-            if(te == null)
-                continue;
-
-            te.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite()).ifPresent(iEnergyStorage -> {
-                if(iEnergyStorage.canReceive() && iEnergyStorage.getEnergyStored() < iEnergyStorage.getMaxEnergyStored()){
-                    iEnergyStorage.receiveEnergy(energy, simulate);
-                }
-            });
-        }
-    }
-
-    public static int getGeneration(Level world, BlockPos pos)
-    {
+    
+    public static int getGeneration(Level world, BlockPos pos) {
         int i = world.getBrightness(LightLayer.SKY, pos);
         float f = world.getSunAngle(1.0F);
-        if (i > 0)
-        {
+        if (i > 0) {
             float f1 = f < (float) Math.PI ? 0.0F : ((float) Math.PI * 2F);
             f = f + (f1 - f) * 0.2F;
-            i = (int)(Math.round((float) i * Math.cos(f)));
+            i = (int) (Math.round((float) i * Math.cos(f)));
         }
         i = Mth.clamp(i, 0, 15);
         float normalize = i / 15f;
@@ -74,24 +42,50 @@ public class BlockEntitySolarPanel extends BlockEntity {
         return Math.round(normalize * 15);
         //return 15;
     }
-
-    public void getEnergyFromSun()
-    {
-        if(level == null) return;
+    
+    public void tick() {
+        if (level == null) return;
+        if (level.isClientSide || DECORATIVE) {
+            return;
+        }
+        
+        if (tick >= 20) {
+            tick = 0;
+            getEnergyFromSun();
+        }
+        tick++;
+        moveEnergyOut(energyCanGenerate, false);
+    }
+    
+    private void moveEnergyOut(int energy, boolean simulate) {
+        if (level == null) return;
+        for (Direction direction : Direction.values()) {
+            BlockEntity te = level.getBlockEntity(worldPosition.relative(direction));
+            if (te == null) continue;
+            
+            te.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite()).ifPresent(iEnergyStorage -> {
+                if (iEnergyStorage.canReceive() && iEnergyStorage.getEnergyStored() < iEnergyStorage.getMaxEnergyStored()) {
+                    iEnergyStorage.receiveEnergy(energy, simulate);
+                }
+            });
+        }
+    }
+    
+    public void getEnergyFromSun() {
+        if (level == null) return;
         energyCanGenerate = getGeneration(this.level, this.worldPosition);
     }
-
+    
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
         energyHandler.invalidate();
     }
-
+    
     @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (side == null)
-            return super.getCapability(cap, side);
+        if (side == null) return super.getCapability(cap, side);
         return cap == ForgeCapabilities.ENERGY && side == Direction.DOWN ? this.energyHandler.cast() : super.getCapability(cap, side);
     }
 }

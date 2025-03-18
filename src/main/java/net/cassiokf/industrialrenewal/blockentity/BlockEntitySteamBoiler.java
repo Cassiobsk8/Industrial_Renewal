@@ -20,26 +20,20 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BlockEntitySteamBoiler extends BlockEntity3x3x3MachineBase<BlockEntitySteamBoiler> {
-    private int type;
-    
     private static final int solidPerTick = 2;
-    public final SteamBoiler boiler = new SteamBoiler(this, SteamBoiler.BoilerType.Solid, solidPerTick);
     private static final int fluidPerTick = 1;
+    public final SteamBoiler boiler = new SteamBoiler(this, SteamBoiler.BoilerType.Solid, solidPerTick);
+    private int type;
     
     public BlockEntitySteamBoiler(BlockPos pos, BlockState state) {
         super(ModBlockEntity.STEAM_BOILER_TILE.get(), pos, state);
     }
     
-    public void tick()
-    {
-        if (this.isMaster() && !level.isClientSide())
-        {
-            if (this.type > 0)
-            {
+    public void tick() {
+        if (this.isMaster() && !level.isClientSide()) {
+            if (this.type > 0) {
                 boiler.onTick();
-            }
-            else
-            {
+            } else {
                 boiler.outPutSteam();
                 boiler.coolDown();
             }
@@ -47,21 +41,17 @@ public class BlockEntitySteamBoiler extends BlockEntity3x3x3MachineBase<BlockEnt
     }
     
     @Override
-    public boolean instanceOf(BlockEntity tileEntity)
-    {
+    public boolean instanceOf(BlockEntity tileEntity) {
         return tileEntity instanceof BlockEntitySteamBoiler;
     }
     
-    public int getIntType()
-    {
+    public int getIntType() {
         if (!isMaster()) return getMaster().type;
         return this.type;
     }
     
-    public void setType(int type)
-    {
-        if (!this.isMaster())
-        {
+    public void setType(int type) {
+        if (!this.isMaster()) {
             this.getMaster().setType(type);
             return;
         }
@@ -75,23 +65,19 @@ public class BlockEntitySteamBoiler extends BlockEntity3x3x3MachineBase<BlockEnt
         this.sync();
     }
     
-    public String getFuelText()
-    {
+    public String getFuelText() {
         if (getIntType() == 0) return "No Firebox";
         return boiler.getFuelText();
     }
     
     @Override
-    public void onMasterBreak()
-    {
+    public void onMasterBreak() {
         boiler.dropItemsOnGround(worldPosition);
         Utils.spawnItemStack(level, worldPosition, getFireBoxStack());
     }
     
-    public ItemStack getFireBoxStack()
-    {
-        switch (type)
-        {
+    public ItemStack getFireBoxStack() {
+        switch (type) {
             default:
             case 0:
                 return ItemStack.EMPTY;
@@ -145,7 +131,7 @@ public class BlockEntitySteamBoiler extends BlockEntity3x3x3MachineBase<BlockEnt
         return boiler;
     }
     
-    public ItemStack getDrop(){
+    public ItemStack getDrop() {
         return switch (type) {
             case 1 -> new ItemStack(ModItems.FIREBOX_SOLID.get(), 1);
             case 2 -> new ItemStack(ModItems.FIREBOX_FLUID.get(), 1);

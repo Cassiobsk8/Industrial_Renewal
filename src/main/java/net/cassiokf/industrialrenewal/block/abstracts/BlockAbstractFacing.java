@@ -16,37 +16,33 @@ import javax.annotation.Nullable;
 public abstract class BlockAbstractFacing extends BlockAbstractNotFullCube {
     
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
-
-    public BlockAbstractFacing(Properties properties)
-    {
+    
+    public BlockAbstractFacing(Properties properties) {
         super(properties);
     }
-
+    
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(FACING);
-
+        
     }
-
+    
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context)
-    {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(FACING, context.getClickedFace());
     }
-
+    
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
-    {
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return getVoxelShape(state);
     }
-
+    
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
-    {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return getVoxelShape(state);
     }
-
+    
     public abstract VoxelShape getVoxelShape(BlockState state);
 }

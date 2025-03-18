@@ -14,17 +14,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockEntityInfinityGenerator extends BlockEntity {
-    private final CustomEnergyStorage energyContainer = new CustomEnergyStorage(0, 0, 0)
-    {
+    private final CustomEnergyStorage energyContainer = new CustomEnergyStorage(0, 0, 0) {
         @Override
-        public boolean canReceive()
-        {
+        public boolean canReceive() {
             return false;
         }
-
+        
         @Override
-        public boolean canExtract()
-        {
+        public boolean canExtract() {
             return false;
         }
     };
@@ -34,27 +31,21 @@ public class BlockEntityInfinityGenerator extends BlockEntity {
         super(ModBlockEntity.INFINITY_GENERATOR.get(), pPos, pBlockState);
     }
     
-    public void tick()
-    {
+    public void tick() {
         assert level != null;
-        if (!level.isClientSide)
-        {
-            for (Direction facing : Direction.Plane.HORIZONTAL)
-            {
+        if (!level.isClientSide) {
+            for (Direction facing : Direction.Plane.HORIZONTAL) {
                 updatePanel(facing, Integer.MAX_VALUE);
             }
         }
     }
-
-    public void updatePanel(Direction facing, int energy)
-    {
+    
+    public void updatePanel(Direction facing, int energy) {
         final BlockEntity be = level.getBlockEntity(worldPosition.relative(facing));
-        if (be != null && !be.isRemoved())
-        {
-            be.getCapability(ForgeCapabilities.ENERGY, facing.getOpposite())
-                    .ifPresent(iEnergyStorage -> {
-                        iEnergyStorage.receiveEnergy(energy, false);
-                    });
+        if (be != null && !be.isRemoved()) {
+            be.getCapability(ForgeCapabilities.ENERGY, facing.getOpposite()).ifPresent(iEnergyStorage -> {
+                iEnergyStorage.receiveEnergy(energy, false);
+            });
         }
     }
     

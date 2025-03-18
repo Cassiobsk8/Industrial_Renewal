@@ -7,15 +7,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityConveyor extends BlockEntityConveyorBase {
-    public BlockEntityConveyor(BlockPos pos, BlockState state)
-    {
+    public BlockEntityConveyor(BlockPos pos, BlockState state) {
         super(ModBlockEntity.CONVEYOR_TILE.get(), pos, state);
     }
-
-    public void tick(){
+    
+    public void tick() {
         int tickspeed = 4;
         int countperop = 8;
-        switch (getBlockState().getValue(BlockConveyor.TIER)){
+        switch (getBlockState().getValue(BlockConveyor.TIER)) {
             case FAST -> {
                 tickspeed = 2;
                 countperop = 16;
@@ -25,8 +24,8 @@ public class BlockEntityConveyor extends BlockEntityConveyorBase {
                 countperop = 32;
             }
         }
-
-
+        
+        
         switch (getBlockState().getValue(BlockConveyor.TYPE)) {
             case INSERTER -> {
                 super.tickConveyor(tickspeed);

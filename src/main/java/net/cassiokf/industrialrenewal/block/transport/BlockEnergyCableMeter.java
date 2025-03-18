@@ -42,8 +42,7 @@ public class BlockEnergyCableMeter extends BlockEnergyCable {
                     default -> ModBlocks.ENERGYCABLE_LV.get();
                 };
                 worldIn.setBlockAndUpdate(pos, block.getState(worldIn, pos, block.defaultBlockState()));
-                if (!player.isCreative())
-                    player.addItem(new ItemStack(ModBlocks.ENERGY_LEVEL.get()));
+                if (!player.isCreative()) player.addItem(new ItemStack(ModBlocks.ENERGY_LEVEL.get()));
                 ItemScrewdriver.playSound(worldIn, pos);
             }
             return InteractionResult.SUCCESS;
@@ -64,6 +63,6 @@ public class BlockEnergyCableMeter extends BlockEnergyCable {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return level.isClientSide? null : ($0, $1, $2, blockEntity) -> ((BlockEntityEnergyCable)blockEntity).tick();
+        return level.isClientSide ? null : ($0, $1, $2, blockEntity) -> ((BlockEntityEnergyCable) blockEntity).tick();
     }
 }

@@ -29,20 +29,26 @@ import java.util.Set;
 
 public class BlockEntitySolarPanelFrame extends BlockEntityMultiBlocksTube<BlockEntitySolarPanelFrame> {
     
+    public final LazyOptional<CustomItemStackHandler> panelInv = LazyOptional.of(this::createHandler);
     private final Set<BlockEntitySolarPanelFrame> panelReady = new HashSet<>();
-    private int tick;
-    private Direction blockFacing;
-    
     private final int MAX_CAPACITY = 10000;
     private final int MAX_TRANSFER_RATE = 10000;
     private final float MULTIPLIER = 2;
-    
     private final boolean DECORATIVE = false;
+    public CustomEnergyStorage energyStorage = new CustomEnergyStorage(MAX_CAPACITY, 0, MAX_TRANSFER_RATE) {
+        @Override
+        public void onEnergyChange() {
+            BlockEntitySolarPanelFrame.this.sync();
+        }
+    };
+    private final LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyStorage);
+    private int tick;
+    private Direction blockFacing;
     
     public BlockEntitySolarPanelFrame(BlockPos pos, BlockState state) {
         super(ModBlockEntity.SOLAR_PANEL_FRAME.get(), pos, state);
     }
-    
+
     private CustomItemStackHandler createHandler() {
         return new CustomItemStackHandler(1) {
             @Override
@@ -58,16 +64,6 @@ public class BlockEntitySolarPanelFrame extends BlockEntityMultiBlocksTube<Block
         };
     }
     
-    public CustomEnergyStorage energyStorage = new CustomEnergyStorage(MAX_CAPACITY, 0, MAX_TRANSFER_RATE) {
-        @Override
-        public void onEnergyChange() {
-            BlockEntitySolarPanelFrame.this.sync();
-        }
-    };
-    
-    public final LazyOptional<CustomItemStackHandler> panelInv = LazyOptional.of(this::createHandler);
-    private final LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyStorage);
-    
     @Override
     public boolean instanceOf(BlockEntity te) {
         return te instanceof BlockEntitySolarPanelFrame;
@@ -75,7 +71,7 @@ public class BlockEntitySolarPanelFrame extends BlockEntityMultiBlocksTube<Block
     
     @Override
     public void doTick() {
-        if (DECORATIVE) return;;
+        if (DECORATIVE) return;
         if (level == null) return;
         if (!level.isClientSide) {
             if (isMaster()) {
@@ -201,7 +197,7 @@ public class BlockEntitySolarPanelFrame extends BlockEntityMultiBlocksTube<Block
     protected void saveAdditional(CompoundTag compound) {
         compound.putInt("energy", energyStorage.getEnergyStored());
         panelInv.ifPresent(h -> {
-            CompoundTag tag = ((INBTSerializable<CompoundTag>) h).serializeNBT();
+            CompoundTag tag = h.serializeNBT();
             compound.put("inv", tag);
         });
         super.saveAdditional(compound);
@@ -210,7 +206,7 @@ public class BlockEntitySolarPanelFrame extends BlockEntityMultiBlocksTube<Block
     @Override
     public void load(CompoundTag compound) {
         energyStorage.setEnergy(compound.getInt("energy"));
-        panelInv.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(compound.getCompound("inv")));
+        panelInv.ifPresent(h -> h.deserializeNBT(compound.getCompound("inv")));
         super.load(compound);
     }
     

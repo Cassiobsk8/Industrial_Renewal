@@ -25,10 +25,11 @@ public class BlockEntityTransformer extends BlockEntity3x2x3MachineBase<BlockEnt
     
     private final int MAX_CAPACITY = 10000;
     private final int TRANSFER_SPEED = 10000;
+    private final CustomEnergyStorage energyDummy = new CustomEnergyStorage(0);
+    private final LazyOptional<CustomEnergyStorage> dummyHandler = LazyOptional.of(() -> energyDummy);
     private int tick = 0;
     private int averageEnergy = 0;
     private int energyOverTime = 0;
-    
     private final CustomEnergyStorage energyStorage = new CustomEnergyStorage(MAX_CAPACITY, TRANSFER_SPEED, TRANSFER_SPEED) {
         
         @Override
@@ -42,9 +43,6 @@ public class BlockEntityTransformer extends BlockEntity3x2x3MachineBase<BlockEnt
         }
     };
     private final LazyOptional<CustomEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyStorage);
-    
-    private final CustomEnergyStorage energyDummy = new CustomEnergyStorage(0);
-    private final LazyOptional<CustomEnergyStorage> dummyHandler = LazyOptional.of(() -> energyDummy);
     
     public BlockEntityTransformer(BlockPos pos, BlockState state) {
         super(ModBlockEntity.TRANSFORMER_TILE.get(), pos, state);
@@ -101,7 +99,7 @@ public class BlockEntityTransformer extends BlockEntity3x2x3MachineBase<BlockEnt
         BlockEntity te = level.getBlockEntity(targetLocation);
         if (te != null) {
             IEnergyStorage teEnergyStorage = te.getCapability(ForgeCapabilities.ENERGY, getFacing()).orElse(null);
-            if(teEnergyStorage != null) {
+            if (teEnergyStorage != null) {
                 int amount = teEnergyStorage.receiveEnergy(Math.min(TRANSFER_SPEED, energy), simulate);
                 if (!simulate) energyOverTime += amount;
                 return amount;

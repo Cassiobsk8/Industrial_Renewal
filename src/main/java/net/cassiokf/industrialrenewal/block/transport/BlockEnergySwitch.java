@@ -12,8 +12,8 @@ public class BlockEnergySwitch extends BlockPipeSwitchBase implements EntityBloc
     public BlockEnergySwitch(Properties property) {
         super(property);
     }
-
-
+    
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

@@ -9,14 +9,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ItemBattery extends IRBaseItem implements ICapabilityProvider {
-
+    
     private final CustomEnergyStorage container;
     protected LazyOptional<CustomEnergyStorage> handler;
-
-    public ItemBattery(Properties props, int energy, int io){
+    
+    public ItemBattery(Properties props, int energy, int io) {
         super(props);
         this.container = new CustomEnergyStorage(energy, io, io);
-        this.handler = LazyOptional.of(()->this.container);
+        this.handler = LazyOptional.of(() -> this.container);
     }
     
     @Override
@@ -31,11 +31,10 @@ public class ItemBattery extends IRBaseItem implements ICapabilityProvider {
     
     
     //    @Override
-//    public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-//        tooltip.add(new TranslationTextComponent("Energy: " + this.container.getEnergyStored() + " / " + this.container.getMaxEnergyStored()));
-//        super.appendHoverText(stack, world, tooltip, flagIn);
-//    }
-
-
-
+    //    public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    //        tooltip.add(new TranslationTextComponent("Energy: " + this.container.getEnergyStored() + " / " + this.container.getMaxEnergyStored()));
+    //        super.appendHoverText(stack, world, tooltip, flagIn);
+    //    }
+    
+    
 }

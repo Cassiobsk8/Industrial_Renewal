@@ -23,7 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import javax.annotation.Nullable;
 
 public class BlockBarrel extends BlockSaveContent implements EntityBlock {
-
+    
     public static final BooleanProperty FRAME = BooleanProperty.create("frame");
     
     public BlockBarrel() {
@@ -45,17 +45,15 @@ public class BlockBarrel extends BlockSaveContent implements EntityBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return super.getStateForPlacement(context)
-                .setValue(FACING, context.getHorizontalDirection())
-                .setValue(FRAME, context.getPlayer().isCrouching());
+        return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection()).setValue(FRAME, context.getPlayer().isCrouching());
     }
-
+    
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(FRAME, FACING);
     }
-
+    
     @org.jetbrains.annotations.Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

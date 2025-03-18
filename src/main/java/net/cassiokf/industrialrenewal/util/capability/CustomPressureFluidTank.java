@@ -6,20 +6,16 @@ import net.minecraftforge.fluids.FluidStack;
 import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
-public class CustomPressureFluidTank extends CustomFluidTank
-{
-    public CustomPressureFluidTank()
-    {
+public class CustomPressureFluidTank extends CustomFluidTank {
+    public CustomPressureFluidTank() {
         super(0);
     }
     
-    public CustomPressureFluidTank(int capacity)
-    {
+    public CustomPressureFluidTank(int capacity) {
         super(capacity);
     }
-
-    public CustomPressureFluidTank(int capacity, Predicate<FluidStack> validator)
-    {
+    
+    public CustomPressureFluidTank(int capacity, Predicate<FluidStack> validator) {
         super(capacity, validator);
     }
     
@@ -36,29 +32,25 @@ public class CustomPressureFluidTank extends CustomFluidTank
     public boolean canPassCompressedFluid() {
         return true;
     }
-
+    
     @Override
-    public int fill(FluidStack resource, FluidAction action)
-    {
+    public int fill(FluidStack resource, FluidAction action) {
         return 0;
     }
-
+    
     @Nonnull
     @Override
-    public FluidStack drain(int maxDrain, FluidAction action)
-    {
+    public FluidStack drain(int maxDrain, FluidAction action) {
         return super.drain(0, action);
     }
-
+    
     @Override
-    public boolean canFill()
-    {
+    public boolean canFill() {
         return false;
     }
     
     @Override
-    public boolean canDrain()
-    {
+    public boolean canDrain() {
         return false;
     }
 }

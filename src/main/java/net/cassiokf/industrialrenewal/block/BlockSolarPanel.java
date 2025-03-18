@@ -26,39 +26,32 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class BlockSolarPanel extends IRBaseBlock implements EntityBlock {
-
+    
+    protected static final AABB BLOCK_AABB = new AABB(0.0, 0.0, 0.0, 1.0, 0.125, 1.0);
+    private static final Optional<VoxelShape> SHAPE = Stream.of(Block.box(0.5, 0, 0.5, 15.5, 1, 15.5), Block.box(0, 0, 0, 16, 1.2, 0.5), Block.box(0, 0, 15.5, 16, 1.2, 16), Block.box(0, 0, 0.5, 0.5, 1.2, 15.5), Block.box(15.5, 0, 0.5, 16, 1.2, 15.5)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR));
+    
     public BlockSolarPanel(Properties props) {
         super(props.noOcclusion());
     }
-
+    
     public BlockSolarPanel() {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).sound(SoundType.GLASS).strength(2f).noOcclusion());
     }
-
-    protected static final AABB BLOCK_AABB = new AABB(0.0, 0.0, 0.0, 1.0, 0.125, 1.0);
-
-    private static final Optional<VoxelShape> SHAPE = Stream.of(
-            Block.box(0.5, 0, 0.5, 15.5, 1, 15.5),
-            Block.box(0, 0, 0, 16, 1.2, 0.5),
-            Block.box(0, 0, 15.5, 16, 1.2, 16),
-            Block.box(0, 0, 0.5, 0.5, 1.2, 15.5),
-            Block.box(15.5, 0, 0.5, 16, 1.2, 15.5)
-    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR));
-
+    
     @Override
     public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
         return SHAPE.orElse(null);
     }
-
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return ModBlockEntity.SOLAR_PANEL.get().create(pos, state);
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide? null : ($0, $1, $2, blockEntity) -> ((BlockEntitySolarPanel)blockEntity).tick();
+        return level.isClientSide ? null : ($0, $1, $2, blockEntity) -> ((BlockEntitySolarPanel) blockEntity).tick();
     }
 }

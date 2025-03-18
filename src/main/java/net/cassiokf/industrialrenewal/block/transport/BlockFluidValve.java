@@ -12,8 +12,8 @@ public class BlockFluidValve extends BlockPipeSwitchBase implements EntityBlock 
     public BlockFluidValve(Properties property) {
         super(property);
     }
-
-
+    
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

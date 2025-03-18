@@ -25,25 +25,20 @@ public class BlockEntityDamTurbine extends BlockEntity3x3x3MachineBase<BlockEnti
     
     public static int MAX_PROCESSING = 1000;
     public static int MAX_EFFICIENCY = 10000;
-    
+    public final CustomFluidTank dummyTank = new CustomFluidTank(0);
+    public final LazyOptional<CustomFluidTank> dummyHandler = LazyOptional.of(() -> dummyTank);
+    private float oldRotation;
+    private float rotation;
+    //    private int outLetLimit = Config.DAM_TURBINE_WATER_OUTPUT_RATE.get();
+    private int passedFluid = 0;
+    private boolean hasFlow = false;
     public final CustomPressureFluidTank inTank = new CustomPressureFluidTank() {
         @Override
         public int receiveCompressedFluid(int amount, int y, FluidAction action) {
             return passCompressedFluid(amount, y, action);
         }
     };
-    
-    public final CustomFluidTank dummyTank = new CustomFluidTank(0);
-    
-    private float oldRotation;
-    private float rotation;
-    //    private int outLetLimit = Config.DAM_TURBINE_WATER_OUTPUT_RATE.get();
-    private int passedFluid = 0;
-    private boolean hasFlow = false;
-    
-    
     public final LazyOptional<CustomPressureFluidTank> inTankHandler = LazyOptional.of(() -> inTank);
-    public final LazyOptional<CustomFluidTank> dummyHandler = LazyOptional.of(() -> dummyTank);
     
     
     public BlockEntityDamTurbine(BlockPos pos, BlockState state) {
@@ -118,7 +113,7 @@ public class BlockEntityDamTurbine extends BlockEntity3x3x3MachineBase<BlockEnti
             if (Float.isNaN(rotation)) rotation = 0;
             if (rotation < max) {
                 float clamped = Utils.normalizeClamped(rotation, 0.001f, norm);
-                rotation *= (1 + (0.005f/clamped));
+                rotation *= (1 + (0.005f / clamped));
                 rotation += Math.min(norm * 0.05f, max - rotation);
             } else if (rotation > max) {
                 rotation -= 1;
@@ -140,7 +135,7 @@ public class BlockEntityDamTurbine extends BlockEntity3x3x3MachineBase<BlockEnti
     }
     
     public String getRotationText() {
-        return "Rot: " + (int)rotation + " rpm";
+        return "Rot: " + (int) rotation + " rpm";
     }
     
     public float getRotationFill() {

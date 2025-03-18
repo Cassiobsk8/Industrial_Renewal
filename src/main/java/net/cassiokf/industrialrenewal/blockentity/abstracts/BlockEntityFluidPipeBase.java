@@ -19,17 +19,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class BlockEntityFluidPipeBase<T extends BlockEntityFluidPipeBase<?>> extends BlockEntityMultiBlocksTube<T> implements ICapabilityProvider {
+    public int averageFluid;
     //TODO: add to config
     private int maxOutput;
-    private int oldFluid;
-    private int tick;
-    public int averageFluid;
-    
-    public BlockEntityFluidPipeBase(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state, int maxOutput) {
-        super(tileEntityTypeIn, pos, state);
-        this.maxOutput = maxOutput;
-    }
-    
     private final CustomFluidTank tank = new CustomFluidTank(maxOutput) {
         @Override
         public int fill(FluidStack resource, FluidAction action) {
@@ -37,6 +29,12 @@ public abstract class BlockEntityFluidPipeBase<T extends BlockEntityFluidPipeBas
         }
     }.setBlockEntity(this);
     private final LazyOptional<CustomFluidTank> tankHandler = LazyOptional.of(this::getTank);
+    private int oldFluid;
+    private int tick;
+    public BlockEntityFluidPipeBase(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state, int maxOutput) {
+        super(tileEntityTypeIn, pos, state);
+        this.maxOutput = maxOutput;
+    }
     
     @Override
     public void doTick() {

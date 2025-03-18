@@ -18,11 +18,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BlockEntityEnergySwitch extends BlockEntitySyncable {
-    public BlockEntityEnergySwitch(BlockPos pos, BlockState state) {
-        super(ModBlockEntity.ENERGY_SWITCH_TILE.get(), pos, state);
-    }
     private final CustomEnergyStorage dummyStorage = new CustomEnergyStorage(0);
-
     private final CustomEnergyStorage energyStorage = new CustomEnergyStorage(0) {
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate) {
@@ -49,8 +45,11 @@ public class BlockEntityEnergySwitch extends BlockEntitySyncable {
             return false;
         }
     };
-    private final LazyOptional<CustomEnergyStorage> energyStorageHandler = LazyOptional.of(()->energyStorage);
-    private final LazyOptional<CustomEnergyStorage> dummyStorageHandler = LazyOptional.of(()->dummyStorage);
+    private final LazyOptional<CustomEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyStorage);
+    private final LazyOptional<CustomEnergyStorage> dummyStorageHandler = LazyOptional.of(() -> dummyStorage);
+    public BlockEntityEnergySwitch(BlockPos pos, BlockState state) {
+        super(ModBlockEntity.ENERGY_SWITCH_TILE.get(), pos, state);
+    }
     
     private IEnergyStorage getOutput() {
         if (level == null) return null;
@@ -61,13 +60,13 @@ public class BlockEntityEnergySwitch extends BlockEntitySyncable {
         }
         return null;
     }
-
-    private boolean isOpen(){
-        return getBlockState().is(ModBlocks.ENERGY_SWITCH.get())? getBlockState().getValue(BlockPipeSwitchBase.ON_OFF) : false;
+    
+    private boolean isOpen() {
+        return getBlockState().is(ModBlocks.ENERGY_SWITCH.get()) ? getBlockState().getValue(BlockPipeSwitchBase.ON_OFF) : false;
     }
-
-    private Direction getFacing(){
-        return getBlockState().is(ModBlocks.ENERGY_SWITCH.get())? getBlockState().getValue(BlockPipeSwitchBase.FACING) : Direction.NORTH;
+    
+    private Direction getFacing() {
+        return getBlockState().is(ModBlocks.ENERGY_SWITCH.get()) ? getBlockState().getValue(BlockPipeSwitchBase.FACING) : Direction.NORTH;
     }
     
     @Override
@@ -76,16 +75,15 @@ public class BlockEntityEnergySwitch extends BlockEntitySyncable {
         dummyStorageHandler.invalidate();
         super.invalidateCaps();
     }
-
+    
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         Direction facing = getFacing();
-
-        if (side == null)
-            return super.getCapability(cap, side);
-
-        if(cap == ForgeCapabilities.ENERGY) {
+        
+        if (side == null) return super.getCapability(cap, side);
+        
+        if (cap == ForgeCapabilities.ENERGY) {
             if (side == facing.getOpposite()) return energyStorageHandler.cast();
             else if (side == facing) return dummyStorageHandler.cast();
         }

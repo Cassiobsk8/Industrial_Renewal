@@ -31,20 +31,19 @@ public class Utils {
     public static final int BUCKET_VOLUME = 1000;
     public static final String WATER_NAME = "Water";
     public static final String STEAM_NAME = "Steam";
-    public static boolean debugMsg = false;
+    public static final Direction[] VALUES = Direction.values();
+    public static final Direction[] BY_HORIZONTAL_INDEX = Arrays.stream(VALUES).filter((direction) -> direction.getAxis().isHorizontal()).sorted(Comparator.comparingInt(Direction::get2DDataValue)).toArray(Direction[]::new);
     private static final Random RANDOM = new Random();
     private static final DecimalFormat form = new DecimalFormat("0.0");
     private static final DecimalFormat preciseForm = new DecimalFormat("0.000");
-    
-    public static final Direction[] VALUES = Direction.values();
-    public static final Direction[] BY_HORIZONTAL_INDEX = Arrays.stream(VALUES).filter((direction) -> direction.getAxis().isHorizontal()).sorted(Comparator.comparingInt(Direction::get2DDataValue)).toArray(Direction[]::new);
+    public static boolean debugMsg = false;
     
     public static void debug(String msg, Object... objects) {
         StringBuilder s = new StringBuilder("DEBUG: ");
         s.append(msg).append(" ");
         for (Object obj : objects) {
             if (obj == null) s.append("EMPTY ");
-            else s.append(obj.toString()).append(" ");
+            else s.append(obj).append(" ");
         }
         IndustrialRenewal.LOGGER.info(String.valueOf(s));
     }

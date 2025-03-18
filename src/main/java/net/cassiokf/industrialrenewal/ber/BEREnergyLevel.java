@@ -9,8 +9,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BEREnergyLevel extends BERBase<BlockEntityEnergyLevel>
-{
+public class BEREnergyLevel extends BERBase<BlockEntityEnergyLevel> {
     
     public BEREnergyLevel(BlockEntityRendererProvider.Context context) {
         super(context);
@@ -18,7 +17,7 @@ public class BEREnergyLevel extends BERBase<BlockEntityEnergyLevel>
     
     @Override
     public void render(BlockEntityEnergyLevel blockEntity, float partialTick, PoseStack stack, MultiBufferSource buffer, int combinedOverlay, int packedLight) {
-        int x=0,y=0,z=0;
+        int x = 0, y = 0, z = 0;
         Direction facing = blockEntity.getGaugeFacing();
         doTheMath(facing, x, z, 0.6, 0);
         renderText(stack, buffer, facing, xPos, y + 0.18, zPos, blockEntity.GetText(), 0.008F);

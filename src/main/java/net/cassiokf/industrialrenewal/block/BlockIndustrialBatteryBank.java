@@ -28,16 +28,16 @@ public class BlockIndustrialBatteryBank extends BlockTowerBase<BlockEntityIndust
     public BlockIndustrialBatteryBank(Properties properties) {
         super(properties);
     }
-
+    
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, @org.jetbrains.annotations.Nullable LivingEntity livingEntity, ItemStack itemStack) {
-        if(!world.isClientSide()){
+        if (!world.isClientSide()) {
             super.setPlacedBy(world, pos, state, livingEntity, itemStack);
             List<BlockPos> blocks = Utils.getBlocksIn3x3x3Centered(pos);
-            for(BlockPos blockPos : blocks){
+            for (BlockPos blockPos : blocks) {
                 BlockEntity te = world.getBlockEntity(blockPos);
-                if(te instanceof BlockEntityIndustrialBatteryBank bankTE && ((BlockEntityTowerBase<?>)te).isMaster()){
-
+                if (te instanceof BlockEntityIndustrialBatteryBank bankTE && ((BlockEntityTowerBase<?>) te).isMaster()) {
+                    
                     bankTE.setSelfBooleanProperty();
                     bankTE.setOtherBooleanProperty(TOP, false, false);
                     bankTE.setOtherBooleanProperty(BASE, false, true);
@@ -47,21 +47,21 @@ public class BlockIndustrialBatteryBank extends BlockTowerBase<BlockEntityIndust
             }
         }
     }
-
+    
     @Override
     public void destroy(LevelAccessor world, BlockPos pos, BlockState state) {
-        if(!world.isClientSide()){
+        if (!world.isClientSide()) {
             List<BlockPos> blocks = Utils.getBlocksIn3x3x3Centered(pos);
-            for(BlockPos blockPos : blocks){
+            for (BlockPos blockPos : blocks) {
                 BlockEntity te = world.getBlockEntity(blockPos);
-                if(te instanceof BlockEntityIndustrialBatteryBank bankTE && ((BlockEntityTowerBase)te).isMaster()){
-                    popResource((Level)world, te.getBlockPos(), new ItemStack(ModItems.BATTERY_LITHIUM.get(), ((BlockEntityIndustrialBatteryBank)te).getBatteries()));
+                if (te instanceof BlockEntityIndustrialBatteryBank bankTE && ((BlockEntityTowerBase) te).isMaster()) {
+                    popResource((Level) world, te.getBlockPos(), new ItemStack(ModItems.BATTERY_LITHIUM.get(), bankTE.getBatteries()));
                     bankTE.setOtherBooleanProperty(TOP, true, false);
                     bankTE.setOtherBooleanProperty(BASE, true, true);
-                    if(!bankTE.isBase()){
+                    if (!bankTE.isBase()) {
                         bankTE.getBase().removeTower(bankTE);
                     }
-                    if(bankTE.getAbove() != null){
+                    if (bankTE.getAbove() != null) {
                         //bankTE.getAbove().tower = new ArrayList<>();
                         bankTE.getAbove().loadTower();
                     }
@@ -70,10 +70,10 @@ public class BlockIndustrialBatteryBank extends BlockTowerBase<BlockEntityIndust
         }
         super.destroy(world, pos, state);
     }
-
+    
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hitResult) {
-        if(!worldIn.isClientSide){
+        if (!worldIn.isClientSide) {
             //Utils.debug("USE ON BATTERYBANK BLOCK");
             ItemStack stack = player.getItemInHand(handIn);
             if (stack.getItem().equals(ModItems.BATTERY_LITHIUM.get())) {
@@ -87,23 +87,22 @@ public class BlockIndustrialBatteryBank extends BlockTowerBase<BlockEntityIndust
                 BlockEntity te = worldIn.getBlockEntity(pos);
                 //Utils.debug("REMOVING",te instanceof TileEntityIndustrialBatteryBank);
                 if (te instanceof BlockEntityIndustrialBatteryBank bb) {
-                    if (bb.getMaster().removeBattery(player))
-                        return InteractionResult.PASS;
+                    if (bb.getMaster().removeBattery(player)) return InteractionResult.PASS;
                 }
             }
         }
         return super.use(state, worldIn, pos, player, handIn, hitResult);
     }
-
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return ModBlockEntity.INDUSTRIAL_BATTERY_TILE.get().create(pos, state);
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return ($0, $1, $2, blockEntity) -> ((BlockEntityIndustrialBatteryBank)blockEntity).tick();
+        return ($0, $1, $2, blockEntity) -> ((BlockEntityIndustrialBatteryBank) blockEntity).tick();
     }
 }

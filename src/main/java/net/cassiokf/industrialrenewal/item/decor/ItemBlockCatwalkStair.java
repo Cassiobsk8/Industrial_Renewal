@@ -17,27 +17,24 @@ public class ItemBlockCatwalkStair extends BlockItem {
     public ItemBlockCatwalkStair(Block block, Properties props) {
         super(block, props);
     }
-
+    
     @Nullable
     @Override
     public BlockPlaceContext updatePlacementContext(BlockPlaceContext context) {
         BlockPos pos = context.getClickedPos();
         Level world = context.getLevel();
         BlockState state = world.getBlockState(pos);
-
-        if(context.getPlayer().isCrouching()){
+        
+        if (context.getPlayer().isCrouching()) {
             return context;
-        }
-        else if(state.getBlock() instanceof BlockCatwalk){
+        } else if (state.getBlock() instanceof BlockCatwalk) {
             BlockPos.MutableBlockPos blockpos$mutable = pos.mutable().move(context.getHorizontalDirection());
-            if(state.canBeReplaced(context))
+            if (state.canBeReplaced(context))
                 return BlockPlaceContext.at(context, blockpos$mutable, context.getHorizontalDirection().getOpposite());
-            else
-                return null;
-        }
-        else if (state.getBlock() instanceof BlockCatwalkStair){
+            else return null;
+        } else if (state.getBlock() instanceof BlockCatwalkStair) {
             BlockPos.MutableBlockPos blockpos$mutable = pos.mutable().move(context.getHorizontalDirection()).move(Direction.UP);
-            if(state.canBeReplaced(context))
+            if (state.canBeReplaced(context))
                 return BlockPlaceContext.at(context, blockpos$mutable, context.getHorizontalDirection().getOpposite());
         }
         return super.updatePlacementContext(context);

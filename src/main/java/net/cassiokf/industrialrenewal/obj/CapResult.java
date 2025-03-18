@@ -4,7 +4,8 @@ public class CapResult {
     
     private int outPut = 0;
     private int validReceivers = 0;
-    public CapResult(int outPut, int validReceivers){
+    
+    public CapResult(int outPut, int validReceivers) {
         setOutPut(outPut);
         setValidReceivers(validReceivers);
     }

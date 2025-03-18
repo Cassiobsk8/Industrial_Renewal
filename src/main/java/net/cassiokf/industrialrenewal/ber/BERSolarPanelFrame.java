@@ -10,23 +10,22 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BERSolarPanelFrame extends BERBase<BlockEntitySolarPanelFrame>{
-
-
+public class BERSolarPanelFrame extends BERBase<BlockEntitySolarPanelFrame> {
+    
+    
     public BERSolarPanelFrame(BlockEntityRendererProvider.Context context) {
         super(context);
     }
-
+    
     @Override
     public void render(BlockEntitySolarPanelFrame blockEntity, float partialTick, PoseStack stack, MultiBufferSource buffer, int combinedOverlay, int packedLight) {
         double x = 0, y = 0, z = 0;
-        if (blockEntity!=null && blockEntity.hasPanel())
-        {
+        if (blockEntity != null && blockEntity.hasPanel()) {
             Direction facing = blockEntity.getBlockFacing();
             doTheMath(facing, x, z, 0.38, 0);
             render3dItem(stack, lighting(blockEntity), combinedOverlay, buffer, facing, blockEntity.getLevel(), xPos, y + 0.50f, zPos, blockEntity.getPanel(), 4, false, 22.5f, 1, 0, 0);
         }
         super.render(blockEntity, partialTick, stack, buffer, combinedOverlay, packedLight);
     }
-
+    
 }

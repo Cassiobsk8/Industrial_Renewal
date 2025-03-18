@@ -25,59 +25,53 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BlockIndustrialFloor extends BlockAbstractSixWayConnections {
-
+    
+    public static final BooleanProperty LIGHT = BooleanProperty.create("light");
     protected static final VoxelShape NONE_AABB = Block.box(6, 6, 6, 10, 10, 10);
-
     protected static final VoxelShape C_UP_AABB = Block.box(0, 15, 0, 16, 16, 16);
     protected static final VoxelShape C_DOWN_AABB = Block.box(0, 0, 0, 16, 1, 16);
     protected static final VoxelShape C_NORTH_AABB = Block.box(0, 0, 0, 16, 16, 1);
     protected static final VoxelShape C_SOUTH_AABB = Block.box(0, 0, 15, 16, 16, 16);
     protected static final VoxelShape C_WEST_AABB = Block.box(0, 0, 0, 1, 16, 16);
     protected static final VoxelShape C_EAST_AABB = Block.box(15, 0, 0, 16, 16, 16);
-
-    public static final BooleanProperty LIGHT = BooleanProperty.create("light");
+    
     public BlockIndustrialFloor() {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(1f), 16, 16);
     }
-
+    
+    private static boolean isValidConnection(final BlockState neighborState, final BlockGetter world, final BlockPos ownPos, final Direction neighborDirection) {
+        Block nb = neighborState.getBlock();
+        return nb instanceof BlockIndustrialFloor || (nb instanceof DoorBlock && neighborState.getValue(DoorBlock.FACING).equals(neighborDirection)) || (neighborDirection.equals(Direction.DOWN) && nb instanceof BlockCatwalkLadder) || (neighborDirection.equals(Direction.UP) && nb instanceof BlockCatwalkHatch)
+                //start check for horizontal Iladder
+                || ((neighborDirection != Direction.UP && neighborDirection != Direction.DOWN) && nb instanceof BlockCatwalkLadder && !neighborState.getValue(BlockCatwalkLadder.ACTIVE))
+                //end
+                ;
+    }
+    
     @Override
     protected BlockState getInitDefaultState() {
         return super.getInitDefaultState().setValue(LIGHT, false);
     }
-
-    private static boolean isValidConnection(final BlockState neighborState, final BlockGetter world, final BlockPos ownPos, final Direction neighborDirection)
-    {
-        Block nb = neighborState.getBlock();
-        return nb instanceof BlockIndustrialFloor
-                || (nb instanceof DoorBlock && neighborState.getValue(DoorBlock.FACING).equals(neighborDirection))
-                || (neighborDirection.equals(Direction.DOWN) && nb instanceof BlockCatwalkLadder)
-                || (neighborDirection.equals(Direction.UP) && nb instanceof BlockCatwalkHatch)
-                //start check for horizontal Iladder
-                || ((neighborDirection != Direction.UP && neighborDirection != Direction.DOWN)
-                && nb instanceof BlockCatwalkLadder && !neighborState.getValue(BlockCatwalkLadder.ACTIVE))
-                //end
-                ;
-    }
-
+    
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(LIGHT);
     }
-
+    
     @Override
     public boolean canConnectTo(Level worldIn, BlockPos currentPos, Direction neighborDirection) {
         final BlockPos neighborPos = currentPos.relative(neighborDirection);
         final BlockState neighborState = worldIn.getBlockState(neighborPos);
-
+        
         return !isValidConnection(neighborState, worldIn, currentPos, neighborDirection);
     }
-
+    
     @Override
     public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if(!worldIn.isClientSide){
-            for(Direction direction : Direction.values()){
-                if(canConnectTo(worldIn, pos, direction))
+        if (!worldIn.isClientSide) {
+            for (Direction direction : Direction.values()) {
+                if (canConnectTo(worldIn, pos, direction))
                     worldIn.setBlock(pos, worldIn.getBlockState(pos).setValue(getPropertyBasedOnDirection(direction), true), 3);
                 else
                     worldIn.setBlock(pos, worldIn.getBlockState(pos).setValue(getPropertyBasedOnDirection(direction), false), 3);
@@ -85,34 +79,33 @@ public class BlockIndustrialFloor extends BlockAbstractSixWayConnections {
         }
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
     }
-
+    
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         ItemStack playerStack = player.getItemInHand(handIn);
-
-        if(!worldIn.isClientSide){
-//            if(Block.byItem(playerStack.getItem()) instanceof BlockPipeBase<?>){
-//                worldIn.playSound(null, pos, SoundEvents.METAL_PLACE, SoundSource.BLOCKS, 1f, 1f);
-//                worldIn.setBlock(pos, Block.byItem(playerStack.getItem()).defaultBlockState().setValue(BlockPipeBase.FLOOR, true), 3);
-//                if (!player.isCreative())
-//                {
-//                    playerStack.shrink(1);
-//                }
-//                return InteractionResult.SUCCESS;
-//            }
-            if(!state.getValue(LIGHT)){
-                if(Block.byItem(playerStack.getItem()) instanceof BlockLight){
-//                    worldIn.playSound(null, pos, SoundEvents.METAL_PLACE, SoundSource.BLOCKS, 1f, 1f);
+        
+        if (!worldIn.isClientSide) {
+            //            if(Block.byItem(playerStack.getItem()) instanceof BlockPipeBase<?>){
+            //                worldIn.playSound(null, pos, SoundEvents.METAL_PLACE, SoundSource.BLOCKS, 1f, 1f);
+            //                worldIn.setBlock(pos, Block.byItem(playerStack.getItem()).defaultBlockState().setValue(BlockPipeBase.FLOOR, true), 3);
+            //                if (!player.isCreative())
+            //                {
+            //                    playerStack.shrink(1);
+            //                }
+            //                return InteractionResult.SUCCESS;
+            //            }
+            if (!state.getValue(LIGHT)) {
+                if (Block.byItem(playerStack.getItem()) instanceof BlockLight) {
+                    //                    worldIn.playSound(null, pos, SoundEvents.METAL_PLACE, SoundSource.BLOCKS, 1f, 1f);
                     worldIn.setBlock(pos, state.setValue(LIGHT, true), 3);
-                    if (!player.isCreative())
-                    {
+                    if (!player.isCreative()) {
                         playerStack.shrink(1);
                     }
                     return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.PASS;
             }
-
+            
             if (handIn == InteractionHand.MAIN_HAND) {
                 Item playerItem = player.getMainHandItem().getItem();
                 if (playerItem.equals(ModItems.SCREW_DRIVER.get())) {
@@ -123,7 +116,7 @@ public class BlockIndustrialFloor extends BlockAbstractSixWayConnections {
                 }
             }
         }
-
+        
         return super.use(state, worldIn, pos, player, handIn, hit);
     }
     
@@ -135,17 +128,16 @@ public class BlockIndustrialFloor extends BlockAbstractSixWayConnections {
             return 0;
         }
     }
-
+    
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
-    {
-//        if(!Config.INDUSTRIAL_FLOOR_COLLISION.get()){
-//            return super.getCollisionShape(state, worldIn, pos, context);
-//        }
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+        //        if(!Config.INDUSTRIAL_FLOOR_COLLISION.get()){
+        //            return super.getCollisionShape(state, worldIn, pos, context);
+        //        }
         VoxelShape SHAPE = NULL_SHAPE;
-        for(Direction face: Direction.values()){
+        for (Direction face : Direction.values()) {
             BooleanProperty prop = getPropertyBasedOnDirection(face);
-            if(state.getValue(prop)){
+            if (state.getValue(prop)) {
                 SHAPE = switch (face) {
                     case UP -> Shapes.or(SHAPE, C_UP_AABB);
                     case DOWN -> Shapes.or(SHAPE, C_DOWN_AABB);
@@ -158,12 +150,11 @@ public class BlockIndustrialFloor extends BlockAbstractSixWayConnections {
         }
         return SHAPE;
     }
-
+    
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean flag) {
         if (!state.is(oldState.getBlock())) {
-            if(state.getValue(LIGHT))
-                Block.popResource(world, pos, new ItemStack(ModBlocks.LIGHT.get().asItem(), 1));
+            if (state.getValue(LIGHT)) Block.popResource(world, pos, new ItemStack(ModBlocks.LIGHT.get().asItem(), 1));
         }
         super.onRemove(state, world, pos, oldState, flag);
     }

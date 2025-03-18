@@ -19,10 +19,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BlockEntityFluidValve extends BlockEntitySyncable {
-    public BlockEntityFluidValve(BlockPos pos, BlockState state) {
-        super(ModBlockEntity.FLUID_VALVE_TILE.get(), pos, state);
-    }
-    
     private final CustomFluidTank dummyTank = new CustomFluidTank(0);
     private final CustomFluidTank fluidTank = new CustomFluidTank(10000) {
         @Override
@@ -45,9 +41,11 @@ public class BlockEntityFluidValve extends BlockEntitySyncable {
             return false;
         }
     };
-
-    private final LazyOptional<CustomFluidTank> tankLazyOptional = LazyOptional.of(()-> fluidTank);
-    private final LazyOptional<CustomFluidTank> dummyLazyOptional = LazyOptional.of(()-> dummyTank);
+    private final LazyOptional<CustomFluidTank> tankLazyOptional = LazyOptional.of(() -> fluidTank);
+    private final LazyOptional<CustomFluidTank> dummyLazyOptional = LazyOptional.of(() -> dummyTank);
+    public BlockEntityFluidValve(BlockPos pos, BlockState state) {
+        super(ModBlockEntity.FLUID_VALVE_TILE.get(), pos, state);
+    }
     
     private IFluidHandler getOutput() {
         if (level == null) return null;
@@ -59,12 +57,12 @@ public class BlockEntityFluidValve extends BlockEntitySyncable {
         return null;
     }
     
-    private boolean isOpen(){
-        return getBlockState().is(ModBlocks.FLUID_VALVE.get())? getBlockState().getValue(BlockPipeSwitchBase.ON_OFF) : false;
+    private boolean isOpen() {
+        return getBlockState().is(ModBlocks.FLUID_VALVE.get()) ? getBlockState().getValue(BlockPipeSwitchBase.ON_OFF) : false;
     }
     
-    private Direction getFacing(){
-        return getBlockState().is(ModBlocks.FLUID_VALVE.get())? getBlockState().getValue(BlockPipeSwitchBase.FACING) : Direction.NORTH;
+    private Direction getFacing() {
+        return getBlockState().is(ModBlocks.FLUID_VALVE.get()) ? getBlockState().getValue(BlockPipeSwitchBase.FACING) : Direction.NORTH;
     }
     
     @Override
@@ -73,16 +71,15 @@ public class BlockEntityFluidValve extends BlockEntitySyncable {
         dummyLazyOptional.invalidate();
         super.invalidateCaps();
     }
-
+    
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         Direction facing = getFacing();
-
-        if (side == null)
-            return super.getCapability(cap, side);
-
-        if(cap == ForgeCapabilities.FLUID_HANDLER) {
+        
+        if (side == null) return super.getCapability(cap, side);
+        
+        if (cap == ForgeCapabilities.FLUID_HANDLER) {
             if (side == facing.getOpposite()) return tankLazyOptional.cast();
             else if (side == facing) return dummyLazyOptional.cast();
         }

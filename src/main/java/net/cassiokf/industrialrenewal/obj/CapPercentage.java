@@ -18,7 +18,7 @@ public class CapPercentage {
         this.amount = amount;
     }
     
-    public CapPercentage (IFluidHandler fluidHandler, BlockEntity blockEntity, float percentage, int amount) {
+    public CapPercentage(IFluidHandler fluidHandler, BlockEntity blockEntity, float percentage, int amount) {
         this.fluidHandler = fluidHandler;
         this.blockEntity = blockEntity;
         this.percentage = percentage;

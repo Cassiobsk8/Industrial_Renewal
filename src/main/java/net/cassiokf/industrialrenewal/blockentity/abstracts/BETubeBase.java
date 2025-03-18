@@ -5,8 +5,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
-public abstract class BETubeBase extends BE6WayConnection
-{
+public abstract class BETubeBase extends BE6WayConnection {
     public static final BooleanProperty MASTER = BooleanProperty.create("master");
     public static final BooleanProperty CUP = BooleanProperty.create("cup");
     public static final BooleanProperty CDOWN = BooleanProperty.create("cdown");
@@ -21,9 +20,8 @@ public abstract class BETubeBase extends BE6WayConnection
     public static final BooleanProperty WSOUTH = BooleanProperty.create("wsouth");
     public static final BooleanProperty WEAST = BooleanProperty.create("weast");
     public static final BooleanProperty WWEST = BooleanProperty.create("wwest");
-
-    public BETubeBase(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state)
-    {
+    
+    public BETubeBase(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
         super(tileEntityTypeIn, pos, state);
     }
 }

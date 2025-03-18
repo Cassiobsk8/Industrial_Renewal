@@ -18,43 +18,42 @@ public abstract class BlockEntitySyncable extends BlockEntity {
     }
     
     public void sync() {
-        if(level == null) return;
-        if (!level.isClientSide())
-        {
+        if (level == null) return;
+        if (!level.isClientSide()) {
             final BlockState state = getBlockState();
             level.sendBlockUpdated(worldPosition, state, state, Block.UPDATE_ALL);
             this.setChanged();
         }
     }
-
+    
     @Override
     public void load(@NotNull CompoundTag compoundTag) {
         super.load(compoundTag);
     }
-
+    
     @Override
     protected void saveAdditional(@NotNull CompoundTag compoundTag) {
         super.saveAdditional(compoundTag);
     }
-
+    
     @Override
     @NotNull
     public CompoundTag getUpdateTag() {
-//        return super.getUpdateTag();
+        //        return super.getUpdateTag();
         return saveWithoutMetadata();
     }
-
+    
     @Override
     public void handleUpdateTag(CompoundTag tag) {
         if (tag == null) return;
         super.handleUpdateTag(tag);
         load(tag);
     }
-
+    
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
-
+    
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         super.onDataPacket(net, pkt);

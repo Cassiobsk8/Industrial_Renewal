@@ -22,10 +22,6 @@ public abstract class BlockEntityEnergyCable extends BlockEntityMultiBlocksTube<
     
     private int averageEnergy;
     private int potentialEnergy;
-    private int oldPotential = -1;
-    private int oldEnergy;
-    private int tick;
-    
     public final CustomEnergyStorage energyStorage = new CustomEnergyStorage(getMaxEnergyToTransport(), getMaxEnergyToTransport(), getMaxEnergyToTransport()) {
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate) {
@@ -38,8 +34,10 @@ public abstract class BlockEntityEnergyCable extends BlockEntityMultiBlocksTube<
             return 0;
         }
     };
-    
     public final LazyOptional<CustomEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyStorage);
+    private int oldPotential = -1;
+    private int oldEnergy;
+    private int tick;
     
     
     public BlockEntityEnergyCable(BlockEntityType<?> tileEntityType, BlockPos pos, BlockState state) {
@@ -55,13 +53,11 @@ public abstract class BlockEntityEnergyCable extends BlockEntityMultiBlocksTube<
     @Override
     public void doTick() {
         if (level != null && !level.isClientSide && isMaster()) {
-            if (tick >= 10)
-            {
+            if (tick >= 10) {
                 tick = 0;
                 averageEnergy = outPut / 10;
                 outPut = 0;
-                if (averageEnergy != oldEnergy || potentialEnergy != oldPotential)
-                {
+                if (averageEnergy != oldEnergy || potentialEnergy != oldPotential) {
                     oldPotential = potentialEnergy;
                     oldEnergy = averageEnergy;
                     sync();
@@ -95,12 +91,11 @@ public abstract class BlockEntityEnergyCable extends BlockEntityMultiBlocksTube<
         for (Direction face : Direction.values()) {
             BlockPos currentPos = worldPosition.relative(face);
             BlockEntity te = level.getBlockEntity(currentPos);
-            boolean hasMachine = te != null && !(te instanceof BlockEntityEnergyCable)
-                    && te.getCapability(ForgeCapabilities.ENERGY, face.getOpposite()).isPresent();
+            boolean hasMachine = te != null && !(te instanceof BlockEntityEnergyCable) && te.getCapability(ForgeCapabilities.ENERGY, face.getOpposite()).isPresent();
             
             if (hasMachine && te.getCapability(ForgeCapabilities.ENERGY, face.getOpposite()).orElse(null).canReceive())
                 if (!isMasterInvalid()) getMaster().addReceiver(te, face);
-            else if (!isMasterInvalid()) getMaster().removeReceiver(te);
+                else if (!isMasterInvalid()) getMaster().removeReceiver(te);
         }
         getMaster().cleanReceiversContainer();
     }

@@ -23,23 +23,23 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockPortableGenerator extends BlockSaveContent implements EntityBlock {
-
+    
     public BlockPortableGenerator(Properties props) {
         super(props);
         registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
     }
-
+    
     public BlockPortableGenerator() {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(2f));
         registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
     }
-
+    
     @org.jetbrains.annotations.Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection());
     }
-
+    
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
@@ -62,10 +62,10 @@ public class BlockPortableGenerator extends BlockSaveContent implements EntityBl
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return ModBlockEntity.PORTABLE_GENERATOR_TILE.get().create(pos, state);
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return level.isClientSide? null : ($0, $1, $2, blockEntity) -> ((BlockEntityPortableGenerator)blockEntity).tick();
+        return level.isClientSide ? null : ($0, $1, $2, blockEntity) -> ((BlockEntityPortableGenerator) blockEntity).tick();
     }
 }

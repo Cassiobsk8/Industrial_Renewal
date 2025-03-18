@@ -23,16 +23,16 @@ public class BlockFluidTank extends BlockTowerBase<BlockEntityFluidTank> impleme
     public BlockFluidTank(BlockBehaviour.Properties properties) {
         super(properties);
     }
-
+    
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, @org.jetbrains.annotations.Nullable LivingEntity livingEntity, ItemStack itemStack) {
-        if(!world.isClientSide()){
+        if (!world.isClientSide()) {
             super.setPlacedBy(world, pos, state, livingEntity, itemStack);
             List<BlockPos> blocks = Utils.getBlocksIn3x3x3Centered(pos);
-            for(BlockPos blockPos : blocks){
+            for (BlockPos blockPos : blocks) {
                 BlockEntity te = world.getBlockEntity(blockPos);
-                if(te instanceof BlockEntityFluidTank bankTE && ((BlockEntityFluidTank)te).isMaster()){
-
+                if (te instanceof BlockEntityFluidTank bankTE && bankTE.isMaster()) {
+                    
                     bankTE.setSelfBooleanProperty();
                     bankTE.setOtherBooleanProperty(TOP, false, false);
                     bankTE.setOtherBooleanProperty(BASE, false, true);
@@ -41,20 +41,20 @@ public class BlockFluidTank extends BlockTowerBase<BlockEntityFluidTank> impleme
             }
         }
     }
-
+    
     @Override
     public void destroy(LevelAccessor world, BlockPos pos, BlockState state) {
-        if(!world.isClientSide()){
+        if (!world.isClientSide()) {
             List<BlockPos> blocks = Utils.getBlocksIn3x3x3Centered(pos);
-            for(BlockPos blockPos : blocks){
+            for (BlockPos blockPos : blocks) {
                 BlockEntity te = world.getBlockEntity(blockPos);
-                if(te instanceof BlockEntityFluidTank bankTE && ((BlockEntityFluidTank)te).isMaster()){
+                if (te instanceof BlockEntityFluidTank bankTE && bankTE.isMaster()) {
                     bankTE.setOtherBooleanProperty(TOP, true, false);
                     bankTE.setOtherBooleanProperty(BASE, true, true);
-                    if(!bankTE.isBase()){
+                    if (!bankTE.isBase()) {
                         bankTE.getBase().removeTower(bankTE);
                     }
-                    if(bankTE.getAbove() != null){
+                    if (bankTE.getAbove() != null) {
                         bankTE.getAbove().loadTower();
                     }
                 }
@@ -62,16 +62,16 @@ public class BlockFluidTank extends BlockTowerBase<BlockEntityFluidTank> impleme
         }
         super.destroy(world, pos, state);
     }
-
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return ModBlockEntity.FLUID_TANK_TILE.get().create(pos, state);
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return ($0, $1, $2, blockEntity) -> ((BlockEntityFluidTank)blockEntity).tick();
+        return ($0, $1, $2, blockEntity) -> ((BlockEntityFluidTank) blockEntity).tick();
     }
 }

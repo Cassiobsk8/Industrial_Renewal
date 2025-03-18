@@ -32,8 +32,7 @@ public class BlockFluidPipeGauge extends BlockFluidPipe {
             if (!worldIn.isClientSide) {
                 BlockFluidPipe block = ModBlocks.FLUID_PIPE.get();
                 worldIn.setBlockAndUpdate(pos, block.getState(worldIn, pos, block.defaultBlockState()));
-                if (!player.isCreative())
-                    player.addItem(new ItemStack(ModBlocks.FLUID_GAUGE.get()));
+                if (!player.isCreative()) player.addItem(new ItemStack(ModBlocks.FLUID_GAUGE.get()));
                 ItemScrewdriver.playSound(worldIn, pos);
             }
             return InteractionResult.SUCCESS;
@@ -50,6 +49,6 @@ public class BlockFluidPipeGauge extends BlockFluidPipe {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return level.isClientSide? null : ($0, $1, $2, blockEntity) -> ((BEFluidPipeGauge)blockEntity).tick();
+        return level.isClientSide ? null : ($0, $1, $2, blockEntity) -> ((BEFluidPipeGauge) blockEntity).tick();
     }
 }

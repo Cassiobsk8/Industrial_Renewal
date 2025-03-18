@@ -11,18 +11,18 @@ public class IRBaseBlock extends Block {
     
     public static final VoxelShape NULL_SHAPE = Block.box(0, 0, 0, 0, 0, 0);
     protected static final VoxelShape FULL_SHAPE = Block.box(0, 0, 0, 16, 16, 16);
-    public IRBaseBlock(){
+    
+    public IRBaseBlock() {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK));
     }
     
     public IRBaseBlock(Properties properties) {
         super(properties.forceSolidOn());
     }
-
-    protected BlockState getInitDefaultState()
-    {
+    
+    protected BlockState getInitDefaultState() {
         BlockState state = this.stateDefinition.any();
-        if(state.hasProperty(BlockStateProperties.WATERLOGGED))
+        if (state.hasProperty(BlockStateProperties.WATERLOGGED))
             state = state.setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE);
         return state;
     }

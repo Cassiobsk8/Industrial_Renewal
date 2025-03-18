@@ -25,21 +25,17 @@ import net.minecraftforge.items.IItemHandler;
 import javax.annotation.Nonnull;
 
 public class BlockEntityWindTurbineHead extends BlockEntitySyncable {
+    public static int energyGeneration = 128;
+    private static final CustomEnergyStorage energyStorage = new CustomEnergyStorage(energyGeneration, energyGeneration, energyGeneration).noReceive().noExtraction();
+    private static final LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyStorage);
+    private final LazyOptional<IItemHandler> bladeInv = LazyOptional.of(this::createHandler);
     private float rotation;
     private float oldRotation = -1f;
     private int energyGenerated;
-    
-    public static int energyGeneration = 128;
     private int tickToDamage;
-    
     public BlockEntityWindTurbineHead(BlockPos pos, BlockState state) {
         super(ModBlockEntity.WIND_TURBINE_TILE.get(), pos, state);
     }
-    
-    private static final CustomEnergyStorage energyStorage = new CustomEnergyStorage(energyGeneration, energyGeneration, energyGeneration).noReceive().noExtraction();
-    
-    private final LazyOptional<IItemHandler> bladeInv = LazyOptional.of(this::createHandler);
-    private static final LazyOptional<IEnergyStorage> energyStorageHandler = LazyOptional.of(() -> energyStorage);
     
     private IItemHandler createHandler() {
         return new CustomItemStackHandler(1) {

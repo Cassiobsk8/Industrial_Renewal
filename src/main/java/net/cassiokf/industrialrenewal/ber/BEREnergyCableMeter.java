@@ -9,8 +9,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BEREnergyCableMeter extends BERBase<BlockEntityEnergyCable>
-{
+public class BEREnergyCableMeter extends BERBase<BlockEntityEnergyCable> {
     
     public BEREnergyCableMeter(BlockEntityRendererProvider.Context context) {
         super(context);
@@ -18,7 +17,7 @@ public class BEREnergyCableMeter extends BERBase<BlockEntityEnergyCable>
     
     @Override
     public void render(BlockEntityEnergyCable blockEntity, float partialTick, PoseStack stack, MultiBufferSource buffer, int combinedOverlay, int packedLight) {
-        int x=0,y=0,z=0;
+        int x = 0, y = 0, z = 0;
         Direction facing = blockEntity.getBlockFacing();
         doTheMath(facing, x, z, 0.69, 0.12f);
         renderPointer(stack, lighting(blockEntity), combinedOverlay, buffer, blockEntity.getLevel(), facing, xPos, y + 0.645, zPos, blockEntity.getOutPutAngle(), pointerLong, 0.4F);

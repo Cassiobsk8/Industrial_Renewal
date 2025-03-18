@@ -18,19 +18,18 @@ public class BlockTrash extends BlockAbstractHorizontalFacing implements EntityB
         super(props);
         registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
     }
-
+    
     public BlockTrash() {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(2f));
         registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
     }
-
+    
     @org.jetbrains.annotations.Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return super.getStateForPlacement(context)
-                .setValue(FACING, context.getHorizontalDirection());
+        return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection());
     }
-
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

@@ -25,11 +25,11 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockFluidPipe extends BlockPipeBase<BlockEntityFluidPipe> implements EntityBlock {
-
+    
     public BlockFluidPipe() {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), 4, 4);
     }
-
+    
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         return getState(context.getLevel(), context.getClickedPos(), defaultBlockState());
@@ -42,28 +42,15 @@ public class BlockFluidPipe extends BlockPipeBase<BlockEntityFluidPipe> implemen
                 BlockFluidPipeGauge block = ModBlocks.FLUID_PIPE_GAUGE.get();
                 worldIn.setBlockAndUpdate(pos, block.getState(worldIn, pos, block.defaultBlockState()).setValue(BlockFluidPipeGauge.FACING, player.getDirection()));
                 ItemScrewdriver.playSound(worldIn, pos);
-                if (!player.isCreative())
-                    player.getItemInHand(handIn).shrink(1);
+                if (!player.isCreative()) player.getItemInHand(handIn).shrink(1);
             }
             return InteractionResult.SUCCESS;
         }
         return super.use(state, worldIn, pos, player, handIn, hitResult);
     }
     
-    public BlockState getState(Level world, BlockPos pos, BlockState oldState){
-        return oldState
-                .setValue(UP, canConnectToPipe(world, pos, Direction.UP))
-                .setValue(DOWN, canConnectToPipe(world, pos, Direction.DOWN))
-                .setValue(NORTH, canConnectToPipe(world, pos, Direction.NORTH))
-                .setValue(SOUTH, canConnectToPipe(world, pos, Direction.SOUTH))
-                .setValue(EAST, canConnectToPipe(world, pos, Direction.EAST))
-                .setValue(WEST, canConnectToPipe(world, pos, Direction.WEST))
-                .setValue(CUP, canConnectToCapability(world, pos, Direction.UP))
-                .setValue(CDOWN, canConnectToCapability(world, pos, Direction.DOWN))
-                .setValue(CNORTH, canConnectToCapability(world, pos, Direction.NORTH))
-                .setValue(CSOUTH, canConnectToCapability(world, pos, Direction.SOUTH))
-                .setValue(CEAST, canConnectToCapability(world, pos, Direction.EAST))
-                .setValue(CWEST, canConnectToCapability(world, pos, Direction.WEST));
+    public BlockState getState(Level world, BlockPos pos, BlockState oldState) {
+        return oldState.setValue(UP, canConnectToPipe(world, pos, Direction.UP)).setValue(DOWN, canConnectToPipe(world, pos, Direction.DOWN)).setValue(NORTH, canConnectToPipe(world, pos, Direction.NORTH)).setValue(SOUTH, canConnectToPipe(world, pos, Direction.SOUTH)).setValue(EAST, canConnectToPipe(world, pos, Direction.EAST)).setValue(WEST, canConnectToPipe(world, pos, Direction.WEST)).setValue(CUP, canConnectToCapability(world, pos, Direction.UP)).setValue(CDOWN, canConnectToCapability(world, pos, Direction.DOWN)).setValue(CNORTH, canConnectToCapability(world, pos, Direction.NORTH)).setValue(CSOUTH, canConnectToCapability(world, pos, Direction.SOUTH)).setValue(CEAST, canConnectToCapability(world, pos, Direction.EAST)).setValue(CWEST, canConnectToCapability(world, pos, Direction.WEST));
     }
     
     @Override
@@ -76,20 +63,18 @@ public class BlockFluidPipe extends BlockPipeBase<BlockEntityFluidPipe> implemen
     public boolean canConnectToCapability(BlockGetter world, BlockPos pos, Direction facing) {
         BlockEntity te = world.getBlockEntity(pos.relative(facing));
         Block block = world.getBlockState(pos.relative(facing)).getBlock();
-        return (te != null
-                && !(block instanceof BlockFluidPipe)
-                && te.getCapability(ForgeCapabilities.FLUID_HANDLER, facing.getOpposite()).isPresent());
+        return (te != null && !(block instanceof BlockFluidPipe) && te.getCapability(ForgeCapabilities.FLUID_HANDLER, facing.getOpposite()).isPresent());
     }
-
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new BlockEntityFluidPipe(pos, state);
     }
-
+    
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide? null : ($0, $1, $2, blockEntity) -> ((BlockEntityFluidPipe)blockEntity).tick();
+        return level.isClientSide ? null : ($0, $1, $2, blockEntity) -> ((BlockEntityFluidPipe) blockEntity).tick();
     }
 }
