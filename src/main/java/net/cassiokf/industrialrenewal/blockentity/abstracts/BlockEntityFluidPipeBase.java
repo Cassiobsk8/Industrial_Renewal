@@ -62,11 +62,10 @@ public abstract class BlockEntityFluidPipeBase<T extends BlockEntityFluidPipeBas
         if (!isMaster() && !isMasterInvalid()) return getMaster().onFluidReceived(resource, action);
         
         if (inUse) return 0; //to prevent stack overflow (IE)
-        inUse = true;
         if (resource == null || resource.getAmount() <= 0) {
-            inUse = false;
             return 0;
         }
+        inUse = true;
         CapResult result = PipeUtils.outputFluid(this, resource, maxOutput, action, level);
         if (action.equals(IFluidHandler.FluidAction.EXECUTE)) outPut += result.getOutPut();
         outPutCount = result.getValidReceivers();

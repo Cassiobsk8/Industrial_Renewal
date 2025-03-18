@@ -75,14 +75,12 @@ public abstract class BlockEntityEnergyCable extends BlockEntityMultiBlocksTube<
         if (!isMaster() || level.isClientSide) return 0;
         
         if (inUse) return 0; //to prevent stack overflow (IE)
+        if (energy <= 0) {
+            return 0;
+        }
         inUse = true;
         int maxTransfer = Math.min(energy, getMaxEnergyToTransport());
         if (!simulate) potentialEnergy = maxTransfer;
-        if (energy <= 0)
-        {
-            inUse = false;
-            return 0;
-        }
         CapResult result = PipeUtils.moveEnergy(this, maxTransfer, getMaxEnergyToTransport(), simulate);
         if (!simulate) outPut += result.getOutPut();
         outPutCount = result.getValidReceivers();
