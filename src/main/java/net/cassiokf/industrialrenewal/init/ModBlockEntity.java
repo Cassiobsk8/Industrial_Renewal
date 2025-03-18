@@ -19,7 +19,8 @@ public class ModBlockEntity {
     
     public static void registerInit(IEventBus bus) {
         BLOCK_ENTITIES.register(bus);
-    }    public static RegistryObject<BlockEntityType<BlockEntityTransformer>> TRANSFORMER_TILE = BLOCK_ENTITIES.register("transformer_tile", () -> BlockEntityType.Builder.of(BlockEntityTransformer::new, ModBlocks.TRANSFORMER.get()).build(null));
+    }
+    public static RegistryObject<BlockEntityType<BlockEntityTransformer>> TRANSFORMER_TILE = BLOCK_ENTITIES.register("transformer_tile", () -> BlockEntityType.Builder.of(BlockEntityTransformer::new, ModBlocks.TRANSFORMER.get()).build(null));
     
     public static RegistryObject<BlockEntityType<BlockEntityHVIsolator>> ISOLATOR_TILE = BLOCK_ENTITIES.register("isolator_tile", () -> BlockEntityType.Builder.of(BlockEntityHVIsolator::new, ModBlocks.HV_ISOLATOR.get()).build(null));
     
@@ -30,15 +31,11 @@ public class ModBlockEntity {
     public static RegistryObject<BlockEntityType<BlockEntityBatteryBank>> BATTERY_BANK = BLOCK_ENTITIES.register("battery_bank_tile", () -> BlockEntityType.Builder.of(BlockEntityBatteryBank::new, ModBlocks.BATTERY_BANK.get()).build(null));
     
     public static RegistryObject<BlockEntityType<BlockEntityEnergyCableLVMeter>> ENERGYCABLE_LV_METER_TILE = BLOCK_ENTITIES.register("energycable_lv_meter_tile", () -> BlockEntityType.Builder.of(BlockEntityEnergyCableLVMeter::new, ModBlocks.ENERGYCABLE_LV_METER.get()).build(null));
-    
     public static RegistryObject<BlockEntityType<BlockEntityEnergyCableMVMeter>> ENERGYCABLE_MV_METER_TILE = BLOCK_ENTITIES.register("energycable_mv_meter_tile", () -> BlockEntityType.Builder.of(BlockEntityEnergyCableMVMeter::new, ModBlocks.ENERGYCABLE_MV_METER.get()).build(null));
-    
     public static RegistryObject<BlockEntityType<BlockEntityEnergyCableHVMeter>> ENERGYCABLE_HV_METER_TILE = BLOCK_ENTITIES.register("energycable_hv_meter_tile", () -> BlockEntityType.Builder.of(BlockEntityEnergyCableHVMeter::new, ModBlocks.ENERGYCABLE_HV_METER.get()).build(null));
     
     public static RegistryObject<BlockEntityType<BlockEntityEnergyCableLV>> ENERGYCABLE_LV_TILE = BLOCK_ENTITIES.register("energycable_lv_tile", () -> BlockEntityType.Builder.of(BlockEntityEnergyCableLV::new, ModBlocks.ENERGYCABLE_LV.get()).build(null));
-    
     public static RegistryObject<BlockEntityType<BlockEntityEnergyCableMV>> ENERGYCABLE_MV_TILE = BLOCK_ENTITIES.register("energycable_mv_tile", () -> BlockEntityType.Builder.of(BlockEntityEnergyCableMV::new, ModBlocks.ENERGYCABLE_MV.get()).build(null));
-    
     public static RegistryObject<BlockEntityType<BlockEntityEnergyCableHV>> ENERGYCABLE_HV_TILE = BLOCK_ENTITIES.register("energycable_hv_tile", () -> BlockEntityType.Builder.of(BlockEntityEnergyCableHV::new, ModBlocks.ENERGYCABLE_HV.get()).build(null));
     
     public static RegistryObject<BlockEntityType<BlockEntityFluidPipe>> FLUIDPIPE_TILE = BLOCK_ENTITIES.register("fluidpipe_tile", () -> BlockEntityType.Builder.of(BlockEntityFluidPipe::new, ModBlocks.FLUID_PIPE.get()).build(null));
