@@ -103,6 +103,10 @@ public class BlockEntityTransformer extends BlockEntity3x2x3MachineBase<BlockEnt
         int totalEnergyUsed = 0;
         int validOutputs = 0;
         Set<CapPercentage> percentages = new HashSet<>();
+        if (availableTransformers.size() == 1) {
+            percentages.add(new CapPercentage((IEnergyStorage) null, availableTransformers.iterator().next(), 1f, energy));
+            return percentages;
+        }
         for (BlockEntityTransformer transformer : availableTransformers) {
             if (transformer != null) {
                 int amount = transformer.outPutEnergy(energy, true);

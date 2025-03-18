@@ -75,6 +75,10 @@ public class PipeUtils {
                 IEnergyStorage energyStorage = te.getCapability(ForgeCapabilities.ENERGY, face).orElse(null);
                 if (energyStorage != null && energyStorage.canReceive()) {
                     int realMaxOutput = machine.getLimitedValueForOutPut(amount, maxEnergyCanTransport, te, true);
+                    if (mapPosSet.size() == 1) {
+                        capPercentages.add(new CapPercentage(energyStorage, te, 1f, realMaxOutput));
+                        return  capPercentages;
+                    }
                     if (realMaxOutput > 0) {
                         int energy = energyStorage.receiveEnergy(realMaxOutput, true);
                         totalEnergyUsed += energy;
@@ -135,6 +139,10 @@ public class PipeUtils {
                 IFluidHandler fluidHandler = te.getCapability(ForgeCapabilities.FLUID_HANDLER, face).orElse(null);
                 if (fluidHandler != null) {
                     int realMaxOutput = machine.getLimitedValueForOutPut(resource.getAmount(), maxFluidCanTransport, te, true);
+                    if (mapPosSet.size() == 1) {
+                        capPercentages.add(new CapPercentage(fluidHandler, te, 1f, realMaxOutput));
+                        return  capPercentages;
+                    }
                     FluidStack realStack = new FluidStack(resource.getFluid(), realMaxOutput);
                     if (realMaxOutput > 0) {
                         int quantity = fluidHandler.fill(realStack, IFluidHandler.FluidAction.SIMULATE);
