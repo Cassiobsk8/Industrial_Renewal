@@ -17,34 +17,22 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 
 public class BlockEntityFluidTank extends BlockEntityTowerBase<BlockEntityFluidTank> {
     
     
     public static final int CAPACITY = 1000000;
-    private static final int MAX_TRANSFER = 1000;
-    private final CustomFluidTank tank = new CustomFluidTank(CAPACITY) {
-        @Override
-        public void onFluidChange() {
-            sync();
-            super.onFluidChange();
-        }
-    };
+    private static final int MAX_TRANSFER = 10000;
+    private final CustomFluidTank tank = new CustomFluidTank(CAPACITY).setBlockEntity(this);
     private final LazyOptional<FluidTank> tankHandler = LazyOptional.of(() -> tank);
     private boolean firstLoad = false;
     private int tick = 0;
     
-    private int maxCapcity = 0;
+    private int maxCapacity = 0;
     private int sumCurrent = 0;
     
     public BlockEntityFluidTank(BlockPos pos, BlockState state) {
         super(ModBlockEntity.FLUID_TANK_TILE.get(), pos, state);
-    }
-    
-    @Override
-    public void onLoad() {
-        super.onLoad();
     }
     
     public void setFirstLoad() {
@@ -59,16 +47,6 @@ public class BlockEntityFluidTank extends BlockEntityTowerBase<BlockEntityFluidT
     @Override
     public boolean instanceOf(BlockEntity tileEntity) {
         return tileEntity instanceof BlockEntityFluidTank;
-    }
-    
-    @Override
-    public void loadTower() {
-        BlockEntityFluidTank chunk = this;
-        tower = new ArrayList<>();
-        while (chunk != null) {
-            if (!tower.contains(chunk)) tower.add(chunk);
-            chunk = chunk.getAbove();
-        }
     }
     
     @Override
@@ -100,7 +78,7 @@ public class BlockEntityFluidTank extends BlockEntityTowerBase<BlockEntityFluidT
             if (tick >= 5) {
                 tick = 0;
                 //Utils.debug("tank", worldPosition, tank.getFluidAmount());
-                maxCapcity = getSumMaxFluid();
+                maxCapacity = getSumMaxFluid();
                 sumCurrent = getSumCurrentFluid();
                 sync();
             }
@@ -147,11 +125,11 @@ public class BlockEntityFluidTank extends BlockEntityTowerBase<BlockEntityFluidT
     
     public String getFluidName() {
         String name = tank.getFluidAmount() > 0 ? tank.getFluid().getDisplayName().getString() : "Empty";
-        return name + ": " + Utils.formatEnergyString((sumCurrent / 1000)).replace("FE", "B") + " / " + Utils.formatEnergyString((maxCapcity / 1000)).replace("FE", "B");
+        return name + ": " + Utils.formatEnergyString((sumCurrent / 1000)).replace("FE", "B") + " / " + Utils.formatEnergyString((maxCapacity / 1000)).replace("FE", "B");
     }
     
     public float getFluidAngle() {
-        return Utils.normalizeClamped(sumCurrent, 0, maxCapcity) * 180f;
+        return Utils.normalizeClamped(sumCurrent, 0, maxCapacity) * 180f;
     }
     
     
@@ -175,7 +153,7 @@ public class BlockEntityFluidTank extends BlockEntityTowerBase<BlockEntityFluidT
     
     @Override
     protected void saveAdditional(CompoundTag compoundTag) {
-        compoundTag.putInt("max", maxCapcity);
+        compoundTag.putInt("max", maxCapacity);
         compoundTag.putInt("current", sumCurrent);
         tank.writeToNBT(compoundTag);
         super.saveAdditional(compoundTag);
@@ -183,7 +161,7 @@ public class BlockEntityFluidTank extends BlockEntityTowerBase<BlockEntityFluidT
     
     @Override
     public void load(CompoundTag compoundTag) {
-        maxCapcity = compoundTag.getInt("max");
+        maxCapacity = compoundTag.getInt("max");
         sumCurrent = compoundTag.getInt("current");
         tank.readFromNBT(compoundTag);
         super.load(compoundTag);
