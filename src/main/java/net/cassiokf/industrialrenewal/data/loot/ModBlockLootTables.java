@@ -4,7 +4,12 @@ import net.cassiokf.industrialrenewal.init.ModBlocks;
 import net.cassiokf.industrialrenewal.init.ModFluids;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Set;
@@ -32,7 +37,6 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.ENERGYCABLE_HV.get());
         dropSelf(ModBlocks.ENERGYCABLE_MV.get());
         dropSelf(ModBlocks.ENERGYCABLE_LV.get());
-        dropSelf(ModBlocks.ENERGYCABLE_LV_METER.get());
         dropSelf(ModBlocks.TRASH.get());
         dropSelf(ModBlocks.TURBINE_PILLAR.get());
         dropSelf(ModBlocks.WIND_TURBINE.get());
@@ -83,6 +87,11 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.FLUID_VALVE.get());
         dropSelf(ModBlocks.ENERGY_SWITCH.get());
         
+        dropTwo(ModBlocks.ENERGYCABLE_LV_METER.get(), ModBlocks.ENERGYCABLE_LV.get().asItem(), ModBlocks.ENERGY_LEVEL.get().asItem());
+        dropTwo(ModBlocks.ENERGYCABLE_MV_METER.get(), ModBlocks.ENERGYCABLE_MV.get().asItem(), ModBlocks.ENERGY_LEVEL.get().asItem());
+        dropTwo(ModBlocks.ENERGYCABLE_HV_METER.get(), ModBlocks.ENERGYCABLE_HV.get().asItem(), ModBlocks.ENERGY_LEVEL.get().asItem());
+        dropTwo(ModBlocks.FLUID_PIPE_GAUGE.get(), ModBlocks.FLUID_PIPE.get().asItem(), ModBlocks.FLUID_GAUGE.get().asItem());
+        
         //TODO: CANNOT DROP ITSELF
         //dropSelf(ModBlocks.BATTERY_BANK.get());
         //dropSelf(ModBlocks.BARREL.get());
@@ -109,5 +118,14 @@ public class ModBlockLootTables extends BlockLootSubProvider {
     @Override
     protected Iterable<Block> getKnownBlocks() {
         return ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator;
+    }
+    
+    protected void dropTwo(Block pBlock, ItemLike pItem, ItemLike pItem2) {
+        this.add(pBlock, this.createDoubleItemTable(pItem, pItem2));
+    }
+    
+    public LootTable.Builder createDoubleItemTable(ItemLike pItem, ItemLike pItem2) {
+        return LootTable.lootTable().withPool(this.applyExplosionCondition(pItem, LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(pItem))))
+                .withPool(this.applyExplosionCondition(pItem2, LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(pItem2))));
     }
 }
