@@ -42,7 +42,6 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.WIND_TURBINE.get());
         dropSelf(ModBlocks.PORTABLE_GENERATOR.get());
         dropSelf(ModBlocks.FLUID_PIPE.get());
-        dropSelf(ModBlocks.FLUID_PIPE_LARGE.get());
         
         dropSelf(ModBlocks.BRACE.get());
         dropSelf(ModBlocks.BRACE_STEEL.get());

@@ -99,8 +99,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FLUID_PIPE.get(), 8).define('#', Tags.Items.INGOTS_COPPER).define('A', Tags.Items.NUGGETS_IRON).pattern("A#A").pattern("# #").pattern("A#A").unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(consumer);
         
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FLUID_PIPE_LARGE.get(), 6).define('#', STEEL_INGOT).define('A', Tags.Items.NUGGETS_IRON).pattern("A#A").pattern("# #").pattern("A#A").unlockedBy("has_item", has(STEEL_INGOT)).save(consumer);
-        
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FLUID_TANK.get(), 1).define('#', STEEL_ROD).define('A', ModBlocks.BARREL.get()).define('B', ModBlocks.FLUID_PIPE.get()).pattern("AAA").pattern("AAA").pattern("#B#").unlockedBy("has_item", has(Items.IRON_INGOT)).save(consumer);
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FIREBOX_SOLID.get(), 1).define('A', Tags.Items.DUSTS_REDSTONE).define('B', Items.HOPPER).define('C', Items.DROPPER).define('D', Items.FURNACE).pattern(" A ").pattern("BCD").pattern(" A ").unlockedBy("has_item", has(Items.IRON_INGOT)).save(consumer);
@@ -228,7 +226,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.DAM_OUTLET.get(), 1).define('A', ModBlocks.CONCRETE.get()).define('B', Items.IRON_BARS).pattern("AAA").pattern("B B").pattern("AAA").unlockedBy("has_item", has(ModBlocks.HIGH_PRESSURE_PIPE.get())).save(consumer);
         
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.HIGH_PRESSURE_PIPE.get(), 2).define('A', STEEL_INGOT).define('B', ModBlocks.FLUID_PIPE_LARGE.get()).pattern("ABA").pattern("B B").pattern("ABA").unlockedBy("has_item", has(STEEL_INGOT)).save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.HIGH_PRESSURE_PIPE.get(), 3).define('A', STEEL_INGOT).define('B', ModBlocks.FLUID_PIPE.get()).pattern("ABA").pattern("B B").pattern("ABA").unlockedBy("has_item", has(STEEL_INGOT)).save(consumer);
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.DAM_TURBINE.get(), 1).define('A', STEEL_BLOCKS).define('B', STEEL_ROD).define('C', ModItems.SMALL_MOTOR.get()).define('D', ModBlocks.HIGH_PRESSURE_PIPE.get()).pattern("ABA").pattern("DBA").pattern("ACD").unlockedBy("has_item", has(ModBlocks.HIGH_PRESSURE_PIPE.get())).save(consumer);
         

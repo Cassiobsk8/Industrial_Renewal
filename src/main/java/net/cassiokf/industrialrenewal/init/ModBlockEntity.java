@@ -42,8 +42,6 @@ public class ModBlockEntity {
     
     public static RegistryObject<BlockEntityType<BEFluidPipeGauge>> FLUIDPIPE_GAUGE_TILE = BLOCK_ENTITIES.register("fluidpipe_gauge_tile", () -> BlockEntityType.Builder.of(BEFluidPipeGauge::new, ModBlocks.FLUID_PIPE_GAUGE.get()).build(null));
     
-    public static RegistryObject<BlockEntityType<BlockEntityFluidPipeLarge>> FLUIDPIPE_LARGE_TILE = BLOCK_ENTITIES.register("fluidpipe_large_tile", () -> BlockEntityType.Builder.of(BlockEntityFluidPipeLarge::new, ModBlocks.FLUID_PIPE_LARGE.get()).build(null));
-    
     public static RegistryObject<BlockEntityType<BlockEntityHighPressureFluidPipe>> HIGH_PRESSURE_PIPE = BLOCK_ENTITIES.register("high_pressure_pipe", () -> BlockEntityType.Builder.of(BlockEntityHighPressureFluidPipe::new, ModBlocks.HIGH_PRESSURE_PIPE.get()).build(null));
     
     public static RegistryObject<BlockEntityType<BlockEntityBarrel>> BARREL_TILE = BLOCK_ENTITIES.register("barrel_tile", () -> BlockEntityType.Builder.of(BlockEntityBarrel::new, ModBlocks.BARREL.get()).build(null));
