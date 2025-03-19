@@ -83,23 +83,23 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SOLAR_PANEL.get(), 1).define('#', Items.GLASS_PANE).define('A', Items.LAPIS_LAZULI).define('B', Tags.Items.INGOTS_IRON).define('C', Tags.Items.DUSTS_REDSTONE).pattern("###").pattern("AAA").pattern("BCB").unlockedBy("has_item", has(Items.IRON_INGOT)).save(consumer);
         
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ENERGYCABLE_LV.get(), 6).define('#', Tags.Items.INGOTS_COPPER).define('A', Tags.Items.DUSTS_REDSTONE).define('X', Items.GLASS_PANE).pattern("AXA").pattern("###").pattern("AXA").unlockedBy("has_item", has(Items.COPPER_INGOT)).save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ENERGYCABLE_LV.get(), 6).define('#', Tags.Items.DUSTS_REDSTONE).define('A', Tags.Items.INGOTS_COPPER).define('X', Items.GLASS_PANE).pattern("AXA").pattern("###").pattern("AXA").unlockedBy("has_item", has(Items.COPPER_INGOT)).save(consumer);
         
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ENERGYCABLE_MV.get(), 6).define('#', Items.GOLD_INGOT).define('A', Tags.Items.DUSTS_REDSTONE).define('X', Items.GLASS_PANE).pattern("#X#").pattern("AAA").pattern("#X#").unlockedBy("has_item", has(Items.IRON_INGOT)).save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ENERGYCABLE_MV.get(), 6).define('#', Items.GOLD_INGOT).define('A', Tags.Items.DUSTS_REDSTONE).define('X', Items.GLASS_PANE).pattern("#X#").pattern("AAA").pattern("#X#").unlockedBy("has_item", has(Items.GOLD_INGOT)).save(consumer);
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ENERGYCABLE_MV.get(), 6).define('#', ModBlocks.ENERGYCABLE_LV.get()).define('A', Items.GOLD_INGOT).pattern("###").pattern("AAA").pattern("###").unlockedBy("has_item", has(Items.GOLD_INGOT)).save(consumer, new ResourceLocation("energy_cable_mv_2"));
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ENERGYCABLE_HV.get(), 6).define('#', Items.GLASS_PANE).define('A', Tags.Items.DUSTS_REDSTONE).define('X', Items.DIAMOND).pattern("#X#").pattern("AAA").pattern("#X#").unlockedBy("has_item", has(Items.DIAMOND)).save(consumer);
         
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ENERGYCABLE_HV.get(), 6).define('#', ModBlocks.ENERGYCABLE_MV.get()).define('A', Items.REDSTONE).define('X', Items.DIAMOND).pattern("###").pattern("AXA").pattern("###").unlockedBy("has_item", has(Items.IRON_INGOT)).save(consumer, new ResourceLocation("energy_cable_hv_2"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ENERGYCABLE_HV.get(), 6).define('#', ModBlocks.ENERGYCABLE_MV.get()).define('A', Items.REDSTONE).define('X', Items.DIAMOND).pattern("###").pattern("AXA").pattern("###").unlockedBy("has_item", has(Items.DIAMOND)).save(consumer, new ResourceLocation("energy_cable_hv_2"));
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.BARREL.get(), 1).define('#', Items.IRON_TRAPDOOR).define('A', Tags.Items.STORAGE_BLOCKS_IRON).pattern("#").pattern("A").unlockedBy("has_item", has(Items.IRON_INGOT)).save(consumer);
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORTABLE_GENERATOR.get(), 1).define('#', Tags.Items.INGOTS_IRON).define('Y', Items.FURNACE).define('A', ModItems.SMALL_MOTOR.get()).define('B', ModBlocks.BARREL.get()).pattern("#B#").pattern("A#Y").pattern("# #").unlockedBy("has_item", has(Items.IRON_INGOT)).save(consumer);
         
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FLUID_PIPE.get(), 8).define('#', Tags.Items.INGOTS_COPPER).define('A', Tags.Items.NUGGETS_IRON).pattern("A#A").pattern("# #").pattern("A#A").unlockedBy("has_item", has(Items.IRON_INGOT)).save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FLUID_PIPE.get(), 8).define('#', Tags.Items.INGOTS_COPPER).define('A', Tags.Items.NUGGETS_IRON).pattern("A#A").pattern("# #").pattern("A#A").unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(consumer);
         
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FLUID_PIPE_LARGE.get(), 16).define('#', STEEL_INGOT).define('A', Tags.Items.NUGGETS_IRON).pattern("A#A").pattern("# #").pattern("A#A").unlockedBy("has_item", has(Items.IRON_INGOT)).save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FLUID_PIPE_LARGE.get(), 6).define('#', STEEL_INGOT).define('A', Tags.Items.NUGGETS_IRON).pattern("A#A").pattern("# #").pattern("A#A").unlockedBy("has_item", has(STEEL_INGOT)).save(consumer);
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FLUID_TANK.get(), 1).define('#', STEEL_ROD).define('A', ModBlocks.BARREL.get()).define('B', ModBlocks.FLUID_PIPE.get()).pattern("AAA").pattern("AAA").pattern("#B#").unlockedBy("has_item", has(Items.IRON_INGOT)).save(consumer);
         
