@@ -354,6 +354,25 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ENERGY_SWITCH.get(), 1).define('A', Items.LEVER).define('B', ModBlocks.ENERGYCABLE_HV.get()).define('C', Tags.Items.STORAGE_BLOCKS_REDSTONE).pattern(" A ").pattern("BCB").pattern(" A ").unlockedBy("has_item", has(ModBlocks.ENERGYCABLE_HV.get())).save(consumer);
         
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FLUID_GAUGE.get(), 1)
+                .define('A', Tags.Items.INGOTS_IRON)
+                .define('B', Tags.Items.DUSTS_REDSTONE)
+                .define('C', IRON_ROD)
+                .define('D', ModBlocks.FLUID_PIPE.get())
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ADA")
+                .unlockedBy("has_item", has(ModBlocks.ENERGYCABLE_HV.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ENERGY_LEVEL.get(), 1)
+                .define('A', Tags.Items.INGOTS_IRON)
+                .define('B', Tags.Items.DUSTS_REDSTONE)
+                .define('C', IRON_ROD)
+                .define('D', ModBlocks.ENERGYCABLE_LV.get())
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ADA")
+                .unlockedBy("has_item", has(ModBlocks.ENERGYCABLE_HV.get())).save(consumer);
+        
         oreBlasting(consumer, SPONGE_IRON_LIST, RecipeCategory.MISC, ModItems.INGOT_STEEL.get(), 0.25f, 100, "spongeiron");
         oreSmelting(consumer, SPONGE_IRON_LIST, RecipeCategory.MISC, ModItems.INGOT_STEEL.get(), 0.25f, 200, "spongeiron");
     }
