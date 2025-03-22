@@ -6,7 +6,7 @@
         "master": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block//storage/master_chest"
+        "model": "industrialrenewal:block/storage/master_chest"
       }
     },
     {
@@ -15,7 +15,7 @@
         "master": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block//storage/master_chest",
+        "model": "industrialrenewal:block/storage/master_chest",
         "y": 180
       }
     },
@@ -25,7 +25,7 @@
         "master": "true"
       },
       "apply": {
-        "model": "industrialrenewal:block//storage/master_chest",
+        "model": "industrialrenewal:block/storage/master_chest",
         "y": 90
       }
     },
